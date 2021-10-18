@@ -4,6 +4,7 @@
 class UsersController < ApplicationController
   require 'will_paginate/array'
   include CropperUtils
+  before_action :is_set_user, only: [:show]
   before_action :set_user, only: %i[show edit update destroy re_enable set_password]
   before_action :require_admin, only: %i[index update destroy re_enable]
   before_action :require_user_or_admin, only: %i[update]
@@ -14,19 +15,18 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = current_user
     @favorite_practices = @user&.favorite_practices || []
-    @facilities_data = facilities_json #['features']
     @created_practices = @user.created_practices
   end
 
   def edit_profile
-    redirect_to new_user_session_path unless current_user.present?
+    redirect_to root_path unless current_user.present?
     @user = current_user
   end
 
   def update_profile
-    redirect_to users_path unless current_user.present?
+    redirect_to root_path unless current_user.present?
     @user = current_user
     if @user.update(user_params)
       if params[:user][:delete_avatar].present? && params[:user][:delete_avatar] == 'true'
@@ -56,7 +56,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    # @user = current_user
     if params[:user][:role].present?
       if params[:user][:role] == 'user'
         @user.remove_all_roles('user')
@@ -65,13 +64,7 @@ class UsersController < ApplicationController
         @user.add_role(params[:user][:role])
         flash[:success] = "Added \"#{params[:user][:role]}\" role to user \"#{@user.email}\""
       end
-      # redirect_to users_path # Add this here, but was originally not in this location
     end
-    # if @user.save
-    #   @user.update_attribute(:accepted_terms, true)
-
-    #   redirect_back(fallback_location: root_path)
-    # end
     redirect_to users_path
   end
 
@@ -92,11 +85,8 @@ class UsersController < ApplicationController
       redirect_to root_path
     else
       flash[:error] = 'Something went wrong. Please contact us marketplace@va.gov for assistance.'
-      redirect_to terms_and_conditions_path
+      redirect_to root_path
     end
-  end
-
-  def terms_and_conditions
   end
 
   def recommended_for_you
@@ -130,15 +120,15 @@ class UsersController < ApplicationController
 
       # Practices based on the user's location
       @practices = Practice.searchable_practices 'a_to_z'
-      @facilities_data = facilities_json
+      @facilities_data = VaFacility.cached_va_facilities.get_relevant_attributes
       @offices_data = origin_data_json
       @user_location_practices = []
 
       @practices.each do |p|
         if p.facility? && p.practice_origin_facilities.any?
           p.practice_origin_facilities.each do |pof|
-            origin_facility = @facilities_data.find { |f| f['StationNumber'] == pof.facility_id } || nil
-            @user_location_practices << p if origin_facility.present? && origin_facility['OfficialStationName'] == @user.location
+            origin_facility = @facilities_data.find { |f| f.id === pof.va_facility_id } || nil
+            @user_location_practices << p if origin_facility.present? && origin_facility.official_station_name === @user.location
           end
         end
         # TODO: In the future, if user-locations are recorded as VISNs or Offices, we need to add them here. As of 11/7/2020, we are only using facilities.
@@ -156,8 +146,12 @@ class UsersController < ApplicationController
 
   private
 
-  def require_user
-    unless current_user.present?
+  # We only want users to view their own profile and not see other users' profiles with the other users' user id
+  def is_set_user
+    user_from_params = User.find(params[:id] || params[:user_id])
+    if current_user.present? && user_from_params.present?
+      redirect_to root_path if current_user.id != user_from_params.id
+    else
       redirect_to root_path
     end
   end
@@ -168,7 +162,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # This is to cover any sort of User self-editting in the future (such as profile infomation)
+  # This is to cover any sort of User self-editing in the future (such as profile infomation)
   def require_user_or_admin
     unless current_user.present? && (current_user == @user || current_user.has_role?(:admin))
       redirect_to users_path

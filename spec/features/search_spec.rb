@@ -1,9 +1,37 @@
 require 'rails_helper'
+require 'rake'
 
 describe 'Search', type: :feature do
   before do
-    Rake::Task['visns:create_visns_and_transfer_data'].execute
-    Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
+    visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
+    visn_2 = Visn.create!(id: 2, name: "New York/New Jersey VA Health Care Network", number: 2)
+    Visn.create!(id: 3, name: "VA Healthcare - VISN 4", number: 4)
+    Visn.create!(id: 4, name: "VA Capitol Health Care Network", number: 5)
+    visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
+    visn_10 = Visn.create!(id: 9, name: "VA Healthcare System", number: 10)
+    visn_16 = Visn.create!(id: 12, name: "South Central VA Health Care Network", number: 16)
+    visn_19 = Visn.create!(id: 14, name: "Rocky Mountain Network", number: 19)
+    visn_20 = Visn.create!(id: 15, name: "Northwest Network", number: 20)
+    visn_21 = Visn.create!(id: 16, name: "Sierra Pacific Network", number: 21)
+    visn_22 = Visn.create!(id: 17, name: "Desert Pacific Healthcare Network", number: 22)
+    visn_23 = Visn.create!(id: 18, name: "VA Midwest Health Care Network", number: 23)
+
+    facility_1 = VaFacility.create!(visn: visn_1, station_number: "402", official_station_name: "Togus VA Medical Center", common_name: "Togus", street_address_state: "ME")
+    facility_2 = VaFacility.create!(visn: visn_2, station_number: "528QK", official_station_name: "Saranac Lake VA Clinic", common_name: "Saranac Lake", street_address_state: "NY")
+    facility_3 = VaFacility.create!(visn: visn_2, station_number: "561BY", official_station_name: "Newark VA Clinic", common_name: "Newark-New Jersey", street_address_state: "NJ")
+    facility_4 = VaFacility.create!(visn: visn_2, station_number: "561BZ", official_station_name: "James J. Howard Veterans' Outpatient Clinic", common_name: "Brick", street_address_state: "NJ")
+    facility_5 = VaFacility.create!(visn: visn_2, station_number: "528QH", official_station_name: "South Salina VA Clinic", common_name: "South Salina", street_address_state: "NY")
+    facility_6 = VaFacility.create!(visn: visn_7, station_number: "544GG", official_station_name: "Spartanburg VA Clinic", common_name: "Spartanburg", street_address_state: "SC")
+    facility_7 = VaFacility.create!(visn: visn_10, station_number: "539QD", official_station_name: "Norwood VA Clinic", common_name: "Norwood", street_address_state: "OH")
+    facility_8 = VaFacility.create!(visn: visn_10, station_number: "538GC", official_station_name: "Marietta VA Clinic", common_name: "Marietta", street_address_state: "OH")
+    facility_9 = VaFacility.create!(visn: visn_10, station_number: "541GB", official_station_name: "Lorain VA Clinic", common_name: "Lorain", street_address_state: "OH")
+    facility_10 = VaFacility.create!(visn: visn_10, station_number: "541GH", official_station_name: "East Liverpool VA Clinic", common_name: "East Liverpool", street_address_state: "OH")
+    facility_11 = VaFacility.create!(visn: visn_16, station_number: "520", official_station_name: "Biloxi VA Medical Center", common_name: "Biloxi", street_address_state: "MS")
+    facility_12 = VaFacility.create!(visn: visn_19, station_number: "623GB", official_station_name: "Vinita VA Clinic", common_name: "Vinita", street_address_state: "OK")
+    facility_13 = VaFacility.create!(visn: visn_20, station_number: "687HA", official_station_name: "Yakima VA Clinic", common_name: "Yakima", street_address_state: "WA")
+    facility_14 = VaFacility.create!(visn: visn_21, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
+    facility_15 = VaFacility.create!(visn: visn_22, station_number: "649GA", official_station_name: "Kingman VA Clinic", common_name: "Kingman", street_address_state: "AZ")
+    facility_16 = VaFacility.create!(visn: visn_23, station_number: "438GD", official_station_name: "Aberdeen VA Clinic", common_name: "Aberdeen", street_address_state: "SD")
 
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'patrick.star@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -12,30 +40,31 @@ describe 'Search', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice, facility_type: 0, facility_id: '640A0')
+    PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_14)
     @practice2 = Practice.create!(name: 'Another Best Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.', user: @user2)
-    PracticeOriginFacility.create!(practice: @practice2, facility_type: 0, facility_id: '687HA')
+    PracticeOriginFacility.create!(practice: @practice2, facility_type: 0, va_facility: facility_13)
     @practice3 = Practice.create!(name: 'Some Cool Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 3', date_initiated: 'Mon, 08 Mar 1994 00:00:00 UTC +00:00', summary: 'This is the second best practice ever.', overview_solution: 'overview-solution', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice3, facility_type: 0, facility_id: '402')
+    PracticeOriginFacility.create!(practice: @practice3, facility_type: 0, va_facility: facility_1)
     @practice4 = Practice.create!(name: 'A Fantastic Practice', initiating_facility_type: 'visn', initiating_facility: '1', tagline: 'Test tagline 4', date_initiated: 'Wed, 15 May 2008 00:00:00 UTC +00:00', summary: 'This is the third best practice ever.', published: true, approved: true, user: @user2)
     @practice5 = Practice.create!(name: 'Random Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Fri, 27 Feb 1990 00:00:00 UTC +00:00', summary: 'This is the fourth best practice ever.', overview_results: 'overview-results', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice5, facility_type: 0, facility_id: '402')
+    PracticeOriginFacility.create!(practice: @practice5, facility_type: 0, va_facility: facility_1)
     @practice6 = Practice.create!(name: 'One Practice to Rule Them All', initiating_facility_type: 'visn', initiating_facility: '1', tagline: 'Test tagline 6', date_initiated: 'Sun, 21 Oct 2001 00:00:00 UTC +00:00', summary: 'This is the fifth best practice ever.', published: true, approved: true, user: @user2)
     @practice7 = Practice.create!(name: 'Practice of the Ages', initiating_facility_type: 'facility', tagline: 'Test tagline 7', date_initiated: 'Mon, 26 Feb 1986 00:00:00 UTC +00:00', summary: 'This is the sixth best practice ever.', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice7, facility_type: 0, facility_id: '539QD')
-    PracticeOriginFacility.create!(practice: @practice7, facility_type: 0, facility_id: '538GC')
+    PracticeOriginFacility.create!(practice: @practice7, facility_type: 0, va_facility: facility_7)
+    PracticeOriginFacility.create!(practice: @practice7, facility_type: 0, va_facility: facility_8)
     @practice8 = Practice.create!(name: 'An Unforgettable Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 8', date_initiated: 'Sat, 11 Jun 1997 00:00:00 UTC +00:00', summary: 'This is the seventh best practice ever.', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice8, facility_type: 0, facility_id: '541GB')
+    PracticeOriginFacility.create!(practice: @practice8, facility_type: 0, va_facility: facility_9)
     @practice9 = Practice.create!(name: 'One Amazing Practice', initiating_facility_type: 'visn', initiating_facility: '3', tagline: 'Test tagline 9', date_initiated: 'Fri, 09 Feb 1996 00:00:00 UTC +00:00', summary: 'This is the eighth best practice ever.', published: true, approved: true, user: @user2)
     @practice10 = Practice.create!(name: 'The Most Efficient Practice', initiating_facility_type: 'visn', initiating_facility: '4', tagline: 'Test tagline 10', date_initiated: 'Wed, 21 Aug 2002 00:00:00 UTC +00:00', summary: 'This is the ninth best practice ever.', published: true, approved: true, user: @user2)
     @practice11 = Practice.create!(name: 'A Glorious Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 11', date_initiated: 'Sat, 06 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the tenth best practice ever.', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice11, facility_type: 0, facility_id: '541GH')
+    PracticeOriginFacility.create!(practice: @practice11, facility_type: 0, va_facility: facility_10)
     @practice12 = Practice.create!(name: 'The Most Magnificent Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 12', date_initiated: 'Sun, 27 Jan 2010 00:00:00 UTC +00:00', summary: 'This is the eleventh best practice ever.', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice12, facility_type: 0, facility_id: '623GB')
+    PracticeOriginFacility.create!(practice: @practice12, facility_type: 0, va_facility: facility_12)
     @practice13 = Practice.create!(name: 'The Champion of Practices', initiating_facility_type: 'facility', tagline: 'Test tagline 13', date_initiated: 'Sun, 17 Nov 1991 00:00:00 UTC +00:00', summary: 'This is the twelfth best practice ever.', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice13, facility_type: 0, facility_id: '528QK')
+    PracticeOriginFacility.create!(practice: @practice13, facility_type: 0, va_facility: facility_2)
     @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true, user: @user2)
-    PracticeOriginFacility.create!(practice: @practice14, facility_type: 0, facility_id: '561BY')
+    PracticeOriginFacility.create!(practice: @practice14, facility_type: 0, va_facility: facility_3)
+
     parent_cat_1 = Category.create!(name: 'Strategic')
     @cat_1 = Category.create!(name: 'COVID', is_other: false, parent_category: parent_cat_1)
     @cat_2 = Category.create!(name: 'Environmental Services', is_other: false, parent_category: parent_cat_1)
@@ -54,19 +83,20 @@ describe 'Search', type: :feature do
     CategoryPractice.create!(practice: @practice6, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice7, category: @cat_4, created_at: Time.now)
     CategoryPractice.create!(practice: @practice12, category: @cat_1, created_at: Time.now)
-    dh_1 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '438GD')
+
+    dh_1 = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_16)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
-    dh_2 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '561BZ')
+    dh_2 = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_4)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_2.id, status: 'Completed')
-    dh_3 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '520')
+    dh_3 = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_11)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_3.id, status: 'Completed')
-    dh_4 = DiffusionHistory.create!(practice_id: @practice3.id, facility_id: '438GD')
+    dh_4 = DiffusionHistory.create!(practice_id: @practice3.id, va_facility: facility_16)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_4.id, status: 'Completed')
-    dh_5 = DiffusionHistory.create!(practice_id: @practice3.id, facility_id: '649GA')
+    dh_5 = DiffusionHistory.create!(practice_id: @practice3.id, va_facility: facility_15)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_5.id, status: 'Completed')
-    dh_6 = DiffusionHistory.create!(practice_id: @practice6.id, facility_id: '544GG')
+    dh_6 = DiffusionHistory.create!(practice_id: @practice6.id, va_facility: facility_6)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
-    dh_7 = DiffusionHistory.create!(practice_id: @practice10.id, facility_id: '528QH')
+    dh_7 = DiffusionHistory.create!(practice_id: @practice10.id, va_facility: facility_5)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_7.id, status: 'Completed')
   end
 
@@ -142,11 +172,11 @@ describe 'Search', type: :feature do
   describe 'initial page load' do
     it 'Should display certain text if the user navigates to the search page with no query' do
       visit_search_page
-      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
 
       # Make sure the initial text is not present when there is a query
       visit '/search?query=text'
-      expect(page).to_not have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to_not have_content('Enter a search term or use the filters to find matching innovations')
     end
   end
 
@@ -154,13 +184,13 @@ describe 'Search', type: :feature do
     it 'should display empty query and filters message' do
       visit '/'
       find('#dm-navbar-search-button').click
-      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
     end
     it 'should display certain text if no matches are found' do
       visit_search_page
       toggle_filters_accordion
       fill_in('dm-practice-search-field', with: 'test')
-      set_combobox_val(0, 'Lincoln VA Clinic')
+      set_combobox_val(0, 'James J. Howard Veterans\' Outpatient Clinic')
       select_category('.cat-2-label')
       search
       expect(page).to_not have_content('results')
@@ -428,7 +458,7 @@ describe 'Search', type: :feature do
         expect(all('h3.dm-practice-title')[5].text).to eq(@practice12.name)
 
         # choose 'most adoptions' option
-        select('Sort by most adopted practices', from: 'search_sort_option')
+        select('Sort by most adopted innovations', from: 'search_sort_option')
         expect(all('h3.dm-practice-title').first.text).to eq(@practice.name)
         expect(all('h3.dm-practice-title')[1].text).to eq(@practice3.name)
         expect(all('h3.dm-practice-title')[2].text).to eq(@practice6.name)
@@ -465,7 +495,7 @@ describe 'Search', type: :feature do
         visit_search_page
 
         toggle_filters_accordion
-        set_combobox_val(0, 'VISN-4')
+        set_combobox_val(0, 'VISN-2')
         select_category('.cat-2-label')
         select_category('.cat-3-label')
         select_category('.cat-5-label')
@@ -511,7 +541,7 @@ describe 'Search', type: :feature do
       add_search_to_cache
       expect(cache_keys).to include("searchable_practices")
       update_practice_introduction(@practice)
-      expect(page).to have_content("Practice was successfully updated.")
+      expect(page).to have_content("Innovation was successfully updated.")
       expect(page).to have_selector(".usa-alert__heading", visible: true)
       expect(cache_keys).not_to include("searchable_practices")
     end
@@ -523,7 +553,7 @@ describe 'Search', type: :feature do
       visit '/admin'
       click_link('Practices')
       click_link('New Practice')
-      fill_in('Practice name', with: 'The Newest Practice')
+      fill_in('Innovation name', with: 'The Newest Practice')
       fill_in('User email', with: 'practice_owner@va.gov')
       click_button('Create Practice')
       latest_practice = Practice.last

@@ -30,7 +30,6 @@
 //= require mark
 //= require ie
 //= require practices
-//= require _feedback_survey
 //= require _side_nav
 //= require commontator/application
 //= require jquery.timeago
@@ -56,3 +55,5 @@
 //= require local-time
 //= require visns/visn_infowindow
 //= require visns/visn_va_facility_infowindow
+//= require jquery.collapser.js
+//= require category_usage.js

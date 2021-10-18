@@ -97,12 +97,6 @@
   }
 }
 
-#dm-search-practices {
-  .addListData {
-    width: 120px !important;
-  }
-}
-
 #search_filters_dropdown {
   border: 0 !important;
   background-color: color($theme-color-secondary-light) !important;
@@ -130,7 +124,7 @@
 }
 
 #update-search-results-form {
-  .usa-search [type="submit"] {
+  #dm-practice-search-button {
     background-image: none !important;
     width: 85px !important;
     padding: 8px 16px 8px 16px !important;

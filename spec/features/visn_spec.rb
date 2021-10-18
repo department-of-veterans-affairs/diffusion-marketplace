@@ -43,259 +43,83 @@ describe 'VISN pages', type: :feature do
       primary: true
     )
 
-    @va_facility = VaFacility.create!(
+    facility_1 = VaFacility.create!(
       visn: @visn,
-      sta3n: 421,
-      station_number: 421,
-      official_station_name: 'Test Name',
-      common_name: 'Test Common Name',
-      classification: 'VA Medical Center (VAMC)',
-      classification_status: 'Firm',
-      mobile: 'No',
-      parent_station_number: 414,
-      official_parent_station_name: 'Test station',
-      fy17_parent_station_complexity_level: '1c-High Complexity',
-      operational_status: 'A',
-      ownership_type: 'VA Owned Asset',
-      delivery_mechanism: nil,
-      staffing_type: 'VA Staff Only',
-      va_secretary_10n_approved_date: '-12324',
-      planned_activation_date: '-12684',
-      station_number_suffix_reservation_effective_date: '05/23/1995',
-      operational_date: '-14321',
-      date_of_first_workload: 'Pre-FY2000',
-      points_of_service: 2,
-      street_address: '1 Test Ave',
-      street_address_city: 'Las Vegas',
-      street_address_state: 'NV',
-      street_address_zip_code: '11111',
-      street_address_zip_code_extension: '1111',
-      county_street_address: 'Test',
-      mailing_address: '1 Test Ave',
-      mailing_address_city: 'Las Vegas',
-      mailing_address_state: 'NV',
-      mailing_address_zip_code: '11111',
-      mailing_address_zip_code_extension: '1111',
-      county_mailing_address: 'Test',
-      station_phone_number: '207-623-8411',
-      station_main_fax_number: '207-623-8412',
-      after_hours_phone_number: '207-623-7211',
-      pharmacy_phone_number: '286-322-1342',
-      enrollment_coordinator_phone_number: '207-623-9332',
-      patient_advocate_phone_number: '207-623-1122',
-      latitude: '44.03409934',
-      longitude: '-70.70545322',
-      congressional_district: 'CD116_ME_23001',
-      market: '01-b',
-      sub_market: '01-b-9',
-      sector: '01-b-10-A',
-      fips_code: '23022',
-      rurality: 'U',
-      monday: '24/7',
-      tuesday: '24/7',
-      wednesday: '24/7',
-      thursday: '24/7',
-      friday: '24/7',
-      saturday: '24/7',
-      sunday: '24/7',
-      hours_note: 'This is a test'
+      station_number: "421",
+      official_station_name: "Test Name",
+      common_name: "Test Common Name",
+      street_address_state: "NV",
+      latitude: "43.03409934",
+      longitude: "-70.70545322",
+      rurality: "U",
+      fy17_parent_station_complexity_level: "1c-High Complexity",
+      classification: "VA Medical Center (VAMC)",
+      station_phone_number: "207-623-8411"
     )
-    @va_facility_2 = VaFacility.create!(
+    facility_2 = VaFacility.create!(
       visn: @visn_2,
-      sta3n: 454,
-      station_number: 424,
-      official_station_name: 'Second Test Name',
-      common_name: 'Second Test Common Name',
-      classification: 'VA Medical Center (VAMC)',
-      classification_status: 'Firm',
-      mobile: 'Yes',
-      parent_station_number: 454,
-      official_parent_station_name: 'Second test station',
-      fy17_parent_station_complexity_level: '1c-High Complexity',
-      operational_status: 'A',
-      ownership_type: 'VA Owned Asset',
-      delivery_mechanism: nil,
-      staffing_type: 'VA Staff Only',
-      va_secretary_10n_approved_date: '-12324',
-      planned_activation_date: '-12684',
-      station_number_suffix_reservation_effective_date: '01/27/1991',
-      operational_date: '-14321',
-      date_of_first_workload: 'Pre-FY2000',
-      points_of_service: 2,
-      street_address: '1 Test St',
-      street_address_city: 'Tampa',
-      street_address_state: 'FL',
-      street_address_zip_code: '11111',
-      street_address_zip_code_extension: '1111',
-      county_street_address: 'Test 2',
-      mailing_address: '1 Test St',
-      mailing_address_city: 'Tampa',
-      mailing_address_state: 'FL',
-      mailing_address_zip_code: '11111',
-      mailing_address_zip_code_extension: '1111',
-      county_mailing_address: 'Test',
-      station_phone_number: '207-623-8411',
-      station_main_fax_number: '207-623-8412',
-      after_hours_phone_number: '207-623-7211',
-      pharmacy_phone_number: '286-322-1342',
-      enrollment_coordinator_phone_number: '207-623-9332',
-      patient_advocate_phone_number: '207-623-1122',
-      latitude: '44.03409934',
-      longitude: '-70.70545322',
-      congressional_district: 'CD116_ME_23001',
-      market: '01-b',
-      sub_market: '01-b-9',
-      sector: '01-b-10-A',
-      fips_code: '23022',
-      rurality: 'U',
-      monday: '24/7',
-      tuesday: '24/7',
-      wednesday: '24/7',
-      thursday: '24/7',
-      friday: '24/7',
-      saturday: '-',
-      sunday: '-',
-      hours_note: 'This is a second test'
+      station_number: "424",
+      official_station_name: "Second Test Name",
+      common_name: "Second Test Common Name",
+      street_address_state: "FL",
+      latitude: "44.03409934",
+      longitude: "-70.70545322",
+      rurality: "U",
+      fy17_parent_station_complexity_level: "1c-High Complexity",
+      classification: "VA Medical Center (VAMC)",
+      station_phone_number: "727-342-9172"
     )
-    @va_facility_3 = VaFacility.create!(
+    facility_3 = VaFacility.create!(
       visn: @visn_2,
-      sta3n: 454,
-      station_number: 443,
-      official_station_name: 'Third Test Name',
-      common_name: 'Third Test Common Name',
-      classification: 'Primary Care CBOC',
-      classification_status: 'Firm',
-      mobile: 'Yes',
-      parent_station_number: 454,
-      official_parent_station_name: 'Third test station',
-      fy17_parent_station_complexity_level: '1c-High Complexity',
-      operational_status: 'A',
-      ownership_type: 'VA Owned Asset',
-      delivery_mechanism: nil,
-      staffing_type: 'VA Staff Only',
-      va_secretary_10n_approved_date: '-12324',
-      planned_activation_date: '-12684',
-      station_number_suffix_reservation_effective_date: '01/27/1991',
-      operational_date: '-14321',
-      date_of_first_workload: 'Pre-FY2000',
-      points_of_service: 2,
-      street_address: '1 Test Ln',
-      street_address_city: 'Clearwater',
-      street_address_state: 'FL',
-      street_address_zip_code: '11111',
-      street_address_zip_code_extension: '1111',
-      county_street_address: 'Test 2',
-      mailing_address: '1 Test Ln',
-      mailing_address_city: 'Clearwater',
-      mailing_address_state: 'FL',
-      mailing_address_zip_code: '11111',
-      mailing_address_zip_code_extension: '1111',
-      county_mailing_address: 'Test',
-      station_phone_number: '207-623-8411',
-      station_main_fax_number: '207-623-8412',
-      after_hours_phone_number: '207-623-7211',
-      pharmacy_phone_number: '286-322-1342',
-      enrollment_coordinator_phone_number: '207-623-9332',
-      patient_advocate_phone_number: '207-623-1122',
-      latitude: '27.96636756',
-      longitude: '-82.79163245',
-      congressional_district: 'CD116_ME_23001',
-      market: '01-b',
-      sub_market: '01-b-9',
-      sector: '01-b-10-A',
-      fips_code: '23022',
-      rurality: 'U',
-      monday: '24/7',
-      tuesday: '24/7',
-      wednesday: '24/7',
-      thursday: '24/7',
-      friday: '24/7',
-      saturday: '-',
-      sunday: '-',
-      hours_note: 'This is a third test'
+      station_number: "443",
+      official_station_name: "Third Test Name",
+      common_name: "Third Test Common Name",
+      street_address_state: "FL",
+      latitude: "27.96636756",
+      longitude: "-82.79163245",
+      rurality: "U",
+      fy17_parent_station_complexity_level: "1c-High Complexity",
+      classification: "Primary Care CBOC",
+      station_phone_number: "813-532-7712"
     )
-    @va_facility_4 = VaFacility.create!(
+    facility_4 = VaFacility.create!(
       visn: @visn_2,
-      sta3n: 454,
-      station_number: 431,
-      official_station_name: 'Fourth Test Name',
-      common_name: 'Fourth Common Name',
-      classification: 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)',
-      classification_status: 'Firm',
-      mobile: 'Yes',
-      parent_station_number: 454,
-      official_parent_station_name: 'Fourth test station',
-      fy17_parent_station_complexity_level: '1c-High Complexity',
-      operational_status: 'A',
-      ownership_type: 'VA Owned Asset',
-      delivery_mechanism: nil,
-      staffing_type: 'VA Staff Only',
-      va_secretary_10n_approved_date: '-12324',
-      planned_activation_date: '-12684',
-      station_number_suffix_reservation_effective_date: '01/27/1991',
-      operational_date: '-14321',
-      date_of_first_workload: 'Pre-FY2000',
-      points_of_service: 2,
-      street_address: '1 Test Circle',
-      street_address_city: 'Warner Robins',
-      street_address_state: 'GA',
-      street_address_zip_code: '22222',
-      street_address_zip_code_extension: '2222',
-      county_street_address: 'Test 2',
-      mailing_address: '1 Test Circle',
-      mailing_address_city: 'Warner Robins',
-      mailing_address_state: 'GA',
-      mailing_address_zip_code: '22222',
-      mailing_address_zip_code_extension: '2222',
-      county_mailing_address: 'Test',
-      station_phone_number: '207-623-8411',
-      station_main_fax_number: '207-623-8412',
-      after_hours_phone_number: '207-623-7211',
-      pharmacy_phone_number: '286-322-1342',
-      enrollment_coordinator_phone_number: '207-623-9332',
-      patient_advocate_phone_number: '207-623-1122',
-      latitude: '32.60681842',
-      longitude: '-83.64688667',
-      congressional_district: 'CD116_ME_23001',
-      market: '01-b',
-      sub_market: '01-b-9',
-      sector: '01-b-10-A',
-      fips_code: '23022',
-      rurality: 'U',
-      monday: '24/7',
-      tuesday: '24/7',
-      wednesday: '24/7',
-      thursday: '24/7',
-      friday: '24/7',
-      saturday: '-',
-      sunday: '-',
-      hours_note: 'This is a fourth test'
+      station_number: "431",
+      official_station_name: "Fourth Test Name",
+      common_name: "Fourth Common Name",
+      street_address_state: "GA",
+      latitude: "32.60681842",
+      longitude: "-83.64688667",
+      rurality: "U",
+      fy17_parent_station_complexity_level: "1c-High Complexity",
+      classification: "Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)",
+      station_phone_number: "912-322-5541"
     )
 
     @user = User.create!(email: 'nobara.kugisaki@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
 
-    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice, facility_type: 0, facility_id: '421')
+    @practice = Practice.create!(name: 'The Best Innovation Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best innovation ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
+    PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     @practice_2 = Practice.create!(name: 'An Awesome Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is an awesome practice.', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_2, facility_type: 0, facility_id: '424')
+    PracticeOriginFacility.create!(practice: @practice_2, facility_type: 0, va_facility: facility_2)
     @practice_3 = Practice.create!(name: 'A Very Cool Practice!', initiating_facility_type: 'facility', tagline: 'Super cool tagline', date_initiated: 'Mon, 09 Mar 1999 00:00:00 UTC +00:00', summary: 'This is a very cool practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_3, facility_type: 0, facility_id: '443')
+    PracticeOriginFacility.create!(practice: @practice_3, facility_type: 0, va_facility: facility_3)
     @practice_4 = Practice.create!(name: 'A Fantastic Practice!', initiating_facility_type: 'facility', tagline: 'Cool tagline', date_initiated: 'Fri, 21 Oct 2001 00:00:00 UTC +00:00', summary: 'This is a fantastic practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_4, facility_type: 0, facility_id: '424')
+    PracticeOriginFacility.create!(practice: @practice_4, facility_type: 0, va_facility: facility_2)
     @practice_5 = Practice.create!(name: 'A Magnificent Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Sat, 30 Nov 1995 00:00:00 UTC +00:00', summary: 'This is a magnificent practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_5, facility_type: 0, facility_id: '424')
+    PracticeOriginFacility.create!(practice: @practice_5, facility_type: 0, va_facility: facility_2)
     @practice_6 = Practice.create!(name: 'A Spectacular Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 6', date_initiated: 'Sun, 09 Oct 2008 00:00:00 UTC +00:00', summary: 'This is a spectacular practice.', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_6, facility_type: 0, facility_id: '424')
+    PracticeOriginFacility.create!(practice: @practice_6, facility_type: 0, va_facility: facility_2)
     @practice_7 = Practice.create!(name: 'A Meaningful Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 7', date_initiated: 'Wed, 11 Feb 1991 00:00:00 UTC +00:00', summary: 'This is a meaningful practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_7, facility_type: 0, facility_id: '443')
+    PracticeOriginFacility.create!(practice: @practice_7, facility_type: 0, va_facility: facility_3)
     @practice_8 = Practice.create!(name: 'A Ground-breaking Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 8', date_initiated: 'Thu, 15 Feb 2015 00:00:00 UTC +00:00', summary: 'This is a ground-breaking practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_8, facility_type: 0, facility_id: '424')
+    PracticeOriginFacility.create!(practice: @practice_8, facility_type: 0, va_facility: facility_2)
 
-    @dh = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '443')
+    @dh = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_3)
     DiffusionHistoryStatus.create!(diffusion_history: @dh, status: 'Completed', start_time: Time.now)
-    @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, facility_id: '431')
+    @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, va_facility: facility_4)
     DiffusionHistoryStatus.create!(diffusion_history: @dh_2, status: 'Completed', start_time: Time.now)
-    @dh_3 = DiffusionHistory.create!(practice_id: @practice_3.id, facility_id: '443')
+    @dh_3 = DiffusionHistory.create!(practice_id: @practice_3.id, va_facility: facility_3)
     DiffusionHistoryStatus.create!(diffusion_history: @dh_3, status: 'Completed', start_time: Time.now)
 
     @cat_1 = Category.create!(name: 'COVID')
@@ -338,7 +162,7 @@ describe 'VISN pages', type: :feature do
       it 'should show metadata for each visn' do
         @visn_markers.last.click
         expect(page).to have_selector('#visn-2-marker-modal', visible: true)
-        expect_visn_metadata('#visn-2-marker-modal', '7 practices created here', '3 practices adopted here')
+        expect_visn_metadata('#visn-2-marker-modal', '7 innovations created here', '3 innovations adopted here')
       end
 
       it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
@@ -361,7 +185,7 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should show metadata for each visn' do
-        expect_visn_metadata('#visn-1-card-link', '1 practice created here', '0 practices adopted here')
+        expect_visn_metadata('#visn-1-card-link', '1 innovation created here', '0 innovations adopted here')
       end
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do
@@ -382,9 +206,8 @@ describe 'VISN pages', type: :feature do
 
     it 'should display a brief breakdown of the visn\'s metadata' do
       visit '/visns/2'
-
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
-      expect(page).to have_content('Collectively, its facilities have created 7 practices and have adopted 3 practices.')
+      expect(page).to have_content('Collectively, its facilities have created 7 innovations and have adopted 3 innovations.')
       expect(page).to have_content('Toge Inumaki')
     end
 
@@ -425,8 +248,8 @@ describe 'VISN pages', type: :feature do
         expect(page).to have_selector('#visn-va-facility-1-marker-modal', visible: true)
         within(:css, '#visn-va-facility-1-marker-modal') do
           expect(find('.visn-va-facility-marker-modal-link').text).to eq('Test Name (Test Common Name)')
-          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('1 practice created here')
-          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('0 practices adopted here')
+          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('1 innovation created here')
+          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('0 innovations adopted here')
         end
       end
 
@@ -446,7 +269,7 @@ describe 'VISN pages', type: :feature do
     end
 
     describe 'visn search section' do
-      it 'should allow users to search for practices that were created or adopted within a given visn' do
+      it 'should allow users to search for innovations that were created or adopted within a given visn' do
         visit '/visns/2'
 
         # defaults to created practices

@@ -49,9 +49,16 @@ function containerizeSubpageHyperlinkCards() {
     })
 }
 
-function executePageBuilderFunctions() {
-    browsePageBuilderPageHappy();
-    containerizeSubpageHyperlinkCards();
+function removeBottomMarginFromLastAccordionHeading() {
+    var accordionHeading = '.usa-accordion__heading';
+    $(accordionHeading).last().removeClass('margin-bottom-2');
+    $(accordionHeading).last().addClass('margin-bottom-0');
 }
 
-$(document).on('turbolinks:load', executePageBuilderFunctions);
+function execPageBuilderFunctions() {
+    browsePageBuilderPageHappy();
+    removeBottomMarginFromLastAccordionHeading();
+    removeBottomMarginFromLastAccordionHeading();
+}
+
+$(document).on('turbolinks:load', execPageBuilderFunctions);

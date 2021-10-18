@@ -12,7 +12,10 @@ describe 'Practices', type: :feature do
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Time.now(), user: @user2)
     @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, date_initiated: Time.now(), user: @user2)
     @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, date_initiated: Time.now(), user: @user2)
-    @highlighted_practice = Practice.create!(name: 'Highlighted practice', approved: true, published: true, enabled: true, highlight: true, highlight_body: 'Highlight body text', date_initiated: Time.now(), user: @user2)
+    @highlighted_practice = Practice.create!(name: 'Highlighted practice', approved: true, published: true, enabled: true, highlight: true, highlight_body: 'Highlight body text', date_initiated: Time.now(), highlight_attachment: File.new("#{Rails.root}/spec/assets/charmander.png"), user: @user2)
+
+    visn_20 = Visn.create!(id: 15, name: "Northwest Network", number: 20)
+    @facility_1 = VaFacility.create!(visn: visn_20, station_number: "687HA", official_station_name: "Yakima VA Clinic", common_name: "Yakima", street_address_state: "WA")
 
     @departments = [
         Department.create!(name: 'Test department 1', short_name: 'td1'),
@@ -34,13 +37,13 @@ describe 'Practices', type: :feature do
   describe 'Authorization' do
     it 'should let unauthenticated users interact with practices' do
       # Visit an individual Practice
-      visit '/practices/the-best-practice-ever'
+      visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('You are not authorized to view this content.')
 
       @user_practice.update(approved: true, published: true)
       # Visit an individual Practice
-      visit '/practices/the-best-practice-ever'
+      visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Login to see full practice')
       click_on('Login to see full practice')
@@ -59,17 +62,15 @@ describe 'Practices', type: :feature do
       # Visit the Marketplace
       visit '/'
       expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
+      expect(page).to have_link(href: '/about')
+      expect(page).to have_content('Browse all innovations')
       expect(page).to have_content(@highlighted_practice.name)
-      expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
-      expect(page).to have_link(href: '/explore')
-      expect(page).to have_content('Recommended for you')
-      expect(page).to have_content('Explore practices that are relevant to your location, role, and saved searches.')
-      expect(page).to have_content('COVID-19')
-      expect(page).to have_content('The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding to the changing medical landscape.')
-      expect(page).to have_link(href: '/covid-19')
-      expect(page).to have_content('Nominate a practice')
-      expect(page).to have_content('If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click the link below to submit it to the Marketplace.')
-      expect(page).to have_link('Start nomination', href: "mailto:marketplace@va.gov?subject=Nominate%20a%20Practice&body=I%20am%20writing%20to%20nominate%20a%20practice%20for%20the%20Diffusion%20Marketplace.%0A%0AName%20of%20practice:%0AOriginating%20facility:%0APoint%20of%20contact:%0ASenior%20executive%20stakeholder%20(if%20known):%0AAdoptions%20(if%20known):")
+      expect(page).to have_content('Highlight body text')
+      expect(page).to have_content('View innovation')
+      expect(page).to have_content('Nominate an innovation')
+      expect(page).to have_content('Are you working on an innovation that’s making a difference at VA? Submit a nomination for the innovation to be included on the Diffusion Marketplace.')
+      expect(page).to have_link('Start nomination', href: nominate_an_innovation_path )
     end
 
     it 'should let the practice owner interact with their practice if not approved or published' do
@@ -87,7 +88,7 @@ describe 'Practices', type: :feature do
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
+      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_current_path('/')
     end
 
@@ -111,12 +112,24 @@ describe 'Practices', type: :feature do
       expect(page).to have_current_path(practice_path(@user_practice))
     end
 
+    it 'should let a user view the practice if it is hidden but not search for it' do
+      login_as(@user2, :scope => :user, :run_callbacks => false)
+      hidden_practice = Practice.create!(name: 'A secret practice', approved: true, published: true, hidden: true, tagline: 'Test secret tagline', date_initiated: Time.now(), user: @user)
+      visit practice_path(hidden_practice)
+      expect(page).to have_content(hidden_practice.name)
+      expect(page).to have_content('Hidden practice')
+      fill_in('search', with: 'A secret practice')
+      find("#dm-navbar-search-button").click
+      expect(page).to have_selector("#search-page")
+      expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
+    end
+
     it 'should display the initiating facility\'s name' do
       login_as(@user, :scope => :user, :run_callbacks => false)
 
       # Visit an individual Practice that is approved and published
       practice = Practice.create!(name: 'Another public practice', date_initiated: Time.now(), approved: true, published: true, initiating_facility_type: 'facility', tagline: 'Test tagline', user: @user2)
-      PracticeOriginFacility.create!(practice: practice, facility_type: 0, facility_id: '687HA')
+      PracticeOriginFacility.create!(practice: practice, facility_type: 0, va_facility: @facility_1)
       visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)

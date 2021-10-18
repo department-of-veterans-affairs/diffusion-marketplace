@@ -9,6 +9,64 @@ function setIntervalAndExecute(prId, isPub, time) {
 
 var sessionCheckInterval = setIntervalAndExecute(practiceId, isPublished, 25000);
 
+function checkUserSession(prId, isPub, callbackFn) {
+    var sessionTimeoutURL = `/session_timeout?path=${String(window.location.pathname)}`;
+    Rails.ajax({
+        type: "GET",
+        url: "/check_session_timeout",
+        success: () => {
+            callbackFn(prId, isPub);
+        },
+        error: () => {
+            window.location.href = sessionTimeoutURL;
+        }, complete: (response) => {
+            if (response.status === 200 || response.status === 401) {
+                if (parseInt(response.responseText) <= 0) {
+                    window.location.href = sessionTimeoutURL;
+                }
+            }
+        }
+    })
+}
+
+function extendPracticeEditorSession(prId, isPub) {
+    Rails.ajax({
+        type: 'patch',
+        url: "/extend_editor_session_time",
+        data: jQuery.param({practice_id: prId}),
+        success: function() {
+            sessionCheckInterval = setIntervalAndExecute(prId, isPub, 25000)
+        }
+    });
+}
+
+function closePracticeEditorSession(prId, isPub) {
+    // Check for any required fields on the page that are not filled out. If there are any, redirect to the metrics page without saving the user's changes.
+    var requiredFields = $('.dm-required-field').attr('visibility', 'visible');
+    var blankRequiredFields = [];
+    $(requiredFields).each(function() {
+        if ($(this).val() === '') {
+            blankRequiredFields.push($(this));
+        }
+    })
+    var anyBlankRequiredFields = false;
+    if (blankRequiredFields.length > 0) {
+        anyBlankRequiredFields = true;
+    }
+    var current_action = "<%= params[:action] %>";
+    Rails.ajax({
+        type: 'patch',
+        url: "/close_edit_session",
+        data: jQuery.param({practice_id: prId, session_ended: true, any_blank_required_fields: anyBlankRequiredFields, current_action: current_action}),
+        success: function(result) {
+            let save_id = document.getElementById('practice-editor-save-button');
+            if (save_id && blankRequiredFields.length === 0 && current_action !== 'editors') {
+                save_id.click();
+            }
+        }
+    });
+}
+
 function getTimeRemainingForCurrentSession(prId, isPub) {
     Rails.ajax({
         type: 'get',
@@ -16,46 +74,15 @@ function getTimeRemainingForCurrentSession(prId, isPub) {
         data: jQuery.param({ practice_id: prId}),
         success: function (data) {
             var timeLeft =  data;
-            var extendTime = isPub ? '15' : '30';
             if (timeLeft <= 2) {
                 clearInterval(sessionCheckInterval);
+                var extendTime = isPub ? '20' : '30';
                 var confirmMsg = "Your editing session is expiring soon. Choosing 'OK' will extend your session by " + extendTime + " minutes. Choosing 'Cancel' will immediately save your data (unless there are required fields that have not been filled out) and end your session."
                 if (confirm(confirmMsg)) {
-                    Rails.ajax({
-                        type: 'patch',
-                        url: "/extend_editor_session_time",
-                        data: jQuery.param({practice_id: prId}),
-                        success: function() {
-                            sessionCheckInterval = setIntervalAndExecute(prId, isPub, 25000)
-                        }
-                    });
+                    checkUserSession(prId, isPub, extendPracticeEditorSession)
                 }
                 else {
-                    // Check for any required fields on the page that are not filled out. If there are any, redirect to the metrics page without saving the user's changes.
-                    var requiredFields = $('.dm-required-field').attr('visibility', 'visible');
-                    var blankRequiredFields = [];
-                    $(requiredFields).each(function() {
-                        if ($(this).val() === '') {
-                            blankRequiredFields.push($(this));
-                        }
-                    })
-                    var anyBlankRequiredFields = false;
-                    if (blankRequiredFields.length > 0) {
-                        anyBlankRequiredFields = true;
-                    }
-
-                    var current_action = "<%= params[:action] %>";
-                    Rails.ajax({
-                        type: 'patch',
-                        url: "/close_edit_session",
-                        data: jQuery.param({practice_id: prId, session_ended: true, any_blank_required_fields: anyBlankRequiredFields, current_action: current_action}),
-                        success: function(result) {
-                            let save_id = document.getElementById('practice-editor-save-button');
-                            if (save_id && blankRequiredFields.length === 0 && current_action !== 'editors') {
-                                save_id.click();
-                            }
-                        }
-                    });
+                    checkUserSession(prId, isPub, closePracticeEditorSession)
                 }
             }
         }

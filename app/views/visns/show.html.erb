@@ -24,8 +24,8 @@
           %>
 
           This VISN has <%= visn_facilities_count %> facilit<%= visn_facilities_count != 1 ? 'ies' : 'y' %> and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
-          Collectively, its facilities have created <%= visn_practices_created_count %> practice<%= 's' if visn_practices_created_count != 1 %> and have adopted
-          <%= visn_practices_adopted_count %> practice<%= 's' if visn_practices_adopted_count != 1 %>.
+          Collectively, its facilities have created <%= visn_practices_created_count %> innovation<%= 's' if visn_practices_created_count != 1 %> and have adopted
+          <%= visn_practices_adopted_count %> innovation<%= 's' if visn_practices_adopted_count != 1 %>.
           This VISN has <%= get_facility_type_text_by_visn(@visn) %>.
         </p>
         <%= link_to 'Jump to list of VA facilities', va_facilities_path, class: 'usa-link' %>
@@ -36,7 +36,7 @@
             <p class="text-bold margin-bottom-2">VISN Marketplace Liaison</p>
             <p class="margin-bottom-2"><%= @primary_visn_liaison.first_name %> <%= @primary_visn_liaison.last_name %></p>
             <% primary_liaison_email = @primary_visn_liaison.email %>
-            <p><%= mail_to primary_liaison_email, primary_liaison_email, class: 'visn-liaison-email' %></p>
+            <p><%= mail_to primary_liaison_email, primary_liaison_email, class: 'usa-link usa-link--external' %></p>
           </div>
         </div>
       <% end %>

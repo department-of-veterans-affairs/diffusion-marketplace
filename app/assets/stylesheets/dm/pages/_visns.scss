@@ -1,25 +1,25 @@
-.visn-modal-link, .va-facility-index-link, .visn-liaison-email, .visn-va-facility-marker-modal-link {
-  text-decoration: none !important;
-  color: color($theme-color-primary);
-
-  &:hover {
-    color: color($theme-color-primary-dark) !important;
-  }
-
-  &:active {
-    color: color($theme-color-primary-darker) !important;
-  }
-
-  &:visited {
-    color: color($theme-color-primary);
-  }
-}
-
 .visn-marker-container, .visn-va-facility-marker-container {
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 #visns-index {
+  .dm-visn-card {
+    &:last-of-type {
+      @include u-margin-bottom(0, !important);
+    }
+
+    @media screen and (min-width: 640px) {
+      &:nth-last-of-type(-n + 2) {
+        @include u-margin-bottom(0, !important);
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      &:nth-last-of-type(-n + 3) {
+        @include u-margin-bottom(0, !important);
+      }
+    }
+  }
   .visn-card-link {
     text-decoration: none;
 

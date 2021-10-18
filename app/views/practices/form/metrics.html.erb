@@ -11,14 +11,14 @@
 <% end %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-  <div class="grid-row grid-gap practice-editor-min-height">
+  <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
     <div id="metrics" class="desktop:grid-col-9 grid-col-12 padding-0">
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
     </div>
       <section class="usa-section padding-top-0 padding-bottom-0" aria-label="Metrics">
-        <div class="grid-row flex-align-end margin-top-4">
+        <div class="grid-row flex-align-end margin-top--important">
           <h1 class="margin-bottom-3 margin-y-0 grid-col-3 font-sans-2xl">
             Metrics
           </h1>
@@ -106,13 +106,13 @@
                 <th scope="col">Adoptions</th>
               </tr>
               <thead>
-              <tr>
+              <tr id="rural-adoptions-row-last-30">
                 <td class="width-80">Rural</td>
-                <td><%= @rural_facility_30 %></td>
+                <td class="rural-adoptions-count-last-30"><%= @rural_facility_30 %></td>
               </tr>
-              <tr>
+              <tr id="urban-adoptions-row-last-30">
                 <td class="width-80">Urban</td>
-                <td><%= @urban_facility_30 %></td>
+                <td class="urban-adoptions-count-last-30"><%= @urban_facility_30 %></td>
               </tr>
             </table>
             <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
@@ -146,7 +146,7 @@
           </div>
 
   <!--      ADOPTIONS for ALL TIME -------------------------------------------------------------------->
-          <div id="adoptions_by_practice_all_time" class="margin-bottom-10" style="display: none">
+          <div id="adoptions_by_practice_all_time" class="margin-bottom-10 display-none">
             <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
               <thead>
                 <tr>
@@ -178,13 +178,13 @@
                   <th scope="col">Adoptions</th>
                 </tr>
               </thead>
-              <tr>
+              <tr id="rural-adoptions-row-at">
                 <td class="width-80">Rural</td>
-                <td><%= @rural_facility_at %></td>
+                <td class="rural-adoptions-count-at"><%= @rural_facility_at %></td>
               </tr>
-              <tr>
+              <tr id="urban-adoptions-row-at">
                 <td class="width-80">Urban</td>
-                <td><%= @urban_facility_at %></td>
+                <td class="urban-adoptions-count-at"><%= @urban_facility_at %></td>
               </tr>
             </table>
             <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
@@ -231,17 +231,17 @@
           </ul>
         </div>
         <div id="leader_board_page_views_30_days">
-          <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
+          <table class="usa-table usa-table--borderless width-full margin-bottom-0 metrics-table">
             <thead>
               <tr>
-                <th scope="col" class="width-80">Practice</th>
+                <th scope="col" class="width-80">Innovation</th>
                 <th scope="col">Views</th>
               </tr>
             </thead>
             <%cur_rec = 1 %>
             <% @page_views_leader_board_30_days.each do |rec| %>
               <tr>
-                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/innovations/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
               <% cur_rec += 1 %>
@@ -249,17 +249,17 @@
           </table>
         </div>
         <div class="display-none" id="leader_board_page_views_all_time">
-          <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
+          <table class="usa-table usa-table--borderless width-full margin-bottom-0 metrics-table">
             <thead>
               <tr>
-                <th scope="col" class="width-80">Practice</th>
+                <th scope="col" class="width-80">Innovation</th>
                 <th scope="col">Views</th>
               </tr>
             </thead>
             <%cur_rec = 1 %>
             <% @page_views_leader_board_all_time.each do |rec| %>
               <tr>
-                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/innovations/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
               <% cur_rec += 1 %>

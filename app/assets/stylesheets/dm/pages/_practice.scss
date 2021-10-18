@@ -245,10 +245,6 @@
   display: none;
 }
 
-// .editor-sidenav-link {
-//   padding: 0.6rem !important;
-// }
-
 .practice-editor-impact-photo {
   max-width: 100% !important;
   object-fit: cover;
@@ -377,10 +373,6 @@
 
 .documentation-check, .risk-miti-check, .checklist-check {
   visibility: hidden;
-}
-
-.practice-editor-min-height {
-  min-height: 700px;
 }
 
 .hidden-estimate-label {
@@ -1010,3 +1002,14 @@ tr.border_bottom td {
     color: color($theme-color-base-ink) !important;
   }
 }
+
+// #practice_origin_facilities_text {
+//   a:not(.dm-btn-primary) {
+//     @extend .dm-internal-link
+//   }
+
+//   .dotify-extra-content {
+//     display: none;
+//   }
+
+// }

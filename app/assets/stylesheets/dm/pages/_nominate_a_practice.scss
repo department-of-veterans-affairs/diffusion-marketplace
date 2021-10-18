@@ -1,0 +1,39 @@
+#dm-nominate-a-practice-page {
+  form {
+    label:last-of-type {
+      @include u-maxw('full', !important);
+    }
+
+    span {
+      font-size: 14px;
+      color: color($theme-color-base-dark);
+    }
+
+    textarea {
+      resize: none;
+      height: 132px;
+      @include u-maxw('full', !important);
+    }
+
+    .usa-button {
+      @media screen and (max-width: 1023px) {
+        width: 153px;
+      }
+    }
+  }
+
+  .dm-alert-message {
+    @media screen and (max-width: 639px) {
+      &:before {
+        -webkit-mask-position: center 14px !important;
+        mask-position: center 14px !important;
+      }
+    }
+
+    .close-alert-message {
+      @media screen and (max-width: 639px) {
+        top: 24px;
+      }
+    }
+  }
+}

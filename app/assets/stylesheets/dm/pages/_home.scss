@@ -3,162 +3,111 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .dm-homepage {
-  .dm-system-message {
-    .usa-alert {
-      margin-bottom: 0;
+  .homepage-welcome-banner {
+    // since the transform style from dm-gradient-banner flips the text along with the gradient colors, we need to flip the text inside of the grid-container to return it to its original state
+    .grid-container {
+      transform: matrix(1, 0, 0, -1, 0, 0);
+    }
+
+    .homepage-welcome-banner-body-text-container {
+      margin-bottom: 119px;
+
+      @media screen and (min-width: 1024px) {
+        @include u-margin-bottom(0);
+      }
     }
   }
 
-  a {
-    color: color($theme-color-base-ink) !important;
-  }
-
-  .homepage-explore-all-section {
-    height: 360px;
+  .homepage-welcome-banner-image-container {
+    @include u-position('absolute');
+    bottom: -87px;
 
     @media screen and (min-width: 1024px) {
-      height: 400px;
-    }
-
-    // h1 {
-    //   line-height: 36px;
-
-    //   @media screen and (min-width: 640px) {
-    //     line-height: 46px;
-    //   }
-    // }
-
-    .fa-laptop-medical {
-      color: color($theme-color-primary-light) !important;
-    }
-
-    // .homepage-explore-all-button {
-    //   // line-height: 19px !important;
-    //   color: color($theme-color-base-ink) !important;
-    //   background-color: color($theme-color-dm-white) !important;
-    //   // border: none !important;
-    //   // font-weight: bold !important;
-    //   // cursor: pointer;
-    //   // padding: 12px 20px 12px 20px !important;
-    //   // width: 197px !important;
-    //   // font-size: 16px !important;
-    //   // text-decoration: none;
-
-    //   @media screen and (min-width: 1024px) {
-    //     // line-height: 26px !important;
-    //     color: color($theme-color-base-ink) !important;
-    //     background-color: color($theme-color-dm-white) !important;
-    //     // border: none !important;
-    //     // padding: 16px 24px 16px 24px !important;
-    //     font-size: 22px !important;
-    //     width: 264px !important;
-    //   }
-
-    //   &:hover {
-    //     background-color: color($theme-color-base-lightest) !important;
-    //   }
-
-    //   &:active {
-    //     background-color: color($theme-color-base-light) !important;
-    //   }
-    // }
-
-    @media screen and (max-width: 1023px) {
-      .fa-laptop-medical {
-        font-size: 4em !important;
-      }
+      height: 223px;
+      @include u-right(0);
+      bottom: unset;
     }
   }
 
-  .banner-links-section {
-    .recommended-for-you-banner-link, .covid-banner-link {
-      text-decoration: none !important;
+  .homepage-welcome-banner-image-container, .homepage-featured-topic-image-container, .homepage-featured-innovation-image-container {
+    max-width: 308px;
 
-      &:visited {
+    img {
+      @include u-height('full');
+      @include u-width('full');
+      object-fit: cover;
+      height: 174px !important;
+
+      @media screen and (min-width: 1024px) {
+        height: 223px !important;
+      }
+
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        @include u-display('none', !important);
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      max-width: unset;
+    }
+  }
+
+  .homepage-search {
+    @media screen and (max-width: 1023px) {
+      margin-top: 119px;
+    }
+
+    #dm-homepage-search-field {
+      &::placeholder {
         color: color($theme-color-base-ink) !important;
       }
-
-      &:hover {
-        h2 {
-          text-decoration: underline !important;
-        }
-      }
-    }
-    .recommended-for-you-banner, .covid-banner {
-      padding: 40px 0 40px 0 !important;
-      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-
-      &:before {
-        background-color: color($theme-color-primary-light) !important;
-      }
-    }
-
-    .recommended-for-you-banner {
-      background-color: transparent !important;
-      border-left-color: color($theme-color-primary-light) !important;
-    }
-
-    .fa-user-circle {
-      color: color($theme-color-base-ink) !important;
-    }
-
-    .covid-banner {
-      background-color: color($theme-color-primary-light);
     }
   }
 
-  // Highlighted Practice section
-  .dm-highlighted-practice {
-    .dm-practice-card {
-      padding-top: 0;
-      padding-bottom: 0;
+  .featured-innovation-content-container {
+    @media screen and (min-width: 1024px) {
+      flex-direction: row-reverse;
+      // needed for Firefox support
+      -webkit-flex-direction: row-reverse;
+    }
+  }
+
+  .featured-topic, .featured-innovation {
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 128px !important;
+    }
+  }
+
+  .nominate-practice-section {
+    @media screen and (min-width: 1024px) {
+      height: 417px;
     }
 
-    .dm-practice-bookmark-btn {
-      top: 6px;
-      right: 6px;
-    }
-
-    .dm-highlighted-practice-card {
-      max-width: 309px;
-    }
-
-    @media screen and (min-width: 40rem) {
-      height: 250px;
-      max-height: 250px;
-
-     .dm-highlighted-practice-content {
-        display: flex;
-        height: 100%;
-        align-items: center;
-      }
-
-      .dm-practice-card-origin {
-        bottom: 0;
-      }
-
-      .dm-highlighted-practice-text {
-        max-width: 520px;
-      }
-
-      .dm-highlighted-practice-card {
-        position: absolute;
-        right: 5%;
-      }
-    }
-
-    @media screen and (min-width: 64rem) {
-      .dm-highlighted-practice-card {
-        top: 944px;
-        right: 0;
-        left: calc(100vw - 50vw + 88px);
+    .grid-row {
+      @media screen and (min-width: 1024px) {
+        @include u-height('full');
+        @include u-flex('align-center');
       }
     }
   }
 
-  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-    .ie-welcome-container {
-      width: 100% !important;
+  .newsletter-subscription-section {
+    form {
+      max-width: unset !important;
+    }
+
+    .grid-row {
+      @media screen and (min-width: 1024px) {
+        @include u-height('full');
+      }
+    }
+
+    .subscribe-button-container {
+      @include u-text('left');
+
+      button {
+        width: 166px !important;
+      }
     }
   }
 }

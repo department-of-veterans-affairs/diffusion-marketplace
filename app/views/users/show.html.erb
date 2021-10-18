@@ -54,8 +54,8 @@
 
   <% if @favorite_practices.any? %>
     <section class="bg-white">
-      <div class="grid-row">
-        <h2 class="profile-h2 font-sans-xl margin-top-0">Bookmarked practices</h2>
+      <div class="grid-row margin-bottom-3">
+        <h2 class="profile-h2 font-sans-xl margin-top-0">Bookmarked innovations</h2>
       </div>
       <div class="grid-row grid-gap-3 dm-favorited-practices">
         <% @favorite_practices.each do |p| %>
@@ -69,8 +69,8 @@
 
   <% if current_user && @created_practices.any? %>
     <section class="bg-white">
-      <div class="grid-row">
-        <h2 class="profile-h2 font-sans-xl margin-top-5">Created practices</h2>
+      <div class="grid-row margin-bottom-3">
+        <h2 class="profile-h2 font-sans-xl margin-top-5">Created innovations</h2>
       </div>
       <div class="grid-row grid-gap-3 dm-created-practices">
         <% @created_practices.each do |p| %>

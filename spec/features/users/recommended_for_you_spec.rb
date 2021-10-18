@@ -23,10 +23,14 @@ describe 'Recommended for you page', type: :feature do
     @practice2 = Practice.create!(name: 'A second public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
     @practice3 = Practice.create!(name: 'A third public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
     @practice4 = Practice.create!(name: 'A fourth public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
-    @practice_facility = PracticeOriginFacility.create!(practice: @practice, facility_id: '516')
-    @practice_facility2 = PracticeOriginFacility.create!(practice: @practice2, facility_id: '516')
-    @practice_facility3 = PracticeOriginFacility.create!(practice: @practice3, facility_id: '516')
-    @practice_facility4 = PracticeOriginFacility.create!(practice: @practice4, facility_id: '516')
+
+    visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
+    facility_1 = VaFacility.create!(visn: visn_8, station_number: "516", official_station_name: "C.W. Bill Young Department of Veterans Affairs Medical Center", common_name: "Bay Pines", street_address_state: "FL")
+
+    @practice_facility = PracticeOriginFacility.create!(practice: @practice, va_facility: facility_1)
+    @practice_facility2 = PracticeOriginFacility.create!(practice: @practice2, va_facility: facility_1)
+    @practice_facility3 = PracticeOriginFacility.create!(practice: @practice3, va_facility: facility_1)
+    @practice_facility4 = PracticeOriginFacility.create!(practice: @practice4, va_facility: facility_1)
     @user_practice = UserPractice.create!(practice: @practice, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 10.days)
     @user_practice2 = UserPractice.create!(practice: @practice2, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 8.days)
     @user_practice3 = UserPractice.create!(practice: @practice3, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 6.days)
@@ -80,7 +84,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should display the bookmarked practices section if the user has any bookmarked practices' do
       login_and_visit_recommended_path(@user2)
 
-      expect(page).to have_content('Your bookmarked practices')
+      expect(page).to have_content('Your bookmarked innovations')
       expect(page).to have_content('A public practice')
       expect(page).to have_content('A second public practice')
     end
@@ -88,7 +92,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should display the created practices section if the user has any created practices' do
       login_and_visit_recommended_path(@user2)
 
-      expect(page).to have_content('Your created practices')
+      expect(page).to have_content('Your created innovations')
       expect(page).to have_content('A public practice')
       expect(page).to have_content('A second public practice')
       expect(page).to have_content('A third public practice')
@@ -105,7 +109,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should take the user to the search page with a query of their location if there are more than three practices that share their location and click the link' do
       login_and_visit_recommended_path(@user2)
 
-      click_link('See more practices')
+      click_link('See more innovations')
       expect(page).to have_selector('#search-page', visible: true)
       expect(page).to have_content('4 results')
     end
@@ -115,7 +119,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should only show the first three bookmarked practices on initial page load' do
       login_and_visit_recommended_path(@user2)
 
-      expect(page).to have_content('Your bookmarked practices')
+      expect(page).to have_content('Your bookmarked innovations')
       within(:css, '.paginated-favorite-practices') do
         expect(page).to have_selector('.dm-practice-card', count: 3)
       end
@@ -146,7 +150,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should only show the first three created practices on initial page load' do
       login_and_visit_recommended_path(@user2)
 
-      expect(page).to have_content('Your created practices')
+      expect(page).to have_content('Your created innovations')
       within(:css, '.paginated-created-practices') do
         expect(page).to have_selector('.dm-practice-card', count: 3)
       end

@@ -15,7 +15,7 @@ describe 'Practice editor', type: :feature, js: true do
     def add_people_resource
       resources_input_1.set('Fred')
       save_progress
-      expect(page).to have_content('Practice was successfully updated')
+      expect(page).to have_content('Innovation was successfully updated')
     end
 
     def add_core_link
@@ -35,29 +35,29 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_content('Core resources list')
       expect(page).to have_content('Core resources attachments')
       within(:css, '#core-people-resource-resources') do
-        expect(page).to have_content('Type a job title, department, and/or discipline another facility would need to involve in implementing your practice. Provide dependencies for implementation (e.g., Clinical Application Coordinator required for 2-4 hours/week for 1-2 weeks).')
+        expect(page).to have_content('Type a job title, department, and/or discipline another facility would need to involve in implementing your innovation. Provide dependencies for implementation (e.g., Clinical Application Coordinator required for 2-4 hours/week for 1-2 weeks).')
         # text input field should be visible even without user clicking "Add resource" button
         expect(page).to have_css('input[type="text"]')
       end
       within(:css, '#core-processes-resource-resources') do
-        expect(page).to have_content('Type a process (e.g., method, procedure, training) another facility would need to implement your practice.')
+        expect(page).to have_content('Type a process (e.g., method, procedure, training) another facility would need to implement your innovation.')
       end
       within(:css, '#core-tools-resource-resources') do
-        expect(page).to have_content('Type a tool (e.g., equipment, software, supply) another facility would need to implement your practice.')
+        expect(page).to have_content('Type a tool (e.g., equipment, software, supply) another facility would need to implement your innovation.')
       end
 
       # Optional
       expect(page).to have_content('Optional resources list')
       expect(page).to have_content('Optional resources attachments')
       within(:css, '#optional-people-resource-resources') do
-        expect(page).to have_content('Type a job title, department, and/or discipline another facility could involve in implementing your practice. Provide dependencies for implementation (e.g., Clinical Application Coordinator required for 2-4 hours/week for 1-2 weeks).')
+        expect(page).to have_content('Type a job title, department, and/or discipline another facility could involve in implementing your innovation. Provide dependencies for implementation (e.g., Clinical Application Coordinator required for 2-4 hours/week for 1-2 weeks).')
         expect(page).to have_no_css('input[type="text"]')
       end
       within(:css, '#optional-processes-resource-resources') do
-        expect(page).to have_content('Type a process (e.g., method, procedure) another facility can consider when implementing your practice.')
+        expect(page).to have_content('Type a process (e.g., method, procedure) another facility can consider when implementing your innovation.')
       end
       within(:css, '#optional-tools-resource-resources') do
-        expect(page).to have_content('Type a tool (e.g., equipment, software, supply) another facility can consider when implementing your practice.')
+        expect(page).to have_content('Type a tool (e.g., equipment, software, supply) another facility can consider when implementing your innovation.')
       end
 
       # Support
@@ -89,7 +89,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       resources_input_1.set('A practice person')
       save_progress
-      expect(page).to have_content('Practice was successfully updated')
+      expect(page).to have_content('Innovation was successfully updated')
       expect(resources_input_1.value ).to eq('A practice person')
     end
 

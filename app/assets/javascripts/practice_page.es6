@@ -35,6 +35,10 @@
                     } else {
                         removeActiveClass(sections[s]);
                     }
+                // To allow the 'About' link in the sidebar nav to be highlighted, check to see if the current sidebar link is '.sidebar-about' and the user is scrolled to the bottom of the page
+                } else if (sections[s] === '.sidebar-about' && (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                    removeActiveClass($(sections[s]).parent().prev().children().first());
+                    addActiveClass(sections[s]);
                 } else if (viewportTop >= sectionPosition && !activeItem) {
                     addActiveClass(sections[s]);
                     activeItem = true;
@@ -171,6 +175,13 @@
         })
     }
 
+    function seeMoreLinkText() {
+        $(".origin-facilities-display-text").collapser({
+            mode: 'chars',
+            truncate: 180
+        });
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
@@ -180,6 +191,7 @@
         expandReplyTextArea();
         toggleAdoptionStatusModal();
         trackPracticeContact();
+        seeMoreLinkText();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
@@ -202,6 +214,7 @@ function seeMoreText() {
         moreText.style.display = "inline";
     }
 }
+
 function seeMoreTextAwards() {
     var dots = document.getElementById("dots_award");
     var moreText = document.getElementById("more_text_award");

@@ -6,22 +6,26 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
     login_as(@admin, :scope => :user, :run_callbacks => false)
+    Practice.create!(name: 'Project HAPPEN', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'test-1232392101@va.gov', user: @admin, maturity_level: 0)
     page_group = PageGroup.create(name: 'competitions', slug: 'competitions', description: 'competitions page')
     Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
     visit practice_overview_path(@practice)
+    # ensure header desktop view
+    page.driver.browser.manage.window.resize_to(1300, 1000)
   end
 
   describe 'header logo' do
     it 'should exist' do
       within('header.usa-header') do
-        expect(page).to have_content('VA | Diffusion Marketplace')
+        expect(page).to have_content('Diffusion Marketplace')
+        expect(page).to have_content('Department of Veterans Affairs')
         expect(page).to have_link(href: '/')
       end
     end
 
     it 'should go to the homepage on click' do
-      click_on 'VA | Diffusion Marketplace'
+      click_on 'Diffusion Marketplace'
       expect(page).to have_current_path('/')
     end
   end
@@ -29,25 +33,50 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   describe 'header links' do
     it 'should exist' do
       within('header.usa-header') do
-        expect(page).to have_content('Diffusion map')
-        expect(page).to have_link(href: '/diffusion-map')
-        expect(page).to have_content('Shark Tank')
-        expect(page).to have_link(href: '/competitions/shark-tank')
+        expect(page).to have_content('About us')
+        expect(page).to have_link(href: '/about')
+        expect(page).to have_content('Partners')
+        expect(page).to have_link(href: '/partners')
         expect(page).to have_content('Your profile')
+        expect(page).to have_content('Browse by locations')
       end
     end
 
-    context 'clicking on the diffusion map link' do
+    context 'clicking on About us link' do
+      it 'should redirect to the About us page' do
+        click_on 'About us'
+        expect(page).to have_current_path('/about')
+      end
+    end
+
+    context 'clicking on the Partners link' do
+      it 'should redirect to partners page' do
+        click_on 'Partners'
+        expect(page).to have_current_path('/partners')
+      end
+    end
+
+    context 'clicking on the Visn index link' do
+      it 'should redirect to Visn index page' do
+        click_on 'Browse by locations'
+        click_on 'VISN index'
+        expect(page).to have_current_path('/visns')
+      end
+    end
+
+    context 'clicking on the Facility index link' do
+      it 'should redirect to Facility index page' do
+        click_on 'Browse by locations'
+        click_on 'Facility index'
+        expect(page).to have_current_path('/facilities')
+      end
+    end
+
+    context 'clicking on the Diffusion map link' do
       it 'should redirect to diffusion map page' do
+        click_on 'Browse by locations'
         click_on 'Diffusion map'
         expect(page).to have_current_path('/diffusion-map')
-      end
-    end
-
-    context 'clicking on the shark tank link' do
-      it 'should redirect to shark tank page' do
-        click_on 'Shark Tank'
-        expect(page).to have_current_path('/competitions/shark-tank')
       end
     end
 

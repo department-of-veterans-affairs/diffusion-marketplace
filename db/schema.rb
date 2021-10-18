@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_11_215208) do
+ActiveRecord::Schema.define(version: 2021_09_10_151628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -965,10 +965,14 @@ ActiveRecord::Schema.define(version: 2021_08_11_215208) do
     t.integer "maturity_level"
     t.datetime "date_published"
     t.datetime "practice_pages_updated"
-    t.string "highlight_title"
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "hidden", default: false, null: false
+    t.string "highlight_attachment_file_name"
+    t.string "highlight_attachment_content_type"
+    t.integer "highlight_attachment_file_size"
+    t.datetime "highlight_attachment_updated_at"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
@@ -1072,6 +1076,20 @@ ActiveRecord::Schema.define(version: 2021_08_11_215208) do
     t.index ["practice_id"], name: "index_toolkit_files_on_practice_id"
   end
 
+  create_table "topics", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "url"
+    t.string "cta_text"
+    t.boolean "featured", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
+    t.integer "attachment_file_size"
+    t.datetime "attachment_updated_at"
+  end
+
   create_table "user_practices", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "practice_id"
@@ -1083,6 +1101,7 @@ ActiveRecord::Schema.define(version: 2021_08_11_215208) do
     t.boolean "team_member", default: false
     t.datetime "time_favorited"
     t.datetime "time_committed"
+    t.boolean "other", default: false
     t.index ["practice_id"], name: "index_user_practices_on_practice_id"
     t.index ["user_id"], name: "index_user_practices_on_user_id"
   end
@@ -1224,6 +1243,7 @@ ActiveRecord::Schema.define(version: 2021_08_11_215208) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "hidden", default: false, null: false
     t.index ["station_number"], name: "index_va_facilities_on_station_number", unique: true
     t.index ["visn_id"], name: "index_va_facilities_on_visn_id"
   end

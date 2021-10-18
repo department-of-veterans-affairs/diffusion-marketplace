@@ -9,7 +9,7 @@
   in_progress_adoptions = @practice.number_of_in_progress_adoptions
   unsuccessful_adoptions = @practice.number_of_unsuccessful_adoptions
   has_practice_partners = @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
-  has_practice_awards = @practice.practice_awards.any? && @practice.practice_awards.find_by(name: 'Other').nil?
+  has_practice_awards = @practice.practice_awards.any? && (@practice.practice_awards.size === 1 ? @practice.practice_awards.find_by(name: 'Other').nil? : true )
 %>
 
 <section id="pr-view-introduction" class="grid-container margin-bottom-3">
@@ -21,7 +21,7 @@
       <h1 class="margin-top-0 margin-bottom-1 dm-word-break-break-word dm-hyphens-auto">
         <%= display_practice_name(@practice) %>
       </h1>
-      <%# practice last update timestamp %>
+      <%# innovation last update timestamp %>
       <p class="grid-col-12 font-sans-3xs text-base line-height-sans-4 margin-bottom-2">
         Last updated <%= timeago(updated_at) %>
       </p>
@@ -64,7 +64,7 @@
       <%# Container for Origin/Adoptions/Awards/Partners %>
       <div class="introduction-sections-container">
 
-        <%# practice origin date and location %>
+        <%# innovation origin date and location %>
         <div>
           <h5 class="text-uppercase display-inline margin-y-0">Origin:</h5>
           <p id="practice_origin_facilities_text" class="display-inline line-height-sans-5">
@@ -73,20 +73,8 @@
               origin_facilities = @practice.practice_origin_facilities
               initiating_facility = @practice.initiating_facility
             %>
-            <%= @practice_date %><%= origin_facilities.present? || initiating_facility.present? ? ',' : '' %>
-              <% if origin_display_name(@practice).length > 180 %>
-                <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
-                <span id="dots">...</span>
-                <span id="more_text" class="display-none">
-                  <%= origin_display_name_trunc(@practice, 0, 99999) %>
-                </span><a class="dm-button--unstyled-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
-              <% else %>
-                <%= origin_display_name(@practice) %>
-              <% end %>
-            <!-- display department --->
-            <% if @practice.department? %>
-              <span>, <%= origin_display_department_name(@practice) %> Administration</span>
-            <% end %>
+            <%= @practice_date %><%= ',' if origin_facilities.present? || initiating_facility.present? %>
+            <%= render partial: 'practices/show/introduction/origin_facility_text' %>
           </p>
         </div>
 

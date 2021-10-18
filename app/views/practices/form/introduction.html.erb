@@ -12,11 +12,11 @@
 
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
-    var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
+    var facilityData = <%= raw @va_facilities.to_json %>;
     <%# initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
     var originData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json")).to_json %>;
-    var visnData = '<%= raw fetch_visns %>';
+    var visnData = '<%= raw @visns.to_json %>';
     var selectedFacility = "<%= @practice.facility? && @practice.initiating_facility || false %>"
     var selectedFacilityType = "<%= @practice.initiating_facility_type %>"
     var selectedDepartment = "<%= @practice.initiating_department_office_id %>"
@@ -31,33 +31,33 @@
 
 <%
   origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
-  partners = PracticePartner.all
   p_partners = @practice.practice_partners
 %>
+
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-  <div class="grid-row grid-gap practice-editor-min-height">
+  <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
     <div id="introduction" class="desktop:grid-col-9 grid-col-12 padding-0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <section class="usa-section padding-top-0 padding-bottom-4 introduction">
+      <section class="usa-section padding-y-0 introduction">
         <h1>Introduction</h1>
         <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <div class="usa-prose-intro">
-          Introduce your practice and provide a brief summary to people who may be unfamiliar with it.
+          Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.
         </div>
         <%= render 'pii_phi_alert' %>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-10">
-            <legend class="usa-sr-only">Practice Information</legend>
+            <legend class="usa-sr-only">Innovation Information</legend>
             <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
             <div class="margin-bottom-5 margin-top-3">
               <div>
                 <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Name <span class="text-gray-50">(required field)</span>
                 <% end %>
-                <span>Type the official name of your practice.</span>&nbsp;
+                <span>Type the official name of your innovation.</span>&nbsp;
               </div>
               <%= f.text_field :name, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
 
@@ -69,7 +69,7 @@
             <div class="margin-bottom-5 margin-top-3">
               <div>
                 <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' %>
-                <span>Type the acronym for your practice.</span>
+                <span>Type the acronym for your innovation.</span>
               </div>
               <div>
                 <%= f.text_field :short_name, class: "grid-col-3 usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: false %>
@@ -87,7 +87,7 @@
                     <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                       Tagline <span class="text-gray-50">(required field)</span>
                     <% end %>
-                    <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp&nbsp;
+                    <span>Type a short sentence summarizing the key outcomes of your innovation.  This text will display on the innovation card.</span>&nbsp&nbsp;
                     <%= render partial: 'shared/textarea_counter', locals: { counter_class: "practice-editor-tagline-character-counter", textarea_class: "practice-editor-tagline-textarea", max_char_count: 72 } %>
                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea #{ @practice.published ? 'dm-required-field' : '' }", required: @practice.published %>
                     <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
@@ -107,7 +107,7 @@
                 Summary <span class="text-gray-50">(required field)</span>
               <% end %>
               <span class="line-height-26">
-                Type a short 1-3 sentence summary of your practice’s mission to engage the audience and provide initial context.
+                Type a short 1-3 sentence summary of your innovation’s mission to engage the audience and provide initial context.
               </span>
               <%= f.text_area :summary, class: "usa-textarea display-block practice-editor-summary-textarea #{ @practice.published ? 'dm-required-field' : '' }", required: @practice.published %>
             </div>
@@ -116,7 +116,7 @@
               <p class="margin-bottom-2 text-bold">
                 Date created <span class="text-gray-50">(required field)</span>
               </p>
-              Select the month and year this practice was created.
+              Select the month and year this innovation was created.
               <div class="grid-row grid-gap-2">
                 <div class="grid-col-7">
                   <%= label_tag 'editor_date_initiated_month', 'Month', class: 'usa-label' %>
@@ -144,9 +144,9 @@
 
             <div class="margin-top-3 margin-bottom-5">
               <p class="text-bold margin-bottom-2">
-                Practice origin <span class="text-gray-50">(required field)</span>
+                Innovation origin <span class="text-gray-50">(required field)</span>
               </p>
-              <span>Select the location where this practice originated</span>
+              <span>Select the location where this innovation originated</span>
               <div class="grid-row grid-gap grid-col-1 margin-bottom-3">
                 <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
@@ -192,7 +192,7 @@
                 <div class="margin-bottom-2 grid-col-8">
                   <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label margin-top-0' %>
                   <%= select_tag('practice[initiating_facility]',
-                                 options_for_select(origin_data['visns'].collect { |v| [v['number'], v['id']] }),
+                                 options_for_select(@visns.collect { |v| ["VISN-#{v.number}", v.id] }),
                                  id: 'editor_visn_select', name: "editor_visn_select",
                                  class: 'height-5 usa-select',
                                  include_blank: '-Select-')
@@ -201,23 +201,23 @@
               </div>
 
               <div id="facility_select_form" class="margin-bottom-5 position-relative">
-                <ul class="practice-editor-origin-ul" role="listbox" title="Practice origin facilities" aria-label="Practice editor origin facility list">
+                <ul class="practice-editor-origin-ul" role="listbox" title="Innovation origin facilities" aria-label="Practice editor origin facility list">
                   <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
                     <%
                       orig_facility_id = pof.object.id || "new_practice_origin_facilities"
                     %>
-                    <% if pof.object.facility_id %>
+                    <% if pof.object.va_facility_id %>
                       <% provide :head_tags do %>
                         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                          $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>',
+                          $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>',
                             function(newElem) {
                               styleOriginFacility($(newElem).closest('li'));
-                              var facility_id = '<%= pof.object.facility_id %>';
-                              var facilitySelector = '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>';
+                              var facility_id = '<%= pof.object.va_facility_id %>';
+                              var facilitySelector = '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>';
                               var stateSelector ='<%= "editor_state_select_#{orig_facility_id}" %>';
                               getFacilitiesByState(facilityData, facilitySelector, stateSelector);
                               selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
-                              $(document).unbindArrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>', newElem);
+                              $(document).unbindArrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>', newElem);
                             }
                           );
                         <% end %>
@@ -232,8 +232,8 @@
                       </div>
                       <div class="grid-row">
                         <div class="grid-col-12">
-                          <%= pof.label :facility_id, 'Facility', class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12' %>
-                          <%= pof.select :facility_id,
+                          <%= pof.label :va_facility_id, 'Facility', class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12' %>
+                          <%= pof.select :va_facility_id,
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
                                                               class: 'usa-select color-disabled']]),
                                          {},
@@ -308,7 +308,7 @@
                 <p class="text-bold margin-bottom-2">
                   Awards and recognition
                 </p>
-                <span>Select any awards or recognitions your practice has received.</span>
+                <span>Select any awards or recognitions your innovation has received.</span>
               </div>
               <div>
                 <% Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION.each do |award| %>
@@ -428,7 +428,7 @@
                 <p class="text-bold margin-bottom-2">
                   Partners
                 </p>
-                <span>Select any of the following partners your practice is associated with.</span>
+                <span>Select any of the following partners your innovation is associated with.</span>
               </div>
               <div>
                 <%
@@ -462,7 +462,7 @@
                   Categories
                   <%= render partial: 'shared/parent_category_modal' %>
                 </p>
-                <span>Select the categories most relevant to your practice (suggested: up to 10).</span>
+                <span>Select the categories most relevant to your innovation (suggested: up to 10).</span>
               </div>
               <% @parent_categories.each do |pc| %>
                 <%
@@ -499,7 +499,7 @@
                 <p class="text-bold margin-bottom-2">
                   Diffusion phase
                 </p>
-                <span>Select the diffusion phase that applies to your practice.</span>
+                <span>Select the diffusion phase that applies to your innovation.</span>
               </div>
 
               <div class="maturity-level-radio-container">
@@ -518,7 +518,7 @@
           </fieldset>
         <% end %>
 
-        <div class="grid-row margin-bottom-8">
+        <div class="grid-row">
           <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_editors_path(@practice), continue_path: practice_adoptions_path(@practice) }%>
         </div>
       </section>

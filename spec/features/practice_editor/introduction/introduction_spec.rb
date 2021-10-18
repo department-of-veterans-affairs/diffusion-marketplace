@@ -2,14 +2,21 @@ require 'rails_helper'
 
 describe 'Practice editor - introduction', type: :feature, js: true do
   before do
+    Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
+    visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
+    visn_21 = Visn.create!(id: 16, name: "Sierra Pacific Network", number: 21)
+
+    facility_1 = VaFacility.create!(visn: visn_21, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
+    VaFacility.create!(visn: visn_7, station_number: "521", official_station_name: "Birmingham VA Medical Center", common_name: "Birmingham-Alabama", street_address_state: "AL")
+
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
     img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
     @practice = Practice.create!(name: 'A public maximum practice', tagline: 'A public tagline', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin)
-    @pr_facility = PracticeOriginFacility.create!(practice: @practice, facility_type: 0, facility_id: '640A0')
+    @pr_facility = PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     PracticeAward.create!(practice: @practice, name: 'QUERI Veterans Choice Act Award', created_at: Time.now)
     PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
-    @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
+    @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_2, created_at: Time.now)
@@ -37,27 +44,27 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
     it 'should display the content correctly' do
       expect(page).to have_content('Introduction')
-      expect(page).to have_content('Introduce your practice and provide a brief summary to people who may be unfamiliar with it.')
+      expect(page).to have_content('Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.')
       expect(page).to have_content('Do not enter PII or PHI for any individual, Veteran, or patient. See our Privacy policy.')
       expect(page).to have_content('Name (required field)')
-      expect(page).to have_content('Type the official name of your practice.')
+      expect(page).to have_content('Type the official name of your innovation.')
       expect(page).to have_content('Acronym')
       expect(page).to have_content('Summary (required field)')
-      expect(page).to have_content('Type a short 1-3 sentence summary of your practice’s mission to engage the audience and provide initial context.')
+      expect(page).to have_content('Type a short 1-3 sentence summary of your innovation’s mission to engage the audience and provide initial context.')
       expect(page).to have_content('Date created (required field)')
-      expect(page).to have_content('Select the month and year this practice was created.')
-      expect(page).to have_content('Practice origin (required field)')
-      expect(page).to have_content('Select the location where this practice originated')
+      expect(page).to have_content('Select the month and year this innovation was created.')
+      expect(page).to have_content('Innovation origin (required field)')
+      expect(page).to have_content('Select the location where this innovation originated')
       expect(page).to have_content('Awards and recognition')
       expect(page).to have_content('Partners')
-      expect(page).to have_content('Select any of the following partners your practice is associated with.')
+      expect(page).to have_content('Select any of the following partners your innovation is associated with.')
       expect(page).to have_content('Diffusion phase')
-      expect(page).to have_content('Select the diffusion phase that applies to your practice.')
-      expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
-      expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
+      expect(page).to have_content('Select the diffusion phase that applies to your innovation.')
+      expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/instructions")
+      expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/adoptions")
       # categories
       expect(page).to have_content('Categories')
-      expect(page).to have_content('Select the categories most relevant to your practice (suggested: up to 10).')
+      expect(page).to have_content('Select the categories most relevant to your innovation (suggested: up to 10).')
       expect(page).to have_no_content('Hidden Cat')
       expect(page).to have_content('Clinical')
       expect(page).to have_content('Operational')
@@ -84,9 +91,9 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       end
       find('.fa-question-circle').click
       expect(page).to have_selector(".usa-modal__content", visible: true)
-      expect(page).to have_content('Practices related to patient care.')
-      expect(page).to have_content('Practices related to VA administrative and logistical functions.')
-      expect(page).to have_content('Practices that support initiatives identified by VA leadership.')
+      expect(page).to have_content('Innovations related to patient care.')
+      expect(page).to have_content('Innovations related to VA administrative and logistical functions.')
+      expect(page).to have_content('Innovations that support initiatives identified by VA leadership.')
     end
   end
 
@@ -140,13 +147,13 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(find(:css, '#initiating_facility_type_department').selected?).to eq(false)
         expect(find(:css, '#initiating_facility_type_other').selected?).to eq(false)
         expect(find(:css, 'select#editor_state_select_1').value).to eq('CA')
-        expect(find(:css, 'select#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq(@pr_facility.facility_id)
+        expect(find(:css, 'select#practice_practice_origin_facilities_attributes_0_va_facility_id').value).to eq(@pr_facility.va_facility_id.to_s)
 
         # add another facility
         find('.dm-add-practice-originating-facilities-link').click
         last_fac_field = find_all('.practice-editor-origin-facility-li').last
         last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
-        last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
+        last_fac_fac_select = last_fac_field.find('select[id*="va_facility_id"]')
         select('Alabama', from: last_fac_state_select[:name])
         select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
         # delete first facility
@@ -165,6 +172,12 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         visit_practice_show
         expect(page).to have_no_content('Birmingham VA Medical Center (Birmingham-Alabama)')
         expect(page).to have_content('VISN-1')
+        # make sure the VISN text is a link to the VISN's show page
+        new_window = window_opened_by { click_link 'VISN-1' }
+        within_window new_window do
+          expect(page).to have_content('VISN 1: VA New England Healthcare System')
+          expect(page).to have_content('This VISN has 0 facilities')
+        end
 
         # set department
         visit_practice_edit
@@ -193,8 +206,8 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         # select the VISN radio option, but do not select a VISN
         click_origin_type('initiating_facility_type_visn')
         click_save
-        expect(page).to_not have_content('Practice was successfully updated.')
-        expect(page).to have_content('There was an error updating initiating facility. The practice was not saved.')
+        expect(page).to_not have_content('Innovation was successfully updated.')
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved.')
 
         # now change initiating_facility_type to VISN, save, and then choose the Office radio option without choosing a facility
         click_origin_type('initiating_facility_type_visn')
@@ -209,8 +222,8 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         select('VBA', :from => 'editor_department_select')
         select('Alabama', :from => 'editor_office_state_select')
         click_save
-        expect(page).to_not have_content('Practice was successfully updated.')
-        expect(page).to have_content('There was an error updating initiating facility. The practice was not saved.')
+        expect(page).to_not have_content('Innovation was successfully updated.')
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved.')
       end
     end
 
@@ -228,7 +241,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         click_save
         visit_practice_show
         expect(page).to have_no_content('VHA Shark Tank Winnder')
-        expect(page).to have_no_content('Other')
         expect(page).to have_content('QUERI Veterans Choice Act Award')
         expect(page).to have_content('Diffusion of Excellence Promising Practice')
       end
@@ -309,7 +321,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
           page.has_checked_field?('Environmental Ser...')
         end
         visit_practice_show
-        expect(page).to have_no_content('Other')
         expect(page).to have_no_content('COVID')
         expect(page).to have_content('ENVIRONMENTAL SERVICES')
         expect(page).to have_content('PULMONARY CARE')

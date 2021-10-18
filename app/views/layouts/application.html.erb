@@ -63,6 +63,9 @@
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       <%= render partial: 'layouts/ahoy_event_tracking', formats: [:js] %>
     <% end %>
+    <% if current_user.present? %>
+      <%= javascript_include_tag 'session_timeout_poller.js', 'data-turbolinks-track': 'reload' %>
+    <% end %>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <meta name="turbolinks-cache-control" content="no-preview">
     <%= yield(:head_tags) %>
@@ -70,16 +73,17 @@
     <%= yield(:styles) %>
   </head>
 
-
   <body <% if content_for?(:body_attributes) %>
         <%= yield(:body_attributes) %>
         <% end %> class="<%= yield(:body_classes) %>">
     <%= render 'shared/header' %>
-    <main id="main-content" class="<%= params[:controller] %> padding-bottom-9 <%= yield(:main_classes) %>">
+    <main
+      id="main-content"
+      class="<%= params[:controller] %> <%= params[:action] %>-main <%= yield(:main_classes) %><%= ' additional-return-to-top-padding' if params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) %>"
+    >
       <%= render 'shared/breadcrumbs' unless session[:breadcrumbs].empty? %>
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>
-    <%= render 'shared/feedback_survey' %>
   </body>
 </html>

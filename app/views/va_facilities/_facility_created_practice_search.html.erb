@@ -1,14 +1,14 @@
 <%
   sort_options = [
     ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
-    ['Sort by most adopted practices', 'adoptions', class: 'usa-select'],
+    ['Sort by most adopted innovations', 'adoptions', class: 'usa-select'],
     ['Sort by most recently added', 'added', class: 'usa-select']
   ]
 %>
 
 <div class="dm-facility-created-practice-search grid-row">
-  <h2 class="font-sans-xl desktop:margin-y-3">
-    Practices created at this facility
+  <h2 class="font-sans-xl margin-top-10 desktop:margin-bottom-3">
+    Innovations created at this facility
   </h2>
   <div class="grid-col-12 display-flex">
     <div class="usa-search float-left grid-col-8">
@@ -41,7 +41,7 @@
       <%= select_tag('created-practices-sort-option', options_for_select(sort_options), id: 'dm-created-practices-sort-option', class: 'height-5 usa-select margin-0') %>
     </div>
   </div>
-  <div class="dm-created-practice-card-section desktop:margin-bottom-5">
+  <div class="dm-created-practice-card-section grid-col-12 desktop:margin-bottom-5">
     <div id="dm-created-practice-card-list" class="grid-row grid-gap-3">
       <!-- loaded asnychronously in `app/assets/javascripts/va_facilities/facility_created_practice_search.es6` -->
     </div>

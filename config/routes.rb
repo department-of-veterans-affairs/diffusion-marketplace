@@ -5,17 +5,21 @@ Rails.application.routes.draw do
   get ':page_group_friendly_id/:page_slug' => 'page#show', constraints: PageGroupConstraint
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
+  devise_scope :user do
+    get   "/check_session_timeout"    => "session_timeout#check_session_timeout"
+    get   "/session_timeout"          => "session_timeout#render_timeout"
+  end
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
   mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
-  get '/terms_and_conditions' => 'users#terms_and_conditions'
   get '/dashboard/export', action: 'export_metrics', controller: 'admin/dashboard', as: 'export_metrics'
   get '/session_time_remaining', action: 'session_time_remaining', controller: 'practices', as: 'session_time_remaining'
+  patch '/update_category_usage', action: 'update_category_usage', controller: 'categories', as: 'update_category_usage'
   patch '/extend_editor_session_time', action: 'extend_editor_session_time', controller: 'practices', as: 'extend_editor_session_time'
   patch '/close_edit_session', action: 'close_edit_session', controller: 'practices', as: 'close_edit_session'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
-  resources :practices, except: :index do
+  resources :practices, path: 'innovations', except: :index do
     get '/edit/metrics', action: 'metrics', as: 'metrics'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
     get '/edit/editors', action: 'editors', as: 'editors'
@@ -51,6 +55,18 @@ Rails.application.routes.draw do
     end
   end
 
+  # old practice routes redirects
+  get '/practices/:id', to: redirect('/innovations/%{id}', status: 302)
+  get '/practices/:id/edit/metrics', to: redirect('/innovations/%{id}/edit/metrics', status: 302)
+  get '/practices/:id/edit/instructions', to: redirect('/innovations/%{id}/edit/instructions', status: 302)
+  get '/practices/:id/edit/editors', to: redirect('/innovations/%{id}/edit/editors', status: 302)
+  get '/practices/:id/edit/introduction', to: redirect('/innovations/%{id}/edit/introduction', status: 302)
+  get '/practices/:id/edit/adoptions', to: redirect('/innovations/%{id}/edit/adoptions', status: 302)
+  get '/practices/:id/edit/overview', to: redirect('/innovations/%{id}/edit/overview', status: 302)
+  get '/practices/:id/edit/implementation', to: redirect('/innovations/%{id}/edit/implementation', status: 302)
+  get '/practices/:id/edit/contact', to: redirect('/innovations/%{id}/edit/contact', status: 302)
+  get '/practices/:id/edit/about', to: redirect('/innovations/%{id}/edit/about', status: 302)
+
   resources :practice_partners, path: :partners
   resources :users, except: %i[show create new edit] do
     patch :re_enable
@@ -84,7 +100,10 @@ Rails.application.routes.draw do
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
 
-  get '/nominate-a-practice', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
+  # redirect users to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL
+  get '/nominate-a-practice', to: redirect('/nominate-an-innovation', status: 302)
+  get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_an_innovation'
+  post '/nominate-an-innovation', controller: 'nominate_practices', action: 'email'
   get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'
 
   namespace :system do
@@ -101,6 +120,8 @@ Rails.application.routes.draw do
   end
   get '/facilities/:id/created-practices', controller: 'va_facilities', action: 'created_practices'
   get '/facilities/:id/update_practices_adopted_at_facility', action: 'update_practices_adopted_at_facility', controller: 'va_facilities'
+  get '/about', controller: 'about', action: 'index', as: 'about'
+  post '/about', controller: 'about', action: 'email'
 
 
   # Custom route for reporting a comment

@@ -80,6 +80,10 @@
 
 .publication-modal-content {
   width: 524px;
+
+  h2 {
+    background-color: color($theme-color-error-dark);
+  }
 }
 
 /* Add Animation */
@@ -140,25 +144,19 @@
   display: none;
 }
 
-.marker-modal-practice-description {
-  height: 20px;
-}
+.usa-modal {
+  border-radius: 4px !important;
 
-#facility-complexity-modal, #facility_status_def_modal, #parent-category-modal {
-
-  .usa-modal {
-    border-radius: 4px !important;
-    .usa-modal__main {
-      padding: 0.5rem 2.5rem 2.5rem !important;
-    }
+  .usa-modal__main {
+    padding: 0.5rem 2.5rem 2.5rem !important;
   }
 
   button {
     color: color($theme-color-base-ink) !important;
     margin-right: 4px;
+
     i {
       font-size: 32px;
     }
   }
 }
-

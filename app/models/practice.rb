@@ -51,7 +51,8 @@ class Practice < ApplicationRecord
         self.overview_solution_changed? ||
         self.overview_results_changed?  ||
         self.retired_changed? ||
-        self.retired_reason_changed?
+        self.retired_reason_changed? ||
+        self.hidden_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -140,6 +141,12 @@ class Practice < ApplicationRecord
     object_presigned_url(origin_picture, style)
   end
 
+  has_attached_file :highlight_attachment, styles: {thumb: '768x432>'} # TODO: modify thumb size
+
+  def highlight_attachment_s3_presigned_url(style = nil)
+    object_presigned_url(highlight_attachment, style)
+  end
+
   PRACTICE_EDITOR_SLUGS =
       {
           'editors': 'instructions',
@@ -171,23 +178,24 @@ class Practice < ApplicationRecord
   MATURITY_LEVEL_MAP = {
       emerging: {
           link_text: 'emerging',
-          description: 'This practice is <b>emerging</b> and worth watching as it is being assessed in early implementations.'.html_safe
+          description: 'This innovation is <b>emerging</b> and worth watching as it is being assessed in early implementations.'.html_safe
       },
       replicate: {
           link_text: 'replicating',
-          description: 'This practice is <b>replicating</b> across multiple facilities as its impact continues to be validated.'.html_safe
+          description: 'This innovation is <b>replicating</b> across multiple facilities as its impact continues to be validated.'.html_safe
       },
       scale: {
           link_text: 'scaling',
-          description: 'This practice is <b>scaling</b> widely with the support of national stakeholders.'.html_safe
+          description: 'This innovation is <b>scaling</b> widely with the support of national stakeholders.'.html_safe
       }
   }
 
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
-  validates_uniqueness_of :name, {message: 'Practice name already exists'}
+  validates_uniqueness_of :name, {message: 'Innovation name already exists'}
   validates :user, presence: true, format: valid_va_email
+  validates_attachment_content_type :highlight_attachment, content_type: /\Aimage\/.*\z/
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
@@ -201,10 +209,10 @@ class Practice < ApplicationRecord
   scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
-  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
+  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true, hidden: false) }
   scope :sort_by_retired, -> { order("retired asc") }
-  scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}).uniq }
-  scope :get_by_created_facility, -> (station_number) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
+  scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
+  scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
   scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
 
@@ -277,10 +285,7 @@ class Practice < ApplicationRecord
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
-  #accepts_nested_attributes_for :practices_origin_facilities?
-  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes|
-    attributes['facility_id'].blank?
-  }
+  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: :reject_practice_origin_facilities
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
@@ -382,15 +387,15 @@ class Practice < ApplicationRecord
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
-  def self.get_facility_created_practices(station_number, search_term = nil, sort = 'a_to_z', categories = nil)
+  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil)
     practices = search_practices(search_term, sort, categories)
 
-    practices.select { |pr| pr.practice_origin_facilities.pluck(:facility_id).include?(station_number)}
+    practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id)}
   end
 
-  def self.get_facility_adopted_practices(station_number, search_term = nil, categories = nil)
+  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil)
     practices = search_practices(search_term, 'a_to_z', categories)
-    practices.select { |pr| pr.diffusion_histories.pluck(:facility_id).include?(station_number)}
+    practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id)}
   end
 
   def self.get_query_for_search_term(search_term)
@@ -408,22 +413,27 @@ class Practice < ApplicationRecord
       search_params[:maturity_level] = mat_level
     end
 
-    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("station_number")
+    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("id")
 
     if va_fac_matches.length > 0
-      facilities = va_fac_matches.map {|st| st.station_number}
-      search_query = search_query + " OR diffusion_histories.facility_id IN (:facilities) OR practice_origin_facilities.facility_id IN (:facilities)"
+      facilities = va_fac_matches.map { |st| st.id }
+      search_query = search_query + " OR diffusion_histories.va_facility_id IN (:facilities) OR practice_origin_facilities.va_facility_id IN (:facilities)"
       search_params[:facilities] = facilities
     end
     return { query: search_query, params: search_params }
   end
 
   def diffusion_history_status_by_facility(facility)
-    diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
+    diffusion_histories.find_by(va_facility_id: facility.id).diffusion_history_statuses.first
   end
 
   # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
     self.name&.strip!
+  end
+
+  # reject the PracticeOriginFacility if the facility field is blank OR the practice already has a PracticeOriginFacility with the same va_facility_id
+  def reject_practice_origin_facilities(attributes)
+    attributes['va_facility_id'].blank? || self.practice_origin_facilities.where(va_facility_id: attributes['va_facility_id'].to_i).exists?
   end
 end

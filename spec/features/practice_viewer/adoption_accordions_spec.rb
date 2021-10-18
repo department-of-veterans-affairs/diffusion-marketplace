@@ -33,11 +33,11 @@ describe 'Adoption accordions', type: :feature, js: true do
       longitude: "-73.89691934",
       street_address_state: "NY"
     )
-    dh_1 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_1.station_number)
+    dh_1 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
-    dh_2 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_2.station_number)
+    dh_2 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_2)
     DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'In progress')
-    dh_3 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_3.station_number)
+    dh_3 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_3)
     DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Unsuccessful', unsuccessful_reasons: [0])
   end
 
@@ -46,11 +46,11 @@ describe 'Adoption accordions', type: :feature, js: true do
   end
 
   describe 'adoption status tooltip' do
-    desktop_successful_text = 'Facilities that have met adoption goals and implemented the practice.'
-    desktop_in_progress_text = 'Facilities that have started but not completed adopting the practice.'
+    desktop_successful_text = 'Facilities that have met adoption goals and implemented the innovation.'
+    desktop_in_progress_text = 'Facilities that have started but not completed adopting the innovation.'
     desktop_unsuccessful_text = 'Facilities that started but stopped working towards adoption.'
-    mobile_successful_text = 'Successful: Facilities that have met adoption goals and implemented the practice.'
-    mobile_in_progress_text = 'In-progress: Facilities that have started but not completed adopting the practice.'
+    mobile_successful_text = 'Successful: Facilities that have met adoption goals and implemented the innovation.'
+    mobile_in_progress_text = 'In-progress: Facilities that have started but not completed adopting the innovation.'
     mobile_unsuccessful_text = 'Unsuccessful: Facilities that started but stopped working towards adoption.'
 
     def desktop_tooltip_expectation_flow(text, index)

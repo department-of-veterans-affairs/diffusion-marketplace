@@ -10,7 +10,7 @@
 
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-  <div class="grid-row grid-gap practice-editor-min-height">
+  <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
     <div id="contact" class="desktop:grid-col-9 grid-col-12 padding-0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
@@ -18,7 +18,7 @@
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Contact</h1>
         <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <h2 class="text-normal line-height-36 font-sans-lg">
-          This section helps people to reach out for support, ask questions, and connect about your practice.
+          This section helps people to reach out for support, ask questions, and connect about your innovation.
         </h2>
         <div class="margin-top-3">
           <%= render 'pii_phi_alert' %>
@@ -29,7 +29,7 @@
             <div class="margin-bottom-5">
               <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
               <h4 class="line-height-18px margin-top-3 font-sans-sm text-bold margin-bottom-2">Email <span class="text-gray-50">(required field)</span></h4>
-              <p class="line-height-26 margin-bottom-2">Type at least one email address dedicated to responding to messages for this practice.
+              <p class="line-height-26 margin-bottom-2">Type at least one email address dedicated to responding to messages for this innovation.
               </p>
 
               <div class="grid-col-7 main-practice-email-container">

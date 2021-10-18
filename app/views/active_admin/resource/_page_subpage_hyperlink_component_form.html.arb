@@ -17,7 +17,7 @@ html = Arbre::Context.new do
           input value: component&.url || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
-          para 'Enter a brief and descriptive URL suffix to any internal page of the marketplace (Ex: "/practices/vione", "/partners", "/covid-19/telehealth"', class: 'inline-hints'
+          para 'Enter a brief and descriptive URL suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth"', class: 'inline-hints'
         end
 
         li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do

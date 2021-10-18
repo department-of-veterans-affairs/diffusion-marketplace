@@ -1,89 +1,85 @@
-#dm-nav-header {
-  // mobile
-  .dm-nav-header-profile {
-    min-width: 100%;
-  }
-
-  .usa-nav__secondary {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 0rem;
-
-    .usa-accordion__button.usa-nav__link {
-      padding: 0.5rem 1rem;
+.usa-header--basic {
+  .usa-current {
+    span {
+      @include u-text('primary-vivid');
+      @include u-text('semibold');
     }
   }
 
-  .usa-col {
-    min-width: 100%;
+  .usa-current::after {
+    @include u-border('primary-vivid');
+    @include u-border(2px)
   }
 
-  .usa-accordion, .usa-nav__submenu, .usa-nav__submenu-list {
-    > li {
-      border-top-width: 1px;
-      border-top-color: color($theme-color-base-light);
+  .usa-nav {
+    width: 263px;
+  }
+
+  .usa-nav__submenu-item a {
+    &.usa-current {
+      @include u-text('primary-vivid', !important);
+    }
+
+    &:hover {
+      @include u-text('primary-vivid', !important);
     }
   }
 
-  .dm-nav-header-profile {
-    border-bottom: 1px solid color($theme-color-base-light);
+  .usa-link {
+    &:hover {
+      @include u-text('primary-vivid', !important);
+      @include u-bg('transparent', !important);
+    }
   }
 
-  // desktop
-  @media screen and (min-width: 64rem) {
-    #extended-logo {
-      max-width: 45%;
-      margin: 0 !important;
-      line-height: 80px;
+  @media all and (min-width: 75rem) {
+    .dm-header--va-seal {
+      @include u-width('6', !important);
+      @include u-height('6', !important);
     }
 
-    .usa-nav__secondary {
-      min-width: 40%;
-      flex-direction: unset;
-      margin-top: 1rem;
-      bottom: 4.3rem !important;
-
-      &.dm-signed-out-nav-secondary {
-        min-width: 35%;
-      }
-
-      .usa-nav__primary-item {
-        position: absolute;
-        top: 0;
-        right: -0.625rem;
-      }
-
-      .usa-accordion__button.usa-nav__link {
-        padding: 1rem 1rem;
+    .usa-current {
+      span {
+        @include u-text('base-dark');
       }
     }
 
-    .dm-nav-header-profile {
-      display: flex;
-      min-width: 0%;
-      border-bottom: none;
+    .usa-logo {
+      @include u-margin-y('3');
+    }
 
-      &.dm-nav-header-profile-sign-in {
-        max-width: 5.75rem;
+    .usa-nav {
+      min-width: 73%;
+      max-width: 73%;
+    }
+
+    .usa-nav__primary {
+      button[aria-expanded="true"] span{
+        @include u-text($theme-color-dm-white)
       }
+    }
 
-      #dm-user-profile-options {
-        &::before, &::after {
-          background-color: transparent;
+    .usa-nav__submenu-item a {
+      &.usa-current {
+        @include u-text($theme-color-dm-white, !important);
+
+        span {
+          @include u-text('normal');
+          @include u-text($theme-color-dm-white, !important);
         }
-        width: 125.422px !important;
       }
-    }
 
-    .usa-navbar {
-      height: 80px !important;
+      &:hover {
+        @include u-text($theme-color-dm-white, !important);
+        @include u-text('underline');
+      }
     }
   }
 }
 
 .va-crisis-line-modal-container {
   div {
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 75rem) {
       position: absolute;
       top: -22px;
       right: 24px;
@@ -100,7 +96,38 @@
     background-position: 16px center;
     padding: 8px 16px 8px 56px;
 
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 75rem) {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+      background-position: 10px center;
+      padding: 8px 16px 8px 50px;
+
+      i {
+        display: none !important;
+      }
+    }
+  }
+}
+
+.va-crisis-line-modal-container {
+  div {
+    @media all and (min-width: 75rem) {
+      position: absolute;
+      top: -22px;
+      right: 3rem;
+    }
+  }
+
+  a {
+    background-image: image-url('crisis-line-logo.png');
+    background-color: color($theme-color-primary-lighter) !important;
+    color: color($theme-color-base-ink)!important;
+    background-repeat: no-repeat;
+    line-height: 15px !important;
+    background-size: 27px 17.5px;
+    background-position: 16px center;
+    padding: 8px 16px 8px 56px;
+
+    @media all and (min-width: 75rem) {
       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
       background-position: 10px center;
       padding: 8px 16px 8px 50px;

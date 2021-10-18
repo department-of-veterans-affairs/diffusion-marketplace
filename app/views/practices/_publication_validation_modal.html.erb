@@ -1,12 +1,12 @@
 <div id="practiceEditorPublicationModal" class="bg-base-light publication-modal-hidden">
   <div class="padding-y-9 publication-modal">
     <div class="margin-x-auto bg-white radius-md publication-modal-content">
-      <div class="bg-secondary text-white radius-top-md">
+      <div class="text-white radius-top-md">
         <h2 class="margin-0 padding-205 font-sans-lg">Cannot publish yet</h2>
       </div>
       <div class="publication-modal-body font-sans-md">
         <div class="padding-2">
-          <p>This is what you need to do before publishing your practice to the Diffusion Marketplace</p>
+          <p>This is what you need to do before publishing your innovation to the Diffusion Marketplace</p>
         </div>
         <div class="font-sans-md line-height-sans-5 practice-editor-publication-error-container padding-2 border-top-2px border-bottom-2px border-base-lightest">
           <% if @practice %>
@@ -27,19 +27,19 @@
               <p class="text-bold">Introduction</p>
               <ul class="dm-publish-errors-ul">
                 <% if s_name.blank? %>
-                  <li>You must include a name for your practice</li>
+                  <li>You must include a name for your innovation</li>
                 <% end %>
                 <% if tagline.blank? %>
-                  <li>You must include a tagline for your practice</li>
+                  <li>You must include a tagline for your innovation</li>
                 <% end %>
                 <% if date_initiated.blank? %>
-                  <li>You must include the initiation date for your practice</li>
+                  <li>You must include the initiation date for your innovation</li>
                 <% end %>
                 <% if initiating_facility_type.blank? || initiating_facility.blank? %>
-                  <li>You must include the initiating facility for your practice</li>
+                  <li>You must include the initiating facility for your innovation</li>
                 <% end %>
                 <% if summary.blank? %>
-                  <li>You must include a practice summary</li>
+                  <li>You must include an innovation summary</li>
                 <% end %>
               </ul>
             <% end %>
@@ -48,13 +48,13 @@
               <p class="text-bold">Overview</p>
               <ul class="dm-publish-errors-ul">
                 <% if overview_problem.blank? %>
-                  <li>You must include a problem statement for your practice</li>
+                  <li>You must include a problem statement for your innovation</li>
                 <% end %>
                 <% if overview_solution.blank? %>
-                  <li>You must include a solution statement for your practice</li>
+                  <li>You must include a solution statement for your innovation</li>
                 <% end %>
                 <% if overview_results.blank? %>
-                  <li>You must include a results statement for your practice</li>
+                  <li>You must include a results statement for your innovation</li>
                 <% end %>
               </ul>
             <% end %>

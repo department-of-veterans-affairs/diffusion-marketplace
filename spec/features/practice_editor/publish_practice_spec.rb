@@ -19,6 +19,9 @@ describe 'Practice editor', type: :feature, js: true do
       longitude: "-69.70413586",
       street_address_state: "ME"
     )
+    visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
+
+    VaFacility.create!(visn: visn_7, station_number: "521", official_station_name: "Birmingham VA Medical Center", common_name: "Birmingham-Alabama", street_address_state: "AL")
   end
 
   describe 'Publish practice flow' do
@@ -40,7 +43,7 @@ describe 'Practice editor', type: :feature, js: true do
       find('#initiating_facility_type_facility').sibling('label').click
       last_fac_field = find_all('.practice-editor-origin-facility-li').last
       last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
-      last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
+      last_fac_fac_select = last_fac_field.find('select[id*="va_facility_id"]')
       select('Alabama', from: last_fac_state_select[:name])
       select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
     end
@@ -68,23 +71,23 @@ describe 'Practice editor', type: :feature, js: true do
       @publish_button.click
       expect(page).to have_selector(".publication-modal-body", visible: true)
       expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('This is what you need to do before publishing your practice to the Diffusion Marketplace')
-      expect(page).to have_content('You must include a tagline for your practice')
-      expect(page).to have_content('You must include the initiation date for your practice')
-      expect(page).to have_content('You must include the initiating facility for your practice')
-      expect(page).to have_content('You must include a practice summary')
+      expect(page).to have_content('This is what you need to do before publishing your innovation to the Diffusion Marketplace')
+      expect(page).to have_content('You must include a tagline for your innovation')
+      expect(page).to have_content('You must include the initiation date for your innovation')
+      expect(page).to have_content('You must include the initiating facility for your innovation')
+      expect(page).to have_content('You must include an innovation summary')
       expect(page).to have_content('You must include at least one adoption')
       expect(page).to have_content('You must include a support network email')
-      expect(page).to have_content('You must include a problem statement for your practice')
-      expect(page).to have_content('You must include a solution statement for your practice')
-      expect(page).to have_content('You must include a results statement for your practice')
+      expect(page).to have_content('You must include a problem statement for your innovation')
+      expect(page).to have_content('You must include a solution statement for your innovation')
+      expect(page).to have_content('You must include a results statement for your innovation')
       find('.back-to-editor-button').click
       set_pr_required_fields
       set_initiating_fac
       @publish_button.click
       expect(page).to have_selector(".publication-modal-body", visible: true)
       expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('This is what you need to do before publishing your practice to the Diffusion Marketplace')
+      expect(page).to have_content('This is what you need to do before publishing your innovation to the Diffusion Marketplace')
       expect(page).to have_no_content('You must include the initiation date for your practice')
       expect(page).to have_no_content('You must include the initiating facility for your practice')
       expect(page).to have_no_content('You must include a practice summary')
@@ -124,7 +127,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_no_content('Cannot publish yet')
       expect(page).to have_content("#{@practice2.name} has been successfully published to the Diffusion Marketplace")
       # Publish button should be gone if the practice has been published
-      expect(page).to_not have_link('Publish practice')
+      expect(page).to_not have_link('Publish innovation')
 
       visit practice_path(@practice2)
       expect(page).to have_content('practice summary')

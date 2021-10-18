@@ -29,6 +29,8 @@ describe 'Explore all practices page', type: :feature do
     end
 
     visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    visn_20 = Visn.create!(id: 15, name: "Northwest Network", number: 20)
+
     @fac_1 = VaFacility.create!(
       visn: visn_1,
       station_number: "402GA",
@@ -43,14 +45,21 @@ describe 'Explore all practices page', type: :feature do
       common_name: "White Plains",
       street_address_state: "NY"
     )
+    @fac_3 = VaFacility.create!(
+      visn: visn_20,
+      station_number: "687HA",
+      official_station_name: "Yakima VA Clinic",
+      common_name: "Yakima",
+      street_address_state: "WA"
+    )
 
-    dh_1 = DiffusionHistory.create!(practice: @practices[0], facility_id: @fac_1.station_number)
+    dh_1 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
-    dh_2 = DiffusionHistory.create!(practice: @practices[0], facility_id: @fac_2.station_number)
+    dh_2 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_2)
     DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Completed')
-    dh_3 = DiffusionHistory.create!(practice: @practices[3], facility_id: @fac_1.station_number)
+    dh_3 = DiffusionHistory.create!(practice: @practices[3], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Completed')
-    dh_4 = DiffusionHistory.create!(practice: @practices[4], facility_id: @fac_1.station_number)
+    dh_4 = DiffusionHistory.create!(practice: @practices[4], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'Completed')
   end
 
@@ -58,7 +67,7 @@ describe 'Explore all practices page', type: :feature do
     it 'should display the correct default content' do
       visit '/explore'
       expect(page).to have_content('COVID')
-      expect(page).to have_content('Telehealth')
+      expect(page).to have_content('TELEHEALTH')
       expect(page).to have_no_content('Main Level Cat')
       expect(page).to have_content('14 results')
       page.has_button?('Load more')
@@ -81,7 +90,7 @@ describe 'Explore all practices page', type: :feature do
 
     it 'should sort the content by most adoptions' do
       visit '/explore'
-      select 'Sort by most adopted practices', from: 'dm_sort_option'
+      select 'Sort by most adopted innovations', from: 'dm_sort_option'
       expect(page).to have_content('14 results')
       page.has_button?('Load more')
       expect(find_all('.dm-practice-title')[0]).to have_text('Cards for Memory')
@@ -123,8 +132,8 @@ describe 'Explore all practices page', type: :feature do
       expect(find_all('.dm-practice-title')[0]).to have_text('Beach VA')
       expect(find_all('.dm-practice-title')[1]).to have_text('BIONE')
       expect(find_all('.dm-practice-title')[5]).to have_text('Virtual Care')
-      # Sort by most adopted practices
-      select 'Sort by most adopted practices', from: 'dm_sort_option'
+      # Sort by most adopted innovations
+      select 'Sort by most adopted innovations', from: 'dm_sort_option'
       expect(page).to have_content('6 results')
       expect(find_all('.dm-practice-title')[0]).to have_text('Cards for Memory')
       expect(find_all('.dm-practice-title')[1]).to have_text('Beach VA')
@@ -152,8 +161,8 @@ describe 'Explore all practices page', type: :feature do
       expect(find_all('.dm-practice-title')[0]).to have_text('Beach VA')
       expect(find_all('.dm-practice-title')[1]).to have_text('BIONE')
       expect(find_all('.dm-practice-title')[11]).to have_text('Telemedicine')
-      # Sort by most adopted practices
-      select 'Sort by most adopted practices', from: 'dm_sort_option'
+      # Sort by most adopted innovations
+      select 'Sort by most adopted innovations', from: 'dm_sort_option'
       expect(page).to have_content('13 results')
       page.has_button?('Load more')
       expect(find_all('.dm-practice-title')[0]).to have_text('Cards for Memory')
@@ -184,7 +193,7 @@ describe 'Explore all practices page', type: :feature do
 
       pr = @practices[7]
       pr.update(summary: 'test summary', date_initiated: Time.now())
-      PracticeOriginFacility.create!(practice: pr, facility_type: 0, facility_id: '687HA')
+      PracticeOriginFacility.create!(practice: pr, facility_type: 0, va_facility: @fac_3)
 
       Rails.cache.clear
       expect(cache_keys).not_to include("searchable_practices_a_to_z")
@@ -196,7 +205,7 @@ describe 'Explore all practices page', type: :feature do
       expect(cache_keys).not_to include("searchable_practices_added")
       expect(cache_keys).not_to include("searchable_practices_adoptions")
 
-      select 'Sort by most adopted practices', from: 'dm_sort_option'
+      select 'Sort by most adopted innovations', from: 'dm_sort_option'
       sleep 1
       expect(cache_keys).to include("searchable_practices_adoptions")
 

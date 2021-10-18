@@ -4,87 +4,53 @@ describe 'VA facility pages', type: :feature, js: true do
   before do
     @visn = Visn.create!(name: 'Test VISN', number: 2)
     @visn_3 = Visn.create!(name: 'VISN 3', number: 3)
-    @va_facility1 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 421,
-        station_number: 421,
-        official_station_name: 'A Test name',
-        common_name: 'A first facility Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1a-High Complexity',
-        operational_status: 'A',
-        ownership_type: 'VA Owned Asset',
-        delivery_mechanism: nil,
-        staffing_type: 'VA Staff Only',
-        va_secretary_10n_approved_date: '-12324',
-        planned_activation_date: '-12684',
-        station_number_suffix_reservation_effective_date: '05/23/1995',
-        operational_date: '-14321',
-        date_of_first_workload: 'Pre-FY2000',
-        points_of_service: 2,
-        street_address: '1 Test Ave',
-        street_address_city: 'Las Vegas',
-        street_address_state: 'NV',
-        street_address_zip_code: '11111',
-        street_address_zip_code_extension: '1111',
-        county_street_address: 'Test',
-        mailing_address: '1 Test Ave',
-        mailing_address_city: 'Las Vegas',
-        mailing_address_state: 'NV',
-        mailing_address_zip_code: '11111',
-        mailing_address_zip_code_extension: '1111',
-        county_mailing_address: 'Test',
-        station_phone_number: '207-623-8411',
-        station_main_fax_number: '207-623-8412',
-        after_hours_phone_number: '207-623-7211',
-        pharmacy_phone_number: '286-322-1342',
-        enrollment_coordinator_phone_number: '207-623-9332',
-        patient_advocate_phone_number: '207-623-1122',
-        latitude: '44.03409934',
-        longitude: '-70.70545322',
-        congressional_district: 'CD116_ME_23001',
-        market: '01-b',
-        sub_market: '01-b-9',
-        sector: '01-b-10-A',
-        fips_code: '23022',
-        rurality: 'U',
-        monday: '24/7',
-        tuesday: '24/7',
-        wednesday: '24/7',
-        thursday: '24/7',
-        friday: '24/7',
-        saturday: '24/7',
-        sunday: '24/7',
-        hours_note: 'This is a test',
-        slug: 'a-first-facility-test-common-name'
+
+    @facility_1 = VaFacility.create!(
+      visn: @visn, station_number: "421",
+      official_station_name: "A Test name",
+      common_name: "A first facility Test Common Name",
+      fy17_parent_station_complexity_level: "1a-High Complexity",
+      latitude: "44.03409934",
+      longitude: "-70.70545322",
+      rurality: "U",
+      street_address: "1 Test Ave",
+      street_address_city: "Las Vegas",
+      street_address_state: "NV",
+      station_phone_number: '207-623-8411',
+      street_address_zip_code: "11111",
+      slug: "a-first-facility-test-common-name",
+      station_number_suffix_reservation_effective_date: "05/23/1995",
+      mailing_address_city: "Las Vegas"
+    )
+    @facility_2 = VaFacility.create!(
+      visn: @visn,
+      sta3n: "400",
+      station_number: "400",
+      official_station_name: "B Test name",
+      common_name: "B Test Common Name",
+      classification: "VA Medical Center (VAMC)",
+      classification_status: "Firm",
+      mobile: "No",
+      parent_station_number: "414",
+      official_parent_station_name: "Test station",
+      fy17_parent_station_complexity_level: "1b-High Complexity",
+    )
+    @facility_3 = VaFacility.create!(
+      visn: @visn_3,
+      sta3n: "401",
+      station_number: "401",
+      official_station_name: "C Test name",
+      common_name: "C Test Common Name",
+      classification: "VA Medical Center (VAMC)",
+      classification_status: "Firm",
+      mobile: "No",
+      parent_station_number: "414",
+      official_parent_station_name: "Test station",
+      fy17_parent_station_complexity_level: "1c-High Complexity",
     )
   end
 
   describe 'index page' do
-    before do
-      va_facilities_name = "BC".split(//)
-      va_facilities_name.each_with_index do | name, i |
-        station_num = i + 400
-        VaFacility.create!(
-          visn: name === "B" ? @visn : @visn_3,
-          sta3n: station_num,
-          station_number: station_num,
-          official_station_name: "#{name} Test name",
-          common_name: "#{name} Test Common Name",
-          classification: 'VA Medical Center (VAMC)',
-          classification_status: 'Firm',
-          mobile: 'No',
-          parent_station_number: 414,
-          official_parent_station_name: 'Test station',
-          fy17_parent_station_complexity_level: i > 0 ? '1c-High Complexity' : '1b-High Complexity',
-        )
-      end
-    end
-
     it 'should be there' do
       visit '/facilities'
       expect(page).to have_selector('.dm-loading-spinner', visible: false)
@@ -175,8 +141,22 @@ describe 'VA facility pages', type: :feature, js: true do
       pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false, user: user)
       CategoryPractice.create!(practice: pr_1, category: cat_5)
 
+      @facility_4 = VaFacility.create!(
+        visn: @visn,
+        sta3n: "402",
+        station_number: "402",
+        official_station_name: "D Test name",
+        common_name: "D Test Common Name",
+        classification: "VA Medical Center (VAMC)",
+        classification_status: "Firm",
+        mobile: "No",
+        parent_station_number: "414",
+        official_parent_station_name: "Test station",
+        fy17_parent_station_complexity_level: "1c-High Complexity",
+      )
+
       @practices.each_with_index do |pr, index|
-        PracticeOriginFacility.create!(practice: pr, facility_id: '421', facility_type: 0)
+        PracticeOriginFacility.create!(practice: pr, facility_type: 0, va_facility: @facility_1)
         if pr.name == 'Different practice'
           CategoryPractice.create!(practice: pr, category: cat_3)
           CategoryPractice.create!(practice: pr, category: cat_4)
@@ -185,49 +165,40 @@ describe 'VA facility pages', type: :feature, js: true do
         elsif index >= 3
           CategoryPractice.create!(practice: pr, category: cat_2)
           CategoryPractice.create!(practice: pr, category: cat_4)
-          PracticeOriginFacility.create!(practice: pr, facility_id: '402', facility_type: 0)
+          PracticeOriginFacility.create!(practice: pr, facility_type: 0, va_facility: @facility_4)
         end
       end
 
-      dh_1 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '401')
+      dh_1 = DiffusionHistory.create!(practice_id: @practices[4].id, va_facility: @facility_2)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
-      dh_2 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '402')
+      dh_2 = DiffusionHistory.create!(practice_id: @practices[4].id, va_facility: @facility_4)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_2.id, status: 'Completed')
-      dh_3 = DiffusionHistory.create!(practice_id: @practices[3].id, facility_id: '401')
+      dh_3 = DiffusionHistory.create!(practice_id: @practices[3].id, va_facility: @facility_2)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_3.id, status: 'Completed')
-      dh_4 = DiffusionHistory.create!(practice_id: @practices[6].id, facility_id: '401')
+      dh_4 = DiffusionHistory.create!(practice_id: @practices[6].id, va_facility: @facility_2)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_4.id, status: 'Completed')
-      dh_5 = DiffusionHistory.create!(practice_id: @practices[0].id, facility_id: '402')
+      dh_5 = DiffusionHistory.create!(practice_id: @practices[0].id, va_facility: @facility_4)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_5.id, status: 'Completed')
-      dh_6 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '403')
-      DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
-      dh_7 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '421')
+      dh_7 = DiffusionHistory.create!(practice_id: @practices[4].id, va_facility: @facility_1)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_7.id, status: 'Completed')
-      dh_8 = DiffusionHistory.create!(practice_id: @practices[3].id, facility_id: '421')
+      dh_8 = DiffusionHistory.create!(practice_id: @practices[3].id, va_facility: @facility_1)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_8.id, status: 'Completed')
-      dh_9 = DiffusionHistory.create!(practice_id: @practices[2].id, facility_id: '421')
+      dh_9 = DiffusionHistory.create!(practice_id: @practices[2].id, va_facility: @facility_1)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_9.id, status: 'Completed')
 
-      VaFacility.create!(
-        visn: @visn,
-        sta3n: 402,
-        station_number: 402,
-        official_station_name: "D Test name",
-        common_name: "D Test Common Name",
-      )
-      visit va_facility_path(@va_facility1)
+      visit va_facility_path(@facility_1)
     end
 
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
       visit '/facilities/a-first-facility-test-common-name'
       expect(page).to have_selector('.dm-loading-spinner', visible: false)
-      expect(page).to have_current_path(va_facility_path(@va_facility1))
+      expect(page).to have_current_path(va_facility_path(@facility_1))
     end
 
-    context 'when searching for adopted practices' do
+    context 'when searching for adopted innovations' do
       it 'should display default content' do
         within(:css, '#dm-facility-adopted-practice-search') do
-          expect(page).to have_content("Practices adopted at this facility")
+          expect(page).to have_content("Innovations adopted at this facility")
           find('#facility_category_select_adoptions').click
           within(:css, '#facility_category_select_adoptions--list') do
             expect(page).to have_content('COVID')
@@ -253,7 +224,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice origin facility and adopting facility' do
+      it 'should allow search for innovation origin facility and adopting facility' do
         within(:css, '#dm-facility-adopted-practice-search') do
           fill_in('dm-adopted-practices-search-field', with: ' d test name')
           find('#dm-adopted-practices-search-button').click
@@ -282,7 +253,7 @@ describe 'VA facility pages', type: :feature, js: true do
           # should see 3 sort filters
           within(:css, "#dm-created-practices-sort-option") do
             expect(page).to have_content('Sort by A to Z')
-            expect(page).to have_content('Sort by most adopted practices')
+            expect(page).to have_content('Sort by most adopted innovations')
             expect(page).to have_content('Sort by most recently added')
           end
           expect(page).to have_css('.dm-load-more-created-practices-btn')
@@ -304,9 +275,9 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should sort the content by most adopted practices' do
+      it 'should sort the content by most adopted innovations' do
         within(:css, '.dm-facility-created-practice-search') do
-          select('Sort by most adopted practices', from: 'created-practices-sort-option')
+          select('Sort by most adopted innovations', from: 'created-practices-sort-option')
           expect(page).to have_content('8 results')
           expect(page).to have_css('.dm-load-more-created-practices-btn')
           expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')
@@ -359,7 +330,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice info' do
+      it 'should allow search for innovation info' do
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'Cards')
           find('#dm-created-practice-search-button').click
@@ -392,7 +363,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice origin facility and adopting facility' do
+      it 'should allow search for innovation origin facility and adopting facility' do
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'd test name')
           find('#dm-created-practice-search-button').click

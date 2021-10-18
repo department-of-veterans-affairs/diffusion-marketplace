@@ -8,9 +8,15 @@
     <%= render partial: 'search', formats: [:js] %>
   <% end %>
 <% end %>
-
+<%
+  if params["query"].present?
+    if !params.has_key?(:cat)
+      update_category_usages
+    end
+  end
+%>
 <div id="search-page">
-  <section class="grid-container">
+  <section class="grid-container margin-bottom-neg-3 tablet:margin-bottom-5">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
     <form id="update-search-results-form">
       <div class="usa-search usa-search--big margin-bottom-2 grid-col-12">
@@ -58,7 +64,7 @@
       sort_options: [
         ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],
         ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
-        ['Sort by most adopted practices', 'adoptions', class: 'usa-select'],
+        ['Sort by most adopted innovations', 'adoptions', class: 'usa-select'],
         ['Sort by most recently added', 'added', class: 'usa-select']
       ],
       section_id: 'dm-search-practices',

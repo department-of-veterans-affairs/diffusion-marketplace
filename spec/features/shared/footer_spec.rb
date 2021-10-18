@@ -23,17 +23,12 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
     it 'should exist' do
       within('footer') do
         expect(page).to have_link('Home')
-        expect(page).to have_link('Partners')
+        expect(page).to have_link('Contact us')
+        expect(page).to have_link('Nominate an innovation')
         expect(page).to have_link('Open calls')
-        expect(page).to have_link('Report a bug')
-        expect(page).to have_link('Send feedback')
-        expect(page).to have_link('Nominate a practice')
+        expect(page).to have_link('Privacy policy')
+        expect(page).to have_link('Terms')
       end
-    end
-
-    it 'should open feedback modal' do
-      find('#feedback-modal').click
-      expect(page).to have_content('We would love to hear from you!')
     end
 
     context 'clicking on the open calls link' do
@@ -47,7 +42,8 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
   describe 'footer diffusion marketplace text' do
     it 'should exist' do
       within('footer') do
-        expect(page).to have_content('VA | Diffusion Marketplace')
+        expect(page).to have_content('Diffusion Marketplace')
+        expect(page).to have_content('Department of Veterans Affairs')
       end
     end
   end

@@ -31,6 +31,7 @@ describe 'Contact section', type: :feature, js: true do
       visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
+      expect(page).to have_content("Other")
       expect(page).to have_css('.commontator')
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
@@ -88,14 +89,24 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_content('2 COMMENTS:')
     end
 
-    it 'Should display the verified implementer tag if the user selects the "I am currently adopting this practice" radio button' do
+    it 'Should display the verified implementer tag if the user selects the "I am currently adopting this innovation" radio button' do
       fill_in('comment[body]', with: 'Hello world')
-      find('label', text: 'I am currently adopting this practice').click
+      find('label', text: 'I am currently adopting this innovation').click
       click_button('commit')
       visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to have_content('PRACTICE ADOPTER')
     end
+
+    it 'Should not display the verified implementer tag if the user selects the "Other" radio button' do
+      fill_in('comment[body]', with: 'Hello world')
+      find('label', text: 'Other').click
+      click_button('commit')
+      visit practice_path(@practice)
+      expect(page).to have_selector('.comments-section', visible: true)
+      expect(page).to_not have_content('PRACTICE ADOPTER')
+    end
+
 
     it 'Should show the amount of likes each comment or reply has' do
       fill_in('comment[body]', with: 'Hello world')
@@ -108,15 +119,6 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_selector('.comments-section', visible: true)
       find(".like").click
       expect(page).to have_css('.comment-1-1-vote')
-    end
-
-    it 'Allow the user to view the profile of a commentator if they click on their name next to the comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
-      expect(page).to have_selector('#submit-comment', visible: true)
-      click_link('Momo H')
-      expect(page).to have_content('Profile')
-      expect(page).to have_content('momo.hinamori@va.gov')
     end
 
     describe 'comment mailer' do

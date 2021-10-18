@@ -1,4 +1,4 @@
-<div class="partner-page-min-height">
+<div class="partner-page-min-height margin-bottom-10">
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </section>
@@ -12,7 +12,7 @@
     </div>
   </section>
   <section>
-    <div class="grid-container">
+    <div class="grid-container margin-bottom-5">
       <% @partner_practices = @practice_partner.practices %>
       <% if @partner_practices.any? %>
         <div class="grid-row grid-gap-3">

@@ -38,7 +38,7 @@ $theme-utility-breakpoints: (
   'tablet':           true,    // 640px
   'tablet-lg':        true,   // 800px
   'desktop':          true,    // 1024px
-  'desktop-lg':       false,   // 1200px
+  'desktop-lg':       true,   // 1200px
   'widescreen':       false,   // 1400px
 );
 
@@ -695,6 +695,7 @@ $font-style-manual-values: ();
 $font-weight-palettes: ('palette-font-weight-default');
 $font-weight-manual-values: ();
 
+
 // .height
 
 $height-palettes: ('palette-height-default');
@@ -848,3 +849,6 @@ $width-manual-values: ();
 
 $z-index-palettes: ('palette-z-index-default');
 $z-index-manual-values: ();
+
+// header
+$theme-header-min-width: ('desktop-lg')

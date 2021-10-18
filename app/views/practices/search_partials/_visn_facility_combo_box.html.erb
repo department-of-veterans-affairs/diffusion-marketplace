@@ -1,7 +1,10 @@
 <div class="usa-combo-box margin-top-1 margin-bottom-2 desktop:margin-y-0 desktop:grid-col-5">
   <label for="<%= facility_type_selector %>" class="line-height-26">Select by VISN or facility</label>
   <select id="<%= facility_type_selector %>" class="usa-select" name="<%= facility_type_selector %>">
-    <% visn_grouped_facilities = @facilities_data.group_by{ |f| f["VISN"]} %>
+    <% visn_grouped_facilities = @va_facilities.group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] } %>
+    <div>
+      <%= visn_grouped_facilities %>
+    </div>
     <% visn_grouped_facilities.each_with_index do |group_array, i| %>
       <%
         visn_number = group_array[0]
@@ -10,9 +13,9 @@
         VISN-<%= visn_number %>
       </option>
       <%# now that the facilities are grouped by VISN, sort them by OfficialStationName %>
-      <% group_array[1].sort_by { |facility| facility["OfficialStationName"] }.each do |f| %>
-        <option class="margin-left-1" value="<%= f["StationNumber"] %>">
-          <%= facility_name_with_common_name(f["OfficialStationName"], f["CommonName"]) %>
+      <% group_array[1].sort_by { |facility| facility.official_station_name }.each do |f| %>
+        <option class="margin-left-1" value="<%= f.station_number %>">
+          <%= facility_name_with_common_name(f.official_station_name, f.common_name) %>
         </option>
       <% end %>
     <% end %>

@@ -216,7 +216,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_selector(".usa-alert__heading", visible: true)
       expect(page).to have_selector("button[aria-controls*='in-progress_adoptions']", visible: true)
       click_button('In-progress adoption: 1')
-      sleep 0.1
+      sleep 0.2
       expect(page).to have_selector("button[aria-controls='diffusion_history_2']", visible: true)
       find_all("button[aria-controls*='diffusion_history']").first.click
       form_id = '2'
@@ -310,8 +310,8 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_selector('.usa-tooltip__body', visible: false)
         find('.usa-tooltip').hover
         expect(page).to have_selector('.usa-tooltip__body', visible: true)
-        expect(page).to have_content('In-progress: Facilities that have started but not completed adopting the practice.')
-        expect(page).to have_content('Successful: Facilities that have met adoption goals and implemented the practice.')
+        expect(page).to have_content('In-progress: Facilities that have started but not completed adopting the innovation.')
+        expect(page).to have_content('Successful: Facilities that have met adoption goals and implemented the innovation.')
         expect(page).to have_content('Unsuccessful: Facilities that started but stopped working towards adoption.')
       end
 

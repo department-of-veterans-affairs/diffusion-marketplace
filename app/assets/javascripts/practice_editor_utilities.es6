@@ -99,7 +99,7 @@ function observePracticeEditorLiArrival($document,
         if (liElSelector === '.practice-editor-origin-facility-li') {
             getFacilitiesByState(
                 facilityData,
-                `practice_practice_origin_facilities_attributes_${dataId}_facility_id`,
+                `practice_practice_origin_facilities_attributes_${dataId}_va_facility_id`,
                 `editor_state_select_${dataId}`
             );
         }

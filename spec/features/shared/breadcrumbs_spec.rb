@@ -2,15 +2,15 @@ require 'rails_helper'
 
 describe 'Breadcrumbs', type: :feature do
   before do
-    @pp = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
+    @pp = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'patrick.star@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', initiating_facility_type: 'other', tagline: 'Test tagline')
-    @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2')
+    @user_practice = Practice.create!(name: 'The Best Innovation Ever!', user: @user, initiating_facility: 'Test facility name', initiating_facility_type: 'other', tagline: 'Test tagline')
+    @user_practice2 = Practice.create!(name: 'Another Best Innovation', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2')
     login_as(@user, :scope => :user, :run_callbacks => false)
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
     @page_group = PageGroup.create!(name: 'programming', description: 'Pages about programming go in this group.')
@@ -30,8 +30,8 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Home')
         expect(page).to have_content('Partners')
       end
-
       click_on('Diffusion of Excellence')
+      sleep 0.1
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
@@ -46,7 +46,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Home')
         expect(page).to have_content('Partners')
         expect(page).to have_content('Diffusion of Excellence')
-        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('The Best Innovation Ever!')
       end
     end
   end
@@ -59,7 +59,7 @@ describe 'Breadcrumbs', type: :feature do
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('The Best Innovation Ever!')
       end
     end
 
@@ -68,7 +68,7 @@ describe 'Breadcrumbs', type: :feature do
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('The Best Innovation Ever!')
       end
 
       # Browse to a different practice's show page
@@ -76,8 +76,8 @@ describe 'Breadcrumbs', type: :feature do
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to_not have_content('The Best Practice Ever!')
-        expect(page).to have_content('Another Best Practice')
+        expect(page).to_not have_content('The Best Innovation Ever!')
+        expect(page).to have_content('Another Best Innovation')
       end
     end
 
@@ -87,23 +87,23 @@ describe 'Breadcrumbs', type: :feature do
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('The Best Innovation Ever!')
         expect(page).to have_content('Edit')
       end
-
+      expect(page).to have_selector('#instructions', visible: true)
       find_all('.usa-sidenav__item')[1].click
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('The Best Innovation Ever!')
         expect(page).to have_content('Edit')
       end
-
+      expect(page).to have_selector('#dm-practice-nav', visible: true)
       find_all('.usa-sidenav__item')[0].click
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('The Best Innovation Ever!')
         expect(page).to have_content('Edit')
         expect(page).to have_content('Metrics')
       end
@@ -122,13 +122,13 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Home')
         expect(page).to have_content('Search')
       end
-      click_on('Go to The Best Practice Ever!')
+      click_on('Go to The Best Innovation Ever!')
       # TODO: why is this timing out?
       # expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
         expect(page).to have_content('Search')
-        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('The Best Innovation Ever!')
       end
 
       # go back to search page

@@ -10,9 +10,9 @@
     <% if paginated_favorites.any? %>
       <section class="recommended-favorite-practices">
         <%= render partial: 'users/recommended_for_you/practice_cards_container', locals: {
-            container_classes: "paginated-favorite-practices margin-top-0 #{pagy_favorites.count <= 3 ? 'x4-25-bottom' : ''}",
+            container_classes: "paginated-favorite-practices margin-top-0",
             container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105',
-            container_title: 'Your bookmarked practices',
+            container_title: 'Your bookmarked innovations',
             practice_data_set: paginated_favorites
         }
         %>
@@ -26,11 +26,11 @@
       pagy_created = @pagy_created_practices
     %>
     <% if paginated_created.any? %>
-      <section class="recommended-created-practices">
+      <section class="recommended-created-practices margin-top-8">
         <%= render partial: 'users/recommended_for_you/practice_cards_container', locals: {
-            container_classes: "paginated-created-practices margin-top-0 #{pagy_created.count <= 3 ? 'x4-25-bottom' : ''}",
+            container_classes: "paginated-created-practices margin-top-0",
             container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105',
-            container_title: 'Your created practices',
+            container_title: 'Your created innovations',
             practice_data_set: paginated_created
         }
         %>
@@ -40,7 +40,7 @@
     <% end %>
 
     <% location_practices = @user_location_practices %>
-    <section class="recommended-user-location-practices">
+    <section class="recommended-user-location-practices margin-top-8">
       <h2 class="usa-prose-h2 font-sans-xl line-height-37px <%= location_practices.any? ? 'margin-bottom-105' : 'margin-bottom-3' %> margin-top-0">
         Based on your location
       </h2>
@@ -53,15 +53,15 @@
         }
         %>
         <% if location_practices.count > 3 %>
-          <a href="/search?query=<%= @user.location %>" class="usa-link margin-bottom-5" title="See more practices based on your location">
-            See more practices
+          <a href="/search?query=<%= @user.location %>" class="usa-link" title="See more innovations based on your location">
+            See more innovations
           </a>
         <% end %>
       <% else %>
         <p class="usa-prose-body line-height-26 margin-bottom-1">
-          <%= current_user.location.present? ? 'There are no practices matched to your location yet.' : 'You don’t have a location listed in GAL yet.' %>
+          <%= current_user.location.present? ? 'There are no innovations matched to your location yet.' : 'You don’t have a location listed in GAL yet.' %>
         </p>
-        <a target="_blank" href="https://yourit.va.gov" class="margin-bottom-5 usa-link usa-link--external line-height-26" title="Link to YourIT">Submit a ticket to YourIT</a>
+        <a target="_blank" href="https://yourit.va.gov" class="usa-link usa-link--external line-height-26" title="Link to YourIT">Submit a ticket to YourIT</a>
       <% end %>
     </section>
   </div>
