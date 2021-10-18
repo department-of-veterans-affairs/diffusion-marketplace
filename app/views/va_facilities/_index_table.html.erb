@@ -3,7 +3,7 @@
     <caption></caption>
     <thead>
       <tr>
-        <th data-sortable scope="col" role="columnheader" aria-sort="descending">
+        <th class="grid-col-5" data-sortable scope="col" role="columnheader" aria-sort="descending">
           Facility
         </th>
         <th data-sortable scope="col" role="columnheader">
@@ -11,7 +11,7 @@
         </th>
         <th class="padding-right-0 grid-col-2" data-sortable scope="col" role="columnheader">
           VISN
-          <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
+          <%= render partial: "visns/visns_tooltip", locals: { data_position: 'bottom'} %>
         </th>
         <th class="padding-right-0 grid-col-3" data-sortable scope="col" role="columnheader">
           Complexity
