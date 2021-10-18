@@ -35,18 +35,27 @@ describe 'Practices', type: :feature do
   end
 
   describe 'Authorization' do
-    it 'should let unauthenticated users interact with practices' do
-      # Visit an unpublished, unapproved practice
+    it 'should let unauthenticated users interact with public-facing practices' do
+      # Visit an unpublished, unapproved, internal-facing practice
       visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('You are not authorized to view this content.')
 
-      @user_practice.update(approved: true, published: true)
-      # Visit a published, approved practice
+      @user_practice.update(approved: true, published: true, is_public: true)
+      # Visit a published, approved, public-facing practice
       visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('The Best Practice Ever!')
       expect(page).to have_content('Test Facility')
+    end
+
+    it 'should not let unauthenticated users interact with internal-facing practices' do
+      @user_practice.update(approved: true, published: true)
+      visit '/innovations/the-best-practice-ever'
+
+      expect(page).to have_current_path(root_path)
+      expect(page).to have_content('This innovation is not available for non-VA users.')
+      expect(page).to have_content('Discover VA innovations to adopt at your facility')
     end
 
     it 'should let authenticated users interact with the marketplace' do

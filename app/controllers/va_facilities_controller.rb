@@ -33,7 +33,7 @@ class VaFacilitiesController < ApplicationController
 
   def show
     station_number = @va_facility.station_number
-    #google maps implementation
+    # google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
       marker.lat facility.latitude
       marker.lng facility.longitude
@@ -47,10 +47,11 @@ class VaFacilitiesController < ApplicationController
       marker.shadow nil
       marker.json({ id: facility.id })
     end
-    adopted_practices = Practice.get_facility_adopted_practices(@va_facility.id)
+
+    adopted_practices = helpers.is_user_a_guest? ? Practice.get_facility_adopted_practices(@va_facility.id, nil, nil, true) : Practice.get_facility_adopted_practices(@va_facility.id, nil, nil, false)
     @adopted_pr_count = adopted_practices.size
     @adopted_practices_categories = get_categories_by_practices(adopted_practices, [])
-    created_practices = Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil)
+    created_practices = helpers.is_user_a_guest? ? Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, true) : Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, false)
     @created_pr_count = created_practices.size
     @created_practices_categories = get_categories_by_practices(created_practices, [])
   end
@@ -62,8 +63,8 @@ class VaFacilitiesController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
+    created_practices = helpers.is_user_a_guest? ? Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, true) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, false)
 
-    created_practices = Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
     @pagy_created_practices = pagy_array(
       created_practices,
       items: 3,
@@ -76,7 +77,6 @@ class VaFacilitiesController < ApplicationController
       pr_html = render_to_string('shared/_practice_card', layout: false, locals: { practice: pr })
       practice_cards_html += pr_html
     end
-
     respond_to do |format|
       format.html
       format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.size, next: @pagy_created_info.next } }
@@ -86,16 +86,17 @@ class VaFacilitiesController < ApplicationController
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
     key_word = params["key_word"].present? ? params["key_word"] : nil
-    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat)
+    adoptions_at_facility = helpers.is_user_a_guest? ? Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat, true) : Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat, false)
+
     adopted_facility_results_html = ''
-    @adoptions_at_facility.each do |pr|
+    adoptions_at_facility.each do |pr|
       pr_html = render_to_string('va_facilities/_adopted_facility_table_row', layout: false, locals: { ad: pr })
       adopted_facility_results_html += pr_html
     end
 
     respond_to do |format|
       format.html
-      format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: @adoptions_at_facility.size } }
+      format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: adoptions_at_facility.size } }
     end
   end
 

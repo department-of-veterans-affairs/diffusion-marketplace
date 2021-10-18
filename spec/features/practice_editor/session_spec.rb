@@ -13,7 +13,7 @@ describe 'Practice editor sessions', type: :feature do
     #introduction page.
     login_as(@user, :scope => :user, :run_callbacks => false)
     visit practice_introduction_path(@practice)
-    logout(@user)
+    logout
     login_as(@user_2, :scope => :user, :run_callbacks => false)
     locked_msg = 'You cannot edit this innovation since it is currently being edited by satoru.gojo@va.gov'
     visit practice_introduction_path(@practice)
@@ -106,7 +106,7 @@ describe 'Practice editor sessions', type: :feature do
       visit practice_introduction_path(@practice_2)
       session = PracticeEditorSession.last
       session.update(session_start_time: DateTime.now - 21.minutes)
-      logout(@user)
+      logout
       login_as(@user_2, :scope => :user, :run_callbacks => false)
       visit practice_introduction_path(@practice_2)
       first_session = PracticeEditorSession.first

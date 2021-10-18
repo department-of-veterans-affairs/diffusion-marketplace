@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 
 
   def index
-    @practices = Practice.searchable_practices 'a_to_z'
+    @practices = helpers.is_user_a_guest? ? Practice.searchable_practices('a_to_z', true) : Practice.searchable_practices('a_to_z', false)
     @favorite_practices = current_user&.favorite_practices || []
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
     @popular_categories = get_most_popular_categories

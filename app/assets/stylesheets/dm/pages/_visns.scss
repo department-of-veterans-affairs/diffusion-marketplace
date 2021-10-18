@@ -65,6 +65,15 @@
     max-width: 100%;
   }
 
+  #visns-show-search-form {
+    .usa-radio__input {
+      left: 10px !important;
+      top: 23px;
+      height: 1px;
+      width: 1px;
+    }
+  }
+
   .filters-p {
     width: 7%;
   }

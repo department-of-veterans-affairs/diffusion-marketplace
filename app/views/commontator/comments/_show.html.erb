@@ -4,8 +4,7 @@
   # comment
   # nested_children or page
   # show_all
-  vaec_environment = ENV['VAEC_ENV']
-  comments_disabled = @practice.retired || (vaec_environment.nil? && current_user.blank?) || (vaec_environment === 'true' && session[:user_type] === 'guest')
+  comments_disabled = @practice.retired || is_user_a_guest?
   thread = comment.thread
   nested_children ||= begin
     children = thread.paginated_comments(page, comment.id, show_all)
