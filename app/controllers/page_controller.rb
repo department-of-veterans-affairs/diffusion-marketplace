@@ -5,7 +5,7 @@ class PageController < ApplicationController
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities
     unless @page.published
-      redirect_to(root_path) unless current_user.has_role?(:admin)
+      redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
   end
 end
