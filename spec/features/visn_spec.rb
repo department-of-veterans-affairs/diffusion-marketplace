@@ -83,7 +83,7 @@ describe 'VISN pages', type: :feature do
       classification: "Primary Care CBOC",
       station_phone_number: "813-532-7712"
     )
-    facility_4 = VaFacility.create!(
+    @facility_4 = VaFacility.create!(
       visn: @visn_2,
       station_number: "431",
       official_station_name: "Fourth Test Name",
@@ -118,7 +118,7 @@ describe 'VISN pages', type: :feature do
 
     @dh = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_3)
     DiffusionHistoryStatus.create!(diffusion_history: @dh, status: 'Completed', start_time: Time.now)
-    @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, va_facility: facility_4)
+    @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, va_facility: @facility_4)
     DiffusionHistoryStatus.create!(diffusion_history: @dh_2, status: 'Completed', start_time: Time.now)
     @dh_3 = DiffusionHistory.create!(practice_id: @practice_3.id, va_facility: facility_3)
     DiffusionHistoryStatus.create!(diffusion_history: @dh_3, status: 'Completed', start_time: Time.now)
@@ -365,6 +365,7 @@ describe 'VISN pages', type: :feature do
       it 'should take the user to the show page of the facility they click on within the facilities table' do
         visit '/visns/2'
         click_link('Fourth Test Name (Fourth Common Name)')
+        expect(page).to have_content('This facility has created 0 innovations and has adopted 1 innovation.')
         expect(page).to have_selector('#va_facility_map', visible: true)
         expect(page).to have_current_path('/facilities/fourth-common-name')
       end
