@@ -2,92 +2,100 @@
 
 <%= render 'shared/usa_banner' %>
 <%= render 'shared/veterans_crisis_line_modal' %>
-<!-- source: https://designsystem.digital.gov/components/header/#extended -->
-<header id="dm-nav-header" class="usa-header usa-header--extended bg-white">
-  <div class="usa-navbar">
-    <div class="usa-logo" id="extended-logo">
-      <a href="/" title="Home" aria-label="Home"><span class="text-bold">VA</span> | Diffusion Marketplace</a>
-    </div>
-    <button class="usa-menu-btn">Menu</button>
-  </div>
-  <nav aria-label="Primary navigation" class="usa-nav desktop:border-bottom desktop:border-base-lighter">
-    <div class="usa-nav__inner">
-      <button class="usa-nav__close">
-        <img src="<%= image_url 'uswds/close.svg' %>" role="img" alt="close">
-      </button>
-      <ul class="usa-nav__primary usa-accordion">
-        <li class="usa-nav__primary-item">
-          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/competitions/shark-tank' %>" href="/competitions/shark-tank">
-            <span>Shark Tank</span>
-          </a>
-        </li>
-        <li class="usa-nav__primary-item">
-          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/visns' %>" href="<%= visns_path %>">
-            <span>VISNs</span>
-          </a>
-        </li>
-        <li class="usa-nav__primary-item">
-          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/facilities' %>" href="<%= va_facilities_path %>">
-            <span>Facilities</span>
-          </a>
-        </li>
-        <li class="usa-nav__primary-item">
-          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/diffusion-map' %>" href="/diffusion-map">
-            <span>Diffusion map</span>
-          </a>
-        </li>
-        <li class="usa-nav__primary-item">
-          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/about' %>" href="/about">
-            <span>About us</span>
-          </a>
-        </li>
-      </ul>
-      <%
-        user_type = session[:user_type]
-        vaec_environment = ENV['VAEC_ENV']
-      %>
-      <div class="usa-nav__secondary<%= if !user_signed_in? && vaec_environment.nil? then ' dm-signed-out-nav-secondary' elsif vaec_environment === 'true' && user_type === 'guest' then ' flex-column-important' end %>">
-        <%= render 'shared/navbar_search' %>
-        <ul class="usa-nav__primary usa-accordion margin-top-0 dm-nav-header-profile<%= if !user_signed_in? && vaec_environment.nil? then ' dm-nav-header-profile-sign-in' elsif vaec_environment === 'true' && user_type === 'guest' then ' display-none-important' end %>">
-          <% if user_signed_in? %>
-            <% if user_type === 'ntlm' %>
-              <li class="usa-nav__primary-item">
-                <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
-                  <span>Your profile</span>
-                </a>
-              </li>
-            <% else %>
-              <li class="usa-nav__primary-item">
-                <button class="usa-accordion__button usa-nav__link" aria-expanded="false" aria-controls="dm-user-profile-options">
-                  <span>Your profile</span>
-                </button>
-                <div id="dm-user-profile-options" class="usa-nav__submenu">
-                  <div class="grid-row grid-gap-4">
-                    <div class="usa-col">
-                      <ul class="usa-nav__submenu-list">
-                        <li class="usa-nav__submenu-item">
-                          <a class="<%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
-                            <span>Profile</span>
-                          </a>
-                        </li>
-                        <li class="usa-nav__submenu-item">
-                          <%= link_to('Sign out', destroy_user_session_path, method: :delete) %>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            <% end %>
-          <% else %>
-            <% unless vaec_environment === 'true' %>
-              <li class="usa-nav__primary-item">
-                <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link' %>
-              </li>
-            <% end %>
-          <% end %>
-        </ul>
+<a class="usa-skipnav" href="#main-content">Skip to main content</a>
+  <div class="usa-overlay"></div>
+  <header class="usa-header usa-header--basic desktop-lg:border-bottom desktop-lg:border-base-lighter">
+  <div class="usa-nav-container maxw-full">
+    <div class="usa-navbar">
+      <div class="usa-logo" id="basic-logo">
+        <em class="usa-logo__text">
+      <a class="display-flex" href="/" title="Home" aria-label="Home">
+        <img class="width-4 height-4 margin-top-2px dm-header--va-seal" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
+        <p class="margin-0 margin-left-1 text-ink line-height-sans-1 padding-top-2px desktop-lg:padding-top-05">
+          <span class="text-bold font-sans-sm desktop-lg:font-sans-lg">Diffusion Marketplace</span><br>
+          <span class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</span>
+        </p>
+      </a>
+        </em>
       </div>
+      <button class="usa-menu-btn bg-ink padding-x-205">Menu</button>
     </div>
-  </nav>
+    <nav aria-label="Primary navigation" class="usa-nav padding-top-6 desktop-lg:margin-y-3">
+      <button class="usa-nav__close">
+        <img src="<%= image_url 'uswds/close.svg' %>" class="maxw-105" role="img" alt="close">
+      </button>
+      <ul class="usa-nav__primary usa-accordion margin-top-0">
+        <li class="usa-nav__primary-item border-base-light">
+          <a class="margin-y-2px desktop-lg:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == '/about' %>" href="/about">
+            <span class="text-normal desktop-lg:text-semibold">About us</span>
+          </a>
+        </li>
+        <li class="usa-nav__primary-item border-base-light">
+          <a class="margin-y-2px desktop-lg:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == '/partners' %>" href="/partners">
+            <span class="text-normal desktop-lg:text-semibold">Partners</span>
+          </a>
+        </li>
+        <li class="usa-nav__primary-item border-base-light border-bottom-1px desktop-lg:border-bottom-0">
+          <button
+            class="margin-y-2px desktop-lg:margin-y-0 usa-accordion__button usa-nav__link <%= 'usa-current' if request.fullpath === '/visns' || request.fullpath === '/facilities' || request.fullpath === '/diffusion-map' %>"
+            aria-expanded="false"
+            aria-controls="browse-by-locations-dropdown"
+          >
+            <span class="text-normal desktop-lg:text-semibold">Browse by locations</span>
+          </button>
+          <ul id="browse-by-locations-dropdown" class="usa-nav__submenu">
+            <li class="usa-nav__submenu-item border-base-light">
+              <a class="font-sans-sm desktop-lg:font-sans-2xs margin-y-2px desktop-lg:margin-y-0 <%= 'usa-current' if request.fullpath === '/visns' %>" href="<%= visns_path %>">VISN index</a>
+            </li>
+            <li class="usa-nav__submenu-item border-base-light">
+              <a class="font-sans-sm desktop-lg:font-sans-2xs margin-y-2px desktop-lg:margin-y-0 <%= 'usa-current' if request.fullpath === '/facilities' %>" href="<%= va_facilities_path %>">Facility index</a>
+            </li>
+            <li class="usa-nav__submenu-item border-base-light">
+              <a class="font-sans-sm desktop-lg:font-sans-2xs margin-y-2px desktop-lg:margin-y-0 <%= 'usa-current' if request.fullpath === '/diffusion-map' %>" href="<%= diffusion_map_path %>">Diffusion map</a>
+            </li>
+          </ul>
+        </li>
+        <li class="usa-nav__primary-item border-0">
+          <%= render 'shared/navbar_search' %>
+        </li>
+        <%
+          user_type = session[:user_type]
+          vaec_environment = ENV['VAEC_ENV']
+        %>
+        <% if user_signed_in? %>
+          <% if vaec_environment === 'true' && user_type === 'ntlm' %>
+            <li class="usa-nav__primary-item border-0">
+              <a class="margin-y-2px desktop-lg:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+                <span class="text-normal desktop-lg:text-semibold">Your profile</span>
+              </a>
+            </li>
+          <% else %>
+            <li class="usa-nav__primary-item border-0">
+              <button class="margin-y-2px desktop-lg:margin-y-0 usa-accordion__button usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" aria-expanded="false" aria-controls="dm-user-profile-options">
+                <span class="text-normal desktop-lg:text-semibold">Your profile</span>
+              </button>
+              <div id="dm-user-profile-options" class="usa-nav__submenu">
+                <ul class="usa-nav__submenu-list">
+                  <li class="usa-nav__submenu-item border-base-light">
+                    <a class="font-sans-sm desktop-lg:font-sans-2xs <%= 'usa-current' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>"  href="<%= user_path(current_user) %>">
+                      <span>Profile</span>
+                    </a>
+                  </li>
+                  <li class="usa-nav__submenu-item border-base-light">
+                    <%= link_to('Sign out', destroy_user_session_path, method: :delete, class: 'font-sans-sm desktop-lg:font-sans-2xs') %>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          <% end %>
+        <% else %>
+          <% unless vaec_environment === 'true' %>
+            <li class="usa-nav__primary-item border-0">
+              <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link margin-y-2px desktop-lg:margin-y-0' %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
 </header>
