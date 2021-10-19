@@ -122,14 +122,14 @@
             <% if component.card? %>
               <div class="grid-col-6 usa-card pb-link-card margin-0">
                 <div class="usa-card__container margin-0">
-                  <a class="usa-card__heading text-bold font-sans-lg line-height-25px dm-external-link padding-x-2 padding-top-4" href="<%= component.url %>">
-                    <%= component.title %>
-                  </a>
+                  <div class="text-bold font-sans-lg line-height-25px margin-top-0 padding-x-2 padding-top-4">
+                    <a class="usa-link pb-link-card-title" href="<%= component.url %>">
+                      <%= component.title %>
+                    </a>
+                  </div>
                   <div class="usa-card__body padding-x-2 padding-bottom-4">
-                    <p class="line-height-26">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis earum
-                      tenetur quo cupiditate, eaque qui officia recusandae. Excepturi nobis
-                      dolores molestias! Quas quisquam a officia eos.
+                    <p class="usa-prose-body pb-link-card-body">
+                      <%= component.description %>
                     </p>
                   </div>
                 </div>

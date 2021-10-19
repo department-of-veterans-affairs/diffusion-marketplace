@@ -4,6 +4,10 @@
     margin-bottom: 1rem;
     line-height: 1.53;
 
+    &.usa-prose-body {
+      line-height: 1.6;
+    }
+
     &.ql-align-justify {
       display: flex;
       justify-content: center;

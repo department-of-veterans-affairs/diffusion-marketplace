@@ -973,6 +973,7 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
     t.string "highlight_attachment_content_type"
     t.integer "highlight_attachment_file_size"
     t.datetime "highlight_attachment_updated_at"
+    t.boolean "is_public", default: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end

@@ -55,10 +55,26 @@ function removeBottomMarginFromLastAccordionHeading() {
     $(accordionHeading).last().addClass('margin-bottom-0');
 }
 
+function truncatePageBuilderComponentText(selector, maxHeight) {
+    $(selector).each(function(index, element) {
+        $(element).shave(maxHeight);
+    });
+}
+
+function truncateTwoColumnLinkTitle() {
+    truncatePageBuilderComponentText('.pb-link-card-title', 50)
+}
+
+function truncateTwoColumnLinkBody() {
+    truncatePageBuilderComponentText('.pb-link-card-body', 50)
+}
+
 function execPageBuilderFunctions() {
     browsePageBuilderPageHappy();
+    containerizeSubpageHyperlinkCards();
     removeBottomMarginFromLastAccordionHeading();
-    removeBottomMarginFromLastAccordionHeading();
+    truncateTwoColumnLinkTitle();
+    truncateTwoColumnLinkBody();
 }
 
 $(document).on('turbolinks:load', execPageBuilderFunctions);
