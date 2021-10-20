@@ -110,4 +110,18 @@
       }
     }
   }
+
+  .shark-tank-banner {
+    background-color: color($theme-color-warning-lighter);
+    @include u-line-height('sans', 3, !important);
+    @include u-height(8);
+
+    @media screen and (min-width: 640px) {
+      @include u-height(5);
+    }
+
+    a {
+      @include u-text-decoration('underline', !important);
+    }
+  }
 }
