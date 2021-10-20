@@ -312,7 +312,7 @@ describe 'VISN pages', type: :feature do
     describe 'facilities table' do
       it 'should display a modal when the user clicks on the question mark icon next to the complexity column in the facilities table' do
         visit '/visns/1'
-        find('.fa-question-circle').click
+        find_all('.fa-question-circle').last.click
 
         expect(page).to have_content('1a-Highest complexity')
         expect(page).to have_content('Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs')
