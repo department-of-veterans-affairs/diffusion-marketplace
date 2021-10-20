@@ -193,6 +193,7 @@ describe 'VA facility pages', type: :feature do
     def login_and_visit_facility_page
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit va_facility_path(@facility_1)
+      expect(page).to have_content('8 results')
     end
 
     def check_search_results_as_guest_user(container_selector)
@@ -319,7 +320,6 @@ describe 'VA facility pages', type: :feature do
       it 'should sort the content by most adopted innovations' do
         login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
-          expect(page).to have_content('8 results')
           select('Sort by most adopted innovations', from: 'created-practices-sort-option')
           expect(page).to have_css('.dm-load-more-created-practices-btn')
           expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')
@@ -342,7 +342,6 @@ describe 'VA facility pages', type: :feature do
       it 'should sort the content by most recently added' do
         login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
-          expect(page).to have_content('8 results')
           select('Sort by most recently added', from: 'created-practices-sort-option')
           expect(page).to have_css('.dm-load-more-created-practices-btn')
           expect(find_all('.dm-practice-title')[0]).to have_text('Different practice')
@@ -364,7 +363,6 @@ describe 'VA facility pages', type: :feature do
 
       it 'should filter by categories and allow for sorting' do
         login_and_visit_facility_page
-        expect(page).to have_content('8 results')
         within(:css, '.dm-facility-created-practice-search') do
           find('#dm-created-practice-categories').click
           find_all('.usa-combo-box__list-option').first.click
@@ -412,7 +410,6 @@ describe 'VA facility pages', type: :feature do
       it 'should allow search for innovation origin facility and adopting facility' do
         login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
-          expect(page).to have_content('8 results')
           fill_in('dm-created-practice-search-field', with: 'd test name')
           find('#dm-created-practice-search-button').click
           expect(page).to have_css('.dm-created-practice-results-count')
@@ -429,7 +426,6 @@ describe 'VA facility pages', type: :feature do
 
       it 'should allow search for categories and related terms' do
         login_and_visit_facility_page
-        expect(page).to have_content('8 results')
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'coronavirus')
           find('#dm-created-practice-search-button').click
