@@ -249,7 +249,7 @@ describe 'Map of Diffusion', type: :feature do
       expect(page).to have_content('Practice C')
     end
     find('.close').click
-    expect(page).to have_no_css('.modal-content')
+    expect(page).to have_selector('.modal-content', count: 3, visible: false)
   end
 
   it 'should allow the user to visit each adoption\'s VA facility page', js: true do
