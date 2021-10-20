@@ -220,7 +220,9 @@ describe 'VA facility pages', type: :feature do
 
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
       login_and_visit_facility_page
+      find(:css, '.va_facilities')
       visit '/facilities/a-first-facility-test-common-name'
+      sleep 0.5
       expect(page).to have_selector('.dm-loading-spinner', visible: false)
       expect(page).to have_current_path(va_facility_path(@facility_1))
     end

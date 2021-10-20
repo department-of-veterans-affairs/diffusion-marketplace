@@ -105,7 +105,7 @@ describe 'Map of Diffusion', type: :feature do
 
     # filters on load
     open_filters
-    expect(page).to have_no_css('modal-content')
+    expect(page).to have_selector('.modal-content', count: 3, visible: false)
     expect(page).to be_accessible.within '#filterResults'
     expect(page).to have_no_css('#filterResultsTrigger')
     expect(page).to have_css('#filterClose')
