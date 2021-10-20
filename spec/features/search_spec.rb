@@ -66,7 +66,7 @@ describe 'Search', type: :feature do
     PracticeOriginFacility.create!(practice: @practice12, facility_type: 0, va_facility: facility_12)
     @practice13 = Practice.create!(name: 'The Champion of Practices', initiating_facility_type: 'facility', tagline: 'Test tagline 13', date_initiated: 'Sun, 17 Nov 1991 00:00:00 UTC +00:00', summary: 'This is the twelfth best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice13, facility_type: 0, va_facility: facility_2)
-    @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true, user: @user2)
+    @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true, user: @user2, is_public: true)
     PracticeOriginFacility.create!(practice: @practice14, facility_type: 0, va_facility: facility_3)
 
     parent_cat_1 = Category.create!(name: 'Strategic')
@@ -302,7 +302,12 @@ describe 'Search', type: :feature do
       logout
       visit_search_page
 
-      fill_in('dm-practice-search-field', with: 'One Practice to Rule Them All')
+      fill_in('dm-practice-search-field', with: 'important')
+      search
+      expect(page).to have_content('1 result')
+      expect(page).to have_content('The Most Important Practice')
+
+      fill_in('dm-practice-search-field', with: 'Rule')
       search
       expect(page).to_not have_content('results')
       expect(page).to_not have_content('One Practice to Rule Them All')
@@ -318,7 +323,7 @@ describe 'Search', type: :feature do
       logout
       visit_search_page
 
-      fill_in('dm-practice-search-field', with: 'One Practice to Rule Them All')
+      fill_in('dm-practice-search-field', with: 'Rule')
       search
       expect(page).to have_content('1 result')
       expect(page).to have_content('One Practice to Rule Them All')

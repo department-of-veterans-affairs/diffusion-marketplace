@@ -158,7 +158,7 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices nil, helpers.is_user_a_guest?
+    @practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices(nil) : Practice.searchable_practices(nil)
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
     @diffusion_histories = []
@@ -173,7 +173,7 @@ class PracticesController < ApplicationController
   # GET /explore
   def explore
     @categories = Category.with_practices
-    practices = helpers.is_user_a_guest? ? Practice.searchable_practices('a_to_z', true) : Practice.searchable_practices('a_to_z', false)
+    practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices('a_to_z') : Practice.searchable_practices('a_to_z')
     @pagy_practices = pagy_array(
       practices,
       items: 12
@@ -195,7 +195,7 @@ class PracticesController < ApplicationController
 
     @sort_option = params[:sort_option] || 'a_to_z'
     @cat_filters = params[:categories] ? params[:categories].map { |cat| cat.to_i } : []
-    practices = helpers.is_user_a_guest? ? Practice.searchable_practices(@sort_option, true) : Practice.searchable_practices(@sort_option, false)
+    practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices(@sort_option) : Practice.searchable_practices(@sort_option)
     if @cat_filters.length > 0
       filtered_practices = practices.select { |pr| !(pr.category_ids & @cat_filters).empty? }
       practices = filtered_practices

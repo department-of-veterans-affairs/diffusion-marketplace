@@ -62,24 +62,29 @@ class Practice < ApplicationRecord
     clear_searchable_cache if self.reset_searchable_cache
   end
 
-  def self.searchable_practices(sort = 'a_to_z', is_user_guest = true)
+  def self.searchable_practices(sort = 'a_to_z')
     if sort == 'a_to_z'
       Rails.cache.fetch('searchable_practices_a_to_z') do
-        is_user_guest ? Practice.public_facing.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'adoptions'
       Rails.cache.fetch('searchable_practices_adoptions') do
-        is_user_guest ? Practice.public_facing.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'added'
       Rails.cache.fetch('searchable_practices_added') do
-        is_user_guest ? Practice.public_facing.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
       end
     elsif sort == nil
       Rails.cache.fetch('searchable_practices') do
-        is_user_guest ? Practice.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.get_with_categories_and_adoptions_ct
       end
     end
+  end
+
+  def self.searchable_public_practices(sort = 'a_to_z')
+    practices = self.searchable_practices(sort)
+    practices.select { |pr| pr.is_public }
   end
 
   def has_facility?
