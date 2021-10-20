@@ -17,6 +17,10 @@ describe 'Homepage', type: :feature do
     visit '/'
   end
 
+  it 'should have a link to the Shark Tank page' do
+    expect(page).to have_link(href: '/competitions/shark-tank')
+  end
+
   it "it should allow the user to visit the 'About' page" do
     click_link('Learn more')
 
