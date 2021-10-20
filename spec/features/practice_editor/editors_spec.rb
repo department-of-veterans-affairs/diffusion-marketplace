@@ -126,8 +126,8 @@ describe 'Practice editor', type: :feature, js: true do
           login_and_visit_editors(@admin)
           fill_in_email_field(@user.email)
           add_editor
-          visit '/'
           logout
+          visit '/'
           login_and_visit_editors(@admin)
           expect(page).to have_content(@admin.email)
           delete_practice_editor(1)
