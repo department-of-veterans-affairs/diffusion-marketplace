@@ -111,7 +111,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
     # open facility complexity modal
     modal_text = 'Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs'
     expect(page).to_not have_content(modal_text)
-    find('.fa-question-circle').click
+    find_all('.fa-question-circle').last.click
     expect(page).to have_content(modal_text)
     find('.fa-times').click
     expect(page).to_not have_content(modal_text)

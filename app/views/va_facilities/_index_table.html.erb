@@ -3,16 +3,17 @@
     <caption></caption>
     <thead>
       <tr>
-        <th data-sortable scope="col" role="columnheader" aria-sort="descending">
+        <th class="grid-col-5" data-sortable scope="col" role="columnheader" aria-sort="descending">
           Facility
         </th>
         <th data-sortable scope="col" role="columnheader">
           State
         </th>
-        <th data-sortable scope="col" role="columnheader">
+        <th class="padding-right-0 grid-col-2" data-sortable scope="col" role="columnheader">
           VISN
+          <span class="display-inline-block usa-prose-body"><%= render partial: "visns/visns_tooltip", locals: { data_position: 'bottom'} %></span>
         </th>
-        <th class="padding-right-0" data-sortable scope="col" role="columnheader">
+        <th class="padding-right-0 grid-col-3" data-sortable scope="col" role="columnheader">
           Complexity
           <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false } %>
         </th>
