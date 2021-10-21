@@ -617,6 +617,7 @@ describe 'The admin dashboard', type: :feature do
 
     # change the practice user back to the original user
     logout
+    visit '/'
     login_as(@admin, :scope => :user, run_callbacks: false)
     visit '/admin/practices/the-best-practice-ever/edit'
     expect(page).to have_content('USER EMAIL')
