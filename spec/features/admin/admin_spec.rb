@@ -611,20 +611,18 @@ describe 'The admin dashboard', type: :feature do
     # create a comment with the current practice user
     logout
     login_as(@user2, :scope => :user, :run_callbacks => false)
-    page.set_rack_session(:user_type => 'ntlm')
     visit practice_path(@practice)
     fill_in('comment[body]', with: 'This is a test comment')
     click_button('commit')
 
     # change the practice user back to the original user
     logout
-    sleep 2
     login_as(@admin, :scope => :user, run_callbacks: false)
-    page.set_rack_session(:user_type => 'guest')
     visit '/admin/practices/the-best-practice-ever/edit'
     expect(page).to have_content('USER EMAIL')
     fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
+    sleep 2
     expect(Practice.first.commontator_thread.subscribers).to include(@user, @user2)
   end
 end
