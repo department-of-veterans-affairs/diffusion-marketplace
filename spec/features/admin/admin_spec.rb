@@ -624,6 +624,8 @@ describe 'The admin dashboard', type: :feature do
     fill_in('practice_user_id', with: '')
     fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
+    expect(page).to have_content('Innovation was successfully updated.')
+    sleep 3
     expect(Practice.first.commontator_thread.subscribers.first).to eq(@user2)
     expect(Practice.first.commontator_thread.subscribers.last).to eq(@user)
   end
