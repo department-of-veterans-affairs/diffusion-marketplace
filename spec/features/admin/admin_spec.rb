@@ -621,6 +621,7 @@ describe 'The admin dashboard', type: :feature do
     login_as(@admin, :scope => :user, run_callbacks: false)
     visit '/admin/practices/the-best-practice-ever/edit'
     expect(page).to have_content('USER EMAIL')
+    fill_in('practice_user_id', with: '')
     fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
     expect(Practice.first.commontator_thread.subscribers.first).to eq(@user2)
