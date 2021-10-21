@@ -41,12 +41,20 @@ function containerizeSubpageHyperlinkCards() {
         }
     });
 
-    // Add bottom margin based on if the next element contains more link cards or not
-    $('.pb-two-column-card-link-container').each(function() {
+    // Add bottom margin styles
+    var linkContainer = '.pb-two-column-card-link-container';
+    $(linkContainer).each(function() {
         var $this = $(this);
 
-        $this.next().hasClass(cardContainerClass) ? $this.addClass('margin-bottom-3') : $this.addClass('margin-bottom-5')
-    })
+        if ($(linkContainer).last().is($this)) {
+            $this.addClass('margin-bottom-0');
+        } else if ($this.next().hasClass(cardContainerClass)) {
+            $this.addClass('margin-bottom-3');
+        } else if (!$this.next().hasClass(cardContainerClass)) {
+            $this.addClass('margin-bottom-5');
+        }
+
+    });
 }
 
 function removeBottomMarginFromLastAccordionHeading() {
@@ -62,11 +70,11 @@ function truncatePageBuilderComponentText(selector, maxHeight) {
 }
 
 function truncateTwoColumnLinkTitle() {
-    truncatePageBuilderComponentText('.pb-link-card-title', 50)
+    truncatePageBuilderComponentText('.pb-link-card-title', 75);
 }
 
 function truncateTwoColumnLinkBody() {
-    truncatePageBuilderComponentText('.pb-link-card-body', 50)
+    truncatePageBuilderComponentText('.pb-link-card-body', 100);
 }
 
 function execPageBuilderFunctions() {

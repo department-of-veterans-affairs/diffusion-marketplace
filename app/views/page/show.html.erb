@@ -121,18 +121,18 @@
         <% when 'PageSubpageHyperlinkComponent' %>
             <% if component.card? %>
               <div class="grid-col-6 usa-card pb-link-card margin-0">
-                <div class="usa-card__container margin-0">
-                  <div class="text-bold font-sans-lg line-height-25px margin-top-0 padding-x-2 padding-top-4">
-                    <a class="usa-link pb-link-card-title" href="<%= component.url %>">
-                      <%= component.title %>
-                    </a>
+                <a class="pb-link text-no-underline" href="<%= component.url %>">
+                  <div class="usa-card__container margin-0 radius-md border-width-1px">
+                    <div class="pb-link-card-title text-bold text-underline font-sans-lg line-height-25px margin-top-0 padding-x-2 padding-top-4">
+                        <%= component.title %>
+                    </div>
+                    <div class="usa-card__body padding-x-2 padding-bottom-4">
+                      <p class="usa-prose-body pb-link-card-body">
+                        <%= component.description %>
+                      </p>
+                    </div>
                   </div>
-                  <div class="usa-card__body padding-x-2 padding-bottom-4">
-                    <p class="usa-prose-body pb-link-card-body">
-                      <%= component.description %>
-                    </p>
-                  </div>
-                </div>
+                </a>
               </div>
             <% else %>
               <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">

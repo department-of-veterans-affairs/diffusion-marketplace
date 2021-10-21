@@ -38,4 +38,33 @@
   p:last-of-type {
     @include u-margin-bottom(0, !important);
   }
+
+  .pb-link {
+    .pb-link-card-title {
+      color: color($theme-color-primary-vivid);
+    }
+
+    .pb-link-card-body {
+      color: color($theme-color-base-ink);
+      @include u-text-decoration('no-underline');
+    }
+
+    &:hover {
+      .pb-link-card-title {
+        color: color($theme-color-primary-dark) !important;
+      }
+    }
+
+    &:active {
+      .pb-link-card-title {
+        color: color($theme-color-primary-darker) !important;
+      }
+    }
+
+    &:visited {
+      .pb-link-card-title {
+        color: color($theme-link-visited-color);
+      }
+    }
+  }
 }

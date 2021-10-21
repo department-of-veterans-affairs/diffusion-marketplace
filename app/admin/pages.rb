@@ -61,7 +61,7 @@ ActiveAdmin.register Page do
           component = eval("#{pc.component_type}.find('#{pc.component_id}')")
           Arbre::Context.new do
             para do
-              b PageComponent::COMPONENT_SELECTION.key(pc.component_type)
+              b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)} #{'(Card)' if pc.component_type == 'PageSubpageHyperlinkComponent' && component&.card?}"
             end
             para component&.heading_type if pc.component_type == 'PageHeaderComponent'
             para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
