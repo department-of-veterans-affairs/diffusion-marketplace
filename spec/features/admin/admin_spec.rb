@@ -620,12 +620,11 @@ describe 'The admin dashboard', type: :feature do
     logout
     sleep 2
     login_as(@admin, :scope => :user, run_callbacks: false)
+    page.set_rack_session(:user_type => 'guest')
     visit '/admin/practices/the-best-practice-ever/edit'
     expect(page).to have_content('USER EMAIL')
     fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
-
     expect(Practice.first.commontator_thread.subscribers).to include(@user, @user2)
   end
-
 end
