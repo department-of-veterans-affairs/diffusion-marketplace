@@ -623,7 +623,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content('USER EMAIL')
     fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
-    sleep 2
-    expect(Practice.first.commontator_thread.subscribers).to include(@user, @user2)
+    expect(Practice.first.commontator_thread.subscribers.first).to eq(@user2)
+    expect(Practice.first.commontator_thread.subscribers.last).to eq(@user)
   end
 end
