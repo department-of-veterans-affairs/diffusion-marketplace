@@ -42,18 +42,17 @@ function containerizeSubpageHyperlinkCards() {
     });
 
     // Add bottom margin styles
-    var linkContainer = '.pb-two-column-card-link-container';
-    $(linkContainer).each(function() {
+    $("." + cardContainerClass).each(function() {
         var $this = $(this);
+        var children = $this.children()
 
-        if ($(linkContainer).last().is($this)) {
-            $this.addClass('margin-bottom-0');
+        if ($('.dm-page-content').children().last().is($this)) {
+            children.addClass('margin-bottom-3');
         } else if ($this.next().hasClass(cardContainerClass)) {
-            $this.addClass('margin-bottom-3');
+            children.addClass('margin-bottom-3');
         } else if (!$this.next().hasClass(cardContainerClass)) {
             $this.addClass('margin-bottom-5');
         }
-
     });
 }
 
@@ -63,26 +62,10 @@ function removeBottomMarginFromLastAccordionHeading() {
     $(accordionHeading).last().addClass('margin-bottom-0');
 }
 
-function truncatePageBuilderComponentText(selector, maxHeight) {
-    $(selector).each(function(index, element) {
-        $(element).shave(maxHeight);
-    });
-}
-
-function truncateTwoColumnLinkTitle() {
-    truncatePageBuilderComponentText('.pb-link-card-title', 75);
-}
-
-function truncateTwoColumnLinkBody() {
-    truncatePageBuilderComponentText('.pb-link-card-body', 100);
-}
-
 function execPageBuilderFunctions() {
     browsePageBuilderPageHappy();
     containerizeSubpageHyperlinkCards();
     removeBottomMarginFromLastAccordionHeading();
-    truncateTwoColumnLinkTitle();
-    truncateTwoColumnLinkBody();
 }
 
 $(document).on('turbolinks:load', execPageBuilderFunctions);

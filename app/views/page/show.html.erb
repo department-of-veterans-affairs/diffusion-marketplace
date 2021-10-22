@@ -120,10 +120,10 @@
           <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
             <% if component.card? %>
-              <div class="grid-col-6 usa-card pb-link-card margin-0">
+              <div class="grid-col-12 tablet:grid-col-6 pb-link-card">
                 <a class="pb-link text-no-underline" href="<%= component.url %>">
                   <div class="usa-card__container margin-0 radius-md border-width-1px">
-                    <div class="pb-link-card-title text-bold text-underline font-sans-lg line-height-25px margin-top-0 padding-x-2 padding-top-4">
+                    <div class="pb-link-card-title text-semibold text-underline font-sans-lg line-height-25px margin-top-0 padding-x-2 padding-top-4">
                         <%= component.title %>
                     </div>
                     <div class="usa-card__body padding-x-2 padding-bottom-4">
@@ -135,8 +135,8 @@
                 </a>
               </div>
             <% else %>
-              <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">
-                <a href="<%= component.url %>" class="width-full">
+              <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 pb-link-default <%= 'margin-x-auto' if @page.narrow? %>">
+                <a href="<%= component.url %>" class="width-full usa-link">
                   <h2 class="font-sans-xl display-inline margin-top-0 text-underline"><%= component.title %></h2>
                   <span class="margin-left-1 fas fa-chevron-right fa-icon-125 text-middle padding-bottom-2"></span>
                 </a>

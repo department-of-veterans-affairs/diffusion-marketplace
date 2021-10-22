@@ -90,4 +90,20 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display a warning banner on non-Chrome browsers', js: true do
     expect(page).to have_content('Some links or actions on this page are not supported or optimal on this browser.')
   end
+
+  it 'should allow admins to toggle card styling for link components' do
+    expect(page).to_not have_selector('.pb-link-card')
+    expect(page).to have_selector('.pb-link-default')
+
+    visit '/admin/pages'
+    all('.edit_link').last.click
+    find('.toggle-card-styling').click
+    find('#page_submit_action_1').click
+    expect(page).to have_content('Page was successfully updated.')
+    visit '/programming/ruby-rocks'
+
+    expect(page).to_not have_selector('.pb-link-default')
+    expect(page).to have_selector('.pb-two-column-card-link-container')
+    expect(page).to have_selector('.pb-link-card')
+  end
 end

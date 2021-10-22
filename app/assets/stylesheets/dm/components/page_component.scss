@@ -40,13 +40,21 @@
   }
 
   .pb-link {
+    .pb-link-card-title, .pb-link-card-body {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     .pb-link-card-title {
       color: color($theme-color-primary-vivid);
+      -webkit-line-clamp: 2;
     }
 
     .pb-link-card-body {
       color: color($theme-color-base-ink);
       @include u-text-decoration('no-underline');
+      -webkit-line-clamp: 4;
     }
 
     &:hover {

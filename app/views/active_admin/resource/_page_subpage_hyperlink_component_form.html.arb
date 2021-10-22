@@ -42,7 +42,8 @@ html = Arbre::Context.new do
           label 'Add card styling', for: "page_page_components_attributes_#{placeholder}_component_attributes_card", class: 'label'
           input value: '1', type: 'checkbox', checked: component&.card?,
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_card",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][card]"
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][card]",
+                class: "toggle-card-styling"
         end
       end
     end
