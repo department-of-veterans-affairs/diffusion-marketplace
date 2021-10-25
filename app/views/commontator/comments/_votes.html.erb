@@ -16,26 +16,26 @@
   %>
 
   <% if comment_voting == :ld || comment_voting == :l %>
-  <% vtype = (comment_voting == :ld) ? 'upvote' : 'like' %>
-  <span id="commontator-comment-<%= comment.id %>-<%= vtype %>" class="<%= vtype %>">
-    <% if can_vote && (vote.blank? || !vote.vote_flag) %>
-      <%= form_tag commontator.upvote_comment_path(comment),
+    <% vtype = (comment_voting == :ld) ? 'upvote' : 'like' %>
+    <span id="commontator-comment-<%= comment.id %>-<%= vtype %>" class="<%= vtype %>">
+      <% if can_vote && (vote.blank? || !vote.vote_flag) %>
+        <%= form_tag commontator.upvote_comment_path(comment),
             method: :put,
             class: 'vote-form',
             remote: true do %>
-        <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up empty-vote" %>
+            <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up empty-vote" %>
+          <% end %>
+      <% elsif can_vote %>
+        <%= form_tag commontator.unvote_comment_path(comment),
+              method: :put,
+              class: 'vote-form',
+              remote: true do %>
+          <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up voted" %>
+        <% end %>
+      <% else %>
+        <button class="fas fa-thumbs-up vote-disabled" disabled="disabled"></button>
       <% end %>
-    <% elsif can_vote %>
-      <%= form_tag commontator.unvote_comment_path(comment),
-            method: :put,
-            class: 'vote-form',
-            remote: true do %>
-        <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up voted" %>
-      <% end %>
-    <% else %>
-      <button class="fas fa-thumbs-up vote-disabled" disabled="disabled"></button>
-    <% end %>
-  </span>
+    </span>
   <% end %>
 
   <span id="commontator-comment-<%= comment.id %>-vote-count" class="vote-count comment-<%= comment.id %>-<%= comment.cached_votes_up %>-vote<%=comment.cached_votes_up == 1 ? '' : 's' %>">

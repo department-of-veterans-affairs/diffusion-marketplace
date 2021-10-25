@@ -71,7 +71,15 @@ class PracticesController < ApplicationController
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
 
-    render 'practices/show/show'
+    if helpers.is_user_a_guest? && !@practice.is_public
+      respond_to do |format|
+        s_error = 'This innovation is not available for non-VA users.'
+        format.html { redirect_to root_path, flash: { error: s_error } }
+        format.json { render error: s_error }
+      end
+    else
+      render 'practices/show/show'
+    end
   end
 
   # GET /practices/1/edit
@@ -150,7 +158,7 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices(nil)
+    @practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices(nil) : Practice.searchable_practices(nil)
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = cached_json_practices
     @diffusion_histories = []
@@ -165,7 +173,7 @@ class PracticesController < ApplicationController
   # GET /explore
   def explore
     @categories = Category.with_practices
-    practices = Practice.searchable_practices 'a_to_z'
+    practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices('a_to_z') : Practice.searchable_practices('a_to_z')
     @pagy_practices = pagy_array(
       practices,
       items: 12
@@ -187,7 +195,7 @@ class PracticesController < ApplicationController
 
     @sort_option = params[:sort_option] || 'a_to_z'
     @cat_filters = params[:categories] ? params[:categories].map { |cat| cat.to_i } : []
-    practices = Practice.searchable_practices @sort_option
+    practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices(@sort_option) : Practice.searchable_practices(@sort_option)
     if @cat_filters.length > 0
       filtered_practices = practices.select { |pr| !(pr.category_ids & @cat_filters).empty? }
       practices = filtered_practices
@@ -667,8 +675,14 @@ class PracticesController < ApplicationController
   end
 
   def cached_json_practices
-    Rails.cache.fetch('searchable_practices_json') do
-      practices_json(Practice.sort_by_retired.get_with_categories_and_adoptions_ct)
+    if helpers.is_user_a_guest?
+      Rails.cache.fetch('searchable_public_practices_json') do
+        practices_json(Practice.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct)
+      end
+    else
+      Rails.cache.fetch('searchable_practices_json') do
+        practices_json(Practice.sort_by_retired.get_with_categories_and_adoptions_ct)
+      end
     end
   end
 

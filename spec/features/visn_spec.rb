@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'spec_helper'
 
 describe 'VISN pages', type: :feature do
   before do
@@ -82,7 +83,7 @@ describe 'VISN pages', type: :feature do
       classification: "Primary Care CBOC",
       station_phone_number: "813-532-7712"
     )
-    facility_4 = VaFacility.create!(
+    @facility_4 = VaFacility.create!(
       visn: @visn_2,
       station_number: "431",
       official_station_name: "Fourth Test Name",
@@ -96,12 +97,13 @@ describe 'VISN pages', type: :feature do
       station_phone_number: "912-322-5541"
     )
 
-    @user = User.create!(email: 'nobara.kugisaki@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+    @user = User.create!(email: 'nobara.kugisaki@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: false, confirmed_at: Time.now, accepted_terms: true)
+    @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @admin.add_role(User::USER_ROLES[1].to_sym)
 
     @practice = Practice.create!(name: 'The Best Innovation Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best innovation ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     @practice_2 = Practice.create!(name: 'An Awesome Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is an awesome practice.', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_2, facility_type: 0, va_facility: facility_2)
     @practice_3 = Practice.create!(name: 'A Very Cool Practice!', initiating_facility_type: 'facility', tagline: 'Super cool tagline', date_initiated: 'Mon, 09 Mar 1999 00:00:00 UTC +00:00', summary: 'This is a very cool practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice_3, facility_type: 0, va_facility: facility_3)
     @practice_4 = Practice.create!(name: 'A Fantastic Practice!', initiating_facility_type: 'facility', tagline: 'Cool tagline', date_initiated: 'Fri, 21 Oct 2001 00:00:00 UTC +00:00', summary: 'This is a fantastic practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
@@ -109,7 +111,6 @@ describe 'VISN pages', type: :feature do
     @practice_5 = Practice.create!(name: 'A Magnificent Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Sat, 30 Nov 1995 00:00:00 UTC +00:00', summary: 'This is a magnificent practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice_5, facility_type: 0, va_facility: facility_2)
     @practice_6 = Practice.create!(name: 'A Spectacular Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 6', date_initiated: 'Sun, 09 Oct 2008 00:00:00 UTC +00:00', summary: 'This is a spectacular practice.', published: true, enabled: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice_6, facility_type: 0, va_facility: facility_2)
     @practice_7 = Practice.create!(name: 'A Meaningful Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 7', date_initiated: 'Wed, 11 Feb 1991 00:00:00 UTC +00:00', summary: 'This is a meaningful practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice_7, facility_type: 0, va_facility: facility_3)
     @practice_8 = Practice.create!(name: 'A Ground-breaking Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 8', date_initiated: 'Thu, 15 Feb 2015 00:00:00 UTC +00:00', summary: 'This is a ground-breaking practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
@@ -117,7 +118,7 @@ describe 'VISN pages', type: :feature do
 
     @dh = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_3)
     DiffusionHistoryStatus.create!(diffusion_history: @dh, status: 'Completed', start_time: Time.now)
-    @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, va_facility: facility_4)
+    @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, va_facility: @facility_4)
     DiffusionHistoryStatus.create!(diffusion_history: @dh_2, status: 'Completed', start_time: Time.now)
     @dh_3 = DiffusionHistory.create!(practice_id: @practice_3.id, va_facility: facility_3)
     DiffusionHistoryStatus.create!(diffusion_history: @dh_3, status: 'Completed', start_time: Time.now)
@@ -126,6 +127,8 @@ describe 'VISN pages', type: :feature do
     @cat_2 = Category.create!(name: 'Test Cat')
     CategoryPractice.create!(practice: @practice_3, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice_4, category: @cat_2, created_at: Time.now)
+
+    login_as(@admin, :scope => :user, :run_callbacks => false)
   end
 
   after do
@@ -205,6 +208,8 @@ describe 'VISN pages', type: :feature do
     end
 
     it 'should display a brief breakdown of the visn\'s metadata' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
+      page.set_rack_session(:user_type => 'ntlm')
       visit '/visns/2'
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
       expect(page).to have_content('Collectively, its facilities have created 7 innovations and have adopted 3 innovations.')
@@ -269,6 +274,31 @@ describe 'VISN pages', type: :feature do
     end
 
     describe 'visn search section' do
+      def check_search_results_as_guest_user(container_selector, link_selector_position, practice_name, input_selector_1, input_selector_2)
+        # Check the results for a VA-only practice as a guest user
+        logout
+        visit visit '/visns/2'
+        expect(page).to_not have_selector(container_selector)
+
+        # login as an admin and set the 'is_public' flag for the same practice to true
+        login_as(@admin, :scope => :user, :run_callbacks => false)
+        visit '/admin/practices'
+        all('.toggle-practice-privacy-link')[link_selector_position].click
+        expect(page).to have_content("\"#{practice_name}\" is now a public-facing innovation")
+
+        # logout and check the results again as a guest user
+        logout
+        visit '/visns/2'
+
+        within(:css, container_selector) do
+          expect(page.find(input_selector_1)).to be_checked
+          expect(page.find(input_selector_2)).to_not be_checked
+          expect(page).to have_content('1 result')
+          expect(page).to have_content("#{practice_name}")
+          expect(page).to_not have_content('There are currently no matches for your search on the Marketplace.')
+        end
+      end
+
       it 'should allow users to search for innovations that were created or adopted within a given visn' do
         visit '/visns/2'
 
@@ -307,6 +337,15 @@ describe 'VISN pages', type: :feature do
 
         expect(practice_cards.count).to eq(2)
       end
+
+      it 'should only display search results for public-facing practices created in a given VISN if the user is a guest' do
+        check_search_results_as_guest_user('#visns-show-search', 5, 'A Very Cool Practice!', '.visn-created-practices-radio', '.visn-adopted-practices-radio')
+      end
+
+      it 'should only display search results for public-facing practices adopted in a given VISN if the user is a guest' do
+        Practice.second.update_attributes(initiating_facility: 1)
+        check_search_results_as_guest_user('#visns-show-search', 6, 'An Awesome Practice!', '.visn-adopted-practices-radio', '.visn-created-practices-radio')
+      end
     end
 
     describe 'facilities table' do
@@ -326,6 +365,7 @@ describe 'VISN pages', type: :feature do
       it 'should take the user to the show page of the facility they click on within the facilities table' do
         visit '/visns/2'
         click_link('Fourth Test Name (Fourth Common Name)')
+        expect(page).to have_content('This facility has created 0 innovations and has adopted 1 innovation.')
         expect(page).to have_selector('#va_facility_map', visible: true)
         expect(page).to have_current_path('/facilities/fourth-common-name')
       end

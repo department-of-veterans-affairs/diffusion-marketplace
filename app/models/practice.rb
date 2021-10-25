@@ -30,7 +30,7 @@ class Practice < ApplicationRecord
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
-    cache_keys = ["searchable_practices", "searchable_practices_a_to_z", "searchable_practices_adoptions", "searchable_practices_added", "searchable_practices_json"]
+    cache_keys = ["searchable_practices", "searchable_practices_a_to_z", "searchable_practices_adoptions", "searchable_practices_added", "searchable_practices_json", "searchable_public_practices_json"]
     cache_keys.each do |cache_key|
       Rails.cache.delete(cache_key)
     end
@@ -52,7 +52,8 @@ class Practice < ApplicationRecord
         self.overview_results_changed?  ||
         self.retired_changed? ||
         self.retired_reason_changed? ||
-        self.hidden_changed?
+        self.hidden_changed? ||
+        self.is_public_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -79,6 +80,11 @@ class Practice < ApplicationRecord
         Practice.sort_by_retired.get_with_categories_and_adoptions_ct
       end
     end
+  end
+
+  def self.searchable_public_practices(sort = 'a_to_z')
+    practices = self.searchable_practices(sort)
+    practices.select { |pr| pr.is_public }
   end
 
   def has_facility?
@@ -209,13 +215,13 @@ class Practice < ApplicationRecord
   scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
-  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true, hidden: false) }
+  scope :published_enabled_approved, -> { where(published: true, enabled: true, approved: true, hidden: false) }
   scope :sort_by_retired, -> { order("retired asc") }
   scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
   scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
+  scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
   scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
-
 
   belongs_to :user, optional: true
 
@@ -365,8 +371,13 @@ class Practice < ApplicationRecord
     PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
   end
 
-  def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil)
+  def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
     query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
+
+    if is_user_guest
+      query = query.public_facing
+    end
+
     if search_term
       search = get_query_for_search_term(search_term)
       query = query.where(search[:query], search[:params])
@@ -387,15 +398,14 @@ class Practice < ApplicationRecord
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
-  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil)
-    practices = search_practices(search_term, sort, categories)
-
-    practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id)}
+  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
+    practices = search_practices(search_term, sort, categories, is_user_guest)
+    practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id) }
   end
 
-  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil)
-    practices = search_practices(search_term, 'a_to_z', categories)
-    practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id)}
+  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil, is_user_guest = true)
+    practices = search_practices(search_term, 'a_to_z', categories, is_user_guest)
+    practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id) }
   end
 
   def self.get_query_for_search_term(search_term)

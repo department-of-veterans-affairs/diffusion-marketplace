@@ -2,6 +2,10 @@ require 'rails_helper'
 require 'rake'
 
 describe 'Search', type: :feature do
+  def user_login
+    login_as(@user, :scope => :user, :run_callbacks => false)
+  end
+
   before do
     visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
     visn_2 = Visn.create!(id: 2, name: "New York/New Jersey VA Health Care Network", number: 2)
@@ -62,7 +66,7 @@ describe 'Search', type: :feature do
     PracticeOriginFacility.create!(practice: @practice12, facility_type: 0, va_facility: facility_12)
     @practice13 = Practice.create!(name: 'The Champion of Practices', initiating_facility_type: 'facility', tagline: 'Test tagline 13', date_initiated: 'Sun, 17 Nov 1991 00:00:00 UTC +00:00', summary: 'This is the twelfth best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice13, facility_type: 0, va_facility: facility_2)
-    @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true, user: @user2)
+    @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true, user: @user2, is_public: true)
     PracticeOriginFacility.create!(practice: @practice14, facility_type: 0, va_facility: facility_3)
 
     parent_cat_1 = Category.create!(name: 'Strategic')
@@ -98,10 +102,7 @@ describe 'Search', type: :feature do
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
     dh_7 = DiffusionHistory.create!(practice_id: @practice10.id, va_facility: facility_5)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_7.id, status: 'Completed')
-  end
-
-  def user_login
-    login_as(@user, :scope => :user, :run_callbacks => false)
+    user_login
   end
 
   def visit_search_page
@@ -186,6 +187,7 @@ describe 'Search', type: :feature do
       find('#dm-navbar-search-button').click
       expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
     end
+
     it 'should display certain text if no matches are found' do
       visit_search_page
       toggle_filters_accordion
@@ -198,7 +200,6 @@ describe 'Search', type: :feature do
     end
 
     it 'should only show approved and published practices' do
-      user_login
       visit_search_page
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
@@ -294,6 +295,39 @@ describe 'Search', type: :feature do
       find('#dm-practice-search-button').click
       expect(page).to have_content('1 result')
       expect(page).to have_content(@practice5.name)
+    end
+
+    it 'should only display search results for practices that are public-facing if the user is a guest' do
+      # Try to search for an internal, VA-only practice as a guest user
+      logout
+      visit_search_page
+
+      fill_in('dm-practice-search-field', with: 'important')
+      search
+      expect(page).to have_content('1 result')
+      expect(page).to have_content('The Most Important Practice')
+
+      fill_in('dm-practice-search-field', with: 'Rule')
+      search
+      expect(page).to_not have_content('results')
+      expect(page).to_not have_content('One Practice to Rule Them All')
+      expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
+
+      # login as an admin and set the 'is_public' flag for the same practice to true
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      visit '/admin/practices'
+      all('.toggle-practice-privacy-link')[8].click
+      expect(page).to have_content("\"One Practice to Rule Them All\" is now a public-facing innovation")
+
+      # logout and search for the practice again as a guest user
+      logout
+      visit_search_page
+
+      fill_in('dm-practice-search-field', with: 'Rule')
+      search
+      expect(page).to have_content('1 result')
+      expect(page).to have_content('One Practice to Rule Them All')
+      expect(page).to_not have_content('There are currently no matches for your search on the Marketplace.')
     end
 
     describe 'filters' do
