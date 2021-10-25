@@ -1,0 +1,32 @@
+function paginatedPracticeListPageComponent() {
+  var type = "<%= @pagy_type %>";
+  var practicesClass = ".dm-paginated-" + type + "-practices";
+
+  <% data_set = @practice_list_components[@pagy_type.to_i][:practices] %>
+  <% pagy = @practice_list_components[@pagy_type.to_i][:pagy] %>
+
+  <% current_page = pagy.page %>
+  <% next_page = pagy.next %>
+
+  // Append the next set of practice cards to the current set
+  $(practicesClass).append("<%= escape_javascript render(partial: 'page/practice_list_container', locals: {
+    practices: data_set,
+    component_index: @pagy_type})
+  %>")
+
+  // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
+  var currentPageClass = ".dm-paginated-" + type + "-link";
+  var loadMoreBtnContainer = ".dm-load-more-practices-" + type + "-btn-container";
+
+  <% if next_page.present? %>
+    $(currentPageClass).remove();
+
+    <% link = pagy_link_proc(pagy) %>
+    $(loadMoreBtnContainer).append(`<%= link.call(next_page, 'Load more').html_safe %>`);
+  <% else %>
+    // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
+    $(currentPageClass).remove();
+  <% end %>
+}
+
+$(paginatedPracticeListPageComponent)
