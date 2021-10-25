@@ -5,6 +5,7 @@ describe 'About us page', type: :feature do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     Practice.create!(name: 'Project HAPPEN', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'contact-happen@happen.com', user: @user, maturity_level: 0)
     Practice.create!(name: 'Best Practice Ever', approved: true, published: true, tagline: "The best tagline ever", support_network_email: 'the-best@best.com', user: @user, maturity_level: 0)
+    login_as(@user, :scope => :user, :run_callbacks => false)
     visit '/about'
   end
 

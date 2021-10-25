@@ -34,16 +34,16 @@
   <% end %>
 
   <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
-
-    <%=
-      form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: "#{comment.parent.nil? && new_record ? 'Type your comment here...' : 'Type your reply here...' }",
-        class: comment.parent.nil? && new_record ? 'usa-textarea comment-textarea line-height-26' : 'usa-textarea reply-textarea line-height-26', id: new_record ?
-        comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
-                              "commontator-comment-#{comment.parent.id}-reply" :
-        "commontator-comment-#{comment.id}-edit-body"
-    %>
-    <%= javascript_tag('Commontator.initMentions();') if config.mentions_enabled %>
-  </div>
+    <% if (current_user.present? && ENV['VAEC_ENV'].nil?) || session[:user_type] === 'ntlm' %>
+        <%=
+          form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: "#{comment.parent.nil? && new_record ? 'Type your comment here...' : 'Type your reply here...' }",
+            class: comment.parent.nil? && new_record ? 'usa-textarea comment-textarea line-height-26' : 'usa-textarea reply-textarea line-height-26', id: new_record ?
+            comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
+                                  "commontator-comment-#{comment.parent.id}-reply" :
+            "commontator-comment-#{comment.id}-edit-body"
+        %>
+        <%= javascript_tag('Commontator.initMentions();') if config.mentions_enabled %>
+      </div>
 
   <div class="submit">
     <div class="text-left usa-fieldset" role="radiogroup">
@@ -89,27 +89,28 @@
           <%= label_tag 'user_practice_status_practice_other', 'Other', class: 'usa-radio__label other-label', for: "practice-other-#{comment.parent_id}" %>
         </div>
       <% end %>
-    </div>
-    <div class="text-left margin-top-2">
-      <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
-        <%=
-          form.submit(
-            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'comment-cancel usa-button usa-button--outline',
-              id: "commontator-thread-#{@commontator_thread.id}-new-comment-submit"
-          )
-        %>
-      <% else %>
-        <%=
-          form.submit(
-            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'usa-button usa-button--outline comment-cancel'
+        </div>
+        <div class="text-left margin-top-2">
+          <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
+            <%=
+              form.submit(
+                t('commontator.comment.actions.cancel'), name: 'cancel', class: 'comment-cancel usa-button usa-button--outline',
+                  id: "commontator-thread-#{@commontator_thread.id}-new-comment-submit"
+              )
+            %>
+          <% else %>
+            <%=
+              form.submit(
+                t('commontator.comment.actions.cancel'), name: 'cancel', class: 'usa-button usa-button--outline comment-cancel'
           )
         %>
       <% end %>
         <% if comment.parent %>
           <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), name: 'reply', class: 'margin-right-0 usa-button usa-button--primary', id: "#{comment.parent && new_record ? 'submit-reply' : 'submit-reply-edit'}" %>
-        <% else %>
-          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "margin-right-0 usa-button usa-button--primary", id: "#{new_record ? 'submit-comment' : 'submit-comment-edit'}", value: 'Post' %>
-        <% end %>
+            <% else %>
+              <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "margin-right-0 usa-button usa-button--primary", id: "#{new_record ? 'submit-comment' : 'submit-comment-edit'}", value: 'Post' %>
+            <% end %>
+      <% end %>
     </div>
   </div>
 <% end %>

@@ -95,32 +95,32 @@ Rails.application.configure do
   region = ENV.fetch('AWS_REGION')
 
   config.paperclip_defaults = {
-      storage: :s3,
-      s3_region: region,
-      s3_host_name: "s3-#{region}.amazonaws.com",
-      s3_credentials: {
-          bucket: ENV.fetch('S3_BUCKET_NAME'),
-      },
-      s3_protocol: 'https',
-      s3_permissions: 'private'
+    storage: :s3,
+    s3_region: region,
+    s3_host_name: "s3-#{region}.amazonaws.com",
+    s3_credentials: {
+      bucket: ENV.fetch('S3_BUCKET_NAME'),
+    },
+    s3_protocol: 'https',
+    s3_permissions: 'private'
   }
 
   mail_settings = {}
 
-  if ENV['USE_NTLM'] == 'true'
+  if ENV['VAEC_ENV'] == 'true'
     mail_settings = {
-        address: 'smtp.va.gov',
-        port: 25,
-        enable_starttls_auto: true
+      address: 'smtp.va.gov',
+      port: 25,
+      enable_starttls_auto: true
     }
   else
     mail_settings = {
-        address: ENV['SES_SMTP_ADDRESS'],
-        port: 587,
-        user_name: ENV.fetch('SES_SMTP_USERNAME'),
-        password: ENV.fetch('SES_SMTP_PASSWORD'),
-        authentication: :login,
-        enable_starttls_auto: true
+      address: ENV['SES_SMTP_ADDRESS'],
+      port: 587,
+      user_name: ENV.fetch('SES_SMTP_USERNAME'),
+      password: ENV.fetch('SES_SMTP_PASSWORD'),
+      authentication: :login,
+      enable_starttls_auto: true
     }
   end
 

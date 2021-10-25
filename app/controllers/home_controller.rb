@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 
 
   def index
-    @practices = Practice.searchable_practices 'a_to_z'
+    @practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices('a_to_z') : Practice.searchable_practices('a_to_z')
     @favorite_practices = current_user&.favorite_practices || []
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
     @popular_categories = get_most_popular_categories
@@ -12,9 +12,14 @@ class HomeController < ApplicationController
   end
 
   def diffusion_map
-    @diffusion_history_practices = Practice.select(:id, :name).get_with_diffusion_histories
+    @diffusion_history_practices = helpers.is_user_a_guest? ? Practice.public_facing.select(:id, :name).get_with_diffusion_histories : Practice.select(:id, :name).get_with_diffusion_histories
     @visns = Visn.cached_visns.select(:id, :number)
-    @diffusion_histories = DiffusionHistory.get_with_practices.order(Arel.sql("lower(practices.name)"))
+
+    def get_diffusion_histories(is_public_practice)
+      DiffusionHistory.get_with_practices(is_public_practice).order(Arel.sql("lower(practices.name)"))
+    end
+
+    @diffusion_histories = helpers.is_user_a_guest? ? get_diffusion_histories(true) : get_diffusion_histories(false)
     @successful_ct = @diffusion_histories.get_by_successful_status.size
     @in_progress_ct = @diffusion_histories.get_by_in_progress_status.size
     @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
