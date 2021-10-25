@@ -150,9 +150,9 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices nil
+    @practices = Practice.searchable_practices(nil)
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
-    @practices_json = practices_json(@practices)
+    @practices_json = cached_json_practices
     @diffusion_histories = []
     @practices.each do |p|
       p.diffusion_histories.each do |dh|
@@ -664,6 +664,12 @@ class PracticesController < ApplicationController
 
   def set_visn_data
     @visn_data = Visn.cached_visns.get_by_initiating_facility(@practice.initiating_facility.to_i) if @practice.visn?
+  end
+
+  def cached_json_practices
+    Rails.cache.fetch('searchable_practices_json') do
+      practices_json(Practice.sort_by_retired.get_with_categories_and_adoptions_ct)
+    end
   end
 
   def set_initiating_facility_other
