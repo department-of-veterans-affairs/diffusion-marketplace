@@ -30,7 +30,7 @@ class Practice < ApplicationRecord
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
-    cache_keys = ["searchable_practices", "searchable_practices_a_to_z", "searchable_practices_adoptions", "searchable_practices_added"]
+    cache_keys = ["searchable_practices", "searchable_practices_a_to_z", "searchable_practices_adoptions", "searchable_practices_added", "searchable_practices_json", "searchable_public_practices_json"]
     cache_keys.each do |cache_key|
       Rails.cache.delete(cache_key)
     end
