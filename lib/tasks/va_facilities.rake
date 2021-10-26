@@ -165,7 +165,7 @@ namespace :va_facilities do
         facility.save
       end
     end
-    puts "All VA facilities have been updated in the DB!"
+    puts "VA complexity levels have been updated in the DB!"
   end
 
 
