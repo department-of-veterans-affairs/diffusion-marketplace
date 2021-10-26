@@ -1,5 +1,5 @@
 <div id="visn-<%= visn.number %>-marker-modal" class="font-sans-sm padding-2">
-  <%= link_to "VISN #{visn.number}", visn_path(visn), 'aria-label': "Go to VISN #{visn.number}", id: "visn-#{visn.number}-modal-link", class: 'visn-modal-link line-height-26 text-bold usa-link', 'target': '_blank' %>
+  <%= link_to "VISN #{visn.number}", visn_path(visn), 'aria-label': "Go to VISN #{visn.number}", id: "visn-#{visn.number}-modal-link", class: 'visn-modal-link line-height-26 text-bold usa-link' %>
   <div class="margin-top-2">
     <%= render partial: 'visn_metadata_list', locals: { visn: visn, grid: false } %>
   </div>
