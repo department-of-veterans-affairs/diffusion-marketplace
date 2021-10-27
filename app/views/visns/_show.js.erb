@@ -257,6 +257,7 @@ function searchPracticesByVisn() {
 
         // Add a search query to the URL when necessary
         var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
+        // search query
         var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
 
         // due to turbolinks reloading the page after clicking on a link, only add a history if the previous URL does not match the next URL
@@ -334,6 +335,7 @@ function searchPracticesByVisn() {
     });
 
     var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
+    // search query
     var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
 
     if (window.location.pathname.includes('visns') && window.location.search !== '' && splitUrl !== urlQuery) {
@@ -455,6 +457,7 @@ document.addEventListener('turbolinks:load', function() {
     execVisnSearchFunctions();
     const searchField = document.querySelector('#visn-search-field');
     var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
+    // search query
     var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
 
     // prevent the form from being submitted multiple times
