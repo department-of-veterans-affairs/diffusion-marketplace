@@ -171,6 +171,7 @@ This will run:
 13. `rails practice_multimedia:transfer_practice_impact_photos` - moves practice impact photos to practice multimedia
 14. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
 15. `rails practice_editors:add_practice_owners_to_practice_editors` - Adds each practice owner to the practice editors list of their corresponding practice
+16.  'rails va_facilities:fix-data-va-facilities' - updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complextity_level')
 
 To reset all of the data and do the process all over again, run:
 ```bash
