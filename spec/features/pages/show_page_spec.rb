@@ -7,12 +7,19 @@ describe 'Page Builder - Show', type: :feature do
     user.add_role(:admin)
     @practices = [
       Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: user),
-      Practice.create!(name: 'A cool practice', approved: true, published: true, tagline: 'Test tagline', user: user)
+      Practice.create!(name: 'A cool practice', approved: true, published: true, tagline: 'Test tagline', user: user),
+      Practice.create!(name: 'An awesome practice', approved: true, published: true, tagline: 'Test tagline', user: user),
+      Practice.create!(name: 'An amazing practice', approved: true, published: true, tagline: 'Test tagline', user: user),
+      Practice.create!(name: 'A beautiful practice', approved: true, published: true, tagline: 'Test tagline', user: user),
+      Practice.create!(name: 'A superb practice', approved: true, published: true, tagline: 'Test tagline', user: user),
+      Practice.create!(name: 'The last practice', approved: true, published: true, tagline: 'Test tagline', user: user)
     ]
+
     page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
     page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     Page.create(page_group: page_group, title: 'javascript', description: 'cool stuff', slug: 'javascript', created_at: Time.now, published: Time.now)
-    practice_list_component = PagePracticeListComponent.create(practices: [@practices[0][:id].to_s, @practices[1][:id].to_s,])
+    pr_ids = @practices.map { |pr| pr[:id].to_s }
+    practice_list_component = PagePracticeListComponent.create(practices: pr_ids)
     subpage_hyperlink_component = PageSubpageHyperlinkComponent.create(url: '/programming/javascript', title: 'Check out JavaScript', description: 'It is pretty cool too')
     image_path = File.join(Rails.root, '/spec/assets/charmander.png')
     image_file = File.new(image_path)
@@ -44,7 +51,15 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display the practices' do
     expect(page).to have_content('A public practice')
     expect(page).to have_content('A cool practice')
+    expect(page).to have_content('An awesome practice')
+    expect(page).to have_content('An amazing practice')
+    expect(page).to have_content('A beautiful practice')
+    expect(page).to have_content('A superb practice')
+    expect(page).to have_no_content('The last practice')
     expect(page).to have_css('.dm-practice-link')
+    expect(page).to have_content('Load more')
+    find('.dm-paginated-0-link').click
+    expect(page).to have_content('The last practice')
   end
 
   it 'Should display the subpage hyperlink' do
