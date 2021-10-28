@@ -44,14 +44,11 @@ function containerizeSubpageHyperlinkCards() {
     // Add bottom margin styles
     $("." + cardContainerClass).each(function() {
         var $this = $(this);
-        var children = $this.children()
 
         if ($('.dm-page-content').children().last().is($this)) {
-            children.addClass('margin-bottom-3');
-        } else if ($this.next().hasClass(cardContainerClass)) {
-            children.addClass('margin-bottom-3');
+            $this.addClass('margin-bottom-neg-3');
         } else if (!$this.next().hasClass(cardContainerClass)) {
-            $this.addClass('margin-bottom-5');
+            $this.addClass('margin-bottom-2');
         }
     });
 }
