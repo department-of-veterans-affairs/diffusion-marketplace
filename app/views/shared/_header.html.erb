@@ -58,8 +58,12 @@
         <li class="usa-nav__primary-item border-0">
           <%= render 'shared/navbar_search' %>
         </li>
+        <%
+          user_type = session[:user_type]
+          vaec_environment = ENV['VAEC_ENV']
+        %>
         <% if user_signed_in? %>
-          <% if ENV['USE_NTLM'] == 'true' %>
+          <% if vaec_environment === 'true' && user_type === 'ntlm' %>
             <li class="usa-nav__primary-item border-0">
               <a class="margin-y-2px desktop-lg:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
                 <span class="text-normal desktop-lg:text-semibold">Your profile</span>
@@ -85,9 +89,11 @@
             </li>
           <% end %>
         <% else %>
-          <li class="usa-nav__primary-item border-0">
-            <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link margin-y-2px desktop-lg:margin-y-0' %>
-          </li>
+          <% unless vaec_environment === 'true' %>
+            <li class="usa-nav__primary-item border-0">
+              <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link margin-y-2px desktop-lg:margin-y-0' %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </nav>

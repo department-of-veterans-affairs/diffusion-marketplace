@@ -17,6 +17,7 @@ var ADOPTED_COMBO_BOX = '#visn-search-adopted-categories';
 var is_combo_box_submitted = false;
 var is_page_load = 0;
 var is_radio_submit = false;
+var visnShowUrl = '/visns/' + visn["number"];
 
 // add a data attribute to the fieldset in order to trigger an ahoy tracking event only when the search field has been updated/populated
 function setFieldsetAttr(boolean) {
@@ -183,7 +184,7 @@ function searchPracticesByVisn() {
         results.forEach(function (result) {
             // add condition to prevent highlighting when only the radio inputs are used
             if (result.item.matches) {
-              highlighter(result);
+                highlighter(result);
             }
         });
         // Highlight search results where exact keyword matches
@@ -255,11 +256,12 @@ function searchPracticesByVisn() {
         hideResultsSectionElAndShowSpinner();
 
         // Add a search query to the URL when necessary
-        var url = window.location.href;
-        var visnShowUrl = '/visns/' + visn["number"];
+        var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
+        // search query
         var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
-        // due to turbolinks reloading the page after clicking on a link, don't add a history if the URL contains 'facilities' or 'practices'
-        if (url.split('/').slice(-2).join('') !== urlQuery && !url.includes('facilities') && !url.includes('practices')) {
+
+        // due to turbolinks reloading the page after clicking on a link, only add a history if the previous URL does not match the next URL
+        if (splitUrl !== urlQuery) {
             window.history.pushState({ turbolinks: {} }, "", urlQuery);
         }
 
@@ -332,7 +334,11 @@ function searchPracticesByVisn() {
         }
     });
 
-    if (window.location.pathname.includes('visns') && window.location.search !== '') {
+    var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
+    // search query
+    var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
+
+    if (window.location.pathname.includes('visns') && window.location.search !== '' && splitUrl !== urlQuery) {
         hideResultsSectionElAndShowSpinner();
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
@@ -403,9 +409,9 @@ function submitFormOnRadioInputClick() {
 
         // when a different radio input is selected, clear the combo box associated with the previously selected input
         if ($(RADIO_OPTIONS).val() === 'created') {
-        $(comboBoxCloseButton).last().click();
+          $(comboBoxCloseButton).last().click();
         } else {
-        $(comboBoxCloseButton).first().click();
+          $(comboBoxCloseButton).first().click();
         }
 
         setFieldsetAttr('false');
@@ -437,7 +443,10 @@ function preventComplexityModalFlickerOnPageLoad() {
 }
 
 function execVisnSearchFunctions() {
-    searchPracticesByVisn();
+    // only execute the search function if the user is on the VISN show page
+    if (location.pathname === visnShowUrl) {
+        searchPracticesByVisn();
+    }
     submitFormOnComboBoxChange(CREATED_COMBO_BOX);
     submitFormOnComboBoxChange(ADOPTED_COMBO_BOX);
     submitFormOnRadioInputClick();
@@ -446,5 +455,13 @@ function execVisnSearchFunctions() {
 
 document.addEventListener('turbolinks:load', function() {
     execVisnSearchFunctions();
-    submitFormOnPageLoadWithCreatedPracticesAsDefault();
+    const searchField = document.querySelector('#visn-search-field');
+    var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
+    // search query
+    var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
+
+    // prevent the form from being submitted multiple times
+    if (location.pathname === visnShowUrl && splitUrl === urlQuery) {
+        submitFormOnPageLoadWithCreatedPracticesAsDefault();
+    }
 });

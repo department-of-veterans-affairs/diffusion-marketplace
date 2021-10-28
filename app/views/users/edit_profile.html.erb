@@ -99,39 +99,40 @@
               </div>
             </div>
 
+              <% user_type = session[:user_type] %>
               <div class="usa-form edit-profile-form">
                 <div class="grid-row width-full">
                   <div class="field grid-col-9">
                     <%= f.label :first_name, class: 'margin-top-2 margin-bottom-2' %><br/>
-                    <%= f.text_field :first_name, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :first_name, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: user_type === 'ntlm' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :last_name, class: 'margin-0 margin-top-2' %><br/>
-                    <%= f.text_field :last_name, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :last_name, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: user_type === 'ntlm' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :location, 'Facility', class: 'margin-0 margin-top-2' %><br/>
-                    <%= f.text_field :location, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :location, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: user_type === 'ntlm' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :phone_number, 'Work phone number', class: 'margin-0 margin-top-2' %><br/>
-                    <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: user_type === 'ntlm' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :job_title, class: 'margin-0 margin-top-2' %><br/>
-                    <%= f.text_field :job_title, class: 'usa-input usa-input__disabled bg-base-lightest border-base-light text-base disabled', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :job_title, class: 'usa-input usa-input__disabled bg-base-lightest border-base-light text-base disabled', disabled: user_type === 'ntlm' %>
                   </div>
                 </div>
               </div>

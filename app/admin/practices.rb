@@ -40,7 +40,9 @@ ActiveAdmin.register Practice do
     column 'Practice Name', :name
     column :support_network_email unless params[:scope] == "get_practice_owner_emails"
     column(:owner_email) {|practice| practice.user&.email}
+    column 'Public', :is_public
     column :created_at unless params[:scope] == "get_practice_owner_emails"
+    column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
     column :date_published unless params[:scope] == "get_practice_owner_emails"
     column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :hidden unless params[:scope] == "get_practice_owner_emails"
@@ -50,12 +52,14 @@ ActiveAdmin.register Practice do
     actions do |practice|
       practice_enabled_action_str = practice.enabled ? "Disable" : "Enable"
       item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
-      practice_highlight_action_str = practice.highlight ? "Unfeature" : "Feature"
-      item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
       practice_hidden_action_str = practice.hidden ? "Show" : "Hide"
       item practice_hidden_action_str, hide_practice_admin_practice_path(practice), method: :post
       practice_retired_action_str = practice.retired ? "Activate" : "Retire"
       item practice_retired_action_str, retire_practice_admin_practice_path(practice), method: :post
+      practice_highlight_action_str = practice.highlight ? "Unfeature" : "Feature"
+      item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
+      practice_highlight_action_str = practice.is_public ? "Make Private" : "Make Public"
+      item practice_highlight_action_str, set_practice_privacy_admin_practice_path(practice), class: 'toggle-practice-privacy-link', method: :post
     end
   end
 
@@ -72,12 +76,7 @@ ActiveAdmin.register Practice do
 
   member_action :enable_practice, method: :post do
     resource.enabled = !resource.enabled
-    message = "\"#{resource.name}\" Practice enabled"
-    unless resource.enabled
-      message = "\"#{resource.name}\" Practice disabled"
-    end
-    resource.save
-    redirect_back fallback_location: root_path, notice: message
+    update_boolean_attr(resource.enabled, 'Practice enabled', 'Practice disabled')
   end
 
   member_action :highlight_practice, method: :post do
@@ -111,6 +110,11 @@ ActiveAdmin.register Practice do
     end
     resource.save
     redirect_back fallback_location: root_path, notice: message
+  end
+
+  member_action :set_practice_privacy, method: :post do
+    resource.is_public = !resource.is_public
+    update_boolean_attr(resource.is_public, 'is now a public-facing innovation', 'is now a VAEC internal-facing innovation')
   end
 
   member_action :export_practice_adoptions, method: :get do
@@ -217,6 +221,7 @@ ActiveAdmin.register Practice do
       row :published
       row :approved
       row :enabled
+      row('Public') { |p| status_tag p.is_public? }
       row('Featured') { |practice| status_tag practice.highlight? }
       if practice.highlight
         row('Featured Body') { |practice| p practice.highlight_body } if practice.highlight_body
@@ -405,6 +410,17 @@ ActiveAdmin.register Practice do
         practice.update_attributes(highlight_body: params[:practice][:highlight_body])
         practice.update_attributes(highlight_attachment: params[:practice][:highlight_attachment]) if practice_highlight_attachment_params.present?
       end
+    end
+
+    def update_boolean_attr(attr, message_1, message_2)
+      message = "\"#{resource.name}\" #{message_1}"
+
+      unless attr
+        message = "\"#{resource.name}\" #{message_2}"
+      end
+
+      resource.save
+      redirect_back fallback_location: root_path, notice: message
     end
   end
 end

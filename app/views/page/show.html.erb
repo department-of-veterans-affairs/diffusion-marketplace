@@ -1,7 +1,9 @@
 <% provide :head_tags do %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <%= render partial: 'show', formats: [:js] %>
+    var chromeWarning = <%= @page.has_chrome_warning_banner %>;
   <% end %>
+  <%= javascript_include_tag 'ie', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_page_show', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <% page_narrow_classes = 'desktop:grid-col-8 margin-x-auto' if @page.narrow? %>
@@ -17,7 +19,7 @@
       </p>
     </div>
     <div class="dm-page-content">
-      <% @page.page_components.each_with_index do |pc, index| %>
+      <% @page_components.each_with_index do |pc, index| %>
         <%
           component = pc.component_type.constantize.find(pc.component_id)
           last_component = @page.page_components.size - 1
@@ -107,16 +109,22 @@
           <%# Practice List %>
           <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>
         <% when 'PagePracticeListComponent' %>
-          <% practices_ids = component.practices %> <%# array of id strings %>
-          <div class="grid-row grid-gap-3 margin-bottom-2<%= ' margin-bottom-0' if last_component === index %>">
-            <% practices_ids.each do |pr_id| %>
-              <% pr = Practice.find(pr_id.to_i) %>
-              <% if pr.present? %>
-                <%= render partial: 'shared/practice_card', locals: { practice: pr } %>
-              <% end %>
-            <% end %>
-          </div>
-
+          <%
+            component_index = @practice_list_component_index
+            pplc = @practice_list_components[component_index]
+            @practice_list_component_index = component_index + 1
+          %>
+          <% if pplc[:practices].any? %>
+            <div class="margin-bottom-2<%= ' margin-bottom-0' if last_component === index %>">
+              <div class="dm-practice-card-list grid-row grid-gap-3 dm-paginated-<%= component_index %>-practices">
+                <%= render partial: 'page/practice_list_container', locals: { practices: pplc[:practices], component_index: component_index } %>
+              </div>
+              <div class="text-center dm-load-more-practices-<%= component_index %>-btn-container" >
+                <% link = pagy_link_proc(pplc[:pagy]) %>
+                <%=  link.call(pplc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+              </div>
+            </div>
+          <% end %>
           <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
             <% if component.card? %>

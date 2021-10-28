@@ -5,24 +5,23 @@
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
       <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">Contact</h2>
       <!--Comments-->
-      <% if current_user.present? %>
-        <div class="desktop:grid-col-11 comments-section practice-section">
-          <div>
-            <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
-            <h2 id="comments" class="font-sans-lg text-bold margin-top-2 margin-bottom-3">Comment</h2>
-          </div>
-          <% if @practice.retired %>
-            <div class="usa-alert usa-alert--info margin-bottom-3">
-              <div class="usa-alert__body">
-                <p class="usa-alert__text">Comments and replies are disabled for retired practices.</p>
-              </div>
-            </div>
-          <% end %>
-          <div>
-            <%= commontator_thread(@practice) %>
-          </div>
+      <div class="desktop:grid-col-11 comments-section practice-section">
+        <div>
+          <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
+          <h2 id="comments" class="font-sans-lg text-bold margin-top-2 margin-bottom-3">Comment</h2>
         </div>
-      <% end %>
+
+        <% if @practice.retired || is_user_a_guest? %>
+          <div class="usa-alert usa-alert--info margin-bottom-3">
+            <div class="usa-alert__body">
+              <p class="usa-alert__text">Comments and replies are disabled for retired innovations and non-VA users.</p>
+            </div>
+          </div>
+        <% end %>
+        <div>
+          <%= commontator_thread(@practice) %>
+        </div>
+      </div>
 
       <!--Email-->
       <%

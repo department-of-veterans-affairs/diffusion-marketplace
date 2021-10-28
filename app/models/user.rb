@@ -11,7 +11,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :password_expirable, :password_archivable, :trackable, :timeoutable
 
-  devise :confirmable unless ENV['USE_NTLM'] == 'true'
+  devise :confirmable unless ENV['VAEC_ENV'] == 'true'
 
   rolify before_add: :remove_all_roles
 

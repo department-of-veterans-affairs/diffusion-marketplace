@@ -969,6 +969,7 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
     t.boolean "hidden", default: false, null: false
+    t.boolean "is_public", default: false
     t.string "highlight_attachment_file_name"
     t.string "highlight_attachment_content_type"
     t.integer "highlight_attachment_file_size"

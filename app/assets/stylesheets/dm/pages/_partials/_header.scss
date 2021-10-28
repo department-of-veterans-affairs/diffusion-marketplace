@@ -30,6 +30,10 @@
       @include u-text('primary-vivid', !important);
       @include u-bg('transparent', !important);
     }
+
+    #dm-navbar-search-form {
+      @include u-margin-x(0, !important);
+    }
   }
 
   @media all and (min-width: 75rem) {

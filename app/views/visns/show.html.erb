@@ -13,7 +13,9 @@
 <div id="visns-show" class="grid-container" data-reload="true">
   <%= render partial: "shared/messages", locals: { small_text: false } %>
   <section id="visn-introduction" class="margin-bottom-3 margin-top-8">
-    <h1 class="font-sans-2xl line-height-46px margin-top-0">VISN <%= @visn.number %>: <%= @visn.name %></h1>
+    <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">VISN</h1>
+      <span class="text-top display-inline-block"> <%= render partial: "visns/visns_tooltip", locals: { data_position: 'top'} %></span>
+    <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block"><%= @visn.number %>: <%= @visn.name %></h1>
     <div class="grid-row grid-gap-3">
       <div class="<%= @primary_visn_liaison.present? ? 'grid-col-6' : 'grid-col-12' %> line-height-26">
         <p class="margin-bottom-3">
@@ -30,7 +32,8 @@
         </p>
         <%= link_to 'Jump to list of VA facilities', va_facilities_path, class: 'usa-link' %>
       </div>
-      <% if @primary_visn_liaison.present? %>
+      <% user_type = session[:user_type] %>
+      <% if @primary_visn_liaison.present? && ((ENV['VAEC_ENV'].nil? && user_type === 'guest') || user_type === 'ntlm') %>
         <div class="grid-col-6">
           <div class="visn-liaison-info padding-3 line-height-26 bg-base-lightest">
             <p class="text-bold margin-bottom-2">VISN Marketplace Liaison</p>

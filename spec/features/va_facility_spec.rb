@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'VA facility pages', type: :feature, js: true do
+describe 'VA facility pages', type: :feature do
   before do
     @visn = Visn.create!(name: 'Test VISN', number: 2)
     @visn_3 = Visn.create!(name: 'VISN 3', number: 3)
@@ -48,6 +48,9 @@ describe 'VA facility pages', type: :feature, js: true do
       official_parent_station_name: "Test station",
       fy17_parent_station_complexity_level: "1c-High Complexity",
     )
+
+    @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @admin.add_role(User::USER_ROLES[1].to_sym)
   end
 
   describe 'index page' do
@@ -185,18 +188,52 @@ describe 'VA facility pages', type: :feature, js: true do
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_8.id, status: 'Completed')
       dh_9 = DiffusionHistory.create!(practice_id: @practices[2].id, va_facility: @facility_1)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_9.id, status: 'Completed')
+    end
 
+    def login_and_visit_facility_page
+      login_as(@admin, :scope => :user, :run_callbacks => false)
       visit va_facility_path(@facility_1)
+      expect(page).to have_content('8 results')
+    end
+
+    def check_search_results_as_guest_user(container_selector)
+      # Check the results for a VA-only practice as a guest user
+      visit va_facility_path(@facility_1)
+      expect(page).to_not have_selector(container_selector)
+
+      # login as an admin and set the 'is_public' flag for the same practice to true
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      visit '/admin/practices'
+      all('.toggle-practice-privacy-link')[5].click
+      expect(page).to have_content("\"Gerofit\" is now a public-facing innovation")
+
+      # logout and check the results again as a guest user
+      logout
+      visit va_facility_path(@facility_1)
+
+      within(:css, container_selector) do
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('Gerofit')
+        expect(page).to_not have_content('There are currently no matches for your search on the Marketplace.')
+      end
     end
 
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
+      login_and_visit_facility_page
+      find(:css, '.va_facilities')
       visit '/facilities/a-first-facility-test-common-name'
+      sleep 0.5
       expect(page).to have_selector('.dm-loading-spinner', visible: false)
       expect(page).to have_current_path(va_facility_path(@facility_1))
     end
 
     context 'when searching for adopted innovations' do
+      it 'should only display search results for practices that are public-facing if the user is a guest' do
+        check_search_results_as_guest_user('#dm-facility-adopted-practice-search')
+      end
+
       it 'should display default content' do
+        login_and_visit_facility_page
         within(:css, '#dm-facility-adopted-practice-search') do
           expect(page).to have_content("Innovations adopted at this facility")
           find('#facility_category_select_adoptions').click
@@ -216,6 +253,7 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should filter by categories' do
+        login_and_visit_facility_page
         within(:css, '#dm-facility-adopted-practice-search') do
           find('#facility_category_select_adoptions').click
           find_all('.usa-combo-box__list-option').first.click
@@ -225,6 +263,7 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should allow search for innovation origin facility and adopting facility' do
+        login_and_visit_facility_page
         within(:css, '#dm-facility-adopted-practice-search') do
           fill_in('dm-adopted-practices-search-field', with: ' d test name')
           find('#dm-adopted-practices-search-button').click
@@ -236,7 +275,12 @@ describe 'VA facility pages', type: :feature, js: true do
     end
 
     context 'when searching for created practices' do
+      it 'should only display search results for practices that are public-facing if the user is a guest' do
+        check_search_results_as_guest_user('.dm-facility-created-practice-search')
+      end
+
       it 'should display the correct default content' do
+        login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
           find('#dm-created-practice-categories').click
           within(:css, '#dm-created-practice-categories--list') do
@@ -276,9 +320,9 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should sort the content by most adopted innovations' do
+        login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
           select('Sort by most adopted innovations', from: 'created-practices-sort-option')
-          expect(page).to have_content('8 results')
           expect(page).to have_css('.dm-load-more-created-practices-btn')
           expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')
           expect(find_all('.dm-practice-title')[1]).to have_text('Gerofit')
@@ -298,9 +342,9 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should sort the content by most recently added' do
+        login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
           select('Sort by most recently added', from: 'created-practices-sort-option')
-          expect(page).to have_content('8 results')
           expect(page).to have_css('.dm-load-more-created-practices-btn')
           expect(find_all('.dm-practice-title')[0]).to have_text('Different practice')
           expect(find_all('.dm-practice-title')[1]).to have_text('Telemedicine')
@@ -320,17 +364,19 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should filter by categories and allow for sorting' do
+        login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
           find('#dm-created-practice-categories').click
           find_all('.usa-combo-box__list-option').first.click
+          expect(page).to have_content('3 results')
           expect(page).to have_content('Cards for Memory')
           expect(page).to have_content('BIONE')
           expect(page).to have_content('GERIVETZ')
-          expect(page).to have_content('3 results')
         end
       end
 
       it 'should allow search for innovation info' do
+        login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'Cards')
           find('#dm-created-practice-search-button').click
@@ -364,6 +410,7 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should allow search for innovation origin facility and adopting facility' do
+        login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'd test name')
           find('#dm-created-practice-search-button').click
@@ -380,6 +427,7 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should allow search for categories and related terms' do
+        login_and_visit_facility_page
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'coronavirus')
           find('#dm-created-practice-search-button').click
