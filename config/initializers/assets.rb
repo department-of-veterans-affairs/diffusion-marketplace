@@ -50,6 +50,7 @@ Rails.application.config.assets.precompile += %w(
                                                   _terms_and_conditions.js
                                                   category_usage.js
                                                   _alert_message_utilities.js
+                                                  _page_show.js
                                               )
 
 # Precompile additional assets.
