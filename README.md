@@ -38,7 +38,6 @@
 | `rails risk_and_mitigation:remove_unpaired_risks_and_mitigation` | Removes risks without a corresponding mitigation AND removes mitigations without a corresponding risk.
 | `rails practice_editors:add_practice_owners_to_practice_editors` | Adds each practice owner to the practice editors list of their corresponding practice
 | `rails va_facilities:fix-data-va-facilities` | updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complextity_level')
-
 #### Ruby version
 
 - `ruby 2.6.3`
