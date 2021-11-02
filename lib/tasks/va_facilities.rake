@@ -151,6 +151,24 @@ namespace :va_facilities do
     puts "All VA facilities have been created or updated in the DB!"
   end
 
+
+  desc 'Fix bad data in the va_facilities table'
+  task :fix_data_va_facilities => :environment do
+    facilities = VaFacility.all
+    facilities.each do |facility|
+      if facility.fy17_parent_station_complexity_level === '2 -Medium Complexity'
+        facility.fy17_parent_station_complexity_level = '2-Medium Complexity'
+        facility.save
+      end
+      if facility.fy17_parent_station_complexity_level === '3 -Low Complexity'
+        facility.fy17_parent_station_complexity_level = '3-Low Complexity'
+        facility.save
+      end
+    end
+    puts "VA complexity levels have been updated in the DB!"
+  end
+
+
   def valid_json?(json)
     JSON.parse(json)
     return true

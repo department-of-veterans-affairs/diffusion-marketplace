@@ -13,9 +13,12 @@
 <div id="visns-show" class="grid-container" data-reload="true">
   <%= render partial: "shared/messages", locals: { small_text: false } %>
   <section id="visn-introduction" class="margin-bottom-3 margin-top-8">
-    <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">VISN</h1>
-      <span class="text-top display-inline-block"> <%= render partial: "visns/visns_tooltip", locals: { data_position: 'top'} %></span>
-    <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block"><%= @visn.number %>: <%= @visn.name %></h1>
+    <div class="display-inline-block">
+    <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">VISN
+      <span class="text-top display-inline-block usa-prose-body"> <%= render partial: "visns/visns_tooltip", locals: { data_position: 'top'} %></span>
+     <%= @visn.number %>: <%= @visn.name %>
+    </h1>
+    </div>
     <div class="grid-row grid-gap-3">
       <div class="<%= @primary_visn_liaison.present? ? 'grid-col-6' : 'grid-col-12' %> line-height-26">
         <p class="margin-bottom-3">
