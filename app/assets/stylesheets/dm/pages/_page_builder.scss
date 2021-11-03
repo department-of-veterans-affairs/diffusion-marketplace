@@ -1,0 +1,6 @@
+.page-builder-intro-container {
+  // since the transform style from dm-gradient-banner flips the text along with the gradient colors, we need to flip the text inside of the grid-container to return it to its original state
+  .grid-container {
+    transform: matrix(1, 0, 0, -1, 0, 0);
+  }
+}

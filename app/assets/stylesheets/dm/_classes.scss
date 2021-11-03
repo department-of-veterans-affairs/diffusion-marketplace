@@ -260,7 +260,7 @@ to confirm the class DOES NOT EXIST before adding a new class
 }
 
 #breadcrumbs {
-  a {
+  a:not(.dm-alt-link-white) {
     color: color($theme-link-color) !important;
 
     &:hover {
