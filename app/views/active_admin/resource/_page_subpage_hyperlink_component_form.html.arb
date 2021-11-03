@@ -34,6 +34,17 @@ html = Arbre::Context.new do
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_description",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][description]"
         end
+
+        li class: 'checkbox input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_card_input" do
+          if component
+            input type: 'hidden', value: '0', name: "page[page_components_attributes][#{placeholder}][component_attributes][card]"
+          end
+          label 'Add card styling', for: "page_page_components_attributes_#{placeholder}_component_attributes_card", class: 'label'
+          input value: '1', type: 'checkbox', checked: component&.card?,
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_card",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][card]",
+                class: "toggle-card-styling"
+        end
       end
     end
   end

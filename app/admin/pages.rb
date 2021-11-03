@@ -4,8 +4,12 @@ ActiveAdmin.register Page do
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
   permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible, :template_type, :has_chrome_warning_banner,
-                page_components_attributes: [:id, :component_type, :position, :_destroy,
-                component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, practices: []]]
+                page_components_attributes: [
+                  :id, :component_type, :position, :_destroy, component_attributes: [
+                    :url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment,
+                    :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, :card, practices: []
+                  ]
+                ]
 
   #
   # or
@@ -57,7 +61,7 @@ ActiveAdmin.register Page do
           component = eval("#{pc.component_type}.find('#{pc.component_id}')")
           Arbre::Context.new do
             para do
-              b PageComponent::COMPONENT_SELECTION.key(pc.component_type)
+              b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)} #{'(Card)' if pc.component_type == 'PageSubpageHyperlinkComponent' && component&.card?}"
             end
             para component&.heading_type if pc.component_type == 'PageHeaderComponent'
             para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
