@@ -611,6 +611,7 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "card", default: false
     t.index ["page_component_id"], name: "index_page_subpage_hyperlink_components_on_page_component_id"
   end
 
