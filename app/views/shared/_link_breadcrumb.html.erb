@@ -1,5 +1,6 @@
-<li class="usa-breadcrumb__list-item">
-  <% if params[:controller] === 'page' %>
+<% is_page_builder_page = params[:controller] === 'page' %>
+<li class="usa-breadcrumb__list-item<%= ' page-builder-breadcrumb' if is_page_builder_page %>">
+  <% if is_page_builder_page %>
     <i class='fas fa-arrow-left margin-right-05'></i>
   <% end %>
   <%= link_to(breadcrumb['display'] || breadcrumb[:display], breadcrumb['path'] || breadcrumb[:path], class: 'usa-breadcrumb__link') %>
