@@ -1,0 +1,32 @@
+.usa-alert {
+  .close-alert-message {
+    top: 20px;
+  }
+
+  &.dm-alert-message {
+    @media screen and (max-width: 639px) {
+      &:before {
+        -webkit-mask-position: center 14px !important;
+        mask-position: center 14px !important;
+      }
+    }
+
+    .close-alert-message {
+      @media screen and (max-width: 639px) {
+        top: 24px;
+      }
+    }
+  }
+
+  &.dm-publication-validation--alert {
+    padding-top: 1.25rem;
+
+    &::before {
+      top: 0.25rem;
+    }
+
+    .close-alert-message {
+      font-size: 1.375rem;
+    }
+  }
+}

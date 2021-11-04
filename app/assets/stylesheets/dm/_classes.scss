@@ -274,14 +274,6 @@ to confirm the class DOES NOT EXIST before adding a new class
   }
 }
 
-.message-icon-bg-position {
-  background-position: 1.25rem 0.75rem !important;
-
-  &:before {
-    @include u-height('full')
-  }
-}
-
 /* Font Awesome icon */
 .fa-icon-125 {
   font-size: 1.25rem;

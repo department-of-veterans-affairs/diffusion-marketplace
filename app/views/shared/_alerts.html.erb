@@ -1,0 +1,27 @@
+<%
+  is_html ||= false
+  classes ||= nil
+  heading ||= nil
+  url ||= nil
+  url_text ||= nil
+%>
+
+<div class="usa-alert usa-alert--<%= type %><%= ' ' + classes if classes.present? %>" role="<%= type === 'error' ? 'alert' : '' %>">
+  <div class="usa-alert__body grid-row flex-align-center">
+    <% if heading %>
+      <h4 class="usa-alert__heading"><%= heading %></h4>
+    <% end %>
+    <p class="usa-alert__text usa-prose-body">
+      <% if is_html %>
+        <%= text.html_safe %>
+      <% else %>
+        <% if url.present? && url_text.present? %>
+          <%= text %> <%= link_to url_text, url if url_text.present? %>
+        <% else %>
+          <%= text.humanize %>
+        <% end %>
+      <% end %>
+    </p>
+    <i class="fas fa-times position-absolute right-3 cursor-pointer close-alert-message"></i>
+  </div>
+</div>
