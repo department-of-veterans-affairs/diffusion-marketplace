@@ -65,10 +65,10 @@
 
   &-white {
     color: color($theme-color-dm-white) !important;
+    text-decoration: underline;
 
     &:hover {
       color: color($theme-color-dm-white) !important;
-      text-decoration: underline;
     }
 
     &:active {

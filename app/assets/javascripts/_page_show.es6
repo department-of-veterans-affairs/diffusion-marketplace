@@ -60,7 +60,7 @@
 
 
     // due to the breadcrumbs being rendered before everything else, move them into the gradient banner for page-builder pages, if the title and description are visible
-    function relocateAndStyleBreadcrumbs() {
+    function relocateAndStyleBreadcrumb() {
         let breadcrumbContainer = '.breadcrumbs-container';
         let breadcrumb = '.usa-breadcrumb__list-item';
 
@@ -72,11 +72,18 @@
         }
     }
 
+    function addMarginToPageContentWithNoBreadCrumb() {
+        if ($('#breadcrumbs').parent().hasClass('display-none') && $('.page-builder-intro-container').hasClass('display-none')) {
+            $('#page-builder-page').addClass('margin-top-10');
+        }
+    }
+
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
         removeBottomMarginFromLastAccordionHeading();
         containerizeSubpageHyperlinkCards();
-        relocateAndStyleBreadcrumbs();
+        relocateAndStyleBreadcrumb();
+        addMarginToPageContentWithNoBreadCrumb();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
