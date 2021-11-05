@@ -69,6 +69,8 @@
             $(breadcrumbContainer).parent().removeClass('grid-container');
             $(breadcrumbContainer).addClass('text-white padding-top-0 padding-bottom-1');
             $(breadcrumb).first().find('a').addClass('dm-alt-link-white');
+        } else {
+            $(breadcrumbContainer).find('.fa-arrow-left').addClass('text-gray-50');
         }
     }
 
