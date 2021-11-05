@@ -68,11 +68,11 @@
     text-decoration: underline;
 
     &:hover {
-      color: color($theme-color-dm-white) !important;
+      color: color($theme-color-base-lighter) !important;
     }
 
     &:active {
-      color: color($theme-color-dm-white) !important;
+      color: color($theme-color-base-light) !important;
     }
   }
 }
