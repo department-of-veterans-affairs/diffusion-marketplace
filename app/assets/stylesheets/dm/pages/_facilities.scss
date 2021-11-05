@@ -28,8 +28,28 @@
       }
     }
 
-    .fa-bookmark:hover{
-      color: blue;
+    .fas {
+      color: color($theme-color-primary-vivid);
+
+      &:hover {
+        color: color($theme-color-primary-dark);
+      }
+
+      &:active {
+        color: color($theme-color-primary-darker);
+      }
+    }
+
+    .far {
+      color: color($theme-color-base-ink);
+
+      &:hover {
+        color: color($theme-color-primary-vivid);
+      }
+
+      &:active {
+        color: color($theme-color-primary-dark);
+      }
     }
 
     tr:first-of-type {
