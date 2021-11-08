@@ -3,10 +3,10 @@
   controller = params[:controller]
 %>
 
-<section class="grid-container">
+<section class="grid-container<%= ' display-none' if (controller == 'page' && params[:page_slug].nil?) || (controller == 'page' && @builder_landing_page.nil?) %>">
   <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container" aria-label="Breadcrumbs">
     <ol class="usa-breadcrumb__list">
-      <% unless controller == 'home' && action == 'index' %>
+      <% if !(controller === 'home' && action === 'index') && controller != 'page' %>
         <li class="usa-breadcrumb__list-item">
           <a href="/" class="usa-breadcrumb__link">Home</a>
         </li>
@@ -21,23 +21,16 @@
         %>
 
           <%# Check if the page is a page-builder page using the controller and action names %>
-          <% if !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.exists? %>
+          <% if !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.present? %>
             <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
-          <% elsif !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.empty? %>
-            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
-          <%# This checks for a page-builder page with no landing page outside of the page controller %>
-          <% elsif !last_crumb && b['path'] == '' %>
-            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
           <% elsif !last_crumb && b['display'] == 'Edit' %>
             <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
-          <% elsif !last_crumb %>
+          <% elsif !last_crumb && params[:controller] != 'page' %>
             <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
-          <% elsif last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.exists? %>
-            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
           <% elsif last_crumb && b['display'] == 'Edit' %>
             <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
           <% else %>
-            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
+            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} unless params[:controller] === 'page' %>
           <% end %>
         <% end %>
     </ol>

@@ -62,4 +62,17 @@
       color: color($theme-link-color) !important;
     }
   }
+
+  &-white {
+    color: color($theme-color-dm-white) !important;
+    text-decoration: underline;
+
+    &:hover {
+      color: color($theme-color-base-lighter) !important;
+    }
+
+    &:active {
+      color: color($theme-color-base-light) !important;
+    }
+  }
 }
