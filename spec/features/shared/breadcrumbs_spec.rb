@@ -173,29 +173,20 @@ describe 'Breadcrumbs', type: :feature do
   end
 
   describe 'Page builder flow' do
-    it 'Should show two breadcrumbs for a page group landing page' do
-      visit '/programming/home'
-
-      expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
-      expect(page).to have_css('.breadcrumbs-container span:last-child', text: @page_group.name)
-    end
-
-    it 'Should show three breadcrumbs with only one link for a page that has a page group without a landing page' do
-      visit '/test/test-page'
-
-      expect(page).to have_css('.usa-breadcrumb__link', count: 1)
-      expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
-      expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:nth-of-type(2)', text: @page_group2.name)
-      expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:last-child', text: @page.title)
-    end
-
-    it 'Should show three breadcrumbs with two links for a page that has a page group a landing page' do
+    it 'Should only show a single breadcrumb for the landing page of a page group, if the user is on a subpage' do
       visit '/programming/test-page'
+      expect(page).to have_css('#breadcrumbs', visible: true)
+      expect(page).to have_css('.usa-breadcrumb__link', text: @page_group.name)
+      expect(page).to have_link(href: '/programming')
+    end
 
-      expect(page).to have_css('.usa-breadcrumb__link', count: 2)
-      expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
-      expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:nth-of-type(2) a', text: @page_group.name)
-      expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:last-child', text: @page.title)
+    it 'Should not show any breadcrumbs for a subpage that has a page group without a landing page or the landing page of a page group' do
+      visit '/test/test-page'
+      expect(page).to have_css('#breadcrumbs', visible: false)
+      expect(page).to_not have_css('.usa-breadcrumb__link')
+
+      visit '/programming/home'
+      expect(page).to have_css('#breadcrumbs', visible: false)
     end
   end
 end

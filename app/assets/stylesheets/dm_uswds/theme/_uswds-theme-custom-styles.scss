@@ -112,6 +112,10 @@ i.e.
 
 .usa-breadcrumb {
   background-color: transparent !important;
+
+  .page-builder-breadcrumb {
+    position: static;
+  }
 }
 
 .usa-breadcrumb__list-item:not(:last-child)::after {

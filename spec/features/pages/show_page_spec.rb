@@ -16,7 +16,7 @@ describe 'Page Builder - Show', type: :feature do
     ]
 
     page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
-    page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    @page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     Page.create(page_group: page_group, title: 'javascript', description: 'cool stuff', slug: 'javascript', created_at: Time.now, published: Time.now)
     pr_ids = @practices.map { |pr| pr[:id].to_s }
     practice_list_component = PagePracticeListComponent.create(practices: pr_ids)
@@ -31,21 +31,31 @@ describe 'Page Builder - Show', type: :feature do
     youtube_video_component = PageYouTubePlayerComponent.create(url: 'https://www.youtube.com/watch?v=C0DPdy98e4c', caption: 'Test Video')
     downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
     downloadable_file_component = PageDownloadableFileComponent.create(attachment: downloadable_file, description: 'Test file')
-    PageComponent.create(page: page, component: practice_list_component, created_at: Time.now)
-    PageComponent.create(page: page, component: subpage_hyperlink_component, created_at: Time.now)
-    PageComponent.create(page: page, component: image_component, created_at: Time.now)
-    PageComponent.create(page: page, component: image_component_2, created_at: Time.now)
-    PageComponent.create(page: page, component: cta_component, created_at: Time.now)
-    PageComponent.create(page: page, component: youtube_video_component, created_at: Time.now)
-    PageComponent.create(page: page, component: downloadable_file_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: practice_list_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: subpage_hyperlink_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: image_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: image_component_2, created_at: Time.now)
+    PageComponent.create(page: @page, component: cta_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: youtube_video_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: downloadable_file_component, created_at: Time.now)
     # must be logged in to view pages
     login_as(user, scope: :user, run_callbacks: false)
     visit '/programming/ruby-rocks'
   end
 
-  it 'Should display the title and description' do
+  it 'Should display the blue gradient banner along with the title and description, if the is_visible attr is true' do
+    expect(page).to have_css('.dm-gradient-banner', visible: true)
     expect(page).to have_content('ruby')
     expect(page).to have_content('what a gem')
+  end
+
+  it 'Should not display the blue gradient banner, title, or description if the is_visible attr is false' do
+    @page.update_attributes(is_visible: false)
+    visit '/programming/ruby-rocks'
+
+    expect(page).to have_css('.dm-gradient-banner', visible: false)
+    expect(page).to_not have_content('ruby')
+    expect(page).to_not have_content('what a gem')
   end
 
   it 'Should display the practices' do
