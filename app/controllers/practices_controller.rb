@@ -676,11 +676,11 @@ class PracticesController < ApplicationController
 
   def cached_json_practices
     if helpers.is_user_a_guest?
-      Rails.cache.fetch('searchable_public_practices_json', expires_in: 12.hours) do
+      Rails.cache.fetch('searchable_public_practices_json', expires_in: 4.hours) do
         practices_json(Practice.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct)
       end
     else
-      Rails.cache.fetch('searchable_practices_json', expires_in: 12.hours) do
+      Rails.cache.fetch('searchable_practices_json', expires_in: 4.hours) do
         practices_json(Practice.sort_by_retired.get_with_categories_and_adoptions_ct)
       end
     end
