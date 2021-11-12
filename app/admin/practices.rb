@@ -1,3 +1,4 @@
+include ApplicationHelper
 include ActiveAdminHelpers
 include PracticeEditorUtils
 include UserUtils
@@ -34,7 +35,55 @@ ActiveAdmin.register Practice do
     end
   end
 
+  collection_action :export_published_practices_with_queri_format, method: :get do
+    practices = Practice.published.sort_a_to_z
+
+    metrics_xlsx_file = Axlsx::Package.new do |p|
+      # styling
+      adoption_xlsx_styles(p)
+
+      # building out xlsx file
+      p.workbook.add_worksheet(:name => "Practices - #{Date.today}") do |sheet|
+        sheet.add_row [
+                        'Practice',
+                        'Description',
+                        'Origination Date',
+                        'Origination Site(s)',
+                        'Partners'
+                      ], style: @xlsx_sub_header_3
+
+        # practice information
+        practices.each do |practice|
+          partners_text = ''
+          has_practice_partners = practice.practice_partners.any? && practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
+
+          if has_practice_partners
+            practice.practice_partners.each_with_index do |partner, index|
+              partners_text += "#{partner.name}#{', ' if practice.practice_partners.size != index + 1 && practice.practice_partners.size > 1}"
+            end
+          else
+            partners_text = 'None'
+          end
+
+          sheet.add_row [
+                          practice.name,
+                          practice.summary.gsub("\r\n\r\n", '').strip,
+                          practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)',
+                          origin_display_name(practice) === '' ? 'None' : origin_display_name(practice),
+                          partners_text
+                        ], style: @xlsx_entry
+        end
+      end
+    end
+    # generating downloadable .xlsx file
+    send_data metrics_xlsx_file.to_stream.read, :filename => "published_practices_#{Date.today}.xlsx", :type => "application/xlsx"
+  end
+
   index do
+    # link to published practices .xlsx download
+    div do
+      link_to 'Published Practices QUERI Download', export_published_practices_with_queri_format_admin_practices_path, class: 'admin-download-published-practices float-right display-block text-bold border-0 radius-md margin-bottom-105'
+    end
     selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
     column 'Practice Name', :name

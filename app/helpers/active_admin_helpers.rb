@@ -30,7 +30,8 @@ module ActiveAdminHelpers
         rurality: selected_facility[0].rurality,
         complexity: selected_facility[0].fy17_parent_station_complexity_level,
         station_number: selected_facility[0].station_number,
-        visn: selected_facility[0].visn
+        visn: selected_facility[0].visn,
+        practice_name: dh.practice.name
       }
     }
     sorted_diffusion_histories = practice_diffusion_histories.sort_by { |pdh| [pdh[:state], pdh[:facility_name]] }
@@ -170,6 +171,51 @@ module ActiveAdminHelpers
             column("Lifetime") {|ast| ast[:total]}
           end
         end
+      end
+    end
+  end
+
+  def add_adoption_columns(adoption_data, sheet, options = { :add_practice_name => false })
+      sheet.add_row [
+                     options[:add_practice_name] ? 'Practice' : nil,
+                    'State',
+                    'Location',
+                    'VISN',
+                    'Station Number',
+                    'Adoption Date',
+                    'Adoption Status',
+                    'Rurality',
+                    'Facility Complexity'
+                  ].compact, style: @xlsx_sub_header_3
+
+    adoption_data.each do |data_array|
+      # adoption information
+      if options[:add_practice_name]
+        data_array.each do |hash|
+          sheet.add_row [
+                          hash[:practice_name],
+                          hash[:state],
+                          adoption_facility_name(hash),
+                          hash[:visn].number,
+                          hash[:station_number],
+                          adoption_date(hash),
+                          adoption_status(hash),
+                          adoption_rurality(hash),
+                          hash[:complexity]
+                        ], style: @xlsx_entry
+
+        end
+      else
+        sheet.add_row [
+                        data_array[:state],
+                        adoption_facility_name(data_array),
+                        data_array[:visn].number,
+                        data_array[:station_number],
+                        adoption_date(data_array),
+                        adoption_status(data_array),
+                        adoption_rurality(data_array),
+                        data_array[:complexity]
+                      ], style: @xlsx_entry
       end
     end
   end
