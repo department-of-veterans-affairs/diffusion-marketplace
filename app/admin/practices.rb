@@ -44,6 +44,7 @@ ActiveAdmin.register Practice do
 
       # building out xlsx file
       p.workbook.add_worksheet(:name => "Practices - #{Date.today}") do |sheet|
+        col_widths = [50, 100, 50, 50, 50]
         sheet.add_row [
                         'Practice',
                         'Description',
@@ -71,8 +72,9 @@ ActiveAdmin.register Practice do
                           practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)',
                           origin_display_name(practice) === '' ? 'None' : origin_display_name(practice),
                           partners_text
-                        ], style: @xlsx_entry
+                        ], style: @xlsx_entry_text_top
         end
+        sheet.column_widths *col_widths
       end
     end
     # generating downloadable .xlsx file

@@ -88,6 +88,8 @@ module ActiveAdminHelpers
     @xlsx_legend_no_bottom_border = s.add_style b: true, u: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom]}
     @xlsx_legend_no_top_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:top]}
     @xlsx_legend_no_y_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom, :top]}
+    @xlsx_entry_text_top = s.add_style sz: 12, alignment: { horizontal: :left, vertical: :top, wrap_text: true}
+    @xlsx_entry_text_bottom = s.add_style sz: 12, alignment: { horizontal: :left, vertical: :bottom, wrap_text: true}
   end
 
   def get_search_term_counts_by_type(ahoy_event_name, search_terms_array)
@@ -202,7 +204,7 @@ module ActiveAdminHelpers
                           adoption_status(hash),
                           adoption_rurality(hash),
                           hash[:complexity]
-                        ], style: @xlsx_entry
+                        ], style: @xlsx_entry_text_bottom
 
         end
       else
@@ -215,7 +217,7 @@ module ActiveAdminHelpers
                         adoption_status(data_array),
                         adoption_rurality(data_array),
                         data_array[:complexity]
-                      ], style: @xlsx_entry
+                      ], style: @xlsx_entry_text_bottom
       end
     end
   end
