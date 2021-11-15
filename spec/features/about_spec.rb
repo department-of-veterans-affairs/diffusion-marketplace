@@ -22,26 +22,18 @@ describe 'About us page', type: :feature do
   end
 
   describe 'FAQ section' do
-    it 'should take the user to the HAPPEN practice page when they click on the link within the first FAQ accordion' do
-      login_as(@user, :scope => :user, :run_callbacks => false)
-      all('.usa-accordion__heading').first.click
-      click_link('HAPPEN')
-      expect(page).to have_content('Project HAPPEN')
-      expect(page).to have_content('contact-happen@happen.com')
-    end
-
     it 'should take the user to the search page with ONLY results that match the maturity level the user clicks on under the \'How does diffusion work?\' question' do
       all('.usa-accordion__heading')[2].click
-      click_link('View emerging innovations')
+      click_link('Emerging')
       expect(page).to have_content('Search')
       expect(page).to have_content('2 results:')
       expect(page).to have_content('Project HAPPEN')
       expect(page).to have_content('Best Practice Ever')
     end
 
-    it 'should take the user to the search page when they click on the \'Start a search\' link under the \'How do I use the Diffusion Marketplace?\' question' do
+    it 'should take the user to the search page when they click on the \'browsing all innovations\' link under the \'How do I use the Diffusion Marketplace?\' question' do
       all('.usa-accordion__heading')[4].click
-      click_link('Start a search')
+      click_link('browsing all innovations')
       expect(page).to have_content('Search')
       expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
     end
