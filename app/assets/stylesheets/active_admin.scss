@@ -237,3 +237,26 @@
     margin-left: 20%;
   }
 }
+
+.index.admin_practices {
+  #collection_selection {
+    position: relative;
+  }
+
+  .table_tools {
+    position: absolute;
+
+    a:first-of-type {
+      margin-left: 0;
+    }
+  }
+
+  .admin-download-published-practices {
+    text-decoration: none !important;
+    background-color: #5ea3d3;
+    padding: 10px 20px;
+    color: #ffffff !important;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 1.0em;
+  }
+}

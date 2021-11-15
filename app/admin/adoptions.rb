@@ -10,6 +10,7 @@ ActiveAdmin.register_page "Adoptions" do
     helper_method :get_adoption_values
     helper_method :adoption_counts_by_practice
     helper_method :all_adoption_counts
+    helper_method :add_adoption_columns
     before_action :set_adoption_values
 
     def set_adoption_values
@@ -71,29 +72,7 @@ ActiveAdmin.register_page "Adoptions" do
 
               # adoption information
               sheet.add_row ['Adoption Information'], style: @xlsx_sub_header
-              sheet.add_row [
-                  'State',
-                  'Location',
-                  'VISN',
-                  'Station Number',
-                  'Adoption Date',
-                  'Adoption Status',
-                  'Rurality',
-                  'Facility Complexity'
-              ], style: @xlsx_sub_header_3
-
-              value.each do |v|
-                sheet.add_row [
-                    v[:state],
-                    adoption_facility_name(v),
-                    v[:visn],
-                    v[:station_number],
-                    adoption_date(v),
-                    adoption_status(v),
-                    adoption_rurality(v),
-                    v[:complexity]
-                ], style: @xlsx_entry
-              end
+              add_adoption_columns(value, sheet, :add_practice_name => false)
               sheet.add_row [''], style: @xlsx_divider
             end
           end
@@ -104,11 +83,31 @@ ActiveAdmin.register_page "Adoptions" do
       send_data metrics_xlsx_file.to_stream.read, :filename => "dm_adoptions_#{Date.today}.xlsx", :type => "application/xlsx"
   end
 
+  page_action :export_all_adoptions_with_queri_format, method: :get do
+    metrics_xlsx_file = Axlsx::Package.new do |p|
+      # styling
+      adoption_xlsx_styles(p)
+
+      # building out xlsx file
+      p.workbook.add_worksheet(:name => "Practice Adoptions - #{Date.today}") do |sheet|
+        add_adoption_columns(@complete_map.values.reject { |v| v.empty? }, sheet, :add_practice_name => true)
+      end
+    end
+
+    # generating downloadable .xlsx file
+    send_data metrics_xlsx_file.to_stream.read, :filename => "QUERI_dm_adoptions_#{Date.today}.xlsx", :type => "application/xlsx"
+  end
+
   content do
     div(class: 'form-and-legend-container') do
       # export .xlsx button
-      form action: admin_adoptions_export_all_adoptions_path, method: :get, style: 'text-align: left' do |f|
-        f.input :submit, type: :submit, value: 'Download All', style: 'margin-bottom: 1rem'
+      form action: admin_adoptions_export_all_adoptions_path, method: :get, class: 'text-left display-inline-block' do |f|
+        f.input :submit, type: :submit, value: 'Download All', class: 'margin-bottom-2'
+      end
+
+      # QUERI data export .xlsx button
+      form action: admin_adoptions_export_all_adoptions_with_queri_format_path, method: :get, class: 'text-left display-inline-block' do |f|
+        f.input :submit, type: :submit, value: 'QUERI Download', class: 'margin-bottom-2'
       end
 
       div(class: 'adoptions-legend') do
