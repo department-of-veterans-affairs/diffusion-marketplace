@@ -1,3 +1,9 @@
+<% provide :head_tags do %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'about/index', formats: [:js] %>
+  <% end %>
+<% end %>
+
 <div class="dm-about-page grid-container">
   <%= render partial: "shared/messages", locals: { small_text: true } %>
 
