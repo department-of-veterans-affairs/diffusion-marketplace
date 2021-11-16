@@ -4,8 +4,18 @@
   @include u-display('inline-block');
   @include u-margin-bottom(1);
   @include u-margin-right(1);
-  @include u-padding-y(2px);
+  padding: 4.5px 8px 4.5px 8px;
   @include u-text('no-underline');
+  @include u-bg('primary-vivid');
+  letter-spacing: 0.05em;
+
+  &:hover {
+    @include u-bg('primary-dark');
+  }
+
+  &:active {
+    @include u-bg('primary-darker');
+  }
 }
 
 .usa-tag--big {
@@ -20,6 +30,10 @@
   @extend .usa-tag--big;
   @include u-bg('primary-vivid');
   cursor: pointer;
+  letter-spacing: 0.1em;
+  padding: 6px 11px 6px 11px;
+  margin-right: 16px;
+  margin-bottom: 16px;
 
   &:hover {
     @include u-bg('primary-dark');
