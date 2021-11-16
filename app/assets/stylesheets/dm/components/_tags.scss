@@ -4,10 +4,10 @@
   @include u-display('inline-block');
   @include u-margin-bottom(1);
   @include u-margin-right(1);
-  padding: 4.5px 8px 4.5px 8px;
+  padding: 6px 8px 4px 8px;
   @include u-text('no-underline');
   @include u-bg('primary-vivid');
-  letter-spacing: 0.05em;
+  letter-spacing: 1px;
 
   &:hover {
     @include u-bg('primary-dark');
@@ -30,8 +30,8 @@
   @extend .usa-tag--big;
   @include u-bg('primary-vivid');
   cursor: pointer;
-  letter-spacing: 0.1em;
-  padding: 6px 11px 6px 11px;
+  letter-spacing: 2px;
+  padding: 10px 12px 8px 12px;
   margin-right: 16px;
   margin-bottom: 16px;
 
