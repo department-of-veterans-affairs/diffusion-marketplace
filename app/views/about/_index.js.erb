@@ -1,0 +1,7 @@
+function scrollToContactSection() {
+    if (location.hash === '#contact-us') {
+        $(window).scrollTop($('.about-us-contact-section').offset().top - 20);
+    }
+}
+
+$(scrollToContactSection);
