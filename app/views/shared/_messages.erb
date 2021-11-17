@@ -15,9 +15,9 @@
       <!-- invalid email also shows two messages. not sure why. that is this conditional: (value == 'Invalid Email or password.' && key == 'alert') -->
       <%= render partial: 'shared/alerts', locals: { type: key, text: value, is_html: true, classes: current_page?(root_path) ? '' : 'margin-y-2 dm-alert-message' } %>
     <% end %>
-  <% end %>
-<% else %>
-  <% if alert.present? %>
-    <%= render partial: 'shared/alerts', locals: { type: 'error', text: alert, classes: 'margin-y-2 dm-alert-message' } %>
+  <% else %>
+    <% if alert.present? %>
+      <%= render partial: 'shared/alerts', locals: { type: 'error', text: alert, classes: "dm-alert-message#{' margin-y-2' unless current_page?(root_path) }" } %>
+    <% end %>
   <% end %>
 <% end %>
