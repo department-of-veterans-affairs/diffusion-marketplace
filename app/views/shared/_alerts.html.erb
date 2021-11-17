@@ -5,8 +5,11 @@
   url ||= nil
   url_text ||= nil
 %>
-
-<div class="usa-alert usa-alert--<%= type %><%= ' ' + classes if classes.present? %>" role="<%= type === 'error' ? 'alert' : '' %>">
+<% if type === 'error' %>
+  <div class="usa-alert usa-alert--<%= type %><%= ' ' + classes if classes.present? %>" role="alert">
+<% else %>
+  <div class="usa-alert usa-alert--<%= type %><%= ' ' + classes if classes.present? %>">
+<% end %>
   <div class="usa-alert__body grid-row flex-align-center">
     <% if heading %>
       <h4 class="usa-alert__heading"><%= heading %></h4>

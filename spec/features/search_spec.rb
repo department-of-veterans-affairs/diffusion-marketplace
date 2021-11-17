@@ -576,7 +576,7 @@ describe 'Search', type: :feature do
       expect(cache_keys).to include("searchable_practices")
       update_practice_introduction(@practice)
       expect(page).to have_content("Innovation was successfully updated.")
-      expect(page).to have_selector(".usa-alert__heading", visible: true)
+      expect(page).to have_selector(".usa-alert", visible: true)
       expect(cache_keys).not_to include("searchable_practices")
     end
 
@@ -600,7 +600,7 @@ describe 'Search', type: :feature do
       fill_in('practice_overview_results', with: 'Practice overview results statement')
       find('#practice-editor-save-button').click
       publish_practice(latest_practice)
-      expect(page).to have_selector(".usa-alert__heading", visible: true)
+      expect(page).to have_selector(".usa-alert", visible: true)
       expect(cache_keys).not_to include("searchable_practices")
     end
   end
