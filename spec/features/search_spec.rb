@@ -7,18 +7,18 @@ describe 'Search', type: :feature do
   end
 
   before do
-    visn_1 = Visn.create!(name: "VA New England Healthcare System", number: 1)
-    visn_2 = Visn.create!(name: "New York/New Jersey VA Health Care Network", number: 2)
-    Visn.create!(name: "VA Healthcare - VISN 4", number: 4)
-    Visn.create!(name: "VA Capitol Health Care Network", number: 5)
-    visn_7 = Visn.create!(name: "VA Southeast Network", number: 7)
-    visn_10 = Visn.create!(name: "VA Healthcare System", number: 10)
-    visn_16 = Visn.create!(name: "South Central VA Health Care Network", number: 16)
-    visn_19 = Visn.create!(name: "Rocky Mountain Network", number: 19)
-    visn_20 = Visn.create!(name: "Northwest Network", number: 20)
-    visn_21 = Visn.create!(name: "Sierra Pacific Network", number: 21)
-    visn_22 = Visn.create!(name: "Desert Pacific Healthcare Network", number: 22)
-    visn_23 = Visn.create!(name: "VA Midwest Health Care Network", number: 23)
+    visn_1 = Visn.find_or_create_by!(name: "VA New England Healthcare System", number: 1)
+    visn_2 = Visn.find_or_create_by!(name: "New York/New Jersey VA Health Care Network", number: 2)
+    Visn.find_or_create_by!(name: "VA Healthcare - VISN 4", number: 4)
+    Visn.find_or_create_by!(name: "VA Capitol Health Care Network", number: 5)
+    visn_7 = Visn.find_or_create_by!(name: "VA Southeast Network", number: 7)
+    visn_10 = Visn.find_or_create_by!(name: "VA Healthcare System", number: 10)
+    visn_16 = Visn.find_or_create_by!(name: "South Central VA Health Care Network", number: 16)
+    visn_19 = Visn.find_or_create_by!(name: "Rocky Mountain Network", number: 19)
+    visn_20 = Visn.find_or_create_by!(name: "Northwest Network", number: 20)
+    visn_21 = Visn.find_or_create_by!(name: "Sierra Pacific Network", number: 21)
+    visn_22 = Visn.find_or_create_by!(name: "Desert Pacific Healthcare Network", number: 22)
+    visn_23 = Visn.find_or_create_by!(name: "VA Midwest Health Care Network", number: 23)
 
     facility_1 = VaFacility.create!(visn: visn_1, station_number: "402", official_station_name: "Togus VA Medical Center", common_name: "Togus", street_address_state: "ME")
     facility_2 = VaFacility.create!(visn: visn_2, station_number: "528QK", official_station_name: "Saranac Lake VA Clinic", common_name: "Saranac Lake", street_address_state: "NY")
@@ -590,17 +590,7 @@ describe 'Search', type: :feature do
       fill_in('Innovation name', with: 'The Newest Practice')
       fill_in('User email', with: 'practice_owner@va.gov')
       click_button('Create Practice')
-
-      visit '/search?=newest'
-      latest_practice = Practice.last
-      expect(page).to_not have_content(latest_practice.name)
-      visit(practice_overview_path(latest_practice))
-      fill_in('practice_overview_problem', with: 'Practice overview problem statement')
-      fill_in('practice_overview_solution', with: 'Practice overview solution statement')
-      fill_in('practice_overview_results', with: 'Practice overview results statement')
-      find('#practice-editor-save-button').click
-      publish_practice(latest_practice)
-      expect(page).to have_selector(".usa-alert", visible: true)
+      expect(page).to have_selector(".flash_notice", visible: true)
       expect(cache_keys).not_to include("searchable_practices")
     end
   end
