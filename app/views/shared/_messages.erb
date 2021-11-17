@@ -2,38 +2,22 @@
   <%= javascript_include_tag '_alert_message_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<% if alert.present? && !flash.keys.include?('url') %>
-  <div class="usa-alert usa-alert--error margin-y-2 dm-alert-message">
-    <div class="usa-alert__body usa-prose-body">
-      <p><%= alert.humanize %></p>
-      <i class="fas fa-times position-absolute right-3 cursor-pointer close-alert-message"></i>
-    </div>
-  </div>
-<% end %>
-<% if flash.present? && alert.blank? && !flash.keys.include?('url') %>
-  <% flash.each do |key, value| %>
-    <% if key == 'notice' then
-         key = 'info'
-       end %>
-    <!-- session expired message shows two extra messages. not sure why. these conditionals: value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || -->
-    <!-- invalid email also shows two messages. not sure why. that is this conditional: (value == 'Invalid Email or password.' && key == 'alert') -->
-    <% unless value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || (value == 'Invalid Email or password.' && key == 'alert') %>
-      <div class="usa-alert usa-alert--<%= key %> margin-y-2 <%= small_text ? 'message-icon-bg-position' : '' %> dm-alert-message">
-        <div class="usa-alert__body grid-row flex-align-center">
-          <div class="usa-alert__heading usa-prose-body margin-bottom-0 <%= small_text ? 'font-sans-sm' : '' %>" role="alert">
-            <%= value %>
-            <i class="fas fa-times position-absolute right-3 cursor-pointer close-alert-message"></i>
-          </div>
-        </div>
-      </div>
+<% if flash.keys.present? %>
+  <!-- custom header and msg -->
+  <% if flash.keys.include?('url') %>
+    <%= render partial: 'shared/alerts', locals: { type: 'error', text: flash[:alert], url: flash[:url], url_text: flash[:url_text] } %>
+  <% elsif flash.keys.include?('heading') %>
+    <%= render partial: 'shared/alerts', locals: { type: 'error', text: flash[:error], is_html: true, heading: flash[:heading], classes: 'dm-publication-validation--alert js-publication-validation--alert' } %>
+  <% elsif alert.blank?%>
+    <% flash.each do |key, value| %>
+      <% key = 'info' if key == 'notice' %>
+      <!-- session expired message shows two extra messages. not sure why. these conditionals: value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || -->
+      <!-- invalid email also shows two messages. not sure why. that is this conditional: (value == 'Invalid Email or password.' && key == 'alert') -->
+      <%= render partial: 'shared/alerts', locals: { type: key, text: value, is_html: true, classes: current_page?(root_path) ? '' : 'margin-y-2 dm-alert-message' } %>
+    <% end %>
+  <% else %>
+    <% if alert.present? %>
+      <%= render partial: 'shared/alerts', locals: { type: 'error', text: alert, classes: "dm-alert-message#{' margin-y-2' unless current_page?(root_path) }" } %>
     <% end %>
   <% end %>
-<% end %>
-<% if flash.keys.present? && flash.keys.include?('url') %>
-  <div class="usa-alert usa-alert--error <%= small_text ? 'message-icon-bg-position' : '' %>">
-    <div class="usa-alert__body grid-row flex-align-center">
-      <span><%= flash[:alert] %> <%= link_to flash[:url_text], flash[:url] if flash[:url_text].present? %></span>
-      <i class="fas fa-times position-absolute right-3 cursor-pointer close-alert-message"></i>
-    </div>
-  </div>
 <% end %>

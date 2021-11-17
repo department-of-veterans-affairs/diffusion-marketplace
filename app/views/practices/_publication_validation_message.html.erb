@@ -1,0 +1,84 @@
+<div>
+  <p class="usa-prose-body">
+    You can save your work as a draft at any time, but these sections need to be completed before publishing:
+  </p>
+  <% if practice %>
+    <%
+      s_name = practice.name
+      tagline = practice.tagline
+      initiating_facility = practice.has_facility?
+      initiating_facility_type = practice.initiating_facility_type
+      summary = practice.summary
+      date_initiated = practice.date_initiated
+      adoptions = practice.diffusion_histories
+      overview_problem = practice.overview_problem
+      overview_solution = practice.overview_solution
+      overview_results = practice.overview_results
+    %>
+
+    <%# Introduction errors %>
+    <% if s_name.blank? || tagline.blank? || initiating_facility_type.blank? || initiating_facility.blank? || date_initiated.blank? || summary.blank? %>
+      <div class="margin-top-1">
+        <p class="usa-prose-h4">Introduction</p>
+        <ul class="usa-prose-ul padding-left-3 margin-top-1">
+          <% if s_name.blank? %>
+            <li>Name</li>
+          <% end %>
+          <% if tagline.blank? %>
+            <li>Tagline</li>
+          <% end %>
+          <% if date_initiated.blank? %>
+            <li>Date created</li>
+          <% end %>
+          <% if initiating_facility_type.blank? || initiating_facility.blank? %>
+            <li>Innovation origin</li>
+          <% end %>
+          <% if summary.blank? %>
+            <li>Summary</li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%# Overview errors %>
+    <% if overview_problem.blank? || overview_solution.blank? || overview_results.blank? %>
+      <div class="margin-top-1">
+        <p class="usa-prose-h4">Overview</p>
+        <ul class="usa-prose-ul padding-left-3 margin-top-1">
+          <% if overview_problem.blank? %>
+            <li>Problem statement</li>
+          <% end %>
+          <% if overview_solution.blank? %>
+            <li>Solution statement</li>
+          <% end %>
+          <% if overview_results.blank? %>
+            <li>Results statement</li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%# Adoptions error %>
+    <% if adoptions.blank? %>
+      <div class="margin-top-1">
+        <p class="usa-prose-h4">Adoptions</p>
+        <ul class="usa-prose-ul padding-left-3 margin-top-1">
+          <li>At least one adoption</li>
+        </ul>
+      </div>
+    <% end %>
+
+    <%# Contact error %>
+    <%
+      email = @practice.support_network_email
+    %>
+    <% if email.blank? %>
+      <div class="margin-top-1">
+        <p class="usa-prose-h4">Contact</p>
+        <ul class="usa-prose-ul padding-left-3 margin-top-1">
+          <li>Email</li>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+</div>

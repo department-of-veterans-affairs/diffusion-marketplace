@@ -45,7 +45,7 @@
                   <% if params[:action] == 'adoptions' %>
                     <%= link_to 'Publish innovation', practice_publication_validation_path(@practice), class: 'usa-button width-full margin-top-2', id: 'publish-practice-button', method: :patch, remote: true %>
                   <% else %>
-                    <%= button_tag 'Publish innovation', class: 'usa-button width-full margin-top-2', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}.js"}%>
+                    <%= button_tag 'Publish innovation', class: 'usa-button width-full margin-top-2', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}"}%>
                   <% end %>
                 </div>
               </li>
