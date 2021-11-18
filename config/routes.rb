@@ -123,6 +123,7 @@ Rails.application.routes.draw do
   get '/about', controller: 'about', action: 'index', as: 'about'
   post '/about', controller: 'about', action: 'email'
 
+  match '/404', to: 'errors#page_not_found_404', via: :all
 
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
