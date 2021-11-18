@@ -69,37 +69,40 @@ describe 'Practice editor', type: :feature, js: true do
 
     it 'should display an error modal only when missing required fields exists' do
       @publish_button.click
-      expect(page).to have_selector(".publication-modal-body", visible: true)
+      expect(page).to have_selector(".dm-publication-validation--alert", visible: true)
       expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('This is what you need to do before publishing your innovation to the Diffusion Marketplace')
-      expect(page).to have_content('You must include a tagline for your innovation')
-      expect(page).to have_content('You must include the initiation date for your innovation')
-      expect(page).to have_content('You must include the initiating facility for your innovation')
-      expect(page).to have_content('You must include an innovation summary')
-      expect(page).to have_content('You must include at least one adoption')
-      expect(page).to have_content('You must include a support network email')
-      expect(page).to have_content('You must include a problem statement for your innovation')
-      expect(page).to have_content('You must include a solution statement for your innovation')
-      expect(page).to have_content('You must include a results statement for your innovation')
-      find('.back-to-editor-button').click
+      expect(page).to have_content('You can save your work as a draft at any time, but these sections need to be completed before publishing:')
+      expect(page).to have_content('Introduction')
+      expect(page).to have_content('Tagline')
+      expect(page).to have_content('Date created')
+      expect(page).to have_content('Innovation origin')
+      expect(page).to have_content('Summary')
+      expect(page).to have_content('Overview')
+      expect(page).to have_content('Problem statement')
+      expect(page).to have_content('Solution statement')
+      expect(page).to have_content('Results statement')
+      expect(page).to have_content('Adoptions')
+      expect(page).to have_content('At least one adoption')
+      expect(page).to have_content('Contact')
+      expect(page).to have_content('Email')
       set_pr_required_fields
       set_initiating_fac
       @publish_button.click
-      expect(page).to have_selector(".publication-modal-body", visible: true)
+      expect(page).to have_selector(".dm-publication-validation--alert", visible: true)
       expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('This is what you need to do before publishing your innovation to the Diffusion Marketplace')
-      expect(page).to have_no_content('You must include the initiation date for your practice')
-      expect(page).to have_no_content('You must include the initiating facility for your practice')
-      expect(page).to have_no_content('You must include a practice summary')
-      expect(page).to have_content('You must include at least one adoption')
-      expect(page).to have_content('You must include a support network email')
+      expect(page).to have_content('You can save your work as a draft at any time, but these sections need to be completed before publishing:')
+      expect(page).to have_content('Date created')
+      expect(page).to have_content('Innovation origin')
+      expect(page).to have_content('Summary')
+      expect(page).to have_content('At least one adoption')
+      expect(page).to have_content('Email')
 
       visit practice_adoptions_path(@practice)
       set_adoption
       @publish_button.click
-      page.has_css?('.publication-modal-body')
-      expect(page).to have_no_content('You must include at least one adoption')
-      expect(page).to have_content('You must include a support network email')
+      page.has_css?('.dm-publication-validation--alert')
+      expect(page).to have_no_content('At least one adoption')
+      expect(page).to have_content('Email')
     end
 
     it 'Should save and publish the practice if all required fields are met' do

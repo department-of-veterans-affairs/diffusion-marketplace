@@ -213,7 +213,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
 
       # it shouldn't update an unsuccessful adoption if no reasons are selected
-      expect(page).to have_selector(".usa-alert__heading", visible: true)
+      expect(page).to have_selector(".usa-alert--info", visible: true)
       expect(page).to have_selector("button[aria-controls*='in-progress_adoptions']", visible: true)
       click_button('In-progress adoption: 1')
       sleep 0.2
