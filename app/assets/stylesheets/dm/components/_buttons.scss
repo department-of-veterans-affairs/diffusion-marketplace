@@ -3,6 +3,7 @@
   @include u-bg('primary-vivid');
   @include u-line-height('sans', 2);
   @include u-text('no-underline', !important);
+  @include u-text('semibold')
 }
 
 .usa-button--outline {
