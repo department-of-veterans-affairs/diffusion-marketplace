@@ -200,7 +200,7 @@ module NavigationHelper
         session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
       end
       if action == 'show'
-        va_facility = VaFacility.find_by(slug: params[:id])
+        va_facility = VaFacility.find_by!(slug: params[:id])
         empty_breadcrumbs
         add_facility_index_breadcrumb
         common_name = va_facility.common_name
@@ -330,6 +330,11 @@ module NavigationHelper
     # remove breadcrumbs from 'About' page
     if controller == 'about' && action == 'index'
         empty_breadcrumbs
+    end
+
+    # remove breadcrumbs from any custom error page
+    if controller === 'errors'
+      empty_breadcrumbs
     end
   end
 end
