@@ -37,7 +37,6 @@
                 <p class="line-height-26 margin-top-2">Type the main problem your innovation attempted to address and include context and any initial goals.</p>
                 <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input #{'dm-required-field' if @practice.published}", required: @practice.published %>
               </div>
-              <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-top-3">
                 <p class="line-height-18px margin-bottom-2 text-bold">Problem attachments</p>
                 <p class="line-height-26">Attach any additional images, videos, files or links related to the problem your innovation addresses.</p>
@@ -124,13 +123,11 @@
 
             <!-- SOLUTION section -->
             <div id="solution_section" class="grid-col-12">
-              <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-bottom-5 margin-top-3">
                 <%= label_tag 'practice_overview_solution', 'Solution statement', class: 'usa-label margin-0 text-bold display-inline overview-solution-statement-label' %><span class="text-gray-50 text-bold"> (required field)</span>
                 <p class="line-height-26 margin-top-2">Type the solution that was implemented to address the problem.</p>
                 <%= f.text_area :overview_solution, required: @practice.published, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
               </div>
-              <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-top-3">
                 <p class="line-height-18px margin-bottom-2 text-bold">Solution attachments</p>
                 <p class="line-height-26">
@@ -219,13 +216,11 @@
 
             <!-- RESULTS section -->
             <div id="results_section" class="grid-col-12">
-              <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-bottom-5 margin-top-3">
                 <%= label_tag 'practice_overview_results', 'Results statement', class: 'usa-label margin-0 text-bold display-inline overview-results-statement-label' %><span class="text-gray-50 text-bold"> (required field)</span>
                 <p class="line-height-26 margin-top-2">Type information about the impact of the innovation at the originating facility.</p>
                 <%= f.text_area :overview_results, required: @practice.published, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
               </div>
-              <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-top-3">
                 <p class="line-height-18px margin-bottom-2 text-bold">Results attachments</p>
                 <p class="line-height-26">
@@ -314,7 +309,6 @@
 
 
             <!-- METRICS Section -->
-            <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
             <div class="margin-bottom-5 margin-top-3">
               <div id="practice-metrics-container" class="position-relative">
                 <div>
@@ -399,7 +393,6 @@
 
             <!-- MULTIMEDIA section -->
             <div id="multimedia_section">
-              <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-top-3">
                 <p class="line-height-18px margin-bottom-2 text-bold">Multimedia</p>
                 <p class="line-height-26">
