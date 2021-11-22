@@ -7,7 +7,6 @@
       <!--Comments-->
       <div class="desktop:grid-col-11 comments-section practice-section">
         <div>
-          <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
           <h2 id="comments" class="font-sans-lg text-bold margin-top-2 margin-bottom-3">Comment</h2>
         </div>
 
@@ -29,8 +28,7 @@
         practice_emails = @practice.practice_emails
       %>
       <% if main_email.present? %>
-        <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
-        <h2 id="email" class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Email</h2>
+        <h2 id="email" class="font-sans-lg text-bold margin-top-5 margin-bottom-1 line-height-25px">Email</h2>
         <p class="line-height-26 margin-bottom-0 main-email-address-container">
           Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'usa-link usa-link--external dm-email-practice', 'aria-label': "Email #{main_email}", data: {practice_id: @practice.id} %> with questions about this innovation.
         </p>

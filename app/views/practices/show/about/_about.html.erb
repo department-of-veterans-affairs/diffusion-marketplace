@@ -11,7 +11,6 @@
       <h1 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">About</h1>
 
       <% if origin_story.present? %>
-        <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
         <h2 class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Origin story</h2>
         <div class="practice-view-origin-story line-height-26 dm-hyphens-auto dm-word-break-break-word desktop:grid-col-11 grid-col-12">
           <% if origin_story.length > 360 %>
@@ -30,8 +29,7 @@
       <% end %>
 
       <% if team_members.any? %>
-        <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
-        <h2 class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Original team</h2>
+        <h2 class="font-sans-lg text-bold margin-top-5 margin-bottom-1 line-height-25px">Original team</h2>
         <div class="desktop:grid-col-11 grid-col-12">
           <div class="grid-row grid-gap">
             <% team_members.each do |vae| %>
