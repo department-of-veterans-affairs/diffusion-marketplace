@@ -4,6 +4,11 @@
 //= require active_admin/base
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
+
+const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
+const MAX_DESCRIPTION_LENGTH = 140;
+
 (function () {
   var PANEL_TOOLTIPS = {
     "dm-new-users-by-month":
@@ -71,10 +76,50 @@
     });
   };
 
+  function addPageDescriptionCharacterCounterText() {
+      let hintEle = $('#page_description').next();
+      $(hintEle).append(' <span class="page-description-character-counter">(0/140 characters)</span>');
+  }
+
+  function getPageDescriptionCharacterCountOnPageLoad() {
+      let descriptionInput = $('#page_description');
+
+      let characterCounterEle = $('.page-description-character-counter');
+      $(characterCounterEle).css('color', CHARACTER_COUNTER_VALID_COLOR);
+
+      let descriptionCurrentLength = descriptionInput.val().length;
+      let characterCounterText = '(' + descriptionCurrentLength + '/' + MAX_DESCRIPTION_LENGTH + ' characters)';
+
+      characterCounterEle.text(characterCounterText);
+
+      if (descriptionCurrentLength === MAX_DESCRIPTION_LENGTH) {
+          characterCounterEle.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+      }
+  }
+
+  function pageDescriptionCharacterCounter() {
+      $(document).on('input', '#page_description', function() {
+          let currentLength = $(this).val().length;
+
+          let characterCounterEle = $('.page-description-character-counter');
+          let characterCounterText  = '(' + currentLength + '/' + MAX_DESCRIPTION_LENGTH + ' characters)';
+
+          characterCounterEle.css('color', CHARACTER_COUNTER_VALID_COLOR);
+          characterCounterEle.text(characterCounterText);
+
+          if (currentLength >= MAX_DESCRIPTION_LENGTH) {
+              characterCounterEle.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+          }
+      });
+  }
+
   var ready = function () {
     loadComponents();
     setDashboardPanelTooltipTitle();
     setColHeaderTooltipTitle();
+    addPageDescriptionCharacterCounterText();
+    getPageDescriptionCharacterCountOnPageLoad();
+    pageDescriptionCharacterCounter();
 
   $("#practice_retired").click(function() {
       var practiceRetired = document.getElementById("practice_retired").checked;

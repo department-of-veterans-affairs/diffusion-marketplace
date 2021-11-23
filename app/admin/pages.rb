@@ -161,12 +161,43 @@ ActiveAdmin.register Page do
   end
 
   controller do
-    before_create do |page|
-
+    def create
+      create_or_update_page
     end
 
-    before_update do |page|
+    def update
+      create_or_update_page
+    end
 
+    private
+
+    def create_or_update_page
+      begin
+        page_params = params[:page]
+        page_description = page_params[:description]
+        page_id = params[:id]
+        page = page_id.present? ? Page.find(page_id) : nil
+          # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21)
+        raise StandardError.new 'Validation failed. Page description cannot be longer than 140 characters.' if page_description.length > 140
+
+        if page.nil?
+          page = Page.create!(permitted_params[:page])
+        else
+          page.update(permitted_params[:page])
+        end
+
+        respond_to do |format|
+          format.html { redirect_to admin_page_path(page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
+        end
+      rescue => e
+        respond_to do |format|
+          if params[:action] === 'update'
+            format.html { redirect_to edit_admin_page_path(page), flash: { error:  "#{e.message}"} }
+          else
+            format.html { redirect_to new_admin_page_path, flash: { error:  "#{e.message}"} }
+          end
+        end
+      end
     end
   end
 
