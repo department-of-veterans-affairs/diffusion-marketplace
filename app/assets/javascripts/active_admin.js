@@ -76,6 +76,11 @@ const MAX_DESCRIPTION_LENGTH = 140;
     });
   };
 
+  // the 'maximum length' validation in rails automatically adds the 'maxlength' attr on any corresponding page description input, but we want the user to have the freedom to exceed that number
+  function removeMaxLengthAttrFromPageDescription() {
+      $('#page_description').removeAttr('maxLength');
+  }
+
   function addPageDescriptionCharacterCounterText() {
       let hintEle = $('#page_description').next();
       $(hintEle).append(' <span class="page-description-character-counter">(0/140 characters)</span>');
@@ -117,6 +122,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
     loadComponents();
     setDashboardPanelTooltipTitle();
     setColHeaderTooltipTitle();
+    removeMaxLengthAttrFromPageDescription();
     addPageDescriptionCharacterCounterText();
     getPageDescriptionCharacterCountOnPageLoad();
     pageDescriptionCharacterCounter();
