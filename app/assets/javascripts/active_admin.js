@@ -97,7 +97,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
 
       characterCounterEle.text(characterCounterText);
 
-      if (descriptionCurrentLength === MAX_DESCRIPTION_LENGTH) {
+      if (descriptionCurrentLength >= MAX_DESCRIPTION_LENGTH) {
           characterCounterEle.css('color', CHARACTER_COUNTER_INVALID_COLOR);
       }
   }
