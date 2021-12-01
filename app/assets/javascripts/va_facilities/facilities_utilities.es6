@@ -5,11 +5,13 @@ const loadingSpinner = ".dm-loading-spinner";
 const facilitiesIndex = "#dm-va-facilities-index";
 const tableRows = ".dm-facilities-table-rows";
 const table = "#dm-va-facilities-directory-table";
-const facilitiesIndexView = ".dm-facilities-index-view";
+const facilitySearchResultsContainer = ".facility-search-results-container";
 const noResults = ".search-no-results";
 const comboBoxClearBtn = ".usa-combo-box__clear-input";
 let autoClearClicked = false;
 let isFacilityFilter = true;
+let visnSelected = false;
+let complexitySelected = false;
 
 function attachFacilitiesComboBoxListener() {
   $(facilitiesComboBox).on('change', (e) => {
@@ -28,6 +30,7 @@ function attachVisnSelectListener() {
     let visn = $(visnSelect).val();
     let complexity = $(complexitySelect).val();
     isFacilityFilter = false;
+    visnSelected = true;
     if (visn || complexity) {
       _sendAjaxRequest({ visn, complexity });
     }
@@ -40,10 +43,11 @@ function attachComplexitySelectListener() {
     let visn = $(visnSelect).val();
     let complexity = $(complexitySelect).val();
     isFacilityFilter = false;
+    complexitySelected = true;
     if (visn || complexity) {
       _sendAjaxRequest({ visn, complexity });
     }
-  })
+  });
 }
 
 function _sendAjaxRequest(data = null) {
@@ -68,10 +72,18 @@ function _sendAjaxRequest(data = null) {
         } else {
           autoClearClicked = true;
           $(comboBoxClearBtn).click();
+          // if one of the select inputs triggered this function, move focus back to whichever one was previously chosen
+          if (visnSelected) {
+              $(visnSelect).focus();
+          } else if (complexitySelected) {
+              $(complexitySelect).focus();
+          }
         }
         // reset to defaults
         autoClearClicked = false;
         isFacilityFilter = true;
+        visnSelected = false;
+        complexitySelected = false;
         _setCounterText(data.count);
         _toggleSpinners({ displaySpinner: false });
         _setReloadData(false);
@@ -105,12 +117,12 @@ function _setCounterText(count) {
 function _toggleSpinners({ displaySpinner }) {
   if (displaySpinner) {
     $(loadingSpinner).removeClass("display-none");
-    $(facilitiesIndexView).addClass("display-none");
+    $(facilitySearchResultsContainer).addClass("display-none");
     $(noResults).addClass("display-none");
     $(table).addClass("display-none");
   } else {
     $(loadingSpinner).addClass("display-none");
-    $(facilitiesIndexView).removeClass("display-none");
+    $(facilitySearchResultsContainer).removeClass("display-none");
     $(table).removeClass("display-none");
   }
 }
