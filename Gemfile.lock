@@ -162,6 +162,9 @@ GEM
       thor (~> 0.19)
     brakeman (4.8.2)
     builder (3.2.4)
+    bullet (6.1.5)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     bundler-audit (0.6.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 0.18)
@@ -532,6 +535,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unf_ext (0.0.7.7-x64-mingw32)
+    uniform_notifier (1.14.2)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -582,6 +586,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.13)
   bootsnap (= 1.4.4)
   brakeman (>= 4.7.1)
+  bullet
   bundler-audit
   bundler-leak
   byebug

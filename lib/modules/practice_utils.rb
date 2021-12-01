@@ -32,7 +32,7 @@ module PracticeUtils
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
 
       # get diffusion history facilities
-      adoptions = practice.diffusion_histories.collect{ |dh| dh.va_facility.station_number }
+      adoptions = practice.diffusion_histories.includes([:va_facility]).collect{ |dh| dh.va_facility.station_number }
       practice_hash['adoption_facilities'] = adoptions
       practice_hash['adoption_count'] = adoptions.size
       practices_array.push practice_hash
