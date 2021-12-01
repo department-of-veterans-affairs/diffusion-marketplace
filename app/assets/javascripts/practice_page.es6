@@ -182,6 +182,14 @@
         });
     }
 
+    function printPracticePage() {
+        $(document).on('keyup', '.print-practice-page', (e) => {
+            if (e.keyCode === 13) {
+                window.print();
+            }
+        });
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
@@ -192,6 +200,7 @@
         toggleAdoptionStatusModal();
         trackPracticeContact();
         seeMoreLinkText();
+        printPracticePage();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
