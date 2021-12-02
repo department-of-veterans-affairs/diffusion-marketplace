@@ -51,7 +51,11 @@ function attachComplexitySelectListener() {
 }
 
 function _sendAjaxRequest(data = null) {
-  _toggleSpinners({ displaySpinner: true })
+  _toggleSpinners({ displaySpinner: true });
+  // disable the filter inputs while the data is loading
+  $(visnSelect).attr('disabled', 'true');
+  $(complexitySelect).attr('disabled', 'true');
+  $(facilitiesComboBox).attr('disabled', 'true');
   if (_getReloadData()) {
     $.ajax({
       type: "GET",
@@ -66,9 +70,15 @@ function _sendAjaxRequest(data = null) {
         } else {
           $(noResults).removeClass("display-none");
         }
+        // enable the inputs
+        $(visnSelect).removeAttr('disabled');
+        $(complexitySelect).removeAttr('disabled');
+        $(facilitiesComboBox).removeAttr('disabled');
+        $(comboBoxClearBtn).removeAttr('disabled');
         // if facility combo box is selected
         if (isFacilityFilter) {
           _clearSelect();
+          $(facilitiesComboBox).focus();
         } else {
           autoClearClicked = true;
           $(comboBoxClearBtn).click();
