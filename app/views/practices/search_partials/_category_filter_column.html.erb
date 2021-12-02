@@ -1,5 +1,7 @@
 <div class="grid-col-12 desktop:grid-col-4">
   <% categories.each do |category| %>
-    <%= render partial: 'practices/search_partials/category_checkbox', locals: { category: category } %>
+    <% cache(category) do %>
+      <%= render partial: 'practices/search_partials/category_checkbox', locals: { category: category, parent_category: parent_category } %>
+    <% end %>
   <% end %>
 </div>

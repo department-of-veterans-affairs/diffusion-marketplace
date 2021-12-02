@@ -30,7 +30,7 @@ class Practice < ApplicationRecord
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
-    cache_keys = ["searchable_practices", "searchable_practices_a_to_z", "searchable_practices_adoptions", "searchable_practices_added", "searchable_practices_json", "searchable_public_practices_json"]
+    cache_keys = ["searchable_practices", "searchable_public_practices", "searchable_practices_json", "searchable_public_practices_json"]
     cache_keys.each do |cache_key|
       Rails.cache.delete(cache_key)
     end
@@ -62,29 +62,16 @@ class Practice < ApplicationRecord
     clear_searchable_cache if self.reset_searchable_cache
   end
 
-  def self.searchable_practices(sort = 'a_to_z')
-    if sort == 'a_to_z'
-      Rails.cache.fetch('searchable_practices_a_to_z') do
-        Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
-      end
-    elsif sort == 'adoptions'
-      Rails.cache.fetch('searchable_practices_adoptions') do
-        Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
-      end
-    elsif sort == 'added'
-      Rails.cache.fetch('searchable_practices_added') do
-        Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
-      end
-    elsif sort == nil
-      Rails.cache.fetch('searchable_practices') do
-        Practice.sort_by_retired.get_with_categories_and_adoptions_ct
-      end
+  def self.searchable_practices
+    Rails.cache.fetch('searchable_practices') do
+      Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
     end
   end
 
-  def self.searchable_public_practices(sort = 'a_to_z')
-    practices = self.searchable_practices(sort)
-    practices.select { |pr| pr.is_public }
+  def self.searchable_public_practices
+    Rails.cache.fetch('searchable_public_practices') do
+      Practice.public_facing.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
+    end
   end
 
   def has_facility?

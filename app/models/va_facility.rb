@@ -17,7 +17,7 @@ class VaFacility < ApplicationRecord
   scope :get_relevant_attributes, -> {
     order(:street_address_state, :official_station_name).select(
       :street_address_state, :official_station_name, :id, :visn_id, :common_name, :station_number, :latitude,
-      :longitude, :slug, :fy17_parent_station_complexity_level, :rurality, :classification, :station_phone_number).includes(:visn)
+      :longitude, :slug, :fy17_parent_station_complexity_level, :rurality, :classification, :station_phone_number)
   }
 
   def practices_created_count
