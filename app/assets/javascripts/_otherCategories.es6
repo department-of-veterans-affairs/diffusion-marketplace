@@ -85,12 +85,9 @@
     }
 
     function executeOtherCategoryFunctions() {
-        // omit the following functions on the search page:
-        if (window.location.pathname !== '/search') {
-            attachShowOtherClinicalCategoryFields();
-            attachShowOtherOperationalCategoryFields();
-            attachShowOtherStrategicCategoryFields();
-        }
+        attachShowOtherClinicalCategoryFields();
+        attachShowOtherOperationalCategoryFields();
+        attachShowOtherStrategicCategoryFields();
         addAllCheckBoxListener('.all-clinical-checkbox', '.clinical-checkbox');
         addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
         addAllCheckBoxListener('.all-strategic-checkbox', '.strategic-checkbox');
