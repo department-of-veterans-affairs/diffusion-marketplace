@@ -10,7 +10,7 @@ class PracticesController < ApplicationController
   before_action :set_office_data, only: [:show]
   before_action :set_visn_data, only: [:show]
   before_action :set_initiating_facility_other, only: [:show]
-  before_action :authenticate_user!, except: [:show, :search, :index, :explore, :explore_practices]
+  before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: :create
   before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
@@ -158,65 +158,17 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices(nil) : Practice.searchable_practices(nil)
+    @visn_grouped_facilities = @va_facilities.includes([:visn]).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
+    @practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices : Practice.searchable_practices
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = cached_json_practices
     @diffusion_histories = []
     @practices.each do |p|
-      p.diffusion_histories.each do |dh|
+      p.diffusion_histories.includes([:va_facility]).each do |dh|
         @diffusion_histories << {practice_id: dh.practice_id, facility_number: dh.va_facility.station_number}
       end
     end
-    @parent_categories = Category.get_parent_categories
-  end
-
-  # GET /explore
-  def explore
-    @categories = Category.with_practices
-    practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices('a_to_z') : Practice.searchable_practices('a_to_z')
-    @pagy_practices = pagy_array(
-      practices,
-      items: 12
-    )
-    @pagy_info = @pagy_practices[0]
-    @practices = @pagy_practices[1]
-    @pr_count = practices.size
-
-    respond_to do |format|
-      format.html
-    end
-  end
-
-  # POST /explore
-  def explore_practices
-    @categories = Category.with_practices
-    page = 1
-    page = params[:page].to_i if params[:page].present?
-
-    @sort_option = params[:sort_option] || 'a_to_z'
-    @cat_filters = params[:categories] ? params[:categories].map { |cat| cat.to_i } : []
-    practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices(@sort_option) : Practice.searchable_practices(@sort_option)
-    if @cat_filters.length > 0
-      filtered_practices = practices.select { |pr| !(pr.category_ids & @cat_filters).empty? }
-      practices = filtered_practices
-    end
-
-    @pagy_practices = pagy_array(
-      practices,
-      items: 12,
-      page: page
-    )
-    @pagy_info = @pagy_practices[0]
-    @practices = @pagy_practices[1]
-    practice_cards_html = ''
-    @practices.each do |pr|
-      pr_html = render_to_string('shared/_practice_card', layout: false, locals: { practice: pr })
-      practice_cards_html += pr_html
-    end
-    respond_to do |format|
-      format.html
-      format.json { render :json => { practice_cards_html: practice_cards_html, count: practices.size, next: @pagy_info.next } }
-    end
+    @parent_categories = Category.get_cached_categories_grouped_by_parent
   end
 
   # POST /practices/1/favorite.js

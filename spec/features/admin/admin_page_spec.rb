@@ -32,6 +32,20 @@ describe 'Page Builder', type: :feature do
 
       expect(page).to have_content('Slug has already been taken')
     end
+
+    it 'Should not allow the user to add a description that is longer than 140 characters' do
+      visit_pages_tab_of_admin_panel
+      click_link 'New Page'
+
+      fill_in 'URL', with: 'test-page-1'
+      fill_in 'Description', with: 'In vehicula leo vitae mattis eleifend. Praesent volutpat ipsum et tincidunt laoreet. Nullam mattis rutrum posuere. Nunc leo neque, molestie nec'
+      select 'programming', from: 'page_page_group_id'
+      find('input[name="commit_1"]').click
+
+      expect(page).to have_content('Validation failed. Page description cannot be longer than 140 characters.')
+      expect(Page.last.slug).to_not eq('test-page-1')
+      expect(Page.last.slug).to eq('test-page')
+    end
   end
 
   it 'Should make the page' do

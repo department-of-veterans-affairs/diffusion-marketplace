@@ -367,7 +367,7 @@ ActiveAdmin.register Practice do
           PracticeEditor.create_and_invite(practice, practice.user)
         end
         respond_to do |format|
-          format.html { redirect_to admin_practice_path(practice), notice: "Innovation was successfully updated." }
+          format.html { redirect_to admin_practice_path(practice), notice: "Innovation was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
         end
       rescue => e
         respond_to do |format|

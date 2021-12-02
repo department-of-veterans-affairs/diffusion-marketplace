@@ -48,4 +48,41 @@ describe 'Admin Dashboard Categories Tab', type: :feature do
 
     expect(page).to have_content('Category was successfully updated.')
   end
+
+  describe 'Cache' do
+    it 'Should be reset if a category has been changed' do
+      add_categories_to_cache
+      visit '/admin/categories'
+      all('.edit_link').first.click
+      select('First Parent Category', :from => 'category_parent_category_id')
+      fill_in('Name', with: 'Completely updated category')
+      click_button('Update Category')
+      expect(cache_keys).not_to include("categories")
+      add_categories_to_cache
+      find('.search-filters-accordion-button').click
+      expect(page).to have_content('Completely update...')
+    end
+
+    it 'Should be reset if a new category is created through the admin panel' do
+      add_categories_to_cache
+      visit '/admin/categories'
+      click_link('New Category')
+      fill_in('Name', with: 'Newest Category')
+      select('Second Parent Category', :from => 'category_parent_category_id')
+      click_button('Create Category')
+      expect(cache_keys).not_to include("categories")
+      add_categories_to_cache
+      find('.search-filters-accordion-button').click
+      expect(page).to have_content('Newest Category')
+    end
+  end
+
+  def add_categories_to_cache
+    visit '/search'
+    expect(cache_keys).to include("categories")
+  end
+
+  def cache_keys
+    Rails.cache.redis.keys
+  end
 end

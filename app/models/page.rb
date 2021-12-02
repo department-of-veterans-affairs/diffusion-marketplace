@@ -5,7 +5,8 @@ class Page < ApplicationRecord
   accepts_nested_attributes_for :page_components, allow_destroy: true
   validates :slug, presence: true, length: {maximum: 255}
   validates :title, presence: true
-  validates :description, presence: true
+  # prevent DB creation of a page that has a description over 140 characters long
+  validates :description, presence: true, length: { maximum: 140 }
   SLUG_FORMAT = /^[a-zA-Z0-9_-]*$*/
   validates_uniqueness_of :slug,
                           scope: :page_group_id,

@@ -87,6 +87,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rails-erd'
   gem 'letter_opener'
+  gem 'bullet'
 
   # To be able to automagically generate domain model ER diagrams, https://github.com/amatsuda/erd
   # Requires graphviz installed locally

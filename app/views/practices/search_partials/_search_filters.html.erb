@@ -12,7 +12,7 @@
 
       <div class="grid-row originating-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
         <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Originating location</p>
-        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select'} %>
+        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
       </div>
     </div>
   </fieldset>
@@ -30,7 +30,7 @@
 
       <div class="grid-row adopting-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
         <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Adopting location</p>
-        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select'} %>
+        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
       </div>
     </div>
   </fieldset>
@@ -51,24 +51,21 @@
           Categories
           <%= render partial: 'shared/parent_category_modal' %>
         </p>
-        <% @parent_categories.each do |pc| %>
+        <% @parent_categories.each do |parent_category, sub_categories| %>
           <%
-            non_other_sub_categories = pc.sub_categories.where(is_other: false).order_by_name
-            cat_placeholders = []
-            if non_other_sub_categories.any?
-              cat_placeholders << [Category.new(name: "All #{pc.name.downcase}", parent_category: pc)]
+            if sub_categories.any?
+              categories = [{name: "All #{parent_category.name.downcase}", parent_category: parent_category, id: parent_category.name}] + sub_categories
+            else
+              categories = []
             end
-
-            categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories : []
-
             sliced_categories = split_data_into_three_columns(categories)
           %>
 
-          <% if non_other_sub_categories.any? %>
+          <% if sub_categories.any? %>
             <div class="grid-row grid-col-12 category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex padding-left-0 padding-right-0">
-              <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1 desktop:margin-bottom-0"><%= pc.name %></p>
+              <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1 desktop:margin-bottom-0"><%= parent_category.name %></p>
               <% sliced_categories.each_with_index do |sc, i| %>
-                <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sc, column: i } unless i === 3 %>
+                <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sc, column: i, parent_category: parent_category } unless i === 3 %>
               <% end %>
             </div>
           <% end %>
