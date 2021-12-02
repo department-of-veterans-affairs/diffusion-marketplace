@@ -71,4 +71,14 @@ Rails.application.configure do
       },
       s3_protocol: 'https'
   }
+
+  # bullet gem - warns if queries can be optimized
+  # for configurations options see: https://github.com/flyerhzm/bullet/#configuration
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.skip_html_injection = false
+  end
 end

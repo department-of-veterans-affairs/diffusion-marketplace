@@ -22,7 +22,6 @@ Rails.application.config.assets.precompile += %w(
                                                   _introduction_image_editor.js
                                                   _overview_image_editor.js
                                                   _usa_file_input.js
-                                                  _explore.js
                                                   practice_editor_contact.js
                                                   practice_editor_timeline.js
                                                   practice_editor_origin.js

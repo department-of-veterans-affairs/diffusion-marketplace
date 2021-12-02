@@ -1,10 +1,12 @@
 class ApplicationController < ActionController::Base
   include NavigationHelper
+  include StatusHelper
   include Pagy::Backend
 
   protect_from_forgery with: :exception
 
   before_action :setup_breadcrumb_navigation
+  before_action :reload_turbolinks
   before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
   before_action :log_in_va_user
@@ -13,6 +15,11 @@ class ApplicationController < ActionController::Base
   before_action :set_visitor_props
 
   protect_from_forgery with: :exception, prepend: true
+
+  def reload_turbolinks
+    @reload_turbolinks = revision.present? && Rails.cache.redis.keys('revision').present? ? revision != cached_revision : true
+    reset_revision_cache if @reload_turbolinks
+  end
 
   def authenticate_active_admin_user!
     authenticate_user!
