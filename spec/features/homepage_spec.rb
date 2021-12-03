@@ -77,7 +77,6 @@ describe 'Homepage', type: :feature do
       expect(page).to have_content(@practice.name)
       expect(page).to have_content('Bookmark')
       expect(page).to have_content('Share')
-      expect(page).to have_content('Subscribe')
       expect(page).to have_content('Print')
     end
   end
