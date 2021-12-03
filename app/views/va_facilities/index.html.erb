@@ -14,7 +14,7 @@
           Facilities
         </h1>
         <span>Looking for a full list of VISNs? <a class="usa-link" href="<%= visns_path %>">Click here</a></span>
-        <div class="dm-facilities-index-view display-none">
+        <div class="dm-facilities-index-view">
           <div class="margin-top-5 margin-bottom-3 grid-col-12">
             <div class="grid-row grid-gap">
               <div class="grid-col-5">
@@ -28,7 +28,7 @@
               </div>
             </div>
           </div>
-          <div class="margin-bottom-0">
+          <div class="margin-bottom-0 facility-search-results-container display-none">
             <span class="dm-results-count">
             </span>
             <%= render partial: 'va_facilities/index_table' %>
