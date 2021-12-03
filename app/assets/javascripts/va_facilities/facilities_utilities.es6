@@ -75,6 +75,7 @@ function _sendAjaxRequest(data = null) {
         $(complexitySelect).removeAttr('disabled');
         $(facilitiesComboBox).removeAttr('disabled');
         $(comboBoxClearBtn).removeAttr('disabled');
+        $('.usa-combo-box__toggle-list').removeAttr('disabled');
         // if facility combo box is selected
         if (isFacilityFilter) {
           _clearSelect();
