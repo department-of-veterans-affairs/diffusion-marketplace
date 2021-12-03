@@ -349,6 +349,29 @@ describe 'Search', type: :feature do
         expect(page).to have_content(@practice12.name)
       end
 
+      it 'should select all subcategories when selecting the parent category' do
+        visit_search_page
+        toggle_filters_accordion
+        select_category('.cat-all-strategic-label')
+        expect(find("#cat-2-input", visible: false)).to be_checked
+        expect(find("#cat-3-input", visible: false)).to be_checked
+        expect(find("#cat-4-input", visible: false)).to be_checked
+        expect(find("#cat-5-input", visible: false)).to be_checked
+        expect(find("#cat-6-input", visible: false)).to be_checked
+        update_results
+        expect(page).to have_content('7 results')
+        toggle_filters_accordion
+        select_category('.cat-2-label')
+        expect(find("#cat-all-strategic-input", visible: false)).to_not be_checked
+        expect(find("#cat-2-input", visible: false)).to_not be_checked
+        expect(find("#cat-3-input", visible: false)).to be_checked
+        expect(find("#cat-4-input", visible: false)).to be_checked
+        expect(find("#cat-5-input", visible: false)).to be_checked
+        expect(find("#cat-6-input", visible: false)).to be_checked
+        update_results
+        expect(page).to have_content('5 results')
+      end
+
       it 'should collect practices that match ALL of the conditions if the user selects filters AND uses the search input' do
         # Filter practices down to where there are two matches
         visit_search_page
