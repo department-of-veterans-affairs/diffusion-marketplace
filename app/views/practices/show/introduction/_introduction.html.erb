@@ -24,33 +24,28 @@
         Last updated <%= timeago(updated_at) %>
       </p>
       <%# practice actions %>
-      <div class="display-flex flex-wrap margin-bottom-2">
-        <%# bookmark %>
-        <% if current_user.present? %>
-          <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Bookmark <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="dm-favorite-practice-link dm-icon-link text-no-underline font-sans-xs text-primary-vivid desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
-            <i class="<%= current_user.favorite_practice_ids.include?(@practice.id) ? 'fas' : 'far '%> fa-bookmark dm-favorite-icon-<%= @practice.id %>  margin-right-05"></i>
-            <span class="dm-favorite-practice-link-text">
-              <%= current_user.favorite_practice_ids.include?(@practice.id) ? 'Bookmarked' : 'Bookmark' %>
-            </span>
-          </a>
-        <% end %>
-        <%# share %>
-        <a target="_blank" tabindex="-1" aria-hidden="true"
-        aria-label="Share <%= @practice.name %>" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="dm-icon-link text-no-underline text-primary-vivid font-sans-xs desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
-          <i class="far fa-share-square margin-right-05"></i>
-          <span>Share</span>
+      <%# bookmark %>
+      <% if current_user.present? %>
+        <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Bookmark <%= @practice.name %>"
+           class="dm-favorite-practice-link dm-icon-link text-no-underline display-inline-block font-sans-xs text-primary-vivid margin-bottom-2 margin-right-5">
+          <i class="<%= current_user.favorite_practice_ids.include?(@practice.id) ? 'fas' : 'far '%> fa-bookmark dm-favorite-icon-<%= @practice.id %>  margin-right-05"></i>
+          <span class="dm-favorite-practice-link-text">
+            <%= current_user.favorite_practice_ids.include?(@practice.id) ? 'Bookmarked' : 'Bookmark' %>
+          </span>
         </a>
-        <%# subscribe %>
-        <span class="font-sans-xs text-no-underline text-gray-50 desktop:grid-col-3 grid-col-6 margin-bottom-0">
-          <i class="far fa-bell margin-right-05"></i>Subscribe
-        </span>
-        <%# print %>
-        <a class="dm-icon-link text-no-underline font-sans-xs text-primary-vivid desktop:grid-col-3 grid-col-6 margin-bottom-0"
-        onclick="window.print(); return false;">
-          <i class="fas fa-print margin-right-05"></i>
-          <span>Print</span>
-        </a>
-      </div>
+      <% end %>
+      <%# share %>
+      <a target="_blank" aria-label="Share <%= @practice.name %> via email" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>"
+         class="dm-icon-link text-no-underline display-inline-block text-primary-vivid font-sans-xs margin-bottom-2 margin-right-5">
+        <i class="far fa-share-square margin-right-05"></i>
+        <span>Share</span>
+      </a>
+      <%# print %>
+      <a class="dm-icon-link text-no-underline display-inline-block font-sans-xs text-primary-vivid margin-bottom-2 print-practice-page" onclick="window.print(); return false;"
+         aria-label="Print page for <%= @practice.name %>" tabindex="0">
+        <i class="fas fa-print margin-right-05"></i>
+        <span>Print</span>
+      </a>
       <%# practice summary %>
       <p class="margin-bottom-1 line-height-26">
         <%= safe_join(raw(@practice.summary).split("\r\n"), tag(:br)) %>
