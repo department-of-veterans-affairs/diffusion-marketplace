@@ -1,7 +1,5 @@
 <div class="grid-row padding-x-3 padding-bottom-0 desktop:padding-x-0">
 <!--  <fieldset class="padding-0">-->
-<!--<<<<<<< HEAD-->
-<!--=======-->
 <!--    <legend class="usa-sr-only">Originating Facility Filter</legend>-->
 <!--    <div class="bg-gray-5 margin-bottom-1 desktop:margin-bottom-0 desktop:padding-bottom-2px">-->
 <!--      <h2 class="usa-accordion__heading">-->
@@ -38,7 +36,6 @@
 <!--  </fieldset>-->
 
   <fieldset class="padding-0">
-<!-- >>>>>>> master-->
     <legend class="usa-sr-only">Category Filter</legend>
     <div class="bg-gray-5 desktop:padding-bottom-2px">
       <h2 class="usa-accordion__heading">
@@ -89,7 +86,8 @@
 
       <div class="grid-row originating-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
         <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Originating location</p>
-        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select'} %>
+        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
+        <%#= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select'} %>
       </div>
     </div>
   </fieldset>
@@ -107,7 +105,9 @@
 
       <div class="grid-row adopting-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
         <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Adopting location</p>
-        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select'} %>
+        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
+
+        <%#= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select'} %>
       </div>
     </div>
   </fieldset>
