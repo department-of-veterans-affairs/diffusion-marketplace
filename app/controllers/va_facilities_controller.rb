@@ -10,9 +10,9 @@ class VaFacilitiesController < ApplicationController
 
   def load_facilities_index_rows
     if params[:facility].present?
-      @facilities = [VaFacility.cached_va_facilities.find(params[:facility])]
+      @facilities = [VaFacility.cached_va_facilities.includes([:visn]).find(params[:facility])]
     else
-      @facilities = VaFacility.cached_va_facilities.get_relevant_attributes
+      @facilities = VaFacility.cached_va_facilities.includes([:visn]).get_relevant_attributes
 
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })

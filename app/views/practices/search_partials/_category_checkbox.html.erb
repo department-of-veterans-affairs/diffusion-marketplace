@@ -1,8 +1,7 @@
 <%
-  parent_category = category.parent_category
   parent_category_name = parent_category.name.downcase
-  category_name = category.name
-  category_id = category.id.nil? ? "#{category_name.split(' ').first.downcase}-#{parent_category_name}" : category.id
+  category_name = category[:name]
+  category_id = category[:id].is_a?(String) ? "#{category_name.split(' ').first.downcase}-#{parent_category_name}" : category.id
   hyphenated_category_name = category_name.split(' ').join('-').downcase
 %>
 

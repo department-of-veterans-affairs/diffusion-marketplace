@@ -95,7 +95,6 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     it 'should exist' do
       expect(page).to have_content('Bookmark')
       expect(page).to have_content('Share')
-      expect(page).to have_content('Subscribe')
       expect(page).to have_content('Print')
     end
 
