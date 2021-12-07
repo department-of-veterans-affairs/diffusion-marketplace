@@ -1,5 +1,43 @@
 <div class="grid-row padding-x-3 padding-bottom-0 desktop:padding-x-0">
   <fieldset class="padding-0">
+    <legend class="usa-sr-only">Category Filter</legend>
+    <div class="bg-gray-5 desktop:padding-bottom-2px">
+      <h2 class="usa-accordion__heading">
+        <button class="usa-accordion__button mobile-category-accordion desktop:display-none"
+                aria-expanded="false"
+                type="button">
+          Category
+        </button>
+      </h2>
+
+      <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
+        <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block margin-top-2">
+          Categories
+          <%= render partial: 'shared/parent_category_modal' %>
+        </p>
+        <% @parent_categories.each do |parent_category, sub_categories| %>
+          <%
+            if sub_categories.any?
+              categories = [{name: "All #{parent_category.name.downcase}", parent_category: parent_category, id: parent_category.name}] + sub_categories
+            else
+              categories = []
+            end
+            sliced_categories = split_data_into_three_columns(categories)
+          %>
+          <% if sub_categories.any? %>
+            <div class="grid-row grid-col-12 category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex padding-left-0 padding-right-0">
+              <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1 desktop:margin-bottom-0"><%= parent_category.name %></p>
+              <% sliced_categories.each_with_index do |sc, i| %>
+                <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sc, column: i, parent_category: parent_category } unless i === 3 %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="padding-0">
     <legend class="usa-sr-only">Originating Facility Filter</legend>
     <div class="bg-gray-5 margin-bottom-1 desktop:margin-bottom-0 desktop:padding-bottom-2px">
       <h2 class="usa-accordion__heading">
@@ -31,45 +69,6 @@
       <div class="grid-row adopting-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
         <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Adopting location</p>
         <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
-      </div>
-    </div>
-  </fieldset>
-
-  <fieldset class="padding-0">
-    <legend class="usa-sr-only">Category Filter</legend>
-    <div class="bg-gray-5 desktop:padding-bottom-2px">
-      <h2 class="usa-accordion__heading">
-        <button class="usa-accordion__button mobile-category-accordion desktop:display-none"
-                aria-expanded="false"
-                type="button">
-          Category
-        </button>
-      </h2>
-
-      <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
-        <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block margin-top-2">
-          Categories
-          <%= render partial: 'shared/parent_category_modal' %>
-        </p>
-        <% @parent_categories.each do |parent_category, sub_categories| %>
-          <%
-            if sub_categories.any?
-              categories = [{name: "All #{parent_category.name.downcase}", parent_category: parent_category, id: parent_category.name}] + sub_categories
-            else
-              categories = []
-            end
-            sliced_categories = split_data_into_three_columns(categories)
-          %>
-
-          <% if sub_categories.any? %>
-            <div class="grid-row grid-col-12 category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex padding-left-0 padding-right-0">
-              <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1 desktop:margin-bottom-0"><%= parent_category.name %></p>
-              <% sliced_categories.each_with_index do |sc, i| %>
-                <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sc, column: i, parent_category: parent_category } unless i === 3 %>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
       </div>
     </div>
   </fieldset>

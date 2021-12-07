@@ -338,3 +338,19 @@ to confirm the class DOES NOT EXIST before adding a new class
 .maxw-none {
   @include u-maxw('none', !important);
 }
+
+.usa-nav__primary button[aria-expanded="false"], .usa-nav__primary button[aria-expanded="true"]{
+  background-size: 10px 10px;
+  background-position: right 8% top 45%;
+}
+
+.usa-nav__primary button[aria-expanded="false"]{
+  background-image: asset_url("header-nav-down-arrow.svg") !important;
+
+  &:hover{
+    background-image: asset_url("header-nav-down-arrow-hover.svg") !important;
+  }
+}
+.usa-nav__primary button[aria-expanded="true"]{
+  background-image: asset_url("header-nav-up-arrow.svg") !important;
+}
