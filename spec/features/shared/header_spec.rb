@@ -140,6 +140,15 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       expect(page).to have_content('1 result')
       expect(page).to have_content('A public practice')
       expect(page).to have_current_path('/search?query=test')
+
+      # make sure all practices are shown on empty header search
+      visit '/'
+      within('header.usa-header') do
+        find('#dm-navbar-search-button').click
+      end
+
+      expect(page).to have_content('A public practice')
+      expect(page).to have_content('Project HAPPEN')
     end
   end
 
