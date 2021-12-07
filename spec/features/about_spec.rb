@@ -34,6 +34,7 @@ describe 'About us page', type: :feature do
     it 'should take the user to the search page when they click on the \'browsing all innovations\' link under the \'How do I use the Diffusion Marketplace?\' question' do
       all('.usa-accordion__heading')[4].click
       click_link('browsing all innovations')
+      # should show all published/enabled/approved practices
       expect(page).to have_content('Search')
       expect(page).to have_content('Project HAPPEN')
       expect(page).to have_content('Best Practice Ever')
