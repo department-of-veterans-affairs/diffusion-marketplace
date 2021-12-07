@@ -219,6 +219,7 @@ function searchPracticesPage() {
 
     // Template out the search results
     function buildSearchResults(results, sortOption) {
+        console.log('results', results);
         $(SPINNER).addClass('display-none');
         var tmpResults = results.sort(sortOption);
 
@@ -643,14 +644,29 @@ function searchPracticesPage() {
             if (searchLocation[0] === '?filter_by' && maturityLevels.includes(searchLocation[1])) {
                 searchByFilterTerm('maturity_level', searchLocation[1])
             } else {
-                results = [];
+                // on an empty search, return all of the practices, but in the fuse format
+                results = fuse._docs.map(item => {
+                    return {
+                        item,
+                        matches: [],
+                        score: null
+                    };
+                });
             }
         }
 
-        // Get the results and default to filtering based on score
-        buildSearchResults(results, sortByScore);
-        // Reset the select input to default
-        $(SORT_EL).prop('selectedIndex',0);
+        // Get the results and then filter them
+        if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
+            // on an empty search, sort by most adoptions and disable the score sorting option, since the score for each result is null
+            buildSearchResults(results, sortByAdoptionCounts);
+            $(SORT_EL).children().first().attr('disabled', 'true');
+            $(SORT_EL).prop('selectedIndex', 2);
+        } else {
+            buildSearchResults(results, sortByScore);
+            // re-enable the score sorting option
+            $(SORT_EL).children().first().removeAttr('disabled');
+            $(SORT_EL).prop('selectedIndex', 0);
+        }
 
         // Print the number of results for the query
         resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
@@ -893,7 +909,7 @@ function searchPracticesPage() {
         } else {
             searchField.value = '';
         }
-    } else if (searchLocation[0] === '?filter_by') {
+    } else if ((searchLocation[0] === '?filter_by') || (window.location.pathname === '/search' && window.location.search === '')) {
         hideResultsSectionElAndShowSpinner();
         search('');
     }
