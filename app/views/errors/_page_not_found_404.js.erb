@@ -1,7 +1,6 @@
 /* In order to prevent issues with turbolinks when clicking on the browser's back button after navigating away from the 404 page, disable it. Feel
   free to comment out this code to see how it affects the page. */
 function disableTurbolinksForAllLinks() {
-    alert('inside turbo links shut down');
     $('a').each(function() {
         $(this).attr('data-turbolinks', 'false');
     });
