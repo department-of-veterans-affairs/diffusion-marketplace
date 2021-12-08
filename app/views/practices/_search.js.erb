@@ -659,7 +659,7 @@ function searchPracticesPage() {
 
         // Get the results and then filter them
         if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
-            // on an empty search, sort by most adoptions and disable the score sorting option, since the score for each result is null
+            // on an empty search or filtered search, sort by most adoptions and disable the score sorting option, since the score for each result is the same
             buildSearchResults(results, sortByAdoptionCounts);
             $(SORT_EL).children().first().attr('disabled', 'true');
             $(SORT_EL).prop('selectedIndex', 2);
