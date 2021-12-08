@@ -13,6 +13,7 @@ if (window.location.pathname === '/search') {
     var SEARCH_RESULTS = '#search-results';
     var SORT_EL = '#search_sort_option';
     var isBlankSearch = false;
+    var NO_SEARCH_RESULTS_TEXT = '.no-query-results-p';
     // Add Namespace for scroll position
     var pagePosition = {
         original: 0,
@@ -269,13 +270,11 @@ function searchPracticesPage() {
             if ($(NO_QUERY_CONTENT).hasClass('display-none')) {
                 $(NO_QUERY_CONTENT).removeClass('display-none');
             }
-            if (isBlankSearch) {
-                $('.no-query-p').removeClass('display-none');
-                $('.no-query-results-p').addClass('display-none');
+            if (isBlankSearch && searchLocation[0] !== '?filter_by') {
+                $(NO_SEARCH_RESULTS_TEXT).addClass('display-none');
             }
-            else{
-                $('.no-query-p').addClass('display-none');
-                $('.no-query-results-p').removeClass('display-none');
+            else {
+                $(NO_SEARCH_RESULTS_TEXT).removeClass('display-none');
             }
         }
     }
@@ -640,8 +639,12 @@ function searchPracticesPage() {
             searchWithOnlyAdoptingFacility();
         } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
             var maturityLevels = ['emerging', 'replicate', 'scale'];
-            if (searchLocation[0] === '?filter_by' && maturityLevels.includes(searchLocation[1])) {
-                searchByFilterTerm('maturity_level', searchLocation[1])
+            if (searchLocation[0] === '?filter_by') {
+                if (maturityLevels.includes(searchLocation[1])) {
+                    searchByFilterTerm('maturity_level', searchLocation[1]);
+                } else {
+                    results = [];
+                }
             } else {
                 // on an empty search, return all of the practices, but in the fuse format
                 results = fuse._docs.map(item => {
