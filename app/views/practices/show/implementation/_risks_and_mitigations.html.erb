@@ -11,9 +11,9 @@
     <% @practice.risk_mitigations.each_with_index do |rm, index| %>
       <tr>
         <% rm.risks.each do |risk| %>
-          <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <th class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0" scope="row">
             <%= risk.description %>
-          </td>
+          </th>
         <% end %>
         <% rm.mitigations.each do |mitigation| %>
           <td class="font-sans-xs-1 text-top line-height-sans-505">

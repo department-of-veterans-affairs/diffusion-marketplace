@@ -736,7 +736,7 @@ li.small-disc:before {
       }
 
       &:last-child {
-        td {
+        th, td {
           border-bottom: none !important;
         }
       }
