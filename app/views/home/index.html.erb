@@ -18,7 +18,7 @@
               <p class="usa-prose-body text-white margin-bottom-2">
                 We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.
               </p>
-              <%= link_to 'Learn more', about_path, class: 'dm-alt-link-gold' %>
+              <%= link_to 'Learn more', about_path, class: 'dm-button--unstyled-gold' %>
             </div>
             <div class="homepage-welcome-banner-image-container text-white grid-col-12 tablet:grid-col-6 desktop:grid-col-5 desktop:padding-left-105">
               <%= image_tag(
@@ -47,7 +47,7 @@
       </div>
     </form>
     <p class="usa-prose-body">
-      <%= link_to 'Browse all innovations', search_path, class: 'usa-link' %>
+      <%= link_to 'Browse all innovations', search_path, class: 'dm-button--unstyled-primary' %>
     </p>
   </section>
   <%= render partial: 'home/popular_categories_section', locals: { section_name: 'popular categories' } if @popular_categories.any? %>
@@ -87,7 +87,7 @@
           <p class="usa-prose-body margin-bottom-2 text-white">
             Are you working on an innovation that’s making a difference at VA? Submit a nomination for the innovation to be included on the Diffusion Marketplace.
           </p>
-          <a class="dm-alt-link-light display-inline-block margin-bottom-8 desktop:margin-bottom-0" href="<%= nominate_an_innovation_path %>">Start nomination</a>
+          <a class="dm-button--unstyled-primary-light display-inline-block margin-bottom-8 desktop:margin-bottom-0" href="<%= nominate_an_innovation_path %>">Start nomination</a>
         </div>
       </div>
     </div>

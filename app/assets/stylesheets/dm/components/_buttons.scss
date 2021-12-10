@@ -137,6 +137,34 @@
   }
 }
 
+.dm-button--unstyled-gold {
+  @extend .usa-button;
+  @extend .usa-button--unstyled;
+  @include u-text($theme-color-accent-warm, !important);
+
+  &:hover {
+    @include u-text($theme-color-accent-warm-dark, !important);
+  }
+
+  &:active {
+    @include u-text($theme-color-accent-warm-darker, !important);
+  }
+}
+
+.dm-button--unstyled-primary-light {
+  @extend .usa-button;
+  @extend .usa-button--unstyled;
+  @include u-text($theme-color-primary-light, !important);
+
+  &:hover {
+    @include u-text($theme-color-primary, !important);
+  }
+
+  &:active {
+    @include u-text($theme-link-color, !important);
+  }
+}
+
 .dm-modal-close-button {
   @include u-bg($theme-color-dm-white, !important);
   @include u-text('base-darkest', !important);
