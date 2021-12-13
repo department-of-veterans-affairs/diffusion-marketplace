@@ -762,16 +762,16 @@ li.small-disc:before {
 
     &.dm-resource-table {
       tr {
-        td:first-child {
+        th {
           width: 150px;
         }
 
-        td:nth-child(2) {
+        td {
           padding-left: 1.75rem !important;
         }
 
         &:first-child {
-          td {
+          th, td {
             border-top-color: color($theme-color-dm-white) !important;
           }
         }
