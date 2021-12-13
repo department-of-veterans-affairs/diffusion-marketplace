@@ -1,6 +1,6 @@
 <% provide :head_tags do %>
   <%= javascript_tag do %>
-    <%= render partial: 'page_not_found_404', formats: [:js] %>
+    <%= render partial: 'errors', formats: [:js] %>
   <% end %>
 <% end %>
 
