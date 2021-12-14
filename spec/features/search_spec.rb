@@ -171,21 +171,45 @@ describe 'Search', type: :feature do
   end
 
   describe 'initial page load' do
-    it 'Should display certain text if the user navigates to the search page with no query' do
+    it 'Should display all published/enabled/approved practices if the user navigates to the search page with no query' do
       visit_search_page
-      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
-
-      # Make sure the initial text is not present when there is a query
-      visit '/search?query=text'
-      expect(page).to_not have_content('Enter a search term or use the filters to find matching innovations')
+      expect(page).to have_content('Load more')
+      click_button('Load more')
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice3.name)
+      expect(page).to have_content(@practice4.name)
+      expect(page).to have_content(@practice5.name)
+      expect(page).to have_content(@practice6.name)
+      expect(page).to have_content(@practice7.name)
+      expect(page).to have_content(@practice8.name)
+      expect(page).to have_content(@practice9.name)
+      expect(page).to have_content(@practice10.name)
+      expect(page).to have_content(@practice11.name)
+      expect(page).to have_content(@practice12.name)
+      expect(page).to have_content(@practice13.name)
+      expect(page).to have_content(@practice14.name)
     end
   end
 
   describe 'results' do
-    it 'should display empty query and filters message' do
+    it 'should display all published/enabled/approved practices if the user clicks on the search button with no query or filters' do
       visit '/'
       find('#dm-navbar-search-button').click
-      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
+      expect(page).to have_content('Load more')
+      click_button('Load more')
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice3.name)
+      expect(page).to have_content(@practice4.name)
+      expect(page).to have_content(@practice5.name)
+      expect(page).to have_content(@practice6.name)
+      expect(page).to have_content(@practice7.name)
+      expect(page).to have_content(@practice8.name)
+      expect(page).to have_content(@practice9.name)
+      expect(page).to have_content(@practice10.name)
+      expect(page).to have_content(@practice11.name)
+      expect(page).to have_content(@practice12.name)
+      expect(page).to have_content(@practice13.name)
+      expect(page).to have_content(@practice14.name)
     end
 
     it 'should display certain text if no matches are found' do
@@ -625,12 +649,6 @@ describe 'Search', type: :feature do
 
     it 'should function appropriately' do
       visit_search_page
-
-      # Make sure the overlay is working properly
-      click_button('Filters')
-      expect(page).to have_selector('.no-query-p', visible: false)
-      find('#close_filters_modal').click
-      expect(page).to have_selector('.no-query-p', visible: true)
 
       click_button('Filters')
       click_button('Originating facility')

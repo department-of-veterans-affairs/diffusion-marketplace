@@ -120,8 +120,8 @@ Rails.application.routes.draw do
   get '/facilities/:id/update_practices_adopted_at_facility', action: 'update_practices_adopted_at_facility', controller: 'va_facilities'
   get '/about', controller: 'about', action: 'index', as: 'about'
   post '/about', controller: 'about', action: 'email'
-
   match '/404', to: 'errors#page_not_found_404', via: :all
+  match '/500', to: 'errors#internal_server_error_500', via: :all
 
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
