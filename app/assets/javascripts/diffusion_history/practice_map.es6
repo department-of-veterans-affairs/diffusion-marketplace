@@ -73,6 +73,15 @@ function initialize() {
         dataMarkers = _.map(data, function (json, index) {
             json.marker = markers[index];
             const serviceObj = json.marker.getServiceObject();
+            let officialStationName = json.facility.official_station_name;
+            let commonName = json.facility.common_name;
+            let adoptionStatus = `${json.status.toLowerCase()} adoption`;
+            // Add title and aria-label to each map marker to improve accessibility
+            if (officialStationName.includes(commonName)) {
+                serviceObj.title = `${officialStationName}, ${adoptionStatus}`;
+            } else {
+                serviceObj.title = `${officialStationName} (${commonName}), ${adoptionStatus}`;
+            }
 
             google.maps.event.addListener(serviceObj, 'click', clickCallback.bind(this, json));
             google.maps.event.addListener(serviceObj, 'mouseover', mouseoverCallback.bind(this, json));

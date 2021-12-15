@@ -96,7 +96,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
   context 'when visiting a practice page with diffusion history' do
     it 'should show the map and allow for filtering' do
       # need to select by title since there are duplicate divs with the same width
-      marker_div = 'div[style*="width: 31px"][title=""]'
+      marker_div = 'div[style*="width: 31px"][role="button"]'
       visit practice_path(@practice)
       expect(page).to have_selector('.dm-practice-diffusion-map', visible: true)
       expect(page).to have_selector(marker_div, visible: true)
@@ -139,7 +139,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       VaFacility.where.not(official_station_name: 'Farmington VA Clinic').destroy_all
       visit practice_path(@practice)
       # click on the generated marker to open the modal
-      find('div[style*="width: 31px"][title=""]').click
+      find('div[style*="width: 31px"][role="button"]').click
       # make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
       new_window = window_opened_by { click_link('Farmington VA Clinic (Farmington-New Mexico)') }
       within_window new_window do
