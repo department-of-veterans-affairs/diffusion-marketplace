@@ -1,7 +1,7 @@
 <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Timeline</h3>
-<div id="dm-timelines">
+<ul id="dm-timelines" aria-label="Timelines and Milestones">
   <% @practice.timelines.order(position: :asc).each_with_index do |t, i| %>
-    <div class="timeline">
+    <li class="timeline">
       <div class="bg-white margin-x-3 dm-timeline-icon">
         <i class="fas fa-circle"></i>
         <span class="timeline-number"></span>
@@ -17,6 +17,6 @@
           <% end %>
         </div>
       </div>
-    </div>
+    </li>
   <% end %>
-</div>
+</ul>
