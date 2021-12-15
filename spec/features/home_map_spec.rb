@@ -84,14 +84,10 @@ describe 'Map of Diffusion', type: :feature do
   end
 
   def expect_marker_ct(count)
-    marker_div = 'div[style*="width: 31px"][title=""]'
+    marker_div = 'div[style*="width: 31px"][role="button"]'
     expect(page).to have_selector(marker_div, visible: true)
     marker_count = find_all(:css, marker_div).count
     expect(marker_count).to be(count)
-  end
-
-  def click_first_map_marker
-    find('#map > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > img', visible: true).click
   end
 
   it 'displays and filters the map' do
@@ -236,7 +232,7 @@ describe 'Map of Diffusion', type: :feature do
     expect(page).to have_content('4 innovations matched (of 4)')
 
     # map modal
-    click_first_map_marker
+    find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
     expect(page).to have_content('Caribou VA Clinic')
     expect(page).to have_content('1 successful adoption')
     expect(page).to have_content('2 in-progress adoptions')
@@ -253,9 +249,8 @@ describe 'Map of Diffusion', type: :feature do
   end
 
   it 'should allow the user to visit each adoption\'s VA facility page', js: true do
-    marker_div = 'div[style*="width: 31px"][title=""]'
     # click on the first generated marker
-    all(marker_div).first.click
+    find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
     # in the marker modal, make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
     new_window_1 = window_opened_by { click_link('Caribou VA Clinic') }
     within_window new_window_1 do
@@ -282,7 +277,7 @@ describe 'Map of Diffusion', type: :feature do
     # view the map markers as a guest user
     logout
     visit '/diffusion-map'
-    expect(page).to_not have_selector('div[style*="width: 31px"][title=""]', visible: true)
+    expect(page).to_not have_selector('div[style*="width: 31px"][role="button"]', visible: true)
     expect(page).to have_content('There are currently 0 successful adoptions, 0 in-progress adoptions, and 0 unsuccessful adoptions.')
 
     # login as an admin and set the 'is_public' flag for a practice to true
