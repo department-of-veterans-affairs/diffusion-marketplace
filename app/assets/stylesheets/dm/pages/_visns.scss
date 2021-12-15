@@ -48,6 +48,13 @@
       }
     }
 
+    &:focus {
+      div {
+        outline: 0.25rem solid #2491ff;
+        outline-offset: 0;
+      }
+    }
+
     &:visited {
       .visn-name {
         color: color($theme-color-primary);
