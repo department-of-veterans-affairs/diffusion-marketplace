@@ -58,34 +58,10 @@
       });
     }
 
-
-    // due to the breadcrumbs being rendered before everything else, move them into the gradient banner for page-builder pages, if the title and description are visible
-    function relocateAndStyleBreadcrumb() {
-        let breadcrumbContainer = '.breadcrumbs-container';
-        let breadcrumb = '.usa-breadcrumb__list-item';
-
-        if (!$('.page-builder-intro-container').hasClass('display-none')) {
-            $(breadcrumbContainer).parent().prependTo('.page-builder-intro-content');
-            $(breadcrumbContainer).parent().removeClass('grid-container');
-            $(breadcrumbContainer).addClass('text-white padding-top-0 padding-bottom-1');
-            $(breadcrumb).first().find('a').addClass('dm-alt-link-white');
-        } else {
-            $(breadcrumbContainer).find('.fa-arrow-left').addClass('text-gray-50');
-        }
-    }
-
-    function addMarginToPageContentWithNoBreadCrumb() {
-        if ($('#breadcrumbs').parent().hasClass('display-none') && $('.page-builder-intro-container').hasClass('display-none')) {
-            $('#page-builder-page').addClass('margin-top-10');
-        }
-    }
-
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
         removeBottomMarginFromLastAccordionHeading();
         containerizeSubpageHyperlinkCards();
-        relocateAndStyleBreadcrumb();
-        addMarginToPageContentWithNoBreadCrumb();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
