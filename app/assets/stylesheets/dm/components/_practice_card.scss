@@ -13,6 +13,13 @@
         text-decoration-color: color($theme-color-accent-warm);
       }
     }
+
+    &:focus {
+      .dm-practice-card-container {
+        outline: 0.25rem solid #2491ff;
+        outline-offset: 0;
+      }
+    }
   }
   // retired banner button
   .dm-practice-retired-banner {
