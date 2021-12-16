@@ -211,14 +211,14 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to have_css("#dm-va-facilities-show", visible: true)
       within(:css, '#breadcrumbs') do
         expect(page).to have_css('.fa-arrow-left')
-        expect(page).to have_content('Facilities index')
+        expect(page).to have_content('Facility index')
         expect(page).to have_link(href: '/facilities')
       end
       find('a[href="/innovations/the-best-innovation-ever"]').click
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Facilities')
+        expect(page).to have_content('Facility index')
         expect(page).to have_content('A first facility Test Common Name')
         expect(page).to have_content('The Best Innovation Ever')
         expect(page).to have_link(href: '/')
@@ -297,11 +297,11 @@ describe 'Breadcrumbs', type: :feature do
 
     it 'Should not show any breadcrumbs for a subpage that has a page group without a landing page or the landing page of a page group' do
       visit '/test/test-page'
-      expect(page).to have_css('#breadcrumbs', visible: false)
+      expect(page).to_not have_css('#breadcrumbs')
       expect(page).to_not have_css('.usa-breadcrumb__link')
 
       visit '/programming/home'
-      expect(page).to have_css('#breadcrumbs', visible: false)
+      expect(page).to_not have_css('#breadcrumbs')
     end
   end
 end
