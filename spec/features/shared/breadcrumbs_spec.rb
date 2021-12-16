@@ -140,7 +140,6 @@ describe 'Breadcrumbs', type: :feature do
     it 'should show display breadcrumbs only for the show pages' do
       @user_practice.update(published: true, approved: true)
       find("a[href='/partners']").click
-      expect(page).to be_accessible.according_to :wcag2a, :section508
       click_on('Diffusion of Excellence')
       expect(page).to have_css("#breadcrumbs", visible: true)
       expect(page).to have_css('.dm-gradient-banner')
