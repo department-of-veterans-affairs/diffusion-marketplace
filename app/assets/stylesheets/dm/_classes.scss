@@ -259,21 +259,6 @@ to confirm the class DOES NOT EXIST before adding a new class
   height: calc(1em * 1.2 * 1);
 }
 
-#breadcrumbs {
-  a:not(.dm-alt-link-white) {
-    color: color($theme-link-color) !important;
-
-    &:hover {
-      color: color($theme-link-hover-color) !important;
-      text-decoration: underline;
-    }
-
-    &:active {
-      color: color($theme-link-active-color) !important;
-    }
-  }
-}
-
 /* Font Awesome icon */
 .fa-icon-125 {
   font-size: 1.25rem;

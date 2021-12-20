@@ -1,0 +1,39 @@
+// `usa-breadcrumb` OVERRIDES
+.usa-breadcrumb {
+  @include u-bg('transparent', !important);
+  .fas {
+    font-size: 13px;
+  }
+
+  .usa-breadcrumb__link {
+    @include u-text('underline');
+
+    &::before {
+      margin-right: 8px !important;
+    }
+
+    &:visited {
+      @include u-text('primary-vivid', !important);
+    }
+  }
+
+  .usa-breadcrumb__list-item {
+    white-space: normal !important;
+  }
+}
+
+.dm-breadcrumb--gradient-bg {
+  @extend .usa-breadcrumb;
+
+  .usa-breadcrumb__link {
+    @include u-text('white', !important);
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:visited {
+      @include u-text('white', !important);
+    }
+  }
+}
