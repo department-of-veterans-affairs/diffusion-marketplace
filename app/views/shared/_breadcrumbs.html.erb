@@ -18,7 +18,7 @@
 <section class="<%= "dm-gradient-banner" if heading.present? %>">
   <div class="grid-container <%= "padding-y-6" if heading.present? %>">
     <% if breadcrumbs.present? %>
-      <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container <%= heading.present? ? "dm-breadcrumb--gradient-bg padding-top-6 padding-bottom-105" : "padding-y-4" %>" aria-label="Breadcrumbs">
+      <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container <%= heading.present? ? "dm-breadcrumb--gradient-bg padding-top-0 padding-bottom-105" : "padding-y-4" %>" aria-label="Breadcrumbs">
         <ol class="usa-breadcrumb__list<%= " text-white" if heading.present? %>">
           <%# TODO: Consolidate this once practice breadcrumbs designs are finalized %>
           <% if controller === 'practices' && (action === 'show' || breadcrumbs.any? { |b| b[:display] === "Edit"}) %>
