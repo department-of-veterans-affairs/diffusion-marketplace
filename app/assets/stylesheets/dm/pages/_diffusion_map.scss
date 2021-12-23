@@ -17,3 +17,15 @@
     visibility: hidden;
   }
 }
+
+.map-filters-accordion {
+  h4 {
+    @include u-maxw('full', !important);
+  }
+
+  .usa-accordion__content {
+    border-bottom: 0.25rem solid #f0f0f0 !important;
+    border-left: 0.25rem solid #f0f0f0 !important;
+    border-right: 0.25rem solid #f0f0f0 !important;
+  }
+}

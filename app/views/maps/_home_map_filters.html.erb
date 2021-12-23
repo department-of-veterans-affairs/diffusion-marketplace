@@ -1,38 +1,34 @@
 <% diffused_practices = @diffusion_history_practices %>
-<div id="filterResults" class="map-filters padding-y-0 position-absolute display-none">
+<div id="filterResults" class="map-filters">
   <div class="padding-left-1">
-    <div class="margin-top-2 margin-bottom-105">
-      <h3 class="font-sans-lg bold-height-2 margin-0 ">Filter results</h3>
-    </div>
-    <div class="margin-bottom-1">
-      <p class="margin-bottom-1 margin-top-0">
-        <span id="facility-results-count">
-          <%= @dh_markers.size %> facility match<%= @dh_markers.size != 1 ? 'es' : '' %>
-        </span>
-        (of <%= @dh_markers.size %>)
-      </p>
-      <p class="margin-0">
-        <span id="practice-results-count">
-          <%= diffused_practices.size %> innovation<%= 's' unless diffused_practices.size === 1 %>
-        </span>
-        matched (of <%= diffused_practices.size %>)
-      </p>
-    </div>
-    <button type="button" class="dm-button--unstyled-primary" id="allMarkersButton">Reset filters</button>
+    <button type="button" class="dm-button--unstyled-primary margin-top-105" id="allMarkersButton">Reset filters</button>
     <div class="margin-y-105">
       <button type="submit" class="usa-button update-map-results-button">Update results</button>
     </div>
   </div>
-  <hr class="flex-fill height-2px border border-base-lighter bg-base-lighter dm-section-line margin-0">
+  <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line margin-0">
 
   <form id="mapFilters" name="mapFilters" class="padding-left-1">
     <div class="map-filters-content">
       <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-105">Innovations</h4>
-      <div id="practice-list-container" class="margin-bottom-2">
-        <fieldset>
+      <div id="practice-list-container" class="margin-bottom-2 margin-right-1">
+        <fieldset class="grid-row">
           <legend class="usa-sr-only">Innovations</legend>
-          <%= collection_check_boxes(:practice, :ids, diffused_practices, :id, :name) do |p| %>
-            <%= p.check_box class: 'usa-checkbox__input' %> <%= p.label class: 'usa-checkbox__label' %>
+          <input type="hidden" name="practices" value="">
+          <% sliced_diffused_practices = split_data_into_three_columns(diffused_practices) %>
+          <% sliced_diffused_practices.each_with_index do |practice_array, i| %>
+            <% unless i === 3 %>
+              <div class="grid-col-4">
+                  <% practice_array.each do |p| %>
+                    <%= render partial: 'shared/checkbox', locals: {
+                      data_id: "practice_ids_#{p.id}",
+                      data_name: 'practices',
+                      data_value: p.id,
+                      data_label_text: p.name
+                    } %>
+                  <% end %>
+              </div>
+            <% end %>
           <% end %>
         </fieldset>
       </div>
@@ -77,22 +73,30 @@
       </div>
 
       <div class="margin-bottom-2 clearfix">
-        <button type="button" class="dm-button--unstyled-primary float-right margin-bottom-1" id="facilityListTrigger">
+        <button type="button" class="dm-button--unstyled-primary margin-bottom-1" id="facilityListTrigger">
           View list of facilities
         </button>
         <div id="facilityListContainer" class="map-filters-list display-none">
-          <fieldset>
+          <fieldset class="grid-row">
             <legend class="usa-sr-only">Facilities</legend>
-            <% @va_facilities.each do |f| %>
-              <%
-                station_number = f.station_number
-                station_name = f.official_station_name
-              %>
-              <input id="<%= station_number %>" name="facilities" type="checkbox" value="<%= station_number %>" class="usa-checkbox__input">
-              <label for="<%= station_number %>" class="usa-checkbox__label">
-                <%= f.street_address_state %>: <%= station_name %>
-                  <%= show_common_name(station_name, f.common_name) %>
-              </label>
+              <% sliced_facilities = split_data_into_three_columns(@va_facilities) %>
+              <% sliced_facilities.each_with_index do |facilities_array, i| %>
+                <% unless i === 3 %>
+                  <div class="grid-col-4">
+                    <% facilities_array.each do |f| %>
+                      <%
+                        station_number = f.station_number
+                        station_name = f.official_station_name
+                      %>
+                      <%= render partial: 'shared/checkbox', locals: {
+                        data_id: station_number,
+                        data_name: 'facilities',
+                        data_value: station_number,
+                        data_label_text: "#{f.street_address_state}: #{facility_name_with_common_name(station_name, f.common_name)}"
+                      } %>
+                    <% end %>
+                  </div>
+                <% end %>
             <% end %>
           </fieldset>
         </div>
