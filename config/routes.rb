@@ -120,6 +120,7 @@ Rails.application.routes.draw do
   get '/facilities/:id/update_practices_adopted_at_facility', action: 'update_practices_adopted_at_facility', controller: 'va_facilities'
   get '/about', controller: 'about', action: 'index', as: 'about'
   post '/about', controller: 'about', action: 'email'
+  get '/terms-and-conditions', controller: 'terms_and_conditions', action: 'index'
   match '/404', to: 'errors#page_not_found_404', via: :all
   match '/500', to: 'errors#internal_server_error_500', via: :all
 

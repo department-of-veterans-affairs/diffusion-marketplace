@@ -325,7 +325,12 @@ module NavigationHelper
 
     # remove breadcrumbs from 'About' page
     if controller == 'about' && action == 'index'
-        empty_breadcrumbs
+      empty_breadcrumbs
+    end
+
+    # remove breadcrumbs from 'Terms and conditions' page
+    if controller == 'terms_and_conditions' && action == 'index'
+      empty_breadcrumbs
     end
 
     # remove breadcrumbs from any custom error page

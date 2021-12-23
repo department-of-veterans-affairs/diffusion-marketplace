@@ -210,4 +210,20 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe "#get_terms_and_conditions_body_text" do
+    context "when given no current user" do
+      it "returns the terms and conditions text without `VA network` in it" do
+        mock_current_user = nil
+        expect(helper.get_terms_and_conditions_body_text(mock_current_user)).to eq("VA systems are intended to be used by authorized users for viewing and retrieving information; except as otherwise authorized for official business and limited personal use under VA policy. Information from this system resides on and transmits through computer systems and networks funded by VA. Access or use constitutes understanding and acceptance that there is no reasonable expectation of privacy in the use of Government networks or systems. Access or use of this system constitutes user understanding and acceptance of these terms and constitutes unconditional consent to review and action includes but is not limited to: monitoring; recording; copying; auditing; inspecting.")
+      end
+    end
+
+    context "when given a current user" do
+      it "returns the terms and conditions text with `VA network` in it" do
+        mock_current_user = {id: 1}
+        expect(helper.get_terms_and_conditions_body_text(mock_current_user)).to eq("VA systems are intended to be used by authorized VA network users for viewing and retrieving information; except as otherwise authorized for official business and limited personal use under VA policy. Information from this system resides on and transmits through computer systems and networks funded by VA. Access or use constitutes understanding and acceptance that there is no reasonable expectation of privacy in the use of Government networks or systems. Access or use of this system constitutes user understanding and acceptance of these terms and constitutes unconditional consent to review and action includes but is not limited to: monitoring; recording; copying; auditing; inspecting.")
+      end
+    end
+  end
 end
