@@ -3,6 +3,8 @@ module NavigationHelper
 
   def setup_breadcrumb_navigation
     session[:breadcrumbs] = session[:breadcrumbs] || []
+    session[:heading] = nil
+    session[:description] = nil
     action = params[:action]
     controller = params[:controller]
 
@@ -31,7 +33,6 @@ module NavigationHelper
       # Diffusion map
       if action == 'diffusion_map'
         empty_breadcrumbs
-        session[:breadcrumbs] << { 'display': 'Diffusion map', 'path': diffusion_map_path }
       end
     end
 
@@ -57,7 +58,7 @@ module NavigationHelper
     end
 
     def add_visn_index_breadcrumb
-      session[:breadcrumbs] << { 'display': 'VISNs', 'path': visns_path }
+      session[:breadcrumbs] << { 'display': 'VISN index', 'path': visns_path }
     end
 
     ### PRACTICE BREADCRUMBS
@@ -186,15 +187,15 @@ module NavigationHelper
     end
 
     ### VAMC breadcrumbs
-    #
     def add_facility_index_breadcrumb
-      session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
+      session[:breadcrumbs] << { 'display': 'Facility index', 'path': va_facilities_path }
     end
+
     if controller == 'va_facilities'
       if action == 'index'
         empty_breadcrumbs
-        session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
       end
+
       if action == 'show'
         va_facility = VaFacility.find_by!(slug: params[:id])
         empty_breadcrumbs
@@ -204,7 +205,6 @@ module NavigationHelper
       end
     end
 
-
     ### PRACTICE PARTNER BREADCRUMBS
     def add_partners_breadcrumb
       session[:breadcrumbs] << { 'display': 'Partners', 'path': practice_partners_path }
@@ -213,9 +213,7 @@ module NavigationHelper
     if controller == 'practice_partners'
       # practice partners path
       if action == 'index'
-        # empty the breadcrumbs and start a new 'path'
         empty_breadcrumbs
-        add_partners_breadcrumb
       end
 
       # practice partner show path
@@ -225,6 +223,8 @@ module NavigationHelper
         @practice_partner = PracticePartner.friendly.find(params[:id])
         partner_breadcrumb = session[:breadcrumbs].find { |b| b['display'] == @practice_partner.name }
 
+        heading = @practice_partner.name + (@practice_partner.short_name.present? ? " (#{@practice_partner.short_name.upcase})" : '')
+        session[:heading] = heading
 
         if partner_breadcrumb.blank?
           add_partners_breadcrumb
@@ -256,15 +256,17 @@ module NavigationHelper
 
         if @page_slug == 'home'
           empty_breadcrumbs
-          add_landing_page_breadcrumb(@builder_page_path)
         elsif @builder_landing_page.exists?
           empty_breadcrumbs
           add_landing_page_breadcrumb("/#{params[:page_group_friendly_id]}")
           add_sub_page_breadcrumb
         else
           empty_breadcrumbs
-          add_landing_page_breadcrumb('')
-          add_sub_page_breadcrumb
+        end
+
+        if @page.is_visible
+          session[:heading] = @page.title
+          session[:description] = @page.description
         end
       end
     end
@@ -313,7 +315,6 @@ module NavigationHelper
     if controller == 'visns'
       if action == 'index'
         empty_breadcrumbs
-        add_visn_index_breadcrumb
       end
 
       if action == 'show'

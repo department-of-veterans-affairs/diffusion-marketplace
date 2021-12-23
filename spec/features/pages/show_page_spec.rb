@@ -53,7 +53,7 @@ describe 'Page Builder - Show', type: :feature do
     @page.update_attributes(is_visible: false)
     visit '/programming/ruby-rocks'
 
-    expect(page).to have_css('.dm-gradient-banner', visible: false)
+    expect(page).to_not have_css('.dm-gradient-banner')
     expect(page).to_not have_content('ruby')
     expect(page).to_not have_content('what a gem')
   end

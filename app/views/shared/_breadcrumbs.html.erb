@@ -1,38 +1,72 @@
 <%
   action = params[:action]
   controller = params[:controller]
+  original_breadcrumbs = session[:breadcrumbs]
+  heading = session[:heading]
+  description = session[:description]
+  breadcrumbs = original_breadcrumbs.dup
+  # ensures breadcrumb isn't displayed if user is on that page
+  if breadcrumbs.size > 1 && controller != 'practices'
+    last_breadcrumb = breadcrumbs.last
+    last_breadcrumb_path = last_breadcrumb[:path] || last_breadcrumb['path']
+    breadcrumbs.pop if last_breadcrumb_path === request.env['PATH_INFO']
+  # ensures breadcrumb isn't displayed for search page
+  elsif breadcrumbs.size === 1 && (request.env['PATH_INFO'] === '/search' || (controller === 'users' && action === 'show' && breadcrumbs.last[:display] === 'Profile'))
+    breadcrumbs.pop
+  end
 %>
-
-<section class="grid-container<%= ' display-none' if (controller == 'page' && params[:page_slug].nil?) || (controller == 'page' && @builder_landing_page.nil?) %>">
-  <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container" aria-label="Breadcrumbs">
-    <ol class="usa-breadcrumb__list">
-      <% if !(controller === 'home' && action === 'index') && controller != 'page' %>
-        <li class="usa-breadcrumb__list-item">
-          <a href="/" class="usa-breadcrumb__link">Home</a>
-        </li>
-      <% end %>
-      <%
-        breadcrumbs = session[:breadcrumbs]
-      %>
-
-      <% breadcrumbs.each_with_index do |b, i| %>
-        <%
-          last_crumb = breadcrumbs.size - 1 == i
-        %>
-
-          <%# Check if the page is a page-builder page using the controller and action names %>
-          <% if !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.present? %>
-            <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
-          <% elsif !last_crumb && b['display'] == 'Edit' %>
-            <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
-          <% elsif !last_crumb && params[:controller] != 'page' %>
-            <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
-          <% elsif last_crumb && b['display'] == 'Edit' %>
-            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
+<section class="<%= "dm-gradient-banner" if heading.present? %>">
+  <div class="grid-container <%= "padding-y-6" if heading.present? %>">
+    <% if breadcrumbs.present? %>
+      <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container <%= heading.present? ? "dm-breadcrumb--gradient-bg padding-top-0 padding-bottom-105" : "padding-y-4" %>" aria-label="Breadcrumbs">
+        <ol class="usa-breadcrumb__list<%= " text-white" if heading.present? %>">
+          <%# TODO: Consolidate this once practice breadcrumbs designs are finalized %>
+          <% if controller === 'practices' && (action === 'show' || breadcrumbs.any? { |b| b[:display] === "Edit"}) %>
+            <li class="usa-breadcrumb__list-item">
+              <a href="/" class="usa-breadcrumb__link">Home</a>
+            </li>
+            <% breadcrumbs.each_with_index do |b, i| %>
+              <% last_crumb = breadcrumbs.size - 1 == i %>
+              <% if !last_crumb %>
+                <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
+              <% else %>
+                <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
+              <% end %>
+            <% end %>
+          <% elsif breadcrumbs.size === 1 %>
+            <%
+              current_path = request.env['PATH_INFO']
+              is_same_path = breadcrumbs.first['path'] === current_path
+              breadcrumb_path = is_same_path ? root_path : breadcrumbs.first['path'] || breadcrumbs.first[:path]
+              breadcrumb_display = is_same_path ? 'Home' : breadcrumbs.first['display'] || breadcrumbs.first[:display]
+              breadcrumb_display.upcase if heading.present?
+            %>
+            <li class="usa-breadcrumb__list-item">
+              <i class='fas fa-arrow-left margin-right-05 <%= heading.present? ? 'text-white' : 'text-gray-50' %>'></i>
+              <%= link_to(breadcrumb_display, breadcrumb_path, class: 'usa-breadcrumb__link padding-left-05 font-sans-sm') %>
+            </li>
           <% else %>
-            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} unless params[:controller] === 'page' %>
+            <% breadcrumbs.each_with_index do |b, i| %>
+              <%
+                last_crumb = breadcrumbs.size - 1 == i
+              %>
+              <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
+            <% end %>
           <% end %>
+        </ol>
+      </div>
+    <% end %>
+    <% if heading.present? %>
+      <div class="dm-breadcrumb-heading">
+        <h1 class="usa-prose-h1 margin-top-0 margin-bottom-3 text-white">
+          <%= heading %>
+        </h1>
+        <% if description.present? %>
+          <p class="font-sans-lg usa-prose-intro line-height-36 grid-col-10 text-white">
+            <%= description %>
+          </p>
         <% end %>
-    </ol>
+      </div>
+    <% end %>
   </div>
 </section>
