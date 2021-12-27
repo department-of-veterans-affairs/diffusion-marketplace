@@ -82,22 +82,24 @@
           <fieldset class="grid-row">
             <legend class="usa-sr-only">Facilities</legend>
               <% sliced_facilities = split_data_into_three_columns(@va_facilities) %>
-              <% sliced_facilities.each_with_index do |facilities_array, i| %>
-                <% unless i === 3 %>
-                  <div class="grid-col-4">
-                    <% facilities_array.each do |f| %>
-                      <%
-                        station_number = f.station_number
-                        station_name = f.official_station_name
-                      %>
-                      <%= render partial: 'shared/checkbox', locals: {
-                        data_id: station_number,
-                        data_name: 'facilities',
-                        data_value: station_number,
-                        data_label_text: "#{f.street_address_state}: #{facility_name_with_common_name(station_name, f.common_name)}"
-                      } %>
-                    <% end %>
-                  </div>
+              <% if sliced_diffused_practices.present? %>
+                <% sliced_facilities.each_with_index do |facilities_array, i| %>
+                  <% unless i === 3 %>
+                    <div class="grid-col-4">
+                      <% facilities_array.each do |f| %>
+                        <%
+                          station_number = f.station_number
+                          station_name = f.official_station_name
+                        %>
+                        <%= render partial: 'shared/checkbox', locals: {
+                          data_id: station_number,
+                          data_name: 'facilities',
+                          data_value: station_number,
+                          data_label_text: "#{f.street_address_state}: #{facility_name_with_common_name(station_name, f.common_name)}"
+                        } %>
+                      <% end %>
+                    </div>
+                  <% end %>
                 <% end %>
             <% end %>
           </fieldset>
