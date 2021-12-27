@@ -27,7 +27,7 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
         expect(page).to have_link('Nominate an innovation')
         expect(page).to have_link('Open calls')
         expect(page).to have_link('Privacy policy')
-        expect(page).to have_link('Terms')
+        expect(page).to have_link('Terms and conditions')
       end
     end
 

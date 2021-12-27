@@ -2,7 +2,6 @@
   var forceModal = <%= @force_terms_and_conditions_modal %>;
 <% end %>
 <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'reload' %>
-
 <%= render partial: 'shared/terms_and_conditions_modal' %>
 
 <footer class="<%= yield(:footer_classes) %>">
@@ -29,7 +28,7 @@
         <a href="https://www.va.gov/privacy-policy" target="_blank" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base desktop:margin-right-8 grid-col-12 padding-y-2 padding-x-2 dm-footer-link">
           Privacy policy
         </a>
-        <a href="#dm-terms-and-conditions-modal" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base grid-col-12 padding-y-2 padding-x-2 dm-footer-link" aria-controls="dm-terms-and-conditions-modal" data-open-modal>
+        <a href="<%= terms_and_conditions_path %>" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base grid-col-12 padding-y-2 padding-x-2 dm-footer-link">
           Terms and conditions
         </a>
       </div>
