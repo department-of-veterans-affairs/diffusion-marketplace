@@ -16,18 +16,20 @@
           <legend class="usa-sr-only">Innovations</legend>
           <input type="hidden" name="practices" value="">
           <% sliced_diffused_practices = split_data_into_three_columns(diffused_practices) %>
-          <% sliced_diffused_practices.each_with_index do |practice_array, i| %>
-            <% unless i === 3 %>
-              <div class="grid-col-4">
-                  <% practice_array.each do |p| %>
-                    <%= render partial: 'shared/checkbox', locals: {
-                      data_id: "practice_ids_#{p.id}",
-                      data_name: 'practices',
-                      data_value: p.id,
-                      data_label_text: p.name
-                    } %>
-                  <% end %>
-              </div>
+          <% if sliced_diffused_practices.present? %>
+            <% sliced_diffused_practices.each_with_index do |practice_array, i| %>
+              <% unless i === 3 %>
+                <div class="grid-col-4">
+                    <% practice_array.each do |p| %>
+                      <%= render partial: 'shared/checkbox', locals: {
+                        data_id: "practice_ids_#{p.id}",
+                        data_name: 'practices',
+                        data_value: p.id,
+                        data_label_text: p.name
+                      } %>
+                    <% end %>
+                </div>
+              <% end %>
             <% end %>
           <% end %>
         </fieldset>
