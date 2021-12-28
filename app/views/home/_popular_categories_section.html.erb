@@ -4,7 +4,7 @@
       <% total_chars = 0 %>
       <% @popular_categories.each do |pop_cat| %>
         <% if total_chars < 130 %>
-            <a class="dm-tag--big--action-primary radius-md" href="/search?filter_by=<%= pop_cat %>">
+            <a class="dm-tag--big--action-primary radius-md popular-category-tag" href="/search?filter_by=<%= pop_cat %>">
               <span class="font-sans-sm text-semibold line-height-18px">
                 <%= pop_cat %>
               </span>

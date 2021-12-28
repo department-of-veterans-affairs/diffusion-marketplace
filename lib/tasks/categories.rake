@@ -53,7 +53,7 @@ namespace :categories do
     ]
 
     covid_cats = [
-      Category.find_or_create_by!(name: 'COVID', related_terms: ['COVID-19', 'COVID 19', 'Coronavirus']),
+      Category.find_or_create_by!(name: 'COVID-19', related_terms: ['COVID 19', 'Coronavirus']),
       Category.find_or_create_by!(name: 'Telehealth'),
       Category.find_or_create_by!(name: 'Pulmonary Care'),
       Category.find_or_create_by!(name: 'Environmental Services'),

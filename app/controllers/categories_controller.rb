@@ -2,6 +2,7 @@ class CategoriesController < ApplicationController
   include CategoriesHelper
 
   def update_category_usage
+    debugger
     query_val = params["query"]
     chosen_categories = params["chosenCategories"]
     cat_id = params["catId"]
