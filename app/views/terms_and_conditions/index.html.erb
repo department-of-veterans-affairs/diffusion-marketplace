@@ -1,0 +1,15 @@
+<div id="dm-terms-and-conditions-page" class="grid-container">
+  <%= render partial: "shared/messages", locals: { small_text: true } %>
+
+  <section class="margin-top-8 margin-bottom-0 margin-top-128-desktop desktop:margin-bottom-8" role="region" aria-label="Terms and conditions">
+    <div class="grid-row grid-col-12 desktop:grid-col-8">
+      <h1 class="usa-prose-h1 margin-top-0 margin-bottom-4">Terms and conditions</h1>
+      <p class="usa-prose-body">
+        <%= get_terms_and_conditions_body_text(current_user) %>
+      </p>
+      <p class="usa-prose-body margin-top-2">
+        By continuing to access this website I agree to these terms.
+      </p>
+    </div>
+  </section>
+</div>

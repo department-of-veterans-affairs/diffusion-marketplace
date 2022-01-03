@@ -9,9 +9,7 @@
 <% end %>
 <%
   if params["query"].present?
-    if !params.has_key?(:cat)
-      update_category_usages
-    end
+    update_category_usages
   end
 %>
 <div id="search-page">

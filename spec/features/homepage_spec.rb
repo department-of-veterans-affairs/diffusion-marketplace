@@ -12,8 +12,16 @@ describe 'Homepage', type: :feature do
     @user.add_role(User::USER_ROLES[1].to_sym)
     Practice.create!(name: 'Project HAPPEN', slug: 'project-happen', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'contact-happen@happen.com', user: @user)
     @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
+    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
+    @practice_3 = Practice.create!(name: 'The Third Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility_id: 1)
     @featured_image = "#{Rails.root}/spec/assets/charmander.png"
+    @parent_cat = Category.create!(name: 'First Parent Category', is_other: false)
+    @cat_1 = Category.create!(name: 'COVID', parent_category: @parent_cat)
+    @cat_2 = Category.create!(name: 'Telehealth', parent_category: @parent_cat)
+    CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice_2, category: @cat_2, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice_3, category: @cat_1, created_at: Time.now)
     login_as(@user, :scope => :user, :run_callbacks => false)
     visit '/'
   end
@@ -94,5 +102,32 @@ describe 'Homepage', type: :feature do
     within_window new_window_1 do
       expect(current_url).to eq('https://public.govdelivery.com/accounts/USVHA/subscribers/qualify')
     end
+  end
+
+  it 'should take the user to the search page with results that match the popular category chosen' do
+    # Add categories to the popular category list
+    fill_in('dm-homepage-search-field', with: 'COVID')
+    find('#dm-homepage-search-button').click
+
+    visit root_path
+    fill_in('dm-homepage-search-field', with: 'Telehealth')
+    find('#dm-homepage-search-button').click
+
+    # Make sure the filtering is working as intended with the Telehealth popular category
+    visit root_path
+    all('.popular-category-tag').first.click
+    expect(page).to have_current_path('/search?filter_by=Telehealth')
+    expect(page).to have_selector('#search-page', visible: true)
+    expect(page).to have_content('1 result')
+    expect(page).to have_content(@practice_2.name)
+
+    # Try the COVID popular category
+    visit root_path
+    all('.popular-category-tag').last.click
+    expect(page).to have_current_path('/search?filter_by=COVID')
+    expect(page).to have_selector('#search-page', visible: true)
+    expect(page).to have_content('2 results')
+    expect(page).to have_content(@practice.name)
+    expect(page).to have_content(@practice_3.name)
   end
 end

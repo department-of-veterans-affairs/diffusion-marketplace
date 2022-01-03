@@ -22,6 +22,7 @@ if (window.location.pathname === '/search') {
             this.original = $(window).scrollTop();
         }
     }
+    var all_categories = <%= raw @categories.to_json %>;
 }
 
 
@@ -639,9 +640,12 @@ function searchPracticesPage() {
             searchWithOnlyAdoptingFacility();
         } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
             var maturityLevels = ['emerging', 'replicate', 'scale'];
+            var filterTerm = decodeURI(searchLocation[1]);
             if (searchLocation[0] === '?filter_by') {
                 if (maturityLevels.includes(searchLocation[1])) {
-                    searchByFilterTerm('maturity_level', searchLocation[1]);
+                    searchByFilterTerm('maturity_level', filterTerm);
+                } else if (all_categories.includes(filterTerm)) {
+                    searchByFilterTerm('category_names', filterTerm);
                 } else {
                     results = [];
                 }
@@ -901,9 +905,6 @@ function searchPracticesPage() {
     if (window.location.pathname === '/search' && window.location.search !== '' && searchLocation[0] !== '?filter_by') {
         hideResultsSectionElAndShowSpinner();
         var query = window.location.search.split('=')[1];
-        if (query.includes("&cat")){
-            query = query.split('&')[0];
-        }
 
         search(decodeURI(query));
         if (query !== undefined) {
@@ -932,13 +933,14 @@ function trackSearchField(searchTerm) {
 }
 
 function trackSearchByFilter(filterTerm) {
-    ahoy.track('Practice search by filter', {filter_term: filterTerm});
+    var decodedFilterTerm = decodeURI(filterTerm);
+    ahoy.track('Practice search by filter', {filter_term: decodedFilterTerm});
     if (typeof ga === 'function') {
         ga('send', {
             hitType: 'event',
             eventCategory: 'search filter',
             eventAction: 'search filter',
-            location: '/search?filter_by=' + filterTerm
+            location: '/search?filter_by=' + decodedFilterTerm
         });
     }
 }
