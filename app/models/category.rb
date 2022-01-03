@@ -17,6 +17,7 @@ class Category < ApplicationRecord
   scope :not_other, -> { where(is_other: false).where.not(name: 'Other').where.not(name: 'other') }
   scope :not_none, -> { where.not(name: 'None').where.not(name: 'none') }
   scope :get_category_by_name, -> (cat_name) { where('lower(name) = ?', cat_name.downcase).where(is_other: false) }
+  scope :get_category_names, -> { not_other.not_none.pluck(:name) }
 
   attr_accessor :related_terms_raw
   attr_accessor :reset_cached_categories
