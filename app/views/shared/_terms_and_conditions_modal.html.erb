@@ -1,17 +1,17 @@
 <div
-  class="usa-modal usa-modal--lg"
+  class="usa-modal"
   id="dm-terms-and-conditions-modal"
   aria-labelledby="dm-terms-and-conditions-modal-heading"
   aria-describedby="dm-terms-and-conditions-modal-description"
   <%= 'data-force-action' if @force_terms_and_conditions_modal%>>
   <div class="usa-modal__content">
     <div class="usa-modal__main">
-      <h2 class="usa-modal__heading" id="dm-terms-and-conditions-modal-heading">
-        <p class="font-sans-2xl margin-bottom-3">Terms and conditions</p>
+      <h3 class="usa-modal__heading usa-prose-h3 margin-bottom-1" id="dm-terms-and-conditions-modal-heading">
+        Terms and conditions
       </h2>
       <div class="usa-prose">
-        <p id="dm-terms-and-conditions-modal-description">
-          VA systems are intended to be used by authorized <%= current_user.present? ? 'VA network' : '' %> users for viewing and retrieving information; except as otherwise authorized for official business and limited personal use under VA policy. Information from this system resides on and transmits through computer systems and networks funded by VA. Access or use constitutes understanding and acceptance that there is no reasonable expectation of privacy in the use of Government networks or systems. Access or use of this system constitutes user understanding and acceptance of these terms and constitutes unconditional consent to review and action includes but is not limited to: monitoring; recording; copying; auditing; inspecting;
+        <p id="dm-terms-and-conditions-modal-description" class="usa-prose-body">
+          <%= get_terms_and_conditions_body_text(current_user) %>
         </p>
       </div>
       <div class="usa-modal__footer">
@@ -19,7 +19,7 @@
           <li class="usa-button-group__item">
             <% if @force_terms_and_conditions_modal %>
               <%= form_tag({action: 'accept_terms', controller: 'users'}, method: :post) do |f| %>
-                <%= submit_tag 'I acknowledge the terms', class: 'usa-button margin-0 padding-2 margin-bottom-4-important' %>
+                <%= submit_tag 'I acknowledge the terms', class: 'usa-button' %>
               <% end %>
             <% else %>
               <button
