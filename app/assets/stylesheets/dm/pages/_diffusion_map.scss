@@ -24,8 +24,8 @@
   }
 
   .usa-accordion__content {
-    border-bottom: 0.25rem solid #f0f0f0 !important;
-    border-left: 0.25rem solid #f0f0f0 !important;
-    border-right: 0.25rem solid #f0f0f0 !important;
+    border-bottom: 0.25rem solid color($theme-color-base-lightest) !important;
+    border-left: 0.25rem solid color($theme-color-base-lightest) !important;
+    border-right: 0.25rem solid color($theme-color-base-lightest) !important;
   }
 }
