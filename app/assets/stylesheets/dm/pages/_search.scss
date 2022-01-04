@@ -102,13 +102,12 @@
   background-color: color($theme-color-secondary-light) !important;
 
   @media screen and (min-width: 1024px) {
-    height: 55vh;
+    position: unset;
     border: 2px solid color($theme-color-base-lightest) !important;
     top: unset;
     right: unset;
     left: unset;
     bottom: unset;
-    position: absolute;
     background-color: color($theme-color-dm-white) !important;
   }
 
@@ -120,6 +119,14 @@
 
   .fa-times {
     display: block !important;
+  }
+
+  .search-category-filters, .search-originating-facility-filter, .search-adopting-facility-filter {
+    @include u-margin-bottom(1);
+
+    @media screen and (min-width: 1024px) {
+      @include u-margin-bottom(0);
+    }
   }
 }
 
