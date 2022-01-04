@@ -389,7 +389,7 @@ ActiveAdmin.register Practice do
     end
 
     def set_practice_adoption_values
-      @facility_data = VaFacility.cached_va_facilities
+      @facility_data = VaFacility.cached_va_facilities.order_by_station_name
       @practice_name = resource.name
       @complete_map = {}
       @adoption_counts = {}

@@ -4,7 +4,7 @@ class PageController < ApplicationController
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @page_components = @page.page_components
     @path_parts = request.path.split('/')
-    @facilities_data = VaFacility.cached_va_facilities
+    @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
     set_pagy_practice_list_array(@page_components)
     @pagy_type = params.keys.first.to_i || nil

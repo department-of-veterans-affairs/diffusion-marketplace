@@ -81,6 +81,6 @@ class HomeController < ApplicationController
   private
 
   def fetch_va_facilities
-    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name
   end
 end
