@@ -62,18 +62,10 @@
 }
 
 .map-filters {
-  background: color($theme-color-dm-white);
-  border: 2px solid #DCDEE0;
-  border-radius: 4px;
-  height: 617px;
-  overflow: hidden;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 309px;
-
   fieldset {
-    padding: 0;
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
+    padding: 0 8px 0 8px;
     border: 0;
   }
 
@@ -86,9 +78,11 @@
   }
 
   .map-filters-content {
-    height: 413px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    #practice-list-container, #facilityListContainer {
+      max-height: 500px;
+      overflow-y: auto;
+      border: 1px solid color($theme-color-base-ink);
+    }
 
     .fa-question-circle {
       color: color($theme-color-base-ink) !important;
@@ -103,11 +97,11 @@
     }
   }
 
-  .map-filters-list {
+  #visn-list-container {
     border: 1px solid color($theme-color-base-ink);
     box-sizing: border-box;
     height: 147px;
-    padding: 14px 12px;
+    padding: 0 4px 12px 4px;
     overflow-y: scroll;
     width: 275px;
   }

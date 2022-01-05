@@ -3,16 +3,16 @@ class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
-    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :official_station_name).where(hidden: false).order(:official_station_name)
+    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :official_station_name).order_by_station_name
     @visns = Visn.cached_visns.select(:name, :number)
-    @types = VaFacility.cached_va_facilities.get_complexity
+    @types = VaFacility.cached_va_facilities.order_by_station_name.get_complexity
   end
 
   def load_facilities_index_rows
     if params[:facility].present?
-      @facilities = [VaFacility.cached_va_facilities.includes([:visn]).find(params[:facility])]
+      @facilities = [VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).find(params[:facility])]
     else
-      @facilities = VaFacility.cached_va_facilities.includes([:visn]).get_relevant_attributes
+      @facilities = VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).get_relevant_attributes
 
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })

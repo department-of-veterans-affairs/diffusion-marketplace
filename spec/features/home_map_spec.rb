@@ -6,10 +6,10 @@ describe 'Map of Diffusion', type: :feature do
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
-    @pr_1 = Practice.create!(name: 'Practice A', approved: true, summary: 'Test summary', published: true, tagline: 'Practice A Tagline', date_initiated: Time.now(), user: @user)
-    @pr_2 = Practice.create!(name: 'Practice B', approved: true, summary: 'Test summary', published: true, tagline: 'Practice B Tagline', date_initiated: Time.now(), user: @user)
-    @pr_3 = Practice.create!(name: 'Practice C', approved: true, summary: 'Test summary', published: true, tagline: 'Practice C Tagline', date_initiated: Time.now(), user: @user)
-    @pr_4 = Practice.create!(name: 'Practice D', approved: true, summary: 'Test summary', published: true, tagline: 'Practice D Tagline', date_initiated: Time.now(), user: @user)
+    @pr_1 = Practice.create!(name: 'Practice A', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice A Tagline', date_initiated: Time.now(), user: @user)
+    @pr_2 = Practice.create!(name: 'Practice B', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice B Tagline', date_initiated: Time.now(), user: @user)
+    @pr_3 = Practice.create!(name: 'Practice C', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice C Tagline', date_initiated: Time.now(), user: @user)
+    @pr_4 = Practice.create!(name: 'Practice D', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice D Tagline', date_initiated: Time.now(), user: @user)
     @visn_1 = Visn.create!(name: 'VISN 1', number: 2)
     @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
     @fac_1 = VaFacility.create!(
@@ -64,7 +64,7 @@ describe 'Map of Diffusion', type: :feature do
     login_as(@user, :scope => :user, :run_callbacks => false)
     visit '/diffusion-map'
     expect(page).to have_selector(".diffusion-map-container", visible: true)
-    expect(page).to have_selector("#filterResultsTrigger", visible: true)
+    expect(page).to have_selector(".map-filters-accordion", visible: true)
   end
 
   after do
@@ -72,7 +72,7 @@ describe 'Map of Diffusion', type: :feature do
   end
 
   def open_filters
-    find("#filterResultsTrigger").click
+    find(".map-filters-accordion-button").click
   end
 
   def update_results
@@ -95,16 +95,15 @@ describe 'Map of Diffusion', type: :feature do
     expect_marker_ct(3)
 
     # filters button
-    expect(page).to be_accessible.within '#filterResultsTrigger'
-    expect(page).to have_css('#filterResultsTrigger')
-    expect(page).to have_no_css('#filterClose')
+    expect(page).to be_accessible.within '.map-filters-accordion'
+    expect(page).to have_css('.map-filters-accordion')
 
     # filters on load
     open_filters
     expect(page).to have_selector('.modal-content', count: 3, visible: false)
     expect(page).to be_accessible.within '#filterResults'
     expect(page).to have_no_css('#filterResultsTrigger')
-    expect(page).to have_css('#filterClose')
+    expect(page).to have_selector('#mapFilters', visible: true)
     expect(page).to have_content('3 facility matches (of 3)')
     expect(page).to have_content('4 innovations matched (of 4)')
     # open facility complexity modal
@@ -119,63 +118,77 @@ describe 'Map of Diffusion', type: :feature do
     find('.usa-checkbox__label[for="practice_ids_3"]').click
     find('.usa-checkbox__label[for="practice_ids_4"]').click
     update_results
+    # make sure the accordion closes
+    expect(page).to have_selector('#mapFilters', visible: false)
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
+    open_filters
     reset_filters
 
     # filters by status
     # in-progress adoptions
+    open_filters
     find('.adoption-status-label[for="status_in-progress"]').click
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     # in-progress & unsuccessful adoptions
+    open_filters
     find('.adoption-status-label[for="status_unsuccessful"]').click
     update_results
     expect_marker_ct(3)
     expect(page).to have_content('3 facility matches (of 3)')
     expect(page).to have_content('4 innovations matched (of 4)')
     # successful adoptions
+    open_filters
     find('.adoption-status-label[for="status_in-progress"]').click
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
     expect(page).to have_content('1 innovation matched (of 4)')
+    open_filters
     reset_filters
 
     # filters by visn
     # @visn_1
+    open_filters
     find('.usa-checkbox__label[for="VISN_1"]').click
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     # @visn_2
+    open_filters
     find('.usa-checkbox__label[for="VISN_1"]').click
     find('.usa-checkbox__label[for="VISN_2"]').click
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
+    open_filters
     reset_filters
 
     # filters by facility
+    open_filters
     find('.usa-combo-box__input').click
     find('#facility_name--list--option-0').click
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
+    open_filters
     find('.usa-combo-box__clear-input').click
     update_results
     expect_marker_ct(3)
     expect(page).to have_content('3 facility matches (of 3)')
     expect(page).to have_content('4 innovations matched (of 4)')
+    open_filters
     reset_filters
 
     # filters by facilities
+    open_filters
     expect(page).to have_css('#facilityListTrigger')
     expect(page).to have_content('View list of facilities')
     expect(page).to have_no_css('#facilityListContainer')
@@ -188,11 +201,13 @@ describe 'Map of Diffusion', type: :feature do
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
     expect(page).to have_content('1 innovation matched (of 4)')
+    open_filters
     find('.usa-checkbox__label[for="526GA"]').click
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
+    open_filters
     find('#facilityListTrigger').click
     expect(page).to have_content('View list of facilities')
     expect(page).to have_no_content('Hide list of facilities')
@@ -200,32 +215,39 @@ describe 'Map of Diffusion', type: :feature do
     reset_filters
 
     # filters by complexity
+    open_filters
     find('.usa-checkbox__label[for="1a_high_complexity"]').click
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
     expect(page).to have_content('1 innovation matched (of 4)')
+    open_filters
     reset_filters
 
     # filters by rurality
+    open_filters
     find('.usa-checkbox__label[for="rurality_U"]').click
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
+    open_filters
     reset_filters
 
     #filters by multiple filters and resets
+    open_filters
     find('.usa-checkbox__label[for="rurality_U"]').click
     find('.usa-checkbox__label[for="practice_ids_4"]').click
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
     expect(page).to have_content('2 innovations matched (of 4)')
+    open_filters
     find('.adoption-status-label[for="status_unsuccessful"]').click
     update_results
     expect(page).to have_content('0 facility matches (of 3)')
     expect(page).to have_content('0 innovations matched (of 4)')
+    open_filters
     find("#allMarkersButton").click
     expect_marker_ct(3)
     expect(page).to have_content('3 facility matches (of 3)')
@@ -246,6 +268,19 @@ describe 'Map of Diffusion', type: :feature do
     end
     find('.close').click
     expect(page).to have_selector('.modal-content', count: 3, visible: false)
+
+    # make sure modals close when updating/resetting filters
+    open_filters
+    find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
+    expect(page).to have_content('View more')
+    reset_filters
+    expect(page).to_not have_content('View more')
+    find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
+    click_button('View more')
+    expect(page).to have_selector('.usa-link[href="/facilities/caribou"', visible: true)
+    open_filters
+    update_results
+    expect(page).to have_selector('.usa-link[href="/facilities/caribou"', visible: false)
   end
 
   it 'should allow the user to visit each adoption\'s VA facility page', js: true do

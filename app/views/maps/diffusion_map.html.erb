@@ -17,15 +17,38 @@
       Explore how innovations are being adopted across the country. There are currently <%= @successful_ct %> successful adoption<%= @successful_ct === 1 ? '' : 's' %>, <%= @in_progress_ct %> in-progress adoption<%= @in_progress_ct === 1 ? '' : 's' %>, and <%= @unsuccessful_ct %> unsuccessful adoption<%= @unsuccessful_ct === 1 ? '' : 's' %>.
     </p>
     <div class="diffusion-map-container display-none">
-      <button id="filterResultsTrigger" class="map-filters-trigger usa-button width-full display-block margin-bottom-105">
-        Filter results
-      </button>
-      <button type="button" class="usa-button usa-button--secondary width-full display-none margin-bottom-105" id="filterClose" aria-label="Close map filters">
-        Close filters
-      </button>
+      <div class="usa-accordion usa-accordion--bordered map-filters-accordion">
+        <h4 class="usa-accordion__heading">
+          <button
+            class="usa-accordion__button map-filters-accordion-button"
+            aria-expanded="false"
+            aria-controls="diffusion-map-filters"
+          >
+            Filter results
+          </button>
+        </h4>
+        <div id="diffusion-map-filters" class="usa-accordion__content usa-prose padding-0">
+          <%= render 'maps/home_map_filters' %>
+        </div>
+      </div>
+      <% diffused_practices = @diffusion_history_practices %>
+      <div class="margin-bottom-1">
+        <h3 class="usa-prose-h3 margin-bottom-1">Results:</h3>
+        <p class="margin-bottom-1 margin-top-0">
+        <span id="facility-results-count">
+          <%= @dh_markers.size %> facility match<%= @dh_markers.size != 1 ? 'es' : '' %>
+        </span>
+          (of <%= @dh_markers.size %>)
+        </p>
+        <p class="margin-0">
+        <span id="practice-results-count">
+          <%= diffused_practices.size %> innovation<%= 's' unless diffused_practices.size === 1 %>
+        </span>
+          matched (of <%= diffused_practices.size %>)
+        </p>
+      </div>
       <div class="width-full position-relative">
         <div id="map" style="width: 100%; height: 633px;"></div>
-        <%= render 'maps/home_map_filters' %>
       </div>
     </div>
     <div class="dm-loading-spinner text-center margin-y-8">

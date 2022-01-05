@@ -24,7 +24,6 @@ function initialize() {
       }
       selectedMarker = json;
       setIcon(json, selectedMarkerIcon);
-      $('#filterResults').hide();
     }
   }
 
@@ -38,6 +37,15 @@ function initialize() {
     if (json.id !== selectedMarker.id) {
       setIcon(json, defaultMarkerIcon);
     }
+  }
+
+  function closeFiltersAccordion() {
+    $('.map-filters-accordion-button').attr('aria-expanded', 'false');
+    $('#diffusion-map-filters').attr('hidden', 'true');
+    // if there's a modal open, close it
+    closeInfoWindow();
+    // if there's a map info window open, close it
+    $('#map').find('.infoBox').closest('div').empty();
   }
 
   function buildMapMarkers(data) {
@@ -127,9 +135,9 @@ function initialize() {
 
     let result = [...mapData];
 
-    // practice ids
-    if (data["practice[ids][]"].length > 1) {
-      const ids = _.compact(data["practice[ids][]"].map(id => id.value));
+    // practices
+    if (data["practices"].length > 1) {
+      const ids = _.compact(data["practices"].map(id => id.value));
       result = result.filter(function (d) {
         const practices = d.practices.map(p => p.id);
         const anyPractices = ids.filter(function (id) {
@@ -250,62 +258,6 @@ function initialize() {
     $("#facility_name").val("");
   }
 
-  function _addHiddenClass(selector) {
-    $(selector).removeClass("display-block");
-    $(selector).addClass("display-none");
-  }
-
-  function _removeHiddenClass(selector) {
-    $(selector).removeClass("display-none");
-    $(selector).addClass("display-block");
-  }
-
-  function attachFilterButtonListeners() {
-    let resultsTrigger = "#filterResultsTrigger";
-    let filterClose = "#filterClose";
-
-    function _displayFilters() {
-      _addHiddenClass(resultsTrigger);
-      _removeHiddenClass(filterClose);
-      $("#filterResults").show();
-      $("#filterClose").focus();
-      closeInfoWindow();
-    }
-
-    function _hideFilters() {
-      _addHiddenClass(filterClose);
-      _removeHiddenClass(resultsTrigger);
-      $("#filterResultsTrigger").show();
-      $("#filterResults").hide();
-      closeInfoWindow();
-    }
-
-    $(document).on("click", resultsTrigger, () => {
-      _displayFilters();
-    });
-
-    $(document).on("keypress", resultsTrigger, function (e) {
-      if (e.which === 13) {
-        _displayFilters();
-      }
-    });
-
-    $(document).on("click", filterClose, () => {
-      _hideFilters();
-    });
-
-    $(document).on("keypress", filterClose, function (e) {
-      if (e.which === 13) {
-        _hideFilters();
-      }
-    });
-
-    $(document).on("click", "#map img", () => {
-      _addHiddenClass(filterClose);
-      _removeHiddenClass(resultsTrigger);
-    });
-  }
-
   function attachComboBoxListeners() {
     $(document).on("click", ".usa-combo-box__clear-input", () => {
       $(".usa-combo-box").data("setFacility", false);
@@ -322,12 +274,14 @@ function initialize() {
 
   function attachResetFilterListener() {
     $(document).on("click", "#allMarkersButton", () => {
+      closeFiltersAccordion();
       Gmaps.allMarkers();
     });
   }
 
   function attachFilterMapListener() {
     $(document).on("click", ".update-map-results-button", () => {
+      closeFiltersAccordion();
       $("#mapFilters").submit();
     });
   }
@@ -358,7 +312,6 @@ function initialize() {
   }
 
   google.maps.event.addListener(handler.getMap(), 'tilesloaded', function () {
-    attachFilterButtonListeners();
     attachComboBoxListeners();
     attachResetFilterListener();
     attachFacilityListListener();
