@@ -165,6 +165,9 @@
 }
 
 .category-container {
+  .desktop\:grid-col-4 {
+    @include u-padding-right('05');
+  }
   div:last-child {
     .usa-checkbox {
       &:last-child {
