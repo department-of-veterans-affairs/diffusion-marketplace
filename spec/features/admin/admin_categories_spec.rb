@@ -60,7 +60,7 @@ describe 'Admin Dashboard Categories Tab', type: :feature do
       expect(cache_keys).not_to include("categories")
       add_categories_to_cache
       find('.search-filters-accordion-button').click
-      expect(page).to have_content('Completely update...')
+      expect(page).to have_content('Completely updated category')
     end
 
     it 'Should be reset if a new category is created through the admin panel' do
