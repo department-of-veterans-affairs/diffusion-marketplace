@@ -179,6 +179,12 @@
       }
     }
   }
+
+  .usa-checkbox__label {
+    @media screen and (max-width: 1023px) {
+      @include u-margin-top(0, !important);
+    }
+  }
 }
 
 .mobile-modal-container {
