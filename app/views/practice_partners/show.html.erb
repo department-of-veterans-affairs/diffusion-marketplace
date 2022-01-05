@@ -1,25 +1,24 @@
-<div class="partner-page-min-height margin-bottom-10">
+<div>
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </section>
 
-  <section class="margin-bottom-5 margin-top-8 grid-container">
-    <div class="grid-row">
+  <section class="margin-top-8 grid-container">
+    <div class="grid-row margin-bottom-5">
       <div>
         <p class="grid-col-12 margin-0 line-height-26 tablet:grid-col-8"><%= @practice_partner.description %></p>
       </div>
     </div>
-  </section>
-  <section>
-    <div class="grid-container margin-bottom-5">
-      <% @partner_practices = @practice_partner.practices %>
-      <% if @partner_practices.any? %>
-        <div class="grid-row grid-gap-3">
-          <% @partner_practices.order(retired: :asc, name: :asc).each do |p| %>
-            <%= render partial: 'shared/practice_card', locals: {practice: p, featured: false} %>
-          <% end %>
-        </div>
-      <% end %>
+    <div class="dm-paginated-partner-practices">
+      <%
+        paginated_partner_practices = @paginated_partner_practices
+        pagy_partner_practices = @pagy_partner_practices
+      %>
+      <%= render partial: 'shared/practice_cards_row', locals: { practices: paginated_partner_practices } %>
+    </div>
+    <div class="dm-load-more-container text-center">
+      <% link = pagy_link_proc(pagy_partner_practices) %>
+      <%= link.call(pagy_partner_practices.vars[:page].to_i + 1, 'Load more').html_safe if pagy_partner_practices.count > 3 %>
     </div>
   </section>
 </div>
