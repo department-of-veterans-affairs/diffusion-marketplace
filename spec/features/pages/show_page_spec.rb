@@ -12,6 +12,7 @@ describe 'Page Builder - Show', type: :feature do
       Practice.create!(name: 'An amazing practice', approved: true, published: true, tagline: 'Test tagline', user: user),
       Practice.create!(name: 'A beautiful practice', approved: true, published: true, tagline: 'Test tagline', user: user),
       Practice.create!(name: 'A superb practice', approved: true, published: true, tagline: 'Test tagline', user: user),
+      Practice.create!(name: 'Third to last practice', approved: true, published: true, tagline: 'Test tagline', user: user),
       Practice.create!(name: 'Second to last practice', approved: true, published: true, tagline: 'Test tagline', user: user),
       Practice.create!(name: 'The last practice', approved: true, published: true, tagline: 'Test tagline', user: user)
     ]
@@ -67,10 +68,12 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_content('A beautiful practice')
     expect(page).to have_content('A superb practice')
     expect(page).to have_no_content('Second to last practice')
+    expect(page).to have_no_content('Third to last practice')
     expect(page).to have_no_content('The last practice')
     expect(page).to have_css('.dm-practice-link')
     expect(page).to have_content('Load more')
     find('.dm-paginated-0-link').click
+    expect(page).to have_content('Third to last practice')
     expect(page).to have_content('Second to last practice')
     expect(page).to have_content('The last practice')
   end
