@@ -82,6 +82,10 @@
       max-height: 500px;
       overflow-y: auto;
       border: 1px solid color($theme-color-base-ink);
+
+      .grid-col-4 {
+        @include u-padding-right('05');
+      }
     }
 
     .fa-question-circle {
