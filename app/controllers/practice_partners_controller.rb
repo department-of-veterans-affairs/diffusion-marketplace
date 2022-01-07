@@ -11,7 +11,7 @@ class PracticePartnersController < ApplicationController
   # GET /practice_partners/1.json
   def show
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
-    @partner_practices = helpers.is_user_a_guest? ? @practice_partner.practices.published_enabled_approved.public_facing.sort_by_retired.sort_a_to_z : @practice_partner.practices.published_enabled_approved.sort_by_retired.sort_a_to_z
+    @partner_practices = helpers.is_user_a_guest? ? @practice_partner.practices.searchable_public_practices : @practice_partner.practices.searchable_practices
     @pagy_partner_practices, @paginated_partner_practices = pagy_array(
       @partner_practices,
       items: 12,
