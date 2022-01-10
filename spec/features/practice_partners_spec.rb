@@ -21,6 +21,7 @@ describe 'Practice partners pages', type: :feature do
     @pr_11 = Practice.create!(name: 'practice eleven', approved: true, published: true, enabled: true, initiating_facility_type: 'other', user: @user2)
     @pr_12 = Practice.create!(name: 'practice twelve', approved: true, published: true, enabled: true, initiating_facility_type: 'other', user: @user2)
     @pr_13 = Practice.create!(name: 'practice thirteen', approved: true, published: true, enabled: true, initiating_facility_type: 'other', user: @user2)
+    Practice.create!(name: 'random practice', approved: true, published: true, enabled: true, initiating_facility_type: 'other', user: @user2)
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @pr_1)
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @pr_2)
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @pr_3)
@@ -74,6 +75,7 @@ describe 'Practice partners pages', type: :feature do
       updated_pr_card_count = find_all('.dm-practice-card').size
       expect(updated_pr_card_count).to eq(13)
       expect(page).to have_no_content('Load more')
+      expect(page).to have_no_content('random practice')
     end
   end
 
@@ -83,6 +85,7 @@ describe 'Practice partners pages', type: :feature do
       pr_card_count = find_all('.dm-practice-card').size
       expect(pr_card_count).to eq(1)
       expect(page).to have_content('A public practice')
+      expect(page).to have_no_content('random practice')
     end
   end
 end
