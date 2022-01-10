@@ -18,7 +18,7 @@
     </div>
     <div class="dm-load-more-container text-center">
       <% link = pagy_link_proc(pagy_partner_practices) %>
-      <%= link.call(pagy_partner_practices.vars[:page].to_i + 1, 'Load more').html_safe if pagy_partner_practices.count > 3 %>
+      <%= link.call(pagy_partner_practices.vars[:page].to_i + 1, 'Load more').html_safe if pagy_partner_practices.count > 12 %>
     </div>
   </section>
 </div>

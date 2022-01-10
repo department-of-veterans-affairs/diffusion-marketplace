@@ -84,6 +84,7 @@ describe 'Practice partners pages', type: :feature do
       visit '/partners/diffusion-of-excellence'
       pr_card_count = find_all('.dm-practice-card').size
       expect(pr_card_count).to eq(1)
+      expect(page).to have_no_content('Load more')
       expect(page).to have_content('A public practice')
       expect(page).to have_no_content('random practice')
     end
