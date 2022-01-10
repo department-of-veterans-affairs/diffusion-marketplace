@@ -1,0 +1,6 @@
+<% classes ||= nil %>
+<div class="grid-row grid-gap-3<%= (' ' + classes) if classes.present? %>">
+  <% practices.each do |p| %>
+    <%= render partial: 'shared/practice_card', locals: { practice: p } %>
+  <% end %>
+</div>

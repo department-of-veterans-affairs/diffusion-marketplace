@@ -9,7 +9,7 @@ function paginatedPracticeListPageComponent() {
   <% next_page = pagy.next %>
 
   // Append the next set of practice cards to the current set
-  $(practicesClass).append("<%= escape_javascript render(partial: 'page/practice_list_container', locals: {
+  $(practicesClass).append("<%= escape_javascript render(partial: 'shared/practice_cards_row', locals: {
     practices: data_set,
     component_index: @pagy_type})
   %>")
