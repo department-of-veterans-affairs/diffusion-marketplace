@@ -156,7 +156,7 @@
   padding: 0 !important;
 }
 
-.category-container, .originating-facility-container, .adopting-facility-container {
+.category-container, .originating-facility-container, .adopting-facility-container, .practice-partner-container {
   background-color: color($theme-color-secondary-light);
 
   @media screen and (min-width: 1024px) {
@@ -164,7 +164,7 @@
   }
 }
 
-.category-container {
+.category-container, .practice-partner-container {
   .desktop\:grid-col-4 {
     @include u-padding-right('05');
   }
