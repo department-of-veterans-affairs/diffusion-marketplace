@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_10_151628) do
+ActiveRecord::Schema.define(version: 2022_01_11_151820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -232,6 +232,14 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "clinical_resource_hubs", force: :cascade do |t|
+    t.bigint "visn_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["visn_id"], name: "index_clinical_resource_hubs_on_visn_id"
   end
 
   create_table "commontator_comments", force: :cascade do |t|
@@ -1350,6 +1358,7 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
   add_foreign_key "clinical_condition_practices", "practices"
   add_foreign_key "clinical_location_practices", "clinical_locations"
   add_foreign_key "clinical_location_practices", "practices"
+  add_foreign_key "clinical_resource_hubs", "visns"
   add_foreign_key "commontator_comments", "commontator_comments", column: "parent_id", on_update: :restrict, on_delete: :cascade
   add_foreign_key "commontator_comments", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
   add_foreign_key "commontator_subscriptions", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade

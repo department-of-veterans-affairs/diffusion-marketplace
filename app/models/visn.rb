@@ -1,5 +1,6 @@
 class Visn < ApplicationRecord
   has_many :va_facilities, dependent: :destroy
+  has_one :clinical_resource_hub, dependent: :destroy
   has_many :visn_liaisons, dependent: :destroy
 
   before_save :clear_visn_cache_on_save

@@ -775,5 +775,16 @@
         }
       ]
     }
+  ],
+  "crh":
+  [
+    {
+      "name": "VISN 1 Clinical Resource Hub (Remote)",
+      "visn_number": 1
+    },
+    {
+      "name": "VISN 2 Clinical Resource Hub (Remote)",
+      "visn_number": 2
+    }
   ]
 }
