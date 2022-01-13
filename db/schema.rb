@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_11_151820) do
+ActiveRecord::Schema.define(version: 2022_01_12_155536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -346,6 +346,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_151820) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "va_facility_id"
+    t.bigint "clinical_resource_hub_id"
+    t.index ["clinical_resource_hub_id"], name: "index_diffusion_histories_on_clinical_resource_hub_id"
     t.index ["practice_id"], name: "index_diffusion_histories_on_practice_id"
     t.index ["va_facility_id"], name: "index_diffusion_histories_on_va_facility_id"
   end
@@ -1368,6 +1370,7 @@ ActiveRecord::Schema.define(version: 2022_01_11_151820) do
   add_foreign_key "developing_facility_type_practices", "developing_facility_types"
   add_foreign_key "developing_facility_type_practices", "practices"
   add_foreign_key "difficulties", "practices"
+  add_foreign_key "diffusion_histories", "clinical_resource_hubs"
   add_foreign_key "diffusion_histories", "practices"
   add_foreign_key "diffusion_histories", "va_facilities"
   add_foreign_key "diffusion_history_statuses", "diffusion_histories"
