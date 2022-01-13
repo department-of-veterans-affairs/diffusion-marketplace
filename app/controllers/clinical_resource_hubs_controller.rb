@@ -6,7 +6,6 @@ class ClinicalResourceHubsController < ApplicationController
 
   private
   def set_crh
-    debugger
     @visn = Visn.find_by!(number: params[:id])
     @crh = ClinicalResourceHub.find_by!(visn: @visn) if @visn.present?
   end
