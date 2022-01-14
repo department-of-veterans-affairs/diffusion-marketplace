@@ -31,7 +31,7 @@ namespace :practice_partners do
         new_partner = PracticePartner.create!(name: partner[:name], slug: partner[:slug], is_major: true)
       end
 
-      puts "The \"#{existing_partner.present? ? existing_partner.name : new_partner.name}\" practice partner has been successfully created/updated and classified as a major partner!!"
+      puts "The \"#{existing_partner.present? ? existing_partner.name : new_partner.name}\" practice partner has been successfully #{existing_partner.present? ? 'updated' : 'created'} and classified as a major partner!!"
     end
   end
 end

@@ -37,8 +37,8 @@ module PracticeUtils
       practice_hash['adoption_count'] = adoptions.size
 
       # get practice partners
-      practice_partners = practice.practice_partners.pluck(:name)
-      practice_hash['practice_partners'] = practice_partners
+      practice_partner_names = practice.practice_partners.pluck(:name)
+      practice_hash['practice_partner_names'] = practice_partner_names
 
       practices_array.push practice_hash
     end

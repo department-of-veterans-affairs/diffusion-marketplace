@@ -289,10 +289,10 @@ function searchPracticesPage() {
     var searchLocation = window.location.search.split('=');
 
     // Search practices and populate the page
-    function search(query, categories, originatingFacility, adoptingFacility) {
+    function search(query, categories, originatingFacility, adoptingFacility, practicePartners) {
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
-        isBlankSearch = !Boolean(query) && categories == undefined && originatingFacility == undefined && adoptingFacility == undefined ? true : false;
+        isBlankSearch = !Boolean(query) && categories == undefined && originatingFacility == undefined && adoptingFacility == undefined && practicePartners == undefined ? true : false;
         // Set variables
         var resultsSummary = document.querySelector('#results-summary');
         // set the search page search bar input value
@@ -378,6 +378,14 @@ function searchPracticesPage() {
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             }
         }
+
+        if (practicePartners) {
+            // Collect any practice that has a practice partner that matches the selected partner(s).
+            var practicePartnerFilters = [];
+            practicePartners.forEach(function (partnerSelection) {
+                return practicePartnerFilters.push({'practice_partner_names': "=\"" + partnerSelection + "\""});
+            });
+        }
         /*
         IMPORTANT: Per Research and Design, if the user's search contains a string from the search bar, utilize the $and operator so that the result(s) must match all conditions.
         On the other hand, if the user's search only contains filters, utilize the $or operator so that the results can match ANY of the conditions.
@@ -445,6 +453,28 @@ function searchPracticesPage() {
             });
         }
 
+        /*
+        Make a result a closer match if it has more than one matching practice partner, as Fuse.js uses short-circuit evaluation. This means most of the time,
+        the results will have the same score because it stops after the first match.
+        */
+        function improveResultScoreBasedOnAmountOfPracticePartnerMatches(results) {
+            results.map(function(result) {
+                var resultScore = result.score;
+                var practice_partner_names = result.item.practice_partner_names;
+                if (practice_partner_names && Array.isArray(practice_partner_names)) {
+                    practice_partner_names.forEach(function (ppn) {
+                        if (practicePartners.includes(ppn)) {
+                            resultScore = result.score / 2;
+                        }
+                        result.score = resultScore;
+                    });
+                } else if (practice_partner_names && !Array.isArray(practice_partner_names)) {
+                    resultScore = result.score / 2;
+                    result.score = resultScore;
+                }
+            });
+        }
+
         function searchWithQueryAndAllFilters() {
             results = fuse.search({
                 $and: [
@@ -463,6 +493,113 @@ function searchPracticesPage() {
                         $and: [
                             {$or: adoptionFacilityArray}
                         ]
+                    },
+                    {
+                        $and: practicePartnerFilters
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndCategoriesAndOriginFacilityAndPracticePartners() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
+                    },
+                    {
+                        $and: practicePartnerFilters
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndCategoriesAndAdoptingFacilityAndPracticePartners() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityArray}
+                        ]
+                    },
+                    {
+                        $and: practicePartnerFilters
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndCategoriesAndBothFacilities() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndPracticePartnersAndBothFacilities() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: practicePartnerFilters
+                    },
+                    {
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndCategoriesAndPracticePartners() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: practicePartnerFilters
                     }
                 ]
             });
@@ -494,6 +631,42 @@ function searchPracticesPage() {
                     },
                     {
                         $and: categoryFilters
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndPracticePartnersAndOriginatingFacility() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: practicePartnerFilters
+                    },
+                    {
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndPracticePartnersAndAdoptingFacility() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: practicePartnerFilters
                     },
                     {
                         $and: [
@@ -567,14 +740,56 @@ function searchPracticesPage() {
             });
         }
 
+        function searchWithQueryAndPracticePartners() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: practicePartnerFilters
+                    }
+                ]
+            });
+        }
+
         function searchWithAllFilters() {
+            results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray, practicePartnerFilters)});
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultScoreBasedOnOriginatingFacility(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
+            improveResultScoreBasedOnAmountOfPracticePartnerMatches(results);
+        }
+
+        function searchWithCategoriesAndOriginatingFacilityAndPracticePartners() {
+            results = fuse.search({$or: categoryFilters.concat(originFacilityArray, practicePartnerFilters)});
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultScoreBasedOnOriginatingFacility(results);
+            improveResultScoreBasedOnAmountOfPracticePartnerMatches(results);
+        }
+
+        function searchWithCategoriesAndAdoptingFacilityAndPracticePartners() {
+            results = fuse.search({$or: categoryFilters.concat(adoptionFacilityArray, practicePartnerFilters)});
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
+            improveResultScoreBasedOnAmountOfPracticePartnerMatches(results);
+        }
+
+        function searchWithCategoriesAndBothFacilities() {
             results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray)});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
             improveResultScoreBasedOnOriginatingFacility(results);
             improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
-        function searchWithCategoriesAndOriginFacility() {
+        function searchWithPracticePartnersAndBothFacilities() {
+            results = fuse.search({$or: practicePartnerFilters.concat(originFacilityArray, adoptionFacilityArray)});
+            improveResultScoreBasedOnAmountOfPracticePartnerMatches(results);
+            improveResultScoreBasedOnOriginatingFacility(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
+        }
+
+        function searchWithCategoriesAndOriginatingFacility() {
             results = fuse.search({$or: categoryFilters.concat(originFacilityArray)});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
             improveResultScoreBasedOnOriginatingFacility(results);
@@ -583,6 +798,24 @@ function searchPracticesPage() {
         function searchWithCategoriesAndAdoptingFacility() {
             results = fuse.search({$or: categoryFilters.concat(adoptionFacilityArray)});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
+        }
+
+        function searchWithCategoriesAndPracticePartners() {
+            results = fuse.search({$or: categoryFilters.concat(practicePartnerFilters)});
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultScoreBasedOnAmountOfPracticePartnerMatches(results);
+        }
+
+        function searchWithPracticePartnersAndOriginatingFacility() {
+            results = fuse.search({$or: practicePartnerFilters.concat(originFacilityArray)});
+            improveResultScoreBasedOnAmountOfPracticePartnerMatches(results);
+            improveResultScoreBasedOnOriginatingFacility(results);
+        }
+
+        function searchWithPracticePartnersAndAdoptingFacility() {
+            results = fuse.search({$or: practicePartnerFilters.concat(adoptionFacilityArray)});
+            improveResultScoreBasedOnAmountOfPracticePartnerMatches(results);
             improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
@@ -597,7 +830,7 @@ function searchPracticesPage() {
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
         }
 
-        function searchWithOnlyOriginFacility() {
+        function searchWithOnlyOriginatingFacility() {
             results = fuse.search({$or: originFacilityArray});
             improveResultScoreBasedOnOriginatingFacility(results);
         }
@@ -607,6 +840,11 @@ function searchPracticesPage() {
             improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
+        function searchWithOnlyPracticePartners() {
+            results = fuse.search({$or: practicePartnerFilters});
+            improveResultScoreBasedOnAmountOfPracticePartnerMatches(results);
+        }
+
         function searchByFilterTerm(searchKey, filterTerm) {
             var searchFilter = {};
             searchFilter[searchKey] = "=\"" + filterTerm + "\"";
@@ -614,37 +852,69 @@ function searchPracticesPage() {
         }
 
         // Run the search query and include filters(if any)
-        if (query !== '' && categoryFilters && originatingFacility && adoptingFacility) {
+        if (query !== '' && categories && originatingFacility && adoptingFacility && practicePartners) {
             searchWithQueryAndAllFilters();
-        } else if (query !== '' && categoryFilters && originatingFacility && !adoptingFacility) {
+        } else if (query !== '' && categories && originatingFacility && !adoptingFacility && practicePartners) {
+            searchWithQueryAndCategoriesAndOriginFacilityAndPracticePartners();
+        } else if (query !== '' && categories && !originatingFacility && adoptingFacility && practicePartners) {
+            searchWithQueryAndCategoriesAndAdoptingFacilityAndPracticePartners();
+        } else if (query !== '' && categories && originatingFacility && adoptingFacility && !practicePartners) {
+            searchWithQueryAndCategoriesAndBothFacilities();
+        } else if (query !== '' && !categories && originatingFacility && adoptingFacility && practicePartners) {
+            searchWithQueryAndPracticePartnersAndBothFacilities();
+        } else if (query !== '' && categories && originatingFacility && !adoptingFacility && !practicePartners) {
             searchWithQueryAndCategoriesAndOriginFacility();
-        } else if (query !== '' && categoryFilters && !originatingFacility && adoptingFacility) {
+        } else if (query !== '' && categories && !originatingFacility && adoptingFacility && !practicePartners) {
             searchWithQueryAndCategoriesAndAdoptingFacility();
-        } else if (query !== '' && !categoryFilters && originatingFacility && adoptingFacility) {
+        } else if (query !== '' && categories && !originatingFacility && !adoptingFacility && practicePartners) {
+            searchWithQueryAndCategoriesAndPracticePartners();
+        } else if (query !== '' && !categories && originatingFacility && !adoptingFacility && practicePartners) {
+            searchWithQueryAndPracticePartnersAndOriginatingFacility();
+        } else if (query !== '' && !categories && !originatingFacility && adoptingFacility && practicePartners) {
+            searchWithQueryAndPracticePartnersAndAdoptingFacility();
+        } else if (query !== '' && !categories && originatingFacility && adoptingFacility && !practicePartners) {
             searchWithQueryAndBothFacilities();
-        } else if (query !== '' && categoryFilters && !originatingFacility && !adoptingFacility) {
+        } else if (query !== '' && categories && !originatingFacility && !adoptingFacility && !practicePartners) {
             searchWithQueryAndCategories();
-        } else if (query !== '' && !categoryFilters && originatingFacility && !adoptingFacility) {
+        } else if (query !== '' && !categories && originatingFacility && !adoptingFacility && !practicePartners) {
             searchWithQueryAndOriginFacility();
-        } else if (query !== '' && !categoryFilters && !originatingFacility && adoptingFacility) {
+        } else if (query !== '' && !categories && !originatingFacility && adoptingFacility && !practicePartners) {
             searchWithQueryAndAdoptingFacility();
-        } else if (query !== '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
-            results = fuse.search(query);
-        } else if (query === '' && categoryFilters && originatingFacility && adoptingFacility) {
+        } else if (query !== '' && !categories && !originatingFacility && !adoptingFacility && practicePartners) {
+            searchWithQueryAndPracticePartners();
+        } else if (query === '' && categories && originatingFacility && adoptingFacility && practicePartners) {
             searchWithAllFilters();
-        } else if (query === '' && categoryFilters && originatingFacility && !adoptingFacility) {
-            searchWithCategoriesAndOriginFacility();
-        } else if (query === '' && categoryFilters && !originatingFacility && adoptingFacility) {
+        } else if (query === '' && categories && originatingFacility && !adoptingFacility && practicePartners) {
+            searchWithCategoriesAndOriginatingFacilityAndPracticePartners();
+        } else if (query === '' && categories && !originatingFacility && adoptingFacility && practicePartners) {
+            searchWithCategoriesAndAdoptingFacilityAndPracticePartners();
+        } else if (query === '' && categories && originatingFacility && adoptingFacility && !practicePartners) {
+            searchWithCategoriesAndBothFacilities();
+        } else if (query === '' && !categories && originatingFacility && adoptingFacility && practicePartners) {
+            searchWithPracticePartnersAndBothFacilities();
+        } else if (query === '' && categories && originatingFacility && !adoptingFacility && !practicePartners) {
+            searchWithCategoriesAndOriginatingFacility();
+        } else if (query === '' && categories && !originatingFacility && adoptingFacility && !practicePartners) {
             searchWithCategoriesAndAdoptingFacility();
-        } else if (query === '' && !categoryFilters && originatingFacility && adoptingFacility) {
+        } else if (query === '' && categories && !originatingFacility && !adoptingFacility && practicePartners) {
+            searchWithCategoriesAndPracticePartners();
+        } else if (query === '' && !categories && originatingFacility && !adoptingFacility && practicePartners) {
+            searchWithPracticePartnersAndOriginatingFacility();
+        } else if (query === '' && !categories && !originatingFacility && adoptingFacility && practicePartners) {
+            searchWithPracticePartnersAndAdoptingFacility();
+        } else if (query === '' && !categories && originatingFacility && adoptingFacility && !practicePartners) {
             searchWithBothFacilities();
-        } else if (query === '' && categoryFilters && !originatingFacility && !adoptingFacility) {
+        } else if (query === '' && categories && !originatingFacility && !adoptingFacility && !practicePartners ) {
             searchWIthOnlyCategories();
-        } else if (query === '' && !categoryFilters && originatingFacility && !adoptingFacility) {
-            searchWithOnlyOriginFacility();
-        } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
+        } else if (query === '' && !categories && originatingFacility && !adoptingFacility && !practicePartners) {
+            searchWithOnlyOriginatingFacility();
+        } else if (query === '' && !categories && !originatingFacility && adoptingFacility && !practicePartners) {
             searchWithOnlyAdoptingFacility();
-        } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
+        } else if (query === '' && !categories && !originatingFacility && !adoptingFacility && practicePartners) {
+            searchWithOnlyPracticePartners();
+        } else if (query !== '' && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
+            results = fuse.search(query);
+        } else if (query === '' && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
             var maturityLevels = ['emerging', 'replicate', 'scale'];
             var filterTerm = decodeURI(searchLocation[1]);
             if (searchLocation[0] === '?filter_by') {
@@ -668,7 +938,7 @@ function searchPracticesPage() {
         }
 
         // Get the results and then filter them
-        if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
+        if (query === '' && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
             // on an empty search or filtered search, sort by most adoptions and disable the score sorting option, since the score for each result is the same
             buildSearchResults(results, sortByAdoptionCounts);
             $(SORT_EL).children().first().attr('disabled', 'true');
@@ -698,9 +968,14 @@ function searchPracticesPage() {
     // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
     function highlighter(resultItem) {
         resultItem.matches.forEach(function (matchItem) {
-            // don't highlight if match was on category or adoption facilities since they are not in practice search result text and can't be highlighted
+            // don't highlight if match was on category, adoption facilities, or practice partners since they are not in practice search result text and can't be highlighted
             // don't highlight origin_facilities or initiating_facility because they are ids. The initiating_facility_name key will cover any text
-            if (matchItem.key != 'category_names' && matchItem.key != 'adoption_facilities' && matchItem.key != 'origin_facilities' && matchItem.key != 'initiating_facility') {
+            if (matchItem.key != 'category_names' &&
+                matchItem.key != 'adoption_facilities' &&
+                matchItem.key != 'origin_facilities' &&
+                matchItem.key != 'initiating_facility' &&
+                matchItem.key != 'practice_partner_names'
+            ) {
                 var text = resultItem.item[matchItem.key];
                 var result = [];
                 var matches = [].concat(matchItem.indices); // limpar referencia
@@ -730,7 +1005,7 @@ function searchPracticesPage() {
 
     // Set Fuse.js search options
     var search_options = {
-        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level', 'adoption_facilities', 'origin_facilities', 'initiating_facility_name', 'overview_problem', 'overview_solution', 'overview_results'],
+        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level', 'adoption_facilities', 'origin_facilities', 'initiating_facility_name', 'overview_problem', 'overview_solution', 'overview_results', 'practice_partner_names'],
         minMatchCharLength: 1,
         tokenize: true,
         shouldSort: true,
@@ -819,11 +1094,11 @@ function searchPracticesPage() {
         var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
 
         // Get the values for any chosen categories
-        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox")');
-        var chosenCategories = selectedCheckboxes.map(function () {
+        var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".practice-partner-search-checkbox")');
+        var chosenCategories = selectedCategoryCheckboxes.map(function () {
             return this.value;
         }).get();
-        if (chosenCategories.length == 0) {
+        if (!chosenCategories.length) {
             chosenCategories = null;
         }
 
@@ -834,11 +1109,20 @@ function searchPracticesPage() {
             data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories})
         });
 
+        // Get the values for any chosen practice partners
+        var selectedPracticePartnerCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".clinical-checkbox"):not(".operational-checkbox"):not(".strategic-checkbox")');
+        var chosenPracticePartners = selectedPracticePartnerCheckboxes.map(function () {
+            return this.value;
+        }).get();
+        if (!chosenPracticePartners.length) {
+            chosenPracticePartners = null;
+        }
+
         // Run the search
-        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
+        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility, chosenPracticePartners);
 
         // Display the amount of filters used(if any)
-        var checkboxCount = selectedCheckboxes.length;
+        var checkboxCount = selectedCategoryCheckboxes.length + selectedPracticePartnerCheckboxes.length;
         var noOriginatingFacilityText = originatingFacilityInput.val() === '';
         var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
         var noAdoptingFacilityText = adoptingFacilityInput.val() === '';

@@ -25,7 +25,8 @@
                         data_id: "practice_ids_#{p.id}",
                         data_name: 'practices',
                         data_value: p.id,
-                        data_label_text: p.name
+                        data_label_text: p.name,
+                        data_class: ''
                       } %>
                     <% end %>
                 </div>
@@ -95,7 +96,8 @@
                           data_id: station_number,
                           data_name: 'facilities',
                           data_value: station_number,
-                          data_label_text: "#{f.street_address_state}: #{facility_name_with_common_name(station_name, f.common_name)}"
+                          data_label_text: "#{f.street_address_state}: #{facility_name_with_common_name(station_name, f.common_name)}",
+                          data_class: ''
                         } %>
                       <% end %>
                     </div>

@@ -100,8 +100,9 @@
                     <%= render partial: 'shared/checkbox', locals: {
                       data_id: "practice_partner_ids_#{partner.id}",
                       data_name: 'practice_partners',
-                      data_value: partner.id,
-                      data_label_text: partner.name
+                      data_value: partner.name,
+                      data_label_text: partner.name,
+                      data_class: ' practice-partner-search-checkbox'
                     } %>
                   <% end %>
                 </div>
