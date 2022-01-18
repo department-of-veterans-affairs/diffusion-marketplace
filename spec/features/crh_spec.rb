@@ -2,9 +2,15 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe 'show page' do
-  it 'should throw error if VISN number does not exist in the DB' do
-    visit '/crh/50'
-    expect(page).to have_content('Internal server error')
-    expect(page).to have_content('We\'re sorry, something went wrong. We\'re working to fix it as soon as we can. Please check back in 30 minutes.')
+  it 'should throw error if crh_path not defined' do
+    visit '/crh'
+    expect(page).to have_content('Page not found')
+    expect(page).to have_content('We\'re sorry, we can\'t find the page you\'re looking for. It might have been removed, changed names, or is otherwise unavailable.')
+  end
+
+  if 'should throw error if visn_number not found in DB'
+    visit '/crh/150'
+    expect(page).to have_content('Page not found')
+    expect(page).to have_content('We\'re sorry, we can\'t find the page you\'re looking for. It might have been removed, changed names, or is otherwise unavailable.')
   end
 end
