@@ -7,14 +7,6 @@ describe 'Clinical_Resource_Hubs', type: :feature do
   end
 
   describe 'CRH show page' do
-    describe 'bad route' do
-      it 'should show 404 error' do
-        visit '/crh/'
-        expect(page).to have_content('Page not found')
-        expect(page).to have_content('We\'re sorry, we can\'t find the page you\'re looking for. It might have been removed, changed names, or is otherwise unavailable.')
-      end
-    end
-
     describe 'route works' do
       it 'should not show 404' do
         visit '/crh/1'
