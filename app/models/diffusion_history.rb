@@ -4,7 +4,6 @@ class DiffusionHistory < ApplicationRecord
   belongs_to :clinical_resource_hub, optional: true
 
 
-  #TODO
   validates_with DiffusionHistoryValidator, on: [:create, :update] #check CRH exists or facility exists
 
 
