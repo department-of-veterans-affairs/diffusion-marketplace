@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_10_151628) do
+ActiveRecord::Schema.define(version: 2022_01_12_155536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -234,6 +234,14 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "clinical_resource_hubs", force: :cascade do |t|
+    t.bigint "visn_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["visn_id"], name: "index_clinical_resource_hubs_on_visn_id"
+  end
+
   create_table "commontator_comments", force: :cascade do |t|
     t.bigint "thread_id", null: false
     t.string "creator_type", null: false
@@ -338,6 +346,8 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "va_facility_id"
+    t.bigint "clinical_resource_hub_id"
+    t.index ["clinical_resource_hub_id"], name: "index_diffusion_histories_on_clinical_resource_hub_id"
     t.index ["practice_id"], name: "index_diffusion_histories_on_practice_id"
     t.index ["va_facility_id"], name: "index_diffusion_histories_on_va_facility_id"
   end
@@ -1350,6 +1360,7 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
   add_foreign_key "clinical_condition_practices", "practices"
   add_foreign_key "clinical_location_practices", "clinical_locations"
   add_foreign_key "clinical_location_practices", "practices"
+  add_foreign_key "clinical_resource_hubs", "visns"
   add_foreign_key "commontator_comments", "commontator_comments", column: "parent_id", on_update: :restrict, on_delete: :cascade
   add_foreign_key "commontator_comments", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
   add_foreign_key "commontator_subscriptions", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
@@ -1359,6 +1370,7 @@ ActiveRecord::Schema.define(version: 2021_09_10_151628) do
   add_foreign_key "developing_facility_type_practices", "developing_facility_types"
   add_foreign_key "developing_facility_type_practices", "practices"
   add_foreign_key "difficulties", "practices"
+  add_foreign_key "diffusion_histories", "clinical_resource_hubs"
   add_foreign_key "diffusion_histories", "practices"
   add_foreign_key "diffusion_histories", "va_facilities"
   add_foreign_key "diffusion_history_statuses", "diffusion_histories"

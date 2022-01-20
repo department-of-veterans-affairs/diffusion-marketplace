@@ -775,5 +775,80 @@
         }
       ]
     }
+  ],
+  "crh":
+  [
+    {
+      "name": "VISN 1 Clinical Resource Hub (Remote)",
+      "visn_number": 1
+    },
+    {
+      "name": "VISN 2 Clinical Resource Hub (Remote)",
+      "visn_number": 2
+    },
+    {
+      "name": "VISN 4 Clinical Resource Hub (Remote)",
+      "visn_number": 4
+    },
+    {
+      "name": "VISN 5 Clinical Resource Hub (Remote)",
+      "visn_number": 5
+    },
+    {
+      "name": "VISN 6 Clinical Resource Hub (Remote)",
+      "visn_number": 6
+    },
+    {
+      "name": "VISN 7 Clinical Resource Hub (Remote)",
+      "visn_number": 7
+    },
+    {
+      "name": "VISN 8 Clinical Resource Hub (Remote)",
+      "visn_number": 8
+    },
+    {
+      "name": "VISN 9 Clinical Resource Hub (Remote)",
+      "visn_number": 9
+    },
+    {
+      "name": "VISN 10 Clinical Resource Hub (Remote)",
+      "visn_number": 10
+    },
+    {
+      "name": "VISN 12 Clinical Resource Hub (Remote)",
+      "visn_number": 12
+    },
+    {
+      "name": "VISN 15 Clinical Resource Hub (Remote)",
+      "visn_number": 15
+    },
+    {
+      "name": "VISN 16 Clinical Resource Hub (Remote)",
+      "visn_number": 16
+    },
+    {
+      "name": "VISN 17 Clinical Resource Hub (Remote)",
+      "visn_number": 17
+    },
+    {
+      "name": "VISN 19 Clinical Resource Hub (Remote)",
+      "visn_number": 19
+    },
+    {
+      "name": "VISN 20 Clinical Resource Hub (Remote)",
+      "visn_number": 20
+    },
+    {
+      "name": "VISN 21 Clinical Resource Hub (Remote)",
+      "visn_number": 21
+    },
+    {
+      "name": "VISN 22 Clinical Resource Hub (Remote)",
+      "visn_number": 22
+    },
+    {
+      "name": "VISN 23 Clinical Resource Hub (Remote)",
+      "visn_number": 23
+    }
   ]
 }
