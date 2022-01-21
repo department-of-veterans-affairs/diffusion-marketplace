@@ -39,7 +39,7 @@ ActiveAdmin.register PracticePartner do
 
   form do |f|
     f.inputs do
-      f.input :name
+      f.input :name, label: 'Practice partner name *Required*'
       f.input :short_name
       f.input :description
       f.input :position
@@ -54,7 +54,7 @@ ActiveAdmin.register PracticePartner do
 
   member_action :set_practice_partner_importance, method: :post do
     resource.is_major = !resource.is_major
-    update_boolean_attr(resource.is_major, 'is now a major practice partner', 'is now a minor practice partner')
+    update_boolean_attr(resource.is_major, 'is now a major practice partner.', 'is now a minor practice partner.')
   end
 
   controller do

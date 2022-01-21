@@ -94,18 +94,32 @@
         <% if sliced_partners.present? %>
           <div class="grid-row grid-col-12 practice-partner-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex padding-left-0 padding-right-0">
             <% sliced_partners.each_with_index do |sp, i| %>
-              <% unless i === 3 %>
-                <div class="grid-col-12 desktop:grid-col-4">
-                  <% sp.each do |partner| %>
+              <% if i != 3 %>
+                <% if sp.kind_of?(Array) %>
+                  <div class="grid-col-12 desktop:grid-col-4">
+                    <% sp.each do |partner| %>
+                      <%= render partial: 'shared/checkbox', locals: {
+                        data_id: "practice_partner_ids_#{partner.id}",
+                        data_name: 'practice_partners',
+                        data_value: partner.name,
+                        data_label_text: partner.name,
+                        data_input_class: ' practice-partner-search-checkbox',
+                        data_label_class: ' practice-partner-search-checkbox-label'
+                      } %>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <div class="grid-col-12 desktop:grid-col-4">
                     <%= render partial: 'shared/checkbox', locals: {
-                      data_id: "practice_partner_ids_#{partner.id}",
+                      data_id: "practice_partner_ids_#{sp.id}",
                       data_name: 'practice_partners',
-                      data_value: partner.name,
-                      data_label_text: partner.name,
-                      data_class: ' practice-partner-search-checkbox'
+                      data_value: sp.name,
+                      data_label_text: sp.name,
+                      data_input_class: ' practice-partner-search-checkbox',
+                      data_label_class: ' practice-partner-search-checkbox-label'
                     } %>
-                  <% end %>
-                </div>
+                  </div>
+                <% end %>
               <% end %>
             <% end %>
           </div>
