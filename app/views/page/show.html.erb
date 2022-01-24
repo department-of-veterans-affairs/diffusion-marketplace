@@ -108,8 +108,8 @@
           %>
           <% if pplc[:practices].any? %>
             <div class="margin-bottom-2<%= ' margin-bottom-0' if last_component === index %>">
-              <div class="dm-practice-card-list grid-row grid-gap-3 dm-paginated-<%= component_index %>-practices">
-                <%= render partial: 'page/practice_list_container', locals: { practices: pplc[:practices], component_index: component_index } %>
+              <div class="dm-practice-card-list dm-paginated-<%= component_index %>-practices">
+                <%= render partial: 'shared/practice_cards_row', locals: { practices: pplc[:practices] } %>
               </div>
               <div class="text-center dm-load-more-practices-<%= component_index %>-btn-container" >
                 <% link = pagy_link_proc(pplc[:pagy]) %>
