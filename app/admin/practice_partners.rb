@@ -31,7 +31,9 @@ ActiveAdmin.register PracticePartner do
       row :created_at
       row :updated_at
       row :slug
-      row :practices
+      row('Practices') do |partner|
+        partner.practices.order(Arel.sql("lower(name) ASC"))
+      end
       row('Major Practice Partner') { |partner| status_tag partner.is_major? }
     end
     active_admin_comments
@@ -39,7 +41,7 @@ ActiveAdmin.register PracticePartner do
 
   form do |f|
     f.inputs do
-      f.input :name, label: 'Practice partner name *Required*'
+      f.input :name, label: 'Name *Required*'
       f.input :short_name
       f.input :description
       f.input :position
@@ -81,6 +83,9 @@ ActiveAdmin.register PracticePartner do
         raise StandardError.new 'There was an error. Practice partner name cannot be blank.' if blank_practice_partner_name
 
         practice_partner = PracticePartner.find_by(slug: slug)
+
+        # raise an error if there's already a practice partner with a slug that matches the parameterized version of the inputted name
+        raise StandardError.new "There was an error. A practice partner with the slug: #{name.parameterize} already exists." if PracticePartner.find_by(slug: name.parameterize)
 
         practice_partner_by_name = PracticePartner.find_by(name: name)
         # raise an error if there's already a practice partner with a name that matches the user's input for the name field
