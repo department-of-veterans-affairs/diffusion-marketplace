@@ -298,7 +298,7 @@ function searchPracticesPage() {
         // set the search page search bar input value
         searchField.value = query;
 
-        if (query !== '') {
+        if (query) {
             trackSearchField(query);
             var searchBarQueryArray = [];
             search_options.keys.forEach(function(practiceKey) {
@@ -852,69 +852,69 @@ function searchPracticesPage() {
         }
 
         // Run the search query and include filters(if any)
-        if (query !== '' && categories && originatingFacility && adoptingFacility && practicePartners) {
+        if (query && categories && originatingFacility && adoptingFacility && practicePartners) {
             searchWithQueryAndAllFilters();
-        } else if (query !== '' && categories && originatingFacility && !adoptingFacility && practicePartners) {
+        } else if (query && categories && originatingFacility && !adoptingFacility && practicePartners) {
             searchWithQueryAndCategoriesAndOriginFacilityAndPracticePartners();
-        } else if (query !== '' && categories && !originatingFacility && adoptingFacility && practicePartners) {
+        } else if (query && categories && !originatingFacility && adoptingFacility && practicePartners) {
             searchWithQueryAndCategoriesAndAdoptingFacilityAndPracticePartners();
-        } else if (query !== '' && categories && originatingFacility && adoptingFacility && !practicePartners) {
+        } else if (query && categories && originatingFacility && adoptingFacility && !practicePartners) {
             searchWithQueryAndCategoriesAndBothFacilities();
-        } else if (query !== '' && !categories && originatingFacility && adoptingFacility && practicePartners) {
+        } else if (query && !categories && originatingFacility && adoptingFacility && practicePartners) {
             searchWithQueryAndPracticePartnersAndBothFacilities();
-        } else if (query !== '' && categories && originatingFacility && !adoptingFacility && !practicePartners) {
+        } else if (query && categories && originatingFacility && !adoptingFacility && !practicePartners) {
             searchWithQueryAndCategoriesAndOriginFacility();
-        } else if (query !== '' && categories && !originatingFacility && adoptingFacility && !practicePartners) {
+        } else if (query && categories && !originatingFacility && adoptingFacility && !practicePartners) {
             searchWithQueryAndCategoriesAndAdoptingFacility();
-        } else if (query !== '' && categories && !originatingFacility && !adoptingFacility && practicePartners) {
+        } else if (query && categories && !originatingFacility && !adoptingFacility && practicePartners) {
             searchWithQueryAndCategoriesAndPracticePartners();
-        } else if (query !== '' && !categories && originatingFacility && !adoptingFacility && practicePartners) {
+        } else if (query && !categories && originatingFacility && !adoptingFacility && practicePartners) {
             searchWithQueryAndPracticePartnersAndOriginatingFacility();
-        } else if (query !== '' && !categories && !originatingFacility && adoptingFacility && practicePartners) {
+        } else if (query && !categories && !originatingFacility && adoptingFacility && practicePartners) {
             searchWithQueryAndPracticePartnersAndAdoptingFacility();
-        } else if (query !== '' && !categories && originatingFacility && adoptingFacility && !practicePartners) {
+        } else if (query && !categories && originatingFacility && adoptingFacility && !practicePartners) {
             searchWithQueryAndBothFacilities();
-        } else if (query !== '' && categories && !originatingFacility && !adoptingFacility && !practicePartners) {
+        } else if (query && categories && !originatingFacility && !adoptingFacility && !practicePartners) {
             searchWithQueryAndCategories();
-        } else if (query !== '' && !categories && originatingFacility && !adoptingFacility && !practicePartners) {
+        } else if (query && !categories && originatingFacility && !adoptingFacility && !practicePartners) {
             searchWithQueryAndOriginFacility();
-        } else if (query !== '' && !categories && !originatingFacility && adoptingFacility && !practicePartners) {
+        } else if (query && !categories && !originatingFacility && adoptingFacility && !practicePartners) {
             searchWithQueryAndAdoptingFacility();
-        } else if (query !== '' && !categories && !originatingFacility && !adoptingFacility && practicePartners) {
+        } else if (query && !categories && !originatingFacility && !adoptingFacility && practicePartners) {
             searchWithQueryAndPracticePartners();
-        } else if (query === '' && categories && originatingFacility && adoptingFacility && practicePartners) {
+        } else if (!query && categories && originatingFacility && adoptingFacility && practicePartners) {
             searchWithAllFilters();
-        } else if (query === '' && categories && originatingFacility && !adoptingFacility && practicePartners) {
+        } else if (!query && categories && originatingFacility && !adoptingFacility && practicePartners) {
             searchWithCategoriesAndOriginatingFacilityAndPracticePartners();
-        } else if (query === '' && categories && !originatingFacility && adoptingFacility && practicePartners) {
+        } else if (!query && categories && !originatingFacility && adoptingFacility && practicePartners) {
             searchWithCategoriesAndAdoptingFacilityAndPracticePartners();
-        } else if (query === '' && categories && originatingFacility && adoptingFacility && !practicePartners) {
+        } else if (!query && categories && originatingFacility && adoptingFacility && !practicePartners) {
             searchWithCategoriesAndBothFacilities();
-        } else if (query === '' && !categories && originatingFacility && adoptingFacility && practicePartners) {
+        } else if (!query && !categories && originatingFacility && adoptingFacility && practicePartners) {
             searchWithPracticePartnersAndBothFacilities();
-        } else if (query === '' && categories && originatingFacility && !adoptingFacility && !practicePartners) {
+        } else if (!query && categories && originatingFacility && !adoptingFacility && !practicePartners) {
             searchWithCategoriesAndOriginatingFacility();
-        } else if (query === '' && categories && !originatingFacility && adoptingFacility && !practicePartners) {
+        } else if (!query && categories && !originatingFacility && adoptingFacility && !practicePartners) {
             searchWithCategoriesAndAdoptingFacility();
-        } else if (query === '' && categories && !originatingFacility && !adoptingFacility && practicePartners) {
+        } else if (!query && categories && !originatingFacility && !adoptingFacility && practicePartners) {
             searchWithCategoriesAndPracticePartners();
-        } else if (query === '' && !categories && originatingFacility && !adoptingFacility && practicePartners) {
+        } else if (!query && !categories && originatingFacility && !adoptingFacility && practicePartners) {
             searchWithPracticePartnersAndOriginatingFacility();
-        } else if (query === '' && !categories && !originatingFacility && adoptingFacility && practicePartners) {
+        } else if (!query && !categories && !originatingFacility && adoptingFacility && practicePartners) {
             searchWithPracticePartnersAndAdoptingFacility();
-        } else if (query === '' && !categories && originatingFacility && adoptingFacility && !practicePartners) {
+        } else if (!query && !categories && originatingFacility && adoptingFacility && !practicePartners) {
             searchWithBothFacilities();
-        } else if (query === '' && categories && !originatingFacility && !adoptingFacility && !practicePartners ) {
+        } else if (!query && categories && !originatingFacility && !adoptingFacility && !practicePartners ) {
             searchWIthOnlyCategories();
-        } else if (query === '' && !categories && originatingFacility && !adoptingFacility && !practicePartners) {
+        } else if (!query && !categories && originatingFacility && !adoptingFacility && !practicePartners) {
             searchWithOnlyOriginatingFacility();
-        } else if (query === '' && !categories && !originatingFacility && adoptingFacility && !practicePartners) {
+        } else if (!query && !categories && !originatingFacility && adoptingFacility && !practicePartners) {
             searchWithOnlyAdoptingFacility();
-        } else if (query === '' && !categories && !originatingFacility && !adoptingFacility && practicePartners) {
+        } else if (!query && !categories && !originatingFacility && !adoptingFacility && practicePartners) {
             searchWithOnlyPracticePartners();
-        } else if (query !== '' && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
+        } else if (query && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
             results = fuse.search(query);
-        } else if (query === '' && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
+        } else if (!query && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
             var maturityLevels = ['emerging', 'replicate', 'scale'];
             var filterTerm = decodeURI(searchLocation[1]);
             if (searchLocation[0] === '?filter_by') {
@@ -938,7 +938,7 @@ function searchPracticesPage() {
         }
 
         // Get the results and then filter them
-        if (query === '' && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
+        if (!query && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
             // on an empty search or filtered search, sort by most adoptions and disable the score sorting option, since the score for each result is the same
             buildSearchResults(results, sortByAdoptionCounts);
             $(SORT_EL).children().first().attr('disabled', 'true');
@@ -1027,7 +1027,7 @@ function searchPracticesPage() {
     // Get the Combo box values based on user interaction
     function getComboBoxVal(inputEle, liEle) {
         var facility;
-        if (inputEle.val() !== '' && liEle.length == 1) {
+        if (inputEle.val() && liEle.length == 1) {
             if (liEle.attr('data-value').includes('VISN')) {
                 return inputEle.val();
             } else {
@@ -1036,7 +1036,7 @@ function searchPracticesPage() {
                 });
                 return facility.station_number;
             }
-        } else if (inputEle.val() !== '' && liEle.length == 0) {
+        } else if (inputEle.val() && liEle.length == 0) {
             if (inputEle.val().includes('VISN')) {
                 return inputEle.val();
             } else {
@@ -1209,7 +1209,7 @@ function searchPracticesPage() {
 }
 
 function trackSearchField(searchTerm) {
-    if (searchTerm !== '') {
+    if (searchTerm) {
         ahoy.track('Practice search', {search_term: searchTerm});
         if (typeof ga === 'function') {
             ga('send', {
