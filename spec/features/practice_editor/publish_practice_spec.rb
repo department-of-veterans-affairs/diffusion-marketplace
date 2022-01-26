@@ -28,9 +28,9 @@ describe 'Practice editor', type: :feature, js: true do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit practice_introduction_path(@practice)
+      page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
       expect(page).to be_accessible.according_to :wcag2a, :section508
       @save_button = find('#practice-editor-save-button')
-      @publish_button = find('#publish-practice-button')
     end
 
     def set_pr_required_fields
@@ -68,7 +68,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should display an error modal only when missing required fields exists' do
-      @publish_button.click
+      find('#publish-practice-button').click
       expect(page).to have_selector(".dm-publication-validation--alert", visible: true)
       expect(page).to have_content('Cannot publish yet')
       expect(page).to have_content('You can save your work as a draft at any time, but these sections need to be completed before publishing:')
@@ -87,7 +87,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_content('Email')
       set_pr_required_fields
       set_initiating_fac
-      @publish_button.click
+      find('#publish-practice-button').click
       expect(page).to have_selector(".dm-publication-validation--alert", visible: true)
       expect(page).to have_content('Cannot publish yet')
       expect(page).to have_content('You can save your work as a draft at any time, but these sections need to be completed before publishing:')
@@ -99,7 +99,8 @@ describe 'Practice editor', type: :feature, js: true do
 
       visit practice_adoptions_path(@practice)
       set_adoption
-      @publish_button.click
+      visit practice_overview_path(@practice)
+      find('#publish-practice-button').click
       page.has_css?('.dm-publication-validation--alert')
       expect(page).to have_no_content('At least one adoption')
       expect(page).to have_content('Email')
@@ -125,8 +126,7 @@ describe 'Practice editor', type: :feature, js: true do
       visit practice_overview_path(@practice2)
       set_overview_required_fields
 
-
-      @publish_button.click
+      find('#publish-practice-button').click
       expect(page).to have_no_content('Cannot publish yet')
       expect(page).to have_content("#{@practice2.name} has been successfully published to the Diffusion Marketplace")
       # Publish button should be gone if the practice has been published

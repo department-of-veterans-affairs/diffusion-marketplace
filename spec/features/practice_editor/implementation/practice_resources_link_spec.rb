@@ -7,6 +7,7 @@ describe 'Practice editor', type: :feature, js: true do
     @practice = Practice.create!(name: 'A practice with no resources', slug: 'test-practice', approved: true, published: true, date_initiated: Date.new(2011, 12, 31), user: @admin)
     PracticeResource.create(practice: @practice, resource: 'core person 1', resource_type: 'core', media_type: 'resource', resource_type_label: 'people', position: 1 )
     login_as(@admin, :scope => :user, :run_callbacks => false)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   describe 'Implementation page -- resource link:' do
@@ -173,6 +174,6 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def save_practice
-    find('#practice-editor-save-button').click
+    find('#practice-editor-save-button', visible: false).click
   end
 end

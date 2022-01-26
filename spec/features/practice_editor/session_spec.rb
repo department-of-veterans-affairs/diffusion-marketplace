@@ -85,7 +85,7 @@ describe 'Practice editor sessions', type: :feature do
     it 'should not save and redirect to metrics with required nested inputs' do
       visit practice_implementation_path(@practice_2)
       find_all('.practice-input').first.set('Fred')
-      find('#practice-editor-save-button').click
+      find('#practice-editor-save-button', visible: false).click
       expect(page).to have_content('Innovation was successfully updated')
       expect(page).to have_current_path(practice_implementation_path(@practice_2))
       PracticeResource.create!(practice: @practice_2, link_url:'www.google.com', name: "search stuff", resource_type: "core", media_type: "link")

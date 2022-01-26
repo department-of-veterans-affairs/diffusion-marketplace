@@ -6,6 +6,7 @@ describe 'Practice editor', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'A practice with no resources', slug: 'practice-no-resources', approved: true, published: true, date_initiated: Date.new(2011, 12, 31), overview_problem: 'existing problem', overview_solution: 'existing solution', overview_results: 'existing results', user: @admin)
     login_as(@admin, :scope => :user, :run_callbacks => false)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   describe 'Overview page' do
@@ -26,7 +27,7 @@ describe 'Practice editor', type: :feature, js: true do
         problem_statement.set('revised problem')
         solution_statement.set('revised solution')
         results_statement.set('revised results')
-        find('#practice-editor-save-button').click
+        find('#practice-editor-save-button', visible: false).click
         visit practice_path(@practice)
         expect(page).to have_no_content('existing problem')
         expect(page).to have_no_content('existing solution')
@@ -51,6 +52,6 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def save_practice
-    find('#practice-editor-save-button').click
+    find('#practice-editor-save-button', visible: false).click
   end
 end

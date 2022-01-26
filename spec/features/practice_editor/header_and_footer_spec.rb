@@ -6,6 +6,7 @@ describe 'Practice editor', type: :feature, js: true do
     @published_pr = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
     @unpublished_pr = Practice.create!(name: 'An unpublished practice', slug: 'a-unpublished-practice', approved: true, published: false, tagline: 'Test tagline', user: @admin)
     @admin.add_role(User::USER_ROLES[0].to_sym)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   describe 'Header and footer' do
@@ -26,7 +27,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_metrics_path(@published_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_css('.usa-current')
@@ -49,7 +49,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_editors_path(@published_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -73,7 +72,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_introduction_path(@published_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -98,7 +96,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_adoptions_path(@published_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -123,7 +120,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_overview_path(@published_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -148,7 +144,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_implementation_path(@published_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -173,7 +168,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_about_path(@published_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -211,7 +205,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_metrics_path(@unpublished_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_css('.usa-current')
@@ -234,7 +227,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_editors_path(@unpublished_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -258,7 +250,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_introduction_path(@unpublished_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -308,7 +299,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_overview_path(@unpublished_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -333,7 +323,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_implementation_path(@unpublished_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')
@@ -358,7 +347,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_current_path(practice_about_path(@unpublished_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
-          expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
           metrics_nav_link = find_all('.usa-nav__primary-item').first
           expect(metrics_nav_link).to have_no_css('.usa-current')

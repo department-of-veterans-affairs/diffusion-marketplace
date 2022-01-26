@@ -13,6 +13,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
     @pr_without_thumbnail = Practice.create!(name: 'A practice without a thumbnail', tagline: 'A public tagline', slug: 'a-no-thumbnail-practice', summary: 'test summary', date_initiated: Time.now, initiating_facility: 'test facility', initiating_facility_type: 'other', approved: true, published: true, user: admin)
 
     login_as(admin, :scope => :user, :run_callbacks => false)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   describe 'Section content on load' do
@@ -295,7 +296,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 end
 
 def click_save
-  find('#practice-editor-save-button').click
+  find('#practice-editor-save-button', visible: false).click
 end
 
 def click_remove_img
