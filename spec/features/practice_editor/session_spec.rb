@@ -59,7 +59,7 @@ describe 'Practice editor sessions', type: :feature do
     fill_in('practice_overview_solution', with: 'test')
     fill_in('practice_overview_results', with: 'test')
     PracticeEditorSession.last.update_attributes(session_start_time: DateTime.current - 28.minutes)
-    click_button('Save')
+    click_button('Save as draft')
     page.driver.browser.switch_to.alert.dismiss
 
     expect(page).to have_current_path(practice_metrics_path(@practice))

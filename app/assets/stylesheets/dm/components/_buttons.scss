@@ -45,19 +45,19 @@
 // CUSTOM BUTTONS
 .dm-button--inverse-secondary {
   @extend .usa-button;
-  @include u-bg($theme-color-dm-white);
+  @include u-bg($theme-color-dm-white, !important);
   @include u-text('ink', !important);
 
   &:hover {
-    @include u-bg('base-lightest');
+    @include u-bg('base-lightest', !important);
   }
 
   &:active {
-    @include u-bg('base-lighter');
+    @include u-bg('base-lighter', !important);
   }
 
   &:disabled {
-    @include u-bg('base');
+    @include u-bg('base', !important);
   }
 }
 
@@ -162,6 +162,24 @@
 
   &:active {
     @include u-text($theme-link-color, !important);
+  }
+}
+
+.dm-button--success {
+  @extend .usa-button;
+  @include u-bg($theme-color-success);
+  @include u-text($theme-color-base-ink);
+
+  &:hover, &:active {
+    @include u-text($theme-color-dm-white);
+  }
+
+  &:hover {
+    @include u-bg($theme-color-success-dark);
+  }
+
+  &:active {
+    @include u-bg($theme-color-success-darker);
   }
 }
 
