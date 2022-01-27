@@ -339,3 +339,7 @@ to confirm the class DOES NOT EXIST before adding a new class
 .usa-nav__primary button[aria-expanded="true"]{
   background-image: asset_url("header-nav-up-arrow.svg") !important;
 }
+u.dotted{
+  border-bottom: 2px dotted #999;
+  text-decoration: none;
+}
