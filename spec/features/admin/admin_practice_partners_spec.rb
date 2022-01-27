@@ -20,10 +20,10 @@ describe 'Admin Practice Partners Tab', type: :feature do
 
     it 'should not allow a user to create a practice partner with a name that already exists in the DB' do
       click_link('New Practice Partner')
-      fill_in('Practice partner name', with: @practice_partner.name)
+      fill_in('Name', with: @practice_partner.name)
       click_button('Create Practice partner')
 
-      expect(page).to have_content('There was an error. Practice Partner 1 practice partner already exists.')
+      expect(page).to have_content('There was an error. A practice partner with the slug: practice-partner-1 already exists.')
     end
   end
 
@@ -51,7 +51,7 @@ describe 'Admin Practice Partners Tab', type: :feature do
       add_practice_partners_to_cache
       visit '/admin/practice_partners'
       click_link('Edit', href: edit_admin_practice_partner_path(@practice_partner))
-      fill_in('Practice partner name', with: 'Updated Practice Partner 1')
+      fill_in('Name', with: 'Updated Practice Partner 1')
       click_button('Update Practice partner')
       expect(cache_keys).not_to include('practice_partners')
       add_practice_partners_to_cache
@@ -63,7 +63,7 @@ describe 'Admin Practice Partners Tab', type: :feature do
       add_practice_partners_to_cache
       visit '/admin/practice_partners'
       click_link('New Practice Partner')
-      fill_in('Practice partner name', with: 'New Practice Partner')
+      fill_in('Name', with: 'New Practice Partner')
       check('Major practice partner?')
       click_button('Create Practice partner')
       expect(cache_keys).not_to include('practice_partners')

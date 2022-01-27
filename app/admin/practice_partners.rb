@@ -85,11 +85,8 @@ ActiveAdmin.register PracticePartner do
         practice_partner = PracticePartner.find_by(slug: slug)
 
         # raise an error if there's already a practice partner with a slug that matches the parameterized version of the inputted name
-        raise StandardError.new "There was an error. A practice partner with the slug: #{name.parameterize} already exists." if PracticePartner.find_by(slug: name.parameterize)
+        raise StandardError.new "There was an error. A practice partner with the slug: #{name.parameterize} already exists." if PracticePartner.find_by(slug: name.parameterize) && practice_partner.nil?
 
-        practice_partner_by_name = PracticePartner.find_by(name: name)
-        # raise an error if there's already a practice partner with a name that matches the user's input for the name field
-        raise StandardError.new "There was an error. #{name} practice partner already exists." if practice_partner_by_name.present? && practice_partner_by_name != practice_partner
         practice_partner ||= PracticePartner.new(name: name)
         practice_partner.name = name
         practice_partner.short_name = short_name
