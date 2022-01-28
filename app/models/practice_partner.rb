@@ -1,4 +1,5 @@
 class PracticePartner < ApplicationRecord
+  include ActiveModel::Dirty
   extend FriendlyId
   friendly_id :name, use: :slugged
   acts_as_list
@@ -6,10 +7,12 @@ class PracticePartner < ApplicationRecord
   has_many :badges
   has_many :practice_partner_practices, dependent: :destroy
   has_many :practices, through: :practice_partner_practices
-  before_save :clear_practice_partners_cache_on_save
-  after_save :reset_practice_partners_cache
 
-  attr_accessor :no_practice_partners
+  before_save :clear_practice_partners_cache_on_save
+  before_destroy :clear_practice_partners_cache_on_destroy
+  after_save :reset_practice_partners_cache
+  after_destroy :reset_practice_partners_cache
+
   attr_accessor :reset_cached_practice_partners
 
   def clear_practice_partners_cache
@@ -24,6 +27,10 @@ class PracticePartner < ApplicationRecord
     if self.changed?
       self.reset_cached_practice_partners = true
     end
+  end
+
+  def clear_practice_partners_cache_on_destroy
+    self.reset_cached_practice_partners = true
   end
 
   def self.cached_practice_partners

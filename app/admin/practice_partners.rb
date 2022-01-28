@@ -48,7 +48,7 @@ ActiveAdmin.register PracticePartner do
       f.input :color
       f.input :icon
       f.input :slug
-      f.input :practices, as: :select, multiple: true, collection: Practice.published.order(Arel.sql("lower(name) ASC")).map { |p| ["#{p.name.capitalize}", p.id]}
+      f.input :practices, as: :select, multiple: true, include_blank: 'None', collection: Practice.published.order(Arel.sql("lower(name) ASC")).map { |p| ["#{p.name.capitalize}", p.id]}
       f.input :is_major, label: 'Major practice partner?'
     end
     f.actions
@@ -121,8 +121,9 @@ ActiveAdmin.register PracticePartner do
     end
 
     def update_partner_practices
-      # remove the first practice partner id -- first is always an empty string
-      selected_practices = params[:practice_partner][:practice_ids].drop(1)
+      practice_ids = params[:practice_partner][:practice_ids]
+      # if the 'None' option is selected, remove the first two practice partner ids -- first one is the hidden input, and the second is for the blank option. If not, just remove the first id for the hidden input
+      selected_practices = practice_ids === ['', ''] ? practice_ids.drop(2) : practice_ids.drop(1)
       selected_practices.map! { |p| p.to_i }
       practice_partner = PracticePartner.find_by(name: params[:practice_partner][:name])
       current_partner_practices = PracticePartnerPractice.where(practice_partner_id: practice_partner[:id]) unless practice_partner.nil?
