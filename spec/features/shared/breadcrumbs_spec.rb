@@ -33,6 +33,25 @@ describe 'Breadcrumbs', type: :feature do
       station_number_suffix_reservation_effective_date: "05/23/1995",
       mailing_address_city: "Las Vegas"
     )
+    VaFacility.create!(
+      visn: visn_1,
+      station_number: "434",
+      official_station_name: "A Second name",
+      common_name: "A second facility Test Common Name",
+      fy17_parent_station_complexity_level: "1a-High Complexity",
+      latitude: "44.03409934",
+      longitude: "-70.70545322",
+      rurality: "U",
+      street_address: "2 Test St",
+      street_address_city: "Sacramento",
+      street_address_state: "CA",
+      station_phone_number: '207-623-8411',
+      classification: 'Primary Care CBOC',
+      street_address_zip_code: "11111",
+      slug: "a-second-facility-test-common-name",
+      station_number_suffix_reservation_effective_date: "05/23/1996",
+      mailing_address_city: "Sacramento"
+    )
     dh_1 = DiffusionHistory.create!(practice: @user_practice, va_facility: fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
     login_as(@user, :scope => :user, :run_callbacks => false)

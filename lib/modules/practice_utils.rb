@@ -35,6 +35,11 @@ module PracticeUtils
       adoptions = practice.diffusion_histories.includes([:va_facility]).collect{ |dh| dh.va_facility.station_number }
       practice_hash['adoption_facilities'] = adoptions
       practice_hash['adoption_count'] = adoptions.size
+
+      # get practice partners
+      practice_partner_names = practice.practice_partners.pluck(:name)
+      practice_hash['practice_partner_names'] = practice_partner_names
+
       practices_array.push practice_hash
     end
 

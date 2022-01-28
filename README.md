@@ -38,6 +38,7 @@
 | `rails risk_and_mitigation:remove_unpaired_risks_and_mitigation` | Removes risks without a corresponding mitigation AND removes mitigations without a corresponding risk.
 | `rails practice_editors:add_practice_owners_to_practice_editors` | Adds each practice owner to the practice editors list of their corresponding practice
 | `rails va_facilities:fix-data-va-facilities` | updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complextity_level')
+| `rails practice_partners:apply_is_major_flag_to_partners` | Creates/updates certain flagship practice partners and applies the 'is_major' flag to them
 #### Ruby version
 
 - `ruby 2.6.3`
@@ -173,6 +174,7 @@ This will run:
 14. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
 15. `rails practice_editors:add_practice_owners_to_practice_editors` - Adds each practice owner to the practice editors list of their corresponding practice
 16. `rails va_facilities:fix-data-va-facilities` - updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complextity_level')
+17. `rails practice_partners:apply_is_major_flag_to_partners` - Creates/updates certain flagship practice partners and applies the 'is_major' flag to them
 
 To reset all of the data and do the process all over again, run:
 ```bash

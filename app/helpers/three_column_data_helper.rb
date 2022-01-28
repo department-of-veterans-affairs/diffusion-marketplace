@@ -15,6 +15,8 @@ module ThreeColumnDataHelper
       end
 
       sliced_data_set
+    else
+      data_set
     end
   end
 end

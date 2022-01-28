@@ -2,6 +2,7 @@ include ApplicationHelper
 include ActiveAdminHelpers
 include PracticeEditorUtils
 include UserUtils
+include ActiveAdminUtils
 
 ActiveAdmin.register Practice do
   actions :all, except: [:destroy]
@@ -251,6 +252,7 @@ ActiveAdmin.register Practice do
       end
       f.input :retired, label: 'Innovation retired?'
       f.input :retired_reason, label: 'Retired reason', as: :quill_editor, wrapper_html: { class: 'retired-reason-container' }
+      f.input :is_public, label: 'Innovation public?'
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
@@ -329,6 +331,7 @@ ActiveAdmin.register Practice do
         email = params[:user_email]
         retired = practice_params[:retired] == "1" ? true : false
         retired_reason = retired ? practice_params[:retired_reason] : nil
+        is_public = practice_params[:is_public] === "1" ? true : false
         # raise an error if practice name is left blank
         raise StandardError.new 'There was an error. Innovation name cannot be blank.' if blank_practice_name
 
@@ -340,6 +343,7 @@ ActiveAdmin.register Practice do
         practice ||= Practice.create(name: practice_name)
         practice.retired = retired
         practice.retired_reason = retired_reason
+        practice.is_public = is_public
 
         # raise an error if practice email does not meet validation requirements
         blank_email = email.blank?
@@ -461,17 +465,6 @@ ActiveAdmin.register Practice do
         practice.update_attributes(highlight_body: params[:practice][:highlight_body])
         practice.update_attributes(highlight_attachment: params[:practice][:highlight_attachment]) if practice_highlight_attachment_params.present?
       end
-    end
-
-    def update_boolean_attr(attr, message_1, message_2)
-      message = "\"#{resource.name}\" #{message_1}"
-
-      unless attr
-        message = "\"#{resource.name}\" #{message_2}"
-      end
-
-      resource.save
-      redirect_back fallback_location: root_path, notice: message
     end
   end
 end
