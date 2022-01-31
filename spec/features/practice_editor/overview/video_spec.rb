@@ -278,7 +278,7 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def save_practice
-    find('#practice-editor-save-button').click
+    find('#practice-editor-save-button', visible: false).click
   end
 
   def no_resource_pr_test_setup
@@ -286,6 +286,7 @@ describe 'Practice editor', type: :feature, js: true do
     expect(page).to have_content('Overview')
     expect(page).to have_no_content("Videos")
     visit practice_overview_path(@pr_no_resources)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   def with_resource_pr_test_setup
@@ -301,5 +302,6 @@ describe 'Practice editor', type: :feature, js: true do
     expect(page).to have_content("existing solution video")
     expect(page).to have_content("existing problem video")
     visit practice_overview_path(@pr_with_resources)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 end

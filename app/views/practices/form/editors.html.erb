@@ -8,12 +8,9 @@
   <% end %>
 <% end %>
 
-<%= render 'practice_editor_sidenav' %>
-<div class="grid-container position-relative">
+<div class="grid-container">
   <div class="grid-row grid-gap">
-    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
-    <div id="editors" class="desktop:grid-col-9 grid-col-12 padding-0">
+    <div id="editors" class="grid-col-12">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 padding-bottom-0 editors">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Editors</h1>
@@ -69,10 +66,6 @@
             <%= f.submit "Send invite", class: 'usa-button margin-top-2 invite-practice-editor-button' %>
           </div>
         <% end %>
-
-        <div class="grid-row margin-top-10">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_instructions_path(@practice), continue_path: practice_introduction_path(@practice) } %>
-        </div>
       </section>
     </div>
   </div>

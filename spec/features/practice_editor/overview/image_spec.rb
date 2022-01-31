@@ -16,6 +16,7 @@ describe 'Practice editor', type: :feature, js: true do
     PracticeMultimedium.create(practice: @pr_with_resources, name: 'existing multimedia image',  attachment: File.new(@img_path_1), resource_type: 0)
     @frame_index = { problem: 0, solution: 1, results: 2, multimedia: 3 }
     login_as(@admin, :scope => :user, :run_callbacks => false)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   describe 'Overview page -- resource & multimedia image:' do
@@ -304,7 +305,7 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def save_practice
-    find('#practice-editor-save-button').click
+    find('#practice-editor-save-button', visible: false).click
   end
 
   def check_crop_values(img_num)

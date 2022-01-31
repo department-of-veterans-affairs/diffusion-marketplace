@@ -1,0 +1,65 @@
+
+<%
+  # TODO: remove contact from keys
+  path_options = {
+    editors: {
+      back: nil,
+      continue: practice_introduction_path(@practice)
+    },
+    introduction: {
+      back: practice_editors_path(@practice),
+      continue: practice_adoptions_path(@practice)
+    },
+    adoptions: {
+      back: practice_introduction_path(@practice),
+      continue: practice_overview_path(@practice)
+    },
+    overview: {
+      back: practice_adoptions_path(@practice),
+      continue: practice_implementation_path(@practice)
+    },
+    implementation: {
+      back: practice_overview_path(@practice),
+      continue: practice_about_path(@practice)
+    },
+    contact: {
+      back: nil,
+      continue: nil
+    },
+    about: {
+      back: practice_implementation_path(@practice),
+      continue: nil
+    }
+  }
+%>
+
+<footer class="<%= yield(:footer_classes) %>">
+  <%# only show return to top on mobile views, practice show page and long practice editor pages (per design 9/21/21) %>
+  <div class="grid-container usa-footer__return-to-top<%= params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) ? ' desktop:display-block' : ' tablet:display-none' %>">
+    <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to top</button>
+  </div>
+
+  <% if params[:action] === 'metrics' %>
+    <div class="bg-base-lighter padding-y-3 padding-left-2 desktop:padding-left-0">
+      <div class="grid-row desktop:margin-left-4">
+        <img class="display-block maxw-5" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
+        <p class="margin-0 margin-left-1 text-ink">
+          <span class="text-heavy font-sans-md">Diffusion Marketplace</span><br>
+          <span class="font-sans-2xs">Department of Veterans Affairs</span>
+        </p>
+      </div>
+    </div>
+  <% else %>
+    <div class="bg-base-lightest">
+      <div class="desktop:padding-y-2 grid-container">
+        <div class="grid-row">
+        <%
+          action_as_sym = params[:action].present? ? params[:action].to_sym : nil
+          back_path = path_options[action_as_sym][:back] || nil
+          continue_path = path_options[action_as_sym][:continue] || nil
+        %>
+        <%= render partial: 'practices/shared/back_and_continue_buttons', locals: { back_path: back_path, continue_path: continue_path } %>
+      </div>
+    </div>
+  <% end %>
+</footer>

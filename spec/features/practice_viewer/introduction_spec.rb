@@ -142,9 +142,10 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
         end
 
         visit practice_introduction_path(@pr_max)
+        page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
         find('#initiating_facility_type_visn').sibling('label').click
         select('VISN-6', :from => 'editor_visn_select')
-        find('#practice-editor-save-button').click
+        find('#practice-editor-save-button', visible: false).click
         visit practice_path(@pr_max)
 
         new_window = window_opened_by { click_link 'VISN-6' }

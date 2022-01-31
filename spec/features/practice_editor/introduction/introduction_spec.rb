@@ -33,6 +33,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     CategoryPractice.create!(practice: @practice, category: @cat_2, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   describe 'on load' do
@@ -60,8 +61,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Select any of the following partners your innovation is associated with.')
       expect(page).to have_content('Diffusion phase')
       expect(page).to have_content('Select the diffusion phase that applies to your innovation.')
-      expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/instructions")
-      expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/adoptions")
       # categories
       expect(page).to have_content('Categories')
       expect(page).to have_content('Select the categories most relevant to your innovation (suggested: up to 10).')
@@ -349,7 +348,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 end
 
 def click_save
-  find('#practice-editor-save-button').click
+  find('#practice-editor-save-button', visible: false).click
 end
 
 def visit_practice_show

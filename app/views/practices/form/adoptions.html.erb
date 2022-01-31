@@ -7,12 +7,10 @@
   <% end %>
   <%= javascript_include_tag 'practice_editor_adoptions', 'data-turbolinks-track': 'reload' %>
 <% end %>
-<%= render 'practice_editor_sidenav' %>
-<div class="grid-container position-relative">
-  <div class="grid-row grid-gap">
-    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-    <div id="dm-pe-adoptions" class="desktop:grid-col-9 grid-col-12 padding-0">
+<div class="grid-container">
+  <div class="grid-row grid-gap">
+    <div id="dm-pe-adoptions" class="grid-col-12">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 padding-bottom-0">
         <h1>Adoptions</h1>
@@ -24,10 +22,6 @@
         <!-- start accordions -->
         <div id="adoptions">
           <%= render partial: 'practices/form/adoptions_forms/adoptions_content' %>
-        </div>
-
-        <div class="grid-row margin-top-7">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_introduction_path(@practice), continue_path: practice_overview_path(@practice) }%>
         </div>
       </section>
     </div>

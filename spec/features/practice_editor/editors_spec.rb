@@ -9,10 +9,6 @@ describe 'Practice editor', type: :feature, js: true do
       @admin.add_role(User::USER_ROLES[0].to_sym)
     end
 
-    def save_practice
-      click_on 'Save'
-    end
-
     def add_editor
       click_on 'Send invite'
     end
@@ -62,7 +58,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       it 'should not allow a user to add an editor if they hit the save button with an empty email field' do
         login_and_visit_editors(@admin)
-        save_practice
+        add_editor
         expect(page).to have_content('There was an error. Email field cannot be blank.')
       end
 

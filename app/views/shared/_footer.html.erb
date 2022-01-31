@@ -1,9 +1,3 @@
-<%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-  var forceModal = <%= @force_terms_and_conditions_modal %>;
-<% end %>
-<%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'reload' %>
-<%= render partial: 'shared/terms_and_conditions_modal' %>
-
 <footer class="<%= yield(:footer_classes) %>">
   <%# only show return to top on mobile views, practice show page and long practice editor pages (per design 9/21/21) %>
   <div class="grid-container usa-footer__return-to-top<%= params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) ? ' desktop:display-block' : ' tablet:display-none' %>">
