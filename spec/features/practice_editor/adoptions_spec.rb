@@ -65,8 +65,6 @@ describe 'Practice editor', type: :feature, js: true do
     it 'should interact with practice adoptions' do
       # it should be there
       expect(page).to have_content('Adoptions')
-      expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_introduction_path(@practice))
-      expect(page).to have_link(class: 'usa-button--secondary', href: practice_overview_path(@practice))
 
       # it should display certain parts of the form on status selection
       open_new_adoption_form

@@ -11,7 +11,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     page_group = PageGroup.create(name: 'competitions', slug: 'competitions', description: 'competitions page')
     Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
-    visit practice_overview_path(@practice)
+    visit practice_path(@practice)
     # ensure header desktop view
     page.driver.browser.manage.window.resize_to(1300, 1000)
   end

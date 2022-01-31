@@ -143,7 +143,7 @@ describe 'Search', type: :feature do
     select('October', :from => 'editor_date_initiated_month')
     fill_in('Year', with: '1970')
     find("#maturity_level_replicate").sibling('label').click
-    find('#practice-editor-save-button').click
+    find('#practice-editor-save-button', visible: false).click
   end
 
   def publish_practice(practice)

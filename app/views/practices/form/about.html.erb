@@ -7,12 +7,9 @@
   <% end %>
 <% end %>
 
-<%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap">
-    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
-    <div id="about" class="desktop:grid-col-9 grid-col-12 padding-0">
+    <div id="about" class="grid-col-12">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 padding-bottom-0 about">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">About</h1>
@@ -108,14 +105,7 @@
             </div>
           </fieldset>
         <% end %>
-
-        <div class="grid-row">
-          <%= link_to practice_contact_path(@practice), class: 'dm-button--outline-secondary margin-right-1' do %>
-            Back
-          <% end %>
-        </div>
       </section>
     </div>
   </div>
 </div>
-

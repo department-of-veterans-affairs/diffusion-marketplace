@@ -275,34 +275,6 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Another Best Innovation')
       end
     end
-
-    it 'should show proper breadcrumbs in the practice editor' do
-      login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit practice_instructions_path(@user_practice)
-
-      within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_content('Edit')
-      end
-      expect(page).to have_selector('#instructions', visible: true)
-      find_all('.usa-sidenav__item')[1].click
-
-      within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_content('Edit')
-      end
-      expect(page).to have_selector('#dm-practice-nav', visible: true)
-      find_all('.usa-sidenav__item')[0].click
-
-      within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_content('Edit')
-        expect(page).to have_content('Metrics')
-      end
-    end
   end
 
   describe 'Page builder flow' do

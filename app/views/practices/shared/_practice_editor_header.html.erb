@@ -1,0 +1,59 @@
+<a class="usa-skipnav" href="#main-content">Skip to main content</a>
+<div class="usa-overlay"></div>
+<header class="usa-header usa-header--basic bg-ink" id="dm-practice-editor-header">
+  <div class="usa-nav-container maxw-full">
+    <div class="usa-navbar">
+      <div class="usa-logo" id="basic-logo">
+        <em class="usa-logo__text">
+          <div class="display-flex">
+            <img class="width-4 height-4 margin-top-2px dm-header--va-seal" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
+            <p class="margin-0 margin-left-1 text-white line-height-sans-1 padding-top-2px desktop-lg:padding-top-05">
+              <span class="text-bold font-sans-sm desktop-lg:font-sans-lg">Diffusion Marketplace</span><br>
+              <span class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</span>
+            </p>
+          </div>
+        </em>
+      </div>
+      <button class="usa-menu-btn">Menu</button>
+    </div>
+    <nav aria-label="Primary navigation" class="usa-nav padding-top-6 desktop-lg:margin-y-3">
+      <button class="usa-nav__close">
+        <img src="<%= image_url 'uswds/close.svg' %>" role="img" alt="Close" />
+      </button>
+      <ul class="usa-nav__primary usa-accordion">
+        <li class="usa-nav__primary-item">
+          <%= link_to 'Metrics', practice_metrics_path(@practice), class: "margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link #{'usa-current' if params[:action] === 'metrics' }" %>
+        </li>
+        <li class="usa-nav__primary-item">
+          <% # TODO CHANGE THIS TO OPEN EDITING GUIDE MODAL %>
+          <%= link_to 'Editing guide', practice_instructions_path(@practice), class: "margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link" %>
+        </li>
+        <li class="usa-nav__primary-item">
+          <%= link_to 'Edit your innovation', practice_editors_path(@practice), class: "margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link #{'usa-current' if NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action]) }" %>
+        </li>
+      </ul>
+      <%
+        save_btn_pgs = ['introduction', 'overview', 'contact', 'implementation','about']
+        has_save_btn = save_btn_pgs.include?(params[:action])
+        save_btn_text = @practice.published ? 'Save and update' : 'Save as draft'
+        save_btn_classes = @practice.published ? 'dm-button--success margin-right-4' : 'dm-button--inverse-secondary margin-right-2'
+      %>
+      <% if has_save_btn %>
+        <button type="submit" class="usa-button margin-left-2 <%= save_btn_classes %>" id="practice-editor-save-button">
+          <%= save_btn_text %>
+        </button>
+      <% end %>
+      <% if !@practice.published && save_btn_pgs.include?(params[:action]) %>
+        <% if params[:action] == 'adoptions' %>
+          <%= link_to 'Save and publish', practice_publication_validation_path(@practice), class: 'usa-button dm-button--success margin-right-4', id: 'publish-practice-button', method: :patch, remote: true %>
+        <% else %>
+          <%= button_tag 'Save and publish', class: 'usa-button dm-button--success margin-right-4', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}"}%>
+        <% end %>
+      <% end %>
+      <button class="dm-button--close-icon bg-ink text-white" aria-label="Close this window">
+        <span class="usa-sr-only">Close this window</span>
+        <i class="fas fa-times"></i>
+      </button>
+    </nav>
+  </div>
+</header>

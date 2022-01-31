@@ -14,6 +14,7 @@ describe 'Practice editor', type: :feature, js: true do
     PracticeSolutionResource.create(practice: @pr_with_resources, name: 'existing solution file', description: 'solution file description', attachment: File.new(@file_path_1), resource_type: 2)
     PracticeResultsResource.create(practice: @pr_with_resources, name: 'existing results file', description: 'results file description', attachment: File.new(@file_path_1), resource_type: 2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   describe 'Overview page -- resource file:' do
@@ -279,7 +280,7 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def save_practice
-    find('#practice-editor-save-button').click
+    find('#practice-editor-save-button', visible: false).click
   end
 
   def no_resource_pr_test_setup

@@ -1,0 +1,37 @@
+#dm-practice-editor-header {
+  &.usa-header--basic {
+    .usa-nav__primary-item {
+      .usa-current::after {
+        @include u-bg('accent-cool-light', !important);
+        @include u-border(0);
+        @include u-height(2px);
+        bottom: 0.5rem !important;
+      }
+    }
+
+    .usa-nav__link {
+      &:hover {
+        @include u-text('accent-cool-light', !important);
+        &::after {
+          @extend .usa-current;
+        }
+      }
+    }
+  }
+
+  .usa-nav__link {
+    @include u-text('white', !important);
+  }
+
+  .dm-button--close-icon {
+    @include u-border(0);
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    i {
+      font-size: 22px;
+    }
+  }
+}

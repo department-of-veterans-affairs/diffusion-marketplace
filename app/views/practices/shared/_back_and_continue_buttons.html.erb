@@ -1,0 +1,17 @@
+<%
+  no_save_path = params[:action] === 'editors' || params[:action] === 'adoptions'
+%>
+<div class="grid-col-6 display-flex flex-column flex-align-start">
+  <% if back_path.present? %>
+    <%= link_to back_path, class: "dm-button--outline-secondary editor-back-to-link margin-right-1 text-no-underline" do %>
+      Back
+    <% end %>
+  <% end %>
+</div>
+<div class="grid-col-6 display-flex flex-column flex-align-end">
+  <% if continue_path.present? %>
+    <%= link_to continue_path, class: "usa-button usa-button--secondary #{ no_save_path ? '' : 'continue-and-save'} margin-right-1" do %>
+      <%= no_save_path ? 'Continue' : 'Save and continue' %>
+    <% end %>
+  <% end %>
+</div>

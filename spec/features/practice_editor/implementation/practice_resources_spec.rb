@@ -10,6 +10,7 @@ describe 'Practice editor', type: :feature, js: true do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit practice_implementation_path(@practice)
+      page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
     end
 
     def add_people_resource
@@ -27,7 +28,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     def save_progress
-      find('#practice-editor-save-button').click
+      find('#practice-editor-save-button', visible: false).click
     end
 
     it 'should be there' do
