@@ -790,6 +790,7 @@ ActiveRecord::Schema.define(version: 2022_01_12_155536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.boolean "is_major", default: false
     t.index ["slug"], name: "index_practice_partners_on_slug", unique: true
   end
 
@@ -979,11 +980,11 @@ ActiveRecord::Schema.define(version: 2022_01_12_155536) do
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
     t.boolean "hidden", default: false, null: false
-    t.boolean "is_public", default: false
     t.string "highlight_attachment_file_name"
     t.string "highlight_attachment_content_type"
     t.integer "highlight_attachment_file_size"
     t.datetime "highlight_attachment_updated_at"
+    t.boolean "is_public", default: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end

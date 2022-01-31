@@ -1,4 +1,5 @@
 class Visn < ApplicationRecord
+  include ActiveModel::Dirty
   has_many :va_facilities, dependent: :destroy
   has_one :clinical_resource_hub, dependent: :destroy
   has_many :visn_liaisons, dependent: :destroy

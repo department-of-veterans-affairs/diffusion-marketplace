@@ -220,7 +220,7 @@ module NavigationHelper
       if action == 'show'
         empty_breadcrumbs
         # add the practice partner to the crumbs if it's not there already
-        @practice_partner = PracticePartner.friendly.find(params[:id])
+        @practice_partner = PracticePartner.cached_practice_partners.friendly.find(params[:id])
         partner_breadcrumb = session[:breadcrumbs].find { |b| b['display'] == @practice_partner.name }
 
         heading = @practice_partner.name + (@practice_partner.short_name.present? ? " (#{@practice_partner.short_name.upcase})" : '')
