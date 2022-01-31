@@ -1,12 +1,12 @@
 <div class="grid-row padding-x-3 padding-bottom-0 desktop:padding-x-0">
   <fieldset class="padding-0">
-    <legend class="usa-sr-only">Category Filter</legend>
+    <legend class="usa-sr-only">Category Filters</legend>
     <div class="bg-gray-5 desktop:padding-bottom-2px search-category-filters">
       <h2 class="usa-accordion__heading">
         <button class="usa-accordion__button mobile-category-accordion desktop:display-none"
                 aria-expanded="false"
                 type="button">
-          Category
+          Categories
         </button>
       </h2>
 
@@ -69,6 +69,61 @@
       <div class="grid-row adopting-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
         <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Adopting location</p>
         <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="padding-0">
+    <legend class="usa-sr-only">Innovation Partner Filters</legend>
+    <div class="bg-gray-5 desktop:padding-bottom-2px search-practice-partner-filters">
+      <h2 class="usa-accordion__heading">
+        <button class="usa-accordion__button mobile-practice-partner-accordion desktop:display-none"
+                aria-expanded="false"
+                type="button">
+          Innovation Partners
+        </button>
+      </h2>
+
+      <div class="grid-row practice-partner-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
+        <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block margin-top-2">
+          Innovation Partners
+        </p>
+        <%
+          sliced_partners = split_data_into_three_columns(@practice_partners)
+        %>
+        <% if sliced_partners.present? %>
+          <div class="grid-row grid-col-12 practice-partner-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex padding-left-0 padding-right-0">
+            <% sliced_partners.each_with_index do |sp, i| %>
+              <% if i != 3 %>
+                <% if sp.kind_of?(Array) %>
+                  <div class="grid-col-12 desktop:grid-col-4">
+                    <% sp.each do |partner| %>
+                      <%= render partial: 'shared/checkbox', locals: {
+                        data_id: "practice_partner_ids_#{partner.id}",
+                        data_name: 'practice_partners',
+                        data_value: partner.name,
+                        data_label_text: partner.name,
+                        data_input_class: ' practice-partner-search-checkbox',
+                        data_label_class: ' practice-partner-search-checkbox-label'
+                      } %>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <div class="grid-col-12 desktop:grid-col-4">
+                    <%= render partial: 'shared/checkbox', locals: {
+                      data_id: "practice_partner_ids_#{sp.id}",
+                      data_name: 'practice_partners',
+                      data_value: sp.name,
+                      data_label_text: sp.name,
+                      data_input_class: ' practice-partner-search-checkbox',
+                      data_label_class: ' practice-partner-search-checkbox-label'
+                    } %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
   </fieldset>

@@ -4,7 +4,7 @@ class PracticePartnersController < ApplicationController
   # GET /practice_partners
   # GET /practice_partners.json
   def index
-    @practice_partners = PracticePartner.all.order(name: :asc)
+    @practice_partners = PracticePartner.cached_practice_partners.order(name: :asc)
   end
 
   # GET /practice_partners/1
@@ -27,6 +27,6 @@ class PracticePartnersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice_partner
-    @practice_partner = PracticePartner.friendly.find(params[:id])
+    @practice_partner = PracticePartner.cached_practice_partners.friendly.find(params[:id])
   end
 end

@@ -423,8 +423,8 @@
               </div>
               <div>
                 <%
-                  no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
-                  partners = PracticePartner.where.not(id: no_partners.ids)
+                  no_partners = PracticePartner.cached_practice_partners.where(name: 'None of the above, or Unsure')
+                  partners = PracticePartner.cached_practice_partners.where.not(id: no_partners.ids)
                 %>
                 <% partners.each do |partner| %>
                   <div class="usa-checkbox practice-partner-checkbox position-relative">
