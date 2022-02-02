@@ -11,10 +11,10 @@
       <option value="VISN-id-<%= i + 1 %>">
         VISN-<%= visn_number %>
       </option>
-      <%# now that the facilities are grouped by VISN, sort them by OfficialStationName %>
-      <% group_array[1].sort_by { |facility| facility.official_station_name }.each do |f| %>
-        <option class="margin-left-1" value="<%= f.station_number %>">
-          <%= facility_name_with_common_name(f.official_station_name, f.common_name) %>
+
+      <% group_array[1].each do |f| %>
+        <option class="margin-left-1" value="<%= f.has_attribute?('station_number') ? f.station_number : f.official_station_name %>">
+          <%= f.official_station_name.include?('VISN') ? f.official_station_name : facility_name_with_common_name(f.official_station_name, f.common_name) %>
         </option>
       <% end %>
     <% end %>

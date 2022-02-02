@@ -9,8 +9,13 @@
   <span class="origin-facilities-display-text">
     <% origin_facilities.each_with_index do |pof, index| %>
       <% facility = pof.va_facility %>
-      <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(pof.va_facility), class: "usa-link",
+      <% if facility.present? %>
+        <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(pof.va_facility), class: "usa-link",
           target: '_blank' %><%= ', ' unless index + 1 === origin_facilities_count %>
+      <% else %>
+        <%= link_to "#{pof.clinical_resource_hub.official_station_name}", clinical_resource_hub_path(pof.clinical_resource_hub), class: "usa-link",
+                    target: '_blank' %><%= ', ' unless index + 1 === origin_facilities_count %>
+      <% end %>
     <% end %>
   </span>
 <% elsif @practice.visn? %>

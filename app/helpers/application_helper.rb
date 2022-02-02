@@ -103,13 +103,14 @@ module ApplicationHelper
     if practice.initiating_facility_type?
       if practice.facility? && practice.practice_origin_facilities.present?
         fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
-        locs = practice.practice_origin_facilities.where(facility_type: fac_type)
+        locs = practice.practice_origin_facilities.includes(:va_facility, :clinical_resource_hub).where(facility_type: fac_type)
         facility_names = String.new
         locs.each_with_index do |loc, index|
-          official_station_name = loc.va_facility.official_station_name
-          common_name = loc.va_facility.common_name
+          has_va_facility = loc.va_facility.present?
+          official_station_name = has_va_facility ? loc.va_facility.official_station_name : loc.clinical_resource_hub.official_station_name
+          common_name = loc.va_facility.common_name if has_va_facility
 
-          facility_names += "#{facility_name_with_common_name(official_station_name, common_name) if loc.va_facility_id.present?}#{', ' if locs.size != index + 1 && locs.size > 1}"
+          facility_names += "#{has_va_facility ? facility_name_with_common_name(official_station_name, common_name) : official_station_name}#{', ' if locs.size != index + 1 && locs.size > 1}"
         end
         facility_names
       elsif practice.initiating_facility?

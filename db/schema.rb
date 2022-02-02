@@ -236,7 +236,7 @@ ActiveRecord::Schema.define(version: 2022_01_12_155536) do
 
   create_table "clinical_resource_hubs", force: :cascade do |t|
     t.bigint "visn_id"
-    t.string "name"
+    t.string "official_station_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["visn_id"], name: "index_clinical_resource_hubs_on_visn_id"
@@ -767,6 +767,8 @@ ActiveRecord::Schema.define(version: 2022_01_12_155536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "va_facility_id"
+    t.bigint "clinical_resource_hub_id"
+    t.index ["clinical_resource_hub_id"], name: "index_practice_origin_facilities_on_clinical_resource_hub_id"
     t.index ["practice_id"], name: "index_practice_origin_facilities_on_practice_id"
     t.index ["va_facility_id"], name: "index_practice_origin_facilities_on_va_facility_id"
   end
@@ -1410,6 +1412,7 @@ ActiveRecord::Schema.define(version: 2022_01_12_155536) do
   add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_metrics", "practices"
   add_foreign_key "practice_multimedia", "practices"
+  add_foreign_key "practice_origin_facilities", "clinical_resource_hubs"
   add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_origin_facilities", "va_facilities"
   add_foreign_key "practice_partner_practices", "practice_partners"

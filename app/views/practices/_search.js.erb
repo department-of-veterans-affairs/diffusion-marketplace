@@ -1,7 +1,7 @@
 // only initialize the following variables while on the search page
 if (window.location.pathname === '/search') {
     var practices = <%= @practices_json %>;
-    var facilities = <%= raw @va_facilities.to_json %>;
+    var facilities = <%= raw (@va_facilities + @clinical_resource_hubs).to_json %>;
     var visns = <%= raw @visns.to_json %>;
     var adoptions = <%= raw @diffusion_histories.to_json %>;
     var results = null;
@@ -322,7 +322,7 @@ function searchPracticesPage() {
 
         var originFacilityArray = originatingFacility ? [] : null;
 
-        if (originatingFacility && originatingFacility.includes('VISN')) {
+        if (originatingFacility && originatingFacility.includes('VISN-')) {
             // Collect any practice that either has the selected VISN as an origin facility, or has an origin facility that belongs to the selected VISN
 
             // Add the VISN to the array
@@ -334,15 +334,23 @@ function searchPracticesPage() {
 
             // Now add the facilities
             visnFacilities.forEach(function(vf) {
-                originFacilityArray.push({'origin_facilities': "=\"" + vf.station_number + "\""});
+                if (vf.hasOwnProperty('station_number')) {
+                    originFacilityArray.push({'origin_facilities': "=\"" + vf.station_number + "\""});
+                } else {
+                    originFacilityArray.push({'origin_facilities': "=\"" + vf.official_station_name + "\""});
+                }
             });
-        } else if (originatingFacility && !originatingFacility.includes('VISN')){
+        } else if (originatingFacility && !originatingFacility.includes('VISN-')){
             // Collect the practices that have an origin facility matching the selected facility
             var foundOriginatingFacility = facilities.find(function(f) {
-                return originatingFacility === f.station_number;
+                if (f.hasOwnProperty('station_number')) {
+                    return originatingFacility === f.station_number;
+                } else {
+                    return originatingFacility === f.official_station_name;
+                }
             });
 
-            originFacilityArray.push({'origin_facilities': "=\"" + foundOriginatingFacility.station_number + "\""});
+            originFacilityArray.push({'origin_facilities': "=\"" + (foundOriginatingFacility.hasOwnProperty('station_number') ? foundOriginatingFacility.station_number : foundOriginatingFacility.official_station_name) + "\""});
         }
 
         function getAdoptionFacilities(stationNumbers, facilityIds) {
