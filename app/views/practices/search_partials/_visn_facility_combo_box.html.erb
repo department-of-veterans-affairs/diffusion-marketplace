@@ -1,5 +1,5 @@
 <div class="usa-combo-box margin-top-1 margin-bottom-2 desktop:margin-y-0 desktop:grid-col-5">
-  <label for="<%= facility_type_selector %>" class="line-height-26">Select by VISN<%= render partial: "visns/visns_tooltip", locals: { data_position: 'right', facility_page: 'true'} %> or facility</label>
+  <label for="<%= facility_type_selector %>" class="line-height-26">Select by <%= render partial: "visns/visns_tooltip", locals: { data_position: 'right', facility_page: 'true'} %> or facility</label>
   <select id="<%= facility_type_selector %>" class="usa-select" name="<%= facility_type_selector %>">
     <div>
       <%= visn_grouped_facilities %>
