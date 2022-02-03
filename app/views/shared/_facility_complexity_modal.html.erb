@@ -1,6 +1,10 @@
 <div href="#facility-complexity-modal" aria-controls="facility-complexity-modal" data-open-modal class="cursor-pointer">
   <span class="usa-sr-only">Open facility complexity modal</span>
-  <u class="dotted">Complexity</u>
+  <% if is_map === true %>
+    <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility <u class="dotted">complexity</u></h4>
+  <% else %>
+    <u class="dotted">Complexity</u>
+  <% end %>
 </div>
 <div class="usa-modal <%= 'display-none' if hide_modal_on_initial_load %>" id="facility-complexity-modal" aria-labelledby="facility-complexity-modal-heading" aria-describedby="facility-complexity-modal-description">
   <div class="usa-modal__content">

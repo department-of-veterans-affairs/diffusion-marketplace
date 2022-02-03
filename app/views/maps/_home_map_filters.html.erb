@@ -123,8 +123,7 @@
       </div>
 
       <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility complexity</h4>
-        <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false } %>
+        <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false, is_map: true } %>
         <% complexity_levels = VaFacility.get_complexity %>
         <fieldset>
           <legend class="usa-sr-only">Facility Complexity Levels</legend>
