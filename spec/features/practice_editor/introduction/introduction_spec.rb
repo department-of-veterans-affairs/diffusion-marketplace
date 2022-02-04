@@ -89,7 +89,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         page.has_checked_field?('All strategic')
         page.has_unchecked_field?('Other')
       end
-      find('.facility-complexity-modal').click
+      find('.parent-category-modal').click
       expect(page).to have_selector(".usa-modal__content", visible: true)
       expect(page).to have_content('Innovations related to patient care.')
       expect(page).to have_content('Innovations related to VA administrative and logistical functions.')
