@@ -67,7 +67,11 @@ function getVisn(visnsArray, facility) {
 
 function getVaFacility(facilitiesArray, facility) {
     return facilitiesArray.find(function(f) {
-        return facility === f.station_number;
+        if (f.station_number) {
+            return facility === f.station_number;
+        } else {
+            return facility === f.official_station_name;
+        }
     });
 }
 
@@ -356,10 +360,13 @@ function searchPracticesPage() {
         function getAdoptionFacilities(stationNumbers, facilityIds) {
             adoptions.forEach(function(a) {
                 stationNumbers.forEach(function(sn) {
-                    if (a.facility_number === sn) {
-                        return facilityIds.push({'adoption_facilities': "=\"" + sn + "\""});
+                    if (a.va_facility_number && a.va_facility_number === sn) {
+                        facilityIds.push({'adoption_facilities': "=\"" + sn + "\""});
+                    } else if (a.clinical_resource_hub_name && a.clinical_resource_hub_name === sn) {
+                        facilityIds.push({'adoption_facilities': "=\"" + sn + "\""});
                     }
                 });
+                return facilityIds;
             });
         }
 
@@ -367,22 +374,26 @@ function searchPracticesPage() {
             var filteredFacilities;
             var stationNumbers = [];
             var adoptionFacilityArray = [];
-            if (adoptingFacility.includes('VISN')) {
+            if (adoptingFacility.includes('VISN-')) {
                 var adoptingFacilityVisn = getVisn(visns, adoptingFacility);
 
                 // Collect any practice that has a diffusion history with a facility that belongs to the selected VISN
                 filteredFacilities = getVaFacilitiesByVisn(facilities, adoptingFacilityVisn)
 
                 filteredFacilities.forEach(function(ff) {
-                    stationNumbers.push(ff.station_number);
-                })
+                    if (ff.station_number) {
+                        stationNumbers.push(ff.station_number);
+                    } else {
+                        stationNumbers.push(ff.official_station_name);
+                    }
+                });
 
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             } else {
                 // Collect any practice that has a diffusion history with a facility that matches the selected facility
-                var foundAdoptingFacility = getVaFacility(facilities, adoptingFacility)
+                var foundAdoptingFacility = getVaFacility(facilities, adoptingFacility);
 
-                stationNumbers.push(foundAdoptingFacility.station_number);
+                foundAdoptingFacility.station_number ? stationNumbers.push(foundAdoptingFacility.station_number) : stationNumbers.push(foundAdoptingFacility.official_station_name)
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             }
         }
