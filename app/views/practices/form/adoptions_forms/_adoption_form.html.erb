@@ -15,12 +15,9 @@
   <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
   <div class="margin-bottom-5 margin-top-1">
     <p class="margin-bottom-2">
-      <span class="margin-right-05 text-middle">Status</span>
-      <%= render partial: 'practices/adoption_status_tooltip',
-         locals: {
-             tooltip_title: 'In-progress: <i>Facilities that have started but not completed adopting the innovation</i>.&#10;Successful: <i>Facilities that have met adoption goals and implemented the innovation.</i>&#10;Unsuccessful: <i>Facilities that started but stopped working towards adoption.</i>'
-         }
-      %>
+      <span class="margin-right-05 text-middle">
+        <span class="usa-tooltip cursor-pointer" title="In-progress: <i>Facilities that have started but not completed adopting the innovation</i>.&#10;Successful: <i>Facilities that have met adoption goals and implemented the innovation.</i>&#10;Unsuccessful: <i>Facilities that started but stopped working towards adoption.</i>" data-position="right"><u class="dotted">Status</u></span>
+      </span>
     </p>
     <div class="usa-radio position-relative">
       <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button dm-required-field', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{form_id}") %>
