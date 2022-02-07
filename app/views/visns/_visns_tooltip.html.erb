@@ -6,9 +6,9 @@
        tabindex="0"
        data-position="<%= data_position %>"
        data-class="visn-description-tooltip"
-       title="Veterans Integrated Services Networks are regional systems <br> of care within the Veterans Health Administration.">
+       title="Veterans Integrated Services Networks are regional systems <% if facility_page === "false" && search_filter === "false" %> <br> <% end %>of care within the Veterans Health Administration.">
     <% if facility_page === "true" %>
-      <u class="dotted text-bold">VISN</u>
+       <u class="dotted <% if search_filter === "false" %> text-bold <% end %>">VISN</u>
     <% else %>
       <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">
         <u class="dotted">VISN</u>
