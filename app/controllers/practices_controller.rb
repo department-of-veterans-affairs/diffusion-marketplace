@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper
+  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper, UsersHelper
   prepend_before_action :skip_timeout, only: [:session_time_remaining]
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,

@@ -55,3 +55,9 @@
   @include u-line-height('body', 5);
   @include u-text('normal');
 }
+
+.usa-prose-caption {
+  @include u-font('body', '2xs');
+  @include u-line-height('body', 3);
+  @include u-text('italic');
+}

@@ -1,6 +1,5 @@
-<% provide :main_classes, 'bg-gray-2' %>
-<% provide :footer_classes, 'bg-gray-2' %>
-
+<% provide :main_classes, 'bg-gray-0' %>
+<% provide :footer_classes, 'bg-gray-0' %>
 <% provide :head_tags do %>
   <%= javascript_include_tag 'metrics_page', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
@@ -13,10 +12,9 @@
 <div class="grid-container">
   <div class="grid-row grid-gap">
     <div id="metrics" class="grid-col-12">
-      <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
     </div>
-      <section class="usa-section padding-top-0 padding-bottom-0" aria-label="Metrics">
+      <section class="usa-section padding-top-0 padding-bottom-0 margin-top-8 margin-top-128-desktop" aria-label="Metrics">
         <div class="grid-row flex-align-end margin-top--important">
           <h1 class="margin-bottom-3 margin-y-0 grid-col-3 font-sans-2xl">
             Metrics
@@ -28,7 +26,6 @@
               <span>Print</span>
             </a>
           </div>
-          <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         </div>
         <div class="margin-bottom-10 grid-row flex-align-center margin-top-3">
           <label for="metrics_duration" class="usa-label grid-col-3 margin-top-0">View your metrics for</label>

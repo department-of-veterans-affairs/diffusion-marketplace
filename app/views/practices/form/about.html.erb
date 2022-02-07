@@ -1,5 +1,5 @@
-<% provide :main_classes, 'bg-gray-2' %>
-<% provide :footer_classes, 'bg-gray-2' %>
+<% provide :main_classes, 'bg-gray-0' %>
+<% provide :footer_classes, 'bg-gray-0' %>
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
@@ -9,11 +9,11 @@
 
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap">
-    <div id="about" class="grid-col-12">
+    <div id="about" class="grid-col-12 margin-top-4">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <%= render partial: "practices/shared/step_indicator" %>
       <section class="usa-section padding-top-0 padding-bottom-0 about">
-        <h1 class="font-sans-2xl line-height-46px margin-bottom-3">About</h1>
-        <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+        <h1 class="font-sans-2xl line-height-46px margin-bottom-3 margin-top-0">About</h1>
         <h2 class="text-normal line-height-36 font-sans-lg">
           This section helps people understand how your innovation started and introduces the original team.
         </h2>

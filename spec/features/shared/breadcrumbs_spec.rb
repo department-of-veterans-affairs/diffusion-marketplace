@@ -124,8 +124,9 @@ describe 'Breadcrumbs', type: :feature do
       click_link('View innovation')
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Home')
-        expect(page).to have_content('Another Best Innovation')
+        expect(page).to have_no_content('Another Best Innovation')
         expect(page).to have_link(href: '/')
         expect(page).to_not have_link(href: '/innovations/another-best-innovation')
       end
@@ -142,11 +143,10 @@ describe 'Breadcrumbs', type: :feature do
       click_on('Go to The Best Innovation Ever')
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Search')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_link(href: '/')
-        expect(page).to_not have_link(href: '/innovations/the-best-innovation-ever')
+        expect(page).to have_no_content('The Best Innovation Ever')
+        expect(page).to have_link(href: '/search?query=the%20best')
       end
 
       find('a[href="/search?query=the%20best"]').click
@@ -209,11 +209,9 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to have_css("#pr-view-introduction", visible: true)
       expect(page).to have_current_path(practice_path(@user_practice))
       within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
         expect(page).to have_content('VISN index')
         expect(page).to have_content('2')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_link(href: '/')
+        expect(page).to have_no_content('The Best Innovation Ever')
         expect(page).to have_link(href: '/visns')
         expect(page).to have_link(href: '/visns/2?query=best')
         expect(page).to_not have_link(href: '/innovations/the-best-innovation-ever')
@@ -235,11 +233,9 @@ describe 'Breadcrumbs', type: :feature do
       find('a[href="/innovations/the-best-innovation-ever"]').click
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
         expect(page).to have_content('Facility index')
         expect(page).to have_content('A first facility Test Common Name')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_link(href: '/')
+        expect(page).to have_no_content('The Best Innovation Ever')
         expect(page).to have_link(href: '/facilities')
         expect(page).to have_link(href: '/facilities/a-first-facility-test-common-name')
         expect(page).to_not have_link(href: '/innovations/the-best-innovation-ever')
@@ -253,8 +249,9 @@ describe 'Breadcrumbs', type: :feature do
       visit practice_path(@user_practice)
 
       within(:css, '#breadcrumbs') do
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
+        expect(page).to have_no_content('The Best Innovation Ever')
       end
     end
 
@@ -262,17 +259,18 @@ describe 'Breadcrumbs', type: :feature do
       visit practice_path(@user_practice)
 
       within(:css, '#breadcrumbs') do
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
+        expect(page).to have_no_content('The Best Innovation Ever')
       end
 
       # Browse to a different practice's show page
       visit practice_path(@user_practice2)
 
       within(:css, '#breadcrumbs') do
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Home')
-        expect(page).to_not have_content('The Best Innovation Ever')
-        expect(page).to have_content('Another Best Innovation')
+        expect(page).to have_no_content('Best Innovation')
       end
     end
   end

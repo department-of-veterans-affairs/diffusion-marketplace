@@ -1,0 +1,22 @@
+// `usa-step-indicator` OVERRIDES
+.usa-step-indicator {
+  .usa-step-indicator__segment {
+    a {
+      @include u-text('base-dark');
+
+      &:visited {
+        @include u-text('base-dark');
+      }
+    }
+
+    &--current, &--complete {
+      a {
+        @include u-text('ink');
+
+        &:visited {
+          @include u-text('ink');
+        }
+      }
+    }
+  }
+}

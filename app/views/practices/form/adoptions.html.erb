@@ -1,6 +1,5 @@
-<% provide :main_classes, 'bg-gray-2' %>
-<% provide :footer_classes, 'bg-gray-2' %>
-
+<% provide :main_classes, 'bg-gray-0' %>
+<% provide :footer_classes, 'bg-gray-0' %>
 <% provide :head_tags do %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
@@ -10,11 +9,11 @@
 
 <div class="grid-container">
   <div class="grid-row grid-gap">
-    <div id="dm-pe-adoptions" class="grid-col-12">
+    <div id="dm-pe-adoptions" class="grid-col-12 margin-top-4">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <%= render partial: "practices/shared/step_indicator" %>
       <section class="usa-section padding-top-0 padding-bottom-0">
-        <h1>Adoptions</h1>
-          <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+        <h1 class="margin-top-0">Adoptions</h1>
         <div class="usa-prose-intro">
           Share which facilities have successfully adopted your innovation. All adoptions roll up to the VAMC level. Aim to update this data quarterly.
         </div>
