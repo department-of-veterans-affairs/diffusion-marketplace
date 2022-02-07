@@ -1,19 +1,21 @@
 <% if facility_page === "true" %>
   <th class="padding-right-0 grid-col-2" data-sortable scope="col" role="columnheader">
 <% end %>
-<div class="usa-tooltip"
-     tabindex="0"
-     data-position="<%= data_position %>"
-     data-class="visn-description-tooltip"
-     title="Veterans Integrated Services Networks are regional systems <br> of care within the Veterans Health Administration.">
-  <% if facility_page === "true" %>
-    <u class="dotted">VISN</u>
-  <% else %>
-    <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">
-      <u class="dotted">VISN</u>
-    </h1>
-  <% end %>
-</div>
+<span class="usa-tooltip usa-prose-body">
+  <div class="usa-tooltip"
+       tabindex="0"
+       data-position="<%= data_position %>"
+       data-class="visn-description-tooltip"
+       title="Veterans Integrated Services Networks are regional systems <br> of care within the Veterans Health Administration.">
+    <% if facility_page === "true" %>
+      <u class="dotted text-bold">VISN</u>
+    <% else %>
+      <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">
+        <u class="dotted">VISN</u>
+      </h1>
+    <% end %>
+  </div>
+</span>
 <% if facility_page === "true" %>
   </th>
 <% end %>
