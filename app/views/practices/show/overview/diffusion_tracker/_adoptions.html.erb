@@ -36,8 +36,7 @@
               aria-controls="<%= group_name.underscore %>">
         <% adoption_statuses_and_text.each do |as| %>
           <% if as[:status] === group_name %>
-            <span class="text-middle margin-right-05"><span class="usa-tooltip" title="<%= as[:text] %>" data-class="adoption-status-tooltip" data-position="right"><u class="dotted"><%= group_name %></u></span></span> adoption<%= histories&.length === 1 ? '' : 's' %> (<%= histories&.length || 0 %>)</span>
-            <span class="fas fa-question-circle fa-2x <%= as[:status].downcase %>-modal-icon cursor-pointer desktop:display-none"></span>
+            <span class="text-middle margin-right-05"><span class="usa-tooltip" title="<%= as[:text] %>" data-class="adoption-status-tooltip" data-position="right"><u class="dotted"><%= group_name %></u></span></span><span class="<%= as[:status].downcase %>-modal-icon cursor-pointer desktop:display-none"><u class="dotted"><%= group_name %></u></span> adoption<%= histories&.length === 1 ? '' : 's' %> (<%= histories&.length || 0 %>)</span>
           <% end %>
         <% end %>
       </button>
