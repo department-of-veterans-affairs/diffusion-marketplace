@@ -172,12 +172,12 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         visit_practice_show
         expect(page).to have_no_content('Birmingham VA Medical Center (Birmingham-Alabama)')
         expect(page).to have_content('VISN-1')
-        # # make sure the VISN text is a link to the VISN's show page
-        # new_window = window_opened_by { click_link 'VISN-1' }
-        # within_window new_window do
-        #   expect(page).to have_content('VISN 1: VA New England Healthcare System')
-        #   expect(page).to have_content('This VISN has 0 facilities')
-        # end
+        # make sure the VISN text is a link to the VISN's show page
+        new_window = window_opened_by { click_link 'VISN-1' }
+        within_window new_window do
+          expect(page).to have_content('VISN 1: VA New England Healthcare System')
+          expect(page).to have_content('This VISN has 0 facilities')
+        end
 
         # set department
         visit_practice_edit
