@@ -148,7 +148,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
         new_window = window_opened_by { click_link 'VISN-6' }
         within_window new_window do
-          expect(page).to have_content('VISN 6: VA Mid-Atlantic Health Care Network')
+          expect(page).to have_content('6: VA Mid-Atlantic Health Care Network')
           expect(page).to have_content('This VISN has 2 facilities')
         end
       end
