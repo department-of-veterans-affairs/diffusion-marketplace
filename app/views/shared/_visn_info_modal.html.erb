@@ -6,9 +6,13 @@
       <% if is_facility_header === true %>
         <u class="dotted">VISN</u>
       <% else %>
-          <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">
-            <u class="dotted">VISN</u>
-          </h1>
+        <% if is_search_filter === true %>
+          Search by <u class="dotted">VISN</u> or facility
+        <% else %>
+            <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">
+              <u class="dotted">VISN</u>
+            </h1>
+        <% end %>
       <% end %>
   <% end %>
     </div>
