@@ -1,7 +1,17 @@
 <div href="#visn-info-modal" aria-controls="visn-info-modal" data-open-modal class="cursor-pointer">
   <span class="usa-sr-only">Open visn info modal</span>
-  <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility <u class="dotted">VISN</u></h4>
-</div>
+  <% if is_map_filter === true %>
+    <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility <u class="dotted">VISN</u></h4>
+    <% else %>
+      <% if is_facility_header === true %>
+        <u class="dotted">VISN</u>
+      <% else %>
+          <h1 class="font-sans-2xl line-height-46px margin-top-0 display-inline-block">
+            <u class="dotted">VISN</u>
+          </h1>
+      <% end %>
+  <% end %>
+    </div>
 <div class="usa-modal <%= 'display-none' if hide_modal_on_initial_load %>" id="visn-info-modal" aria-labelledby="visn-info-modal-heading" aria-describedby="visn-info-modal-description">
   <div class="usa-modal__content">
     <div class="usa-modal__main">

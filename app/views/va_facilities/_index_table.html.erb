@@ -9,7 +9,9 @@
         <th data-sortable scope="col" role="columnheader">
           State
         </th>
-        <span class="display-inline-block usa-prose-body"><%= render partial: "visns/visns_tooltip", locals: { data_position: 'bottom', facility_page: 'true', search_filter: 'false'} %></span>
+        <th class="padding-right-0 grid-col-2" data-sortable scope="col" role="columnheader">
+          <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false, is_map_filter: false, is_facility_header: true } %>
+        </th>
         <th class="padding-right-0 grid-col-3" data-sortable scope="col" role="columnheader">
           <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false, is_map: false } %>
         </th>
