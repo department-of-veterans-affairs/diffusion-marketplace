@@ -17,17 +17,6 @@
       background-color: color($theme-color-secondary-light);
     }
 
-    .fa-question-circle {
-      color: color($theme-color-base-ink) !important;
-      padding: 4px;
-      text-decoration: none !important;
-
-      &:visited {
-        text-decoration: none !important;
-        color: color($theme-color-base-ink) !important;
-      }
-    }
-
     .fas {
       color: color($theme-color-primary-vivid);
 
