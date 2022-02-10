@@ -199,7 +199,7 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('Successful adoption: 1')
       end
 
-      find_all(".facility_status_modal").first.click
+      find_all('#facility_status_modal').first.click
       expect(page).to have_content("In-progress:")
       expect(page).to have_content("Successful:")
       expect(page).to have_content("Unsuccessful:")
