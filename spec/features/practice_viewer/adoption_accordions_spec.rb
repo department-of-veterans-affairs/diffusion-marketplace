@@ -53,12 +53,6 @@ describe 'Adoption accordions', type: :feature, js: true do
     mobile_in_progress_text = 'In-progress: Facilities that have started but not completed adopting the innovation.'
     mobile_unsuccessful_text = 'Unsuccessful: Facilities that started but stopped working towards adoption.'
 
-    def desktop_tooltip_expectation_flow(text, index)
-      expect(page).to have_selector('.usa-tooltip__body', text: text, visible: false)
-      all('.usa-tooltip')[index].hover
-      expect(page).to have_selector('.usa-tooltip__body', text: text, visible: true)
-    end
-
     def mobile_tooltip_expectation_flow(text, element_1, element_2)
       expect(page).to have_selector('.padding-2', text: text, visible: false)
       # display modal
@@ -67,19 +61,6 @@ describe 'Adoption accordions', type: :feature, js: true do
       # close modal
       find(element_2).click
       expect(page).to have_selector('.padding-2', text: text, visible: false)
-    end
-
-    context 'desktop' do
-      it 'should display a tooltip with a definition of the adoption status for each status accordion' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
-        visit practice_path(@practice)
-        expect(page).to have_content(@practice.name)
-
-        # make sure the tooltip is shown for each status accordion
-        desktop_tooltip_expectation_flow(desktop_successful_text, 0 )
-        desktop_tooltip_expectation_flow(desktop_in_progress_text, 1)
-        desktop_tooltip_expectation_flow(desktop_unsuccessful_text, 2)
-      end
     end
 
     context 'mobile' do
