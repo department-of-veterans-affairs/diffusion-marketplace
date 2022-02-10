@@ -199,6 +199,11 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('Successful adoption: 1')
       end
 
+      find_all(".facility_status_modal").first.click
+      expect(page).to have_content("In-progress:")
+      expect(page).to have_content("Successful:")
+      expect(page).to have_content("Unsuccessful:")
+
       # it should delete an adoption entry
       find("button[aria-controls='in-progress_adoptions']").click
       expect(page).to have_selector("#in-progress_adoptions", visible: true)
@@ -298,13 +303,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content("Lack of sufficient leadership/key stakeholder buy-in")
         expect(page).to have_content("gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMP...")
         expect(page).to have_no_content("OVER50CHARACTERS")
-      end
-
-      it 'should display a modal for adoptions statuses' do
-        find_all(".facility_status_modal").first.click
-        expect(page).to have_content("In-progress:")
-        expect(page).to have_content("Successful:")
-        expect(page).to have_content("Unsuccessful:")
       end
     end
 
