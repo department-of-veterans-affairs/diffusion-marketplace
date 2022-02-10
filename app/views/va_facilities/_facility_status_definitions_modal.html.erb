@@ -1,8 +1,13 @@
-<div href="#facility-status-modal" aria-controls="facility-status-modal-element" data-open-modal class="cursor-pointer">
+<%
+  require 'securerandom'
+  guid = SecureRandom.hex(10) #or whatever value you want instead of 10
+%>
+
+<div href="#facility-status-modal-<%= guid %>" aria-controls="facility-status-modal-<%= guid %>" data-open-modal class="cursor-pointer">
   <span class="usa-sr-only">Open facility status modal</span>
   <u class="dotted">Status</u>
 </div>
-<div class="usa-modal" id="facility-status-modal" aria-labelledby="facility-status-modal-heading" aria-describedby="facility-status-modal-description">
+<div class="usa-modal" id="facility-status-modal-<%= guid %>" aria-labelledby="facility-status-modal-heading" aria-describedby="facility-status-modal-description">
   <div class="usa-modal__content">
     <div class="usa-modal__main">
       <div class="usa-prose">
