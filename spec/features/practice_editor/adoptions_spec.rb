@@ -51,6 +51,9 @@ describe 'Practice editor', type: :feature, js: true do
     def select_status(status)
       label = "label[for*='status_#{status}']"
       find(label).click
+      expect(page).to have_content("In-progress:")
+      expect(page).to have_content("Successful:")
+      expect(page).to have_content("Unsuccessful:")
     end
 
     def select_facility_combo_box(index)
@@ -198,11 +201,6 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('NY: Yonkers VA Clinic (11/1998 - 03/1999)')
         expect(page).to have_content('Successful adoption: 1')
       end
-
-      find_all('#facility_status_modal').first.click
-      expect(page).to have_content("In-progress:")
-      expect(page).to have_content("Successful:")
-      expect(page).to have_content("Unsuccessful:")
 
       # it should delete an adoption entry
       find("button[aria-controls='in-progress_adoptions']").click
