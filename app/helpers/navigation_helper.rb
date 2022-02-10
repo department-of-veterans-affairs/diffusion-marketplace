@@ -120,70 +120,48 @@ module NavigationHelper
       end
 
       ### PRACTICE EDITOR BREADCRUMBS ###
-      def instructions_breadcrumb
-        session[:breadcrumbs].find { |b| b['display'] == 'Instructions' }
-      end
-
-      def add_instructions_breadcrumb(practice)
-        session[:breadcrumbs] << { 'display': 'Edit', 'path': practice_instructions_path(practice) }
-      end
-
-      def reset_editor_breadcrumbs(practice)
-        empty_breadcrumbs
-        add_practice_breadcrumb(practice)
-        add_instructions_breadcrumb(practice)
-      end
-
       # Instructions breadcrumbs
       if action == 'instructions'
-        reset_editor_breadcrumbs(practice_by_practice_id)
+        empty_breadcrumbs
       end
 
       if action == 'metrics'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Metrics', 'path': practice_metrics_path(practice_by_practice_id) }
+        empty_breadcrumbs
       end
 
       # Editors breadcrumbs
       if action == 'editors'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Editors', 'path': practice_introduction_path(practice_by_practice_id) }
+        empty_breadcrumbs
       end
 
       # Introduction breadcrumbs
       if action == 'introduction'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Introduction', 'path': practice_introduction_path(practice_by_practice_id) }
+        empty_breadcrumbs
       end
 
       # Adoptions breadcrumbs
       if action == 'adoptions'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Adoptions', 'path': practice_adoptions_path(practice_by_practice_id) }
+        empty_breadcrumbs
       end
 
       # Overview breadcrumbs
       if action == 'overview'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Overview', 'path': practice_overview_path(practice_by_practice_id) }
+        empty_breadcrumbs
       end
 
       # Implementation breadcrumbs
       if action == 'implementation'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Implementation', 'path': practice_implementation_path(practice_by_practice_id) }
+        empty_breadcrumbs
       end
 
       # Contact breadcrumbs
       if action == 'contact'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Contact', 'path': practice_contact_path(practice_by_practice_id) }
+        empty_breadcrumbs
       end
 
       # About breadcrumbs
       if action == 'about'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'About', 'path': practice_about_path(practice_by_practice_id) }
+        empty_breadcrumbs
       end
     end
 
