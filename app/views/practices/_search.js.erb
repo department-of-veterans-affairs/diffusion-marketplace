@@ -1,5 +1,5 @@
 // only initialize the following variables while on the search page
-if (window.location.pathname === '/search') {
+<% if params[:action] === 'search' %>
     var practices = <%= @practices_json %>;
     var facilities = <%= raw (@va_facilities + @clinical_resource_hubs).to_json %>;
     var visns = <%= raw @visns.to_json %>;
@@ -23,7 +23,7 @@ if (window.location.pathname === '/search') {
         }
     }
     var all_categories = <%= raw @categories.to_json %>;
-}
+<% end %>
 
 
 // sort functions
