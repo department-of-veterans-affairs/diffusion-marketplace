@@ -155,6 +155,12 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('An adoption for Caribou VA Clinic in ME already exists in the entry list. If it is not listed, please report a bug.')
       end
 
+      find('.facility-modal-status').click
+      expect(page).to have_selector(".usa-modal__content", visible: true)
+      expect(page).to have_content('In-progress')
+      expect(page).to have_content('Successful:')
+      expect(page).to have_content('Unsuccessful:')
+
       # it shouldn't create an adoption if the end date is greater than the start date
       select_status('completed')
       select_facility_combo_box(2)
