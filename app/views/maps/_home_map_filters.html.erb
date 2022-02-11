@@ -51,7 +51,7 @@
       </div>
 
       <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Innovation status</h4>
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0"><span><%= render partial: '/va_facilities/facility_status_definitions_modal', locals: {is_map_filter: true} %></span></h4>
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
           <% DiffusionHistoryStatus::STATUSES.each do |i, v| %>
