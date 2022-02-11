@@ -159,7 +159,6 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_selector(".usa-modal__content", visible: true)
       expect(page).to have_content('In-progress')
       expect(page).to have_content('Successful')
-      expect(page).to have_content('Unsuccessful')
 
       # it shouldn't create an adoption if the end date is greater than the start date
       select_status('completed')
