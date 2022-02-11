@@ -51,9 +51,6 @@ describe 'Practice editor', type: :feature, js: true do
     def select_status(status)
       label = "label[for*='status_#{status}']"
       find(label).click
-      expect(page).to have_content("In-progress:")
-      expect(page).to have_content("Successful:")
-      expect(page).to have_content("Unsuccessful:")
     end
 
     def select_facility_combo_box(index)
