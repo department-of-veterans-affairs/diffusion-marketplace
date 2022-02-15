@@ -1,12 +1,4 @@
-<%
-  require 'securerandom'
-  guid = SecureRandom.hex(10) #or whatever value you want instead of 10
-%>
-<div href="#facility-status-modal-<%= guid %>" class="cursor-pointer <% if is_map_filter != true  %> margin-bottom-2 modal-status-def <% end %>" aria-controls="facility-status-modal-<%= guid %>" data-open-modal>
-  <span class="usa-sr-only">Open facility status modal</span>
-  <span><% if is_map_filter === true %>Innovation <% end %><u class="dotted">Status</u></span>
-</div>
-<div class="usa-modal" id="facility-status-modal-<%= guid %>" aria-labelledby="facility-status-modal-heading" aria-describedby="facility-status-modal-description">
+<div class="usa-modal" id="facility-status-modal" aria-labelledby="facility-status-modal-heading" aria-describedby="facility-status-modal-description">
   <div class="usa-modal__content">
     <div class="usa-modal__main">
       <div class="usa-prose">

@@ -51,7 +51,12 @@
       </div>
 
       <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0"><span><%= render partial: '/va_facilities/facility_status_definitions_modal', locals: {is_map_filter: true} %></span></h4>
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">
+          <div href="#facility-status-modal" class="cursor-pointer margin-bottom-2 modal-status-def" aria-controls="facility-status-modal" data-open-modal>
+            <span class="usa-sr-only">Open facility status modal</span>
+            <span>Innovation <u class="dotted">status</u></span>
+          </div>
+          <span><%= render partial: '/va_facilities/facility_status_definitions_modal', locals: {is_map_filter: true} %></span></h4>
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
           <% DiffusionHistoryStatus::STATUSES.each do |i, v| %>
