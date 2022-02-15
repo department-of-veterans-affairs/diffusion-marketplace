@@ -72,9 +72,6 @@ describe 'Practice editor', type: :feature, js: true do
       open_new_adoption_form
       within(:css, '#adoption_form') do
         expect(page).to have_content('Status')
-        page.find_link("Status").click
-        expect(page).to have_content('Facilities that have started but not completed adopting the innovation.')
-        find('.usa-modal__close').click
         expect(page).to have_content('Start date (optional)')
         expect(page).to have_no_content('End date (optional)')
         expect(page).to have_no_content('Why was this adoption unsuccessful?')
