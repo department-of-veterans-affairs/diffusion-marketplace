@@ -72,7 +72,7 @@ group :development, :test do
   gem 'axe-matchers'
   gem 'webdrivers'
 
-  gem 'brakeman', '>= 4.7.1'
+  gem 'brakeman', '5.0.2'
   gem 'bundler-audit'
   gem 'bundler-leak'
   gem 'json', '>= 2.3.0'
