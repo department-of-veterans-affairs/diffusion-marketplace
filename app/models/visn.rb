@@ -37,13 +37,16 @@ class Visn < ApplicationRecord
     end
   end
 
-  def get_adopted_practices(station_numbers, options = { :is_user_guest => true })
-    options[:is_user_guest] ? Practice.public_facing.load_associations.get_by_adopted_facility(station_numbers) : Practice.published_enabled_approved.load_associations.get_by_adopted_facility(station_numbers)
+  def get_adopted_practices(station_numbers, crh_id, options = { :is_user_guest => true })
+    options[:is_user_guest] ? Practice.public_facing.load_associations.get_by_adopted_facility_and_crh(station_numbers, crh_id) :
+    Practice.published_enabled_approved.load_associations.get_by_adopted_facility_and_crh(station_numbers, crh_id)
   end
 
-  def get_created_practices(station_numbers, options = { :is_user_guest => true })
-    facility_created_practices = options[:is_user_guest] ? Practice.public_facing.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility(station_numbers) : Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility(station_numbers)
-    visn_created_practices = options[:is_user_guest] ? Practice.public_facing.load_associations.where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s) : Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s)
+  def get_created_practices(station_numbers, crh_id, options = { :is_user_guest => true })
+    facility_created_practices = options[:is_user_guest] ? Practice.public_facing.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility_and_crh(station_numbers, crh_id) :
+                                 Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility_and_crh(station_numbers, crh_id)
+    visn_created_practices = options[:is_user_guest] ? Practice.public_facing.load_associations.where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s) :
+                             Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s)
 
     facility_created_practices + visn_created_practices
   end

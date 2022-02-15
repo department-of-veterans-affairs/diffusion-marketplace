@@ -115,6 +115,7 @@ describe 'VISN pages', type: :feature do
     PracticeOriginFacility.create!(practice: @practice_7, facility_type: 0, va_facility: facility_3)
     @practice_8 = Practice.create!(name: 'A Ground-breaking Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 8', date_initiated: 'Thu, 15 Feb 2015 00:00:00 UTC +00:00', summary: 'This is a ground-breaking practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice_8, facility_type: 0, va_facility: facility_2)
+    @practice_9 = Practice.create!(name: 'A Glorious Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 9', date_initiated: 'Thu, 15 Feb 2015 00:00:00 UTC +00:00', summary: 'This is a glorious practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
 
     @dh = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_3)
     DiffusionHistoryStatus.create!(diffusion_history: @dh, status: 'Completed', start_time: Time.now)
@@ -127,6 +128,15 @@ describe 'VISN pages', type: :feature do
     @cat_2 = Category.create!(name: 'Test Cat')
     CategoryPractice.create!(practice: @practice_3, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice_4, category: @cat_2, created_at: Time.now)
+
+    ClinicalResourceHub.create!(visn: @visn, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
+    clinical_resource_hub = ClinicalResourceHub.create!(visn: @visn_2, official_station_name: "VISN 2 Clinical Resource Hub (Remote)")
+    PracticeOriginFacility.create!(practice: @practice_8, facility_type: 0, clinical_resource_hub: clinical_resource_hub)
+    PracticeOriginFacility.create!(practice: @practice_9, facility_type: 0, clinical_resource_hub: clinical_resource_hub)
+    new_dh_1 = DiffusionHistory.create!(practice_id: @practice_5.id, clinical_resource_hub: clinical_resource_hub)
+    DiffusionHistoryStatus.create!(diffusion_history_id: new_dh_1.id, status: 'Completed')
+    new_dh_2 = DiffusionHistory.create!(practice_id: @practice_9.id, clinical_resource_hub: clinical_resource_hub)
+    DiffusionHistoryStatus.create!(diffusion_history_id: new_dh_2.id, status: 'Completed')
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
   end
@@ -165,7 +175,7 @@ describe 'VISN pages', type: :feature do
       it 'should show metadata for each visn' do
         @visn_markers.last.click
         expect(page).to have_selector('#visn-2-marker-modal', visible: true)
-        expect_visn_metadata('#visn-2-marker-modal', '7 innovations created here', '3 innovations adopted here')
+        expect_visn_metadata('#visn-2-marker-modal', '8 innovations created here', '5 innovations adopted here')
       end
 
       it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
@@ -212,7 +222,7 @@ describe 'VISN pages', type: :feature do
       page.set_rack_session(:user_type => 'ntlm')
       visit '/visns/2'
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
-      expect(page).to have_content('Collectively, its facilities have created 7 innovations and have adopted 3 innovations.')
+      expect(page).to have_content('Collectively, its facilities have created 8 innovations and have adopted 5 innovations.')
       expect(page).to have_content('Toge Inumaki')
     end
 
@@ -306,11 +316,11 @@ describe 'VISN pages', type: :feature do
         # make sure 'Load more' feature is working
         expect(practice_cards.count).to eq(6)
         click_button('Load more')
-        expect(practice_cards.count).to eq(7)
+        expect(practice_cards.count).to eq(8)
 
         # switch to adopted practices
         find_all('.usa-radio__label').last.click
-        expect(practice_cards.count).to eq(3)
+        expect(practice_cards.count).to eq(5)
 
         # run the search on created practices
         find_all('.usa-radio__label').first.click
@@ -330,6 +340,25 @@ describe 'VISN pages', type: :feature do
         find_all('.usa-combo-box__list-option').first.click
 
         expect(practice_cards.count).to eq(1)
+
+        # Add a search query on created practices for the CRH
+        find_all('.usa-radio__label').first.click
+        find('.usa-combo-box__clear-input').click
+        fill_in('visn-search-field', with: 'Clinical Resource Hub')
+        find('#visn-search-button').click
+
+        expect(practice_cards.count).to eq(3)
+        expect(page).to have_content(@practice_5.name)
+        expect(page).to have_content(@practice_8.name)
+        expect(page).to have_content(@practice_9.name)
+
+        # Add a search query on adopted practices for the CRH
+        find_all('.usa-radio__label').last.click
+        find('#visn-search-button').click
+
+        expect(practice_cards.count).to eq(2)
+        expect(page).to have_content(@practice_5.name)
+        expect(page).to have_content(@practice_9.name)
       end
 
       it 'should allow users to visit a visns\'s show page with a search query' do
@@ -339,12 +368,12 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should only display search results for public-facing practices created in a given VISN if the user is a guest' do
-        check_search_results_as_guest_user('#visns-show-search', 5, 'A Very Cool Practice!', '.visn-created-practices-radio', '.visn-adopted-practices-radio')
+        check_search_results_as_guest_user('#visns-show-search', 6, 'A Very Cool Practice!', '.visn-created-practices-radio', '.visn-adopted-practices-radio')
       end
 
       it 'should only display search results for public-facing practices adopted in a given VISN if the user is a guest' do
         Practice.second.update_attributes(initiating_facility: 1)
-        check_search_results_as_guest_user('#visns-show-search', 6, 'An Awesome Practice!', '.visn-adopted-practices-radio', '.visn-created-practices-radio')
+        check_search_results_as_guest_user('#visns-show-search', 7, 'An Awesome Practice!', '.visn-adopted-practices-radio', '.visn-created-practices-radio')
       end
     end
 
