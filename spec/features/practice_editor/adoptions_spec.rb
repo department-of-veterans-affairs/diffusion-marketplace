@@ -72,7 +72,7 @@ describe 'Practice editor', type: :feature, js: true do
       open_new_adoption_form
       within(:css, '#adoption_form') do
         expect(page).to have_content('Status')
-        find_all('.modal-status-def').first.click
+        find('#modal-status-def').click
         find('.usa-modal__close').click
         expect(page).to have_content('Start date (optional)')
         expect(page).to have_no_content('End date (optional)')
