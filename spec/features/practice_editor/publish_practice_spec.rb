@@ -108,7 +108,7 @@ describe 'Practice editor', type: :feature, js: true do
 
     it 'Should save and publish the practice if all required fields are met' do
       # set contact email
-      visit practice_contact_path(@practice2)
+      visit practice_about_path(@practice2)
       email = 'test@email.com'
       fill_in('Main email address', with: email)
       @save_button.click
