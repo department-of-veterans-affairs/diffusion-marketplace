@@ -59,6 +59,10 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       station_phone_number: "757-432-1543 x",
       fy17_parent_station_complexity_level: "1c-High Complexity"
     )
+    ClinicalResourceHub.create!(visn: visn_6, official_station_name: "VISN 6 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_9, official_station_name: "VISN 9 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_21, official_station_name: "VISN 21 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_23, official_station_name: "VISN 23 Clinical Resource Hub (Remote)")
 
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_1)
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_2)
