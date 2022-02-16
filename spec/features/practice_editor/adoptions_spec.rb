@@ -73,7 +73,7 @@ describe 'Practice editor', type: :feature, js: true do
       within(:css, '#adoption_form') do
         expect(page).to have_content('Status')
         # open facility status modal
-        find_all('.facility-status-modal').last.click
+        find('#facility-status-modal').click
         expect(page).to have_content('Facilities that have started')
         find('.fa-times').click
         expect(page).to_not have_content('Facilities that have started')
