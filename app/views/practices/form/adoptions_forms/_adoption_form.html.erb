@@ -15,10 +15,10 @@
   <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
   <div class="margin-bottom-5 margin-top-1">
     <p class="margin-bottom-2">
-    <div href="#facility-status-modal" class="cursor-pointer margin-bottom-2" aria-controls="facility-status-modal" data-open-modal>
+    <a href="#facility-status-modal" class="dotted cursor-pointer margin-bottom-2" aria-controls="facility-status-modal" data-open-modal>
       <span class="usa-sr-only">Open facility status modal</span>
-      <span><u class="dotted">Status</u></span>
-    </div>
+      Status
+    </a>
     </p>
     <div class="usa-radio position-relative">
       <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button dm-required-field', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{form_id}") %>
