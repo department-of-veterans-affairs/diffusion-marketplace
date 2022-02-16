@@ -17,6 +17,10 @@
           <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false, is_map_filter: false, is_facility_header: true, is_search_filter: false } %>
         </th>
         <th class="padding-right-0 grid-col-3" data-sortable scope="col" role="columnheader">
+          <a href="#facility-complexity-modal" aria-controls="facility-complexity-modal" data-open-modal class="dotted cursor-pointer facility-complexity-modal">
+            <span class="usa-sr-only">Open facility complexity modal</span>
+            Complexity
+          </a>
           <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false, is_map: false } %>
         </th>
         <th data-sortable scope="col" role="columnheader">
