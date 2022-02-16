@@ -56,7 +56,8 @@
             <span class="usa-sr-only">Open facility status modal</span>
             <span>Innovation <u class="dotted">status</u></span>
           </div>
-          <span><%= render partial: '/va_facilities/facility_status_definitions_modal', locals: {is_map_filter: true} %></span></h4>
+        </h4>
+          <%= render partial: '/va_facilities/facility_status_definitions_modal', locals: {is_map_filter: true} %>
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
           <% DiffusionHistoryStatus::STATUSES.each do |i, v| %>
