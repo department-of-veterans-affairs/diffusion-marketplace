@@ -72,9 +72,13 @@ describe 'Practice editor', type: :feature, js: true do
       open_new_adoption_form
       # open facility status modal
       find_all('.facility-status-modal-header').first.click
-      expect(page).to have_content('Facilities that have started')
+      expect(page).to have_content('Facilities that have started but not completed adopting the innovation.')
+      expect(page).to have_content('Facilities that have met adoption goals and implemented the innovation.')
+      expect(page).to have_content('Facilities that have started but stopped working towards adoption.')
       find_all('.usa-modal__close').first.click
       expect(page).to_not have_content('Facilities that have started')
+      expect(page).to_not have_content('Facilities that have met adoption goals and implemented the innovation.')
+      expect(page).to_not have_content('Facilities that have started but stopped working towards adoption.')
       within(:css, '#adoption_form') do
         expect(page).to have_content('Status')
         expect(page).to have_content('Start date (optional)')
