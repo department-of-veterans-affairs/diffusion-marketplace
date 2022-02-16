@@ -7,7 +7,6 @@
   sorted_in_progress_adoptions = in_progress_adoptions.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name] } if in_progress_adoptions.any?
   sorted_unsuccessful_adoptions = unsuccessful_adoptions.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name] } if unsuccessful_adoptions.any?
 %>
-<%= render partial: 'va_facilities/facility_status_definitions_modal', locals: {is_map_filter: false} %>
 
 <% if sorted_successful_adoptions %>
   <%= render partial: 'practices/form/adoptions_forms/adoption_accordion_by_status', locals: {
