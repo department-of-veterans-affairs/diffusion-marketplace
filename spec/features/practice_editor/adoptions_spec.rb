@@ -75,7 +75,7 @@ describe 'Practice editor', type: :feature, js: true do
         # open facility status modal
         find_all('.facility-status-modal-header').first.click
         expect(page).to have_content('Facilities that have started')
-        page.find('.fa-times').click
+        find_all('.usa-modal__close').first.click
         expect(page).to_not have_content('Facilities that have started')
 
         expect(page).to have_content('Start date (optional)')
