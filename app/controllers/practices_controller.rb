@@ -367,6 +367,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/adoptions
   def adoptions
+    @va_facilities = (@va_facilities + ClinicalResourceHub.cached_clinical_resource_hubs).sort_by(&:official_station_name.downcase)
     render 'practices/form/adoptions'
   end
 

@@ -44,9 +44,13 @@
     <label for="<%= facility_select_selector %>" class="usa-label line-height-26">Facility</label>
     <div class="usa-combo-box margin-top-1 margin-bottom-2">
       <select id="<%= facility_select_selector %>" class="usa-select" name="va_facility_id">
-        <% @va_facilities.all.each do |vaf| %>
+        <% @va_facilities.each do |vaf| %>
           <option value=<%= vaf[:id] %>>
-            <%= vaf[:street_address_state] + ': ' + vaf[:official_station_name] + ' (' + vaf[:common_name] + ')' %>
+            <% if vaf[:street_address_state].present? %>
+              <%= vaf[:street_address_state] + ': ' + vaf[:official_station_name] + ' (' + vaf[:common_name] + ')' %>
+            <% else %>
+              <%= vaf[:official_station_name] %>
+            <% end %>
           </option>
         <% end %>
       </select>
