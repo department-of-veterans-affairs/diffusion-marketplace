@@ -73,12 +73,12 @@ describe 'Practice editor', type: :feature, js: true do
       within(:css, '#adoption_form') do
         expect(page).to have_content('Status')
         # open facility status modal
-        modal_text = 'In-progress:'
-        expect(page).to_not have_content(modal_text)
+        expect(page).to_not have_content('In-progress')
         find_all('.facility-status-modal').last.click
-        expect(page).to have_content(modal_text)
+        expect(page).to have_content('In-progress')
         find('.fa-times').click
-        expect(page).to_not have_content(modal_text)
+        expect(page).to_not have_content('In-progress')
+
         expect(page).to have_content('Start date (optional)')
         expect(page).to have_no_content('End date (optional)')
         expect(page).to have_no_content('Why was this adoption unsuccessful?')
