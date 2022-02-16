@@ -70,10 +70,12 @@
         </fieldset>
       </div>
       <div class="margin-bottom-2">
-        <div href="#visn-info-modal" aria-controls="visn-info-modal" data-open-modal class="cursor-pointer">
-          <span class="usa-sr-only">Open visn info modal</span>
-            <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility <u class="dotted">VISN</u></h4>
-        </div>
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility
+          <a href="#visn-info-modal" aria-controls="visn-info-modal" data-open-modal class="dotted cursor-pointer">
+            <span class="usa-sr-only">Open visn info modal</span>
+            VISN
+          </a>
+        </h4>
         <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
         <div id="visn-list-container" class="map-filters-list">
           <fieldset>
