@@ -14,7 +14,7 @@
 
       <% group_array[1].each do |f| %>
         <option class="margin-left-1" value="<%= f.has_attribute?('station_number') ? f.station_number : f.official_station_name %>">
-          <%= f.official_station_name.include?('VISN') ? f.official_station_name : facility_name_with_common_name(f.official_station_name, f.common_name) %>
+          <%= f.has_attribute?('common_name') ? facility_name_with_common_name(f.official_station_name, f.common_name) : f.official_station_name %>
         </option>
       <% end %>
     <% end %>
