@@ -50,9 +50,9 @@
         </fieldset>
       </div>
 
-      <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">
-          <div href="#facility-status-modal" class="cursor-pointer margin-bottom-2 modal-status-def" aria-controls="facility-status-modal" data-open-modal>
+      <div class="margin-bottom-3">
+        <h4 class="font-sans-md bold-height-2 margin-bottom-1 margin-top-0">
+          <div href="#facility-status-modal" class="cursor-pointer" aria-controls="facility-status-modal" data-open-modal>
             <span class="usa-sr-only">Open facility status modal</span>
             <span>Innovation <u class="dotted">status</u></span>
           </div>
@@ -68,7 +68,11 @@
         </fieldset>
       </div>
       <div class="margin-bottom-2">
-          <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false, is_map_filter: true, is_facility_header: false, is_search_filter: false } %>
+        <div href="#visn-info-modal" aria-controls="visn-info-modal" data-open-modal class="cursor-pointer">
+          <span class="usa-sr-only">Open visn info modal</span>
+            <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility <u class="dotted">VISN</u></h4>
+        </div>
+        <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
         <div id="visn-list-container" class="map-filters-list">
           <fieldset>
             <legend class="usa-sr-only">VISNs</legend>

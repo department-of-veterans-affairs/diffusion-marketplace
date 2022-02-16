@@ -10,6 +10,10 @@
           State
         </th>
         <th class="padding-right-0 grid-col-2" data-sortable scope="col" role="columnheader">
+          <div href="#visn-info-modal" aria-controls="visn-info-modal" data-open-modal class="cursor-pointer">
+            <span class="usa-sr-only">Open visn info modal</span>
+                <u class="dotted">VISN</u>
+          </div>
           <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false, is_map_filter: false, is_facility_header: true, is_search_filter: false } %>
         </th>
         <th class="padding-right-0 grid-col-3" data-sortable scope="col" role="columnheader">
