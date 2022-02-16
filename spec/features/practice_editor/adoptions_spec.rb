@@ -75,7 +75,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_content('Facilities that have started but not completed adopting the innovation.')
       expect(page).to have_content('Facilities that have met adoption goals and implemented the innovation.')
       find_all('.usa-modal__close').first.click
-      expect(page).to_not have_content('Facilities that have started')
+      expect(page).to_not have_content('Facilities that have started but not completed adopting the innovation.')
       expect(page).to_not have_content('Facilities that have met adoption goals and implemented the innovation.')
       within(:css, '#adoption_form') do
         expect(page).to have_content('Status')
