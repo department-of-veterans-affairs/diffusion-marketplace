@@ -50,8 +50,15 @@
         </fieldset>
       </div>
 
-      <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Innovation status</h4>
+      <div class="margin-bottom-3">
+        <h4 class="font-sans-md bold-height-2 margin-bottom-1 margin-top-0">
+          Innovation
+          <a href="#facility-status-modal" class="dotted cursor-pointer" aria-controls="facility-status-modal" data-open-modal>
+            <span class="usa-sr-only">Open facility status modal</span>
+            status
+          </a>
+        </h4>
+          <%= render partial: '/va_facilities/facility_status_definitions_modal', locals: {is_map_filter: true} %>
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
           <% DiffusionHistoryStatus::STATUSES.each do |i, v| %>
@@ -63,8 +70,13 @@
         </fieldset>
       </div>
       <div class="margin-bottom-2">
-          <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility VISN</h4>
-          <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility
+          <a href="#visn-info-modal" aria-controls="visn-info-modal" data-open-modal class="dotted cursor-pointer">
+            <span class="usa-sr-only">Open visn info modal</span>
+            VISN
+          </a>
+        </h4>
+        <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
         <div id="visn-list-container" class="map-filters-list">
           <fieldset>
             <legend class="usa-sr-only">VISNs</legend>
@@ -124,8 +136,14 @@
       </div>
 
       <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility complexity</h4>
-        <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false } %>
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">
+        Facility
+          <a href="#facility-complexity-modal" class="facility-complexity-modal cursor-pointer dotted" aria-controls="facility-complexity-modal" data-open-modal class="cursor-pointer">
+            <span class="usa-sr-only">Open facility complexity modal</span>
+              complexity
+          </a>
+        </h4>
+        <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false, is_map: true } %>
         <% complexity_levels = VaFacility.get_complexity %>
         <fieldset>
           <legend class="usa-sr-only">Facility Complexity Levels</legend>
