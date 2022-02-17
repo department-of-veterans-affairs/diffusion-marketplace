@@ -33,7 +33,7 @@ class PracticesController < ApplicationController
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
 
-    @pr_diffusion_histories = @practice.diffusion_histories
+    @pr_diffusion_histories = @practice.diffusion_histories.where(clinical_resource_hub_id: nil)
     @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
       facility = @va_facilities.find { |f| f.station_number === dhg.va_facility.station_number }
       marker.lat facility.latitude
@@ -158,14 +158,23 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @visn_grouped_facilities = @va_facilities.includes([:visn]).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
+    @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
+    # combine the va_facilities query with the CRH query, sort them by 'official_station_name', group them by their VISN's number, and then sort by VISN number
+    @visn_grouped_facilities = (@va_facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
     @practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices : Practice.searchable_practices
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = cached_json_practices
     @diffusion_histories = []
     @practices.each do |p|
-      p.diffusion_histories.includes([:va_facility]).each do |dh|
-        @diffusion_histories << {practice_id: dh.practice_id, facility_number: dh.va_facility.station_number}
+      p.diffusion_histories.includes([:va_facility, :clinical_resource_hub]).each do |dh|
+        va_facility = dh.va_facility
+        crh = dh.clinical_resource_hub
+
+        @diffusion_histories << {
+          practice_id: dh.practice_id,
+          va_facility_number: va_facility.present? ? va_facility.station_number : nil,
+          clinical_resource_hub_name: crh.present? ? crh.official_station_name : nil
+        }
       end
     end
     @parent_categories = Category.get_cached_categories_grouped_by_parent
