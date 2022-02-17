@@ -67,17 +67,6 @@ describe 'Adoption accordions', type: :feature, js: true do
       before do
         page.driver.browser.manage.window.resize_to(340, 580)
       end
-
-      it 'should display a modal with a definition of the adoption status for each status accordion' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
-        visit practice_path(@practice)
-        expect(page).to have_content(@practice.name)
-
-        # make sure the modal appears for each status accordion
-        mobile_tooltip_expectation_flow(mobile_successful_text, '.successful-modal-icon', '#close_successful_status_modal')
-        mobile_tooltip_expectation_flow(mobile_in_progress_text, '.in-progress-modal-icon', '#close_in-progress_status_modal')
-        mobile_tooltip_expectation_flow(mobile_unsuccessful_text, '.unsuccessful-modal-icon', '#close_unsuccessful_status_modal')
-      end
     end
   end
 end
