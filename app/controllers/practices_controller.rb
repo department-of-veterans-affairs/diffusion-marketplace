@@ -19,7 +19,7 @@ class PracticesController < ApplicationController
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
   before_action :fetch_visns, only: [:show, :search, :introduction]
-  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
+  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :introduction]
 
   # GET /practices
   # GET /practices.json
@@ -367,7 +367,8 @@ class PracticesController < ApplicationController
 
   # /practices/slug/adoptions
   def adoptions
-    @va_facilities = (@va_facilities + ClinicalResourceHub.cached_clinical_resource_hubs).sort_by(&:official_station_name.downcase)
+    # sort the facilities in alphanumeric order with the NaturalSorter gem
+    @va_facilities = Naturalsorter::Sorter.sort_by_method((VaFacility.cached_va_facilities.get_relevant_attributes + ClinicalResourceHub.cached_clinical_resource_hubs), 'official_station_name'.downcase, true)
     render 'practices/form/adoptions'
   end
 
@@ -395,11 +396,16 @@ class PracticesController < ApplicationController
   end
 
   def create_or_update_diffusion_history
+    # sort the facilities in alphanumeric order with the NaturalSorter gem
+    @va_facilities = Naturalsorter::Sorter.sort_by_method((VaFacility.cached_va_facilities.get_relevant_attributes + ClinicalResourceHub.cached_clinical_resource_hubs), 'official_station_name'.downcase, true)
     # set attributes for later use
-    facility_id = params[:va_facility_id].to_i
+    is_crh = params[:va_facility_id].start_with?('crh')
+    facility_id = params[:va_facility_id].split('-')[1].to_i
     status = params[:status]
     unsuccessful_reasons = params[:unsuccessful_reasons] || []
     unsuccessful_reasons_other = params[:unsuccessful_reasons_other] || nil
+    find_va_facility_dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
+    find_crh_dh = DiffusionHistory.find_by(practice: @practice, clinical_resource_hub_id: facility_id)
 
     if params[:date_started].present? && !(params[:date_started].values.include?(''))
       start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
@@ -413,20 +419,20 @@ class PracticesController < ApplicationController
     if @dh.present?
       # is the user changing to a facility that they already have listed?
       # if so, tell them no
-      existing_dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
+      existing_dh = is_crh ? find_crh_dh : find_va_facility_dh
       if existing_dh && existing_dh.id != @dh.id
         params[:existing_dh] = @va_facilities.find(facility_id)
       end
     else
       # or else, we're creating something
       # figure out if the user already has this diffusion history
-      @dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
+      @dh = is_crh ? find_crh_dh : find_va_facility_dh
       # if so, tell them!
       if @dh
-        params[:exists] = @va_facilities.find(facility_id)
+        params[:exists] = is_crh ? @va_facilities.where(clinical_resource_hub_id: facility_id).first : @va_facilities.where(facility_id: facility_id).first
       else
         # if not, create a new one
-        @dh = DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
+        @dh = is_crh ? DiffusionHistory.create(practice: @practice, clinical_resource_hub_id: facility_id) : DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
       end
     end
 

@@ -22,6 +22,4 @@ class DiffusionHistory < ApplicationRecord
   def clear_searchable_practices_cache
     practice.clear_searchable_cache
   end
-
-
 end
