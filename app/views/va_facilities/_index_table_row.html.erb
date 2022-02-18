@@ -1,10 +1,24 @@
 <% facilities.each do |facility| %>
   <tr>
+    <% puts facility.official_station_name %>
+    <%# if facility.official_station_name === "VISN 1 Clinical Resource Hub (Remote)" %>
+      <%# debugger %>
+    <%# end %>
     <th scope="row" role="rowheader" class="grid-col-4"><a class="usa-link" href='<%= va_facility_path(facility) %>'><%= facility["official_station_name"] %> (<%= facility["common_name"] %>)</a></th>
-    <td class="grid-col-1"><%= facility.street_address_state %></td>
-    <td class="grid-col-1"><a class="usa-link" href='/visns/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
-    <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.match(/^1/) ? facility.fy17_parent_station_complexity_level[0..1].upcase : facility.fy17_parent_station_complexity_level[0..0].upcase %></td>
-    <td class="grid-col-2"><%= facility.practices_created_count %></td>
-    <td class="grid-col-2"><%= facility.practices_adopted_count  %></td>
+    <td class="grid-col-1"><%= facility.class.name == "ClinicalResourceHub" ? facility.visn.state : facility.street_address_state %></td>
+    <% if facility.class.name === "ClinicalResourceHub" %>
+      <td class="grid-col-1"><a class="usa-link" href='/crh/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
+    <% else %>
+      <td class="grid-col-1"><a class="usa-link" href='/visns/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
+    <% end %>
+    <% if facility.class.name === "ClinicalResourceHub" %>
+      <td class="grid-col-2">NA</td>
+      <td class="grid-col-2">NA</td>
+      <td class="grid-col-2">NA</td>
+     <% else %>
+        <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.match(/^1/) ? facility.fy17_parent_station_complexity_level[0..1].upcase : facility.fy17_parent_station_complexity_level[0..0].upcase %></td>
+        <td class="grid-col-2"><%= facility.practices_created_count %></td>
+        <td class="grid-col-2"><%= facility.practices_adopted_count  %></td>
+     <% end %>
   </tr>
 <% end %>
