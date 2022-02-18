@@ -4,7 +4,7 @@ class DiffusionHistory < ApplicationRecord
   belongs_to :clinical_resource_hub, optional: true
 
 
-  validates_with DiffusionHistoryValidator, on: [:create, :update] #check CRH exists or facility exists
+  validates_with DiffusionHistoryValidator, on: [:create, :update] # check CRH exists or facility exists
 
 
   has_many :diffusion_history_statuses, dependent: :destroy
@@ -22,6 +22,4 @@ class DiffusionHistory < ApplicationRecord
   def clear_searchable_practices_cache
     practice.clear_searchable_cache
   end
-
-
 end

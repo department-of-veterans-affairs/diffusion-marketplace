@@ -2,12 +2,16 @@ require 'rails_helper'
 
 describe 'Practice editor - introduction', type: :feature, js: true do
   before do
-    Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
+    visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
     visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
     visn_21 = Visn.create!(id: 16, name: "Sierra Pacific Network", number: 21)
 
     facility_1 = VaFacility.create!(visn: visn_21, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
     VaFacility.create!(visn: visn_7, station_number: "521", official_station_name: "Birmingham VA Medical Center", common_name: "Birmingham-Alabama", street_address_state: "AL")
+    ClinicalResourceHub.create!(visn: visn_1, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_7, official_station_name: "VISN 7 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_21, official_station_name: "VISN 21 Clinical Resource Hub (Remote)")
+
 
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)

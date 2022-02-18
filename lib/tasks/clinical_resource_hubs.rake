@@ -8,7 +8,7 @@ namespace :clinical_resource_hubs do
       visn = Visn.where(number: v["visn_number"]).first
       ClinicalResourceHub.create!(
           visn_id: visn.id,
-          name: v["name"]
+          official_station_name: v["name"]
       )
     end
     puts "All Clinical Resource Hubs have been added to the DB!"
