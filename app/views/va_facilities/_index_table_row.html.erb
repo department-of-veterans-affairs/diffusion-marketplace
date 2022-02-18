@@ -4,8 +4,8 @@
     <%# if facility.official_station_name === "VISN 1 Clinical Resource Hub (Remote)" %>
       <%# debugger %>
     <%# end %>
-    <th scope="row" role="rowheader" class="grid-col-4"><a class="usa-link" href='<%= va_facility_path(facility) %>'><%= facility["official_station_name"] %> (<%= facility["common_name"] %>)</a></th>
-    <td class="grid-col-1"><%= facility.class.name == "ClinicalResourceHub" ? facility.visn.state : facility.street_address_state %></td>
+    <th scope="row" role="rowheader" class="grid-col-4"><a class="usa-link" href='<%= va_facility_path(facility) %>'><%= facility["official_station_name"] %> <% if facility.class.name != "ClinicalResourceHub"  %> (<%= facility["common_name"] %>)<% end %></a></th>
+    <td class="grid-col-1"><%= facility.class.name === "ClinicalResourceHub" ? facility.visn.state : facility.street_address_state %></td>
     <% if facility.class.name === "ClinicalResourceHub" %>
       <td class="grid-col-1"><a class="usa-link" href='/crh/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
     <% else %>
