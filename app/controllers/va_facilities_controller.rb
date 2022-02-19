@@ -24,14 +24,9 @@ class VaFacilitiesController < ApplicationController
     end
 
     @clinical_resource_hubs = ClinicalResourceHub.all
-    # combine the va_facilities query with the CRH query, sort them by 'official_station_name', group them by their VISN's number, and then sort by VISN number
-    #@visn_grouped_facilities = (@va_facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
+    # include CRHs in facilities list
     @facilities = (@facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase) #.group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
-    debugger
-      
-
     table_rows_html = render_to_string('va_facilities/_index_table_row', layout: false, locals: { facilities: @facilities })
-
     respond_to do |format|
       format.html
       format.json { render :json => { rowsHtml: table_rows_html, count: @facilities.length } }

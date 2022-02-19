@@ -37,4 +37,12 @@ class ClinicalResourceHub < ApplicationRecord
       ClinicalResourceHub.all
     end
   end
+
+  def practices_created_by_crh_count
+    PracticeOriginFacility.where(clinical_resource_hub_id: id).count
+  end
+
+  def practices_adopted_by_crh_count
+    DiffusionHistory.where(clinical_resource_hub_id: id).count
+  end
 end
