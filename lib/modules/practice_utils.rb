@@ -147,11 +147,11 @@ module PracticeUtils
   end
 
   def fetch_adoptions_by_practice_last_30_days(practice)
-    DiffusionHistory.get_with_practices(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now)
+    DiffusionHistory.get_with_practice(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now)
   end
 
   def fetch_adoptions_by_practice_all_time(practice)
-    DiffusionHistory.get_with_practices(practice)
+    DiffusionHistory.get_with_practice(practice)
   end
 
   def fetch_adoption_counts_by_status(status, adoptions)
@@ -176,19 +176,19 @@ module PracticeUtils
   end
 
   def fetch_adoption_counts_by_practice_last_30_days(practice)
-    DiffusionHistory.get_with_practices(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now).size
+    DiffusionHistory.get_with_practice(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now).size
   end
 
   def fetch_adoption_counts_by_practice_all_time(practice)
-    DiffusionHistory.get_with_practices(practice).size
+    DiffusionHistory.get_with_practice(practice).size
   end
 
   def fetch_adoption_facilities_for_practice_last_30_days(practice)
-    DiffusionHistory.get_with_practices(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now).includes(:va_facility).collect { |dh| dh.va_facility.station_number if dh.va_facility.present? }
+    DiffusionHistory.get_with_practice(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now).includes(:va_facility).collect { |dh| dh.va_facility.station_number if dh.va_facility.present? }
   end
 
   def fetch_adoption_facilities_for_practice_all_time(practice)
-    DiffusionHistory.get_with_practices(practice).includes(:va_facility).collect { |dh| dh.va_facility.station_number if dh.va_facility.present? }
+    DiffusionHistory.get_with_practice(practice).includes(:va_facility).collect { |dh| dh.va_facility.station_number if dh.va_facility.present? }
   end
 
   def get_adoption_facility_details_for_practice(facility_data, facility_station_numbers_for_practice, key, value)
