@@ -247,19 +247,23 @@ class PracticesController < ApplicationController
     @page_views_for_practice_count = fetch_page_view_for_practice_count(@practice.id, @duration)
     @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
-    @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
+    if @duration === '30'
+      @adoptions_by_practice = fetch_adoption_counts_by_practice_last_30_days(@practice)
+    else
+      @adoptions_by_practice = fetch_adoption_counts_by_practice_all_time(@practice)
+    end
 
-    @adoptions_total_30 = fetch_adoptions_total_by_practice(@practice.id)
-    @adoptions_total_at = fetch_adoptions_total_by_practice(@practice.id, "0")
+    @adoptions_total_30 = fetch_adoption_counts_by_practice_last_30_days(@practice)
+    @adoptions_total_at = fetch_adoption_counts_by_practice_all_time(@practice)
 
-    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Completed")
-    @adoptions_successful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Completed")
-    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "In progress")
-    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "In progress")
-    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Unsuccessful")
-    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Unsuccessful")
+    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'Completed')
+    @adoptions_successful_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'Completed')
+    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'In progress')
+    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'In progress')
+    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'Unsuccessful')
+    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'Unsuccessful')
 
-    @facility_ids_for_practice_30 = fetch_adoption_facilities_for_practice(@practice.id, "30", @va_facilities)
+    @facility_ids_for_practice_30 = fetch_adoption_facilities_for_practice_last_30_days(@practice)
     @rural_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "R")
     @urban_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "U")
     @a_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1a-High Complexity")
@@ -268,7 +272,7 @@ class PracticesController < ApplicationController
     @medium_complexity_2_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "2 -Medium Complexity")
     @low_complexity_3_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "3 -Low Complexity")
 
-    @facility_ids_for_practice_at = fetch_adoption_facilities_for_practice(@practice.id, "0", @va_facilities)
+    @facility_ids_for_practice_at = fetch_adoption_facilities_for_practice_all_time(@practice)
     @rural_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "R")
     @urban_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "U")
     @a_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1a-High Complexity")
