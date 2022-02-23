@@ -10,7 +10,7 @@ class HomeController < ApplicationController
   end
 
   def diffusion_map
-    @diffusion_history_practices = helpers.is_user_a_guest? ? Practice.public_facing.select(:id, :name).get_with_diffusion_histories : Practice.select(:id, :name).get_with_diffusion_histories
+    @diffusion_history_practices = helpers.is_user_a_guest? ? Practice.public_facing.select(:id, :name).get_with_va_facility_diffusion_histories : Practice.select(:id, :name).get_with_va_facility_diffusion_histories
     @visns = Visn.cached_visns.select(:id, :number)
 
     def get_diffusion_histories(is_public_practice)
@@ -22,7 +22,7 @@ class HomeController < ApplicationController
     @in_progress_ct = @diffusion_histories.get_by_in_progress_status.size
     @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
 
-    @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:va_facility_id)) do |dhg, marker|
+    @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.exclude_clinical_resource_hubs.group_by(&:va_facility_id)) do |dhg, marker|
       station_number = @va_facilities.find(dhg[0]).station_number
       diffusion_histories = dhg[1]
       facility = @va_facilities.find { |f| f.station_number === station_number }

@@ -434,7 +434,7 @@ class PracticesController < ApplicationController
       # if so, tell them no
       existing_dh = is_crh ? find_crh_dh : find_va_facility_dh
       if existing_dh && existing_dh.id != @dh.id
-        params[:existing_dh] = @va_facilities.find(facility_id)
+        params[:existing_dh] = is_crh ? @va_facilities.find { |vaf| vaf.id === facility_id && vaf.official_station_name.include?('Clinical Resource Hub') } : @va_facilities.find { |vaf| vaf.id === facility_id }
       end
     else
       # or else, we're creating something
@@ -442,7 +442,7 @@ class PracticesController < ApplicationController
       @dh = is_crh ? find_crh_dh : find_va_facility_dh
       # if so, tell them!
       if @dh
-        params[:exists] = is_crh ? @va_facilities.where(clinical_resource_hub_id: facility_id).first : @va_facilities.where(facility_id: facility_id).first
+        params[:exists] = is_crh ? @va_facilities.find { |vaf| vaf.id === facility_id && vaf.official_station_name.include?('Clinical Resource Hub') } : @va_facilities.find { |vaf| vaf.id === facility_id }
       else
         # if not, create a new one
         @dh = is_crh ? DiffusionHistory.create(practice: @practice, clinical_resource_hub_id: facility_id) : DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)

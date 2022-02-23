@@ -16,7 +16,7 @@
         <h2 class="usa-accordion__heading margin-top-0 padding-top-05 padding-bottom-0">
           <button class="usa-accordion__button text-normal adoptions-edit bg-white child-accordion-button"
                   aria-expanded="false"
-                  aria-controls="<%= facility.present? ? "diffusion_history_facility_#{a.id}" : "diffusion_history_crh_#{a.id}" %>">
+                  aria-controls="<%= "diffusion_history_#{a.id}" %>">
             <span class="line-height-sans-505 display-inline-block text-top">
               <% if facility.present? %>
                 <%= facility.street_address_state %>: <%= facility.official_station_name %><%= show_common_name(facility.official_station_name, facility.common_name) %>
@@ -28,7 +28,7 @@
             </span>
           </button>
         </h2>
-        <div id="<%= facility.present? ? "diffusion_history_facility_#{a.id}" : "diffusion_history_crh_#{a.id}" %>" class="usa-accordion__content usa-prose overflow-visible">
+        <div id="<%= "diffusion_history_#{a.id}" %>" class="usa-accordion__content usa-prose overflow-visible">
           <% if params[:existing_dh] && @dh&.id == a.id %>
             <%= render partial: 'practices/form/adoptions_forms/existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
           <% end %>
