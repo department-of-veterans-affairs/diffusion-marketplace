@@ -3,12 +3,16 @@ class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
-    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :official_station_name).order_by_station_name
+    debugger
+    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name.includes([:visn])
+    @clinical_resource_hubs = ClinicalResourceHub.all
+    @facilities = (@facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase) #.group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
     @visns = Visn.cached_visns.select(:name, :number)
     @types = VaFacility.cached_va_facilities.order_by_station_name.get_complexity
   end
 
   def load_facilities_index_rows
+    debugger
     if params[:facility].present?
       @facilities = [VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).find(params[:facility])]
     else
@@ -25,7 +29,10 @@ class VaFacilitiesController < ApplicationController
 
     @clinical_resource_hubs = ClinicalResourceHub.all
     # include CRHs in facilities list
-    @facilities = (@facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase) #.group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
+    debugger
+    if !params.has_key?(:facility)
+      @facilities = (@facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase) #.group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
+    end
     table_rows_html = render_to_string('va_facilities/_index_table_row', layout: false, locals: { facilities: @facilities })
     respond_to do |format|
       format.html

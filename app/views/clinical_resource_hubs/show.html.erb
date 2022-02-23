@@ -23,15 +23,10 @@
     <%# if @adopted_pr_count > 0 %>
       <%#= render partial: 'va_facilities/facility_practice_adoptions' %>
     <%# end %>
+
+    <div>
+      VISN NUmber: <%= params["id"] %>
+      VISN_ID: <%= @crh.visn_id %>
+    </div>
   </div>
 </section>
-
-
-<div>
-  <%# debugger %>
-  VISN NUmber: <%= params["id"] %>
-  <div>
-  VISN_ID: <%= @crh.visn_id %>
-  </div>
-    hello world
-</div>
