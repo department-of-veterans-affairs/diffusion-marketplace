@@ -2,7 +2,7 @@
 <div class="usa-combo-box margin-top-1 margin-bottom-2">
   <select id="<%= facility_selector %>" class="usa-select" name="<%= facility_selector %>">
     <% facilities.each do |fac| %>
-      <option value="<% if fac.class.name === "ClinicalResourceHub"  %>crh-<% end %><%= fac.id %>">
+      <option value="<%= fac.id %><% if fac.class.name === "ClinicalResourceHub"  %>-crh<% end %>">
         <%= fac.official_station_name %>
         <% if fac.class.name != "ClinicalResourceHub"  %>
           (<%= fac.common_name %>)

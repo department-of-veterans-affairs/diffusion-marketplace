@@ -13,8 +13,11 @@ class VaFacilitiesController < ApplicationController
 
   def load_facilities_index_rows
     debugger
-    if params[:facility].present?
+    if params[:facility].present? && params[:facility].to_i > 0
       @facilities = [VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).find(params[:facility])]
+
+    elsif params[:crh].present? && params[:crh].to_i > 0
+      @facilities = ClinicalResourceHub.find_by_id(params[:crh].to_i)
     else
       @facilities = VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).get_relevant_attributes
 

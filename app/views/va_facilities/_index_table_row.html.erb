@@ -1,24 +1,31 @@
-<% facilities.each do |facility| %>
-  <% path = facility.class.name === "ClinicalResourceHub" ? "/crh/" + facility.visn.number.to_s : va_facility_path(facility)  %>
-  <% if facility.class.name === "ClinicalResourceHub" %>
-    <% created_count = facility.practices_created_by_crh_count %>
-    <% adopted_count = facility.practices_adopted_by_crh_count %>
-  <% else %>
-    <% created_count = facility.practices_created_count %>
-    <% adopted_count = facility.practices_adopted_count %>
-  <% end %>
-  <tr>
-    <th scope="row" role="rowheader" class="grid-col-4"><a class="usa-link" href='<%= path %>'><%= facility["official_station_name"] %>
-      <% if facility.class.name != "ClinicalResourceHub"  %> (<%= facility["common_name"] %>)<% end %></a>
-    </th>
-    <td class="grid-col-1"><%= facility.class.name === "ClinicalResourceHub" ? facility.visn.state : facility.street_address_state %></td>
-    <td class="grid-col-1"><a class="usa-link" href='/visns/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
-    <% if facility.class.name === "ClinicalResourceHub" %>
-        <td class="grid-col-2">N/A</td>
-     <% else %>
-        <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.match(/^1/) ? facility.fy17_parent_station_complexity_level[0..1].upcase : facility.fy17_parent_station_complexity_level[0..0].upcase %></td>
-     <% end %>
-    <td class="grid-col-2"><%= created_count %></td>
-    <td class="grid-col-2"><%= adopted_count  %></td>
-  </tr>
+<% debugger %>
+
+<% if facilities.class.name === 'ClinicalResourceHub' %>
+
+
+<% else %>
+    <% facilities.each do |facility| %>
+      <% path = facility.class.name === "ClinicalResourceHub" ? "/crh/" + facility.visn.number.to_s : va_facility_path(facility)  %>
+      <% if facility.class.name === "ClinicalResourceHub" %>
+        <% created_count = facility.practices_created_by_crh_count %>
+        <% adopted_count = facility.practices_adopted_by_crh_count %>
+      <% else %>
+        <% created_count = facility.practices_created_count %>
+        <% adopted_count = facility.practices_adopted_count %>
+      <% end %>
+      <tr>
+        <th scope="row" role="rowheader" class="grid-col-4"><a class="usa-link" href='<%= path %>'><%= facility["official_station_name"] %>
+          <% if facility.class.name != "ClinicalResourceHub"  %> (<%= facility["common_name"] %>)<% end %></a>
+        </th>
+        <td class="grid-col-1"><%= facility.class.name === "ClinicalResourceHub" ? facility.visn.state : facility.street_address_state %></td>
+        <td class="grid-col-1"><a class="usa-link" href='/visns/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
+        <% if facility.class.name === "ClinicalResourceHub" %>
+            <td class="grid-col-2">N/A</td>
+         <% else %>
+            <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.match(/^1/) ? facility.fy17_parent_station_complexity_level[0..1].upcase : facility.fy17_parent_station_complexity_level[0..0].upcase %></td>
+         <% end %>
+        <td class="grid-col-2"><%= created_count %></td>
+        <td class="grid-col-2"><%= adopted_count  %></td>
+      </tr>
+    <% end %>
 <% end %>

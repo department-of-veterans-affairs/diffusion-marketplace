@@ -15,13 +15,21 @@ let complexitySelected = false;
 
 function attachFacilitiesComboBoxListener() {
   $(facilitiesComboBox).on('change', (e) => {
-      alert('hello');
       debugger
     _setReloadData(true)
-    let facility = parseInt($(e.currentTarget).val());
-    if (facility) {
+      let facility = null;
+      let crh = null;
+      if($(e.currentTarget).val().includes('crh')){
+          crh = parseInt($(e.currentTarget).val());
+      }
+      else{
+          facility = parseInt($(e.currentTarget).val());
+      }
+
+
+    if (facility || crh) {
       isFacilityFilter = true;
-      _sendAjaxRequest({ facility });
+      _sendAjaxRequest({ facility, crh });
     }
   })
 }
