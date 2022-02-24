@@ -58,7 +58,6 @@
             status
           </a>
         </h4>
-          <%= render partial: '/va_facilities/facility_status_definitions_modal', locals: {is_map_filter: true} %>
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
           <% DiffusionHistoryStatus::STATUSES.each do |i, v| %>
