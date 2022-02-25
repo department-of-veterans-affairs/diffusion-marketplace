@@ -3,7 +3,6 @@ class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
-    debugger
     @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name.includes([:visn])
     @clinical_resource_hubs = ClinicalResourceHub.all
     @facilities = (@facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase) #.group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
@@ -12,12 +11,11 @@ class VaFacilitiesController < ApplicationController
   end
 
   def load_facilities_index_rows
-    debugger
     if params[:facility].present? && params[:facility].to_i > 0
       @facilities = [VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).find(params[:facility])]
 
     elsif params[:crh].present? && params[:crh].to_i > 0
-      @facilities = ClinicalResourceHub.find_by_id(params[:crh].to_i)
+      @facilities = [ClinicalResourceHub.find_by_id(params[:crh].to_i)]
     else
       @facilities = VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).get_relevant_attributes
 
@@ -32,7 +30,6 @@ class VaFacilitiesController < ApplicationController
 
     @clinical_resource_hubs = ClinicalResourceHub.all
     # include CRHs in facilities list
-    debugger
     if !params.has_key?(:facility)
       @facilities = (@facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase) #.group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
     end
