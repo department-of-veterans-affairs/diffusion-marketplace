@@ -17,16 +17,10 @@
       <div class="grid-col-12 line-height-26"> This Clinical Resource Hub (CRH) servers veterans in <%= @crh.visn.state %>. It has created <%= @crh.practices_created_by_crh_count %> innovations and has adopted <%= @crh.practices_adopted_by_crh_count %> innovations.
       </div>
     </div>
-    <%# if @created_pr_count > 0 %>
-      <%#= render partial: 'va_facilities/facility_created_practice_search', locals: {facility_category_selector: 'facility_category_select'} %>
-    <%# end %>
-    <%# if @adopted_pr_count > 0 %>
-      <%#= render partial: 'va_facilities/facility_practice_adoptions' %>
-    <%# end %>
-
     <div>
-      VISN NUmber: <%= params["id"] %>
+      VISN Number: <%= params["id"] %>
       VISN_ID: <%= @crh.visn_id %>
     </div>
   </div>
 </section>
+

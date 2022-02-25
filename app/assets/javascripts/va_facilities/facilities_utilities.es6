@@ -15,7 +15,6 @@ let complexitySelected = false;
 
 function attachFacilitiesComboBoxListener() {
   $(facilitiesComboBox).on('change', (e) => {
-      debugger
     _setReloadData(true)
       let facility = null;
       let crh = null;

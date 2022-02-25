@@ -1,6 +1,9 @@
 class ClinicalResourceHubsController < ApplicationController
   before_action :set_crh, only: [:show]
   def show
+    visn_id = @visn.id
+    visn_number = @visn.number
+
 
   end
 
