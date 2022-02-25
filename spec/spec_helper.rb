@@ -13,8 +13,7 @@ SimpleCov.start 'rails' do
   add_filter '/spec/'
   add_filter '/vendor/'
   add_filter '/config/'
-  add_filter 'lib/tasks/surveymonkey.rake'
-  add_filter 'lib/tasks/dm.rake'
+  add_filter 'lib/tasks/'
 
   add_group 'Controllers', 'app/controllers'
   add_group 'Models', 'app/models'
