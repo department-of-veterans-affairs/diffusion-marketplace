@@ -39,7 +39,7 @@
   <% if adoption %>
     <% dh_va_facility_id = adoption.diffusion_history.va_facility_id %>
     <%= f.hidden_field("va_facility_id",
-          value: dh_va_facility_id.present? ? dh_va_facility_id : adoption.diffusion_history.clinical_resource_hub_id,
+          value: dh_va_facility_id.present? ? dh_va_facility_id : "crh_#{adoption.diffusion_history.clinical_resource_hub_id}",
           id: "editor_facility_select_#{form_id}")
     %>
   <% else %>

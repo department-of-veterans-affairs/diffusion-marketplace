@@ -423,33 +423,34 @@ class PracticesController < ApplicationController
     if params[:date_started].present? && !(params[:date_started].values.include?(''))
       start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
     end
+
     if (params[:date_ended].present? && !(params[:date_ended].values.include?(''))) && params[:status].downcase != 'in progress'
       end_time = DateTime.new(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
     end
 
+    existing_dh = is_crh ? find_crh_dh : find_va_facility_dh
+    existing_dh_facility = is_crh ? @va_facilities.find { |vaf| vaf.id === facility_id && vaf.official_station_name.include?('Clinical Resource Hub') } : @va_facilities.find { |vaf| vaf.id === facility_id }
+
     # if there is a diffusion_history_id, we're updating something
     @dh = DiffusionHistory.find(params[:diffusion_history_id]) if params[:diffusion_history_id].present?
     if @dh.present?
-      # is the user changing to a facility that they already have listed?
-      # if so, tell them no
-      existing_dh = is_crh ? find_crh_dh : find_va_facility_dh
-      if existing_dh && existing_dh.id != @dh.id
-        params[:existing_dh] = is_crh ? @va_facilities.find { |vaf| vaf.id === facility_id && vaf.official_station_name.include?('Clinical Resource Hub') } : @va_facilities.find { |vaf| vaf.id === facility_id }
+      # figure out if the user already has this diffusion history
+      # if so, tell them!
+      if existing_dh.present? && existing_dh.id != @dh.id
+        params[:exists] = existing_dh_facility
       end
     else
-      # or else, we're creating something
-      # figure out if the user already has this diffusion history
-      @dh = is_crh ? find_crh_dh : find_va_facility_dh
-      # if so, tell them!
-      if @dh
-        params[:exists] = is_crh ? @va_facilities.find { |vaf| vaf.id === facility_id && vaf.official_station_name.include?('Clinical Resource Hub') } : @va_facilities.find { |vaf| vaf.id === facility_id }
+      # if they're creating a new diffusion history, figure out if the facility they chose is already being used in a current diffusion history
+      if existing_dh.present?
+        # if so, tell them!
+        params[:exists] = existing_dh_facility
       else
-        # if not, create a new one
+        # if not, create a new diffusion history
         @dh = is_crh ? DiffusionHistory.create(practice: @practice, clinical_resource_hub_id: facility_id) : DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
       end
     end
 
-    if params[:exists].blank? && params[:existing_dh].blank?
+    if params[:exists].blank?
       if params[:diffusion_history_status_id]
         # update the diffusion history status
         dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])

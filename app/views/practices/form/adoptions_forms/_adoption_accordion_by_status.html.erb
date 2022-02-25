@@ -29,8 +29,8 @@
           </button>
         </h2>
         <div id="<%= "diffusion_history_#{a.id}" %>" class="usa-accordion__content usa-prose overflow-visible">
-          <% if params[:existing_dh] && @dh&.id == a.id %>
-            <%= render partial: 'practices/form/adoptions_forms/existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
+          <% if params[:exists] && @dh&.id === a.id %>
+            <%= render partial: 'practices/form/adoptions_forms/existing_adoption_warning', locals: {facility: params[:exists]} %>
           <% end %>
           <%= render partial: 'practices/form/adoptions_forms/adoption_form', locals: { adoption: dhs } %>
         </div>
