@@ -87,18 +87,6 @@
         @include u-padding-right('05');
       }
     }
-
-    .fa-question-circle {
-      color: color($theme-color-base-ink) !important;
-      padding: 4px;
-      text-decoration: none !important;
-      display: inline-block !important;
-
-      &:visited {
-        text-decoration: none !important;
-        color: color($theme-color-base-ink) !important;
-      }
-    }
   }
 
   #visn-list-container {

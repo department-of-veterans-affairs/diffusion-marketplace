@@ -1,7 +1,8 @@
-<a href="#facility-status-modal" aria-controls="facility-status-modal" data-open-modal class="fas fa-question-circle cursor-pointer">
-  <span class="usa-sr-only">Open facility status modal</span>
-</a>
-<div class="usa-modal" id="facility-status-modal" aria-labelledby="facility-status-modal-heading" aria-describedby="facility-status-modal-description">
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'facility_status_definitions_modal', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<div class="usa-modal display-none" id="facility-status-modal" aria-labelledby="facility-status-modal-heading" aria-describedby="facility-status-modal-description">
   <div class="usa-modal__content">
     <div class="usa-modal__main">
       <div class="usa-prose">

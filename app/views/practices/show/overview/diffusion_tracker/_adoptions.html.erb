@@ -34,11 +34,9 @@
       <button class="usa-accordion__button padding-right-205"
               aria-expanded="false"
               aria-controls="<%= group_name.underscore %>">
-        <span class="text-middle margin-right-05"><%= group_name %> adoption<%= histories&.length === 1 ? '' : 's' %> (<%= histories&.length || 0 %>)</span>
         <% adoption_statuses_and_text.each do |as| %>
           <% if as[:status] === group_name %>
-            <%= render partial: 'practices/adoption_status_tooltip', locals: { tooltip_title: as[:text] } %>
-            <span class="fas fa-question-circle fa-2x <%= as[:status].downcase %>-modal-icon cursor-pointer desktop:display-none"></span>
+            <%= group_name %> adoption<%= histories&.length === 1 ? '' : 's' %> (<%= histories&.length || 0 %>)</span>
           <% end %>
         <% end %>
       </button>
@@ -79,9 +77,5 @@
         <p>There are no <%= group_name.downcase %> adoptions for this innovation.</p>
       <% end %>
     </div>
-    <%# Calling the modal outside of the accordion button prevents any semantic issues %>
-    <% adoption_statuses_and_text.each do |as| %>
-      <%= render partial: 'practices/show/mobile_partials/adoption_status_modal', locals: { status: as[:status], text: as[:text] } if as[:status] === group.to_s %>
-    <% end %>
   <% end %>
 </div>
