@@ -86,7 +86,6 @@ module PracticesHelper
 
   def get_visn_associated_states_str(visn_id)
     visn_associated_states = [VaFacility.select(:mailing_address_state).distinct.where(:visn_id => visn_id)]
-    debugger
     state_hash_array = states_lookup
     states_str = ""
     visn_associated_states[0].each do | vst |
@@ -94,8 +93,7 @@ module PracticesHelper
       state_hash_array.each do | st |
         cur_state = st.split(",")
         if cur_state[1] != nil && cur_state[0] === vst.mailing_address_state
-          debugger
-          states_str += cur_state[1].to_s
+          states_str += cur_state[1].to_s + ", "
           b_found = true
           next
         end
@@ -104,7 +102,6 @@ module PracticesHelper
         next
       end
     end
-    debugger
     states_str
   end
 
