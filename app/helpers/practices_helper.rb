@@ -90,15 +90,18 @@ module PracticesHelper
     state_hash_array = states_lookup
     states_str = ""
     visn_associated_states[0].each do | vst |
+      b_found = false
       state_hash_array.each do | st |
         cur_state = st.split(",")
-        x = st[0]
-        y = vst[0]
-        if cur_state[1] != nil && cur_state[0] === vst[0].mailing_address_state
-          states_str += cur_state[1].to_s
+        if cur_state[1] != nil && cur_state[0] === vst.mailing_address_state
           debugger
+          states_str += cur_state[1].to_s
+          b_found = true
           next
         end
+      end
+      if b_found
+        next
       end
     end
     debugger
