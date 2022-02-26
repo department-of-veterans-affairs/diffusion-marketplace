@@ -1,10 +1,15 @@
 class ClinicalResourceHubsController < ApplicationController
+  include PracticesHelper
+  include StatesHelper
   before_action :set_crh, only: [:show]
   def show
+    #@states_hash = states_lookup # options_for_states.split(',').split(':')
+    debugger
     visn_id = @visn.id
     visn_number = @visn.number
 
-
+    @states_str = get_visn_associated_states_str(visn_id)
+    debugger
   end
 
   private

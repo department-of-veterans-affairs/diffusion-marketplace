@@ -56,6 +56,7 @@ module PracticesHelper
   end
 
   def options_for_states
+    debugger
     @state_options = us_states
     x = 0
     state_hash_str = ""
@@ -68,6 +69,42 @@ module PracticesHelper
     end
     state_hash_str
   end
+
+  def states_lookup
+    @state_options = us_states
+    x = 0
+    state_hash_arr = []
+      @state_options.each do |st|
+        if x > 0
+          st.split
+          state_hash_arr << st[1] + "," + st[0]
+        end
+        x = x + 1
+      end
+      state_hash_arr
+  end
+
+  def get_visn_associated_states_str(visn_id)
+    visn_associated_states = [VaFacility.select(:mailing_address_state).distinct.where(:visn_id => visn_id)]
+    debugger
+    state_hash_array = states_lookup
+    states_str = ""
+    visn_associated_states[0].each do | vst |
+      state_hash_array.each do | st |
+        cur_state = st.split(",")
+        x = st[0]
+        y = vst[0]
+        if cur_state[1] != nil && cur_state[0] === vst[0].mailing_address_state
+          states_str += cur_state[1].to_s
+          debugger
+          next
+        end
+      end
+    end
+    debugger
+    states_str
+  end
+
 
   def get_all_awards(practice)
     all_awards = ""
