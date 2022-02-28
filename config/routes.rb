@@ -78,8 +78,7 @@ Rails.application.routes.draw do
   end
 
   root 'home#index'
-  get '/crh/:id' => 'clinical_resource_hubs#show'
-  resources :clinical_resource_hubs, param: :number
+  resources :clinical_resource_hubs, path: :crh, param: :number
   get '/practices' => 'practices#index'
   get '/partners' => 'practice_partners#index'
   # Adding this for the View Toolkit button on practice page. Though we don't have any uploaded yet so I'm not using it.

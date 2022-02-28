@@ -4,7 +4,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
   before do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @practice = Practice.create!(name: 'The Best Innovation Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
-    visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    visn_1 = Visn.create!(name: 'VISN 1', number: 1)
     @fac_1 = VaFacility.create!(
       visn: visn_1,
       station_number: "402GA",
@@ -71,7 +71,10 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       station_phone_number: "207-623-2123 x",
       fy17_parent_station_complexity_level: "1c-High Complexity"
     )
-
+    @crh = ClinicalResourceHub.create!(
+      visn: visn_1,
+      official_station_name: "VISN 1 Clinical Resource Hub",
+    )
     @dh = DiffusionHistory.create!(practice: @practice, va_facility: @fac_1)
     @dh_1 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_2)
     @dh_2 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_3)
@@ -105,6 +108,12 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       expect(page).to be_accessible.within '#mapFilters'
       # all markers
       marker_count = find_all(:css, marker_div).count
+      expect(marker_count).to eq(6)
+
+      # make sure CRH adoptions are NOT shown on the map
+      dh_6 = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'In progress')
+      visit practice_path(@practice)
       expect(marker_count).to eq(6)
 
       # Filter out "Complete" status
@@ -146,6 +155,20 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
         expect(page).to have_content('Farmington VA Clinic')
         expect(page).to have_content('This facility has created')
         expect(page).to have_content('Main number:')
+      end
+    end
+  end
+
+  context 'adoption accordions' do
+    it 'should include CRH adoptions' do
+      dh_6 = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'In progress')
+      visit practice_path(@practice)
+
+      expect(page).to have_content('In-progress adoptions (2)')
+      within(:css, '.practice-viewer-adoptions-accordion') do
+        find('button[aria-controls="in_progress"]').click
+        expect(page).to have_link('VISN 1 Clinical Resource Hub', href: '/crh/1')
       end
     end
   end
