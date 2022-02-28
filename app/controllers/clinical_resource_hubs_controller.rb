@@ -5,9 +5,7 @@ class ClinicalResourceHubsController < ApplicationController
   def show
     visn_id = @visn.id
     visn_number = @visn.number
-
     @states_str = get_visn_associated_states_str(visn_id)
-    debugger
   end
 
   private

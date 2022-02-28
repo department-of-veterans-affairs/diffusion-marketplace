@@ -102,7 +102,22 @@ module PracticesHelper
         next
       end
     end
-    states_str
+    ret_str = ""
+    ctr = 1
+    if states_str.length > 0
+      states_str = states_str[0..-3]
+      states_arr = states_str.split(",")
+      states_arr.each do |st|
+        if states_arr.length == ctr
+          ret_str = ret_str[0..-2]
+          ret_str += " and " + st
+        else
+          ret_str += st + ","
+        end
+        ctr += 1
+      end
+    end
+    ret_str
   end
 
 
