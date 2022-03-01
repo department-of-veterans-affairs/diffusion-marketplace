@@ -107,7 +107,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       # filters button
       expect(page).to be_accessible.within '#mapFilters'
       # all markers
-      marker_count = find_all(:css, marker_div).count
+      marker_count = all(marker_div).count
       expect(marker_count).to eq(6)
 
       # make sure CRH adoptions are NOT shown on the map
@@ -120,27 +120,23 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       complete_filter_checkbox = find(:css, 'label[for="status_successful"]')
       complete_filter_checkbox.click
       expect(page).to have_selector(marker_div, visible: true)
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to eq(3)
+      expect(page.all(marker_div, visible: true).count).to eq(3)
 
       # Filter out "In progress" status
       in_progress_filter_checkbox = find(:css, 'label[for="status_in-progress"]')
       in_progress_filter_checkbox.click
       expect(page).to have_selector(marker_div, visible: true)
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to eq(2)
+      expect(page.all(marker_div, visible: true).count).to eq(2)
 
       # Filter out "Unsuccessful" status
       unsuccessful_filter_checkbox = find(:css, 'label[for="status_unsuccessful"]')
       unsuccessful_filter_checkbox.click
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to eq(0)
+      expect(page.all(marker_div, visible: true).count).to eq(0)
 
       # Bring back "Complete"
       complete_filter_checkbox.click
       expect(page).to have_selector(marker_div, visible: true)
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to eq(3)
+      expect(page.all(marker_div, visible: true).count).to eq(3)
     end
 
     it 'should allow the user to visit each adoption\'s VA facility page' do
