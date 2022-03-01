@@ -10,6 +10,7 @@
   <%= javascript_include_tag 'va_facilities/facility_adopted_practice_search', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'va_facilities/facility_created_practice_search', 'data-turbolinks-track': 'reload' %>
 <% end %>
+<%= render partial: 'shared/facility_status_definitions_modal' %>
 
 <section class="usa-section padding-y-0 grid-col-12" id="dm-va-facilities-show">
   <input type="hidden" id="facility_station_number" value="<%= @va_facility.station_number %>"/>

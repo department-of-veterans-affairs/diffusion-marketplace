@@ -25,37 +25,8 @@
   }
 }
 
-.adoption-status-modal {
-  position: fixed; /* Stay in place */
-  z-index: 100000; /* Sit on top */
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-
-  .adoption-status-modal-content {
-    // get the height of the modal and divide by two so it's in the middle of the screen
-    top: calc(50vh - 80px);
-    border: 0;
-
-    .fa-times-circle {
-      font-size: 1.5em !important;
-      &:hover {
-        color: color($theme-color-base-lightest);
-      }
-
-      &:active {
-        color: color($theme-color-base-light);
-      }
-    }
-  }
-}
-
 /* Modal Content */
-.modal-content, .terms-modal-content, .report-abuse-modal-content, .adoption-status-modal-content {
+.modal-content, .terms-modal-content, .report-abuse-modal-content {
   position: relative;
   background-color: #fefefe;
   margin: auto;

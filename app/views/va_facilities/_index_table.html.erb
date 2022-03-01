@@ -10,12 +10,18 @@
           State
         </th>
         <th class="padding-right-0 grid-col-2" data-sortable scope="col" role="columnheader">
-          VISN
-          <span class="display-inline-block usa-prose-body"><%= render partial: "visns/visns_tooltip", locals: { data_position: 'bottom'} %></span>
+          <a href="#visn-info-modal" aria-controls="visn-info-modal" data-open-modal class="dotted cursor-pointer">
+            <span class="usa-sr-only">Open visn info modal</span>
+            VISN
+          </a>
+          <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false, is_map_filter: false, is_facility_header: true, is_search_filter: false } %>
         </th>
         <th class="padding-right-0 grid-col-3" data-sortable scope="col" role="columnheader">
-          Complexity
-          <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false } %>
+          <a href="#facility-complexity-modal" aria-controls="facility-complexity-modal" data-open-modal class="dotted cursor-pointer facility-complexity-modal">
+            <span class="usa-sr-only">Open facility complexity modal</span>
+            Complexity
+          </a>
+          <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false, is_map: false } %>
         </th>
         <th data-sortable scope="col" role="columnheader">
           Created

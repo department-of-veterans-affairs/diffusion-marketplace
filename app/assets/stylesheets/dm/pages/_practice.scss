@@ -509,9 +509,6 @@
 }
 
 #adoptions, .practice-section {
-  .fa-question-circle {
-    font-size: 0.75em;
-  }
   .usa-tooltip__body {
     font-size: 16px !important;
     font-weight: 400 !important;
@@ -989,16 +986,5 @@ tr.border_bottom td {
     @media screen and (max-width: 1023px) {
       display: none;
     }
-  }
-}
-
-.fa-question-circle {
-  color: color($theme-color-base-ink) !important;
-  padding: 4px;
-  text-decoration: none !important;
-
-  &:visited {
-    text-decoration: none !important;
-    color: color($theme-color-base-ink) !important;
   }
 }

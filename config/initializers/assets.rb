@@ -50,6 +50,7 @@ Rails.application.config.assets.precompile += %w(
                                                   category_usage.js
                                                   _alert_message_utilities.js
                                                   _page_show.js
+                                                  facility_status_definitions_modal.js
                                               )
 
 # Precompile additional assets.

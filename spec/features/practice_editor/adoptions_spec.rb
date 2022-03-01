@@ -70,7 +70,15 @@ describe 'Practice editor', type: :feature, js: true do
 
       # it should display certain parts of the form on status selection
       open_new_adoption_form
+      # open facility status modal
+      find_all('.facility-status-modal-header').first.click
+      expect(page).to have_content('Facilities that have started but not completed adopting the innovation.')
+      expect(page).to have_content('Facilities that have met adoption goals and implemented the innovation.')
+      find_all('.usa-modal__close').first.click
+      expect(page).to_not have_content('Facilities that have started but not completed adopting the innovation.')
+      expect(page).to_not have_content('Facilities that have met adoption goals and implemented the innovation.')
       within(:css, '#adoption_form') do
+        expect(page).to have_content('Status')
         expect(page).to have_content('Start date (optional)')
         expect(page).to have_no_content('End date (optional)')
         expect(page).to have_no_content('Why was this adoption unsuccessful?')
@@ -306,20 +314,6 @@ describe 'Practice editor', type: :feature, js: true do
         find("button[aria-controls='successful_adoptions']").click
       end
 
-      def tooltip_expectations
-        expect(page).to have_selector('.usa-tooltip__body', visible: false)
-        find('.usa-tooltip').hover
-        expect(page).to have_selector('.usa-tooltip__body', visible: true)
-        expect(page).to have_content('In-progress: Facilities that have started but not completed adopting the innovation.')
-        expect(page).to have_content('Successful: Facilities that have met adoption goals and implemented the innovation.')
-        expect(page).to have_content('Unsuccessful: Facilities that started but stopped working towards adoption.')
-      end
-
-      def new_adoption_form_tooltip_flow
-        open_new_adoption_form
-        tooltip_expectations
-      end
-
       def create_adoption(status, facility_index)
         open_new_adoption_form
         select_status(status)
@@ -329,32 +323,6 @@ describe 'Practice editor', type: :feature, js: true do
 
       before do
         create_adoption('completed', 0)
-      end
-
-      context 'on page load' do
-        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within the new adoption form' do
-          new_adoption_form_tooltip_flow
-        end
-
-        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within an existing adoption form' do
-          open_successful_adoption_accordion
-          click_button('ME: Caribou VA Clinic')
-          tooltip_expectations
-        end
-      end
-
-      context 'after ajax call' do
-        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within the new adoption form' do
-          create_adoption('completed', 1)
-          new_adoption_form_tooltip_flow
-        end
-
-        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within an existing adoption form' do
-          create_adoption('completed', 2)
-          open_successful_adoption_accordion
-          click_button('NY: Yonkers VA Clinic')
-          tooltip_expectations
-        end
       end
     end
   end
