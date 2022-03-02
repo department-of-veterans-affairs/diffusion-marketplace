@@ -7,7 +7,7 @@
   <%= javascript_include_tag 'va_facilities/facility_adopted_practice_search', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'va_facilities/facility_created_practice_search', 'data-turbolinks-track': 'reload' %>
 <% end %>
-<section class="usa-section padding-y-0 grid-col-12" id="dm-va-facilities-show">
+<section class="usa-section padding-y-0 grid-col-12" id="dm-crh-show">
 <!--  <input type="hidden" id="facility_station_number" value="<%#= @crh.station_number %>"/>-->
   <div class="grid-container position-relative grid-col-12">
     <h1 class="margin-top-0 margin-bottom-3">
@@ -27,7 +27,7 @@
         <legend class="usa-sr-only">Search for innovations by CRH</legend>
         <div class="grid-row" role="radiogroup">
           <div class="usa-radio grid-col-4 margin-bottom-5">
-            <input class="usa-radio__input crh-created-practices-radio" id="created-practices" type="radio" name="visns-show-radio-buttons" value="created">
+            <input checked="checked" class="usa-radio__input crh-created-practices-radio" id="created-practices" type="radio" name="visns-show-radio-buttons" value="created">
             <label class="usa-radio__label margin-bottom-0" for="created-practices">Innovations created here (<%= @crh.practices_created_by_crh_count %>)</label>
           </div>
           <div class="usa-radio grid-col-4">
@@ -46,30 +46,32 @@
               </button>
             </div>
           </div>
+
           <%= render partial: 'visns/categories_combo_box', locals: { practice_type: 'created', practice_categories: @practices_created_categories } %>
+          <div style="alignment: right" id="dm-crh-search-practices">
+
+          </div>
+
           <%#= render partial: 'categories_combo_box', locals: { practice_type: 'adopted', practice_categories: @practices_adopted_categories } %>
         </div>
       </fieldset>
     </form>
-
     <%= render partial: 'shared/search_sort_select_section', locals: {
         sort_options: [
-            ['Sort by most adopted innovations', 'adoptions', class: 'usa-select'],
+            ['- Select -', 'select', class: 'usa-select'],
             ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
             ['Sort by most recently added', 'added', class: 'usa-select']
         ],
-        section_id: 'dm-visn-search-practices',
-        section_classes: 'display-none',
+        section_id: 'dm-crh-search-practices',
+        section_classes: 'display-inline',
         first_div_classes: 'grid-row grid-gap-3 margin-bottom-105 flex-align-center',
         second_div_classes: 'grid-col-4'
     }
     %>
+
+
     <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: 'dm-visn-search-loading-spinner flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10' } %>
     <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false } %>
-
   </div>
-<!--</section>-->
-<!--<section id="visns-show-search">-->
-
 </section>
 

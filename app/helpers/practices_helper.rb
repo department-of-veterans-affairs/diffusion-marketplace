@@ -5,7 +5,6 @@ module PracticesHelper
   end
 
   def options_for_states
-    debugger
     @state_options = us_states
     x = 0
     state_hash_str = ""

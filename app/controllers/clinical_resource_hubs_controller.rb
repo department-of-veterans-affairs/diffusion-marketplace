@@ -7,10 +7,8 @@ class ClinicalResourceHubsController < ApplicationController
     visn_id = @visn.id
     visn_number = @visn.number
     @states_str = get_visn_associated_states_str(visn_id)
-    debugger
     @practices_created_categories = []
-    cats = get_categories_by_practices(@crh.practices_created_by_crh, @practices_created_categories)
-    debugger
+    get_categories_by_practices(@crh.practices_created_by_crh, @practices_created_categories)
   end
 
   private
