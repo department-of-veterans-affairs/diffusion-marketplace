@@ -380,8 +380,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/adoptions
   def adoptions
-    # sort the facilities in alphanumeric order with the NaturalSorter gem
-    @va_facilities = Naturalsorter::Sorter.sort_by_method((VaFacility.cached_va_facilities.get_relevant_attributes + ClinicalResourceHub.cached_clinical_resource_hubs), 'official_station_name'.downcase, true)
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     render 'practices/form/adoptions'
   end
 
@@ -409,8 +408,7 @@ class PracticesController < ApplicationController
   end
 
   def create_or_update_diffusion_history
-    # sort the facilities in alphanumeric order with the NaturalSorter gem
-    @va_facilities = Naturalsorter::Sorter.sort_by_method((VaFacility.cached_va_facilities.get_relevant_attributes + ClinicalResourceHub.cached_clinical_resource_hubs), 'official_station_name'.downcase, true)
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     # set attributes for later use
     is_crh = params[:va_facility_id].start_with?('crh')
     facility_id = params[:va_facility_id].split('-')[1].to_i

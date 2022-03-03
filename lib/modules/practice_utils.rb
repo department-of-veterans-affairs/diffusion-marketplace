@@ -157,11 +157,11 @@ module PracticeUtils
   def fetch_adoption_counts_by_status(status, adoptions)
     case status
     when 'Completed'
-      adoptions.select { |a| a_status = a.diffusion_history_statuses.first.status; a_status === 'Completed' || a_status === 'Implemented' || a_status === 'Complete' }.size
+      adoptions.get_by_successful_status.size
     when 'In progress'
-      adoptions.select { |a| a_status = a.diffusion_history_statuses.first.status; a_status === 'In progress' || a_status === 'Planning' || a_status === 'Implementing' }.size
+      adoptions.get_by_in_progress_status.size
     when 'Unsuccessful'
-      adoptions.select { |a| a_status = a.diffusion_history_statuses.first.status; a_status === 'Unsuccessful' }.size
+      adoptions.get_by_unsuccessful_status.size
     end
   end
 

@@ -100,6 +100,6 @@ module PracticesHelper
 
   def sort_adoptions_by_state_and_station_name(adoptions)
     adoptions.exclude_clinical_resource_hubs.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name.downcase] } +
-      adoptions.exclude_va_facilities.sort_by { |a| a.clinical_resource_hub.official_station_name.downcase[/\d+/].to_i }
+      adoptions.exclude_va_facilities.sort_by { |a| a.clinical_resource_hub.visn.number }
   end
 end
