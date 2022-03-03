@@ -166,7 +166,7 @@ describe 'Practice editor', type: :feature, js: true do
       within(:css, "#in_progress") do
         expect(page).to have_content("ME: Caribou VA Clinic (Caribou)")
         expect(page).to have_content("Started adoption on 12/1990")
-        expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
+        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
         expect(page).to have_content("VISN 1 Clinical Resource Hub")
       end
 
@@ -192,7 +192,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       # it shouldn't create an adoption if the end date is greater than the start date
       select_status('completed')
-      select_facility_combo_box(3)
+      select_facility_combo_box(1)
       fill_in 'date_started_month', with: '11'
       fill_in 'date_started_year', with: '2000'
       fill_in 'date_ended_month', with: '3'
@@ -230,7 +230,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
       find("button[aria-controls='successful_adoptions']").click
       within(:css, '#adoptions') do
-        expect(page).to have_content('NY: Yonkers VA Clinic (11/1998 - 03/1999)')
+        expect(page).to have_content('NY: White Plains VA Clinic (11/1998 - 03/1999)')
         expect(page).to have_content('Successful adoption: 1')
       end
 
@@ -294,7 +294,7 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('Unsuccessful adoption: 1')
         find_all("button[aria-controls*='adoptions']").last.click
         find_all("button[aria-controls*='diffusion_history']").first.click
-        expect(page).to have_content('NY: White Plains VA Clinic (11/2000 - 03/2001)')
+        expect(page).to have_content('NY: Yonkers VA Clinic (11/2000 - 03/2001)')
         within(:css, "#diffusion_history_#{form_id}") do
           expect(find_field('Successful').checked?).to eq false
           expect(find_field('In-progress').checked?).to eq false
@@ -322,7 +322,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
       find("button[aria-controls='successful']").click
       within(:css, "#successful") do
-        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
+        expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
         expect(page).to have_content("Started adoption on 11/1998, ended on 03/1999.")
       end
       find("button[aria-controls='in_progress']").click
@@ -331,7 +331,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
       find("button[aria-controls='unsuccessful']").click
       within(:css, "#unsuccessful") do
-        expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
+        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
         expect(page).to have_content("Started adoption on 11/2000, ended on 03/2001.")
         expect(page).to have_content("Lack of sufficient leadership/key stakeholder buy-in")
         expect(page).to have_content("gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMP...")
