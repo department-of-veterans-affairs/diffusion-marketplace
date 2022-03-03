@@ -10,6 +10,8 @@ class ClinicalResourceHub < ApplicationRecord
 
   attr_accessor :reset_cached_clinical_resource_hubs
 
+  scope :sort_by_visn_number, -> { includes(:visn).sort_by { |crh| crh.visn.number } }
+
   def to_param
     visn.number.to_s
   end

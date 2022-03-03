@@ -146,51 +146,49 @@ module PracticeUtils
     end
   end
 
-  def fetch_adoptions_total_by_practice(practice_id, duration = "30", status = "")
-    sql = "select count(*) as count from diffusion_histories dh join diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id where dh.practice_id = $1"
-    if(duration == "30")
-      sql += " and dh.created_at >= $2"
-      if(status.length > 0)
-        sql += " and dhs.status= $3"
-        records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"], [nil, "#{status}"]])
-      else
-        records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
-      end
-    else
-      if(status.length > 0)
-        sql += " and dhs.status= $2"
-        records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{status}"]])
-      else
-        records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
-      end
-    end
-    records_array[0]["count"]
+  def fetch_adoptions_by_practice_last_30_days(practice)
+    DiffusionHistory.get_with_practice(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now)
   end
 
-  def fetch_adoptions_by_practice(practice_id, duration = "30")
-    sql = "select count(*) as the_count from diffusion_histories where practice_id = $1"
-    if duration == "30"
-      sql += " and created_at >= $2"
-      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
-    else
-      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
-    end
-    records_array[0]["the_count"]
+  def fetch_adoptions_by_practice_all_time(practice)
+    DiffusionHistory.get_with_practice(practice)
   end
 
-  def fetch_adoption_facilities_for_practice(practice_id, duration="30", facility_data)
-    facility_ids = []
-    sql = "select va_facility_id from diffusion_histories where practice_id = $1"
-    if duration == "30"
-      sql += " and created_at >= $2"
-      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
-    else
-      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
+  def fetch_adoption_counts_by_status(status, adoptions)
+    case status
+    when 'Completed'
+      adoptions.get_by_successful_status.size
+    when 'In progress'
+      adoptions.get_by_in_progress_status.size
+    when 'Unsuccessful'
+      adoptions.get_by_unsuccessful_status.size
     end
-    records_array.each do |rec|
-      facility_ids << facility_data.find(rec.values.first).station_number
-    end
-    facility_ids
+  end
+
+  def fetch_adoptions_total_by_practice_and_status_last_30_days(practice, status)
+    adoptions = fetch_adoptions_by_practice_last_30_days(practice)
+    fetch_adoption_counts_by_status(status, adoptions)
+  end
+
+  def fetch_adoptions_total_by_practice_and_status_all_time(practice, status)
+    adoptions = fetch_adoptions_by_practice_all_time(practice)
+    fetch_adoption_counts_by_status(status, adoptions)
+  end
+
+  def fetch_adoption_counts_by_practice_last_30_days(practice)
+    DiffusionHistory.get_with_practice(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now).size
+  end
+
+  def fetch_adoption_counts_by_practice_all_time(practice)
+    DiffusionHistory.get_with_practice(practice).size
+  end
+
+  def fetch_adoption_facilities_for_practice_last_30_days(practice)
+    DiffusionHistory.get_with_practice(practice).where(created_at: Time.now.beginning_of_day - 30.days..Time.now).includes(:va_facility).collect { |dh| dh.va_facility.station_number if dh.va_facility.present? }
+  end
+
+  def fetch_adoption_facilities_for_practice_all_time(practice)
+    DiffusionHistory.get_with_practice(practice).includes(:va_facility).collect { |dh| dh.va_facility.station_number if dh.va_facility.present? }
   end
 
   def get_adoption_facility_details_for_practice(facility_data, facility_station_numbers_for_practice, key, value)
