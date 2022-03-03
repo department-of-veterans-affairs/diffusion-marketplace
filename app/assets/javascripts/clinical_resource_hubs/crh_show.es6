@@ -1,8 +1,9 @@
-const loadingSpinner = ".dm-visn-facilities-loading-spinner";
-const tableRows = ".dm-visns-table-rows";
-const table = ".visn-facilities-table";
-const visnsShow = "#visns-show"
-const visnNum = parseInt(visn_number); // set in `app/views/visns/show.html.erb`
+const loadingSpinner = ".dm-crh-facilities-loading-spinner";
+const tableRows = ".dm-crh-table-rows";
+const table = ".crh-facilities-table";
+const visnsShow = "#crh-show"
+debugger
+const visnNum = parseInt(visnNumber); // set in `app/views/visns/show.html.erb`
 
 function _sendAjaxRequest() {
     $.ajax({

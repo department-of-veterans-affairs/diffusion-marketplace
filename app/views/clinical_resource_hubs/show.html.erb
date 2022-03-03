@@ -5,18 +5,17 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+
     <%= render partial: 'crh_show', formats: [:js] %>
     <%# set visnNumber before loading the crh/show file %>
-    var visnNumber = '<%= @visn.number %>';
+    <% debugger %>
+    var visnNumber = '<%= params["id"] %>';
   <% end %>
-  <%#= javascript_include_tag 'va_facilities/facility_adopted_practice_search', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'clinical_resource_hubs/crh_show', 'data-turbolinks-track': 'reload' %>
 <% end %>
+
 <% visn_number = params["id"]  %>
 <% visn_id = @crh.visn_id %>
-
-
-
 
 <div id="crh-show" class="grid-container" data-reload="true">
   <section class="usa-section padding-y-0 grid-col-12" id="dm-crh-show">
