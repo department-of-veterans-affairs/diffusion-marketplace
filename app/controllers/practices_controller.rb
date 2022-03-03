@@ -19,7 +19,7 @@ class PracticesController < ApplicationController
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
   before_action :fetch_visns, only: [:show, :search, :introduction]
-  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
+  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :introduction]
 
   # GET /practices
   # GET /practices.json
@@ -247,19 +247,23 @@ class PracticesController < ApplicationController
     @page_views_for_practice_count = fetch_page_view_for_practice_count(@practice.id, @duration)
     @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
-    @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
+    if @duration === '30'
+      @adoptions_by_practice = fetch_adoption_counts_by_practice_last_30_days(@practice)
+    else
+      @adoptions_by_practice = fetch_adoption_counts_by_practice_all_time(@practice)
+    end
 
-    @adoptions_total_30 = fetch_adoptions_total_by_practice(@practice.id)
-    @adoptions_total_at = fetch_adoptions_total_by_practice(@practice.id, "0")
+    @adoptions_total_30 = fetch_adoption_counts_by_practice_last_30_days(@practice)
+    @adoptions_total_at = fetch_adoption_counts_by_practice_all_time(@practice)
 
-    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Completed")
-    @adoptions_successful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Completed")
-    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "In progress")
-    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "In progress")
-    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Unsuccessful")
-    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Unsuccessful")
+    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'Completed')
+    @adoptions_successful_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'Completed')
+    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'In progress')
+    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'In progress')
+    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'Unsuccessful')
+    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'Unsuccessful')
 
-    @facility_ids_for_practice_30 = fetch_adoption_facilities_for_practice(@practice.id, "30", @va_facilities)
+    @facility_ids_for_practice_30 = fetch_adoption_facilities_for_practice_last_30_days(@practice)
     @rural_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "R")
     @urban_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "U")
     @a_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1a-High Complexity")
@@ -268,7 +272,7 @@ class PracticesController < ApplicationController
     @medium_complexity_2_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "2 -Medium Complexity")
     @low_complexity_3_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "3 -Low Complexity")
 
-    @facility_ids_for_practice_at = fetch_adoption_facilities_for_practice(@practice.id, "0", @va_facilities)
+    @facility_ids_for_practice_at = fetch_adoption_facilities_for_practice_all_time(@practice)
     @rural_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "R")
     @urban_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "U")
     @a_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1a-High Complexity")
@@ -376,6 +380,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/adoptions
   def adoptions
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     render 'practices/form/adoptions'
   end
 
@@ -403,42 +408,47 @@ class PracticesController < ApplicationController
   end
 
   def create_or_update_diffusion_history
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     # set attributes for later use
-    facility_id = params[:va_facility_id].to_i
+    is_crh = params[:va_facility_id].start_with?('crh')
+    facility_id = params[:va_facility_id].split('-')[1].to_i
     status = params[:status]
     unsuccessful_reasons = params[:unsuccessful_reasons] || []
     unsuccessful_reasons_other = params[:unsuccessful_reasons_other] || nil
+    find_va_facility_dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
+    find_crh_dh = DiffusionHistory.find_by(practice: @practice, clinical_resource_hub_id: facility_id)
 
     if params[:date_started].present? && !(params[:date_started].values.include?(''))
       start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
     end
+
     if (params[:date_ended].present? && !(params[:date_ended].values.include?(''))) && params[:status].downcase != 'in progress'
       end_time = DateTime.new(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
     end
 
+    existing_dh = is_crh ? find_crh_dh : find_va_facility_dh
+    existing_dh_facility = is_crh ? @va_facilities.find { |vaf| vaf.id === facility_id && vaf.official_station_name.include?('Clinical Resource Hub') } : @va_facilities.find { |vaf| vaf.id === facility_id }
+
     # if there is a diffusion_history_id, we're updating something
     @dh = DiffusionHistory.find(params[:diffusion_history_id]) if params[:diffusion_history_id].present?
     if @dh.present?
-      # is the user changing to a facility that they already have listed?
-      # if so, tell them no
-      existing_dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
-      if existing_dh && existing_dh.id != @dh.id
-        params[:existing_dh] = @va_facilities.find(facility_id)
+      # figure out if the user already has this diffusion history
+      # if so, tell them!
+      if existing_dh.present? && existing_dh.id != @dh.id
+        params[:exists] = existing_dh_facility
       end
     else
-      # or else, we're creating something
-      # figure out if the user already has this diffusion history
-      @dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
-      # if so, tell them!
-      if @dh
-        params[:exists] = @va_facilities.find(facility_id)
+      # if they're creating a new diffusion history, figure out if the facility they chose is already being used in a current diffusion history
+      if existing_dh.present?
+        # if so, tell them!
+        params[:exists] = existing_dh_facility
       else
-        # if not, create a new one
-        @dh = DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
+        # if not, create a new diffusion history
+        @dh = is_crh ? DiffusionHistory.create(practice: @practice, clinical_resource_hub_id: facility_id) : DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
       end
     end
 
-    if params[:exists].blank? && params[:existing_dh].blank?
+    if params[:exists].blank?
       if params[:diffusion_history_status_id]
         # update the diffusion history status
         dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])

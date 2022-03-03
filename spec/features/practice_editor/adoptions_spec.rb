@@ -34,6 +34,10 @@ describe 'Practice editor', type: :feature, js: true do
       longitude: "-73.89691934",
       street_address_state: "NY"
     )
+    @crh = ClinicalResourceHub.create!(
+      visn: visn_1,
+      official_station_name: "VISN 1 Clinical Resource Hub",
+    )
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit practice_adoptions_path(@practice)
     expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -131,7 +135,7 @@ describe 'Practice editor', type: :feature, js: true do
       # it should create another one
       find('#add_adoption_button').click
       select_status('in_progress')
-      select_facility_combo_box(1)
+      select_facility_combo_box(2)
       submit_form
       expect(page).to have_selector(".adoption-success-alert", visible: true)
       within(:css, '#adoptions') do
@@ -139,18 +143,31 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('In-progress adoptions: 2')
       end
 
+      # it should allow the user to create a CRH adoption
+      find('#add_adoption_button').click
+      select_status('in_progress')
+      find_all('.usa-combo-box__input')[0].click
+      find_all('.usa-combo-box__input')[0].set('VISN 1')
+      find_all('.usa-combo-box__list-option').first.click
+      submit_form
+      expect(page).to have_selector(".adoption-success-alert", visible: true)
+      within(:css, '#adoptions') do
+        expect(page).to have_content('Success!')
+        expect(page).to have_content('In-progress adoptions: 3')
+      end
+
       # it should update the overview section and display the adoption
       visit practice_path(@practice)
-      expect(page).to have_content("In-progress adoptions (2)")
       expect(page).to have_selector("#map", visible: true)
       within(:css, ".practice-viewer-adoptions-accordion") do
-        expect(page).to have_content('In-progress adoptions (2)')
+        expect(page).to have_content('In-progress adoptions (3)')
         find("button[aria-controls='in_progress']").click
       end
       within(:css, "#in_progress") do
         expect(page).to have_content("ME: Caribou VA Clinic (Caribou)")
         expect(page).to have_content("Started adoption on 12/1990")
-        expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
+        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
+        expect(page).to have_content("VISN 1 Clinical Resource Hub")
       end
 
       # it shouldn't create the same facility twice for a practice
@@ -163,9 +180,19 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('An adoption for Caribou VA Clinic in ME already exists in the entry list. If it is not listed, please report a bug.')
       end
 
+      # make sure this applies to CRHs as well
+      select_status('completed')
+      find_all('.usa-combo-box__input')[0].click
+      find_all('.usa-combo-box__input')[0].set('VISN 1')
+      find_all('.usa-combo-box__list-option').first.click
+      submit_form
+      within(:css, '#adoptions') do
+        expect(page).to have_content('An adoption for VISN 1 Clinical Resource Hub already exists in the entry list. If it is not listed, please report a bug.')
+      end
+
       # it shouldn't create an adoption if the end date is greater than the start date
       select_status('completed')
-      select_facility_combo_box(2)
+      select_facility_combo_box(1)
       fill_in 'date_started_month', with: '11'
       fill_in 'date_started_year', with: '2000'
       fill_in 'date_ended_month', with: '3'
@@ -203,7 +230,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
       find("button[aria-controls='successful_adoptions']").click
       within(:css, '#adoptions') do
-        expect(page).to have_content('NY: Yonkers VA Clinic (11/1998 - 03/1999)')
+        expect(page).to have_content('NY: White Plains VA Clinic (11/1998 - 03/1999)')
         expect(page).to have_content('Successful adoption: 1')
       end
 
@@ -217,13 +244,13 @@ describe 'Practice editor', type: :feature, js: true do
       page.accept_alert
       expect(page).to have_content('Adoption was successfully deleted.')
       within(:css, '#adoptions') do
-        expect(page).to have_content('In-progress adoption: 1')
+        expect(page).to have_content('In-progress adoptions: 2')
       end
 
       # it shouldn't update an unsuccessful adoption if no reasons are selected
       expect(page).to have_selector(".usa-alert--info", visible: true)
       expect(page).to have_selector("button[aria-controls*='in-progress_adoptions']", visible: true)
-      click_button('In-progress adoption: 1')
+      click_button('In-progress adoptions: 2')
       sleep 0.2
       expect(page).to have_selector("button[aria-controls='diffusion_history_2']", visible: true)
       find_all("button[aria-controls*='diffusion_history']").first.click
@@ -264,11 +291,10 @@ describe 'Practice editor', type: :feature, js: true do
       within(:css, '#adoptions') do
         expect(page).to have_no_content('There was a problem with your adoption.')
         expect(page).to have_content('Success!')
-        expect(page).to have_no_content('In-progress adoption')
         expect(page).to have_content('Unsuccessful adoption: 1')
         find_all("button[aria-controls*='adoptions']").last.click
         find_all("button[aria-controls*='diffusion_history']").first.click
-        expect(page).to have_content('NY: White Plains VA Clinic (11/2000 - 03/2001)')
+        expect(page).to have_content('NY: Yonkers VA Clinic (11/2000 - 03/2001)')
         within(:css, "#diffusion_history_#{form_id}") do
           expect(find_field('Successful').checked?).to eq false
           expect(find_field('In-progress').checked?).to eq false
@@ -291,17 +317,21 @@ describe 'Practice editor', type: :feature, js: true do
       visit practice_path(@practice)
       within(:css, ".practice-viewer-adoptions-accordion") do
         expect(page).to have_content('Successful adoption (1)')
-        expect(page).to have_content('In-progress adoptions (0)')
+        expect(page).to have_content('In-progress adoption (1)')
         expect(page).to have_content('Unsuccessful adoption (1)')
       end
       find("button[aria-controls='successful']").click
       within(:css, "#successful") do
-        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
+        expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
         expect(page).to have_content("Started adoption on 11/1998, ended on 03/1999.")
+      end
+      find("button[aria-controls='in_progress']").click
+      within(:css, "#in_progress") do
+        expect(page).to have_content("VISN 1 Clinical Resource Hub")
       end
       find("button[aria-controls='unsuccessful']").click
       within(:css, "#unsuccessful") do
-        expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
+        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
         expect(page).to have_content("Started adoption on 11/2000, ended on 03/2001.")
         expect(page).to have_content("Lack of sufficient leadership/key stakeholder buy-in")
         expect(page).to have_content("gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMP...")

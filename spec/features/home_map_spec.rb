@@ -10,6 +10,7 @@ describe 'Map of Diffusion', type: :feature do
     @pr_2 = Practice.create!(name: 'Practice B', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice B Tagline', date_initiated: Time.now(), user: @user)
     @pr_3 = Practice.create!(name: 'Practice C', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice C Tagline', date_initiated: Time.now(), user: @user)
     @pr_4 = Practice.create!(name: 'Practice D', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice D Tagline', date_initiated: Time.now(), user: @user)
+    @pr_5 = Practice.create!(name: 'Practice E', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice E Tagline', date_initiated: Time.now(), user: @user)
     @visn_1 = Visn.create!(name: 'VISN 1', number: 2)
     @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
     @fac_1 = VaFacility.create!(
@@ -47,6 +48,10 @@ describe 'Map of Diffusion', type: :feature do
       rurality: "U",
       fy17_parent_station_complexity_level: "1a-High Complexity",
       station_phone_number: "207-623-2123 x"
+    )
+    @crh = ClinicalResourceHub.create!(
+      visn: @visn_2,
+      official_station_name: "VISN 2 Clinical Resource Hub",
     )
     dh_1 = DiffusionHistory.create!(practice: @pr_1, va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
@@ -92,6 +97,14 @@ describe 'Map of Diffusion', type: :feature do
 
   it 'displays and filters the map' do
     expect(page).to have_content('Explore how innovations are being adopted across the country. There are currently 2 successful adoptions, 3 in-progress adoptions, and 1 unsuccessful adoption.')
+    expect_marker_ct(3)
+
+    # make sure that CRH adoptions are included in the total count, but NOT display on the diffusion map
+    dh_7 = DiffusionHistory.create!(practice: @pr_5, clinical_resource_hub: @crh)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_7, status: 'Unsuccessful', unsuccessful_reasons: [0])
+
+    visit '/diffusion-map'
+    expect(page).to have_content('Explore how innovations are being adopted across the country. There are currently 2 successful adoptions, 3 in-progress adoptions, and 2 unsuccessful adoptions.')
     expect_marker_ct(3)
 
     # filters button
@@ -318,7 +331,7 @@ describe 'Map of Diffusion', type: :feature do
     # login as an admin and set the 'is_public' flag for a practice to true
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices'
-    all('.toggle-practice-privacy-link')[3].click
+    all('.toggle-practice-privacy-link')[4].click
     expect(page).to have_content("\"Practice A\" is now a public-facing innovation")
 
     # logout and view the map markers again as a guest user
