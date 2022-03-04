@@ -162,6 +162,15 @@ function searchPracticesByCrh() {
             }
         }
 
+        function resultsForOnlyRadioVal(jsonPractices) {
+            results = jsonPractices.map((jsonPractice, index) => ({
+                item: jsonPractice,
+                score: 1,
+                refIndex: index,
+                matches: null
+            }));
+        }
+
         // Run the search query, if present, and include filters, if present.
         if (query !== '' && categoryFilter) {
             searchWithQueryAndCategory();
@@ -444,12 +453,12 @@ function execCrhSearchFunctions() {
     submitFormOnComboBoxChange(CREATED_COMBO_BOX);
     submitFormOnComboBoxChange(ADOPTED_COMBO_BOX);
     submitFormOnRadioInputClick();
-    preventComplexityModalFlickerOnPageLoad();
+//    preventComplexityModalFlickerOnPageLoad();
 }
 
 document.addEventListener('turbolinks:load', function() {
     execCrhSearchFunctions();
-    const searchField = document.querySelector('crh-search-field');
+    const searchField = document.querySelector('#crh-search-field');
     var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
     // search query
     var urlQuery = searchField.value === '' ? crhShowUrl : crhShowUrl + '?query=' + searchField.value;

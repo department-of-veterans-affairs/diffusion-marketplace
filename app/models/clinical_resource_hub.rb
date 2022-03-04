@@ -51,4 +51,53 @@ class ClinicalResourceHub < ApplicationRecord
   def practices_adopted_by_crh_count
     DiffusionHistory.where(clinical_resource_hub_id: id).count
   end
+
+  def get_crh_adopted_practices( crh_id, options = { :is_user_guest => true })
+    # options[:is_user_guest] ? Practice.public_facing.load_associations.get_by_adopted_facility_and_crh(station_numbers, crh_id) :
+    #     Practice.published_enabled_approved.load_associations.get_by_adopted_facility_and_crh(station_numbers, crh_id)
+    return []
+  end
+
+  # def get_crh_created_practices(station_numbers, crh_id, options = { :is_user_guest => true })
+  #   facility_created_practices = options[:is_user_guest] ? Practice.public_facing.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility_and_crh(station_numbers, crh_id) :
+  #                                    Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility_and_crh(station_numbers, crh_id)
+  #   visn_created_practices = options[:is_user_guest] ? Practice.public_facing.load_associations.where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s) :
+  #                                Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s)
+  #
+  #   facility_created_practices + visn_created_practices
+  # end
+
+  def get_crh_created_practices(crh_id, search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
+    practices = Practice.search_practices(search_term, sort, categories, is_user_guest)
+    practices.select { |pr| pr.practice_origin_facilities.where(clinical_resource_hub_id: crh_id)}
+  end
+
+  # def search_crh_practices(search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
+  #   query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
+  #
+  #   if is_user_guest
+  #     query = query.public_facing
+  #   end
+  #
+  #   if search_term
+  #     search = get_query_for_search_term(search_term)
+  #     query = query.where(search[:query], search[:params])
+  #   end
+  #
+  #   if categories
+  #     query = query.filter_by_category_ids(categories)
+  #   end
+  #
+  #   if sort === 'a_to_z'
+  #     query = query.sort_a_to_z
+  #   elsif sort === 'adoptions'
+  #     query = query.sort_adoptions_ct
+  #   elsif sort === 'added'
+  #     query = query.sort_added
+  #   end
+  #   query = query.sort_by_retired
+  #   query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
+  # end
+
+
 end

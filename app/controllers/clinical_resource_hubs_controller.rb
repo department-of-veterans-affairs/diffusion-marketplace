@@ -10,30 +10,30 @@ class ClinicalResourceHubsController < ApplicationController
     @visn_va_facilities = VaFacility.get_by_visn(@visn).get_relevant_attributes
     @visn_crh = ClinicalResourceHub.cached_clinical_resource_hubs.find_by(visn: @visn)
     @states_str = get_visn_associated_states_str(visn_id)
-    visn_va_facilities_ids = @visn_va_facilities.get_ids
-    debugger
-    @practices_created_by_visn = helpers.is_user_a_guest? ? @visn.get_created_practices(visn_va_facilities_ids, @visn_crh.id, :is_user_guest => true) :
-                                     @visn.get_created_practices(visn_va_facilities_ids, @visn_crh.id, :is_user_guest => false)
-    @practices_created_json = practices_json(@practices_created_by_visn)
 
-    @practices_adopted_by_visn = helpers.is_user_a_guest? ? @visn.get_adopted_practices(visn_va_facilities_ids, @visn_crh.id, :is_user_guest => true) :
-                                     @visn.get_adopted_practices(visn_va_facilities_ids, @visn_crh.id, :is_user_guest => false)
-    @practices_adopted_json = practices_json(@practices_adopted_by_visn)
+
+    @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => true) :
+                                     @visn.get_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => false)
+
+    @practices_created_json = practices_json(@practices_created_by_crh) unless @practices_created_by_crh == nil
+
+    @practices_adopted_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_adopted_practices(@crh.id,  :is_user_guest => true) :
+                                     @visn.get_adopted_practices(@crh.id, :is_user_guest => false)
+    @practices_adopted_json = practices_json(@practices_adopted_by_crh) unless @practices_adopted_by_crh == nil
 
     @practices_created_categories = []
     get_categories_by_practices(@crh.practices_created_by_crh, @practices_created_categories)
+    debugger
   end
 
   # GET /crh/:id/created_crh_practices
   def created_crh_practices
-    debugger
     page = 1
     page = params[:page].to_i if params[:page].present?
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    created_practices = helpers.is_user_a_guest? ? Practice.get_crh_created_practices(@crh.id, search_term, sort_option, categories, true) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, false)
-    debugger
+    created_practices = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, search_term, sort_option, categories, true) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, false)
     @pagy_created_practices = pagy_array(
         created_practices,
         items: 3,
@@ -52,7 +52,7 @@ class ClinicalResourceHubsController < ApplicationController
       if practice_cards_html.length > 0
         format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.size, next: @pagy_created_info.next } }
       else
-        return "no results to display."
+        render json: { message: "No results" }, status: :ok
       end
     end
   end
