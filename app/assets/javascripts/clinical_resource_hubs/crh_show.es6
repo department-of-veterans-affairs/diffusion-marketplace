@@ -1,7 +1,7 @@
 const loadingSpinner = ".dm-crh-facilities-loading-spinner";
 const tableRows = ".dm-crh-table-rows";
 const table = ".crh-facilities-table";
-const visnsShow = "#crh-show"
+const crhShow = "#crh-show"
 debugger
 const visnNum = parseInt(visnNumber); // set in `app/views/visns/show.html.erb`
 
@@ -9,7 +9,7 @@ function _sendAjaxRequest() {
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: `/crh/${visnNum}/load-facilities-rows`,
+        url: `/crh/${visnNum}/created-crh-practices`,
         success: function (data) {
             $(tableRows).append(data.rowsHtml);
             $(table).removeClass("display-none");
@@ -20,7 +20,7 @@ function _sendAjaxRequest() {
 }
 
 function execCrhShowFns() {
-    if ($(visnsShow).data('reload')) {
+    if ($(crhShow).data('reload')) {
         _sendAjaxRequest();
     }
 }

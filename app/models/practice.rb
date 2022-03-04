@@ -387,6 +387,14 @@ class Practice < ApplicationRecord
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
+  def self.get_crh_created_practices(crh_id, search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
+    debugger
+    practices = search_practices(search_term, sort, categories, is_user_guest)
+    practices.select { |pr| pr.practice_origin_facilities.pluck(:clinical_resource_hub_id).include?(crh_id) }
+  end
+
+
+
   def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
     practices = search_practices(search_term, sort, categories, is_user_guest)
     practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id) }
