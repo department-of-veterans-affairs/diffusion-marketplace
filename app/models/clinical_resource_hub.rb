@@ -44,7 +44,7 @@ class ClinicalResourceHub < ApplicationRecord
     PracticeOriginFacility.where(clinical_resource_hub_id: id).count
   end
 
-  def practices_created_by_crh
+  def crh_created_practices
     Practice.where(id: PracticeOriginFacility.select(:practice_id).where(clinical_resource_hub_id: id))
   end
 

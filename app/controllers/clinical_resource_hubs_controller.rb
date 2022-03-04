@@ -22,8 +22,7 @@ class ClinicalResourceHubsController < ApplicationController
     @practices_adopted_json = practices_json(@practices_adopted_by_crh) unless @practices_adopted_by_crh == nil
 
     @practices_created_categories = []
-    get_categories_by_practices(@crh.practices_created_by_crh, @practices_created_categories)
-    debugger
+    get_categories_by_practices(@practices_created_by_crh, @practices_created_categories)
   end
 
   # GET /crh/:id/created_crh_practices
@@ -48,7 +47,6 @@ class ClinicalResourceHubsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      debugger
       if practice_cards_html.length > 0
         format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.size, next: @pagy_created_info.next } }
       else
