@@ -14,7 +14,7 @@ function _sendAjaxRequest() {
             $(table).removeClass("display-none");
             $(loadingSpinner).addClass("display-none");
             $(crhShow).data('reload', false);
-            alert(data);
+            //alert(data);
         },
     });
 }
