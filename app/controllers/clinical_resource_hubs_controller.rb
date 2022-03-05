@@ -13,7 +13,7 @@ class ClinicalResourceHubsController < ApplicationController
 
 
     @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => true) :
-                                     @visn.get_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => false)
+                                    @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => false)
 
     @practices_created_json = practices_json(@practices_created_by_crh) unless @practices_created_by_crh == nil
 
