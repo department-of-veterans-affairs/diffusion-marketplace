@@ -126,25 +126,7 @@ ActiveAdmin.register Page do
     end
 
     f.inputs "Page Components" do
-      f.has_many :page_components, heading: nil, sortable: :position, sortable_start: 1, allow_destroy: true, class: 'page_components' do |pc, index|
-        # TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
-        placeholder = pc.object.component_id ? index - 1 : 'NEW_PAGE_COMPONENT_RECORD'
-        component = pc.object.component_id ? eval("#{pc.object.component_type}.find('#{pc.object.component_id}')") : nil
-
-        pc.input :component_type, input_html: {class: 'polyselect', 'data-component-id': placeholder}, collection: PageComponent::COMPONENT_SELECTION
-        # render partial: 'page_header_component_form', locals: {f: pc, component: component.class == PageHeaderComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_header2_component_form', locals: {f: pc, component: component.class == PageHeader2Component ? component : nil, placeholder: placeholder}
-        render partial: 'page_header3_component_form', locals: {f: pc, component: component.class == PageHeader3Component ? component : nil, placeholder: placeholder}
-        render partial: 'page_paragraph_component_form', locals: {f: pc, component: component.class == PageParagraphComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_practice_list_component_form', locals: {f: pc, component: component.class == PagePracticeListComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_subpage_hyperlink_component_form', locals: {f: pc, component: component.class == PageSubpageHyperlinkComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_accordion_component_form', locals: {f: pc, component: component.class == PageAccordionComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_you_tube_player_component_form', locals: {f: pc, component: component.class == PageYouTubePlayerComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_image_component_form', locals: {f: pc, component: component.class == PageImageComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_hr_component_form', locals: {f: pc, component: component.class == PageHrComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_downloadable_file_component_form', locals: {f: pc, component: component.class == PageDownloadableFileComponent ? component : nil, placeholder: placeholder}
-        render partial: 'page_cta_component_form', locals: {f: pc, component: component.class == PageCtaComponent ? component : nil, placeholder: placeholder}
-      end
+      f.template.render partial: 'page_components_form', locals: {f: f, page_components: :page_components}
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons
 

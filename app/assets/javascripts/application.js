@@ -32,7 +32,7 @@
 //= require practices
 //= require _side_nav
 //= require commontator/application
-//= require jquery.timeago
+//= require rails-timeago
 //= require timeago
 //= require replies
 //= require gmaps/google

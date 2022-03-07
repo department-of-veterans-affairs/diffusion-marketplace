@@ -32,7 +32,7 @@ class Visn < ApplicationRecord
 
   def self.cached_visns
     Rails.cache.fetch('visns') do
-      Visn.all
+      Visn.all.load
     end
   end
 
