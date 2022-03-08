@@ -117,11 +117,10 @@ class SavePracticeService
     practice_partner_params = @practice_params[:practice_partner]
     practice_partners = @practice.practice_partner_practices
     if practice_partner_params.present?
-      partner_keys = practice_partner_params.keys
-      partner_keys.each do |key|
-        next if @practice.practice_partners.ids.include? key.to_i
+      practice_partner_params.each do |key, value|
+        next if @practice.practice_partners.ids.include? value[:value].to_i
 
-        practice_partners.create practice_partner_id: key.to_i
+        practice_partners.create(practice_partner_id: value[:value].to_i)
       end
 
       practice_partners.each do |partner|

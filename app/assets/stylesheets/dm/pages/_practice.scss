@@ -810,6 +810,16 @@ li.small-disc:before {
   }
 }
 
+.dm-practice-editor-practice-partner-li {
+  .usa-combo-box__input-button-separator, .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
+    top: 2rem;
+  }
+
+  .dm-add-practice-partner-link {
+    bottom: 1rem;
+  }
+}
+
 // Overview
 #overview {
   .dm-resource-image-editor {

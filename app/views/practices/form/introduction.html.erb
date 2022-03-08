@@ -305,9 +305,9 @@
               <div>
                 <% Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION.each do |award| %>
                   <% underscore_award = award.split(' ').join('').underscore %>
-                  <div class="usa-checkbox practice-partner-checkbox position-relative">
+                  <div class="usa-checkbox practice-award-checkbox position-relative">
                     <input type="checkbox"
-                           class="usa-checkbox__input partner-input"
+                           class="usa-checkbox__input award-input"
                            id="practice_award_<%= underscore_award %>"
                            name="practice[practice_award][<%= underscore_award %>][name]"
                            value="<%= award %>"
@@ -416,35 +416,84 @@
 
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-105">
-                <p class="text-bold margin-bottom-2">
-                  Partners
-                </p>
-                <span>Select any of the following partners your innovation is associated with.</span>
-              </div>
-              <div>
-                <%
-                  no_partners = PracticePartner.cached_practice_partners.where(name: 'None of the above, or Unsure')
-                  partners = PracticePartner.cached_practice_partners.where.not(id: no_partners.ids)
-                %>
-                <% partners.each do |partner| %>
-                  <div class="usa-checkbox practice-partner-checkbox position-relative">
-                    <input type="checkbox"
-                           class="usa-checkbox__input partner-input"
-                           id="practice_partner_<%= partner.id %>"
-                           name="practice[practice_partner][<%= partner.id %>][value]"
-                           <%= 'checked="true"' if p_partners.include?(partner) %>
-                      />
-                    <label class="usa-checkbox__label"
-                           id="practice_partner_<%= partner.id %>_label"
-                           for="practice_partner_<%= partner.id %>"
-                    >
-                      <%= partner.name %>
-                    </label>
+                <fieldset class="usa-fieldset grid-col-6">
+                  <legend class="usa-sr-only">Partners</legend>
+                  <div id="dm-practice-partner-container" class="position-relative">
+                    <ul class="dm-practice-editor-practice-partner-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
+                      <%= f.fields_for :practice_partner_practices, wrapper: false do |ppp| %>
+                        <%
+                          ppp_id = ppp.object.id || "new_practice_partner_practice"
+                          ppp_partner_id = ppp.object.practice_partner_id
+                        %>
+                        <% if ppp.object.id %>
+                          <%# add separators on page load %>
+                          <% provide :head_tags do %>
+                            <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                              $(document).arrive('<%= "#practice_partner_practice_#{ppp_id}_value" %>',
+                              function(newElem) {
+                              styleOriginFacility(
+                              $(newElem).closest('li'),
+                              <%= ppp_id %>,
+                              '.dm-practice-editor-practice-partner-li',
+                              '.dm-practice-editor-practice-partner-ul',
+                              '12'
+                              );
+                              $(document).unbindArrive('<%= "#practice_partner_practice_#{ppp_id}_value" %>', newElem);
+                              }
+                              );
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                        <li class="dm-practice-editor-practice-partner-li fields margin-bottom-2" role="option" data-id="<%= ppp_id %>">
+                          <div class="grid-row">
+                            <div class="usa-combo-box grid-col-12" data-default-value="<%= ppp_partner_id %>">
+                              <label for="practice_partner_practice_<%= ppp_id %>_value">Select a practice partner</label>
+                              <select id="practice_partner_practice_<%= ppp_id %>_value" class="usa-select" name="practice[practice_partner][<%= ppp_id %>][value]">
+                                <% @major_practice_partners.each do |mp| %>
+                                  <option value="<%= mp.id %>">
+                                    <%= mp.name %>
+                                  </option>
+                                <% end %>
+                              </select>
+                            </div>
+                            <div class="grid-col-12 trash-container">
+                              <input type="hidden" name="practice[practice_partner][<%= ppp_id %>][_destroy]" value="false"/>
+                              <a class="dm-origin-trash dm-button--unstyled-warning float-right remove_nested_fields">Delete entry</a>
+                            </div>
+                          </div>
+                        </li>
+                      <% end %>
+                    </ul>
+                    <%= f.link_to_add :practice_partner_practices, id: 'link_to_add_link_practice_partner_practices', class: "dm-add-another-link dm-add-practice-partner-practice-link dm-button--unstyled-primary" do %>
+                      Add another
+                    <% end %>
+                    <% provide :head_tags do %>
+                      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                        observePracticeEditorLiArrival(
+                        $(document),
+                        '.dm-practice-editor-practice-partner-li',
+                        '.dm-practice-editor-practice-partner-ul',
+                        '12'
+                        );
+                        attachTrashListener(
+                        $(document),
+                        '#dm-practice-partner-container',
+                        '.dm-practice-editor-practice-partner-li'
+                        );
+                        <% unless @practice_partners.any? %>
+                          $(document).arrive('#practice_partner_practices_fields_blueprint',
+                          function(blueprint) {
+                          $('.dm-add-practice-partner-practice-link').click();
+                          $(document).unbindArrive('#practice_partner_practices_fields_blueprint', blueprint);
+                          }
+                          );
+                        <% end %>
+                      <% end %>
+                    <% end %>
                   </div>
-                <% end %>
+                </fieldset>
               </div>
             </div>
-
 
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-1">
