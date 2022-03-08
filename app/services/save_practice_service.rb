@@ -124,7 +124,7 @@ class SavePracticeService
       end
 
       practice_partners.each do |partner|
-        partner.destroy unless partner_keys.include?(partner.practice_partner_id.to_s)
+        partner.destroy unless practice_partner_params.keys.include?(partner.practice_partner_id.to_s)
       end
     elsif practice_partner_params.blank? && @current_endpoint == 'introduction'
       practice_partners.destroy_all
