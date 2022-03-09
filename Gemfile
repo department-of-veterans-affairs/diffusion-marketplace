@@ -47,7 +47,7 @@ gem 'devise', '>= 4.6.0'
 gem 'devise-security'
 gem 'kaminari'
 
-gem 'rolify'
+gem 'rolify', '~> 5.3.0'
 # pagination gem
 gem 'pagy', '~> 3.5'
 
