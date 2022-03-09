@@ -131,7 +131,7 @@ gem "nested_form"
 gem 'colorize'
 gem 'humanize'
 gem 'paper_trail'
-gem 'commontator'
+gem 'commontator', '~> 6.3.1'
 gem 'acts_as_votable'
 
 # Active Admin
