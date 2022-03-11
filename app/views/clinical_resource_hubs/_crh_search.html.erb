@@ -3,14 +3,14 @@
   <form id="crh-show-search-form" class="usa-form maxw-none margin-bottom-3">
     <fieldset class="usa-fieldset" data-search-filter="false">
       <legend class="usa-sr-only">Search for innovations by CRH</legend>
-      <div class="grid-row" role="radiogroup">
+      <div class="grid-row margin-bottom-5" role="radiogroup">
         <div class="usa-radio grid-col-4">
           <input class="usa-radio__input crh-created-practices-radio" id="crh-created-practices" type="radio" name="crh-show-radio-buttons" value="created">
-          <label class="usa-radio__label margin-bottom-0" for="created-practices">Innovations created here (<%= @crh.practices_created_by_crh_count  %>)</label>
+          <label class="usa-radio__label margin-bottom-0" for="crh-created-practices">Innovations created here (<%= @crh.practices_created_by_crh_count  %>)</label>
         </div>
         <div class="usa-radio grid-col-4">
           <input class="usa-radio__input crh-adopted-practices-radio" id="crh-adopted-practices" type="radio" name="crh-show-radio-buttons" value="adopted">
-          <label class="usa-radio__label margin-bottom-0" for="adopted-practices">Innovations adopted here (<%= @crh.practices_adopted_by_crh_count  %>)</label>
+          <label class="usa-radio__label margin-bottom-0" for="crh-adopted-practices">Innovations adopted here (<%= @crh.practices_adopted_by_crh_count  %>)</label>
         </div>
       </div>
 
@@ -25,6 +25,7 @@
           </div>
         </div>
         <%= render partial: 'crh_categories_combo_box', locals: { practice_type: 'created', practice_categories: @practices_created_categories } %>
+        <%= render partial: 'crh_categories_combo_box', locals: { practice_type: 'adopted', practice_categories: @practices_created_categories } %>
       </div>
     </fieldset>
   </form>

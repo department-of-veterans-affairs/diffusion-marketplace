@@ -2,7 +2,7 @@ const loadingSpinner = ".dm-crh-facilities-loading-spinner";
 const tableRows = ".dm-crh-table-rows";
 const table = ".crh-facilities-table";
 const crhShow = "#crh-show"
-const visnNum = parseInt(visnNumber); // set in `app/views/visns/show.html.erb`
+const visnNum = parseInt(visnNumber); // set in `app/views/clinical_resource_hubs/show.html.erb`
 
 function _sendAjaxRequest() {
     $.ajax({
