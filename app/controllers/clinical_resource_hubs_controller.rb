@@ -18,7 +18,7 @@ class ClinicalResourceHubsController < ApplicationController
     @practices_created_json = practices_json(@practices_created_by_crh) unless @practices_created_by_crh == nil
 
     @practices_adopted_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_adopted_practices(@crh.id,  :is_user_guest => true) :
-                                     @visn.get_adopted_practices(@crh.id, :is_user_guest => false)
+                                    @crh.get_crh_adopted_practices(@crh.id, :is_user_guest => false)
     @practices_adopted_json = practices_json(@practices_adopted_by_crh) unless @practices_adopted_by_crh == nil
 
     @practices_created_categories = []
