@@ -16,11 +16,8 @@
   <%= javascript_include_tag 'clinical_resource_hubs/crh_show', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<% debugger %>
-
 <div id="crh-show" class="grid-container" data-reload="true">
   <section class="usa-section padding-y-0 grid-col-12" id="dm-crh-show">
-  <!--  <input type="hidden" id="facility_station_number" value="<%#= @crh.station_number %>"/>-->
     <div class="grid-container position-relative grid-col-12">
       <h1 class="margin-top-0 margin-bottom-3">
         <%= @crh.official_station_name %>
