@@ -126,7 +126,7 @@ ActiveAdmin.register Page do
     end
 
     f.inputs "Page Components" do
-      f.template.render partial: 'page_components_form', locals: {f: f, page_components: :page_components}
+      render partial: 'page_components_form', locals: {f: f, page_components: :page_components}
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons
 
