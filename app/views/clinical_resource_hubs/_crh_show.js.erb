@@ -265,7 +265,10 @@ function searchPracticesByCrh() {
         // Add a search query to the URL when necessary
         var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
         // search query
-        var urlQuery = searchField.value === '' ? crhShowUrl : crhShowUrl + '?query=' + searchField.value;
+        var urlQuery = crhShowUrl;
+        if (searchField != null) {
+            urlQuery = searchField.value === '' ? crhShowUrl : crhShowUrl + '?query=' + searchField.value;
+        }
 
         // due to turbolinks reloading the page after clicking on a link, only add a history if the previous URL does not match the next URL
         if (splitUrl !== urlQuery) {
@@ -343,7 +346,11 @@ function searchPracticesByCrh() {
 
     var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
     // search query
-    var urlQuery = searchField.value === '' ? crhShowUrl : crhShowUrl + '?query=' + searchField.value;
+    debugger
+    var urlQuery = crhShowUrl;
+    if (searchField != null) {
+        urlQuery = searchField.value === '' ? crhShowUrl : crhShowUrl + '?query=' + searchField.value;
+    }
 
     if (window.location.pathname.includes('crh') && window.location.search !== '' && splitUrl !== urlQuery) {
         hideResultsSectionElAndShowSpinner();
@@ -460,7 +467,10 @@ document.addEventListener('turbolinks:load', function() {
     const searchField = document.querySelector('#crh-search-field');
     var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
     // search query
-    var urlQuery = searchField.value === '' ? crhShowUrl : crhShowUrl + '?query=' + searchField.value;
+    var urlQuery = crhShowUrl;
+    if (searchField != null) {
+        urlQuery = searchField.value === '' ? crhShowUrl : crhShowUrl + '?query=' + searchField.value;
+    }
 
     // prevent the form from being submitted multiple times
     if (location.pathname === crhShowUrl && splitUrl === urlQuery) {

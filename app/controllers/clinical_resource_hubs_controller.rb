@@ -12,8 +12,12 @@ class ClinicalResourceHubsController < ApplicationController
     @states_str = get_visn_associated_states_str(visn_id)
 
 
-    @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => true) :
-                                    @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => false)
+    # @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => true) :
+    #                                 @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => false)
+
+
+    @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, :is_user_guest => true) :
+                                    @crh.get_crh_created_practices(@crh.id, :is_user_guest => false)
 
     @practices_created_json = practices_json(@practices_created_by_crh) unless @practices_created_by_crh == nil
 
@@ -27,12 +31,13 @@ class ClinicalResourceHubsController < ApplicationController
 
   # GET /crh/:id/created_crh_practices
   def created_crh_practices
+    debugger
     page = 1
     page = params[:page].to_i if params[:page].present?
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    created_practices = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, search_term, sort_option, categories, true) : Practice.get_facility_created_practices(@crh.id, search_term, sort_option, categories, false)
+    created_practices = helpers.is_user_a_guest? ? @crh.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, true) : Practice.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, false)
     @pagy_created_practices = pagy_array(
         created_practices,
         items: 3,

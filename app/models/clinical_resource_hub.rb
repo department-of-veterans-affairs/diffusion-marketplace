@@ -57,8 +57,17 @@ class ClinicalResourceHub < ApplicationRecord
         Practice.published_enabled_approved.load_associations.get_by_adopted_crh(crh_id)
   end
 
-  def get_crh_created_practices(crh_id, search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
+  def get_crh_created_practices(crh_id, options = { :is_user_guest => true })
+    debugger
+    options[:is_user_guest] ? Practice.public_facing.load_associations.get_by_created_crh(crh_id) :
+        Practice.published_enabled_approved.load_associations.get_by_created_crh(crh_id)
+  end
+
+  def get_crh_created_innovations(crh_id, search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
     practices = Practice.search_practices(search_term, sort, categories, is_user_guest)
     practices.select { |pr| pr.practice_origin_facilities.where(clinical_resource_hub_id: crh_id)}
   end
+
+
+
 end
