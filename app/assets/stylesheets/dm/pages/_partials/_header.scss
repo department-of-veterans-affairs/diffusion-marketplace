@@ -38,8 +38,8 @@
 
   @media all and (min-width: 75rem) {
     .dm-header--va-seal {
-      @include u-width('6', !important);
-      @include u-height('6', !important);
+      @include u-width(6, !important);
+      @include u-height(6, !important);
     }
 
     .usa-current {
@@ -49,7 +49,7 @@
     }
 
     .usa-logo {
-      @include u-margin-y('3');
+      @include u-margin-y(3);
     }
 
     .usa-nav {
