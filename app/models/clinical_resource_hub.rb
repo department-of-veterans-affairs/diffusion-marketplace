@@ -58,7 +58,6 @@ class ClinicalResourceHub < ApplicationRecord
   end
 
   def get_crh_created_practices(crh_id, options = { :is_user_guest => true })
-    debugger
     options[:is_user_guest] ? Practice.public_facing.load_associations.get_by_created_crh(crh_id) :
         Practice.published_enabled_approved.load_associations.get_by_created_crh(crh_id)
   end

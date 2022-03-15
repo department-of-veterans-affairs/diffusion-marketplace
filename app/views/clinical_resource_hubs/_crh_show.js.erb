@@ -346,7 +346,6 @@ function searchPracticesByCrh() {
 
     var splitUrl = "/" + window.location.href.split('/').slice(-2).join('/');
     // search query
-    debugger
     var urlQuery = crhShowUrl;
     if (searchField != null) {
         urlQuery = searchField.value === '' ? crhShowUrl : crhShowUrl + '?query=' + searchField.value;

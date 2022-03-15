@@ -31,7 +31,6 @@ class ClinicalResourceHubsController < ApplicationController
 
   # GET /crh/:id/created_crh_practices
   def created_crh_practices
-    debugger
     page = 1
     page = params[:page].to_i if params[:page].present?
     sort_option = params[:sort_option] || 'a_to_z'
