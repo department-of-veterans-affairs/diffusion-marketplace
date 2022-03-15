@@ -136,7 +136,7 @@ class SavePracticeService
         partner_id_counts[partner_id] = 1
       end
 
-      # prevent duplicate practice partner creation
+      # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner
       if value[:id].nil?
         if unsaved_practice_partner_ids.include?(partner_id) || existing_practice_partner.present?
           practice_partner_params.delete(key)
