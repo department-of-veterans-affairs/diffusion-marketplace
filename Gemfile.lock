@@ -22,8 +22,8 @@ GIT
 
 GIT
   remote: https://github.com/agilesix/uswds-rails.git
-  revision: ebd25cc1053f623ece1eb351b31d3672b6475a60
-  ref: ebd25cc
+  revision: f8a3658be91cf1e835df39575eb4a3fe09db16e3
+  ref: f8a3658
   specs:
     uswds-rails (2.11.1)
       bourbon (= 4.2.7)
@@ -83,18 +83,17 @@ GEM
     active_admin_theme (1.1.4)
     active_material (1.5.2)
     active_skin (0.0.13)
-    activeadmin (2.3.1)
+    activeadmin (2.8.1)
       arbre (~> 1.2, >= 1.2.1)
-      formtastic (~> 3.1)
+      formtastic (>= 3.1, < 5.0)
       formtastic_i18n (~> 0.4)
       inherited_resources (~> 1.7)
       jquery-rails (~> 4.2)
-      kaminari (~> 1.0, >= 1.0.1)
-      railties (>= 5.0, < 6.1)
+      kaminari (~> 1.0, >= 1.2.1)
+      railties (>= 5.2, < 6.1)
       ransack (~> 2.1, >= 2.1.1)
       sassc-rails (~> 2.1)
       sprockets (>= 3.0, < 4.1)
-      sprockets-es6 (~> 0.9, >= 0.9.2)
     activeadmin_addons (1.9.0)
       active_material
       railties
@@ -256,8 +255,8 @@ GEM
       thor (>= 0.14.0, < 2)
     font-awesome-sass (5.13.1)
       sassc (>= 1.11)
-    formtastic (3.1.5)
-      actionpack (>= 3.2.13)
+    formtastic (4.0.0)
+      actionpack (>= 5.2.0)
     formtastic_i18n (0.7.0)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
@@ -518,13 +517,9 @@ GEM
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
-    sprockets (3.7.2)
+    sprockets (4.0.3)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-es6 (0.9.2)
-      babel-source (>= 5.8.11)
-      babel-transpiler
-      sprockets (>= 3.0.0)
     sprockets-rails (3.4.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
@@ -580,7 +575,7 @@ PLATFORMS
 DEPENDENCIES
   active_admin_theme
   active_skin
-  activeadmin (~> 2.3.0)
+  activeadmin (~> 2.8.0)
   activeadmin_addons
   activeadmin_quill_editor
   activerecord-nulldb-adapter
@@ -660,7 +655,7 @@ DEPENDENCIES
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)
-  sprockets (~> 3.7.2)
+  sprockets
   survey_monkey_api!
   turbolinks (~> 5)
   tzinfo-data
@@ -670,7 +665,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-   ruby 2.7.0p0
+   ruby 2.7.5p203
 
 BUNDLED WITH
    2.3.7

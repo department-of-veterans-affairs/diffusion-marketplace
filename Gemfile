@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 source 'https://rails-assets.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.0'
+ruby '2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -97,7 +97,7 @@ group :development do
   gem 'erd'
 
   gem 'rubyzip'
-  gem 'sprockets', '~> 3.7.2'
+  gem 'sprockets'
 
   ###
 end
@@ -106,7 +106,7 @@ gem 'ffi'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: 'ebd25cc'
+gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: 'f8a3658'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
@@ -135,7 +135,7 @@ gem 'commontator', '~> 6.3.1'
 gem 'acts_as_votable'
 
 # Active Admin
-gem 'activeadmin', '~> 2.3.0'
+gem 'activeadmin', '~> 2.8.0'
 gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'
