@@ -60,8 +60,11 @@ class SavePracticeService
         filter_practice_origin_facilities
       end
 
+      if @practice_params["practice_partner_practices_attributes"].present?
+        update_practice_partner_practices
+      end
+
       updated = @practice.update(@practice_params)
-      rescue_method(:update_practice_partner_practices)
       rescue_method(:update_department_practices)
       rescue_method(:remove_attachments)
       rescue_method(:manipulate_avatars)
@@ -114,20 +117,33 @@ class SavePracticeService
   end
 
   def update_practice_partner_practices
-    practice_partner_params = @practice_params[:practice_partner]
-    practice_partners = @practice.practice_partner_practices
-    if practice_partner_params.present?
-      practice_partner_params.each do |key, value|
-        next if @practice.practice_partners.ids.include? value[:value].to_i
+    practice_partner_params = @practice_params[:practice_partner_practices_attributes]
+    partner_id_counts = practice_partner_params.values.collect { |param| param[:practice_partner_id] }.group_by(&:itself).transform_values(&:count)
+    unsaved_practice_partner_ids = []
 
-        practice_partners.create(practice_partner_id: value[:value].to_i)
+    practice_partner_params.each do |key, value|
+      partner_id = value[:practice_partner_id]
+      existing_practice_partner = @practice.practice_partners.find_by(id: partner_id.to_i)
+
+      # if the user tries to delete an existing partner and create a new identical partner, keep the original record and remove the corresponding partners that are not yet created
+      if partner_id_counts[partner_id] > 1 && existing_practice_partner.present?
+        duplicate_practice_partners_to_be_created = practice_partner_params.select { |hash_key, hash_value| hash_value[:practice_partner_id] === partner_id }.keys
+        # remove all of the keys that have have a practice_partner_id value that match the current partner_id
+        duplicate_practice_partners_to_be_created.each do |param_key|
+          practice_partner_params.delete(param_key)
+        end
+        # set the count for the current partner_id back to 1
+        partner_id_counts[partner_id] = 1
       end
 
-      practice_partners.each do |partner|
-        partner.destroy unless practice_partner_params.keys.include?(partner.practice_partner_id.to_s)
+      # prevent duplicate practice partner creation
+      if value[:id].nil?
+        if unsaved_practice_partner_ids.include?(partner_id) || existing_practice_partner.present?
+          practice_partner_params.delete(key)
+        else
+          unsaved_practice_partner_ids << partner_id unless partner_id.nil?
+        end
       end
-    elsif practice_partner_params.blank? && @current_endpoint == 'introduction'
-      practice_partners.destroy_all
     end
   end
 

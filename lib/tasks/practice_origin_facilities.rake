@@ -7,7 +7,7 @@ namespace :practice_origin_facilities do
 
     initiating_facilities_practices.each do |pr|
       if pr.initiating_facility.present?
-        PracticeOriginFacility.find_or_create_by!(practice: pr, facility_id: pr.initiating_facility, facility_type: 0)
+        PracticeOriginFacility.find_or_create_by!(practice: pr, facility_id: pr.initiating_facility, facility_type: 0, va_facility_id: pr.initiating_facility)
       end
     end
     puts "#{initiating_facilities_practices.length} practice origin facilities have been added"

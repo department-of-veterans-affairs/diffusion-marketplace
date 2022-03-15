@@ -416,49 +416,46 @@
 
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-105">
-                <fieldset class="usa-fieldset grid-col-6">
+                <p class="text-bold margin-bottom-1">
+                  Partners
+                </p>
+                <p class="margin-bottom-2 grid-col-8">
+                  Type or select from the dropdown any of the following partners your innovation is associated with.
+                </p>
+                <fieldset class="usa-fieldset grid-col-8">
                   <legend class="usa-sr-only">Partners</legend>
                   <div id="dm-practice-partner-container" class="position-relative">
                     <ul class="dm-practice-editor-practice-partner-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
                       <%= f.fields_for :practice_partner_practices, wrapper: false do |ppp| %>
                         <%
-                          ppp_id = ppp.object.id || "new_practice_partner_practice"
+                          ppp_id = ppp.object.id || 'new_practice_partner_practices'
                           ppp_partner_id = ppp.object.practice_partner_id
+                          ppp_index = ppp.index
                         %>
                         <% if ppp.object.id %>
                           <%# add separators on page load %>
                           <% provide :head_tags do %>
                             <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                              $(document).arrive('<%= "#practice_partner_practice_#{ppp_id}_value" %>',
-                              function(newElem) {
-                              styleOriginFacility(
-                              $(newElem).closest('li'),
-                              <%= ppp_id %>,
-                              '.dm-practice-editor-practice-partner-li',
-                              '.dm-practice-editor-practice-partner-ul',
-                              '12'
-                              );
-                              $(document).unbindArrive('<%= "#practice_partner_practice_#{ppp_id}_value" %>', newElem);
-                              }
-                              );
+                              $(document).arrive('<%= "#practice_practice_partner_practices_attributes_#{ppp_index}_practice_partner_id" %>', function(newElem) {
+                                var $li = $(newElem).closest('li');
+                                styleOriginFacility($li, <%= ppp_id %>, '.dm-practice-editor-practice-partner-li', '.dm-practice-editor-practice-partner-ul', '12');
+                                var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
+                                $_destroy.attr('name', 'practice[practice_partner_practices_attributes][<%= ppp_index %>][_destroy]');
+                                $_destroy.attr('id', 'practice_practice_partner_practices_attributes_<%= ppp_index %>__destroy');
+                                $(document).unbindArrive('<%= "#practice_practice_partner_practices_attributes_#{ppp_index}_practice_partner_id" %>', newElem);
+                              });
                             <% end %>
                           <% end %>
                         <% end %>
                         <li class="dm-practice-editor-practice-partner-li fields margin-bottom-2" role="option" data-id="<%= ppp_id %>">
                           <div class="grid-row">
                             <div class="usa-combo-box grid-col-12" data-default-value="<%= ppp_partner_id %>">
-                              <label for="practice_partner_practice_<%= ppp_id %>_value">Select a practice partner</label>
-                              <select id="practice_partner_practice_<%= ppp_id %>_value" class="usa-select" name="practice[practice_partner][<%= ppp_id %>][value]">
-                                <% @major_practice_partners.each do |mp| %>
-                                  <option value="<%= mp.id %>">
-                                    <%= mp.name %>
-                                  </option>
-                                <% end %>
-                              </select>
+                              <%#= ppp.label :practice_partner_id, '', class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12' %>
+                              <label for="practice_practice_partner_practices_attributes_<%= ppp_index %>_practice_partner_id" class="usa-label margin-top-0 margin-bottom-1 grid-col-12"></label>
+                              <%= ppp.select :practice_partner_id, @major_practice_partners.collect { |mp| [mp.name, mp.id] }, class: 'usa-input desktop:grid-col-12 margin-top-0' %>
                             </div>
                             <div class="grid-col-12 trash-container">
-                              <input type="hidden" name="practice[practice_partner][<%= ppp_id %>][_destroy]" value="false"/>
-                              <a class="dm-origin-trash dm-button--unstyled-warning float-right remove_nested_fields">Delete entry</a>
+                              <%= f.link_to_remove 'Delete entry', class: "dm-origin-trash dm-button--unstyled-warning float-right" %>
                             </div>
                           </div>
                         </li>
@@ -469,24 +466,34 @@
                     <% end %>
                     <% provide :head_tags do %>
                       <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                        $(document).arrive('#practice_partner_practices_fields_blueprint', function(blueprint) {
+                          var blueprintText = $(blueprint).data('blueprint');
+                          var newBluePrintText = blueprintText.replace('practice[_destroy]', 'practice[practice_partner_practices_attributes][new_practice_partner_practices][_destroy]');
+                          $(blueprint).data('blueprint', newBluePrintText);
+                          newBluePrintText = newBluePrintText.replace('practice__destroy', 'practice_practice_partner_practices_attributes_new_practice_partner_practices__destroy');
+                          $(blueprint).data('blueprint', newBluePrintText);
+                          $(document).unbindArrive('#practice_partner_practices_fields_blueprint', blueprint);
+                        });
+                      <% end %>
+                    <% end %>
+                    <% provide :head_tags do %>
+                      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                         observePracticeEditorLiArrival(
-                        $(document),
-                        '.dm-practice-editor-practice-partner-li',
-                        '.dm-practice-editor-practice-partner-ul',
-                        '12'
+                          $(document),
+                          '.dm-practice-editor-practice-partner-li',
+                          '.dm-practice-editor-practice-partner-ul',
+                          '12'
                         );
                         attachTrashListener(
-                        $(document),
-                        '#dm-practice-partner-container',
-                        '.dm-practice-editor-practice-partner-li'
+                          $(document),
+                          '#dm-practice-partner-container',
+                          '.dm-practice-editor-practice-partner-li'
                         );
                         <% unless @practice_partners.any? %>
-                          $(document).arrive('#practice_partner_practices_fields_blueprint',
-                          function(blueprint) {
-                          $('.dm-add-practice-partner-practice-link').click();
-                          $(document).unbindArrive('#practice_partner_practices_fields_blueprint', blueprint);
-                          }
-                          );
+                          $(document).arrive('#practice_partner_practices_fields_blueprint', function(blueprint) {
+                            $('.dm-add-practice-partner-practice-link').click();
+                            $(document).unbindArrive('#practice_partner_practices_fields_blueprint', blueprint);
+                          });
                         <% end %>
                       <% end %>
                     <% end %>

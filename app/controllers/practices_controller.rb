@@ -554,7 +554,6 @@ class PracticesController < ApplicationController
                                      publications_attributes: [:id, :_destroy, :title, :link, :position],
                                      additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
                                      practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
-                                     practice_partner: {},
                                      department: {},
                                      category: {},
                                      practice_award: {},
@@ -571,7 +570,8 @@ class PracticesController < ApplicationController
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
                                      duration: {},
-                                     practice_editors_attributes: [:id, :email, :_destroy]
+                                     practice_editors_attributes: [:id, :email, :_destroy],
+                                     practice_partner_practices_attributes:  [:id, :practice_partner_id, :_destroy]
 
     )
   end
@@ -680,7 +680,7 @@ class PracticesController < ApplicationController
       if facility_type.present?
         set_initiating_fac_params params
       end
-      debugger
+
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction' && !updated.is_a?(StandardError)
