@@ -31,7 +31,9 @@
   </form>
 
   <%= render partial: 'shared/search_sort_select_section', locals: {
+      is_crh_show: true,
       sort_options: [
+          ['- Select -'],
           ['Sort by most adopted innovations', 'adoptions', class: 'usa-select'],
           ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
           ['Sort by most recently added', 'added', class: 'usa-select']
