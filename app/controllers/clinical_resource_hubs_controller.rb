@@ -36,7 +36,7 @@ class ClinicalResourceHubsController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    created_practices = helpers.is_user_a_guest? ? @crh.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, true) : Practice.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, false)
+    created_practices = helpers.is_user_a_guest? ? @crh.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, true) : @crh.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, false)
     @pagy_created_practices = pagy_array(
         created_practices,
         items: 3,
