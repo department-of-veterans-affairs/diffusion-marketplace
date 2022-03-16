@@ -16,7 +16,7 @@
   <%= javascript_include_tag 'clinical_resource_hubs/crh_show', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<div id="crh-show" class="grid-container" data-reload="true">
+<div id="crh-show" class="grid-col-12" data-reload="true">
   <section class="usa-section padding-y-0 grid-col-12" id="dm-crh-show">
     <div class="grid-container position-relative grid-col-12">
       <h1 class="margin-top-0 margin-bottom-3">
@@ -28,5 +28,7 @@
       </div>
     </div>
   </section>
-  <%= render partial: 'crh_search' unless @practices_created_by_crh.count == 0 && @practices_adopted_by_crh.count  == 0 %>
+  <div class="grid-container">
+    <%= render partial: 'crh_search' unless @practices_created_by_crh.count == 0 && @practices_adopted_by_crh.count  == 0 %>
+  </div>
 </div>
