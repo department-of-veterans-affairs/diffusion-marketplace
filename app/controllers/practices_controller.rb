@@ -141,7 +141,7 @@ class PracticesController < ApplicationController
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
           practice_editor = PracticeEditor.find_by(practice: @practice, user: current_user)
           if practice_editor.present? && Time.current - practice_editor.created_at > 2
-            practice_editor.update_attributes(last_edited_at: DateTime.current)
+            practice_editor.update(last_edited_at: DateTime.current)
           end
         end
       else
@@ -179,9 +179,9 @@ class PracticesController < ApplicationController
     user_practice = UserPractice.find_by(user: current_user, practice: @practice)
 
     if user_practice.present? && user_practice.favorited
-      user_practice.update_attributes(favorited: false)
+      user_practice.update(favorited: false)
     elsif user_practice.present? && !user_practice.favorited
-      user_practice.update_attributes(favorited: true, time_favorited: DateTime.now)
+      user_practice.update(favorited: true, time_favorited: DateTime.now)
     else
       user_practice = UserPractice.create(user: current_user, practice: @practice, favorited: true, time_favorited: DateTime.now)
     end
@@ -201,23 +201,23 @@ class PracticesController < ApplicationController
 
   def highlight
     old_highlight = Practice.find_by_highlight(true)
-    old_highlight.update_attributes(highlight: false) if old_highlight.present?
-    @practice.update_attributes highlight: true, featured: false
+    old_highlight.update(highlight: false) if old_highlight.present?
+    @practice.update(highlight: true, featured: false)
     redirect_to edit_practice_path(@practice)
   end
 
   def un_highlight
-    @practice.update_attributes highlight: false
+    @practice.update(highlight: false)
     redirect_to edit_practice_path(@practice)
   end
 
   def feature
-    @practice.update_attributes featured: true
+    @practice.update(featured: true)
     redirect_to edit_practice_path(@practice)
   end
 
   def un_feature
-    @practice.update_attributes featured: false
+    @practice.update(featured: false)
     redirect_to edit_practice_path(@practice)
   end
 
@@ -381,7 +381,7 @@ class PracticesController < ApplicationController
           flash[:error] = "There was an #{updated.message}. The innovation was not saved or published."
           format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
         else
-          @practice.update_attributes(published: true, date_published: DateTime.now)
+          @practice.update(published: true, date_published: DateTime.now)
           flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
           format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
@@ -435,7 +435,7 @@ class PracticesController < ApplicationController
       if params[:diffusion_history_status_id]
         # update the diffusion history status
         dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
-        params[:updated] = dhs.update_attributes(status: status, start_time: start_time, end_time: end_time, unsuccessful_reasons: unsuccessful_reasons, unsuccessful_reasons_other: unsuccessful_reasons_other)
+        params[:updated] = dhs.update(status: status, start_time: start_time, end_time: end_time, unsuccessful_reasons: unsuccessful_reasons, unsuccessful_reasons_other: unsuccessful_reasons_other)
       else
         # create a new status.
         DiffusionHistoryStatus.create!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time, unsuccessful_reasons: unsuccessful_reasons, unsuccessful_reasons_other: unsuccessful_reasons_other)

@@ -343,7 +343,7 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should only display search results for public-facing practices adopted in a given VISN if the user is a guest' do
-        Practice.second.update_attributes(initiating_facility: 1)
+        Practice.second.update(initiating_facility: 1)
         check_search_results_as_guest_user('#visns-show-search', 6, 'An Awesome Practice!', '.visn-adopted-practices-radio', '.visn-created-practices-radio')
       end
     end

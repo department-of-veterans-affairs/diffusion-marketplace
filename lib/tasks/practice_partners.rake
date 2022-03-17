@@ -26,7 +26,7 @@ namespace :practice_partners do
       new_partner = nil
 
       if existing_partner.present?
-        existing_partner.update_attributes(is_major: true)
+        existing_partner.update(is_major: true)
       else
         new_partner = PracticePartner.create!(name: partner[:name], slug: partner[:slug], is_major: true)
       end

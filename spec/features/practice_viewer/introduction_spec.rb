@@ -206,7 +206,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
   describe 'maturity level indicators' do
     before do
       # set maturity level
-      @pr_max.update_attributes(maturity_level: 'emerging')
+      @pr_max.update(maturity_level: 'emerging')
       visit practice_path(@pr_max)
     end
 

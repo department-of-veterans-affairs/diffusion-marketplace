@@ -60,7 +60,7 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'database_cleaner'
-  gem 'capybara', '~> 3.32.0'
+  gem 'capybara'
   gem 'rspec_junit_formatter'
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
