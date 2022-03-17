@@ -37,7 +37,7 @@ class PracticePartner < ApplicationRecord
 
   def self.cached_practice_partners
     Rails.cache.fetch('practice_partners') do
-      PracticePartner.all.order(Arel.sql("lower(name) ASC"))
+      PracticePartner.all.order(Arel.sql("lower(name) ASC")).load
     end
   end
 end

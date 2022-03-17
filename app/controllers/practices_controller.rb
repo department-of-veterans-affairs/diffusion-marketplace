@@ -159,11 +159,11 @@ class PracticesController < ApplicationController
 
   def search
     @visn_grouped_facilities = @va_facilities.includes([:visn]).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
-    @practices = helpers.is_user_a_guest? ? Practice.searchable_public_practices : Practice.searchable_practices
+    pr = helpers.is_user_a_guest? ? Practice.published_enabled_approved.public_facing : Practice.published_enabled_approved
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = cached_json_practices
     @diffusion_histories = []
-    @practices.each do |p|
+    pr.each do |p|
       p.diffusion_histories.includes([:va_facility]).each do |dh|
         @diffusion_histories << {practice_id: dh.practice_id, facility_number: dh.va_facility.station_number}
       end

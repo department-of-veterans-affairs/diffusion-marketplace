@@ -45,7 +45,7 @@ class VaFacility < ApplicationRecord
 
   def self.cached_va_facilities
     Rails.cache.fetch('va_facilities') do
-      VaFacility.where(hidden: false)
+      VaFacility.where(hidden: false).load
     end
   end
 end
