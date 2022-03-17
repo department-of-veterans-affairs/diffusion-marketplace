@@ -11,11 +11,6 @@ class ClinicalResourceHubsController < ApplicationController
     @visn_crh = ClinicalResourceHub.cached_clinical_resource_hubs.find_by(visn: @visn)
     @states_str = get_visn_associated_states_str(visn_id)
 
-
-    # @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => true) :
-    #                                 @crh.get_crh_created_practices(@crh.id, nil, 'a_to_z', nil, :is_user_guest => false)
-
-
     @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, :is_user_guest => true) :
                                     @crh.get_crh_created_practices(@crh.id, :is_user_guest => false)
 
@@ -25,8 +20,11 @@ class ClinicalResourceHubsController < ApplicationController
                                     @crh.get_crh_adopted_practices(@crh.id, :is_user_guest => false)
     @practices_adopted_json = practices_json(@practices_adopted_by_crh) unless @practices_adopted_by_crh == nil
 
-    @practices_created_categories = []
-    get_categories_by_practices(@practices_created_by_crh, @practices_created_categories)
+    @crh_practices_created_categories = []
+    get_categories_by_practices(@practices_created_by_crh, @crh_practices_created_categories)
+
+    @crh_practices_adopted_categories = []
+    get_categories_by_practices(@practices_adopted_by_crh, @crh_practices_adopted_categories)
   end
 
   # GET /crh/:id/created_crh_practices
