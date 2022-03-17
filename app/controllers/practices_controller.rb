@@ -311,8 +311,8 @@ class PracticesController < ApplicationController
   # /practices/slug/introduction
   def introduction
     @parent_categories = Category.get_parent_categories
-    @major_practice_partners = PracticePartner.cached_practice_partners.major_partners
-    @practice_partners = @practice.practice_partners.where(is_major: true)
+    @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
+    @practice_partners = @practice.practice_partners
     render 'practices/form/introduction'
   end
 

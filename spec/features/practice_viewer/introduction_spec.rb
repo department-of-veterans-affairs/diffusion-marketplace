@@ -71,7 +71,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     PracticeAward.create!(practice: @pr_max, name: 'Other', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'An amazing award that the whole team is proud of', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'Another great award that this innovation can show off', created_at: Time.now)
-    @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
+    @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002', is_major: true)
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
     PracticePartnerPractice.create!(practice: @pr_max, practice_partner: @pr_partner_1, created_at: Time.now)
     PracticePartnerPractice.create!(practice: @pr_max, practice_partner: @pr_partner_2, created_at: Time.now)
@@ -173,11 +173,11 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       visit practice_path(@pr_max)
     end
 
-    it 'should display the content correctly' do
+    it 'should only have links for major practice partners' do
       expect(page).to have_content(@pr_partner_1.name)
       expect(page).to have_content(@pr_partner_2.name)
       expect(page).to have_link(href: practice_partner_path(@pr_partner_1))
-      expect(page).to have_link(href: practice_partner_path(@pr_partner_2))
+      expect(page).to_not have_link(href: practice_partner_path(@pr_partner_2))
     end
   end
 

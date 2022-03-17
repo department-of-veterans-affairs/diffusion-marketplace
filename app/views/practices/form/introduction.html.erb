@@ -449,10 +449,9 @@
                         <% end %>
                         <li class="dm-practice-editor-practice-partner-li fields margin-bottom-2" role="option" data-id="<%= ppp_id %>">
                           <div class="grid-row">
-                            <div class="usa-combo-box grid-col-12" data-default-value="<%= ppp_partner_id %>">
-                              <%#= ppp.label :practice_partner_id, '', class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12' %>
-                              <label for="practice_practice_partner_practices_attributes_<%= ppp_index %>_practice_partner_id" class="usa-label margin-top-0 margin-bottom-1 grid-col-12"></label>
-                              <%= ppp.select :practice_partner_id, @major_practice_partners.collect { |mp| [mp.name, mp.id] }, class: 'usa-input desktop:grid-col-12 margin-top-0' %>
+                            <div class="usa-combo-box grid-col-12 practice-partner-combo-box" data-default-value="<%= ppp_partner_id %>">
+                              <%= ppp.label :practice_partner_id, class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12 usa-sr-only' %>
+                              <%= ppp.select :practice_partner_id, @cached_practice_partners.collect { |mp| [mp.name, mp.id] }, class: 'usa-input desktop:grid-col-12 margin-top-0' %>
                             </div>
                             <div class="grid-col-12 trash-container">
                               <%= f.link_to_remove 'Delete entry', class: "dm-origin-trash dm-button--unstyled-warning float-right" %>

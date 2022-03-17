@@ -4,12 +4,15 @@ class PracticePartnersController < ApplicationController
   # GET /practice_partners
   # GET /practice_partners.json
   def index
-    @practice_partners = PracticePartner.cached_practice_partners.order(name: :asc)
+    @practice_partners = PracticePartner.cached_practice_partners.major_partners.order(name: :asc)
   end
 
   # GET /practice_partners/1
   # GET /practice_partners/1.json
   def show
+    # only allow users to view the show page for major practices
+    redirect_to root_path unless @practice_partner.is_major
+
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @partner_practices = helpers.is_user_a_guest? ? @practice_partner.practices.published_enabled_approved.public_facing.sort_by_retired.sort_a_to_z : @practice_partner.practices.published_enabled_approved.sort_by_retired.sort_a_to_z
     @pagy_partner_practices, @paginated_partner_practices = pagy_array(

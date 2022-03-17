@@ -157,3 +157,4 @@ gem 'lodash-rails'
 gem 'route_downcaser'
 
 gem "autoprefixer-rails"
+gem 'naturalsorter', '3.0.22'
