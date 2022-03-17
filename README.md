@@ -37,8 +37,9 @@
 | `rails documentation:port_publications_to_practice_resources` | Ports publications (links) to practice_resources
 | `rails risk_and_mitigation:remove_unpaired_risks_and_mitigation` | Removes risks without a corresponding mitigation AND removes mitigations without a corresponding risk.
 | `rails practice_editors:add_practice_owners_to_practice_editors` | Adds each practice owner to the practice editors list of their corresponding practice
-| `rails va_facilities:fix_data_va_facilities` | updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complextity_level')
+| `rails va_facilities:fix_data_va_facilities` | updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complexity_level')
 | `rails practice_partners:apply_is_major_flag_to_partners` | Creates/updates certain flagship practice partners and applies the 'is_major' flag to them
+| `rails practice_partners:add_new_practice_partners` | Adds new practice partners to the DB based on a spreadsheet provided in March 2022
 #### Ruby version
 
 - `ruby 2.6.3`
@@ -175,6 +176,7 @@ This will run:
 15. `rails practice_editors:add_practice_owners_to_practice_editors` - Adds each practice owner to the practice editors list of their corresponding practice
 16. `rails va_facilities:fix_data_va_facilities` - updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complextity_level')
 17. `rails practice_partners:apply_is_major_flag_to_partners` - Creates/updates certain flagship practice partners and applies the 'is_major' flag to them
+18. `rails practice_partners:add_new_practice_partners` - Adds new practice partners to the DB based on a spreadsheet provided in March 2022
 
 To reset all of the data and do the process all over again, run:
 ```bash
