@@ -300,10 +300,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(find(:css, '#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Office of Rural Health')
         expect(page).to have_selector('.dm-practice-editor-practice-partner-li', count: 3)
       end
-
-      it 'should raise an error if the practice failed to update because of the partners' do
-
-      end
     end
 
     context 'categories' do
