@@ -9,7 +9,7 @@ var NO_QUERY_CONTENT = '.search-no-results';
 var SPINNER = '.dm-crh-search-loading-spinner';
 var LOAD_MORE_CONTAINER = '.button-box';
 var SEARCH_RESULTS = '#search-results';
-var SORT_EL = '#search_sort_option';
+var SORT_EL = '#search_sort_options';
 var RADIO_OPTIONS = 'input[name=crh-show-radio-buttons]';
 var CREATED_COMBO_BOX = '#crh-search-created-categories';
 var ADOPTED_COMBO_BOX = '#crh-search-adopted-categories';
@@ -17,6 +17,9 @@ var is_combo_box_submitted = false;
 var is_page_load = 0;
 var is_radio_submit = false;
 var crhShowUrl = '/crh/' + visn["number"];
+
+var createdComboBoxDiv = '.practice-created-categories-combo-box';
+var adoptedComboBoxDiv = '.practice-adopted-categories-combo-box';
 
 // add a data attribute to the fieldset in order to trigger an ahoy tracking event only when the search field has been updated/populated
 function setFieldsetAttr(boolean) {
@@ -73,6 +76,11 @@ function searchPracticesByCrh() {
     }
     // Search practices and populate the page
     function search(query, category, radioVal) {
+        if(query.length > 0 && category == undefined && radioVal == undefined) {
+            radio_btn = document.getElementById('crh-created-practices');
+            radio_btn.checked = "checked";
+            showAndHideComboBoxes(createdComboBoxDiv, adoptedComboBoxDiv);
+        }
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
         // Set variables
@@ -143,15 +151,6 @@ function searchPracticesByCrh() {
             }
         }
 
-        // if the radio input is the only filter, return all of the results that correspond to whichever input is chosen (created/adopted)
-//        function resultsForOnlyRadioVal(jsonPractices) {
-//            results = jsonPractices.map((jsonPractice, index) => ({
-//                item: jsonPractice,
-//                score: 1,
-//                refIndex: index,
-//                matches: null
-//            });
-//        }
 
         function searchWithOnlyRadioVal() {
             if (radioVal === 'created') {
@@ -259,7 +258,6 @@ function searchPracticesByCrh() {
 
     $(document).on('submit', '#crh-show-search-form', function (e) {
         e.preventDefault();
-
         hideResultsSectionElAndShowSpinner();
 
         // Add a search query to the URL when necessary
@@ -278,16 +276,6 @@ function searchPracticesByCrh() {
         // Get the value for the created/adopted innovations radio input
         var createdOrAdoptedRadio = $('input[name=crh-show-radio-buttons]:checked').val();
 
-        // hide one of the category combo boxes based on which radio input is chosen
-        var createdComboBoxDiv = '.practice-created-categories-combo-box';
-        var adoptedComboBoxDiv = '.practice-adopted-categories-combo-box';
-
-        function showAndHideComboBoxes(comboBoxDivOne, comboBoxDivTwo) {
-            if ($(comboBoxDivOne).hasClass('display-none')) {
-                $(comboBoxDivOne).removeClass('display-none');
-            }
-            $(comboBoxDivTwo).addClass('display-none');
-        }
 
         // Get the value of the category combo box
         var categoryComboBoxVal;
@@ -324,6 +312,7 @@ function searchPracticesByCrh() {
         // Run the search
         search(searchField.value, categoryComboBoxVal, createdOrAdoptedRadio);
     });
+
 
     // Sort the results based on each sort option
     var sortSelect = $(SORT_EL);
@@ -459,6 +448,13 @@ function execCrhSearchFunctions() {
     submitFormOnComboBoxChange(ADOPTED_COMBO_BOX);
     submitFormOnRadioInputClick();
 //    preventComplexityModalFlickerOnPageLoad();
+}
+
+function showAndHideComboBoxes(comboBoxDivOne, comboBoxDivTwo) {
+    if ($(comboBoxDivOne).hasClass('display-none')) {
+        $(comboBoxDivOne).removeClass('display-none');
+    }
+    $(comboBoxDivTwo).addClass('display-none');
 }
 
 document.addEventListener('turbolinks:load', function() {
