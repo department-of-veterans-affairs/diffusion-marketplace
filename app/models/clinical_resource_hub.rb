@@ -62,7 +62,4 @@ class ClinicalResourceHub < ApplicationRecord
     practices = Practice.search_practices(search_term, sort, categories, is_user_guest)
     practices.select { |pr| pr.practice_origin_facilities.where(clinical_resource_hub_id: crh_id)}
   end
-
-
-
 end

@@ -1,8 +1,8 @@
 <% facilities.each do |facility| %>
   <% path = facility.class.name === "ClinicalResourceHub" ? "/crh/" + facility.visn.number.to_s : va_facility_path(facility)  %>
   <% if facility.class.name === "ClinicalResourceHub" %>
-    <% created_count = facility.practices_created_by_crh_count %>
-    <% adopted_count = facility.practices_adopted_by_crh_count %>
+    <% created_count = crh_created_practices_count(facility.visn_id) %>
+    <% adopted_count = crh_adopted_practices_count(facility.visn_id) %>
   <% else %>
     <% created_count = facility.practices_created_count %>
     <% adopted_count = facility.practices_adopted_count %>
