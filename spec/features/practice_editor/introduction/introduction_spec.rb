@@ -230,10 +230,9 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
     context 'awards and recognition' do
       it 'should allow changing awards' do
-        expect(page).to have_checked_field('QUERI Veterans Choice Act Award')
-        expect(page).to have_checked_field('Diffusion of Excellence Promising Practice')
-        expect(page).to have_unchecked_field('VHA Shark Tank Winner')
-        expect(page).to have_no_content('Name of award or recognition')
+        expect(find('#practice_award_queri_veterans_choice_act_award', visible: false)).to be_checked
+        expect(find('#practice_award_diffusionof_excellence_promising_practice', visible: false)).to be_checked
+        expect(find('#practice_award_vha_shark_tank_winner', visible: false)).to_not be_checked
         find('#practice_award_fed_health_it_award_label').click # selects FedHealth IT Award
         find('#practice_award_other_label').click # selects other
         find('#practice_award_vha_shark_tank_winner_label').click # deselects VHA Shark Tank Winner
@@ -300,6 +299,10 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         # make sure the first entry ('Office of Rural Health') never got destroyed and that there are still only 3 partners in the list
         expect(find(:css, '#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Office of Rural Health')
         expect(page).to have_selector('.dm-practice-editor-practice-partner-li', count: 3)
+      end
+
+      it 'should raise an error if the practice failed to update because of the partners' do
+
       end
     end
 

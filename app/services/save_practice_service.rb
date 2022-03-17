@@ -11,7 +11,6 @@ class SavePracticeService
     @resources = ['problem_resources', 'solution_resources', 'results_resources', 'multimedia']
     @current_endpoint = params[:current_endpoint]
     @error_messages = {
-        update_practice_partner_practices: 'error updating practice partners',
         update_department_practices: 'error updating departments',
         remove_attachments: 'error removing attachments',
         manipulate_avatars: 'error updating avatars',
@@ -121,29 +120,33 @@ class SavePracticeService
     partner_id_counts = practice_partner_params.values.collect { |param| param[:practice_partner_id] }.group_by(&:itself).transform_values(&:count)
     unsaved_practice_partner_ids = []
 
-    practice_partner_params.each do |key, value|
-      partner_id = value[:practice_partner_id]
-      existing_practice_partner = @practice.practice_partners.find_by(id: partner_id.to_i)
+    begin
+      practice_partner_params.each do |key, value|
+        partner_id = value[:practice_partner_id]
+        existing_practice_partner = @practice.practice_partners.find_by(id: partner_id.to_i)
 
-      # if the user tries to delete an existing partner and create a new identical partner, keep the original record and remove the corresponding partners that are not yet created
-      if partner_id_counts[partner_id] > 1 && existing_practice_partner.present?
-        duplicate_practice_partners_to_be_created = practice_partner_params.select { |hash_key, hash_value| hash_value[:practice_partner_id] === partner_id }.keys
-        # remove all of the keys that have have a practice_partner_id value that match the current partner_id
-        duplicate_practice_partners_to_be_created.each do |param_key|
-          practice_partner_params.delete(param_key)
+        # if the user tries to delete an existing partner and create a new identical partner, keep the original record and remove the corresponding partners that are not yet created
+        if partner_id_counts[partner_id] > 1 && existing_practice_partner.present?
+          duplicate_practice_partners_to_be_created = practice_partner_params.select { |hash_key, hash_value| hash_value[:practice_partner_id] === partner_id }.keys
+          # remove all of the keys that have have a practice_partner_id value that match the current partner_id
+          duplicate_practice_partners_to_be_created.each do |param_key|
+            practice_partner_params.delete(param_key)
+          end
+          # set the count for the current partner_id back to 1
+          partner_id_counts[partner_id] = 1
         end
-        # set the count for the current partner_id back to 1
-        partner_id_counts[partner_id] = 1
-      end
 
-      # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner
-      if value[:id].nil?
-        if unsaved_practice_partner_ids.include?(partner_id) || existing_practice_partner.present?
-          practice_partner_params.delete(key)
-        else
-          unsaved_practice_partner_ids << partner_id unless partner_id.nil?
+        # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner
+        if value[:id].nil?
+          if unsaved_practice_partner_ids.include?(partner_id) || existing_practice_partner.present?
+            practice_partner_params.delete(key)
+          else
+            unsaved_practice_partner_ids << partner_id unless partner_id.nil?
+          end
         end
       end
+    rescue
+      raise StandardError.new 'error updating practice partners'
     end
   end
 
