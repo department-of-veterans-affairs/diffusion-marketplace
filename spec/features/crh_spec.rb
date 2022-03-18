@@ -14,6 +14,13 @@ describe 'Clinical_Resource_Hubs', type: :feature do
         expect(page).to_not have_content('We\'re sorry, we can\'t find the page you\'re looking for. It might have been removed, changed names, or is otherwise unavailable.')
       end
     end
+    describe 'crh show page works' do
+      it 'should display content show 404' do
+        visit '/crh/1'
+        expect(page).to have_content('VISN 1 Clinical Resource Hub')
+        expect(page).to have_content('New Hampshire, Maine, Connecticut, Rhode Island, Massachusetts and Vermont')
+      end
+    end
   end
 
   describe 'Cache' do
