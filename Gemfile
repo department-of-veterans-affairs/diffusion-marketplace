@@ -5,14 +5,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 5.2.4.6'
+gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '1.1.4'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
 gem 'puma', '>= 4.3.5'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -52,6 +52,7 @@ gem 'rolify'
 gem 'pagy', '~> 3.5'
 
 gem 'local_time'
+gem 'rails-timeago'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -96,6 +97,7 @@ group :development do
   gem 'erd'
 
   gem 'rubyzip'
+  gem 'sprockets', '~> 3.7.2'
 
   ###
 end
@@ -131,10 +133,9 @@ gem 'humanize'
 gem 'paper_trail'
 gem 'commontator'
 gem 'acts_as_votable'
-gem 'jquery-timeago-rails', github: 'agilesix/jquery-timeago-rails'
 
 # Active Admin
-gem 'activeadmin'
+gem 'activeadmin', '~> 2.3.0'
 gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'

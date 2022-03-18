@@ -32,4 +32,4 @@ html = Arbre::Context.new do
   end
 end
 
-f.template.concat(html.to_s)
+return html.to_s

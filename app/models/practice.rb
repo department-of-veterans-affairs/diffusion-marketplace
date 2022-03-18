@@ -30,7 +30,7 @@ class Practice < ApplicationRecord
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
-    cache_keys = ["searchable_practices", "searchable_public_practices", "searchable_practices_json", "searchable_public_practices_json"]
+    cache_keys = ["searchable_practices_json", "searchable_public_practices_json"]
     cache_keys.each do |cache_key|
       Rails.cache.delete(cache_key)
     end
@@ -60,18 +60,6 @@ class Practice < ApplicationRecord
 
   def reset_searchable_practices
     clear_searchable_cache if self.reset_searchable_cache
-  end
-
-  def self.searchable_practices
-    Rails.cache.fetch('searchable_practices') do
-      Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
-    end
-  end
-
-  def self.searchable_public_practices
-    Rails.cache.fetch('searchable_public_practices') do
-      Practice.public_facing.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
-    end
   end
 
   def has_facility?
