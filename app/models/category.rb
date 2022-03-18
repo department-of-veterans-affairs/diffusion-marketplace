@@ -50,7 +50,7 @@ class Category < ApplicationRecord
 
   def self.cached_categories
     Rails.cache.fetch('categories') do
-      Category.where(is_other: false).joins(:parent_category).where.not(parent_category: nil).order_by_name.includes(:parent_category)
+      Category.where(is_other: false).joins(:parent_category).where.not(parent_category: nil).order_by_name.includes(:parent_category).load
     end
   end
 

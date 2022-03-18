@@ -119,7 +119,7 @@ class UsersController < ApplicationController
 
 
       # Practices based on the user's location
-      @practices = Practice.searchable_practices
+      @practices = Practice.published_enabled_approved.includes(:practice_origin_facilities)
       @facilities_data = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_station_name
       @offices_data = origin_data_json
       @user_location_practices = []
