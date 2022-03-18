@@ -15,7 +15,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
       end
     end
     describe 'crh show page works' do
-      it 'should display content show 404' do
+      it 'should display content' do
         visit '/crh/1'
         expect(page).to have_content('VISN 1 Clinical Resource Hub')
       end
