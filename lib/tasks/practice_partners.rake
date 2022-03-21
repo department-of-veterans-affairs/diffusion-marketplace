@@ -34,4 +34,34 @@ namespace :practice_partners do
       puts "The \"#{existing_partner.present? ? existing_partner.name : new_partner.name}\" practice partner has been successfully #{existing_partner.present? ? 'updated' : 'created'} and classified as a major partner!!"
     end
   end
+
+  desc 'Adds new practice partners from a list created in 2022'
+  task :add_new_practice_partners => :environment do
+    new_practice_partners_json = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_partners.json"))
+    failed_partner_creations = []
+
+    new_practice_partners_json.each do |npp|
+      partner_name = npp['Name']
+      existing_practice_partner = PracticePartner.find_by(name: partner_name)
+
+      if existing_practice_partner.nil?
+        begin
+          PracticePartner.create!(name: partner_name)
+          puts "SUCCESS: The #{partner_name} practice partner has been created!"
+        rescue
+          puts "ERROR: Something went wrong. The #{partner_name} practice partner could not be created."
+          failed_partner_creations << partner_name
+        end
+      else
+        puts "WARNING: The #{partner_name} practice partner could not be created because a practice partner with the same name already exists in the DB."
+      end
+    end
+    puts "*** The 'add_new_practice_partners' task has been completed! *** \n\n"
+    if failed_partner_creations.any?
+      puts "Error(s) prevented the following practice partners from being created: "
+      failed_partner_creations.each do |fpp|
+        puts "-- #{fpp}\n"
+      end
+    end
+  end
 end

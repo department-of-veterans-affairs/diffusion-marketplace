@@ -15,6 +15,8 @@ class PracticePartner < ApplicationRecord
 
   attr_accessor :reset_cached_practice_partners
 
+  scope :major_partners, -> { where(is_major: true) }
+
   def clear_practice_partners_cache
     Rails.cache.delete('practice_partners')
   end

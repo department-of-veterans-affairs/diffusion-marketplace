@@ -1,7 +1,8 @@
 require 'rails_helper'
 describe 'Practice partners pages', type: :feature do
   before do
-    @pp = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
+    @pp = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002', is_major: true)
+    @pp_2 = PracticePartner.create!(name: 'Awesome Practice Partner', short_name: 'APP', description: 'Hello world')
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'patrick.star@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -50,6 +51,12 @@ describe 'Practice partners pages', type: :feature do
       expect(current_path).to eq('/partners')
     end
 
+    it 'should only display major practice partners on the partners index page' do
+      visit '/partners'
+      expect(page).to have_content(@pp.name)
+      expect(page).to_not have_content(@pp_2.name)
+    end
+
     it 'should show the initiating facility\'s name' do
       @pr_1.update(initiating_facility: 'Foobar Facility')
       visit '/partners/diffusion-of-excellence'
@@ -76,6 +83,13 @@ describe 'Practice partners pages', type: :feature do
       expect(updated_pr_card_count).to eq(13)
       expect(page).to have_no_content('Load more')
       expect(page).to have_no_content('random practice')
+    end
+
+    it 'should redirect the user to the homepage if they try to view a minor practice partner\'s show page' do
+      @pp.update_attributes(is_major: false)
+      visit '/partners/diffusion-of-excellence'
+      expect(page).to_not have_current_path('/partners/diffusion-of-excellence')
+      expect(page).to have_current_path('/')
     end
   end
 

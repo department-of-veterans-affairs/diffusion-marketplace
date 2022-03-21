@@ -272,7 +272,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
-  accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
+  accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['practice_partner_id'].blank? }
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['description'].blank?
     ip_reject = false

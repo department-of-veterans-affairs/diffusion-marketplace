@@ -9,16 +9,6 @@ RSpec.describe SavePracticeService do
       @save_practice = SavePracticeService.new({ practice: practice, practice_params: {}})
     end
 
-    context 'while update_practice_partner_practices' do
-      it 'returns a StandardError' do
-        allow(@save_practice).to receive(:update_practice_partner_practices).and_raise(StandardError.new('Error!!!'))
-  
-        result = @save_practice.save_practice
-        expect(result.is_a?(StandardError)).to eq true
-        expect(result.message).to eq 'error updating practice partners'
-      end
-    end
-
     context 'while update_department_practices' do
       it 'returns a StandardError' do
         allow(@save_practice).to receive(:update_department_practices).and_raise(StandardError.new('Error!!!'))
