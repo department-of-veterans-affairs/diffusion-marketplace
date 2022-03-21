@@ -16,8 +16,9 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     @pr_facility = PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     PracticeAward.create!(practice: @practice, name: 'QUERI Veterans Choice Act Award', created_at: Time.now)
     PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
-    @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
-    @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
+    @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002', is_major: true)
+    @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE', is_major: true)
+    @pr_partner_3 = PracticePartner.create!(name: 'Awesome Practice Partner', short_name: 'APP', description: 'Hello world')
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_2, created_at: Time.now)
     @parent_cat_1 = Category.create!(name: 'Strategic')
@@ -57,7 +58,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Select the location where this innovation originated')
       expect(page).to have_content('Awards and recognition')
       expect(page).to have_content('Partners')
-      expect(page).to have_content('Select any of the following partners your innovation is associated with.')
+      expect(page).to have_content('Type or select from the dropdown any of the following partners your innovation is associated with.')
       expect(page).to have_content('Diffusion phase')
       expect(page).to have_content('Select the diffusion phase that applies to your innovation.')
       expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/instructions")
@@ -229,10 +230,9 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
     context 'awards and recognition' do
       it 'should allow changing awards' do
-        expect(page).to have_checked_field('QUERI Veterans Choice Act Award')
-        expect(page).to have_checked_field('Diffusion of Excellence Promising Practice')
-        expect(page).to have_unchecked_field('VHA Shark Tank Winner')
-        expect(page).to have_no_content('Name of award or recognition')
+        expect(find('#practice_award_queri_veterans_choice_act_award', visible: false)).to be_checked
+        expect(find('#practice_award_diffusionof_excellence_promising_practice', visible: false)).to be_checked
+        expect(find('#practice_award_vha_shark_tank_winner', visible: false)).to_not be_checked
         find('#practice_award_fed_health_it_award_label').click # selects FedHealth IT Award
         find('#practice_award_other_label').click # selects other
         find('#practice_award_vha_shark_tank_winner_label').click # deselects VHA Shark Tank Winner
@@ -247,14 +247,58 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     end
 
     context 'partners' do
+      def set_practice_partner_combo_box_val(value)
+        find('.usa-combo-box__input').click
+        find('.usa-combo-box__input').set(value)
+        all('.usa-combo-box__list-option').first.click
+      end
+
       it 'should allow changing partners' do
-        expect(page).to have_checked_field('Diffusion of Excellence')
-        expect(page).to have_checked_field('Office of Rural Health')
-        find('#practice_partner_1_label').click # uncheck Diffusion of Excellence
+        expect(find(:css, '#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+        expect(find(:css, '#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
+        # add another partner
+        find('#link_to_add_link_practice_partner_practices').click
+        within(all('.dm-practice-editor-practice-partner-li').last) do
+          set_practice_partner_combo_box_val('Awesome')
+        end
+        # remove the Diffusion of Excellence partner
+        within(all('.dm-practice-editor-practice-partner-li')[0]) do
+          click_link('Delete entry')
+        end
         click_save
+        expect(find(:css, '#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq(@pr_partner_3.name)
         visit_practice_show
         expect(page).to_not have_link('Diffusion of Excellence')
+        expect(page).to_not have_link(@pr_partner_3.name)
         expect(page).to have_link('Office of Rural Health')
+        # make sure the user can't create two of the same unsaved practice partner
+        visit_practice_edit
+        find('#link_to_add_link_practice_partner_practices').click
+        within(all('.dm-practice-editor-practice-partner-li').last) do
+          set_practice_partner_combo_box_val('Diffusion')
+        end
+
+        find('#link_to_add_link_practice_partner_practices').click
+        within(all('.dm-practice-editor-practice-partner-li').last) do
+          set_practice_partner_combo_box_val('Diffusion')
+        end
+        click_save
+        expect(find(:css, '#practice_practice_partner_practices_attributes_2_practice_partner_id').value).to eq('Diffusion of Excellence')
+        expect(page).to have_selector('.dm-practice-editor-practice-partner-li', count: 3)
+        # make sure the user can't create a duplicate practice partner if that same practice partner is already in the list of partners
+        # remove the 'Office of Rural Health' partner from the list
+        within(all('.dm-practice-editor-practice-partner-li')[0]) do
+          click_link('Delete entry')
+        end
+        # try to create a new 'Office of Rural Health' partner at the same time
+        find('#link_to_add_link_practice_partner_practices').click
+        within(all('.dm-practice-editor-practice-partner-li').last) do
+          set_practice_partner_combo_box_val('Office')
+        end
+        click_save
+        # make sure the first entry ('Office of Rural Health') never got destroyed and that there are still only 3 partners in the list
+        expect(find(:css, '#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Office of Rural Health')
+        expect(page).to have_selector('.dm-practice-editor-practice-partner-li', count: 3)
       end
     end
 

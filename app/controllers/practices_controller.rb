@@ -170,7 +170,7 @@ class PracticesController < ApplicationController
     end
     @parent_categories = Category.get_cached_categories_grouped_by_parent
     @categories = Category.cached_categories.get_category_names
-    @practice_partners = PracticePartner.cached_practice_partners.where(is_major: true)
+    @practice_partners = PracticePartner.cached_practice_partners.major_partners
   end
 
   # POST /practices/1/favorite.js
@@ -311,6 +311,8 @@ class PracticesController < ApplicationController
   # /practices/slug/introduction
   def introduction
     @parent_categories = Category.get_parent_categories
+    @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
+    @practice_partners = @practice.practice_partners
     render 'practices/form/introduction'
   end
 
@@ -552,7 +554,6 @@ class PracticesController < ApplicationController
                                      publications_attributes: [:id, :_destroy, :title, :link, :position],
                                      additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
                                      practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
-                                     practice_partner: {},
                                      department: {},
                                      category: {},
                                      practice_award: {},
@@ -569,7 +570,8 @@ class PracticesController < ApplicationController
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
                                      duration: {},
-                                     practice_editors_attributes: [:id, :email, :_destroy]
+                                     practice_editors_attributes: [:id, :email, :_destroy],
+                                     practice_partner_practices_attributes:  [:id, :practice_partner_id, :_destroy]
 
     )
   end
@@ -678,6 +680,7 @@ class PracticesController < ApplicationController
       if facility_type.present?
         set_initiating_fac_params params
       end
+
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction' && !updated.is_a?(StandardError)

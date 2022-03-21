@@ -99,7 +99,6 @@
             <p class="display-inline line-height-26">
               <% all_awards = get_all_awards(@practice) %>
               <% if all_awards.length > 180 %>
-                <%#= truncate(@all_awards.to_s, start: 0, length: 180) %>
                 <span id="awards_truncated"><%= all_awards[0...180]%></span>
                 <span id="dots_award">...</span>
                 <span id="more_text_award">
@@ -123,10 +122,13 @@
             <h5 class="text-uppercase display-inline margin-y-0">Partners:</h5>
             <p class="display-inline line-height-26">
               <% @practice.practice_partners.each_with_index do |partner, index| %>
-                <a href="<%= practice_partner_path(partner) %>" class="usa-link">
-                  <%= partner.name %>
-                </a>
-                <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
+                <% needs_comma = @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
+
+                <% if partner.is_major %>
+                  <a href="<%= practice_partner_path(partner) %>" class="usa-link"><%= partner.name %></a><%= ', ' if needs_comma %>
+                <% else %>
+                  <span><%= partner.name %></span><%= ', ' if needs_comma %>
+                <% end %>
               <% end %>
             </p>
           </div>
