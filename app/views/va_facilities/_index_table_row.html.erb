@@ -11,10 +11,10 @@
     <th scope="row" role="rowheader" class="grid-col-4"><a class="usa-link" href='<%= path %>'><%= facility["official_station_name"] %>
       <% if facility.class.name != "ClinicalResourceHub"  %> (<%= facility["common_name"] %>)<% end %></a>
     </th>
-    <td class="grid-col-1"><%= facility.class.name === "ClinicalResourceHub" ? facility.visn.state : facility.street_address_state %></td>
+    <td class="grid-col-1"><%= facility.class.name === "ClinicalResourceHub" ? '-' : facility.street_address_state %></td>
     <td class="grid-col-1"><a class="usa-link" href='/visns/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
     <% if facility.class.name === "ClinicalResourceHub" %>
-        <td class="grid-col-2">N/A</td>
+        <td class="grid-col-2">-</td>
      <% else %>
         <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.match(/^1/) ? facility.fy17_parent_station_complexity_level[0..1].upcase : facility.fy17_parent_station_complexity_level[0..0].upcase %></td>
      <% end %>

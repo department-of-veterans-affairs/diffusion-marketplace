@@ -25,10 +25,10 @@ class VaFacilitiesController < ApplicationController
   end
 
   def load_facilities_index_rows
-    if params[:facility].present? && params[:facility].to_i > 0
+    if params[:facility].present?
       @facilities = [VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).find(params[:facility])]
 
-    elsif params[:crh].present? && params[:crh].to_i > 0
+    elsif params[:crh].present?
       @facilities = [ClinicalResourceHub.find_by_id(params[:crh].to_i)]
     else
       @facilities = VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).get_relevant_attributes
