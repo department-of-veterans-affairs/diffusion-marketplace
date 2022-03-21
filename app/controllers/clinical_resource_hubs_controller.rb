@@ -48,12 +48,7 @@ class ClinicalResourceHubsController < ApplicationController
       practice_cards_html += pr_html
     end
     respond_to do |format|
-      format.html
-      if practice_cards_html.length > 0
-        format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.size, next: @pagy_created_info.next } }
-      else
-        render json: { message: "No results" }, status: :ok
-      end
+      format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.size, next: @pagy_created_info.next } }
     end
   end
 
