@@ -21,6 +21,8 @@ describe 'Clinical_Resource_Hubs', type: :feature do
     DiffusionHistoryStatus.create!(diffusion_history: @dh_2, status: 'Completed', start_time: Time.now)
     @dh_3 = DiffusionHistory.create!(practice_id: @practice_3.id, clinical_resource_hub: @crh3)
     DiffusionHistoryStatus.create!(diffusion_history: @dh_3, status: 'Completed', start_time: Time.now)
+
+    login_as(@user, :scope => :user, :run_callbacks => false)
   end
 
   describe 'CRH show page' do
