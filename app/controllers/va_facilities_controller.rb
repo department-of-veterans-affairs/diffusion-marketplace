@@ -1,27 +1,12 @@
 class VaFacilitiesController < ApplicationController
-  include PracticeUtils
+  include PracticeUtils, VaFacilitiesHelper
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
-  helper_method :crh_created_practices_count, :crh_adopted_practices_count
   def index
     @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name.includes([:visn])
     @clinical_resource_hubs = ClinicalResourceHub.all
     @facilities = (@facilities.includes(:visn).sort_by(&:official_station_name.downcase) + @clinical_resource_hubs.includes([:visn]).sort_by(&:id))
     @visns = Visn.cached_visns.select(:name, :number)
     @types = VaFacility.cached_va_facilities.order_by_station_name.get_complexity
-  end
-
-  def crh_created_practices_count(visn_id)
-    crh = ClinicalResourceHub.find_by(visn_id: visn_id)
-    @practices_created_by_crh = helpers.is_user_a_guest? ? crh.get_crh_created_practices(crh.id, :is_user_guest => true) :
-                                    crh.get_crh_created_practices(crh.id, :is_user_guest => false)
-    @practices_created_by_crh.count
-  end
-
-  def crh_adopted_practices_count(visn_id)
-    crh = ClinicalResourceHub.find_by(visn_id: visn_id)
-    @practices_adopted_by_crh = helpers.is_user_a_guest? ? crh.get_crh_adopted_practices(crh.id,  :is_user_guest => true) :
-                                    crh.get_crh_adopted_practices(crh.id, :is_user_guest => false)
-    @practices_adopted_by_crh.count
   end
 
   def load_facilities_index_rows
