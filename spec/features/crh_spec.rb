@@ -36,13 +36,13 @@ describe 'Clinical_Resource_Hubs', type: :feature do
     describe 'crh show page works' do
       it 'should display content' do
         visit '/crh/1'
-        expect(page).to have_content('VISN 1 Clinical Resource Hub')
+        expect(page).to have_content('Clinical Resource Hub (CRH) serves veterans in')
         visit '/crh/2'
-        expect(page).to have_content('VISN 2 Clinical Resource Hub')
+        expect(page).to have_content('Clinical Resource Hub (CRH) serves veterans in')
       end
       it 'should display adopted practice cards' do
         visit '/crh/1'
-        choose('crh-show-radio-buttons[created_or_adopted]', option: 'adopted')
+        choose('crh-show-radio-buttons', option: 'adopted')
         expect(practice_cards.count).to eq(1)
       end
       it 'should display CRH info modal and close' do
@@ -58,7 +58,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
         visit '/crh/1'
         expect(page).to have_content("Facility index")
         find("a[href='/facilities']").click
-        expect(page).to have_content("Looking for a full list if VISNs?")
+        expect(page).to have_content("for a full list of VISNs?")
       end
     end
   end
