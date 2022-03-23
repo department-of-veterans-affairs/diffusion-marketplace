@@ -99,6 +99,11 @@ to confirm the class DOES NOT EXIST before adding a new class
   }
 }
 
+.margin-top-96 {
+  margin-top: 96px;
+}
+
+
 /* Margin Bottom */
 .margin-bottom-0 {
   @include u-margin-bottom(0, !important);
