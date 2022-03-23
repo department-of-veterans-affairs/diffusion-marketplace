@@ -6,7 +6,6 @@ class ClinicalResourceHubsController < ApplicationController
   def show
     @visn_va_facilities = VaFacility.get_by_visn(@visn).get_relevant_attributes
     @visn_crh = ClinicalResourceHub.cached_clinical_resource_hubs.find_by(visn: @visn)
-    @states_str = get_visn_associated_states_str(@visn.id)
 
     @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, :is_user_guest => true) :
                                     @crh.get_crh_created_practices(@crh.id, :is_user_guest => false)
@@ -49,12 +48,10 @@ class ClinicalResourceHubsController < ApplicationController
     end
   end
 
-
-
-
   private
   def set_crh
     @visn = params[:id].present? ? Visn.find_by!(number: params[:id]) : Visn.find_by!(number: params[:number])
+    @visn_obj = Visn.find_by!(number: params[:number])
     @crh = ClinicalResourceHub.find_by!(visn: @visn) if @visn.present?
   end
 end
