@@ -42,7 +42,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
       end
       it 'should display adopted practice cards' do
         visit '/crh/1'
-        find('#crh_adopted_practices').click
+        find('#crh-adopted-practices').click
         expect(practice_cards.count).to eq(1)
       end
       it 'should display CRH info modal and close' do
@@ -57,7 +57,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
       it 'should display breadcrumb to facilities index page' do
         visit '/crh/1'
         expect(page).to have_content("Facility index")
-        find('.usa_breadcrumb__link').click
+        find("a[href='/facilities']").click
         expect(page).to have_content("Looking for a full list if VISNs?")
       end
     end
