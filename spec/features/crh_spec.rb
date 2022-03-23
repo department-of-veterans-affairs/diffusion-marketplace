@@ -27,9 +27,6 @@ describe 'Clinical_Resource_Hubs', type: :feature do
 
   describe 'CRH show page' do
     describe 'route works' do
-      it 'should be there' do
-        expect(page).to have_current_path(clinical_resource_hubs_path)
-      end
       it 'should not show 404' do
         visit '/crh/1'
         expect(page).to_not have_content('Page not found')
@@ -40,19 +37,18 @@ describe 'Clinical_Resource_Hubs', type: :feature do
       it 'should display content' do
         visit '/crh/1'
         expect(page).to have_content('VISN 1 Clinical Resource Hub')
-      end
-      it 'should display content' do
         visit '/crh/2'
         expect(page).to have_content('VISN 2 Clinical Resource Hub')
       end
       it 'should display adopted practice cards' do
         visit '/crh/1'
-        find(".crh_adopted_practices").click
+        find('#crh_adopted_practices').click
         expect(practice_cards.count).to eq(1)
       end
       it 'should display CRH info modal and close' do
         visit '/crh/1'
-        find(".crh_info_modal").click
+        # find('#crh_info_modal').click
+        find("a[href='#crh-info-modal']").click
         expect(page).to have_content("Clinical Resource Hubs (CRH) are a network of solutions that combines in-person care and telehealth to support underserved medical facilities.")
         # check to make sure it closes properly
         find('.usa-modal__close').click
@@ -61,7 +57,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
       it 'should display breadcrumb to facilities index page' do
         visit '/crh/1'
         expect(page).to have_content("Facility index")
-        find('#usa_breadcrumb__link').click
+        find('.usa_breadcrumb__link').click
         expect(page).to have_content("Looking for a full list if VISNs?")
       end
     end
