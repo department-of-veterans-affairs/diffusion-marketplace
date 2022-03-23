@@ -8,6 +8,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
     @crh = ClinicalResourceHub.create!(official_station_name: 'VISN 1 Clinical Resource Hub', visn_id: @visn_1.id)
     @crh2 = ClinicalResourceHub.create!(official_station_name: 'VISN 2 Clinical Resource Hub', visn_id: @visn_2.id)
     @crh3 = ClinicalResourceHub.create!(official_station_name: 'VISN 3 Clinical Resource Hub', visn_id: @visn_3.id)
+    @user = User.create!(email: 'nobara.kugisaki@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: false, confirmed_at: Time.now, accepted_terms: true)
 
     @practice = Practice.create!(name: 'The Best Innovation Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best innovation ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     @practice_2 = Practice.create!(name: 'An Awesome Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is an awesome practice.', published: true, enabled: true, approved: true, user: @user)
@@ -55,7 +56,12 @@ describe 'Clinical_Resource_Hubs', type: :feature do
         find('.usa-modal__close').click
         expect(page).to_not have_content("Clinical Resource Hubs (CRH) are a network of solutions that combines in-person care and telehealth to support underserved medical facilities.")
       end
-
+      it 'should display breadcrumb to facilities index page' do
+        visit '/crh/1'
+        expect(page).to have_content("Facility index")
+        find('#usa_breadcrumb__link').click
+        expect(page).to have_content("Looking for a full list if VISNs?")
+      end
     end
   end
 
