@@ -1,101 +1,81 @@
 <%= javascript_include_tag '_header_utilities', 'data-turbolinks-track': 'reload' %>
-
 <%= render 'shared/usa_banner' %>
 <%= render 'shared/veterans_crisis_line_modal' %>
+<!-- source: https://designsystem.digital.gov/components/header/#extended -->
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
-  <div class="usa-overlay"></div>
-  <header class="usa-header usa-header--basic desktop-lg:border-bottom desktop-lg:border-base-lighter">
-  <div class="usa-nav-container maxw-full">
-    <div class="usa-navbar">
-      <div class="usa-logo" id="basic-logo">
-        <em class="usa-logo__text">
-      <a class="display-flex" href="/" title="Home" aria-label="Home">
-        <img class="width-4 height-4 margin-top-2px dm-header--va-seal" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
-        <p class="margin-0 margin-left-1 text-ink line-height-sans-1 padding-top-2px desktop-lg:padding-top-05">
-          <span class="text-bold font-sans-sm desktop-lg:font-sans-lg">Diffusion Marketplace</span><br>
-          <span class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</span>
-        </p>
-      </a>
-        </em>
-      </div>
-      <button class="usa-menu-btn bg-ink padding-x-205">Menu</button>
+<header id="dm-nav-header" class="usa-header usa-header--extended bg-white ">
+  <div class="usa-navbar padding-x-0 margin-0 desktop:width-full desktop:padding-left-105">
+    <div class="usa-logo">
+      <em class="usa-logo__text">
+        <a class="display-flex" href="/" title="Home" aria-label="Home">
+          <img class="width-4 height-4 margin-top-2px" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
+          <p class="margin-0 margin-left-1 text-ink line-height-sans-1 padding-top-2px">
+            <span class="text-bold font-sans-sm desktop:font-sans-lg">Diffusion Marketplace</span><br>
+            <span class="font-sans-3xs text-light desktop:font-sans-sm">Department of Veterans Affairs</span>
+          </p>
+        </a>
+      </em>
     </div>
-    <nav aria-label="Primary navigation" class="usa-nav padding-top-6 desktop-lg:margin-y-3">
+    <div class="dm-navbar__secondary display-none desktop:display-flex flex-row flex-align-self-center">
+      <%= render partial: 'shared/navbar_search', locals: { search_form_id: 'dm-navbar-search-desktop-form', search_field_id: 'dm-navbar-search-desktop-field', search_button_id: 'dm-navbar-search-desktop-button' } %>
+      <%= render partial: 'shared/header_user_login_nav', locals: { accordion_id: 'dm-user-profile-options' } %>
+    </div>
+    <button class="usa-menu-btn bg-ink padding-x-205">Menu</button>
+  </div>
+  <nav aria-label="Primary navigation" class="usa-nav desktop:border-bottom desktop:border-base-lighter">
+    <div class="usa-nav__inner">
       <button class="usa-nav__close">
-        <img src="<%= image_url 'uswds/close.svg' %>" class="maxw-105" role="img" alt="close">
+        <img src="<%= image_url 'uswds/close.svg' %>" role="img" alt="close">
       </button>
-      <ul class="usa-nav__primary usa-accordion margin-top-0">
+      <ul class="usa-nav__primary usa-accordion">
+        <li class="usa-nav__primary-item border-0 dm-header--mobile-searchbar desktop:display-none">
+          <%= render partial: 'shared/navbar_search', locals: { search_form_id: 'dm-navbar-search-mobile-form', search_field_id: 'dm-navbar-search-mobile-field', search_button_id: 'dm-navbar-search-mobile-button' } %>
+        </li>
         <li class="usa-nav__primary-item border-base-light">
-          <a class="margin-y-2px desktop-lg:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == '/about' %>" href="/about">
-            <span class="text-normal desktop-lg:text-semibold">About us</span>
+          <a class="margin-y-2px desktop:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == '/about' %>" href="/about">
+            <span class="text-normal desktop:text-semibold">About us</span>
           </a>
         </li>
         <li class="usa-nav__primary-item border-base-light">
-          <a class="margin-y-2px desktop-lg:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == '/partners' %>" href="/partners">
-            <span class="text-normal desktop-lg:text-semibold">Partners</span>
+          <a class="margin-y-2px desktop:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == '/partners' %>" href="/partners">
+            <span class="text-normal desktop:text-semibold">Partners</span>
           </a>
         </li>
-        <li class="usa-nav__primary-item border-base-light border-bottom-1px desktop-lg:border-bottom-0">
+        <li class="usa-nav__primary-item border-base-light">
+          <a class="margin-y-2px desktop:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == '/competitions/shark-tank' %>" href="/competitions/shark-tank">
+            <span class="text-normal desktop:text-semibold">Shark Tank</span>
+          </a>
+        </li>
+        <li class="usa-nav__primary-item border-base-light desktop:border-bottom-0">
           <button
-            class="margin-y-2px desktop-lg:margin-y-0 usa-accordion__button usa-nav__link <%= 'usa-current' if request.fullpath === '/visns' || request.fullpath === '/facilities' || request.fullpath === '/diffusion-map' %>"
+            class="margin-y-2px desktop:margin-y-0 usa-accordion__button usa-nav__link border-base-light <%= 'usa-current' if request.fullpath === '/visns' || request.fullpath === '/facilities' || request.fullpath === '/diffusion-map' %>"
             aria-expanded="false"
             aria-controls="browse-by-locations-dropdown"
           >
-            <span class="text-normal desktop-lg:text-semibold">Browse by locations</span>
+            <span class="text-normal desktop:text-semibold padding-right-0">Browse by locations</span>
           </button>
-          <ul id="browse-by-locations-dropdown" class="usa-nav__submenu">
+          <ul id="browse-by-locations-dropdown" class="display-none usa-nav__submenu">
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop-lg:font-sans-2xs margin-y-2px desktop-lg:margin-y-0 <%= 'usa-current' if request.fullpath === '/visns' %>" href="<%= visns_path %>">VISN index</a>
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === '/visns' %>" href="<%= visns_path %>">
+                VISN index
+              </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop-lg:font-sans-2xs margin-y-2px desktop-lg:margin-y-0 <%= 'usa-current' if request.fullpath === '/facilities' %>" href="<%= va_facilities_path %>">Facility index</a>
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === '/facilities' %>" href="<%= va_facilities_path %>">
+                Facility index
+              </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop-lg:font-sans-2xs margin-y-2px desktop-lg:margin-y-0 <%= 'usa-current' if request.fullpath === '/diffusion-map' %>" href="<%= diffusion_map_path %>">Diffusion map</a>
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === '/diffusion-map' %>" href="<%= diffusion_map_path %>">
+                Diffusion map
+              </a>
             </li>
           </ul>
         </li>
-        <li class="usa-nav__primary-item border-0">
-          <%= render 'shared/navbar_search' %>
-        </li>
-        <%
-          user_type = session[:user_type]
-          vaec_environment = ENV['VAEC_ENV']
-        %>
-        <% if user_signed_in? %>
-          <% if vaec_environment === 'true' && user_type === 'ntlm' %>
-            <li class="usa-nav__primary-item border-0">
-              <a class="margin-y-2px desktop-lg:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
-                <span class="text-normal desktop-lg:text-semibold">Your profile</span>
-              </a>
-            </li>
-          <% else %>
-            <li class="usa-nav__primary-item border-0">
-              <button class="margin-y-2px desktop-lg:margin-y-0 usa-accordion__button usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" aria-expanded="false" aria-controls="dm-user-profile-options">
-                <span class="text-normal desktop-lg:text-semibold">Your profile</span>
-              </button>
-              <div id="dm-user-profile-options" class="usa-nav__submenu">
-                <ul class="usa-nav__submenu-list">
-                  <li class="usa-nav__submenu-item border-base-light">
-                    <a class="font-sans-sm desktop-lg:font-sans-2xs <%= 'usa-current' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>"  href="<%= user_path(current_user) %>">
-                      <span>Profile</span>
-                    </a>
-                  </li>
-                  <li class="usa-nav__submenu-item border-base-light">
-                    <%= link_to('Sign out', destroy_user_session_path, method: :delete, class: 'font-sans-sm desktop-lg:font-sans-2xs') %>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          <% end %>
-        <% else %>
-          <% unless vaec_environment === 'true' %>
-            <li class="usa-nav__primary-item border-0">
-              <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link margin-y-2px desktop-lg:margin-y-0' %>
-            </li>
-          <% end %>
-        <% end %>
       </ul>
-    </nav>
-  </div>
+      <div class="usa-nav__secondary desktop:display-none">
+        <%= render partial: 'shared/header_user_login_nav', locals: { accordion_id: 'dm-user-mobile-profile-options' } %>
+      </div>
+    </div>
+  </nav>
 </header>

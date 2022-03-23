@@ -1,0 +1,42 @@
+<%
+  user_type = session[:user_type]
+  vaec_environment = ENV['VAEC_ENV']
+  accordion_id ||= 'dm-user-profile-options'
+%>
+<ul class="usa-nav__primary usa-accordion margin-top-0 border-base-light border-bottom-1px desktop:border-0">
+  <% if user_signed_in? %>
+    <% if vaec_environment === 'true' && user_type === 'ntlm' %>
+        <li class="usa-nav__primary-item border-base-light border-top-1px desktop:border-0">
+          <a class="margin-y-2px desktop:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+            <span class="text-normal desktop:text-semibold">
+              Your profile
+            </span>
+          </a>
+        </li>
+    <% else %>
+      <li class="usa-nav__primary-item border-base-light border-top-1px desktop:border-0">
+        <button class="margin-y-2px desktop:margin-y-0 usa-accordion__button usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" aria-expanded="false" aria-controls="<%= accordion_id %>">
+          <span class="text-normal desktop:text-semibold padding-right-0">Your profile</span>
+        </button>
+        <div id="<%= accordion_id %>" class="usa-nav__submenu">
+          <ul class="usa-nav__submenu-list">
+            <li class="usa-nav__submenu-item border-base-light">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>"  href="<%= user_path(current_user) %>">
+                <span>Profile</span>
+              </a>
+            </li>
+            <li class="usa-nav__submenu-item border-base-light">
+              <%= link_to('Sign out', destroy_user_session_path, method: :delete, class: 'font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0') %>
+            </li>
+          </ul>
+        </div>
+      </li>
+    <% end %>
+  <% else %>
+    <% unless vaec_environment === 'true' %>
+      <li class="usa-nav__primary-item border-base-light border-top-1px desktop:border-0">
+        <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link margin-y-2px desktop:margin-y-0 desktop:text-semibold' %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
