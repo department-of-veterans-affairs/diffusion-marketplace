@@ -42,11 +42,20 @@ describe 'Clinical_Resource_Hubs', type: :feature do
         visit '/crh/2'
         expect(page).to have_content('VISN 2 Clinical Resource Hub')
       end
-      if 'should display adopted practice cards'
+      it 'should display adopted practice cards' do
         visit '/crh/1'
         find(".crh_adopted_practices").click
         expect(practice_cards.count).to eq(1)
       end
+      it 'should display CRH info modal and close' do
+        visit '/crh/1'
+        find(".crh_info_modal").click
+        expect(page).to have_content("Clinical Resource Hubs (CRH) are a network of solutions that combines in-person care and telehealth to support underserved medical facilities.")
+        # check to make sure it closes properly
+        find('.usa-modal__close').click
+        expect(page).to_not have_content("Clinical Resource Hubs (CRH) are a network of solutions that combines in-person care and telehealth to support underserved medical facilities.")
+      end
+
     end
   end
 
