@@ -42,8 +42,8 @@ describe 'Clinical_Resource_Hubs', type: :feature do
       end
       it 'should display adopted practice cards' do
         visit '/crh/1'
-        within('.usa-radio').last do
-          find('[for=crh-adopted-practices]').click
+        within('.radio-button-group') do
+          find('.crh-adopted-practices').set(true)
         end
         expect(practice_cards.count).to eq(1)
       end
