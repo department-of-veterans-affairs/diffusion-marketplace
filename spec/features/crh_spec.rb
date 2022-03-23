@@ -42,7 +42,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
       end
       it 'should display adopted practice cards' do
         visit '/crh/1'
-        find('#crh-adopted-practices').click
+        find('.crh-adopted-practices').click
         expect(practice_cards.count).to eq(1)
       end
       it 'should display CRH info modal and close' do
