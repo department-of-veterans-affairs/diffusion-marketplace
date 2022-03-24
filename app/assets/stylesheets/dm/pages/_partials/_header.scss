@@ -110,14 +110,14 @@
     }
 
     .usa-nav {
-      @include u-width(100%);
+      width: 100%;
     }
 
     .usa-navbar {
       @include u-display('flex');
-      @include u-maxw(100%);
       @include u-padding-left(2);
-      @include u-width(100%);
+      max-width: 100%;
+      width: 100%;
     }
 
     .usa-nav__link {
