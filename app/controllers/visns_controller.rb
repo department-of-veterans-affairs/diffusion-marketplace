@@ -94,8 +94,13 @@ class VisnsController < ApplicationController
     @visns.each do |visn|
       va_facility_ids = VaFacility.get_by_visn(visn).get_ids
       visn_crh = visn.clinical_resource_hub
-      created = helpers.is_user_a_guest? ? visn.get_created_practices(va_facility_ids, visn_crh.id, :is_user_guest => true).size : visn.get_created_practices(va_facility_ids, visn_crh.id, :is_user_guest => false).size
-      adopted = helpers.is_user_a_guest? ? visn.get_adopted_practices(va_facility_ids, visn_crh.id, :is_user_guest => true).size : visn.get_adopted_practices(va_facility_ids, visn_crh.id, :is_user_guest => false).size
+      if visn_crh === nil
+        created = 0
+        adopted = 0
+      else
+        created = helpers.is_user_a_guest? ? visn.get_created_practices(va_facility_ids, visn_crh.id, :is_user_guest => true).size : visn.get_created_practices(va_facility_ids, visn_crh.id, :is_user_guest => false).size
+        adopted = helpers.is_user_a_guest? ? visn.get_adopted_practices(va_facility_ids, visn_crh.id, :is_user_guest => true).size : visn.get_adopted_practices(va_facility_ids, visn_crh.id, :is_user_guest => false).size
+      end
       visn_counts.push({number: visn[:number], created: created, adopted: adopted})
     end
     visn_counts
