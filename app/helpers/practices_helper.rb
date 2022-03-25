@@ -18,20 +18,6 @@ module PracticesHelper
     state_hash_str
   end
 
-  def states_lookup
-    @state_options = us_states
-    x = 0
-    state_hash_arr = []
-      @state_options.each do |st|
-        if x > 0
-          st.split
-          state_hash_arr << st[1] + "," + st[0]
-        end
-        x = x + 1
-      end
-      state_hash_arr
-  end
-
   def get_all_awards(practice)
     all_awards = ""
     practice_awards = practice.practice_awards.where.not(name: 'Other')

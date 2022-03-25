@@ -7,13 +7,11 @@ class ClinicalResourceHubsController < ApplicationController
     @visn_va_facilities = VaFacility.get_by_visn(@visn).get_relevant_attributes
     @visn_crh = ClinicalResourceHub.cached_clinical_resource_hubs.find_by(visn: @visn)
 
-    @practices_created_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_created_practices(@crh.id, :is_user_guest => true) :
-                                    @crh.get_crh_created_practices(@crh.id, :is_user_guest => false)
-
+    @practices_created_by_crh = @crh.get_crh_created_practices(@crh.id, is_user_guest: helpers.is_user_a_guest?)
     @practices_created_json = practices_json(@practices_created_by_crh) unless @practices_created_by_crh == nil
 
-    @practices_adopted_by_crh = helpers.is_user_a_guest? ? @crh.get_crh_adopted_practices(@crh.id,  :is_user_guest => true) :
-                                    @crh.get_crh_adopted_practices(@crh.id, :is_user_guest => false)
+    @practices_adopted_by_crh = @crh.get_crh_adopted_practices(@crh.id,  is_user_guest: helpers.is_user_a_guest?)
+
     @practices_adopted_json = practices_json(@practices_adopted_by_crh) unless @practices_adopted_by_crh == nil
 
     @crh_practices_created_categories = []
@@ -30,7 +28,7 @@ class ClinicalResourceHubsController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    created_practices = helpers.is_user_a_guest? ? @crh.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, true) : @crh.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, false)
+    created_practices = @crh.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, helpers.is_user_a_guest?)
     @pagy_created_practices = pagy_array(
         created_practices,
         items: 3,

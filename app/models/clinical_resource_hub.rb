@@ -40,14 +40,6 @@ class ClinicalResourceHub < ApplicationRecord
     end
   end
 
-  def practices_created_by_crh_count
-    PracticeOriginFacility.where(clinical_resource_hub_id: id).count
-  end
-
-  def practices_adopted_by_crh_count
-    DiffusionHistory.where(clinical_resource_hub_id: id).count
-  end
-
   def get_crh_adopted_practices( crh_id, options = { :is_user_guest => true })
     options[:is_user_guest] ? Practice.public_facing.load_associations.get_by_adopted_crh(crh_id) :
         Practice.published_enabled_approved.load_associations.get_by_adopted_crh(crh_id)
