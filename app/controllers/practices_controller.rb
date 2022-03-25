@@ -323,6 +323,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/introduction
   def introduction
+    @va_facilities_and_crhs = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     @parent_categories = Category.get_parent_categories
     @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
     @practice_partners = @practice.practice_partners
@@ -585,7 +586,7 @@ class PracticesController < ApplicationController
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
                                      categories_attributes: [:id, :_destroy, :name, :parent_category_id, :is_other],
-                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id, :va_facility_id],
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id, :va_facility_id, :clinical_resource_hub_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
                                      duration: {},
@@ -714,31 +715,37 @@ def clear_origin_facilities
 end
 
 def set_initiating_fac_params(params)
-  facility_type = params[:practice][:initiating_facility_type]
-
-  if facility_type == "facility"
-    params[:practice][:practice_origin_facilities_attributes].values.each do |value|
-      if value[:va_facility_id].nil?
-        params[:practice][:practice_origin_facilities_attributes] = nil
+  origin_facility_params = params[:practice][:practice_origin_facilities_attributes]
+  case params[:practice][:initiating_facility_type]
+  when "facility"
+    origin_facility_params.values.each do |value|
+      facility_id = value[:facility_id]
+      if facility_id.present?
+        if facility_id.start_with?('va-facility')
+          value[:va_facility_id] = facility_id.split('-').last
+        else
+          value[:clinical_resource_hub_id] = facility_id.split('-').last
+        end
+        value[:facility_id] = facility_id.split('-').last
       end
     end
     @practice.initiating_facility = ""
     @practice.initiating_department_office_id = ""
-  elsif facility_type == "visn"
+  when "visn"
     if params[:editor_visn_select].present?
       @practice.initiating_facility = params[:editor_visn_select]
       @practice.initiating_department_office_id = ""
     else
       @practice.initiating_facility = ""
     end
-  elsif facility_type == "department"
+  when "department"
     if params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
       @practice.initiating_facility = params[:practice][:initiating_facility]
       @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
     else
       @practice.initiating_facility = ""
     end
-  elsif facility_type == "other"
+  else
     if params[:initiating_facility_other].present?
       @practice.initiating_facility = params[:initiating_facility_other]
       @practice.initiating_department_office_id = ""

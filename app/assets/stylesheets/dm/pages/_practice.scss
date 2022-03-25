@@ -815,6 +815,15 @@ li.small-disc:before {
     margin-top: -30px !important;
   }
 }
+.practice-editor-origin-li {
+   .usa-combo-box {
+     max-width: unset !important;
+   }
+
+  .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
+    top: 0.5rem;
+  }
+}
 
 // Overview
 #overview {

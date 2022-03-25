@@ -124,9 +124,11 @@ class SavePracticeService
       practice_partner_params.each do |key, value|
         partner_id = value[:practice_partner_id]
         existing_practice_partner = @practice.practice_partners.find_by(id: partner_id.to_i)
+        has_duplicate_partner_params = partner_id_counts[partner_id] > 1
+        existing_partner_present_in_params = practice_partner_params.values.select { |val| val[:practice_partner_id] === existing_practice_partner.id.to_s && val[:id].present? }.present?
 
         # if the user tries to delete an existing partner and create a new identical partner, keep the original record and remove the corresponding partners that are not yet created
-        if partner_id_counts[partner_id] > 1 && existing_practice_partner.present?
+        if has_duplicate_partner_params && existing_practice_partner.present? && existing_partner_present_in_params
           duplicate_practice_partners_to_be_created = practice_partner_params.select { |hash_key, hash_value| hash_value[:practice_partner_id] === partner_id }.keys
           # remove all of the keys that have have a practice_partner_id value that match the current partner_id
           duplicate_practice_partners_to_be_created.each do |param_key|
@@ -138,8 +140,10 @@ class SavePracticeService
 
         # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner
         if value[:id].nil?
-          if unsaved_practice_partner_ids.include?(partner_id) || existing_practice_partner.present?
+          if (unsaved_practice_partner_ids.include?(partner_id)) || (existing_practice_partner.present? && has_duplicate_partner_params)
             practice_partner_params.delete(key)
+            # set the count for the current partner_id back to 1
+            partner_id_counts[partner_id] = 1
           else
             unsaved_practice_partner_ids << partner_id unless partner_id.nil?
           end
@@ -501,15 +505,69 @@ class SavePracticeService
 
   # remove duplicate practice origin facilities that have not yet been created
   def filter_practice_origin_facilities
-    pof_params = @practice_params[:practice_origin_facilities_attributes]
+    origin_facility_params = @practice_params[:practice_origin_facilities_attributes]
+    facility_id_counts = origin_facility_params.values.collect { |param| param[:facility_id] }.group_by(&:itself).transform_values(&:count)
     unsaved_va_facility_ids = []
-    pof_params.each do |pof|
-      pof_hash = pof[1]
-      pof_va_facility_id = pof_hash[:va_facility_id]
-      if pof_hash[:id].blank?
-        pof_params.delete(pof[0]) if unsaved_va_facility_ids.include?(pof_va_facility_id)
-        unsaved_va_facility_ids << pof_va_facility_id
+    unsaved_crh_ids = []
+
+    begin
+      origin_facility_params.each do |key, value|
+        va_facility_id = value[:va_facility_id]
+        crh_id = value[:clinical_resource_hub_id]
+        practice_origin_facilities = @practice.practice_origin_facilities
+
+        if va_facility_id.present? || crh_id.present?
+          existing_origin_facility = va_facility_id.present? ? practice_origin_facilities.find_by(va_facility_id: va_facility_id.to_i) :
+                                     practice_origin_facilities.find_by(clinical_resource_hub_id: crh_id.to_i)
+        end
+
+        has_duplicate_origin_facility_params = va_facility_id.present? ? facility_id_counts[va_facility_id] > 1 : facility_id_counts[crh_id] > 1
+        existing_origin_facility_present_in_params = origin_facility_params.values.select do |val|
+          if val[:va_facility_id].present? && existing_origin_facility.present?
+            val[:va_facility_id] === existing_origin_facility.va_facility_id.to_s && val[:id].present?
+          elsif val[:clinical_resource_hub_id].present? && existing_origin_facility.present?
+            val[:clinical_resource_hub_id] === existing_origin_facility.clinical_resource_hub_id.to_s && val[:id].present?
+          end
+        end
+
+        # if the user tries to delete an existing partner and create a new identical partner, keep the original record and remove the corresponding partners that are not yet created
+        if has_duplicate_origin_facility_params && existing_origin_facility.present? && existing_origin_facility_present_in_params.any?
+          duplicate_origin_facilities_to_be_created = origin_facility_params.select do |hash_key, hash_value|
+            if hash_value[:va_facility_id].present?
+              hash_value[:va_facility_id] === va_facility_id
+            else
+              hash_value[:clinical_resource_hub_id] === crh_id
+            end
+          end
+          # remove all of the keys that have have a practice_partner_id value that match the current partner_id
+          duplicate_origin_facilities_to_be_created.keys.each do |param_key|
+            origin_facility_params.delete(param_key)
+          end
+          # set the count for the current partner_id back to 1
+          va_facility_id.present? ? facility_id_counts[va_facility_id] = 1 : facility_id_counts[crh_id] = 1
+        end
+
+        # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner
+        if value[:id].nil? && va_facility_id.present?
+          if (unsaved_va_facility_ids.include?(va_facility_id)) || (existing_origin_facility.present? && has_duplicate_origin_facility_params)
+            origin_facility_params.delete(key)
+            # set the count for the current partner_id back to 1
+            facility_id_counts[va_facility_id] = 1
+          else
+            unsaved_va_facility_ids << va_facility_id unless va_facility_id.nil?
+          end
+        elsif value[:id].nil? && crh_id.present?
+          if (unsaved_crh_ids.include?(crh_id)) || (existing_origin_facility.present? && has_duplicate_origin_facility_params)
+            origin_facility_params.delete(key)
+            # set the count for the current partner_id back to 1
+            facility_id_counts[crh_id] = 1
+          else
+            unsaved_crh_ids << crh_id unless crh_id.nil?
+          end
+        end
       end
+    rescue => e
+      raise StandardError.new 'error updating practice origin facilities'
     end
   end
 end

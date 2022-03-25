@@ -78,7 +78,7 @@ function removeSeparator($originFacilityEl) {
 }
 
 function observePracticeEditorLiArrival($document,
-                                        liElSelector = '.practice-editor-origin-facility-li',
+                                        liElSelector = '.practice-editor-origin-li',
                                         ulSelector = '.practice-editor-origin-ul',
                                         separatorCols = '8',
                                         link_to_add_link_id = '',
@@ -96,13 +96,13 @@ function observePracticeEditorLiArrival($document,
             link_to_add_link_id,
             link_to_add_button_id
         );
-        if (liElSelector === '.practice-editor-origin-facility-li') {
-            getFacilitiesByState(
-                facilityData,
-                `practice_practice_origin_facilities_attributes_${dataId}_va_facility_id`,
-                `editor_state_select_${dataId}`
-            );
-        }
+        // if (liElSelector === '.practice-editor-origin-li') {
+        //     getFacilitiesByState(
+        //         facilityData,
+        //         `practice_practice_origin_facilities_attributes_${dataId}_va_facility_id`,
+        //         `editor_state_select_${dataId}`
+        //     );
+        // }
 
         if (liElSelector === '.core-people-resource-li') {
             if(is_published) {
@@ -118,7 +118,7 @@ function observePracticeEditorLiArrival($document,
 
 function styleOriginFacility($newEl,
                              dataId,
-                             liElSelector = '.practice-editor-origin-facility-li',
+                             liElSelector = '.practice-editor-origin-li',
                              ulSelector = '.practice-editor-origin-ul',
                              separatorCols = '8',
                              link_to_add_link_id = '',
