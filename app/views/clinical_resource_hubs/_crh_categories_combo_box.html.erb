@@ -1,12 +1,12 @@
-<div class="usa-combo-box grid-col-4 practice-<%= practice_type %>-categories-combo-box" data-placeholder="All categories">
-  <label for="crh-search-<%= practice_type %>-categories" class="line-height-26">Categories</label>
-  <select id="crh-search-<%= practice_type %>-categories" class="usa-select" name="crh-search-<%= practice_type %>-categories">
-    <% if practice_categories.count > 0 %>
-      <% practice_categories.each do |ct| %>
-        <option value="<%= ct.name %>">
-          <%= ct.name %>
-        </option>
-      <% end %>
-    <% end %>
-  </select>
-</div>
+<% if practice_categories.present? && practice_categories.count > 0 %>
+  <div class="usa-combo-box grid-col-4 practice-<%= practice_type %>-categories-combo-box" data-placeholder="All categories">
+    <label for="crh-search-<%= practice_type %>-categories" class="line-height-26">Categories</label>
+    <select id="crh-search-<%= practice_type %>-categories" class="usa-select" name="crh-search-<%= practice_type %>-categories">
+        <% practice_categories.each do |ct| %>
+          <option value="<%= ct.name %>">
+            <%= ct.name %>
+          </option>
+        <% end %>
+    </select>
+  </div>
+<% end %>
