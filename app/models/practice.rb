@@ -194,7 +194,7 @@ class Practice < ApplicationRecord
   scope :sort_by_retired, -> { order("retired asc") }
   scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
   scope :get_by_adopted_facility_and_crh, -> (facility_id, crh_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).or(left_outer_joins(:diffusion_histories).where(diffusion_histories: {clinical_resource_hub_id: crh_id})).uniq }
-  scope :get_by_adopted_crh, -> (crh_id) { (left_outer_joins :diffusion_histories).where(diffusion_histories: {clinical_resource_hub_id: crh_id}).uniq }
+  scope :get_by_adopted_crh, -> (crh_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {clinical_resource_hub_id: crh_id}).uniq }
 
   scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }).uniq }
   scope :get_by_created_facility_and_crh, -> (facility_id, crh_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }).or(where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { clinical_resource_hub_id: crh_id })).uniq }
