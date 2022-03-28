@@ -2,7 +2,6 @@ class VaFacilitiesController < ApplicationController
   include PracticeUtils, VaFacilitiesHelper
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
   def index
-    debugger
     @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name.includes([:visn])
     @clinical_resource_hubs = ClinicalResourceHub.all
     @facilities = (@facilities.includes(:visn).sort_by(&:official_station_name.downcase) + @clinical_resource_hubs.includes([:visn]).sort_by(&:id))
@@ -11,7 +10,6 @@ class VaFacilitiesController < ApplicationController
   end
 
   def load_facilities_index_rows
-    debugger
     if params[:facility].present?
       @facilities = [VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).find(params[:facility])]
 
@@ -19,20 +17,18 @@ class VaFacilitiesController < ApplicationController
       @facilities = [ClinicalResourceHub.find_by_id(params[:crh].to_i)]
     else
       @facilities = VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).get_relevant_attributes
+      @clinical_resource_hubs = ClinicalResourceHub.all
 
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })
+        visn_id = Visn.where(number: params["visn"].to_i).first().id
+        @clinical_resource_hubs = @clinical_resource_hubs.where(visn_id: visn_id).sort_by(&:id)
       end
-
       if params[:complexity].present?
+        @clinical_resource_hubs = []
         @facilities = @facilities.where(va_facilities: { fy17_parent_station_complexity_level: params[:complexity] })
       end
-    end
-
-    @clinical_resource_hubs = ClinicalResourceHub.all
-    # include CRHs in facilities list
-    if !params.has_key?(:facility)
-      @facilities = (@facilities.includes(:visn).sort_by(&:official_station_name.downcase) + @clinical_resource_hubs.includes([:visn]).sort_by(&:id))
+      @facilities = @facilities + @clinical_resource_hubs
     end
     table_rows_html = render_to_string('va_facilities/_index_table_row', layout: false, locals: { facilities: @facilities })
     respond_to do |format|
