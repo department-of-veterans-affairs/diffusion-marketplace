@@ -442,7 +442,7 @@
                   <legend class="usa-sr-only">Partners</legend>
                   <div id="dm-practice-partner-container" class="position-relative">
                     <ul class="dm-practice-editor-practice-partner-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
-                      <%= f.fields_for :practice_partner_practices, wrapper: false do |ppp| %>
+                      <%= f.fields_for :practice_partner_practices, @practice_partners, wrapper: false do |ppp| %>
                         <%
                           ppp_id = ppp.object.id || 'new_practice_partner_practices'
                           ppp_partner_id = ppp.object.practice_partner_id

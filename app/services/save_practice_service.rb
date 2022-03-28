@@ -123,12 +123,11 @@ class SavePracticeService
     begin
       practice_partner_params.each do |key, value|
         partner_id = value[:practice_partner_id]
-        existing_practice_partner = @practice.practice_partners.find_by(id: partner_id.to_i)
+        existing_practice_partner = @practice.practice_partners.where(id: partner_id.to_i).first
         has_duplicate_partner_params = partner_id_counts[partner_id] > 1
-        existing_partner_present_in_params = practice_partner_params.values.select { |val| val[:practice_partner_id] === existing_practice_partner.id.to_s && val[:id].present? }.present?
 
         # if the user tries to delete an existing partner and create a new identical partner, keep the original record and remove the corresponding partners that are not yet created
-        if has_duplicate_partner_params && existing_practice_partner.present? && existing_partner_present_in_params
+        if has_duplicate_partner_params && existing_practice_partner.present?
           duplicate_practice_partners_to_be_created = practice_partner_params.select { |hash_key, hash_value| hash_value[:practice_partner_id] === partner_id }.keys
           # remove all of the keys that have have a practice_partner_id value that match the current partner_id
           duplicate_practice_partners_to_be_created.each do |param_key|
