@@ -98,8 +98,8 @@ class VisnsController < ApplicationController
         created = 0
         adopted = 0
       else
-        created = helpers.is_user_a_guest? ? visn.get_created_practices(va_facility_ids, visn_crh.id, :is_user_guest => true).size : visn.get_created_practices(va_facility_ids, visn_crh.id, :is_user_guest => false).size
-        adopted = helpers.is_user_a_guest? ? visn.get_adopted_practices(va_facility_ids, visn_crh.id, :is_user_guest => true).size : visn.get_adopted_practices(va_facility_ids, visn_crh.id, :is_user_guest => false).size
+        created = visn.get_created_practices(va_facility_ids, visn_crh.id, :is_user_guest => helpers.is_user_a_guest?).size
+        adopted = visn.get_adopted_practices(va_facility_ids, visn_crh.id, :is_user_guest => helpers.is_user_a_guest?).size
       end
       visn_counts.push({number: visn[:number], created: created, adopted: adopted})
     end

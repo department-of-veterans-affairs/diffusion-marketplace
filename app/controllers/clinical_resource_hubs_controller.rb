@@ -1,7 +1,6 @@
 class ClinicalResourceHubsController < ApplicationController
   include PracticesHelper
   include PracticeUtils
-  include StatesHelper
   before_action :set_crh, only: [:show, :created_crh_practices]
   def show
     @visn_va_facilities = VaFacility.get_by_visn(@visn).get_relevant_attributes
