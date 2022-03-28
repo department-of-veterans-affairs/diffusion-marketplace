@@ -5,6 +5,7 @@ var created_practices = <%= @practices_created_json %>;
 var adopted_practices = <%= @practices_adopted_json %>;
 var resultsHTML = '';
 var RESULTS_SECTION = '#dm-crh-search-practices';
+var RADIO_BUTTON_GROUP = '#radio-button-group'
 var NO_QUERY_CONTENT = '.search-no-results';
 var SPINNER = '.dm-crh-search-loading-spinner';
 var LOAD_MORE_CONTAINER = '.button-box';
@@ -50,9 +51,15 @@ function searchPracticesByCrh() {
             if ($(RESULTS_SECTION).hasClass('display-none')) {
                 $(RESULTS_SECTION).removeClass('display-none');
             }
+            if($(RADIO_BUTTON_GROUP).hasClass("margin-bottom-35")){
+                $(RADIO_BUTTON_GROUP).removeClass('margin-bottom-35');
+            }
         } else {
             if (!$(RESULTS_SECTION).hasClass('display-none')) {
                 $(RESULTS_SECTION).addClass('display-none');
+            }
+            if(!$(RADIO_BUTTON_GROUP).hasClass("margin-bottom-35")){
+                $(RADIO_BUTTON_GROUP).addClass('margin-bottom-35');
             }
             // Show the no results text
             if ($(NO_QUERY_CONTENT).hasClass('display-none')) {

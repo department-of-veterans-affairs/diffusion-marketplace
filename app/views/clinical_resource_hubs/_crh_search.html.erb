@@ -5,11 +5,11 @@
       <legend class="usa-sr-only">Search for innovations by CRH</legend>
       <div id="radio-button-group" class="grid-row" role="radiogroup">
         <div class="usa-radio grid-col-4">
-          <input class="usa-radio__input crh-created-practices-radio" id="crh-created-practices" type="radio" name="crh-show-radio-buttons" value="created" <%= @practices_created_by_crh.count === 0 ? 'disabled' : '' %>>
+          <input class="usa-radio__input crh-created-practices-radio" id="crh-created-practices" type="radio" name="crh-show-radio-buttons" value="created">
           <label class="usa-radio__label margin-bottom-0" for="crh-created-practices">Innovations created here (<%= @practices_created_by_crh.count  %>)</label>
         </div>
         <div class="usa-radio grid-col-4">
-          <input class="usa-radio__input crh-adopted-practices-radio" id="crh-adopted-practices" type="radio" name="crh-show-radio-buttons" value="adopted" <%= @practices_adopted_by_crh.count === 0 ? 'disabled' : '' %>>
+          <input class="usa-radio__input crh-adopted-practices-radio" id="crh-adopted-practices" type="radio" name="crh-show-radio-buttons" value="adopted">
           <label class="usa-radio__label margin-bottom-0" for="crh-adopted-practices">Innovations adopted here (<%= @practices_adopted_by_crh.count %>)</label>
         </div>
       </div>
