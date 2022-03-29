@@ -156,11 +156,11 @@
           @include u-text('ink', !important);
           @include u-text('semibold', !important);
         }
+      }
 
-        &.usa-accordion__button[aria-expanded="true"] {
-          span {
-            @include u-text($theme-color-dm-white, !important);
-          }
+      &.usa-accordion__button[aria-expanded="true"] {
+        span {
+          @include u-text($theme-color-dm-white, !important);
         }
       }
 
@@ -176,7 +176,7 @@
 
           &.usa-accordion__button[aria-expanded="true"] {
             span {
-              @include u-text('primary-vivid', !important);
+              @include u-text($theme-color-dm-white, !important);
             }
           }
         }
@@ -188,10 +188,9 @@
           border-width: 1.25px;
         }
 
-        span, &.usa-current > span, &.usa-accordion__button > span, &.usa-current.usa-accordion__button[aria-expanded="true"] > span {
+        span, &.usa-current > span, &.usa-accordion__button[aria-expanded="false"] > span {
           @include u-text('primary-dark', !important);
         }
-
       }
     }
 
@@ -212,15 +211,15 @@
 
       button[aria-expanded="true"] {
         background-image: asset_url("header-nav-up-arrow-desktop.svg") !important;
+
+        &:hover, &:active {
+          background-image: asset_url("header-nav-up-arrow-desktop.svg") !important;
+        }
       }
 
-      &:active {
-        button[aria-expanded="false"] {
+      button[aria-expanded="false"] {
+        &:active {
           background-image: asset_url("header-nav-down-arrow-active.svg") !important;
-        }
-
-        button[aria-expanded="true"] {
-          background-image: asset_url("header-nav-up-arrow-active.svg") !important;
         }
       }
     }
@@ -234,9 +233,20 @@
         left: 26.125rem;
       }
 
-      .usa-current {
-        span {
-          @include u-text('normal', !important);
+
+      li {
+        a {
+          @include u-text($theme-color-dm-white, !important);
+
+          &:hover, &:active {
+            text-decoration: underline;
+            @include u-text($theme-color-dm-white, !important);
+          }
+        }
+
+        .usa-current {
+          @include u-text($theme-color-dm-white, !important);
+          @include u-text('bold');
         }
       }
     }
