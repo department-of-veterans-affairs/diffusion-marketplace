@@ -70,7 +70,7 @@ describe 'Breadcrumbs', type: :feature do
 
   describe 'Pages that should not have breadcrumbs' do
     it 'should not display breadcrumbs for the search page from the navbar button' do
-      find('#dm-navbar-search-button').click
+      find('#dm-navbar-search-desktop-button').click
       expect(page).to_not have_css('#breadcrumbs')
     end
 
@@ -80,7 +80,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should not display breadcrumbs for the search page when clicking the homepage search' do
-      find('#dm-homepage-search-button').click
+      find('#dm-navbar-search-desktop-button').click
       expect(page).to_not have_css('#breadcrumbs')
     end
 
@@ -135,8 +135,8 @@ describe 'Breadcrumbs', type: :feature do
   describe 'Innovation search' do
     it 'should show proper breadcrumbs when a user searches for a practice and then visits that practice\'s page' do
       @user_practice.update(published: true, approved: true)
-      fill_in('dm-navbar-search-field', with: 'the best')
-      find('#dm-navbar-search-button').click
+      fill_in('dm-navbar-search-desktop-field', with: 'the best')
+      find('#dm-navbar-search-desktop-button').click
       expect(page).to have_content('The Best')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       click_on('Go to The Best Innovation Ever')

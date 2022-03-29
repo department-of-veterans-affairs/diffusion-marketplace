@@ -1,7 +1,7 @@
-#dm-navbar-search-form {
+.dm-navbar-search-form {
   margin: 1.25rem 0 0.5rem;
 
-  #dm-navbar-search-field {
+  .dm-navbar-search-field {
     min-width: calc(100% - 3.0625rem) !important;
     max-width: calc(100% - 3.0625rem) !important;
     // remove red outline for required search input field
@@ -10,22 +10,26 @@
     }
   }
 
-  #dm-navbar-search-button {
+  .dm-navbar-search-button {
     @include u-bg('primary-vivid');
     @include u-radius-right('md');
     height: 2rem;
     width: 3.0625rem;
     font-size: 1rem;
     padding-top: 0.75rem;
+
+    &:hover {
+      @include u-bg('primary-dark');
+    }
   }
 
   // desktop
-  @media screen and (min-width: 75rem) {
+  @media screen and (min-width: 64rem) {
     margin: 0 1rem;
     order: 0;
     max-width: 16.5rem;
 
-    #dm-navbar-search-field {
+    .dm-navbar-search-field {
       margin: 0;
       width: 13.4375rem !important;
     }
