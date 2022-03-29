@@ -136,4 +136,39 @@ module ApplicationHelper
   def get_terms_and_conditions_body_text(current_user)
     "VA systems are intended to be used by authorized#{current_user.present? ? ' VA network ' : ' '}users for viewing and retrieving information; except as otherwise authorized for official business and limited personal use under VA policy. Information from this system resides on and transmits through computer systems and networks funded by VA. Access or use constitutes understanding and acceptance that there is no reasonable expectation of privacy in the use of Government networks or systems. Access or use of this system constitutes user understanding and acceptance of these terms and constitutes unconditional consent to review and action includes but is not limited to: monitoring; recording; copying; auditing; inspecting."
   end
+
+  def get_facility_locations_by_visn(visn)
+    sorted_facility_locations = VaFacility.get_by_visn(visn).get_locations.sort
+    location_list = ''
+
+    # Add other US territories to us_states helper method array
+    va_facility_locations = us_states.concat(
+        [
+            ["Virgin Islands", "VI"],
+            ["Philippines Islands", "PI"],
+            ["Guam", "GU"],
+            ["American Samoa", "AS"]
+        ]
+    )
+
+    # iterate through the facility locations and add text
+    sorted_facility_locations.each do |sfl|
+      va_facility_locations.each do |vfl|
+        full_name = vfl.first === "Virgin Islands" || vfl.first === "Philippines Islands" ? "the #{vfl.first}" : vfl.first
+        if vfl[1] === sfl
+          if sorted_facility_locations.count > 1 && sorted_facility_locations.last === sfl
+            location_list += "and #{full_name}"
+          elsif sorted_facility_locations.count > 2
+            location_list += "#{full_name}, "
+          else
+            location_list += sorted_facility_locations.count == 1 ? "#{full_name}" : "#{full_name} "
+          end
+        end
+      end
+    end
+
+    location_list
+  end
+
+
 end
