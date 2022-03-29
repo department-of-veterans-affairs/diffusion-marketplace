@@ -35,15 +35,12 @@ function loadMoreEventListener() {
 
 function filterCategoriesEventListener() {
   $(cp.categoriesInput).on("change", function(e) {
+      debugger
       var catId = e.target[e.target.selectedIndex].value;
-      if(catId.length == 0){
-          return;
-      }
       //update category usage/selected..
       updateSelectedCategoriesUsage({
           category_id: catId
       });
-
     setDataAndMakeRequest({ isNextPage: false });
   })
 }
@@ -66,9 +63,6 @@ function searchEventListener() {
   $(cp.searchBtn).on("click", function(e) {
     e.preventDefault();
     let searchTerm = $(cp.searchField).val();
-      if(searchTerm.length == 0){
-          return;
-      }
     updateSelectedCategoriesUsage({
         sQuery: searchTerm
     });
@@ -105,13 +99,19 @@ function setDataAndMakeRequest({ isNextPage = false, searchTermInput }) {
     ? parseInt($(cp.categoriesInput).parent().find(".usa-select")[0].value)
     : null;
 
-  let searchTerm =
-    $(cp.searchField).data("search").length > 0
-      ? $(cp.searchField).data("search")
-      : null;
+    let createdSearchField = document.getElementById('dm-created-practice-search-field');
+    let searchTerm = null;
+    if (createdSearchField !== null){
+        searchTerm = createdSearchField.value === '' ? null : $(cp.searchField).data("search");
+    }
+    else {
+        searchTerm =
+            $(cp.searchField).data("search").length > 0
+                ? $(cp.searchField).data("search")
+                : null;
+    }
    // sets the search term only when the user clicks search and is less confusing if a user updates the search input but never hits the search button
    $(cp.searchField).val(searchTerm);
-
   let data = { sort_option: sortOption };
 
   if (isNextPage && page !== null) {
