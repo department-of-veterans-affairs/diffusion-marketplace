@@ -73,6 +73,10 @@ class VisnsController < ApplicationController
 
   def load_facilities_show_rows
     @facilities = VaFacility.get_by_visn(@visn).select(:common_name, :id, :official_station_name, :slug, :station_number, :fy17_parent_station_complexity_level)
+    @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
+    visn_id = Visn.where(number: params["number"].to_i).first.id
+    @clinical_resource_hubs = @clinical_resource_hubs.where(visn_id: visn_id)
+    @facilities += @clinical_resource_hubs
 
     table_rows_html = render_to_string('visns/_show_table_row', layout: false, locals: { facilities: @facilities })
 

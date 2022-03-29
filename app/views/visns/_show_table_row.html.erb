@@ -1,10 +1,30 @@
 <% facilities.each do |facility| %>
+  <% path = facility.class.name === "ClinicalResourceHub" ? "/crh/" + facility.visn.number.to_s : va_facility_path(facility)  %>
+  <% if facility.class.name === "ClinicalResourceHub" %>
+    <% created_count = crh_created_practices_count(facility.visn_id) %>
+    <% adopted_count = crh_adopted_practices_count(facility.visn_id) %>
+  <% else %>
+    <% created_count = facility.practices_created_count %>
+    <% adopted_count = facility.practices_adopted_count %>
+  <% end %>
   <tr>
     <th scope="row" role="rowheader" class="grid-col-6">
-      <%= link_to "#{facility.official_station_name} (#{facility.common_name})", va_facility_path(facility), class: 'usa-link' %>
+      <a class="usa-link" href='<%= path %>'><%= facility["official_station_name"] %>
+        <% if facility.class.name != "ClinicalResourceHub"  %> (<%= facility["common_name"] %>)<% end %></a>
+
+
+      <%# if facility.class.name === "ClinicalResourceHub" %>
+        <%#= link_to "#{facility.official_station_name}", va_facility_path(facility), class: 'usa-link' %>
+      <%# else %>
+        <%#= link_to "#{facility.official_station_name} (#{facility.common_name})", va_facility_path(facility), class: 'usa-link' %>
+      <%# end %>
     </th>
-    <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.split('-').shift.upcase %></td>
-    <td class="grid-col-2"><%= facility.practices_created_count %></td>
-    <td class="grid-col-2"><%= facility.practices_adopted_count  %></td>
+      <% if facility.class.name === "VaFacility" %>
+        <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.split('-').shift.upcase %></td>
+      <% else %>
+        <td class="grid-col-2"> - </td>
+      <% end %>
+      <td class="grid-col-2"><%= created_count %></td>
+      <td class="grid-col-2"><%= adopted_count %></td>
   </tr>
 <% end %>
