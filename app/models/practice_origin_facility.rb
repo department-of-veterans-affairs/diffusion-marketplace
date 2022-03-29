@@ -5,6 +5,8 @@ class PracticeOriginFacility <  ApplicationRecord
   belongs_to :va_facility, optional: true
   belongs_to :clinical_resource_hub, optional: true
 
+  attr_accessor :facility_type_and_id
+
   after_save :clear_searchable_practices_cache
   after_destroy :clear_searchable_practices_cache
 

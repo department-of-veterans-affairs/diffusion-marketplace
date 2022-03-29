@@ -217,6 +217,11 @@
                       <% end %>
                     <% end %>
                     <li class="practice-editor-origin-li fields margin-bottom-2" role="option" data-id="<%= pof_id %>">
+                      <% if pof_id.present? %>
+                        <%= f.hidden_field("practice_origin_facilities_attributes][#{pof_index}][facility_type_and_id",
+                                           value: pof.object.va_facility_id.present? ? "va-facility-#{pof.object.va_facility_id}" :
+                                                  "crh-#{pof.object.clinical_resource_hub_id}") %>
+                      <% end %>
                       <div class="grid-row">
                         <div class="usa-combo-box grid-col-12 practice-editor-origin-combo-box"
                              data-default-value="<%= if pof.object.id.present? then pof_va_facility_id.present? ? "va-facility-#{pof_va_facility_id}" : "crh-#{pof_crh_id}" else nil end %>"

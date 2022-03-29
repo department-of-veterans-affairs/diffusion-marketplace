@@ -83,6 +83,14 @@
         summaryEl.height(summaryEl[0].scrollHeight - 14);
     }
 
+    function showFirstFacilityFieldIfNoPracticeOriginFacilitiesExist() {
+        $(document).on('click', '#initiating_facility_type_facility', () => {
+            if ($('.practice-editor-origin-combo-box').length === 0) {
+                $('.dm-add-practice-originating-facilities-link').click();
+            }
+        })
+    }
+
 
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
@@ -105,6 +113,7 @@
         if (selectedOffice !== "false" && selectedDepartment !== "false" && selectedOffice !== "" && selectedDepartment !== "") {
             selectOffice(originData, selectedDepartment, selectedOffice)
         }
+        showFirstFacilityFieldIfNoPracticeOriginFacilitiesExist();
     }
 
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
@@ -117,5 +126,3 @@ function showOtherAwardFields() {
         $('#other_awards_container').addClass('display-none');
     }
 }
-
-

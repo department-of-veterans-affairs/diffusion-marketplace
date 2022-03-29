@@ -586,7 +586,8 @@ class PracticesController < ApplicationController
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
                                      categories_attributes: [:id, :_destroy, :name, :parent_category_id, :is_other],
-                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id, :va_facility_id, :clinical_resource_hub_id],
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type,
+                                                                             :initiating_department_office_id, :va_facility_id, :clinical_resource_hub_id, :facility_type_and_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
                                      duration: {},
@@ -720,11 +721,23 @@ def set_initiating_fac_params(params)
   when "facility"
     origin_facility_params.values.each do |value|
       facility_id = value[:facility_id]
+      facility_type_and_id = value[:facility_type_and_id]
+
       if facility_id.present?
         if facility_id.start_with?('va-facility')
           value[:va_facility_id] = facility_id.split('-').last
+          # if there's an existing origin facility that's being changed from a CRH to a VaFacility, we need to update it, because a PracticeOriginFacility cannot have both foreign keys populated
+          if value[:id].present? && facility_type_and_id.start_with?('crh') && value[:_destroy] === 'false'
+            practice_origin_facility = PracticeOriginFacility.find_by(practice_id: @practice.id, clinical_resource_hub_id: facility_type_and_id.split('-').last)
+            practice_origin_facility.update(clinical_resource_hub_id: nil, va_facility_id: facility_id.split('-').last)
+          end
         else
           value[:clinical_resource_hub_id] = facility_id.split('-').last
+          # if there's an existing origin facility that's being changed from a VaFacility to a CRH, we need to update it, because a PracticeOriginFacility cannot have both foreign keys populated
+          if value[:id].present? && facility_type_and_id.start_with?('va-facility') && value[:_destroy] === 'false'
+            practice_origin_facility = PracticeOriginFacility.find_by(practice_id: @practice.id, va_facility_id: facility_type_and_id.split('-').last)
+            practice_origin_facility.update(va_facility_id: nil, clinical_resource_hub_id: facility_id.split('-').last)
+          end
         end
         value[:facility_id] = facility_id.split('-').last
       end
