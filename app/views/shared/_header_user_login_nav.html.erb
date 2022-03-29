@@ -15,7 +15,7 @@
         </li>
     <% else %>
       <li class="usa-nav__primary-item border-base-light border-top-1px desktop:border-0">
-        <button class="margin-y-2px desktop:margin-y-0 usa-accordion__button usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" aria-expanded="false" aria-controls="<%= accordion_id %>">
+        <button class="dm-text-no-underline margin-y-2px desktop:margin-y-0 usa-accordion__button usa-nav__link <%= 'usa-current' if request.fullpath == user_path(current_user) %>" aria-expanded="false" aria-controls="<%= accordion_id %>">
           <span class="text-normal desktop:text-semibold padding-right-0">Your profile</span>
         </button>
         <div id="<%= accordion_id %>" class="usa-nav__submenu">
