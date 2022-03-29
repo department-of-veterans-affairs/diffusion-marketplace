@@ -127,7 +127,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_content(hidden_practice.name)
       expect(page).to have_content('Hidden practice')
       fill_in('search', with: 'A secret practice')
-      find("#dm-navbar-search-button").click
+      find("#dm-navbar-search-desktop-button").click
       expect(page).to have_selector("#search-page")
       expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
     end

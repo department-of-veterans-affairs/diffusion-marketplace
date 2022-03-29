@@ -1,22 +1,3 @@
-// header nav links
-.usa-nav__primary-item {
-  .usa-nav__link {
-    @include u-text('normal', !important);
-
-    &:hover {
-      @include u-text('primary-vivid', !important);
-
-      &::after {
-        @include u-bg('primary-vivid', !important);
-      }
-    }
-
-    @media all and (min-width: 75rem) {
-      @include u-text('semibold', !important);
-    }
-  }
-}
-
 .dm-footer-link {
   color: color($theme-color-base-ink);
   text-decoration: none;
