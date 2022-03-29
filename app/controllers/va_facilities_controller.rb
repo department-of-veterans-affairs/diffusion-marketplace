@@ -22,7 +22,7 @@ class VaFacilitiesController < ApplicationController
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })
         visn_id = Visn.where(number: params["visn"].to_i).first().id
-        @clinical_resource_hubs = @clinical_resource_hubs.where(visn_id: visn_id).sort_by(&:id)
+        @clinical_resource_hubs = @clinical_resource_hubs.where(visn_id: visn_id)
       end
       if params[:complexity].present?
         @clinical_resource_hubs = []
