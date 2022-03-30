@@ -1,8 +1,12 @@
+<% label_text = '' %>
+<%
+  label_text = 'Sort by' if local_assigns[:is_crh_show]
+%>
 <section id="<%= section_id %>" class="<%= section_classes %>">
   <div class="<%= first_div_classes %>">
-    <p class="font-sans-normal grid-col-8 line-height-26" id="results-summary"></p>
-    <div class="<%= second_div_classes %>">
-      <%= label_tag 'search_sort_option', '', class: 'usa-label margin-0', 'aria-label': 'Search sort options'%>
+    <p class="font-sans-normal grid-col-8 line-height-26 margin-top-5" id="results-summary"></p>
+    <div class="<%= second_div_classes %>" id="search_sort_options">
+      <%= label_tag 'search_sort_option', label_text, class: 'usa-label margin-0', 'aria-label': 'Search sort options'%>
       <%= select_tag('', options_for_select(sort_options), id: 'search_sort_option', name: 'search_sort_option', class: 'height-5 usa-select margin-0') %>
     </div>
   </div>
