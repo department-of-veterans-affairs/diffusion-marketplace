@@ -25,17 +25,6 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = 'edit
     facilitySelect.val(facility.id);
 }
 
-// function getFacilitiesByState(facilityData, facilitySelector = 'editor_facility_select', stateSelector = 'editor_state_select') {
-//     let facilitySelect = $(`#${facilitySelector}`);
-//     let facilitySelectLabel = $('label[for="' + facilitySelector + '"]');
-//     let stateSelect = $(`#${stateSelector}`);
-//     facilitySelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
-//     facilitySelect.prop('disabled', 'disabled');
-//     $(stateSelect).on('change', () => {
-//         filterFacilities(facilityData, facilitySelect, facilitySelectLabel, stateSelector);
-//     });
-// }
-
 function filterFacilities(facilityData, facilitySelect, facilitySelectLabel, stateSelector) {
     let selectedState = $(`#${stateSelector} option:selected`).val();
     enableSelect(facilitySelect, facilitySelectLabel);
