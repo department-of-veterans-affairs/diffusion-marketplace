@@ -71,6 +71,11 @@ class PracticesController < ApplicationController
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
 
+    # get the VaFacilities and ClinicalResourceHubs associated with the practice's origin facilities and then order them alphabetically
+    va_facility_origin_facilities = VaFacility.where(id: PracticeOriginFacility.get_va_facility_ids_by_practice(@practice.id)).get_relevant_attributes
+    crh_origin_facilities = ClinicalResourceHub.where(id: PracticeOriginFacility.get_clinical_resource_hub_ids_by_practice(@practice.id))
+    @origin_facilities = Naturalsorter::Sorter.sort_by_method(va_facility_origin_facilities + crh_origin_facilities, 'official_station_name', true, true)
+
     if helpers.is_user_a_guest? && !@practice.is_public
       respond_to do |format|
         s_error = 'This innovation is not available for non-VA users.'
