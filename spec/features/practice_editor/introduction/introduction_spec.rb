@@ -309,7 +309,13 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_no_content('Birmingham VA Medical Center (Birmingham-Alabama)')
         expect(page).to have_content('VISN-1')
 
+        # switch back the facility option, but do not add a facility
         visit_practice_edit
+        click_origin_type('initiating_facility_type_facility')
+        click_save
+        expect(page).to_not have_content('Innovation was successfully updated.')
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved.')
+
         click_origin_type('initiating_facility_type_department')
         select('VBA', :from => 'editor_department_select')
         select('Alabama', :from => 'editor_office_state_select')

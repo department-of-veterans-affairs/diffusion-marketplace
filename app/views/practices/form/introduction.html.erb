@@ -207,7 +207,6 @@
                         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                           $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof_index}_facility_id" %>', function(newElem) {
                             var $li = $(newElem).closest('li');
-                            styleOriginFacility($li, <%= pof_id %>, '.practice-editor-origin-li', '.practice-editor-origin-ul', '12');
                             var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
                             $_destroy.attr('name', 'practice[practice_origin_facilities_attributes][<%= pof_index %>][_destroy]');
                             $_destroy.attr('id', 'practice_practice_origin_facilities_attributes_<%= pof_index %>__destroy');
@@ -217,10 +216,10 @@
                       <% end %>
                     <% end %>
                     <li class="practice-editor-origin-li fields margin-bottom-2" role="option" data-id="<%= pof_id %>">
-                      <% if pof_id.present? %>
+                      <% if pof.object.id.present? %>
                         <%= f.hidden_field("practice_origin_facilities_attributes][#{pof_index}][facility_type_and_id",
-                                           value: pof.object.va_facility_id.present? ? "va-facility-#{pof.object.va_facility_id}" :
-                                                  "crh-#{pof.object.clinical_resource_hub_id}") %>
+                                           value: pof_va_facility_id.present? ? "va-facility-#{pof_va_facility_id}" :
+                                                  "crh-#{pof_crh_id}") %>
                       <% end %>
                       <div class="grid-row">
                         <div class="usa-combo-box grid-col-12 practice-editor-origin-combo-box"

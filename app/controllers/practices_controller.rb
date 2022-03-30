@@ -748,6 +748,15 @@ def set_initiating_fac_params(params)
         value[:facility_id] = facility_id.split('-').last
       end
     end
+=begin
+    if all of the origin facility params being sent in do not have a facility_id and the user switched from another originating facility type, set the
+    practice_origin_facilities_attributes params to nil.
+=end
+    origin_facility_id_counts = origin_facility_params.values.collect{ |param| param[:facility_id] }.group_by(&:itself).transform_values(&:count)
+    if (@practice.initiating_facility.present? || @practice.initiating_department_office_id.present?) && origin_facility_id_counts[nil] === origin_facility_params.keys.length
+      params[:practice][:practice_origin_facilities_attributes] = nil
+    end
+
     @practice.initiating_facility = ""
     @practice.initiating_department_office_id = ""
   when "visn"
