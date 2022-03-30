@@ -33,6 +33,7 @@ GIT
 GEM
   remote: https://rails-assets.org/
   specs:
+    rails-assets-jquery (3.6.0)
     rails-assets-jquery.scrollTo (2.1.2)
       rails-assets-jquery (>= 1.8)
     rails-assets-sticky (1.0.4)
@@ -632,6 +633,7 @@ DEPENDENCIES
   puma (>= 4.3.5)
   rack_session_access
   rails (~> 6.0.0)
+  rails-assets-jquery!
   rails-assets-jquery.scrollTo!
   rails-assets-sticky!
   rails-erd

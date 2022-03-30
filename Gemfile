@@ -125,6 +125,7 @@ gem 'friendly_id', '~> 5.2.4'
 
 gem 'jquery-cropper'
 
+gem 'rails-assets-jquery', source: 'https://rails-assets.org'
 gem 'rails-assets-sticky', source: 'https://rails-assets.org'
 gem 'rails-assets-jquery.scrollTo', source: 'https://rails-assets.org'
 gem "nested_form"
