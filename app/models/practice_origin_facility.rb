@@ -10,6 +10,7 @@ class PracticeOriginFacility <  ApplicationRecord
   after_save :clear_searchable_practices_cache
   after_destroy :clear_searchable_practices_cache
 
+  scope :order_by_id, -> { order(id: :asc) }
   scope :get_va_facility_ids_by_practice, -> (practice_id) {
     includes(:va_facility).where(practice_id: practice_id).where.not(va_facility_id: nil).map(&:va_facility_id)
   }

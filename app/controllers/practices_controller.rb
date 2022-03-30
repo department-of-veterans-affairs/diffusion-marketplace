@@ -331,7 +331,8 @@ class PracticesController < ApplicationController
     @va_facilities_and_crhs = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     @parent_categories = Category.get_parent_categories
     @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
-    @practice_partners = PracticePartnerPractice.where(practice_id: @practice.id).order(id: :asc)
+    @ordered_practice_partners = PracticePartnerPractice.where(practice_id: @practice.id).order_by_id
+    @ordered_practice_origin_facilities = PracticeOriginFacility.where(practice_id: @practice.id).order_by_id
     render 'practices/form/introduction'
   end
 

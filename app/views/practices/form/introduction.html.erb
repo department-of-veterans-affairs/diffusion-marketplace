@@ -194,7 +194,7 @@
 
               <div id="facility_select_form" class="margin-bottom-5 position-relative grid-col-8">
                 <ul class="practice-editor-origin-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
-                  <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
+                  <%= f.fields_for :practice_origin_facilities, @ordered_practice_origin_facilities, wrapper: false do |pof| %>
                     <%
                       pof_id = pof.object.id || 'new_practice_origin_facilities'
                       pof_va_facility_id = pof.object.va_facility_id
@@ -261,7 +261,6 @@
                       $(blueprint).data('blueprint', newBluePrintText);
                       newBluePrintText = newBluePrintText.replace('practice__destroy', 'practice_practice_origin_facilities_attributes_new_practice_origin_facilities__destroy');
                       $(blueprint).data('blueprint', newBluePrintText);
-                      $(document).unbindArrive('#practice_origin_facilities_fields_blueprint', blueprint);
                     });
                   <% end %>
                 <% end %>
@@ -278,6 +277,12 @@
                     '#facility_select_form',
                     '.practice-editor-origin-li'
                     );
+                    <% unless @ordered_practice_origin_facilities.any? %>
+                      $(document).arrive('#practice_origin_facilities_fields_blueprint', function(blueprint) {
+                        $('#link_to_add_link_practice_origin_facilities').click();
+                        $(document).unbindArrive('#practice_origin_facilities_fields_blueprint', blueprint);
+                      });
+                    <% end %>
                   <% end %>
                 <% end %>
               </div>
@@ -447,7 +452,7 @@
                   <legend class="usa-sr-only">Partners</legend>
                   <div id="dm-practice-partner-container" class="position-relative">
                     <ul class="dm-practice-editor-practice-partner-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
-                      <%= f.fields_for :practice_partner_practices, @practice_partners, wrapper: false do |ppp| %>
+                      <%= f.fields_for :practice_partner_practices, @ordered_practice_partners, wrapper: false do |ppp| %>
                         <%
                           ppp_id = ppp.object.id || 'new_practice_partner_practices'
                           ppp_partner_id = ppp.object.practice_partner_id
@@ -511,7 +516,7 @@
                           '#dm-practice-partner-container',
                           '.dm-practice-editor-practice-partner-li'
                         );
-                        <% unless @practice_partners.any? %>
+                        <% unless @ordered_practice_partners.any? %>
                           $(document).arrive('#practice_partner_practices_fields_blueprint', function(blueprint) {
                             $('.dm-add-practice-partner-practice-link').click();
                             $(document).unbindArrive('#practice_partner_practices_fields_blueprint', blueprint);

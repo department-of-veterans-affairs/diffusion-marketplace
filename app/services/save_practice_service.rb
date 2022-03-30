@@ -115,9 +115,31 @@ class SavePracticeService
     end
   end
 
+  def get_id_counts_from_params(params, hash_attr)
+    params.values.collect { |param| param[hash_attr] }.group_by(&:itself).transform_values(&:count)
+  end
+
+  def delete_param_and_reset_id_counts(params, param_key, id_counts, id)
+    params.delete(param_key)
+    id_counts[id] = 1
+  end
+
+  def delete_duplicate_params_and_reset_id_counts(duplicate_params, params, id_counts, id, origin_facilities_present = false)
+    if origin_facilities_present
+      duplicate_params.keys.each do |param_key|
+        params.delete(param_key)
+      end
+    else
+      duplicate_params.each do |param_key|
+        params.delete(param_key)
+      end
+      id_counts[id] = 1
+    end
+  end
+
   def update_practice_partner_practices
     practice_partner_params = @practice_params[:practice_partner_practices_attributes]
-    partner_id_counts = practice_partner_params.values.collect { |param| param[:practice_partner_id] }.group_by(&:itself).transform_values(&:count)
+    partner_id_counts = get_id_counts_from_params(practice_partner_params, :practice_partner_id)
     unsaved_practice_partner_ids = []
 
     begin
@@ -129,19 +151,13 @@ class SavePracticeService
         # if the user tries to delete an existing partner and create a new identical partner, keep the original record and remove the corresponding partners that are not yet created
         if has_duplicate_partner_params && existing_practice_partner.present?
           duplicate_practice_partners_to_be_created = practice_partner_params.select { |hash_key, hash_value| hash_value[:practice_partner_id] === partner_id }.keys
-          # remove all of the keys that have have a practice_partner_id value that match the current partner_id
-          duplicate_practice_partners_to_be_created.each do |param_key|
-            practice_partner_params.delete(param_key)
-          end
-          # set the count for the current partner_id back to 1
-          partner_id_counts[partner_id] = 1
+          # remove all of the keys that have a practice_partner_id value that match the current partner_id and reset the counts
+          delete_duplicate_params_and_reset_id_counts(duplicate_practice_partners_to_be_created, practice_partner_params, partner_id_counts, partner_id)
         end
 
-        # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner
+        # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner and reset the counts
         if (unsaved_practice_partner_ids.include?(partner_id)) || (existing_practice_partner.present? && has_duplicate_partner_params)
-          practice_partner_params.delete(key)
-          # set the count for the current partner_id back to 1
-          partner_id_counts[partner_id] = 1
+          delete_param_and_reset_id_counts(practice_partner_params, key, partner_id_counts, partner_id)
         else
           unsaved_practice_partner_ids << partner_id unless partner_id.nil?
         end
@@ -502,7 +518,7 @@ class SavePracticeService
 
   def filter_practice_origin_facilities
     origin_facility_params = @practice_params[:practice_origin_facilities_attributes]
-    facility_id_counts = origin_facility_params.values.collect { |param| param[:facility_id] }.group_by(&:itself).transform_values(&:count)
+    facility_id_counts = get_id_counts_from_params(origin_facility_params, :facility_id)
     unsaved_va_facility_ids = []
     unsaved_crh_ids = []
 
@@ -512,6 +528,7 @@ class SavePracticeService
         crh_id = value[:clinical_resource_hub_id]
         practice_origin_facilities = @practice.practice_origin_facilities
 
+        # check for an existing origin facility record
         if va_facility_id.present? || crh_id.present?
           existing_origin_facility = va_facility_id.present? ? practice_origin_facilities.find_by(va_facility_id: va_facility_id.to_i) :
                                      practice_origin_facilities.find_by(clinical_resource_hub_id: crh_id.to_i)
@@ -527,28 +544,22 @@ class SavePracticeService
               hash_value[:clinical_resource_hub_id] === crh_id
             end
           end
-          # remove all of the keys that have a va_facility_id or clinical_resource_hub_id value that match the current va_facility_id or clinical_resource_hub_id
-          duplicate_origin_facilities_to_be_created.keys.each do |param_key|
-            origin_facility_params.delete(param_key)
-          end
+          # remove all of the keys that have a va_facility_id or clinical_resource_hub_id value that match the current va_facility_id or clinical_resource_hub_id and reset the counts
+          delete_duplicate_params_and_reset_id_counts(duplicate_origin_facilities_to_be_created, origin_facility_params, facility_id_counts, va_facility_id, true)
           # set the count for the current va_facility_id or clinical_resource_hub_id back to 1
           va_facility_id.present? ? facility_id_counts[va_facility_id] = 1 : facility_id_counts[crh_id] = 1
         end
 
-        # prevent duplicate origin facility creation when a user tries to submit more than one of the same would-be origin facility
+        # prevent duplicate origin facility creation when a user tries to submit more than one of the same would-be origin facility and reset the counts
         if va_facility_id.present?
           if (unsaved_va_facility_ids.include?(va_facility_id)) || (existing_origin_facility.present? && has_duplicate_origin_facility_params)
-            origin_facility_params.delete(key)
-            # set the count for the current va_facility_id back to 1
-            facility_id_counts[va_facility_id] = 1
+            delete_param_and_reset_id_counts(origin_facility_params, key, facility_id_counts, va_facility_id)
           else
             unsaved_va_facility_ids << va_facility_id unless va_facility_id.nil?
           end
         elsif crh_id.present?
           if (unsaved_crh_ids.include?(crh_id)) || (existing_origin_facility.present? && has_duplicate_origin_facility_params)
-            origin_facility_params.delete(key)
-            # set the count for the current clinical_resource_hub_id back to 1
-            facility_id_counts[crh_id] = 1
+            delete_param_and_reset_id_counts(origin_facility_params, key, facility_id_counts, crh_id)
           else
             unsaved_crh_ids << crh_id unless crh_id.nil?
           end
