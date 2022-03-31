@@ -19,6 +19,9 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should navigate the user around the editor when they click on the section names' do
+          visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
+          VaFacility.create!(visn: visn_1, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
+
           visit '/innovations/a-public-practice'
           click_link 'Edit innovation'
           click_link 'Edit: A public practice'
