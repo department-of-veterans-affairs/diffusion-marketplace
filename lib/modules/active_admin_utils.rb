@@ -1,8 +1,8 @@
 module ActiveAdminUtils
-  def update_boolean_attr(attr, message_1, message_2)
+  def update_boolean_attr(resource, resource_attr, message_1, message_2)
     message = "\"#{resource.name}\" #{message_1}"
 
-    unless attr
+    unless resource_attr
       message = "\"#{resource.name}\" #{message_2}"
     end
 
