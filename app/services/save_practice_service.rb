@@ -139,7 +139,9 @@ class SavePracticeService
 
   def update_practice_partner_practices
     practice_partner_params = @practice_params[:practice_partner_practices_attributes]
-    partner_id_counts = get_id_counts_from_params(practice_partner_params, :practice_partner_id)
+    practice_partner_params_data = ParamsData.new(practice_partner_params)
+    modify_practice_partner_params = ModifyParams.new(practice_partner_params)
+    partner_id_counts = practice_partner_params_data.get_id_counts_from_params(:practice_partner_id)
     unsaved_practice_partner_ids = []
 
     begin
@@ -147,17 +149,23 @@ class SavePracticeService
         partner_id = value[:practice_partner_id]
         existing_practice_partner = @practice.practice_partners.where(id: partner_id.to_i).first
         has_duplicate_partner_params = partner_id_counts[partner_id] > 1
+        # if the user tries to change an existing partner to another existing partner, raise an error
+        if practice_partner_params_data.has_two_existing_records_with_identical_param_values?(:practice_partner_id, partner_id)
+          raise StandardError.new
+        end
 
         # if the user tries to delete an existing partner and create a new identical partner, keep the original record and remove the corresponding partners that are not yet created
         if has_duplicate_partner_params && existing_practice_partner.present?
           duplicate_practice_partners_to_be_created = practice_partner_params.select { |hash_key, hash_value| hash_value[:practice_partner_id] === partner_id }.keys
           # remove all of the keys that have a practice_partner_id value that match the current partner_id and reset the counts
-          delete_duplicate_params_and_reset_id_counts(duplicate_practice_partners_to_be_created, practice_partner_params, partner_id_counts, partner_id)
+          modify_practice_partner_params.delete_duplicate_params(duplicate_practice_partners_to_be_created)
+          modify_practice_partner_params.reset_param_id_counts(partner_id_counts, partner_id)
         end
 
         # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner and reset the counts
         if (unsaved_practice_partner_ids.include?(partner_id)) || (existing_practice_partner.present? && has_duplicate_partner_params)
-          delete_param_and_reset_id_counts(practice_partner_params, key, partner_id_counts, partner_id)
+          modify_practice_partner_params.delete_param(key)
+          modify_practice_partner_params.reset_param_id_counts(partner_id_counts, partner_id)
         else
           unsaved_practice_partner_ids << partner_id unless partner_id.nil?
         end
@@ -518,7 +526,9 @@ class SavePracticeService
 
   def filter_practice_origin_facilities
     origin_facility_params = @practice_params[:practice_origin_facilities_attributes]
-    facility_id_counts = get_id_counts_from_params(origin_facility_params, :facility_id)
+    origin_facility_params_data = ParamsData.new(origin_facility_params)
+    modify_origin_facility_params = ModifyParams.new(origin_facility_params)
+    facility_id_counts = origin_facility_params_data.get_id_counts_from_params(:facility_id)
     unsaved_va_facility_ids = []
     unsaved_crh_ids = []
 
@@ -545,21 +555,23 @@ class SavePracticeService
             end
           end
           # remove all of the keys that have a va_facility_id or clinical_resource_hub_id value that match the current va_facility_id or clinical_resource_hub_id and reset the counts
-          delete_duplicate_params_and_reset_id_counts(duplicate_origin_facilities_to_be_created, origin_facility_params, facility_id_counts, va_facility_id, true)
-          # set the count for the current va_facility_id or clinical_resource_hub_id back to 1
-          va_facility_id.present? ? facility_id_counts[va_facility_id] = 1 : facility_id_counts[crh_id] = 1
+          modify_origin_facility_params.delete_deep_duplicate_params(duplicate_origin_facilities_to_be_created)
+          va_facility_id.present? ? modify_origin_facility_params.reset_param_id_counts(facility_id_counts, va_facility_id) :
+            modify_origin_facility_params.reset_param_id_counts(facility_id_counts, crh_id)
         end
 
         # prevent duplicate origin facility creation when a user tries to submit more than one of the same would-be origin facility and reset the counts
         if va_facility_id.present?
           if (unsaved_va_facility_ids.include?(va_facility_id)) || (existing_origin_facility.present? && has_duplicate_origin_facility_params)
-            delete_param_and_reset_id_counts(origin_facility_params, key, facility_id_counts, va_facility_id)
+            modify_origin_facility_params.delete_param(key)
+            modify_origin_facility_params.reset_param_id_counts(facility_id_counts, va_facility_id)
           else
             unsaved_va_facility_ids << va_facility_id unless va_facility_id.nil?
           end
         elsif crh_id.present?
           if (unsaved_crh_ids.include?(crh_id)) || (existing_origin_facility.present? && has_duplicate_origin_facility_params)
-            delete_param_and_reset_id_counts(origin_facility_params, key, facility_id_counts, crh_id)
+            modify_origin_facility_params.delete_param(key)
+            modify_origin_facility_params.reset_param_id_counts(facility_id_counts, crh_id)
           else
             unsaved_crh_ids << crh_id unless crh_id.nil?
           end
