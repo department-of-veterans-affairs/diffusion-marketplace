@@ -115,28 +115,6 @@ class SavePracticeService
     end
   end
 
-  def get_id_counts_from_params(params, hash_attr)
-    params.values.collect { |param| param[hash_attr] }.group_by(&:itself).transform_values(&:count)
-  end
-
-  def delete_param_and_reset_id_counts(params, param_key, id_counts, id)
-    params.delete(param_key)
-    id_counts[id] = 1
-  end
-
-  def delete_duplicate_params_and_reset_id_counts(duplicate_params, params, id_counts, id, origin_facilities_present = false)
-    if origin_facilities_present
-      duplicate_params.keys.each do |param_key|
-        params.delete(param_key)
-      end
-    else
-      duplicate_params.each do |param_key|
-        params.delete(param_key)
-      end
-      id_counts[id] = 1
-    end
-  end
-
   def update_practice_partner_practices
     practice_partner_params = @practice_params[:practice_partner_practices_attributes]
     practice_partner_params_data = ParamsData.new(practice_partner_params)
