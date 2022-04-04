@@ -120,30 +120,27 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       complete_filter_checkbox = find(:css, 'label[for="status_successful"]')
       complete_filter_checkbox.click
       within(:css, '#map') do
-        expect(page).to have_selector(marker_div)
-        expect(page).to have_selector(marker_div, visible: true, count: 3)
+        expect(page).to have_selector(marker_div, count: 3)
       end
 
       # Filter out "In progress" status
       in_progress_filter_checkbox = find(:css, 'label[for="status_in-progress"]')
       in_progress_filter_checkbox.click
       within(:css, '#map') do
-        expect(page).to have_selector(marker_div)
-        expect(page).to have_selector(marker_div, visible: true, count: 2)
+        expect(page).to have_selector(marker_div, count: 2)
       end
 
       # Filter out "Unsuccessful" status
       unsuccessful_filter_checkbox = find(:css, 'label[for="status_unsuccessful"]')
       unsuccessful_filter_checkbox.click
       within(:css, '#map') do
-        expect(page).to_not have_selector(marker_div, visible: true)
+        expect(page).to_not have_selector(marker_div)
       end
 
       # Bring back "Complete"
       complete_filter_checkbox.click
       within(:css, '#map') do
-        expect(page).to have_selector(marker_div)
-        expect(page).to have_selector(marker_div, visible: true, count: 3)
+        expect(page).to have_selector(marker_div, count: 3)
       end
     end
 
