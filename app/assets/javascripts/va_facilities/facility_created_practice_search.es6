@@ -35,7 +35,6 @@ function loadMoreEventListener() {
 
 function filterCategoriesEventListener() {
   $(cp.categoriesInput).on("change", function(e) {
-      debugger
       var catId = e.target[e.target.selectedIndex].value;
       //update category usage/selected..
       updateSelectedCategoriesUsage({
