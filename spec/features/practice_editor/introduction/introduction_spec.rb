@@ -239,6 +239,27 @@ describe 'Practice editor - introduction', type: :feature, js: true do
           expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_1_facility_id')
         end
 
+        it 'should not allow a user to change an existing facility to another existing facility' do
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('VISN 1')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('VISN 1 Clinical Resource Hub (Remote)')
+          # try to change the Palo Alto entry to VISN 1 Clinical Resource Hub
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('Palo Alto')
+          end
+          click_save
+
+          expect(page).to have_content('There was an error updating practice origin facilities. The innovation was not saved.')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('VISN 1 Clinical Resource Hub (Remote)')
+          expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_2_facility_id')
+        end
+
         it 'should allow a user to change an existing origin facility to a different one and create a new entry using the facility that was previously saved' do
           # change the existing origin facility input's value to a different facility
           within(all('.practice-editor-origin-li').last) do
@@ -396,6 +417,28 @@ describe 'Practice editor - introduction', type: :feature, js: true do
           click_save
 
           expect(find(:css, 'input#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+          expect(page).not_to have_selector('input#practice_practice_partner_practices_attributes_2_practice_partner_id')
+        end
+
+        it 'should not allow a user to change an existing practice partner to another existing practice partner' do
+          click_add_another('#link_to_add_link_practice_partner_practices')
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Rural Health')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
+
+          # try to change the Office of Rural Health entry to Diffusion of Excellence
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Diffusion')
+          end
+          click_save
+
+          expect(page).to have_content('There was an error updating practice partners. The innovation was not saved.')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
           expect(page).not_to have_selector('input#practice_practice_partner_practices_attributes_2_practice_partner_id')
         end
 

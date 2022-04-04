@@ -117,8 +117,8 @@ class SavePracticeService
 
   def update_practice_partner_practices
     practice_partner_params = @practice_params[:practice_partner_practices_attributes]
-    practice_partner_params_data = ParamsData.new(practice_partner_params)
-    modify_practice_partner_params = ModifyParams.new(practice_partner_params)
+    practice_partner_params_data = Params::ParamsData.new(practice_partner_params)
+    modify_practice_partner_params = Params::ModifyParams.new(practice_partner_params)
     partner_id_counts = practice_partner_params_data.get_id_counts_from_params(:practice_partner_id)
     unsaved_practice_partner_ids = []
 
@@ -504,17 +504,51 @@ class SavePracticeService
 
   def filter_practice_origin_facilities
     origin_facility_params = @practice_params[:practice_origin_facilities_attributes]
-    origin_facility_params_data = ParamsData.new(origin_facility_params)
-    modify_origin_facility_params = ModifyParams.new(origin_facility_params)
-    facility_id_counts = origin_facility_params_data.get_id_counts_from_params(:facility_id)
+    origin_facility_params_data = Params::ParamsData.new(origin_facility_params)
+    modify_origin_facility_params = Params::ModifyParams.new(origin_facility_params)
     unsaved_va_facility_ids = []
     unsaved_crh_ids = []
 
     begin
       origin_facility_params.each do |key, value|
-        va_facility_id = value[:va_facility_id]
-        crh_id = value[:clinical_resource_hub_id]
+        facility_id = value[:facility_id]
+
+        if facility_id.start_with?('va-facility')
+          value[:va_facility_id] = facility_id.split('-').last
+          va_facility_id = value[:va_facility_id]
+        else
+          value[:clinical_resource_hub_id] = facility_id.split('-').last
+          crh_id = value[:clinical_resource_hub_id]
+        end
+
+        facility_type_and_id = value[:facility_type_and_id]
         practice_origin_facilities = @practice.practice_origin_facilities
+
+        # if the user tries to change an existing facility to another existing facility, raise an error
+        raise StandardError.new if origin_facility_params_data.has_two_existing_records_with_identical_param_values?(:facility_id, facility_id)
+
+        if facility_id.present?
+          if facility_id.start_with?('va-facility')
+            value[:va_facility_id] = facility_id.split('-').last
+            # if there's an existing origin facility that's being changed from a CRH to a VaFacility, we need to assign the new va_facility_id and set the clinical_resource_hub_id to nil,
+            # because a PracticeOriginFacility cannot have both foreign keys populated
+            if value[:id].present? && facility_type_and_id.start_with?('crh') && value[:_destroy] === 'false'
+              practice_origin_facility = PracticeOriginFacility.find_by(practice_id: @practice.id, clinical_resource_hub_id: facility_type_and_id.split('-').last)
+              practice_origin_facility.update_attributes(clinical_resource_hub_id: nil, va_facility_id: facility_id.split('-').last)
+            end
+          else
+            value[:clinical_resource_hub_id] = facility_id.split('-').last
+            # if there's an existing origin facility that's being changed from a VaFacility to a CRH, we need to assign the new clinical_resource_hub_id and set the va_facility_id to nil
+            # because a PracticeOriginFacility cannot have both foreign keys populated
+            if value[:id].present? && facility_type_and_id.start_with?('va-facility') && value[:_destroy] === 'false'
+              practice_origin_facility = PracticeOriginFacility.find_by(practice_id: @practice.id, va_facility_id: facility_type_and_id.split('-').last)
+              practice_origin_facility.update_attributes(va_facility_id: nil, clinical_resource_hub_id: facility_id.split('-').last)
+            end
+          end
+          value[:facility_id] = facility_id.split('-').last
+        end
+
+        facility_id_counts = origin_facility_params_data.get_id_counts_from_params(:facility_id)
 
         # check for an existing origin facility record
         if va_facility_id.present? || crh_id.present?

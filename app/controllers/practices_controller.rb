@@ -724,34 +724,11 @@ def set_initiating_fac_params(params)
   origin_facility_params = params[:practice][:practice_origin_facilities_attributes]
   case params[:practice][:initiating_facility_type]
   when "facility"
-    origin_facility_params.values.each do |value|
-      facility_id = value[:facility_id]
-      facility_type_and_id = value[:facility_type_and_id]
-
-      if facility_id.present?
-        if facility_id.start_with?('va-facility')
-          value[:va_facility_id] = facility_id.split('-').last
-          # if there's an existing origin facility that's being changed from a CRH to a VaFacility, we need to update it, because a PracticeOriginFacility cannot have both foreign keys populated
-          if value[:id].present? && facility_type_and_id.start_with?('crh') && value[:_destroy] === 'false'
-            practice_origin_facility = PracticeOriginFacility.find_by(practice_id: @practice.id, clinical_resource_hub_id: facility_type_and_id.split('-').last)
-            practice_origin_facility.update(clinical_resource_hub_id: nil, va_facility_id: facility_id.split('-').last)
-          end
-        else
-          value[:clinical_resource_hub_id] = facility_id.split('-').last
-          # if there's an existing origin facility that's being changed from a VaFacility to a CRH, we need to update it, because a PracticeOriginFacility cannot have both foreign keys populated
-          if value[:id].present? && facility_type_and_id.start_with?('va-facility') && value[:_destroy] === 'false'
-            practice_origin_facility = PracticeOriginFacility.find_by(practice_id: @practice.id, va_facility_id: facility_type_and_id.split('-').last)
-            practice_origin_facility.update(va_facility_id: nil, clinical_resource_hub_id: facility_id.split('-').last)
-          end
-        end
-        value[:facility_id] = facility_id.split('-').last
-      end
-    end
 =begin
     if all of the origin facility params being sent in do not have a facility_id and the user switched from another originating facility type, set the
     practice_origin_facilities_attributes params to nil.
 =end
-    origin_facility_id_counts = origin_facility_params.values.collect{ |param| param[:facility_id] }.group_by(&:itself).transform_values(&:count)
+    origin_facility_id_counts = Params::ParamsData.new(origin_facility_params).get_id_counts_from_params(:facility_id)
     if (@practice.initiating_facility.present? || @practice.initiating_department_office_id.present?) && origin_facility_id_counts[nil] === origin_facility_params.keys.length
       params[:practice][:practice_origin_facilities_attributes] = nil
     end
