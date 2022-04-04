@@ -120,7 +120,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       complete_filter_checkbox = find(:css, 'label[for="status_successful"]')
       complete_filter_checkbox.click
       expect(page).to have_selector(marker_div, visible: true)
-      expect(page.all(marker_div, visible: true).count).to eq(3)
+      expect(page).to have_selector(marker_div, visible: true, count: 3)
 
       # Filter out "In progress" status
       in_progress_filter_checkbox = find(:css, 'label[for="status_in-progress"]')

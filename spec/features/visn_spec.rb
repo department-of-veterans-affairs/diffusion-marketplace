@@ -394,6 +394,7 @@ describe 'VISN pages', type: :feature do
       it 'should take the user to the show page of the facility they click on within the facilities table' do
         visit '/visns/2'
         click_link('Fourth Test Name (Fourth Common Name)')
+        sleep 0.1
         expect(page).to have_content('This facility has created 0 innovations and has adopted 1 innovation.')
         expect(page).to have_selector('#va_facility_map', visible: true)
         expect(page).to have_current_path('/facilities/fourth-common-name')
