@@ -26,7 +26,7 @@ function ajaxUpdateSearchResults(updateCat = true) {
   let keyWord = null;
   let adoptedSearchField = document.getElementById('dm-adopted-practices-search-field');
   let selectedCategory = $('select[name="facility_category_select_adoptions"]').val();
-   if (adoptedSearchField !== null){
+   if (adoptedSearchField){
        keyWord = adoptedSearchField.value === '' ? null : $(ap.searchField).data("search");
    }
 

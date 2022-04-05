@@ -100,7 +100,7 @@ function setDataAndMakeRequest({ isNextPage = false, searchTermInput }) {
 
     let createdSearchField = document.getElementById('dm-created-practice-search-field');
     let searchTerm = null;
-    if (createdSearchField !== null){
+    if (createdSearchField){
         searchTerm = createdSearchField.value === '' ? null : $(cp.searchField).data("search");
     }
     else {
