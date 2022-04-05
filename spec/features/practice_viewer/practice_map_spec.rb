@@ -119,24 +119,29 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       # Filter out "Complete" status
       complete_filter_checkbox = find(:css, 'label[for="status_successful"]')
       complete_filter_checkbox.click
-      expect(page).to have_selector(marker_div, visible: true)
-      expect(page.all(marker_div, visible: true).count).to eq(3)
+      within(:css, '#map') do
+        expect(page).to have_selector(marker_div, count: 3)
+      end
 
       # Filter out "In progress" status
       in_progress_filter_checkbox = find(:css, 'label[for="status_in-progress"]')
       in_progress_filter_checkbox.click
-      expect(page).to have_selector(marker_div, visible: true)
-      expect(page.all(marker_div, visible: true).count).to eq(2)
+      within(:css, '#map') do
+        expect(page).to have_selector(marker_div, count: 2)
+      end
 
       # Filter out "Unsuccessful" status
       unsuccessful_filter_checkbox = find(:css, 'label[for="status_unsuccessful"]')
       unsuccessful_filter_checkbox.click
-      expect(page.all(marker_div, visible: true).count).to eq(0)
+      within(:css, '#map') do
+        expect(page).to_not have_selector(marker_div)
+      end
 
       # Bring back "Complete"
       complete_filter_checkbox.click
-      expect(page).to have_selector(marker_div, visible: true)
-      expect(page.all(marker_div, visible: true).count).to eq(3)
+      within(:css, '#map') do
+        expect(page).to have_selector(marker_div, count: 3)
+      end
     end
 
     it 'should allow the user to visit each adoption\'s VA facility page' do

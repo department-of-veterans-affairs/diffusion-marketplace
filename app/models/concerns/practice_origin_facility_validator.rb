@@ -4,7 +4,7 @@ class PracticeOriginFacilityValidator < ActiveModel::Validator
     has_multiple_relationships = (record.va_facility_id.present? && record.clinical_resource_hub_id.present?) || (record.va_facility_id.present? && record.clinical_resource_hub_id.present?)
     begin
       if !is_valid
-        raise StandardError.new 'Error! A DiffusionHistory must belong to either a VaFacility or a ClinicalResourceHub.'
+        raise StandardError.new 'Error! A PracticeOriginFacility must belong to either a VaFacility or a ClinicalResourceHub.'
       elsif has_multiple_relationships
         raise StandardError.new 'Error! A PracticeOriginFacility can belong to either a VaFacility or a ClinicalResourceHub, but not both.'
       end

@@ -121,7 +121,7 @@
           <div>
             <h5 class="text-uppercase display-inline margin-y-0">Partners:</h5>
             <p class="display-inline line-height-26">
-              <% @practice.practice_partners.each_with_index do |partner, index| %>
+              <% Naturalsorter::Sorter.sort_by_method(@practice.practice_partners, 'name', true, true).each_with_index do |partner, index| %>
                 <% needs_comma = @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
 
                 <% if partner.is_major %>

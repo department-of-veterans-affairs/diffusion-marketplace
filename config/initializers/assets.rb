@@ -15,7 +15,6 @@ Rails.application.config.assets.precompile += %w(
                                                   ie.js
                                                   _render_warning_banners.js
                                                   _assign_facility_name.js
-                                                  _facilitySelect.js
                                                   practice_editor_adoptions.js
                                                   practice_page.js
                                                   _practice_editor_utilities.js

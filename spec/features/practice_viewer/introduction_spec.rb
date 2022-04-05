@@ -127,13 +127,13 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
     context 'origin section' do
       it 'should expand content on click' do
-        expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park), Robley Rex Department of Veterans Affairs Medical Center (Louisville), Omaha VA Medical Center (Omaha-Nebraska), Hampton...')
+        expect(page).to have_content('Hampton VA Medical Center, Hunter Holmes McGuire Hospital (Richmond-Virginia), Omaha VA Medical Center (Omaha-Nebraska), Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)...')
         expect(page).to have_content('See more')
         click_link('See more')
-        expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park), Robley Rex Department of Veterans Affairs Medical Center (Louisville), Omaha VA Medical Center (Omaha-Nebraska), Hampton VA Medical Center, Hunter Holmes McGuire Hospital (Richmond-Virginia)')
+        expect(page).to have_content('Hampton VA Medical Center, Hunter Holmes McGuire Hospital (Richmond-Virginia), Omaha VA Medical Center (Omaha-Nebraska), Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park), Robley Rex Department of Veterans Affairs Medical Center (Louisville)')
         expect(page).to have_content('See less')
         click_link('See less')
-        expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park), Robley Rex Department of Veterans Affairs Medical Center (Louisville), Omaha VA Medical Center (Omaha-Nebraska), Hampton...')
+        expect(page).to have_content('Hampton VA Medical Center, Hunter Holmes McGuire Hospital (Richmond-Virginia), Omaha VA Medical Center (Omaha-Nebraska), Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)...')
         expect(page).to have_content('See more')
       end
 
