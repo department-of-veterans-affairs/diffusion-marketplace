@@ -1,19 +1,17 @@
 <%
   visns = Visn.cached_visns.select(:id, :number)
-  origin_facilities = @practice.practice_origin_facilities
-  origin_facilities_count = @practice.practice_origin_facilities.count
+  origin_facilities_count = @origin_facilities.size
   display_name = origin_display_name(@practice)
 %>
 
 <% if @practice.facility? %>
   <span class="origin-facilities-display-text">
-    <% origin_facilities.each_with_index do |pof, index| %>
-      <% facility = pof.va_facility %>
-      <% if facility.present? %>
-        <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(pof.va_facility), class: "usa-link",
+    <% @origin_facilities.each_with_index do |facility, index| %>
+      <% if facility[:street_address_state].present? %>
+        <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: "usa-link",
           target: '_blank' %><%= ', ' unless index + 1 === origin_facilities_count %>
       <% else %>
-        <%= link_to "#{pof.clinical_resource_hub.official_station_name}", clinical_resource_hub_path(pof.clinical_resource_hub), class: "usa-link",
+        <%= link_to "#{facility.official_station_name}", clinical_resource_hub_path(facility), class: "usa-link",
                     target: '_blank' %><%= ', ' unless index + 1 === origin_facilities_count %>
       <% end %>
     <% end %>
