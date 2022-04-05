@@ -386,11 +386,7 @@ class PracticesController < ApplicationController
           format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
       else
-        pub_msg = render_to_string('practices/_publication_validation_message', layout: false, locals: { practice: @practice })
-        flash[:error] = "#{pub_msg}"
-        flash[:heading] = "Cannot publish yet"
-        path = "practice_#{current_endpoint}_path"
-        format.js { render js: "window.location='#{self.send(path)}'" }
+        format.js
       end
     end
   end
