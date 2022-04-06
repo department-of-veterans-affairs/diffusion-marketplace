@@ -89,9 +89,7 @@
               </div>
             </div>
 
-
             <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @practice } %>
-
 
             <div class="margin-top-3 margin-bottom-5">
               <%= f.label :summary, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
@@ -130,7 +128,6 @@
                 </div>
               </div>
             </div>
-
 
             <div class="margin-top-3 margin-bottom-5">
               <p class="text-bold margin-bottom-2">
@@ -410,7 +407,6 @@
               </div>
             </div>
 
-
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-105">
                 <p class="text-bold margin-bottom-1">
@@ -519,7 +515,6 @@
                   end
 
                   categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories + cat_placeholders.last : []
-
                   sliced_categories = split_data_into_three_columns(categories)
                 %>
 

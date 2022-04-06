@@ -1,7 +1,7 @@
 <div id="practiceEditorPublicationModal" class="bg-base-light publication-modal-hidden">
   <div class="padding-y-9 publication-modal">
     <div class="publication-modal-content margin-x-auto bg-white radius-md position-relative">
-      <span class="close-publication-modal close text-base-darker position-absolute top-0 right-0" tabindex="0" role="button" aria-label="Close modal"><span class="fas fa-times"></span></span>
+      <button class="close-publication-modal close text-base-darker bg-white padding-05 border-0 position-absolute top-0 right-0" aria-label="Close publication modal"><i class="fas fa-times"></i></button>
       <h2 class="margin-bottom-1 margin-top-0 font-sans-xl usa-prose-h2">Cannot publish yet</h2>
       <p class="usa-prose-body margin-bottom-2">
         These sections need to be complete before we can publish your innovation:
@@ -85,9 +85,9 @@
           </div>
         <% end %>
       <% end %>
-      <div class="padding-2 text-left">
-        <button id="publication-modal-save-button">Save as draft and exit</button>
-        <button class="usa-button margin-0 padding-2 back-to-editor-button">Return to editor</button>
+      <div class="margin-top-4 text-left">
+        <button id="publication-modal-save-button" class="usa-button margin-right-4">Save as draft and exit</button>
+        <button class="usa-button margin-0 back-to-editor-button dm-button--unstyled-primary">Return to editor</button>
       </div>
     </div>
   </div>
