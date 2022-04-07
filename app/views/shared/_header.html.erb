@@ -3,22 +3,22 @@
 <%= render 'shared/veterans_crisis_line_modal' %>
 <!-- source: https://designsystem.digital.gov/components/header/#extended -->
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
-  <div class="usa-overlay"></div>
-  <header class="usa-header usa-header--basic desktop-lg:border-bottom desktop-lg:border-base-lighter">
-  <div class="usa-nav-container maxw-full">
-    <div class="usa-navbar">
-      <div class="usa-logo" id="basic-logo">
-        <em class="usa-logo__text">
-          <a class="display-flex" href="/" title="Home" aria-label="Home">
-            <img class="width-4 height-4 margin-top-2px dm-header--va-seal" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
-            <p class="margin-0 margin-left-1 text-ink line-height-sans-1 padding-top-2px desktop-lg:padding-top-05">
-              <span class="text-bold font-sans-sm desktop-lg:font-sans-lg">Diffusion Marketplace</span><br>
-              <span class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</span>
-            </p>
-          </a>
-        </em>
-      </div>
-      <button class="usa-menu-btn bg-ink padding-x-205">Menu</button>
+<header id="dm-nav-header" class="usa-header usa-header--extended bg-white">
+  <div class="usa-navbar padding-x-0 margin-0 desktop:width-full">
+    <div class="usa-logo">
+      <em class="usa-logo__text">
+        <a class="display-flex" href="/" title="Home" aria-label="Home">
+          <img class="width-4 height-4 margin-top-2px" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
+          <p class="margin-0 margin-left-1 text-ink line-height-sans-1 padding-top-2px">
+            <span class="text-bold font-sans-sm desktop:font-sans-lg">Diffusion Marketplace</span><br>
+            <span class="font-sans-3xs text-light desktop:font-sans-sm">Department of Veterans Affairs</span>
+          </p>
+        </a>
+      </em>
+    </div>
+    <div class="dm-navbar__secondary display-none desktop:display-flex flex-row flex-align-self-center">
+      <%= render partial: 'shared/navbar_search', locals: { search_form_id: 'dm-navbar-search-desktop-form', search_field_id: 'dm-navbar-search-desktop-field', search_button_id: 'dm-navbar-search-desktop-button' } %>
+      <%= render partial: 'shared/header_user_login_nav', locals: { accordion_id: 'dm-user-profile-options' } %>
     </div>
     <button class="usa-menu-btn bg-ink padding-x-205">Menu</button>
   </div>
