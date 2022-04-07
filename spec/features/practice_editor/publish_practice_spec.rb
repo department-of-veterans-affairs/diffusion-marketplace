@@ -69,41 +69,60 @@ describe 'Practice editor', type: :feature, js: true do
 
     it 'should display an error modal only when missing required fields exists' do
       find('#publish-practice-button').click
-      expect(page).to have_selector(".dm-publication-validation--alert", visible: true)
-      expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('You can save your work as a draft at any time, but these sections need to be completed before publishing:')
-      expect(page).to have_content('Introduction')
-      expect(page).to have_content('Tagline')
-      expect(page).to have_content('Date created')
-      expect(page).to have_content('Innovation origin')
-      expect(page).to have_content('Summary')
-      expect(page).to have_content('Overview')
-      expect(page).to have_content('Problem statement')
-      expect(page).to have_content('Solution statement')
-      expect(page).to have_content('Results statement')
-      expect(page).to have_content('Adoptions')
-      expect(page).to have_content('At least one adoption')
-      expect(page).to have_content('Contact')
-      expect(page).to have_content('Email')
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
+      within(:css, '#practiceEditorPublicationModal') do
+        expect(page).to have_content('Cannot publish yet')
+        expect(page).to have_content('These sections need to be complete before we can publish your innovation:')
+        expect(page).to have_content('Introduction')
+        expect(page).to have_content('Tagline')
+        expect(page).to have_content('Date created')
+        expect(page).to have_content('Innovation origin')
+        expect(page).to have_content('Summary')
+        expect(page).to have_content('Overview')
+        expect(page).to have_content('Problem statement')
+        expect(page).to have_content('Solution statement')
+        expect(page).to have_content('Results statement')
+        expect(page).to have_content('Adoptions')
+        expect(page).to have_content('At least one adoption')
+        expect(page).to have_content('Contact')
+        expect(page).to have_content('Email')
+      end
+      # exit the modal with the "Return to editor" button
+      click_button('Return to editor')
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: false)
       set_pr_required_fields
       set_initiating_fac
       find('#publish-practice-button').click
-      expect(page).to have_selector(".dm-publication-validation--alert", visible: true)
-      expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('You can save your work as a draft at any time, but these sections need to be completed before publishing:')
-      expect(page).to have_content('Date created')
-      expect(page).to have_content('Innovation origin')
-      expect(page).to have_content('Summary')
-      expect(page).to have_content('At least one adoption')
-      expect(page).to have_content('Email')
-
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
+      within(:css, '#practiceEditorPublicationModal') do
+        expect(page).to have_content('Cannot publish yet')
+        expect(page).to have_content('These sections need to be complete before we can publish your innovation:')
+        expect(page).to have_content('Date created')
+        expect(page).to have_content('Innovation origin')
+        expect(page).to have_content('Summary')
+        expect(page).to have_content('At least one adoption')
+        expect(page).to have_content('Email')
+      end
+      # exit the modal by clicking anywhere outside of the modal
+      find('body').click
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: false)
       visit practice_adoptions_path(@practice)
       set_adoption
       visit practice_overview_path(@practice)
       find('#publish-practice-button').click
-      page.has_css?('.dm-publication-validation--alert')
-      expect(page).to have_no_content('At least one adoption')
-      expect(page).to have_content('Email')
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
+      within(:css, '#practiceEditorPublicationModal') do
+        expect(page).to have_no_content('At least one adoption')
+        expect(page).to have_content('Email')
+      end
+      # exit the modal by clicking on the 'X' icon
+      find('.close-publication-modal').click
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: false)
+
+      # save the practice through the modal
+      find('#publish-practice-button').click
+      click_button('Save as draft and exit')
+      expect(page).to have_content('Innovation was successfully updated.')
     end
 
     it 'Should save and publish the practice if all required fields are met' do
