@@ -5,7 +5,7 @@
 }
 
 /* The Modal (background) */
-.modal, .terms-modal, .report-abuse-modal, .publication-modal {
+.modal, .terms-modal, .report-abuse-modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 100000; /* Sit on top */
@@ -40,13 +40,7 @@
   animation-duration: 0.4s
 }
 
-.close-publication-modal {
-  i {
-    font-size: 32px;
-  }
-}
-
-.terms-modal, .report-abuse-modal, .publication-modal {
+.terms-modal, .report-abuse-modal {
   display: block;
   padding-top: 120px;
 
@@ -55,10 +49,23 @@
   }
 }
 
-.publication-modal-content {
-  width: 830px;
-  @include u-padding-x(5);
-  @include u-padding-y(6);
+.publication-modal {
+  z-index: 100000; /* Sit on top */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+
+  .publication-modal-content {
+    width: 830px;
+    @include u-padding-x(5);
+    @include u-padding-y(6);
+    transform: translateY(25%);
+
+    .close-publication-modal {
+      i {
+        font-size: 32px;
+      }
+    }
+  }
 }
 
 .publication-modal-hidden {
