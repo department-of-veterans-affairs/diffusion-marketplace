@@ -57,7 +57,8 @@
 
 .publication-modal-content {
   width: 830px;
-  padding: 48px 40px;
+  @include u-padding-x(5);
+  @include u-padding-y(6);
 }
 
 .publication-modal-hidden {
