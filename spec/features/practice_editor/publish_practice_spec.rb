@@ -87,8 +87,8 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('Contact')
         expect(page).to have_content('Email')
       end
-      # exit the modal with the "Return to editor" button
-      click_button('Return to editor')
+      # exit the modal with the "Continue editing" button
+      click_button('Continue editing')
       expect(page).to have_selector('#practiceEditorPublicationModal', visible: false)
       set_pr_required_fields
       set_initiating_fac
