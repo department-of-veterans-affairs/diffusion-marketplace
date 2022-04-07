@@ -13,7 +13,7 @@ function changeActionUrl(ele, urlSlug) {
 
 function preventScrolling() {
     publicationValidation.scrollPosition = $(window).scrollTop();
-     $(publicationValidation.body).css('top', "-" + publicationValidation.scrollPosition + "px");
+    $(publicationValidation.body).css('top', `-${publicationValidation.scrollPosition}px`);
     addClassToElement(publicationValidation.body, 'overflow-y-scroll');
     addClassToElement(publicationValidation.body, 'position-fixed');
     addClassToElement(publicationValidation.body, 'width-full');
@@ -61,7 +61,20 @@ function submitFormOnButtonClick() {
     $(document).on('click', '#publication-modal-save-button', function () {
         hidePublicationModal();
         changeActionUrl(publicationValidation.form, publicationValidation.practiceSlug);
+        /*
+          add a hidden input to the form. Design wants the user to be redirected to the practice's show page after clicking 'Save as draft and exit', so this will allow us to have an identifier in
+          the params that will let us check if the request is being sent from the publish modal.
+        */
+        let hiddenInput = 'publication-modal-hidden-input';
+        $('<input />')
+            .attr('type', 'hidden')
+            .attr('name', 'publish_modal_save')
+            .attr('value', true)
+            .addClass(hiddenInput)
+            .appendTo(publicationValidation.form);
         validateForm({form: $(publicationValidation.form), railsFireEvent: false});
+        // remove the hidden input
+        $(`.${hiddenInput}`).remove();
     });
 }
 

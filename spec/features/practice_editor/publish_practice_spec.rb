@@ -119,10 +119,11 @@ describe 'Practice editor', type: :feature, js: true do
       find('.close-publication-modal').click
       expect(page).to have_selector('#practiceEditorPublicationModal', visible: false)
 
-      # save the practice through the modal
+      # save the practice through the modal and make sure the user is redirected to the practice's show page
       find('#publish-practice-button').click
       click_button('Save as draft and exit')
       expect(page).to have_content('Innovation was successfully updated.')
+      expect(page.current_path).to eq('/innovations/a-public-practice')
     end
 
     it 'Should save and publish the practice if all required fields are met' do

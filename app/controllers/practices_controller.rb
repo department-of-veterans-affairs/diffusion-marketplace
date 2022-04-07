@@ -108,6 +108,7 @@ class PracticesController < ApplicationController
     session_open = PracticeEditorSession.find_by(practice: @practice, user_id: current_user.id, session_end_time: nil).present?
     latest_session_user_is_current_user = PracticeEditorSession.where(practice: @practice).last.user === current_user
     updated = update_conditions if session_open || latest_session_user_is_current_user
+    is_request_from_publish_modal = params[:publish_modal_save].present?
 
     #check to see if current session has expired.... if  not
     respond_to do |format|
@@ -117,7 +118,12 @@ class PracticesController < ApplicationController
           # Add back end validation error messages for Editors page just as a safety measure
           invalid_editor_email_field = updated.message.split(' ').slice(3..-1).join(' ')
           flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The innovation was not saved."
-          format.html { redirect_back fallback_location: root_path }
+          # if the request was sent via the publication modal, redirect the user to the practice's show page
+          if is_request_from_publish_modal
+            format.html { redirect_to practice_path }
+          else
+            format.html { redirect_back fallback_location: root_path }
+          end
           format.json { render json: updated, status: :unprocessable_entity }
         elsif !session_open && latest_session_user_is_current_user
           flash[:notice] = "Your editing session for #{@practice.name} has ended. Your edits have been saved and you have been returned to the Metrics page."
@@ -135,7 +141,12 @@ class PracticesController < ApplicationController
             format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Innovation was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
+            # if the request was sent via the publication modal, redirect the user to the practice's show page
+            if is_request_from_publish_modal
+              format.html { redirect_to practice_path, notice: editor_notice + 'Innovation was successfully updated.' }
+            else
+              format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
+            end
             format.json { render json: @practice, status: :ok }
           end
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
@@ -150,7 +161,12 @@ class PracticesController < ApplicationController
           format.html { redirect_to practice_metrics_path(@practice) }
         else
           flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
-          format.html { redirect_back fallback_location: root_path }
+          # if the request was sent via the publication modal, redirect the user to the practice's show page
+          if is_request_from_publish_modal
+            format.html { redirect_to practice_path }
+          else
+            format.html { redirect_back fallback_location: root_path }
+          end
           format.json { render json: updated, status: :unprocessable_entity }
         end
       end
