@@ -208,7 +208,7 @@ describe 'Search', type: :feature do
   describe 'results' do
     it 'should display all published/enabled/approved practices if the user clicks on the search button with no query or filters' do
       visit '/'
-      find('#dm-navbar-search-button').click
+      find('#dm-navbar-search-desktop-button').click
       expect(page).to have_content('Load more')
       click_button('Load more')
       expect(page).to have_content(@practice.name)

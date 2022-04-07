@@ -38,6 +38,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/about')
         expect(page).to have_content('Partners')
         expect(page).to have_link(href: '/partners')
+        expect(page).to have_content('Shark Tank')
+        expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Your profile')
         expect(page).to have_content('Browse by locations')
       end
@@ -55,6 +57,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/about')
         expect(page).to have_content('Partners')
         expect(page).to have_link(href: '/partners')
+        expect(page).to have_content('Shark Tank')
+        expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Browse by locations')
         expect(page).to_not have_content('Sign in')
       end
@@ -66,6 +70,13 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       it 'should redirect to the About us page' do
         click_on 'About us'
         expect(page).to have_current_path('/about')
+      end
+    end
+
+    context 'clicking on Shark Tank link' do
+      it 'should redirect to the Shark Tank page' do
+        click_on 'Shark Tank'
+        expect(page).to have_current_path('/competitions/shark-tank')
       end
     end
 
@@ -127,14 +138,14 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   describe 'header search' do
     it 'should exist' do
       within('header.usa-header') do
-        expect(page).to have_css('#dm-navbar-search-field')
+        expect(page).to have_css('#dm-navbar-search-desktop-field')
       end
     end
 
     it 'should redirect to the search results page' do
       within('header.usa-header') do
-        fill_in('dm-navbar-search-field', with: 'test')
-        find('#dm-navbar-search-button').click
+        fill_in('dm-navbar-search-desktop-field', with: 'test')
+        find('#dm-navbar-search-desktop-button').click
       end
 
       expect(page).to have_content('1 result')
@@ -144,9 +155,44 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       # should show all published/enabled/approved practices on empty header search
       visit '/'
       within('header.usa-header') do
-        find('#dm-navbar-search-button').click
+        find('#dm-navbar-search-desktop-button').click
       end
 
+      expect(page).to have_content('A public practice')
+      expect(page).to have_content('Project HAPPEN')
+    end
+  end
+
+  describe 'header mobile' do
+    before do
+      # ensure header mobile view
+      page.driver.browser.manage.window.resize_to(480, 800)
+      find('.usa-menu-btn').click
+    end
+
+    it 'should show the search bar and links' do
+      expect(page).to have_css('.dm-navbar-search-field')
+      expect(page).to have_content('About us')
+      expect(page).to have_link(href: '/about')
+      expect(page).to have_content('Partners')
+      expect(page).to have_link(href: '/partners')
+      expect(page).to have_content('Shark Tank')
+      expect(page).to have_link(href: '/competitions/shark-tank')
+      expect(page).to have_content('Your profile')
+      expect(page).to have_content('Browse by locations')
+    end
+
+    it 'should redirect to the search results page' do
+      fill_in('dm-navbar-search-mobile-field', with: 'test')
+      find('#dm-navbar-search-mobile-button').click
+      expect(page).to have_content('1 result')
+      expect(page).to have_content('A public practice')
+      expect(page).to have_current_path('/search?query=test')
+
+      # should show all published/enabled/approved practices on empty header search
+      visit '/'
+      find('.usa-menu-btn').click
+      find('#dm-navbar-search-mobile-button').click
       expect(page).to have_content('A public practice')
       expect(page).to have_content('Project HAPPEN')
     end
