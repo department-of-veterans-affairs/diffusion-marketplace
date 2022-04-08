@@ -313,6 +313,16 @@ describe 'Practice editor - introduction', type: :feature, js: true do
           expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('AL: Birmingham VA Medical Center (Birmingham-Alabama)')
           expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_2_facility_id')
         end
+
+        it 'should not save empty entries' do
+          # add a second blank origin facility
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          click_save
+
+          expect(page).to have_content('Innovation was successfully updated.')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+          expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_1_facility_id')
+        end
       end
 
       it 'should display an error and revert changes if fields are not populated' do
