@@ -6,7 +6,7 @@
           <%= link_to 'Metrics', practice_metrics_path(@practice), class: "#{'usa-current' if current_page?(practice_metrics_path(@practice))} width-full" %>
         </li>
         <li class="usa-sidenav__item">
-          <%= link_to 'Editing guide', practice_instructions_path(@practice), class: "#{'usa-current' if current_page?( practice_instructions_path(@practice))} width-full" %>
+          <%= link_to 'Editing guide', practice_instructions_path(@practice), class: "#{'usa-current' if current_page?( practice_instructions_path(@practice))} width-full", :remote => true %>
         </li>
         <li class="usa-sidenav__item">
           <%= link_to "Edit: #{@practice.name}", practice_introduction_path(@practice), class: "#{'usa-current' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>

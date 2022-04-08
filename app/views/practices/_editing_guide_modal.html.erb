@@ -1,0 +1,80 @@
+<div id="editingGuideModal" class="bg-base-light editing-guide-modal-hidden">
+  <div class="editing-guide-modal display-block">
+    <div class="editing-guide-modal-content margin-x-auto bg-white radius-md position-relative">
+      <button class="editing-guide-close-modal close text-base-darker bg-white padding-05 border-0 position-absolute top-2 right-2" aria-label="Close editing guide modal"><i class="fas fa-times"></i></button>
+      <div id="instructions" class="usa-prose">
+        <section class="margin-bottom-3">
+          <%= render partial: "shared/messages", locals: {small_text: false} %>
+          <h1 class="margin-bottom-3">Editing guide</h1>
+          <div>Follow these instructions to build your innovation page. Your page is modular, meaning that some sections in the editor are optional. Required fields are denoted with an asterisk (*). You will be able to edit your innovation once it’s published.</div>
+        </section>
+
+        <section class="desktop:grid-col-11 margin-bottom-5">
+          <h4 class="margin-bottom-1">What you need</h4>
+          <div>
+            <ul class="usa-list padding-left-0 margin-top-0">
+              <li class="small-disc margin-bottom-1">To create an innovation page, you’ll be asked to share data, images, video, instructions, documents, and testimonials.</li>
+              <li class="small-disc">All uploaded material must be a common file format (pdf, docx, xlxs, jpg, jpeg, png, or pdf) that is ready to be shared with the public.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="desktop:grid-col-11 margin-bottom-3">
+          <h4 class="margin-bottom-1">Privacy policy</h4>
+          <div>
+            <ul class="usa-list padding-left-0 margin-top-0">
+              <li class="small-disc margin-bottom-1">Avoid entering Personally Identifiable Information (PII) or Protected Health Information (PHI) for any individual, Veteran, or patient.</li>
+              <li class="small-disc margin-bottom-1">If you want to upload an image that features a Veteran, or text that includes a Veteran’s name or individually-identifiable information, you must fill out and hold onto forms <%= link_to 'VAF 10-3203', Constants::FORM_3203_URL, target: '_blank', class: 'usa-link usa-link--external' %> and <%= link_to 'VAF 10-5345', Constants::FORM_5345_URL, target: '_blank', class: 'usa-link usa-link--external' %>. Form <%= link_to 'VAF 10-3203', Constants::FORM_3203_URL, target: '_blank', class: 'usa-link usa-link--external' %> must be filled out with the 'Externally (shared outside VA)' checkbox selected.</li>
+              <li class="small-disc margin-bottom-1">If you post PHI you must fill out and hold onto
+                <%= link_to 'VAF 10-3203', Constants::FORM_3203_URL, target: '_blank', class: 'usa-link usa-link--external' %> and
+                <%= link_to 'VAF 10-5345', Constants::FORM_5345_URL, target: '_blank', class: 'usa-link usa-link--external' %>.
+              </li>
+              <li class="small-disc margin-bottom-1">
+                If you want to upload an image that features a Veteran, or text that includes a Veteran's name or individually-identifiable information you must have forms
+                <%= link_to 'VAF 10-3203', Constants::FORM_3203_URL, target: '_blank', class: 'usa-link usa-link--external' %> and
+                <%= link_to 'VAF 10-5345', Constants::FORM_5345_URL, target: '_blank', class: 'usa-link usa-link--external' %>.
+                Waivers must be filled out with the 'External to VA' check box selected.
+              </li>
+              <li class="small-disc">
+                If you post PHI on the site you must fill out and hold onto
+                <%= link_to 'VAF 10-3203', Constants::FORM_3203_URL, target: '_blank', class: 'usa-link usa-link--external' %> and
+                <%= link_to 'VAF 10-5345', Constants::FORM_5345_URL, target: '_blank', class: 'usa-link usa-link--external' %>.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="desktop:grid-col-11 margin-bottom-5">
+          <h4 class="margin-bottom-1">Writing principles</h4>
+          <p>Writing clear and consistent content is vital to our mission of sharing innovations across the VHA ecosystem. On the Diffusion Marketplace, good content is:</p>
+          <div>
+            <ul class="usa-list padding-left-0 margin-top-0">
+              <li class="small-disc margin-bottom-1">Clear. Use simple words and sentences. If an acronym is necessary for future reference, spell the full word and follow with the acronym in parentheses on the first reference.</li>
+              <li class="small-disc margin-bottom-1">Appropriate. Write in a way that suits the situation. Just like you do in face-to-face conversations, adapt your tone to be appropriate to colleagues, Veterans, and members of the public.</li>
+              <li class="small-disc">Correct. Double check content and spelling before publishing or updating. It can always help to have a second person familiar with your innovation review content to look for possible mistakes. </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="desktop:grid-col-11 margin-bottom-5">
+          <h4 class="margin-bottom-1">Formatting and editing</h4>
+          <div>
+            <ul class="usa-list padding-left-0 margin-top-0">
+              <li class="small-disc margin-bottom-1">Please fill out all fields marked with an asterisk (*) as required. All other fields are optional.</li>
+              <li class="small-disc margin-bottom-1">Ensure your work is accurate, formatted consistently, and as complete as possible before publishing. </li>
+              <li class="small-disc margin-bottom-1">Capitalize proper nouns and names and use sentence case (only capitalizing the first word in titles). </li>
+              <li class="small-disc margin-bottom-1">Please avoid using images with text.</li>
+            </ul>
+          </div>
+        </section>
+
+        <div class="usa-summary-box usa-summary-box--warn">
+          <div class="usa-summary-box__body">
+            <div class="usa-summary-box__heading">Need help along the way?</div>
+            <div class="usa-summary-box__text">Reach out to a member of our support staff with your question. <a class="usa-link usa-link--external" href="mailto:marketplace@va.gov" target="_blank">Send us an email</a><div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

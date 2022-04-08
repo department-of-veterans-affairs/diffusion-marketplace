@@ -5,7 +5,7 @@
 }
 
 /* The Modal (background) */
-.modal, .terms-modal, .report-abuse-modal {
+.modal, .terms-modal, .report-abuse-modal, .editing-guide-modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 100000; /* Sit on top */
@@ -26,7 +26,7 @@
 }
 
 /* Modal Content */
-.modal-content, .terms-modal-content, .report-abuse-modal-content {
+.modal-content, .terms-modal-content, .report-abuse-modal-content, .editing-guide-modal-content {
   position: relative;
   background-color: #fefefe;
   margin: auto;
@@ -40,13 +40,25 @@
   animation-duration: 0.4s
 }
 
-.terms-modal, .report-abuse-modal {
+.terms-modal, .report-abuse-modal, .editing-guide-modal {
   display: block;
   padding-top: 120px;
 
   .terms-modal-content {
     border: none
   }
+}
+
+.editing-guide-modal {
+  padding: 10rem 0;
+  box-sizing: border-box;
+}
+
+.editing-guide-modal-content {
+  width: 80%;
+  min-width: 20rem;
+  max-width: 50rem;
+  padding: 3rem;
 }
 
 /* Add Animation */

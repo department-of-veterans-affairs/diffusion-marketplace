@@ -1,0 +1,32 @@
+var editingGuideValidation = {
+    form: '#form',
+    modal: '#editingGuideModal',
+    practiceSlug: '<%= @practice.slug %>',
+    hideModal: 'editing-guide-modal-hidden'
+ }
+
+var resetEditingGuideModal = function(event) {
+    $('body').removeClass('overflow-y-hidden')
+    $(editingGuideValidation.modal).remove();
+}
+
+ if (!$(editingGuideValidation.modal).length) {
+    $('#main-content').after("<%= escape_javascript(render partial: 'editing_guide_modal', formats: [ :html ]) %>");
+ }
+
+ $(editingGuideValidation.modal).removeClass(editingGuideValidation.hideModal);
+
+ $(document).on('click', '.editing-guide-close-modal', resetEditingGuideModal);
+ $(document).on('keydown', function(event) {
+     if (event.key == "Escape") {
+        resetEditingGuideModal();
+    }
+ });
+
+ $('body').addClass('overflow-y-hidden')
+
+ $('body').off().on('click', function(e) {
+    if ($(e.target).parent().attr('id') === 'editingGuideModal') {
+        $(editingGuideValidation.modal).addClass(editingGuideValidation.hideModal);
+    }
+ });

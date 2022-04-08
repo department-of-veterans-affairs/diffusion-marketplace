@@ -223,7 +223,9 @@ class PracticesController < ApplicationController
 
   # GET /practices/1/instructions
   def instructions
-    render 'practices/form/instructions'
+    respond_to do |format|
+      format.js { render :file => 'practices/form/instructions.js.erb' }
+    end
   end
 
   # /practices/slug/overview
