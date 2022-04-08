@@ -513,14 +513,6 @@ class SavePracticeService
       origin_facility_params.each do |key, value|
         facility_id = value[:facility_id]
 
-        if facility_id.start_with?('va-facility')
-          value[:va_facility_id] = facility_id.split('-').last
-          va_facility_id = value[:va_facility_id]
-        else
-          value[:clinical_resource_hub_id] = facility_id.split('-').last
-          crh_id = value[:clinical_resource_hub_id]
-        end
-
         facility_type_and_id = value[:facility_type_and_id]
         practice_origin_facilities = @practice.practice_origin_facilities
 
@@ -530,6 +522,7 @@ class SavePracticeService
         if facility_id.present?
           if facility_id.start_with?('va-facility')
             value[:va_facility_id] = facility_id.split('-').last
+            va_facility_id = value[:va_facility_id]
             # if there's an existing origin facility that's being changed from a CRH to a VaFacility, we need to assign the new va_facility_id and set the clinical_resource_hub_id to nil,
             # because a PracticeOriginFacility cannot have both foreign keys populated
             if value[:id].present? && facility_type_and_id.start_with?('crh') && value[:_destroy] === 'false'
@@ -538,6 +531,7 @@ class SavePracticeService
             end
           else
             value[:clinical_resource_hub_id] = facility_id.split('-').last
+            crh_id = value[:clinical_resource_hub_id]
             # if there's an existing origin facility that's being changed from a VaFacility to a CRH, we need to assign the new clinical_resource_hub_id and set the va_facility_id to nil
             # because a PracticeOriginFacility cannot have both foreign keys populated
             if value[:id].present? && facility_type_and_id.start_with?('va-facility') && value[:_destroy] === 'false'
