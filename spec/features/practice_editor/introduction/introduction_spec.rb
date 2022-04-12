@@ -105,7 +105,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
     it 'should allow changing name, acronym, summary' do
       expect(page).to have_field('Name', with: @practice.name)
-      expect(page).to have_field('Acronym', with: @practice.short_name)
+      expect(page).to_not have_field('Acronym', with: @practice.short_name)
       expect(page).to have_field('Summary', with: @practice.summary)
       # add whitespace to practice name
       fill_in('Name (required field)', with: '   Edited practice ')

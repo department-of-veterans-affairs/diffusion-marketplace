@@ -247,7 +247,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     end
 
     it 'should display the content correctly' do
-      expect(page).to have_content("#{@pr_max.name} (#{@pr_max.short_name})")
+      expect(page).to have_content("#{@pr_max.name}")
       expect(page).to have_current_path("/innovations/#{@pr_max.slug}")
       expect(page).to have_content('Last updated') # TODO: How to test timeago?
       expect(page).to have_content(@pr_max.summary)
