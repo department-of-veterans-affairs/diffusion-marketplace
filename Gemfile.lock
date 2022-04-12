@@ -31,6 +31,14 @@ GIT
       rails-assets-normalize-css (= 3.0.3)
 
 GEM
+  remote: https://rails-assets.org/
+  specs:
+    rails-assets-jquery.scrollTo (2.1.2)
+      rails-assets-jquery (>= 1.8)
+    rails-assets-sticky (1.0.4)
+      rails-assets-jquery
+
+GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
@@ -350,10 +358,10 @@ GEM
       connection_pool (~> 2.2)
     net-ldap (0.16.1)
     nio4r (2.5.8)
-    nokogiri (1.13.3)
+    nokogiri (1.13.4)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.13.3-x64-mingw32)
+    nokogiri (1.13.4-x64-mingw32)
       racc (~> 1.4)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
