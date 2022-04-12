@@ -58,7 +58,9 @@
     width: 830px;
     @include u-padding-x(5);
     @include u-padding-y(6);
-    transform: translateY(25%);
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 
     .close-publication-modal {
       i {

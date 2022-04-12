@@ -108,7 +108,7 @@ class PracticesController < ApplicationController
     session_open = PracticeEditorSession.find_by(practice: @practice, user_id: current_user.id, session_end_time: nil).present?
     latest_session_user_is_current_user = PracticeEditorSession.where(practice: @practice).last.user === current_user
     updated = update_conditions if session_open || latest_session_user_is_current_user
-    is_request_from_publish_modal = params[:publish_modal_save].present?
+    is_request_from_publish_modal = params[:save_and_publish].present?
 
     #check to see if current session has expired.... if  not
     respond_to do |format|
@@ -402,7 +402,7 @@ class PracticesController < ApplicationController
           format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
       else
-        format.js
+        format.js { render js: "window.location.replace('#{request.referrer}?save_and_publish=true')" }
       end
     end
   end

@@ -12,6 +12,7 @@
 
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
+    <%= render partial: 'practices/publication_validation', formats: [:js] %>
     var facilityData = <%= raw @va_facilities.to_json %>;
     <%# initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
@@ -560,3 +561,6 @@
     </div>
   </div>
 </div>
+<% if params[:save_and_publish].present? %>
+  <%= render partial: 'practices/shared/publication_validation_modal' %>
+<% end %>

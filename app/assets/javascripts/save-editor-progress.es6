@@ -26,24 +26,9 @@ function saveEditorProgressOnContinue() {
     });
 }
 
-function saveEditorProgressOnPublish() {
-    $(document).on('click', '#publish-practice-button', (event) => {
-        let $form = $('#form');
-        let formAction = $('#publish-practice-button').data('form-action')
-
-        // set the action to `practice_publication_validation_path`
-        $form.attr('action', formAction)
-        $form.attr('data-remote', true)
-        event.preventDefault();
-
-        validateForm({ form: $form, railsFireEvent: true })
-    });
-}
-
 function initSaveProgressFunctions() {
     submitPracticeEditorSaveForm();
     saveEditorProgressOnContinue();
-    saveEditorProgressOnPublish();
 }
 
 $(initSaveProgressFunctions());
