@@ -140,7 +140,7 @@
       <%# practice main display image for desktop %>
       <%= render partial: 'practices/show/desktop_partials/main_display_image_container' %>
       <%# search terms(campaigns/categories/tags) for desktop %>
-      <% if @practice.categories.where.not(is_other: true, name: 'Other').any? %>
+      <% if @practice.categories.not_none.not_other.any? %>
         <%= render partial: 'practices/show/desktop_partials/search_terms' %>
       <% end %>
     </div>

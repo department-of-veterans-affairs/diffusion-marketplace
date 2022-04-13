@@ -178,7 +178,7 @@
 </script>
 
 <%# search terms(campaigns/categories/tags) for mobile  %>
-<% if @practice.categories.where.not(is_other: true, name: 'Other').any? %>
+<% if @practice.categories.not_other.not_none.any? %>
   <%= render partial: 'practices/show/mobile_partials/search_terms' %>
 <% end %>
 

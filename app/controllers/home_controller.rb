@@ -23,9 +23,8 @@ class HomeController < ApplicationController
     @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
 
     @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:va_facility_id)) do |dhg, marker|
-      station_number = @va_facilities.find(dhg[0]).station_number
       diffusion_histories = dhg[1]
-      facility = @va_facilities.find { |f| f.station_number === station_number }
+      facility = @va_facilities.find(dhg[0])
       marker.lat facility.latitude
       marker.lng facility.longitude
 

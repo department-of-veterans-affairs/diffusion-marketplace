@@ -32,10 +32,9 @@ class PracticesController < ApplicationController
   def show
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
-
-    @pr_diffusion_histories = @practice.diffusion_histories
+    @pr_diffusion_histories = @practice.diffusion_histories.includes([:va_facility])
     @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
-      facility = @va_facilities.find { |f| f.station_number === dhg.va_facility.station_number }
+      facility = @va_facilities.find(dhg.va_facility_id)
       marker.lat facility.latitude
       marker.lng facility.longitude
 
@@ -615,12 +614,7 @@ class PracticesController < ApplicationController
   end
 
   def set_facility_data
-    if @practice.facility?
-      @facility_data = []
-      @practice.practice_origin_facilities.each do |pof|
-        @facility_data << pof.va_facility
-      end
-    end
+    @facility_data = @practice.practice_origin_facilities.includes([:va_facility]).get_va_facilities if @practice.facility?
   end
 
   def set_office_data
