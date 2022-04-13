@@ -23,7 +23,7 @@ jobs:
     parallelism: 83
     docker:
       # specify the version you desire here
-      - image: circleci/ruby:2.6.3-node-browsers
+      - image: circleci/ruby:2.7.5-node-browsers
         environment:
           RAILS_ENV: test
           MAX_THREADS: 2
@@ -137,7 +137,7 @@ jobs:
           path: /tmp/bundler-audit-report.txt
   deploy:
     docker:
-      - image: circleci/ruby:2.6.3-node-browsers
+      - image: circleci/ruby:2.7.5-node-browsers
     working_directory: ~/deploy
     steps:
       - checkout

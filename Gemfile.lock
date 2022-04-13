@@ -31,15 +31,6 @@ GIT
       rails-assets-normalize-css (= 3.0.3)
 
 GEM
-  remote: https://rails-assets.org/
-  specs:
-    rails-assets-jquery (3.6.0)
-    rails-assets-jquery.scrollTo (2.1.2)
-      rails-assets-jquery (>= 1.8)
-    rails-assets-sticky (1.0.4)
-      rails-assets-jquery
-
-GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
@@ -343,6 +334,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.2)
+    mini_portile2 (2.8.0)
     minitest (5.15.0)
     msgpack (1.5.1)
     multi_xml (0.6.0)
@@ -356,6 +348,9 @@ GEM
       connection_pool (~> 2.2)
     net-ldap (0.17.0)
     nio4r (2.5.8)
+    nokogiri (1.13.3)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.13.3-x86_64-darwin)
       racc (~> 1.4)
     ntlm-http (0.1.1)
@@ -570,6 +565,7 @@ GEM
     zeitwerk (2.5.4)
 
 PLATFORMS
+  ruby
   x86_64-darwin-20
 
 DEPENDENCIES
