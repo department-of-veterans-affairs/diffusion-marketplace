@@ -683,16 +683,16 @@ describe 'Search', type: :feature do
   describe 'Cache' do
     it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
-      expect(cache_keys).to include("searchable_practices_json")
+      expect(cache_keys).to include("searchable_practices")
       update_practice_introduction(@practice)
       expect(page).to have_content("Innovation was successfully updated.")
       expect(page).to have_selector(".usa-alert", visible: true)
-      expect(cache_keys).not_to include("searchable_practices_json")
+      expect(cache_keys).not_to include("searchable_practices")
     end
 
     it 'Should be reset if a new practice is created through the admin panel' do
       add_search_to_cache
-      expect(cache_keys).to include("searchable_practices_json")
+      expect(cache_keys).to include("searchable_practices")
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit '/admin'
       click_link('Practices')
@@ -701,7 +701,7 @@ describe 'Search', type: :feature do
       fill_in('User email', with: 'practice_owner@va.gov')
       click_button('Create Practice')
       expect(page).to have_selector(".flash_notice", visible: true)
-      expect(cache_keys).not_to include("searchable_practices_json")
+      expect(cache_keys).not_to include("searchable_practices")
     end
   end
 
