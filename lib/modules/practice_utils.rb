@@ -8,8 +8,12 @@ module PracticeUtils
       modified_practice = practice.as_json
       modified_practice[:image] = ''
       if practice.main_display_image?
-        path = practice.main_display_image.path(:thumb).sub('/', '')
-        modified_practice[:image] = signer.presigned_get_url(object_key: path)
+        if Rails.env.test?
+          modified_practice[:image] = practice.main_display_image.url
+        else
+          path = practice.main_display_image.path(:thumb).sub('/', '')
+          modified_practice[:image] = signer.presigned_get_url(object_key: path)
+        end
       end
       if current_user.present?
         modified_practice[:user_favorited] = current_user.favorite_practice_ids.include?(practice[:id])
