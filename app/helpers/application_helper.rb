@@ -53,7 +53,7 @@ module ApplicationHelper
         fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
         locs = practice.practice_origin_facilities.where(facility_type: fac_type)
         facility_names = String.new
-        locs.each_with_index do |loc, index|
+        locs.includes([:va_facility]).each_with_index do |loc, index|
           official_station_name = loc.va_facility.official_station_name
           common_name = loc.va_facility.common_name
 
@@ -64,7 +64,7 @@ module ApplicationHelper
       # TODO: Modify once visn, dept, other is moved from Practice to a separate table
         case practice.initiating_facility_type
         when 'visn'
-          visn = Visn.cached_visns.get_by_initiating_facility(practice.initiating_facility.to_i)
+          visn = Visn.get_by_initiating_facility(practice.initiating_facility.to_i)
           return "VISN-#{visn.number.to_s}"
         when 'department'
           dept_id = practice.initiating_department_office_id

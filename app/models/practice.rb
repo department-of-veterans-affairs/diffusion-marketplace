@@ -29,8 +29,20 @@ class Practice < ApplicationRecord
   attr_accessor :practice_partner, :department, :practice_award, :category
   attr_accessor :reset_searchable_cache
 
+  def self.cached_practices(is_guest_user)
+    if is_guest_user
+      Rails.cache.fetch('searchable_public_practices', expires_in: 4.hours) do
+        Practice.published_enabled_approved.public_facing.sort_by_retired
+      end
+    else
+      Rails.cache.fetch('searchable_practices', expires_in: 4.hours) do
+        Practice.published_enabled_approved.sort_by_retired
+      end
+    end
+  end
+  
   def clear_searchable_cache
-    cache_keys = ["searchable_practices_json", "searchable_public_practices_json"]
+    cache_keys = ["searchable_practices", "searchable_public_practices"]
     cache_keys.each do |cache_key|
       Rails.cache.delete(cache_key)
     end
@@ -332,6 +344,7 @@ class Practice < ApplicationRecord
   def favorited_count
     user_practices.where({favorited: true}).count
   end
+
   def favorited_count_by_range(start_date, end_date)
     user_practices.where({time_favorited: start_date...end_date}).count
   end
@@ -420,5 +433,32 @@ class Practice < ApplicationRecord
   # reject the PracticeOriginFacility if the facility field is blank OR the practice already has a PracticeOriginFacility with the same va_facility_id
   def reject_practice_origin_facilities(attributes)
     attributes['va_facility_id'].blank? || self.practice_origin_facilities.where(va_facility_id: attributes['va_facility_id'].to_i).exists?
+  end
+
+  def get_search_fields
+    [:id, :name, :short_name, :description, :tagline, :summary, :slug, :initiating_facility_type, :initiating_facility, :initiating_department_office_id, :overview_problem, :overview_solution, :overview_results, :maturity_level, :date_published, :retired, :is_public, :date_initiated, :practice_pages_updated]
+  end
+
+  def get_category_names(categories)
+    cat_names = []
+    categories.each do |cat|
+      cat_names.push(cat.name)
+      unless cat.related_terms.empty?
+        cat_names.concat(cat.related_terms)
+      end
+    end
+    cat_names
+  end
+
+  def as_json(*)
+    super(only: get_search_fields).merge(
+      date_initiated: date_initiated? ? date_initiated.strftime("%B %Y") : '(start date unknown)',
+      category_names: get_category_names(self.categories.not_other.not_none),
+      initiating_facility_name: origin_display(self),
+      practice_partner_names: practice_partners.pluck(:name),
+      origin_facilities: practice_origin_facilities.get_va_facilities,
+      adoption_facilities: diffusion_histories.get_va_facilities,
+      adoption_count: diffusion_histories.size
+    )
   end
 end

@@ -159,9 +159,11 @@ class PracticesController < ApplicationController
 
   def search
     @visn_grouped_facilities = @va_facilities.includes([:visn]).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
-    pr = helpers.is_user_a_guest? ? Practice.published_enabled_approved.public_facing : Practice.published_enabled_approved
+    pr = Practice.cached_practices(helpers.is_user_a_guest?)
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
-    @practices_json = cached_json_practices
+
+    @practices_json = practices_json(pr.get_with_categories_and_adoptions_ct, current_user)
+
     @diffusion_histories = []
     pr.each do |p|
       p.diffusion_histories.includes([:va_facility]).each do |dh|
@@ -631,19 +633,7 @@ class PracticesController < ApplicationController
   end
 
   def set_visn_data
-    @visn_data = Visn.cached_visns.get_by_initiating_facility(@practice.initiating_facility.to_i) if @practice.visn?
-  end
-
-  def cached_json_practices
-    if helpers.is_user_a_guest?
-      Rails.cache.fetch('searchable_public_practices_json', expires_in: 4.hours) do
-        practices_json(Practice.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct)
-      end
-    else
-      Rails.cache.fetch('searchable_practices_json', expires_in: 4.hours) do
-        practices_json(Practice.sort_by_retired.get_with_categories_and_adoptions_ct)
-      end
-    end
+    @visn_data = Visn.get_by_initiating_facility(@practice.initiating_facility.to_i) if @practice.visn?
   end
 
   def set_initiating_facility_other

@@ -1,7 +1,15 @@
 (($) => {
   const $document = $(document);
 
-  function loadTermsAndConditionsFn() {
+  function _preventTermsAndConditionsFlickerOnPageLoad() {
+    $(document).arrive("header", { existing: true }, () => {
+      $("#dm-terms-and-conditions-modal")
+        .find(".usa-modal")
+        .removeClass("display-none");
+    });
+  }
+
+  function _forceDisplayModal() {
     $(document).arrive("footer", { existing: true }, () => {
       if (forceModal) {
         let $termsModal = $("#dm-terms-and-conditions-modal");
@@ -10,6 +18,11 @@
         $termsModal.removeClass("is-hidden");
       }
     });
+  }
+
+  function loadTermsAndConditionsFn() {
+    _preventTermsAndConditionsFlickerOnPageLoad();
+    _forceDisplayModal();
   }
 
   $document.on('turbolinks:load', loadTermsAndConditionsFn);

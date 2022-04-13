@@ -55,6 +55,6 @@ class Category < ApplicationRecord
   end
 
   def self.get_cached_categories_grouped_by_parent
-    cached_categories.group_by(&:parent_category)
+    cached_categories.includes([:parent_category]).group_by(&:parent_category)
   end
 end

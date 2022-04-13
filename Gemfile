@@ -16,7 +16,6 @@ gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'mini_racer', platforms: :ruby
 
 gem 'babel-transpiler'
 
@@ -76,7 +75,6 @@ group :development, :test do
   gem 'brakeman', '5.0.2'
   gem 'bundler-audit'
   gem 'bundler-leak'
-  gem 'json', '>= 2.3.0'
 end
 
 group :development do
@@ -112,6 +110,7 @@ gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'aws-sdk-rds'
+gem 'wt_s3_signer'
 gem 'paperclip', '~> 6.0.0'
 gem 'font-awesome-sass', '~> 5.13.0'
 gem 'sidekiq'
@@ -134,6 +133,7 @@ gem 'humanize'
 gem 'paper_trail'
 gem 'commontator', '~> 6.3.1'
 gem 'acts_as_votable'
+gem 'json', '~> 2.3.0'
 
 # Active Admin
 gem 'activeadmin', '~> 2.8.0'
