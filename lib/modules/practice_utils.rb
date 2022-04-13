@@ -2,7 +2,9 @@ module PracticeUtils
   def practices_json(practices, current_user)
     practices_array = []
     s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
-    signer = WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 84000)
+    unless Rails.env.test?
+      signer = WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 84000)
+    end
 
     practices.each do |practice|
       modified_practice = practice.as_json
