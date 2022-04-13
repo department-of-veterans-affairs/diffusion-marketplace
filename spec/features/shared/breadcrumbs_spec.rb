@@ -13,7 +13,7 @@ describe 'Breadcrumbs', type: :feature do
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Innovation Ever', user: @user, initiating_facility: 'Test facility name', initiating_facility_type: 'other', tagline: 'Test tagline', is_public: true, published: true, approved: true, enabled: true, summary: 'test innovation summary')
     @user_practice2 = Practice.create!(name: 'Another Best Innovation', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2', highlight_attachment: File.new(@img_path_1), highlight: true, highlight_body: 'highlighted innovation', is_public: true, published: true, approved: true, enabled: true)
-    visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    visn_1 = Visn.create!(name: 'VISN 1', number: 1)
     fac_1 = VaFacility.create!(
       visn: visn_1,
       station_number: "421",

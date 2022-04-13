@@ -120,7 +120,7 @@ class PracticesController < ApplicationController
           flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The innovation was not saved."
           # if the request was sent via the publication modal, redirect the user to the practice's show page
           if is_request_from_publish_modal
-            format.html { redirect_to practice_path }
+            format.html { redirect_to practice_path(@practice) }
           else
             format.html { redirect_back fallback_location: root_path }
           end
@@ -143,7 +143,7 @@ class PracticesController < ApplicationController
           else
             # if the request was sent via the publication modal, redirect the user to the practice's show page
             if is_request_from_publish_modal
-              format.html { redirect_to practice_path, notice: editor_notice + 'Innovation was successfully updated.' }
+              format.html { redirect_to practice_path(@practice), notice: editor_notice + 'Innovation was successfully updated.' }
             else
               format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
             end
@@ -163,7 +163,7 @@ class PracticesController < ApplicationController
           flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
           # if the request was sent via the publication modal, redirect the user to the practice's show page
           if is_request_from_publish_modal
-            format.html { redirect_to practice_path }
+            format.html { redirect_to practice_path(@practice) }
           else
             format.html { redirect_back fallback_location: root_path }
           end
@@ -395,13 +395,19 @@ class PracticesController < ApplicationController
         # if there is an error with updating the practice, alert the user
         if updated.is_a?(StandardError)
           flash[:error] = "There was an #{updated.message}. The innovation was not saved or published."
-          format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
+          format.js { render js: "window.location.replace('#{request.referrer}')" }
         else
           @practice.update_attributes(published: true, date_published: DateTime.now)
           flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
           format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
       else
+        # if the practice cannot be published, redirect the user to their previously visited editor page and display an alert along with the publication validation modal
+        if updated.is_a?(StandardError)
+          flash[:error] = "There was an #{updated.message}. The innovation was not saved."
+        else
+          flash[:notice] = "Innovation was successfully updated."
+        end
         format.js { render js: "window.location.replace('#{request.referrer}?save_and_publish=true')" }
       end
     end
