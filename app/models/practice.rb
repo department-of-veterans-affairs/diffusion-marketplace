@@ -437,7 +437,7 @@ class Practice < ApplicationRecord
   end
 
   def get_search_fields
-    [:id, :name, :short_name, :description, :tagline, :summary, :slug, :initiating_facility_type, :initiating_facility, :initiating_department_office_id, :overview_problem, :overview_solution, :overview_results, :maturity_level, :date_published, :retired, :is_public, :date_initiated, :practice_pages_updated]
+    [:id, :name, :short_name, :description, :tagline, :summary, :slug, :initiating_facility_type, :initiating_facility, :initiating_department_office_id, :overview_problem, :overview_solution, :overview_results, :maturity_level, :date_published, :retired, :is_public, :date_initiated, :created_at, :practice_pages_updated]
   end
 
   def get_category_names(categories)
