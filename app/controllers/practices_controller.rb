@@ -32,7 +32,7 @@ class PracticesController < ApplicationController
   def show
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
-    @pr_diffusion_histories = @practice.diffusion_histories.includes([:va_facility])
+    @pr_diffusion_histories = @practice.diffusion_histories
     @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
       facility = @va_facilities.find(dhg.va_facility_id)
       marker.lat facility.latitude
