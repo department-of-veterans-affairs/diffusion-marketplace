@@ -18,8 +18,8 @@ class PracticesController < ApplicationController
   before_action :is_enabled, only: [:show]
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
-  before_action :fetch_visns, only: [:show, :search, :introduction]
-  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
+  before_action :fetch_visns, only: [:search, :introduction]
+  before_action :fetch_va_facilities, only: [:search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
 
   # GET /practices
   # GET /practices.json
@@ -34,11 +34,11 @@ class PracticesController < ApplicationController
     commontator_thread_show(@practice)
     @pr_diffusion_histories = @practice.diffusion_histories
     @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
-      facility = @va_facilities.find(dhg.va_facility_id)
+      facility = VaFacility.select(:id, :latitude, :longitude, :station_number, :official_station_name, :common_name, :slug).find(dhg.va_facility_id)
       marker.lat facility.latitude
       marker.lng facility.longitude
 
-      current_diffusion_status = dhg.diffusion_history_statuses.first
+      current_diffusion_status = dhg.diffusion_history_statuses.select(:status, :start_time, :end_time).first
       marker_url = view_context.image_path('map-marker-successful-default.svg')
       status = 'Complete'
       start_time = current_diffusion_status.start_time
