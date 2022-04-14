@@ -2,6 +2,26 @@
   <div class="grid-container">
     <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
     <h3 class="font-sans-lg margin-y-2">Search categories</h3>
-    <%= render partial: 'practices/show/mobile_partials/search_term_selectors' %>
+    <% if search_terms.count > 10 %>
+      <% search_terms.slice(0..9).each do |term| %>
+        <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
+      <% end %>
+      <% remaining_terms = search_terms.slice(10..-1) %>
+      <div id="search_terms_truncated_mobile" style="display: none">
+        <% search_terms.slice(10..-1).each do |term| %>
+          <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
+        <% end %>
+      </div>
+
+      <button class="dm-button--unstyled-primary font-sans-3xs text-ls-1 text-bold text-uppercase margin-bottom-5"
+              onclick="seeMoreSearchTermsMobile(); return false;"
+              id="seeMore_search_terms_mobile">
+        See more
+      </button>
+    <% else %>
+      <% search_terms.each do |term| %>
+        <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
+      <% end %>
+    <% end %>
   </div>
 </section>

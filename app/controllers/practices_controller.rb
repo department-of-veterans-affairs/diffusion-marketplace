@@ -18,8 +18,8 @@ class PracticesController < ApplicationController
   before_action :is_enabled, only: [:show]
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
-  before_action :fetch_visns, only: [:search, :introduction]
-  before_action :fetch_va_facilities, only: [:search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
+  before_action :fetch_visns, only: [:show, :search, :introduction]
+  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
 
   # GET /practices
   # GET /practices.json
@@ -30,15 +30,16 @@ class PracticesController < ApplicationController
   # GET /innovations/1
   # GET /practices/1.json
   def show
+    @search_terms = @practice.categories.not_none.not_other
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
     @pr_diffusion_histories = @practice.diffusion_histories
     @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
-      facility = VaFacility.select(:id, :latitude, :longitude, :station_number, :official_station_name, :common_name, :slug).find(dhg.va_facility_id)
+      facility = @va_facilities.find(dhg.va_facility_id)
       marker.lat facility.latitude
       marker.lng facility.longitude
 
-      current_diffusion_status = dhg.diffusion_history_statuses.select(:status, :start_time, :end_time).first
+      current_diffusion_status = dhg.diffusion_history_statuses.first
       marker_url = view_context.image_path('map-marker-successful-default.svg')
       status = 'Complete'
       start_time = current_diffusion_status.start_time
