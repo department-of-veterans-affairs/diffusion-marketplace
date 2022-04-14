@@ -11,7 +11,7 @@ class PracticePartnerPractice < ApplicationRecord
   attr_accessor :reset_cached_searchable_practices
 
   def clear_searchable_practices_cache
-    cache_keys = ["searchable_practices", "searchable_public_practices"]
+    cache_keys = ["searchable_practices_json", "searchable_public_practices_json"]
     cache_keys.each do |cache_key|
       Rails.cache.delete(cache_key)
     end

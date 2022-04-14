@@ -78,13 +78,13 @@ describe 'Admin Practice Partners Tab', type: :feature do
       add_practice_partners_to_cache
       expect(page).to have_content('1 result')
       expect(page).to have_content(@practice.name)
-      expect(cache_keys).to include('searchable_practices')
+      expect(cache_keys).to include('searchable_practices_json')
       visit '/admin/practice_partners'
       click_link('Edit', href: edit_admin_practice_partner_path(@practice_partner))
       # add a practice to the partner
       find("option[value='1']").click
       click_button('Update Practice partner')
-      expect(cache_keys).not_to include('searchable_practices')
+      expect(cache_keys).not_to include('searchable_practices_json')
       # make sure the cache has been reset and that the practice is now associated with the practice partner
       add_practice_partners_to_cache
       find('.search-filters-accordion-button').click
@@ -103,14 +103,14 @@ describe 'Admin Practice Partners Tab', type: :feature do
       find('#dm-practice-search-button').click
       expect(page).to have_content('1 result')
       expect(page).to have_content(@practice.name)
-      expect(cache_keys).to include('searchable_practices')
+      expect(cache_keys).to include('searchable_practices_json')
       visit '/admin/practice_partners'
       click_link('Edit', href: edit_admin_practice_partner_path(@practice_partner))
       # remove the practice from the partner
       all('#practice_partner_practice_ids option')[1].click
       all('#practice_partner_practice_ids option')[0].click
       click_button('Update Practice partner')
-      expect(cache_keys).not_to include('searchable_practices')
+      expect(cache_keys).not_to include('searchable_practices_json')
       # make sure the cache has been reset and that the practice is no longer associated with the practice partner
       add_practice_partners_to_cache
       find('.search-filters-accordion-button').click

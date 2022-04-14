@@ -2,6 +2,7 @@ class Practice < ApplicationRecord
   include ActiveModel::Dirty
   include PracticeEditorUtils
   include VaEmail
+  extend PracticeUtils
 
   before_validation :trim_whitespace
   before_save :clear_searchable_cache_on_save
@@ -29,20 +30,20 @@ class Practice < ApplicationRecord
   attr_accessor :practice_partner, :department, :practice_award, :category
   attr_accessor :reset_searchable_cache
 
-  def self.cached_practices(is_guest_user)
+  def self.cached_json_practices(is_guest_user)
     if is_guest_user
-      Rails.cache.fetch('searchable_public_practices', expires_in: 4.hours) do
-        Practice.published_enabled_approved.public_facing.sort_by_retired
+      Rails.cache.fetch('searchable_public_practices_json', expires_in: 4.hours) do
+        practices_json(Practice.published_enabled_approved.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct)
       end
     else
-      Rails.cache.fetch('searchable_practices', expires_in: 4.hours) do
-        Practice.published_enabled_approved.sort_by_retired
+      Rails.cache.fetch('searchable_practices_json', expires_in: 4.hours) do
+        practices_json(Practice.published_enabled_approved.sort_by_retired.get_with_categories_and_adoptions_ct)
       end
     end
   end
   
   def clear_searchable_cache
-    cache_keys = ["searchable_practices", "searchable_public_practices"]
+    cache_keys = ["searchable_practices_json", "searchable_public_practices_json"]
     cache_keys.each do |cache_key|
       Rails.cache.delete(cache_key)
     end

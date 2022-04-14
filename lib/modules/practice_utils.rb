@@ -1,5 +1,5 @@
 module PracticeUtils
-  def practices_json(practices, current_user)
+  def practices_json(practices, current_user=nil)
     practices_array = []
     s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
     unless Rails.env.test?
