@@ -1,22 +1,10 @@
 module PracticeUtils
   def practices_json(practices, current_user=nil)
     practices_array = []
-    s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
-    unless Rails.env.test?
-      signer = WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 84000)
-    end
 
     practices.each do |practice|
       modified_practice = practice.as_json
-      modified_practice[:image] = ''
-      if practice.main_display_image?
-        if Rails.env.test?
-          modified_practice[:image] = practice.main_display_image.url
-        else
-          path = practice.main_display_image.path(:thumb).sub('/', '')
-          modified_practice[:image] = signer.presigned_get_url(object_key: path)
-        end
-      end
+      modified_practice[:image] = practice.main_display_image? ? practice.main_display_image_s3_presigned_url(:thumb) : ''
       if current_user.present?
         modified_practice[:user_favorited] = current_user.favorite_practice_ids.include?(practice[:id])
       end
