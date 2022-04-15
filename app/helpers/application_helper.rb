@@ -54,8 +54,9 @@ module ApplicationHelper
         locs = practice.practice_origin_facilities.where(facility_type: fac_type)
         facility_names = String.new
         locs.includes([:va_facility]).each_with_index do |loc, index|
-          official_station_name = loc.va_facility.official_station_name
-          common_name = loc.va_facility.common_name
+          va_fac = loc.va_facility
+          official_station_name = va_fac.official_station_name
+          common_name = va_fac.common_name
 
           facility_names += "#{facility_name_with_common_name(official_station_name, common_name) if loc.va_facility_id.present?}#{', ' if locs.size != index + 1 && locs.size > 1}"
         end

@@ -69,7 +69,7 @@
               initiating_facility = @practice.initiating_facility
             %>
             <%= @practice_date %><%= ',' if origin_facilities.present? || initiating_facility.present? %>
-            <%= render partial: 'practices/show/introduction/origin_facility_text' %>
+            <%= render partial: 'practices/show/introduction/origin_facility_text', locals: {visns: @visns.select(:id, :number), origin_facilities: origin_facilities } %>
           </p>
         </div>
 
@@ -140,8 +140,8 @@
       <%# practice main display image for desktop %>
       <%= render partial: 'practices/show/desktop_partials/main_display_image_container' %>
       <%# search terms(campaigns/categories/tags) for desktop %>
-      <% if @practice.categories.not_none.not_other.any? %>
-        <%= render partial: 'practices/show/desktop_partials/search_terms' %>
+      <% if search_terms.any? %>
+        <%= render partial: 'practices/show/desktop_partials/search_terms', locals: { search_terms: search_terms } %>
       <% end %>
     </div>
     <%# practice updates %>
