@@ -93,7 +93,7 @@ module ApplicationHelper
   end
 
   def email_practice_subject(practice)
-    URI.encode("VA Diffusion Marketplace - #{practice.name} summary")
+    url_generator("VA Diffusion Marketplace - #{practice.name} summary")
   end
 
   def email_practice_body(practice)
@@ -134,5 +134,10 @@ module ApplicationHelper
 
   def get_terms_and_conditions_body_text(current_user)
     "VA systems are intended to be used by authorized#{current_user.present? ? ' VA network ' : ' '}users for viewing and retrieving information; except as otherwise authorized for official business and limited personal use under VA policy. Information from this system resides on and transmits through computer systems and networks funded by VA. Access or use constitutes understanding and acceptance that there is no reasonable expectation of privacy in the use of Government networks or systems. Access or use of this system constitutes user understanding and acceptance of these terms and constitutes unconditional consent to review and action includes but is not limited to: monitoring; recording; copying; auditing; inspecting."
+  end
+
+  def url_generator(string)
+    parser = URI::Parser.new
+    parser.escape(string)
   end
 end

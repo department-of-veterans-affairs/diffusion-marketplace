@@ -111,7 +111,7 @@ gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'aws-sdk-rds'
 gem 'wt_s3_signer'
-gem 'paperclip', '~> 6.0.0'
+gem 'paperclip', github: 'agilesix/paperclip', ref: 'ruby-2.7.x-deprecation-fix'
 gem 'font-awesome-sass', '~> 5.13.0'
 gem 'sidekiq'
 

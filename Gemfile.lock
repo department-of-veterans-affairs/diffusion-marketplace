@@ -14,6 +14,18 @@ GIT
       ruby-ntlm
 
 GIT
+  remote: https://github.com/agilesix/paperclip.git
+  revision: e1df9f4d9ebb0f59220e726df5453b75c5b77641
+  ref: ruby-2.7.x-deprecation-fix
+  specs:
+    paperclip (6.1.0)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      mime-types
+      mimemagic (~> 0.3.0)
+      terrapin (~> 0.6.0)
+
+GIT
   remote: https://github.com/agilesix/surveymonkey.git
   revision: d21232a99470ae53d3c798796e058de94be9426e
   specs:
@@ -29,15 +41,6 @@ GIT
       bourbon (= 4.2.7)
       neat (= 1.8)
       rails-assets-normalize-css (= 3.0.3)
-
-GEM
-  remote: https://rails-assets.org/
-  specs:
-    rails-assets-jquery (3.6.0)
-    rails-assets-jquery.scrollTo (2.1.2)
-      rails-assets-jquery (>= 1.8)
-    rails-assets-sticky (1.0.4)
-      rails-assets-jquery
 
 GEM
   remote: https://rubygems.org/
@@ -368,12 +371,6 @@ GEM
     paper_trail (12.3.0)
       activerecord (>= 5.2)
       request_store (~> 1.1)
-    paperclip (6.0.0)
-      activemodel (>= 4.2.0)
-      activesupport (>= 4.2.0)
-      mime-types
-      mimemagic (~> 0.3.0)
-      terrapin (~> 0.6.0)
     pg (1.1.4)
     pry (0.12.2)
       coderay (~> 1.1.0)
@@ -634,7 +631,7 @@ DEPENDENCIES
   ntlm-sso!
   pagy (~> 3.5)
   paper_trail
-  paperclip (~> 6.0.0)
+  paperclip!
   pg (= 1.1.4)
   pry (~> 0.12.2)
   puma (>= 4.3.5)
