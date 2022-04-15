@@ -331,15 +331,15 @@ class Practice < ApplicationRecord
   end
 
   def number_of_completed_adoptions
-    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Completed'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implemented'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Complete'})).count
+    diffusion_histories.get_by_successful_status.size
   end
 
   def number_of_in_progress_adoptions
-    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'In progress'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Planning'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implementing'})).count
+    diffusion_histories.get_by_in_progress_status.size
   end
 
   def number_of_unsuccessful_adoptions
-    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Unsuccessful'}).count
+    diffusion_histories.get_by_unsuccessful_status.size
   end
 
   def favorited_count

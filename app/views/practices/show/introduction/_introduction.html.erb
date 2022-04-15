@@ -69,7 +69,7 @@
               initiating_facility = @practice.initiating_facility
             %>
             <%= @practice_date %><%= ',' if origin_facilities.present? || initiating_facility.present? %>
-            <%= render partial: 'practices/show/introduction/origin_facility_text' %>
+            <%= render partial: 'practices/show/introduction/origin_facility_text', locals: {visns: @visns.select(:id, :number), origin_facilities: origin_facilities } %>
           </p>
         </div>
 

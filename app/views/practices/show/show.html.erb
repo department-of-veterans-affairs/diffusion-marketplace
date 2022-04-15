@@ -103,7 +103,8 @@
 <% end %>
 
 <!-- Diffusion Tracker -->
-<% if @practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
+<% diffusion_histories = @practice.diffusion_histories.includes(:va_facility).joins(:va_facility).order('va_facilities.street_address_state, va_facilities.official_station_name') %>
+<% if diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
   <section id="dm-pv-diffusion-tracker" class="margin-bottom-5 grid-container">
     <div class="grid-row grid-gap-2">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
@@ -111,7 +112,7 @@
         <div class="metric-section practice-section">
           <h3 class="margin-y-2 line-height-26 font-sans-lg">Diffusion tracker</h3>
           <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
-          <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions' %>
+          <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions', locals: { diffusion_histories: diffusion_histories } %>
         </div>
       </div>
     </div>
