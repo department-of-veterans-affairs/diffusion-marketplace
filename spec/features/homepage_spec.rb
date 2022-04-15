@@ -116,18 +116,18 @@ describe 'Homepage', type: :feature do
     # Make sure the filtering is working as intended with the Telehealth popular category
     visit root_path
     all('.popular-category-tag').first.click
-    expect(page).to have_current_path('/search?filter_by=Telehealth')
-    expect(page).to have_selector('#search-page', visible: true)
-    expect(page).to have_content('1 result')
-    expect(page).to have_content(@practice_2.name)
-
-    # Try the COVID popular category
-    visit root_path
-    all('.popular-category-tag').last.click
     expect(page).to have_current_path('/search?filter_by=COVID')
     expect(page).to have_selector('#search-page', visible: true)
     expect(page).to have_content('2 results')
     expect(page).to have_content(@practice.name)
     expect(page).to have_content(@practice_3.name)
+
+    # Try the COVID popular category
+    visit root_path
+    all('.popular-category-tag').last.click
+    expect(page).to have_current_path('/search?filter_by=Telehealth')
+    expect(page).to have_selector('#search-page', visible: true)
+    expect(page).to have_content('1 result')
+    expect(page).to have_content(@practice_2.name)
   end
 end
