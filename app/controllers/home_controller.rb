@@ -20,7 +20,7 @@ class HomeController < ApplicationController
 
     @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:va_facility_id)) do |dhg, marker|
       diffusion_histories = dhg[1]
-      facility = VaFacility.select(:id, :latitude, :longitude, :station_number, :official_station_name, :common_name, :slug, :fy17_parent_station_complexity_level, :rurality, :visn_id).find(dhg[0])
+      facility = @va_facilities.find(dhg[0])
       marker.lat facility.latitude
       marker.lng facility.longitude
 

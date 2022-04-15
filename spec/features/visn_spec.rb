@@ -88,6 +88,7 @@ describe 'VISN pages', type: :feature do
       station_number: "431",
       official_station_name: "Fourth Test Name",
       common_name: "Fourth Common Name",
+      slug: 'fourth-common-name',
       street_address_state: "GA",
       latitude: "32.60681842",
       longitude: "-83.64688667",
