@@ -12,7 +12,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
     img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
-    @practice = Practice.create!(name: 'A public maximum practice', tagline: 'A public tagline', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin)
+    @practice = Practice.create!(name: 'A public maximum practice', tagline: 'A public tagline', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin)
     @pr_facility = PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     PracticeAward.create!(practice: @practice, name: 'QUERI Veterans Choice Act Award', created_at: Time.now)
     PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
@@ -120,7 +120,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('YOLO')
       expect(page).to have_content('Updated summary')
       expect(page).to have_no_content(@practice.name)
-      expect(page).to have_no_content(@practice.short_name)
       expect(page).to have_no_content(@practice.summary)
     end
 
