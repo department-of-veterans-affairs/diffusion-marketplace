@@ -50,7 +50,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Do not enter PII or PHI for any individual, Veteran, or patient. See our Privacy policy.')
       expect(page).to have_content('Name (required field)')
       expect(page).to have_content('Type the official name of your innovation.')
-      expect(page).to have_content('Acronym')
       expect(page).to have_content('Summary (required field)')
       expect(page).to have_content('Type a short 1-3 sentence summary of your innovation’s mission to engage the audience and provide initial context.')
       expect(page).to have_content('Date created (required field)')
@@ -103,21 +102,17 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       visit_practice_edit
     end
 
-    it 'should allow changing name, acronym, summary' do
+    it 'should allow changing name, summary' do
       expect(page).to have_field('Name', with: @practice.name)
-      expect(page).to_not have_field('Acronym', with: @practice.short_name)
       expect(page).to have_field('Summary', with: @practice.summary)
       # add whitespace to practice name
       fill_in('Name (required field)', with: '   Edited practice ')
-      fill_in('Acronym', with: 'YOLO')
       fill_in('Summary', with: 'Updated summary')
       click_save
       # make sure white space is trimmed from practice name
       expect(page).to have_field('Name', with: 'Edited practice')
-
       visit_practice_show
       expect(page).to have_content('Edited practice')
-      expect(page).to have_content('YOLO')
       expect(page).to have_content('Updated summary')
       expect(page).to have_no_content(@practice.name)
       expect(page).to have_no_content(@practice.summary)
