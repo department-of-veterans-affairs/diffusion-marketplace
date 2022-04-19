@@ -32,11 +32,11 @@ class Practice < ApplicationRecord
 
   def self.cached_json_practices(is_guest_user)
     if is_guest_user
-      Rails.cache.fetch('searchable_public_practices_json', expires_in: 4.hours) do
+      Rails.cache.fetch('searchable_public_practices_json', expires_in: 30.minutes) do
         practices_json(Practice.published_enabled_approved.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct)
       end
     else
-      Rails.cache.fetch('searchable_practices_json', expires_in: 4.hours) do
+      Rails.cache.fetch('searchable_practices_json', expires_in: 30.minutes) do
         practices_json(Practice.published_enabled_approved.sort_by_retired.get_with_categories_and_adoptions_ct)
       end
     end
