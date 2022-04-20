@@ -66,9 +66,7 @@ class Practice < ApplicationRecord
         self.retired_changed? ||
         self.retired_reason_changed? ||
         self.hidden_changed? ||
-        self.is_public_changed? ||
-        self.main_display_image_crop_x_changed? ||
-        self.main_display_image_crop_y_changed?
+        self.is_public_changed?
       self.reset_searchable_cache = true
     end
   end
