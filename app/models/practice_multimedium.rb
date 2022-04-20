@@ -27,6 +27,6 @@ class PracticeMultimedium < ApplicationRecord
   end
 
   def reset_s3_signer_cache
-    Rails.cache.delete('s3_signer')
+    Cache.new.delete_cache_key('s3_signer')
   end
 end

@@ -35,7 +35,7 @@ class Category < ApplicationRecord
   end
 
   def clear_categories_cache
-    Rails.cache.delete('categories')
+    Cache.new.delete_cache_key('categories')
   end
 
   def reset_categories_cache

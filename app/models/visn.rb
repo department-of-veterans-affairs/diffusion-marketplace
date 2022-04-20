@@ -17,7 +17,7 @@ class Visn < ApplicationRecord
   end
 
   def clear_visn_cache
-    Rails.cache.delete('visns')
+    Cache.new.delete_cache_key('visns')
   end
 
   def reset_visn_cache

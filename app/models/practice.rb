@@ -45,7 +45,7 @@ class Practice < ApplicationRecord
   def clear_searchable_cache
     cache_keys = ["searchable_practices_json", "searchable_public_practices_json", "s3_signer"]
     cache_keys.each do |cache_key|
-      Rails.cache.delete(cache_key)
+      Cache.new.delete_cache_key(cache_key)
     end
   end
 
