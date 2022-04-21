@@ -65,11 +65,10 @@
           <p id="practice_origin_facilities_text" class="display-inline line-height-sans-5">
             <%
               @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'
-              origin_facilities = @origin_facilities
               initiating_facility = @practice.initiating_facility
             %>
             <%= @practice_date %><%= ',' if origin_facilities.present? || initiating_facility.present? %>
-            <%= render partial: 'practices/show/introduction/origin_facility_text', locals: {visns: @visns.select(:id, :number), origin_facilities: origin_facilities } %>
+            <%= render partial: 'practices/show/introduction/origin_facility_text', locals: {visns: @visns.select(:id, :number), origin_facilities: @origin_facilities } %>
           </p>
         </div>
 
