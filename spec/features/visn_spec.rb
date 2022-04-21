@@ -88,6 +88,7 @@ describe 'VISN pages', type: :feature do
       station_number: "431",
       official_station_name: "Fourth Test Name",
       common_name: "Fourth Common Name",
+      slug: 'fourth-common-name',
       street_address_state: "GA",
       latitude: "32.60681842",
       longitude: "-83.64688667",
@@ -343,7 +344,7 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should only display search results for public-facing practices adopted in a given VISN if the user is a guest' do
-        Practice.second.update_attributes(initiating_facility: 1)
+        Practice.second.update(initiating_facility: 1)
         check_search_results_as_guest_user('#visns-show-search', 6, 'An Awesome Practice!', '.visn-adopted-practices-radio', '.visn-created-practices-radio')
       end
     end
@@ -364,6 +365,7 @@ describe 'VISN pages', type: :feature do
 
       it 'should take the user to the show page of the facility they click on within the facilities table' do
         visit '/visns/2'
+        expect(page).to have_selector('.visn-facilities-table', visible: true)
         click_link('Fourth Test Name (Fourth Common Name)')
         expect(page).to have_content('This facility has created 0 innovations and has adopted 1 innovation.')
         expect(page).to have_selector('#va_facility_map', visible: true)

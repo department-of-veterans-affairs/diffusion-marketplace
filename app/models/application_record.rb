@@ -2,11 +2,14 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   def signer
-    @signer ||= Aws::S3::Presigner.new
+    Rails.cache.fetch('s3_signer', expires_in: 5.minutes) do
+      s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
+      WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 84000)
+    end
   end
 
   def s3_presigned_url(path)
-    signer.presigned_url(:get_object, bucket: ENV['S3_BUCKET_NAME'], key: path, expires_in: 86400 ) # number of seconds in a day
+    signer.presigned_get_url(object_key: path)
   end
 
   def object_presigned_url(obj, style = nil)
