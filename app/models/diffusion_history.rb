@@ -19,6 +19,7 @@ class DiffusionHistory < ApplicationRecord
   scope :get_by_unsuccessful_status, -> { by_status('Unsuccessful') }
   scope :get_with_practices, -> (public_practice) { joins(:practice).includes([:practice]).where(practices: public_practice ? { published: true, enabled: true, approved: true, hidden: false, is_public: true } : { published: true, enabled: true, approved: true, hidden: false }).select("diffusion_histories.*, practices.id as practices_id") }
   scope :get_va_facilities, -> { includes(:va_facility).pluck("va_facilities.station_number") }
+  scope :get_clinical_resource_hubs, -> { includes(:clinical_resource_hub).pluck("clinical_resource_hubs.official_station_name") }
   scope :get_with_practice, -> (practice) { joins(:practice).where(practice: practice) }
   scope :exclude_va_facilities, -> { where(va_facility_id: nil) }
   scope :exclude_clinical_resource_hubs, -> { where(clinical_resource_hub_id: nil) }

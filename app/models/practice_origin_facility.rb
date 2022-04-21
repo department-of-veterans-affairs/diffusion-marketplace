@@ -18,6 +18,7 @@ class PracticeOriginFacility <  ApplicationRecord
     includes(:clinical_resource_hub).where(practice_id: practice_id).where.not(clinical_resource_hub_id: nil).map(&:clinical_resource_hub_id)
   }
   scope :get_va_facilities, -> { includes(:va_facility).pluck("va_facilities.station_number") }
+  scope :get_clinical_resource_hubs, -> { includes(:clinical_resource_hub).pluck("clinical_resource_hubs.official_station_name") }
 
   validates_with PracticeOriginFacilityValidator, on: [:create, :update] # make sure only one of the optional foreign keys is populated at any given time, either va_facility or clinical_resource_hub
 

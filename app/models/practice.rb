@@ -463,8 +463,8 @@ class Practice < ApplicationRecord
       category_names: get_category_names(self.categories.not_other.not_none),
       initiating_facility_name: origin_display(self),
       practice_partner_names: practice_partners.pluck(:name),
-      origin_facilities: practice_origin_facilities.get_va_facilities,
-      adoption_facilities: diffusion_histories.get_va_facilities,
+      origin_facilities: practice_origin_facilities.get_va_facilities + practice_origin_facilities.get_clinical_resource_hubs,
+      adoption_facilities: diffusion_histories.get_va_facilities + diffusion_histories.get_clinical_resource_hubs,
       adoption_count: diffusion_histories.size
     )
   end
