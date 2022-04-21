@@ -1,12 +1,8 @@
 <%
-  successful_adoptions = diffusion_histories.get_by_successful_status
-  in_progress_adoptions = diffusion_histories.get_by_in_progress_status
-  unsuccessful_adoptions = diffusion_histories.get_by_unsuccessful_status
-
   adoption_groups = {
-    DiffusionHistoryStatus::STATUSES[0] => successful_adoptions,
-    DiffusionHistoryStatus::STATUSES[1] => in_progress_adoptions,
-    DiffusionHistoryStatus::STATUSES[2] => unsuccessful_adoptions
+    DiffusionHistoryStatus::STATUSES[0] => @successful_adoptions,
+    DiffusionHistoryStatus::STATUSES[1] => @in_progress_adoptions,
+    DiffusionHistoryStatus::STATUSES[2] => @unsuccessful_adoptions
   }
 
   adoption_statuses_and_text = [
