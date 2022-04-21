@@ -1,5 +1,0 @@
-<% category_term = @practice.categories.find_by(name: term) %>
-
-<% if category_term.present? %>
-  <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
-<% end %>

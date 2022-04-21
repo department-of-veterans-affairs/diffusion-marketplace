@@ -282,7 +282,7 @@ describe 'The admin dashboard', type: :feature do
   end
 
   it 'should be able to view Versions and revert' do
-    @practice.update_attributes(name: 'This is a new Version!')
+    @practice.update(name: 'This is a new Version!')
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
 

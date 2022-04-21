@@ -176,7 +176,7 @@ class SavePracticeService
             if destroy
               practice_depts.find_by(id: key).destroy!
             else
-              practice_depts.find_by(id: key).update_attributes(department_id: value.to_i)
+              practice_depts.find_by(id: key).update(department_id: value.to_i)
             end
           end
         end
@@ -218,7 +218,7 @@ class SavePracticeService
               cate = Category.create(name: name.strip, is_other: true, parent_category_id: parent_cat_id) unless cate.present?
               CategoryPractice.find_or_create_by(category: cate, practice: @practice)
             elsif destroy != '1' && id.present?
-              practice_categories.find_by(id: id.to_i).update_attributes(name: name.strip, parent_category_id: parent_cat_id)
+              practice_categories.find_by(id: id.to_i).update(name: name.strip, parent_category_id: parent_cat_id)
             elsif destroy == '1' && id.present?
               practice_category_practices.where(category_id: id).destroy_all
               Category.find(id).destroy if CategoryPractice.where(category_id: id).where('practice_id != ?', @practice.id).blank?
@@ -320,7 +320,7 @@ class SavePracticeService
         @practice_params[attribute].each do |key, e|
           if e['delete_attachment'] == 'true'
             record = @practice.send(attachment).find(e[:id])
-            record.update_attributes(attachment: nil)
+            record.update(attachment: nil)
           end
         end
       end
@@ -338,7 +338,7 @@ class SavePracticeService
 
             # Remove avatar
             if e['delete_avatar'] == 'true'
-              record.update_attributes(avatar: nil)
+              record.update(avatar: nil)
             end
 
             # Crop avatar
@@ -353,7 +353,7 @@ class SavePracticeService
 
   def remove_main_display_image
     if @practice_params[:delete_main_display_image].present? && @practice_params[:delete_main_display_image] == 'true'
-      @practice.update_attributes(main_display_image: nil)
+      @practice.update(main_display_image: nil)
     end
   end
 
@@ -369,9 +369,9 @@ class SavePracticeService
     if @current_endpoint === 'introduction'
       if initiating_facility_type.present? && initiating_facility.present?
         if initiating_facility_type != 'department'
-          @practice.update_attributes(initiating_department_office_id: nil)
+          @practice.update(initiating_department_office_id: nil)
         end
-        @practice.update_attributes({initiating_facility_type: initiating_facility_type, initiating_facility: initiating_facility})
+        @practice.update({initiating_facility_type: initiating_facility_type, initiating_facility: initiating_facility})
       elsif initiating_facility.blank? && @practice_params[:practice_origin_facilities_attributes].nil?
         raise StandardError.new @error_messages[:update_initiating_facility]
       end

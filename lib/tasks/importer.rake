@@ -143,9 +143,9 @@ namespace :importer do
     features << Practice.find_by_slug('vione')
     features << Practice.find_by_slug('vha-rapid-naloxone')
 
-    highlighted.update_attributes(highlight: true) if highlighted.present?
+    highlighted.update(highlight: true) if highlighted.present?
     features.each do |f|
-      f.update_attributes(featured: true)
+      f.update(featured: true)
     end
     puts "*********** Completed Featured Practices **********".green
   end

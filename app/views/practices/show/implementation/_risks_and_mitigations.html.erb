@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @practice.risk_mitigations.each_with_index do |rm, index| %>
+    <% @practice.risk_mitigations.includes([:risks, :mitigations]).each_with_index do |rm, index| %>
       <tr>
         <% rm.risks.each do |risk| %>
           <th class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0" scope="row">
