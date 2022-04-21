@@ -1,4 +1,25 @@
 <div>
   <h5 class="font-sans-3xs margin-bottom-2 text-bold">CATEGORIES:</h5>
-  <%= render partial: 'practices/show/desktop_partials/search_term_selectors' %>
+  <% if search_terms.count > 10 %>
+    <% search_terms.slice(0..9).each do |term| %>
+      <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
+    <% end %>
+
+    <% remaining_terms = search_terms.slice(0..9) %>
+    <div id="search_terms_truncated_desktop" style="display: none">
+      <% remaining_terms.each do |term| %>
+        <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
+      <% end %>
+    </div>
+
+    <button class="dm-button--unstyled-primary font-sans-3xs text-bold text-ls-1 text-uppercase"
+            onclick="seeMoreSearchTermsDesktop(); return false;"
+            id="seeMore_search_terms_desktop">
+        See more
+    </button>
+  <% else %>
+    <% search_terms.each do |term| %>
+      <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
+    <% end %>
+  <% end %>
 </div>

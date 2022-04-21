@@ -1,12 +1,10 @@
 <%
-  visns = Visn.cached_visns.select(:id, :number)
-  origin_facilities_count = @origin_facilities.size
+  origin_facilities_count = origin_facilities.size
   display_name = origin_display_name(@practice)
 %>
-
 <% if @practice.facility? %>
   <span class="origin-facilities-display-text">
-    <% @origin_facilities.each_with_index do |facility, index| %>
+    <% origin_facilities.each_with_index do |facility, index| %>
       <% if facility[:street_address_state].present? %>
         <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: "usa-link",
           target: '_blank' %><%= ', ' unless index + 1 === origin_facilities_count %>
@@ -17,6 +15,7 @@
     <% end %>
   </span>
 <% elsif @practice.visn? %>
+  <% visns = Visn.cached_visns.select(:id, :number) %>
   <%= link_to display_name, visn_path(visns.get_by_initiating_facility(@practice.initiating_facility.to_i)), target: '_blank', class: "usa-link" %>
 <% else %>
   <% if display_name.length > 180 %>

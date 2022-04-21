@@ -31,7 +31,7 @@ class VaFacility < ApplicationRecord
   end
 
   def clear_va_facility_cache
-    Rails.cache.delete('va_facilities')
+    Cache.new.delete_cache_key('va_facilities')
   end
 
   def reset_va_facility_cache
