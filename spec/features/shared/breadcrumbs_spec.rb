@@ -14,6 +14,7 @@ describe 'Breadcrumbs', type: :feature do
     @user_practice = Practice.create!(name: 'The Best Innovation Ever', user: @user, initiating_facility: 'Test facility name', initiating_facility_type: 'other', tagline: 'Test tagline', is_public: true, published: true, approved: true, enabled: true, summary: 'test innovation summary')
     @user_practice2 = Practice.create!(name: 'Another Best Innovation', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2', highlight_attachment: File.new(@img_path_1), highlight: true, highlight_body: 'highlighted innovation', is_public: true, published: true, approved: true, enabled: true)
     visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    ClinicalResourceHub.create!(visn: visn_1, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
     fac_1 = VaFacility.create!(
       visn: visn_1,
       station_number: "421",
@@ -52,7 +53,6 @@ describe 'Breadcrumbs', type: :feature do
       station_number_suffix_reservation_effective_date: "05/23/1996",
       mailing_address_city: "Sacramento"
     )
-    ClinicalResourceHub.create!(visn: visn_1, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
     dh_1 = DiffusionHistory.create!(practice: @user_practice, va_facility: fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
     login_as(@user, :scope => :user, :run_callbacks => false)
