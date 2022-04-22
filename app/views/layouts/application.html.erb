@@ -94,7 +94,6 @@
       id="main-content"
       class="<%= params[:controller] %> <%= params[:action] %>-main <%= yield(:main_classes) %><%= ' additional-return-to-top-padding' if params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) %>"
     >
-      <%= render partial: 'shared/terms_and_conditions_modal' %>
       <% if session[:breadcrumbs].any? || session[:heading].present? %>
         <%= render 'shared/breadcrumbs' %>
       <% end %>
