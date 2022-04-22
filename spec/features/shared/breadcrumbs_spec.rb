@@ -13,10 +13,9 @@ describe 'Breadcrumbs', type: :feature do
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Innovation Ever', user: @user, initiating_facility: 'Test facility name', initiating_facility_type: 'other', tagline: 'Test tagline', is_public: true, published: true, approved: true, enabled: true, summary: 'test innovation summary')
     @user_practice2 = Practice.create!(name: 'Another Best Innovation', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2', highlight_attachment: File.new(@img_path_1), highlight: true, highlight_body: 'highlighted innovation', is_public: true, published: true, approved: true, enabled: true)
-    visn_1 = Visn.create!(name: 'VISN 1', number: 2)
-    ClinicalResourceHub.create!(visn: visn_1, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
+    @visn_1 = Visn.create!(name: 'VISN 1', number: 2)
     fac_1 = VaFacility.create!(
-      visn: visn_1,
+      visn: @visn_1,
       station_number: "421",
       official_station_name: "A Test name",
       common_name: "A first facility Test Common Name",
@@ -35,7 +34,7 @@ describe 'Breadcrumbs', type: :feature do
       mailing_address_city: "Las Vegas"
     )
     VaFacility.create!(
-      visn: visn_1,
+      visn: @visn_1,
       station_number: "434",
       official_station_name: "A Second name",
       common_name: "A second facility Test Common Name",
@@ -108,6 +107,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should not display breadcrumbs for the visns index' do
+      ClinicalResourceHub.create!(visn: @visn_1, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
       click_button('Browse by locations')
       find("a[href='/visns']").click
       expect(page).to_not have_css('#breadcrumbs')
@@ -185,6 +185,7 @@ describe 'Breadcrumbs', type: :feature do
 
   describe 'Visns' do
     it 'should show breadcrumbs for visns show page' do
+      ClinicalResourceHub.create!(visn: @visn_1, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
       click_button('Browse by locations')
       find('a[href="/visns"]').click
       find('.visn-card-link').click
