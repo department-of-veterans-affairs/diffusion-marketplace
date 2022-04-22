@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     @user = current_user
     if @user.update(user_params)
       if params[:user][:delete_avatar].present? && params[:user][:delete_avatar] == 'true'
-        @user.update_attributes(avatar: nil)
+        @user.update(avatar: nil)
       end
 
       if is_cropping?(params[:user])
@@ -69,13 +69,13 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.update_attributes disabled: true
+    @user.update(disabled: true)
     flash[:success] = "Disabled user \"#{@user.email}\""
     redirect_to users_path
   end
 
   def re_enable
-    @user.update_attributes disabled: false
+    @user.update(disabled: false)
     flash[:success] = "Re-enabled user \"#{@user.email}\""
     redirect_to users_path
   end

@@ -12,6 +12,7 @@ class DiffusionHistory < ApplicationRecord
   scope :get_by_in_progress_status, -> { (by_status('In progress')).or(by_status('Planning')).or(by_status('Implementing')) }
   scope :get_by_unsuccessful_status, -> { by_status('Unsuccessful') }
   scope :get_with_practices, -> (public_practice) { joins(:practice).includes([:practice]).where(practices: public_practice ? { published: true, enabled: true, approved: true, hidden: false, is_public: true } : { published: true, enabled: true, approved: true, hidden: false }).select("diffusion_histories.*, practices.id as practices_id") }
+  scope :get_va_facilities, -> { includes(:va_facility).pluck("va_facilities.station_number") }
 
   def clear_searchable_practices_cache
     practice.clear_searchable_cache

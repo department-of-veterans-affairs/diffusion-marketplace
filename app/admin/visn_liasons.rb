@@ -73,7 +73,7 @@ ActiveAdmin.register VisnLiaison do
       message = can_save ? "VISN liaison was successfully #{is_update ? 'updated' : 'created'}." : "There was an error #{is_update ? 'updating' : 'creating'} your VISN liaison: #{set_primary_error_msg(visn_liaison_params_with_id)}"
 
       if is_update
-        saved_resource = resource.update_attributes(visn_liaison_params) if can_save
+        saved_resource = resource.update(visn_liaison_params) if can_save
       else
         saved_resource = VisnLiaison.create!(visn_liaison_params) if can_save
       end

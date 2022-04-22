@@ -10,12 +10,8 @@ class HomeController < ApplicationController
   end
 
   def diffusion_map
-    @diffusion_history_practices = helpers.is_user_a_guest? ? Practice.public_facing.select(:id, :name).get_with_diffusion_histories : Practice.select(:id, :name).get_with_diffusion_histories
     @visns = Visn.cached_visns.select(:id, :number)
-
-    def get_diffusion_histories(is_public_practice)
-      DiffusionHistory.get_with_practices(is_public_practice).order(Arel.sql("lower(practices.name)"))
-    end
+    @diffusion_history_practices = helpers.is_user_a_guest? ? Practice.public_facing.select(:id, :name).get_with_diffusion_histories : Practice.select(:id, :name).get_with_diffusion_histories
 
     @diffusion_histories = helpers.is_user_a_guest? ? get_diffusion_histories(true) : get_diffusion_histories(false)
     @successful_ct = @diffusion_histories.get_by_successful_status.size
@@ -23,9 +19,8 @@ class HomeController < ApplicationController
     @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
 
     @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:va_facility_id)) do |dhg, marker|
-      station_number = @va_facilities.find(dhg[0]).station_number
       diffusion_histories = dhg[1]
-      facility = @va_facilities.find { |f| f.station_number === station_number }
+      facility = @va_facilities.find(dhg[0])
       marker.lat facility.latitude
       marker.lng facility.longitude
 
@@ -79,6 +74,10 @@ class HomeController < ApplicationController
   end
 
   private
+
+  def get_diffusion_histories(is_public_practice)
+    DiffusionHistory.get_with_practices(is_public_practice).order(Arel.sql("lower(practices.name)"))
+  end
 
   def fetch_va_facilities
     @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name
