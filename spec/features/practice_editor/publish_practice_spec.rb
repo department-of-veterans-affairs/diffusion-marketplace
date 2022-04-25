@@ -131,6 +131,7 @@ describe 'Practice editor', type: :feature do
 
     context 'alerts' do
       it 'should show save alerts along with the publication modal when a user attempts to publish a practice that has missing required publish fields' do
+        set_initiating_fac
         click_publish_button
         expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
         click_close_modal_button
@@ -147,7 +148,7 @@ describe 'Practice editor', type: :feature do
         expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved.')
       end
 
-      it 'should show save errors on the practice\'s show page when a user attempts to publish a practice that has all required publish fields filled out' do
+      it 'should show save errors, but not display the publish modal, when a user attempts to publish a practice that has all required publish fields filled out' do
         # Fill out all required fields
         visit practice_about_path(@practice)
         fill_in('Main email address', with: 'test@email.com')
@@ -166,11 +167,13 @@ describe 'Practice editor', type: :feature do
         set_initiating_visn
         @save_button.click
         expect(page).to have_content('Innovation was successfully updated.')
+        # all required publish fields are now completed
         # to trigger the error, click on the facility radio button for 'Innovation origin', but do not choose a facility
         find('#initiating_facility_type_facility').sibling('label').click
         click_publish_button
-        expect(page).to have_current_path(practice_path(@practice))
+        expect(page).to have_current_path(practice_introduction_path(@practice))
         expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved or published.')
+        expect(page).to_not have_selector('#practiceEditorPublicationModal', visible: true)
       end
     end
 
