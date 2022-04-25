@@ -166,7 +166,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'In progress')
       visit practice_path(@practice)
 
-      expect(page).to have_content('In-progress adoptions (2)')
+      expect(page).to have_content('2 in-progress')
       within(:css, '.practice-viewer-adoptions-accordion') do
         find('button[aria-controls="in_progress"]').click
         expect(page).to have_link('VISN 1 Clinical Resource Hub', href: '/crh/1')
