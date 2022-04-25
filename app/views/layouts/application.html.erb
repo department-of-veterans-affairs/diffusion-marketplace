@@ -45,10 +45,7 @@
           });
         </script>
       <% end %>
-
     <% end %>
-
-
 
     <title>Diffusion Marketplace</title>
     <%= favicon_link_tag asset_path('favicon.ico') %>
@@ -66,7 +63,12 @@
     <% end %>
     <% if current_user.present? %>
       <%= javascript_include_tag 'session_timeout_poller.js', 'data-turbolinks-track': 'false' %>
+      <%= javascript_tag 'data-turbolinks-track': 'false' do %>
+        var forceModal = <%= @force_terms_and_conditions_modal %>;
+      <% end %>
+      <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'false' %>
     <% end %>
+    <%= javascript_include_tag '_header_utilities', 'data-turbolinks-track': 'false' %>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <meta name="turbolinks-cache-control" content="no-preview">
     <% if @reload_turbolinks %>
@@ -90,6 +92,9 @@
       <% end %>
       <%= yield %>
     </main>
+    <% if current_user.present? %>
+      <%= render partial: 'shared/terms_and_conditions_modal' %>
+    <% end %>
     <%= render 'shared/footer' %>
   </body>
 </html>

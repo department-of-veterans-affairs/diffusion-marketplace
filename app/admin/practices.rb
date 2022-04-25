@@ -462,8 +462,8 @@ ActiveAdmin.register Practice do
 
       practice = Practice.find_by(slug: practice_slug)
       if practice_highlight_body_params.present? && (practice_highlight_attachment_params.present? || practice.highlight_attachment.exists?)
-        practice.update_attributes(highlight_body: params[:practice][:highlight_body])
-        practice.update_attributes(highlight_attachment: params[:practice][:highlight_attachment]) if practice_highlight_attachment_params.present?
+        practice.update(highlight_body: params[:practice][:highlight_body])
+        practice.update(highlight_attachment: params[:practice][:highlight_attachment]) if practice_highlight_attachment_params.present?
       end
     end
   end

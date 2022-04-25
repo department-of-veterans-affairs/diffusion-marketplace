@@ -21,7 +21,7 @@ namespace :practice_origin_facilities do
       no_facility_practice_origin_facilities.each do |pof|
         pof_facility = VaFacility.cached_va_facilities.find_by(station_number: pof.facility_id)
         if pof_facility.present?
-          pof.update_attributes(va_facility_id: pof_facility.id)
+          pof.update(va_facility_id: pof_facility.id)
           puts "PracticeOriginFacility #{pof.id} has been assigned a VA facility!"
         else
           puts "Error - PracticeOriginFacility #{pof.id} was not assigned a VA facility because #{pof.facility_id.nil? ? 'it\'s facility_id is nil.' : %Q(a VaFacility with the station_number '#{pof.facility_id}' does not exist.) }"

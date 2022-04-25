@@ -1,5 +1,6 @@
 class PracticeSolutionResource < ApplicationRecord
   acts_as_list scope: :practice
+  before_save :reset_s3_signer_cache
   after_create :attachment_crop
 
   has_attached_file :attachment, styles: {thumb: '768x432>'}, :processors => [:cropper]
@@ -20,6 +21,10 @@ class PracticeSolutionResource < ApplicationRecord
 
   def skip_for_non_image
     %w(image/jpg image/jpeg image/png).include?(attachment_content_type)
+  end
+
+  def reset_s3_signer_cache
+    Cache.new.delete_cache_key('s3_signer')
   end
 
   def attachment_crop

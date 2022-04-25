@@ -51,7 +51,7 @@ module ApplicationHelper
     if practice.initiating_facility_type?
       if practice.facility? && practice.practice_origin_facilities.present?
         fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
-        locs = practice.practice_origin_facilities.includes(:va_facility, :clinical_resource_hub).where(facility_type: fac_type)
+        locs = practice.practice_origin_facilities.includes([:va_facility, :clinical_resource_hub]).where(facility_type: fac_type)
         facility_names = String.new
         locs.each_with_index do |loc, index|
           has_va_facility = loc.va_facility.present?
@@ -65,7 +65,7 @@ module ApplicationHelper
       # TODO: Modify once visn, dept, other is moved from Practice to a separate table
         case practice.initiating_facility_type
         when 'visn'
-          visn = Visn.cached_visns.get_by_initiating_facility(practice.initiating_facility.to_i)
+          visn = Visn.get_by_initiating_facility(practice.initiating_facility.to_i)
           return "VISN-#{visn.number.to_s}"
         when 'department'
           dept_id = practice.initiating_department_office_id
@@ -94,7 +94,7 @@ module ApplicationHelper
   end
 
   def email_practice_subject(practice)
-    URI.encode("VA Diffusion Marketplace - #{practice.name} summary")
+    url_generator("VA Diffusion Marketplace - #{practice.name} summary")
   end
 
   def email_practice_body(practice)
@@ -137,6 +137,11 @@ module ApplicationHelper
     "VA systems are intended to be used by authorized#{current_user.present? ? ' VA network ' : ' '}users for viewing and retrieving information; except as otherwise authorized for official business and limited personal use under VA policy. Information from this system resides on and transmits through computer systems and networks funded by VA. Access or use constitutes understanding and acceptance that there is no reasonable expectation of privacy in the use of Government networks or systems. Access or use of this system constitutes user understanding and acceptance of these terms and constitutes unconditional consent to review and action includes but is not limited to: monitoring; recording; copying; auditing; inspecting."
   end
 
+  def url_generator(string)
+    parser = URI::Parser.new
+    parser.escape(string)
+  end
+
   def get_facility_locations_by_visn(visn)
     sorted_facility_locations = VaFacility.get_by_visn(visn).get_locations.sort
     location_list = ''
@@ -166,9 +171,6 @@ module ApplicationHelper
         end
       end
     end
-
     location_list
   end
-
-
 end

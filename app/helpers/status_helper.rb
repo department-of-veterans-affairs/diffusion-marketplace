@@ -14,7 +14,7 @@ module StatusHelper
   end
 
   def reset_revision_cache
-    Rails.cache.delete('revision')
+    Cache.new.delete_cache_key('revision')
     cached_revision
   end
 end
