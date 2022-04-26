@@ -51,8 +51,8 @@ function searchPracticesByCrh() {
             if ($(RESULTS_SECTION).hasClass('display-none')) {
                 $(RESULTS_SECTION).removeClass('display-none');
             }
-            if($(RADIO_BUTTON_GROUP).hasClass('margin-bottom-28')){
-                $(RADIO_BUTTON_GROUP).removeClass('margin-bottom-28');
+            if(!$(RADIO_BUTTON_GROUP).hasClass('margin-bottom-28')){
+                $(RADIO_BUTTON_GROUP).addClass('margin-bottom-28');
             }
         } else {
             if (!$(RESULTS_SECTION).hasClass('display-none')) {
