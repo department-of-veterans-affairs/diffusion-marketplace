@@ -16,7 +16,7 @@
               <% if devise_error_messages!.present? %>
                 <div class="usa-alert usa-alert--error" >
                   <div class="usa-alert__body">
-                    <%= devise_error_messages! %>
+                    <%= render "devise/shared/error_messages", resource: resource %>
                   </div>
                 </div>
               <% end %>

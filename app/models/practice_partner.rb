@@ -18,7 +18,7 @@ class PracticePartner < ApplicationRecord
   scope :major_partners, -> { where(is_major: true) }
 
   def clear_practice_partners_cache
-    Rails.cache.delete('practice_partners')
+    Cache.new.delete_cache_key('practice_partners')
   end
 
   def reset_practice_partners_cache

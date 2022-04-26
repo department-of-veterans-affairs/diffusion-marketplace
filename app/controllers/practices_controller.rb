@@ -30,12 +30,12 @@ class PracticesController < ApplicationController
   # GET /innovations/1
   # GET /practices/1.json
   def show
+    @search_terms = @practice.categories.not_none.not_other
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
-
     @pr_diffusion_histories = @practice.diffusion_histories.where(clinical_resource_hub_id: nil)
     @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
-      facility = @va_facilities.find { |f| f.station_number === dhg.va_facility.station_number }
+      facility = @va_facilities.find(dhg.va_facility_id)
       marker.lat facility.latitude
       marker.lng facility.longitude
 
@@ -146,7 +146,7 @@ class PracticesController < ApplicationController
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
           practice_editor = PracticeEditor.find_by(practice: @practice, user: current_user)
           if practice_editor.present? && Time.current - practice_editor.created_at > 2
-            practice_editor.update_attributes(last_edited_at: DateTime.current)
+            practice_editor.update(last_edited_at: DateTime.current)
           end
         end
       else
@@ -165,12 +165,13 @@ class PracticesController < ApplicationController
   def search
     @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
     # combine the va_facilities query with the CRH query, sort them by 'official_station_name', group them by their VISN's number, and then sort by VISN number
-    @visn_grouped_facilities = (@va_facilities.includes(:visn) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
-    @practices = helpers.is_user_a_guest? ? Practice.published_enabled_approved.public_facing : Practice.published_enabled_approved
+    @visn_grouped_facilities = (@va_facilities.includes([:visn]) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
+    pr = helpers.is_user_a_guest? ? Practice.published_enabled_approved.public_facing.sort_by_retired : Practice.published_enabled_approved.sort_by_retired
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
-    @practices_json = cached_json_practices
+    @practices_json = Practice.cached_json_practices(helpers.is_user_a_guest?)
+
     @diffusion_histories = []
-    @practices.each do |p|
+    pr.each do |p|
       p.diffusion_histories.includes([:va_facility, :clinical_resource_hub]).each do |dh|
         va_facility = dh.va_facility
         crh = dh.clinical_resource_hub
@@ -193,9 +194,9 @@ class PracticesController < ApplicationController
     user_practice = UserPractice.find_by(user: current_user, practice: @practice)
 
     if user_practice.present? && user_practice.favorited
-      user_practice.update_attributes(favorited: false)
+      user_practice.update(favorited: false)
     elsif user_practice.present? && !user_practice.favorited
-      user_practice.update_attributes(favorited: true, time_favorited: DateTime.now)
+      user_practice.update(favorited: true, time_favorited: DateTime.now)
     else
       user_practice = UserPractice.create(user: current_user, practice: @practice, favorited: true, time_favorited: DateTime.now)
     end
@@ -215,23 +216,23 @@ class PracticesController < ApplicationController
 
   def highlight
     old_highlight = Practice.find_by_highlight(true)
-    old_highlight.update_attributes(highlight: false) if old_highlight.present?
-    @practice.update_attributes highlight: true, featured: false
+    old_highlight.update(highlight: false) if old_highlight.present?
+    @practice.update(highlight: true, featured: false)
     redirect_to edit_practice_path(@practice)
   end
 
   def un_highlight
-    @practice.update_attributes highlight: false
+    @practice.update(highlight: false)
     redirect_to edit_practice_path(@practice)
   end
 
   def feature
-    @practice.update_attributes featured: true
+    @practice.update(featured: true)
     redirect_to edit_practice_path(@practice)
   end
 
   def un_feature
-    @practice.update_attributes featured: false
+    @practice.update(featured: false)
     redirect_to edit_practice_path(@practice)
   end
 
@@ -402,7 +403,7 @@ class PracticesController < ApplicationController
           flash[:error] = "There was an #{updated.message}. The innovation was not saved or published."
           format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
         else
-          @practice.update_attributes(published: true, date_published: DateTime.now)
+          @practice.update(published: true, date_published: DateTime.now)
           flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
           format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
@@ -461,7 +462,7 @@ class PracticesController < ApplicationController
       if params[:diffusion_history_status_id]
         # update the diffusion history status
         dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
-        params[:updated] = dhs.update_attributes(status: status, start_time: start_time, end_time: end_time, unsuccessful_reasons: unsuccessful_reasons, unsuccessful_reasons_other: unsuccessful_reasons_other)
+        params[:updated] = dhs.update(status: status, start_time: start_time, end_time: end_time, unsuccessful_reasons: unsuccessful_reasons, unsuccessful_reasons_other: unsuccessful_reasons_other)
       else
         # create a new status.
         DiffusionHistoryStatus.create!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time, unsuccessful_reasons: unsuccessful_reasons, unsuccessful_reasons_other: unsuccessful_reasons_other)
@@ -639,12 +640,7 @@ class PracticesController < ApplicationController
   end
 
   def set_facility_data
-    if @practice.facility?
-      @facility_data = []
-      @practice.practice_origin_facilities.each do |pof|
-        @facility_data << pof.va_facility
-      end
-    end
+    @facility_data = @practice.practice_origin_facilities.includes([:va_facility]).get_va_facilities if @practice.facility?
   end
 
   def set_office_data
@@ -657,19 +653,7 @@ class PracticesController < ApplicationController
   end
 
   def set_visn_data
-    @visn_data = Visn.cached_visns.get_by_initiating_facility(@practice.initiating_facility.to_i) if @practice.visn?
-  end
-
-  def cached_json_practices
-    if helpers.is_user_a_guest?
-      Rails.cache.fetch('searchable_public_practices_json', expires_in: 4.hours) do
-        practices_json(Practice.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct)
-      end
-    else
-      Rails.cache.fetch('searchable_practices_json', expires_in: 4.hours) do
-        practices_json(Practice.sort_by_retired.get_with_categories_and_adoptions_ct)
-      end
-    end
+    @visn_data = Visn.get_by_initiating_facility(@practice.initiating_facility.to_i) if @practice.visn?
   end
 
   def set_initiating_facility_other

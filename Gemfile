@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 source 'https://rails-assets.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.3'
+ruby '2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -16,7 +16,6 @@ gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'mini_racer', platforms: :ruby
 
 gem 'babel-transpiler'
 
@@ -41,13 +40,13 @@ gem 'bcrypt', '~> 3.1.13'
 # gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '1.4.4', require: false
+gem 'bootsnap', '1.4.6', require: false
 
 gem 'devise', '>= 4.6.0'
 gem 'devise-security'
 gem 'kaminari'
 
-gem 'rolify'
+gem 'rolify', '~> 5.3.0'
 # pagination gem
 gem 'pagy', '~> 3.5'
 
@@ -76,7 +75,6 @@ group :development, :test do
   gem 'brakeman', '5.0.2'
   gem 'bundler-audit'
   gem 'bundler-leak'
-  gem 'json', '>= 2.3.0'
 end
 
 group :development do
@@ -97,22 +95,23 @@ group :development do
   gem 'erd'
 
   gem 'rubyzip'
-  gem 'sprockets', '~> 3.7.2'
+  gem 'sprockets'
 
   ###
 end
-gem 'ffi', '1.11.1'
+gem 'ffi'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: 'ebd25cc'
+gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: 'f8a3658'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'aws-sdk-rds'
-gem 'paperclip', '~> 6.0.0'
+gem 'wt_s3_signer'
+gem 'paperclip', github: 'agilesix/paperclip', ref: 'ruby-2.7.x-deprecation-fix'
 gem 'font-awesome-sass', '~> 5.13.0'
 gem 'sidekiq'
 
@@ -125,17 +124,19 @@ gem 'friendly_id', '~> 5.2.4'
 
 gem 'jquery-cropper'
 
+gem 'rails-assets-jquery', source: 'https://rails-assets.org'
 gem 'rails-assets-sticky', source: 'https://rails-assets.org'
 gem 'rails-assets-jquery.scrollTo', source: 'https://rails-assets.org'
 gem "nested_form"
 gem 'colorize'
 gem 'humanize'
 gem 'paper_trail'
-gem 'commontator'
+gem 'commontator', '~> 6.3.1'
 gem 'acts_as_votable'
+gem 'json', '~> 2.3.0'
 
 # Active Admin
-gem 'activeadmin', '~> 2.3.0'
+gem 'activeadmin', '~> 2.8.0'
 gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'

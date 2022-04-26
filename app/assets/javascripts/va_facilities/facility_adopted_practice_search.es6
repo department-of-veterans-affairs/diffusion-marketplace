@@ -22,9 +22,13 @@ function trackSearch(term) {
 }
 
 function ajaxUpdateSearchResults(updateCat = true) {
-  _displaySpinner({ display: true })
+  _displaySpinner({ display: true });
+  let keyWord = null;
+  let adoptedSearchField = document.getElementById('dm-adopted-practices-search-field');
   let selectedCategory = $('select[name="facility_category_select_adoptions"]').val();
-  let keyWord = $(ap.searchField).data("search").length > 0 ? $(ap.searchField).data("search") : null;
+   if (adoptedSearchField){
+       keyWord = adoptedSearchField.value === '' ? null : $(ap.searchField).data("search");
+   }
 
   //updates selected category for usage stats..... dm-2800
     if(updateCat) {
@@ -77,9 +81,6 @@ function attachSearchButtonClickListener() {
   $("#dm-adopted-practices-search-button").click (function(e) {
     e.preventDefault();
     let keyWord = $(ap.searchField).val();
-    if(keyWord.length == 0){
-        return;
-    }
     updateSelectedCategoriesUsage({
         sQuery: keyWord
     });

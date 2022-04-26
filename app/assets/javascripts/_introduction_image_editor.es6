@@ -295,7 +295,23 @@
     setImageVars();
     attachImgActionsEventListeners();
     displayUpload();
-}
+  }
+
+  function _toggleDeleteBtn({ visible, target }) {
+    let $imgDeleteBtn = $(target)
+      .closest(".dm-cropper-boundary")
+      .find($('.dm-cropper-delete-image'));
+    let hideDeleteBtn = $(target)
+      .closest(".dm-cropper-boundary")
+      .find($imgsContainer)
+      .hasClass("dm-resource-image");
+
+    if (visible && !hideDeleteBtn) {
+      $imgDeleteBtn.removeClass("display-none");
+    } else {
+      $imgDeleteBtn.addClass("display-none");
+    }
+  }
 
   $document.on('turbolinks:load', loadCropperFunctions);
 })(window.jQuery);
