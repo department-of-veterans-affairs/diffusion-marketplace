@@ -718,21 +718,21 @@ def set_initiating_fac_params(params)
       @practice.initiating_facility = params[:editor_visn_select]
       @practice.initiating_department_office_id = ""
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   elsif facility_type == "department"
     if params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
       @practice.initiating_facility = params[:practice][:initiating_facility]
       @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   elsif facility_type == "other"
     if params[:initiating_facility_other].present?
       @practice.initiating_facility = params[:initiating_facility_other]
       @practice.initiating_department_office_id = ""
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   end
 end
