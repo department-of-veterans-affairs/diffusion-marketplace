@@ -163,12 +163,12 @@ describe 'Practice editor', type: :feature, js: true do
       #   expect(page).to have_content('In-progress adoptions (3)')
       #   find("button[aria-controls='in_progress']").click
       # end
-      within(:css, "#in_progress") do
-        expect(page).to have_content("ME: Caribou VA Clinic (Caribou)")
-        expect(page).to have_content("Started adoption on 12/1990")
-        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
-        expect(page).to have_content("VISN 1 Clinical Resource Hub")
-      end
+      # within(:css, "#in_progress") do
+      #   expect(page).to have_content("ME: Caribou VA Clinic (Caribou)")
+      #   expect(page).to have_content("Started adoption on 12/1990")
+      #   expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
+      #   expect(page).to have_content("VISN 1 Clinical Resource Hub")
+      # end
 
       # it shouldn't create the same facility twice for a practice
       visit practice_adoptions_path(@practice)
