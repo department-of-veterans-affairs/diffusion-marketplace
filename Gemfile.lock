@@ -43,16 +43,6 @@ GIT
       rails-assets-normalize-css (= 3.0.3)
 
 GEM
-  remote: https://rails-assets.org/
-  specs:
-    rails-assets-jquery (3.6.0)
-    rails-assets-jquery.scrollTo (2.1.2)
-      rails-assets-jquery (>= 1.8)
-    rails-assets-normalize-css (3.0.3)
-    rails-assets-sticky (1.0.4)
-      rails-assets-jquery
-
-GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
@@ -577,6 +567,7 @@ GEM
     zeitwerk (2.5.4)
 
 PLATFORMS
+  ruby
   x86_64-darwin-20
 
 DEPENDENCIES
