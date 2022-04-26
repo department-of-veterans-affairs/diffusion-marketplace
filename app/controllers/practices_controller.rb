@@ -680,12 +680,18 @@ class PracticesController < ApplicationController
   def update_conditions
     if params[:practice].present?
       facility_type = params[:practice][:initiating_facility_type] || nil
+      initiating_facility_params_error = ''
       if facility_type.present?
-        set_initiating_fac_params params
+        begin
+          set_initiating_fac_params params
+        rescue => e
+          initiating_facility_params_error = e
+        end
       end
 
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
-      updated = SavePracticeService.new(pr_params).save_practice
+
+      updated = initiating_facility_params_error.present? ? initiating_facility_params_error : SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction' && !updated.is_a?(StandardError)
       updated
     end
@@ -701,13 +707,12 @@ def set_initiating_fac_params(params)
   facility_type = params[:practice][:initiating_facility_type]
 
   if facility_type == "facility"
-    params[:practice][:practice_origin_facilities_attributes].values.each do |value|
-      if value[:va_facility_id].nil?
-        params[:practice][:practice_origin_facilities_attributes] = nil
-      end
+    if params[:practice][:practice_origin_facilities_attributes].values.select { |pof| pof["va_facility_id"] }.empty?
+      raise StandardError.new 'error updating initiating facility'
+    else
+      @practice.initiating_facility = ""
+      @practice.initiating_department_office_id = ""
     end
-    @practice.initiating_facility = ""
-    @practice.initiating_department_office_id = ""
   elsif facility_type == "visn"
     if params[:editor_visn_select].present?
       @practice.initiating_facility = params[:editor_visn_select]
