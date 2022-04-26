@@ -1,5 +1,9 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'practices/show/ahoy_event_tracking.js', formats: [:js] if current_user.present? %>
+  <% end %>
+
 <% end %>
 <section class="usa-section padding-y-0 margin-bottom-1 margin-top-0">
   <div class="grid-container position-relative">
@@ -15,7 +19,7 @@
 <!-- "Practice nav" section -->
 <!-- Overview Implementation Contact About -->
 
-<%= render partial: 'practices/show/introduction/introduction' %>
+<%= render partial: 'practices/show/introduction/introduction', locals: { search_terms: @search_terms } %>
 
 <div class="grid-container position-relative z-top">
   <div id="dm-practice-nav" class="z-top mobile-hide">
@@ -99,7 +103,8 @@
 <% end %>
 
 <!-- Diffusion Tracker -->
-<% if @practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
+<% diffusion_histories = @practice.diffusion_histories.includes(:va_facility).joins(:va_facility).order('va_facilities.street_address_state, va_facilities.official_station_name') %>
+<% if diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
   <section id="dm-pv-diffusion-tracker" class="margin-bottom-5 grid-container">
     <div class="grid-row grid-gap-2">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
@@ -107,7 +112,7 @@
         <div class="metric-section practice-section">
           <h3 class="margin-y-2 line-height-26 font-sans-lg">Diffusion tracker</h3>
           <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
-          <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions' %>
+          <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions', locals: { diffusion_histories: diffusion_histories } %>
         </div>
       </div>
     </div>
@@ -172,16 +177,7 @@
 <% if @practice.origin_story.present? || @practice.va_employees.any? %>
   <%= render partial: 'practices/show/about/about' %>
 <% end %>
-
-<script type="text/javascript">
-  <%= render partial: 'practices/show/ahoy_event_tracking.js' if current_user.present? %>
-</script>
-
-<%# search terms(campaigns/categories/tags) for mobile  %>
-<% if @practice.categories.where.not(is_other: true, name: 'Other').any? %>
-  <%= render partial: 'practices/show/mobile_partials/search_terms' %>
+<%# search terms(campaigns/categories/tags) for mobile %>
+<% if @search_terms.present? %>
+  <%= render partial: 'practices/show/mobile_partials/search_terms', locals: { search_terms: @search_terms } %>
 <% end %>
-
-
-
-

@@ -25,7 +25,7 @@ ActiveAdmin.register Topic do
       other_topics = Topic.where.not(id: resource.id)
       if other_topics.present?
         other_topics.each do |other_topic|
-          other_topic.update_attributes(featured: false)
+          other_topic.update(featured: false)
         end
       end
     else

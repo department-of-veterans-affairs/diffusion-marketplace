@@ -57,7 +57,7 @@ ActiveAdmin.register Category do
 
     def update
       category = Category.find(params[:id])
-      updated = category.update_attributes(category_params)
+      updated = category.update(category_params)
 
       respond_to do |format|
         if updated

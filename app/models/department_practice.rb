@@ -10,6 +10,6 @@ class DepartmentPractice < ApplicationRecord
   end
 
   def update_number_of_departments
-    self.practice.update_attributes(number_departments: departments_count)
+    self.practice.update(number_departments: departments_count)
   end
 end

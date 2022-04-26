@@ -167,7 +167,7 @@ namespace :categories do
     def assign_parent_cat(cat, parent_cat)
       cat_record = Category.get_category_by_name(cat).first
       if cat_record.present?
-        cat_record.update_attributes(parent_category: parent_cat)
+        cat_record.update(parent_category: parent_cat)
         puts "#{cat} now has a parent category of #{parent_cat.name}."
       else
         puts "#{cat} does not exist."

@@ -50,7 +50,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should not display the blue gradient banner, title, or description if the is_visible attr is false' do
-    @page.update_attributes(is_visible: false)
+    @page.update(is_visible: false)
     visit '/programming/ruby-rocks'
 
     expect(page).to_not have_css('.dm-gradient-banner')

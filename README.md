@@ -42,18 +42,18 @@
 | `rails practice_partners:add_new_practice_partners` | Adds new practice partners to the DB based on a spreadsheet provided in March 2022
 #### Ruby version
 
-- `ruby 2.6.3`
+- `ruby 2.7.5`
 
-- `rails ~> 5.2.4`
+- `rails ~> 6.0.0`
 
 #### System dependencies
 
-- `ruby 2.6.3`
+- `ruby 2.7.5`
   - Linux-based install `rvm` (Ruby Version Manager) http://rvm.io/
   - `ruby -v`
 - `bundler`
   - `gem install bundler`
-- `nodejs`
+- `node 16.14.2`
   - https://nodejs.org/en/
   - `node -v`
 - `postgresql` https://www.postgresql.org/download/
