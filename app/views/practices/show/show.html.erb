@@ -103,16 +103,21 @@
 <% end %>
 
 <!-- Diffusion Tracker -->
-<% diffusion_histories = @practice.diffusion_histories %>
-<% if diffusion_histories.any? && diffusion_histories.exclude_clinical_resource_hubs.any? && ENV['GOOGLE_API_KEY'] %>
+<%
+  diffusion_histories = @practice.diffusion_histories
+  has_non_crh_diffusion_histories = diffusion_histories.exclude_clinical_resource_hubs.any?
+%>
+<% if diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
   <section id="dm-pv-diffusion-tracker" class="margin-bottom-5 grid-container">
     <div class="grid-row grid-gap-2">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
       <div class="desktop:grid-col-9 grid-col-12">
         <div class="metric-section practice-section">
           <h3 class="margin-top-2 margin-bottom-1 line-height-26 font-sans-lg">Diffusion tracker</h3>
-          <p class="margin-bottom-2">Does not include Clinical Resource Hubs (CRH)</p>
-          <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
+          <% if has_non_crh_diffusion_histories %>
+            <p class="margin-bottom-2">Does not include Clinical Resource Hubs (CRH)</p>
+            <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
+          <% end %>
           <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions', locals: { diffusion_histories: diffusion_histories } %>
         </div>
       </div>
