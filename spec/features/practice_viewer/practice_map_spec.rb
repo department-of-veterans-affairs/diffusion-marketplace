@@ -160,17 +160,32 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
     end
   end
 
-  # context 'adoption accordions' do
-  #   it 'should include CRH adoptions' do
-  #     dh_6 = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
-  #     DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'In progress')
-  #     visit practice_path(@practice)
-  #
-  #     expect(page).to have_content('2 in-progress')
-  #     within(:css, '.practice-viewer-adoptions-accordion') do
-  #       find('button[aria-controls="in_progress"]').click
-  #       expect(page).to have_link('VISN 1 Clinical Resource Hub', href: '/crh/1')
-  #     end
-  #   end
-  # end
+  context 'adoption accordions' do
+    it 'should include CRH adoptions' do
+      dh_6 = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'In progress')
+      visit practice_path(@practice)
+
+      expect(page).to have_content('In-progress adoptions (2)')
+      within(:css, '.practice-viewer-adoptions-accordion') do
+        find('button[aria-controls="in_progress"]').click
+        expect(page).to have_link('VISN 1 Clinical Resource Hub', href: '/crh/1')
+      end
+    end
+  end
+
+  context 'edge cases' do
+    it 'should only show the adoption accordions and \'Diffusion tracker\' title text if the practice ONLY has CRH adoptions' do
+      @practice.diffusion_histories.destroy_all
+      dh = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history: dh, status: 'In progress')
+
+      visit practice_path(@practice)
+      expect(page).to_not have_content('Does not include Clinical Resource Hubs (CRH)')
+      expect(page).to_not have_selector('#map')
+      expect(page).to have_content('Successful adoptions (0)')
+      expect(page).to have_content('In-progress adoption (1)')
+      expect(page).to have_content('Unsuccessful adoptions (0)')
+    end
+  end
 end

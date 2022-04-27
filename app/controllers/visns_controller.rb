@@ -1,10 +1,9 @@
 class VisnsController < ApplicationController
   include PracticeUtils
   before_action :set_visn, only: [:show, :load_facilities_show_rows]
+  before_action :set_visns_and_visns_origin_and_adoption_counts, only: :index
 
   def index
-    @visns = Visn.cached_visns
-    @visns_counts = set_visns_counts
     @visn_markers = Gmaps4rails.build_markers(@visns) do |visn, marker|
       marker.lat visn[:latitude].to_s
       marker.lng visn[:longitude].to_s
@@ -91,16 +90,25 @@ class VisnsController < ApplicationController
     @visn = Visn.find_by!(number: params[:number])
   end
 
-  def set_visns_counts
-    visn_counts = []
-    @visns.each do |visn|
+  def set_visns
+    @visns = Visn.cached_visns
+  end
+
+  def set_visns_origin_and_adoption_counts(visns)
+    @visns_counts = []
+    visns.each do |visn|
       va_facility_ids = VaFacility.get_by_visn(visn).get_ids
       visn_crh = visn.clinical_resource_hub
       created = visn.get_created_practices(va_facility_ids, visn_crh.id, is_user_guest: helpers.is_user_a_guest?).size
       adopted = visn.get_adopted_practices(va_facility_ids, visn_crh.id, is_user_guest: helpers.is_user_a_guest?).size
 
-      visn_counts.push({number: visn[:number], created: created, adopted: adopted})
+      @visns_counts.push({number: visn[:number], created: created, adopted: adopted})
     end
-    visn_counts
+    @visns_counts
+  end
+
+  def set_visns_and_visns_origin_and_adoption_counts
+    set_visns
+    set_visns_origin_and_adoption_counts(@visns)
   end
 end

@@ -66,278 +66,278 @@ describe 'Practice editor', type: :feature, js: true do
       find("button[id*='adoption_form']").click
     end
 
-    # it 'should interact with practice adoptions' do
-    #   # it should be there
-    #   expect(page).to have_content('Adoptions')
-    #   expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_introduction_path(@practice))
-    #   expect(page).to have_link(class: 'usa-button--secondary', href: practice_overview_path(@practice))
-    #
-    #   # it should display certain parts of the form on status selection
-    #   open_new_adoption_form
-    #   # open facility status modal
-    #   find_all('.facility-status-modal-header').first.click
-    #   expect(page).to have_content('Facilities that have started but not completed adopting the innovation.')
-    #   expect(page).to have_content('Facilities that have met adoption goals and implemented the innovation.')
-    #   find_all('.usa-modal__close').first.click
-    #   expect(page).to_not have_content('Facilities that have started but not completed adopting the innovation.')
-    #   expect(page).to_not have_content('Facilities that have met adoption goals and implemented the innovation.')
-    #   within(:css, '#adoption_form') do
-    #     expect(page).to have_content('Status')
-    #     expect(page).to have_content('Start date (optional)')
-    #     expect(page).to have_no_content('End date (optional)')
-    #     expect(page).to have_no_content('Why was this adoption unsuccessful?')
-    #     select_status('completed')
-    #     expect(page).to have_content('Start date (optional)')
-    #     expect(page).to have_content('End date (optional)')
-    #     expect(page).to have_no_content('Why was this adoption unsuccessful?')
-    #     select_status('unsuccessful')
-    #     expect(page).to have_content('Why was this adoption unsuccessful?')
-    #     expect(page).to have_no_content('(0/50 characters)')
-    #     select_status('in_progress')
-    #     expect(page).to have_content('Start date (optional)')
-    #     expect(page).to have_no_content('End date (optional)')
-    #     expect(page).to have_no_content('Why was this adoption unsuccessful?')
-    #   end
-    #
-    #   # it should clear the form on cancel
-    #   within(:css, '#adoption_form') do
-    #     select_status('in_progress')
-    #     select_facility_combo_box(0)
-    #     find('#clear_entry').click
-    #   end
-    #   open_new_adoption_form
-    #   within(:css, '#adoption_form') do
-    #     expect(page.find("#status_in_progress")).not_to be_checked
-    #     expect(page).to have_no_content('Caribou VA Clinic')
-    #   end
-    #
-    #   # it should not let an adoption without a facility be created
-    #   select_status('in_progress')
-    #   submit_form
-    #   expect(page).to have_selector(".usa-alert--error", visible: true)
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('There was a problem with your adoption.')
-    #     expect(page).to have_content('A facility must be selected.')
-    #   end
-    #
-    #   # it should create an adoption
-    #   select_facility_combo_box(0)
-    #   fill_in 'date_started_month', with: '12'
-    #   fill_in 'date_started_year', with: '1990'
-    #   submit_form
-    #   expect(page).to have_selector(".adoption-success-alert", visible: true)
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('Success!')
-    #     expect(page).to have_content('In-progress adoption: 1')
-    #   end
-    #   expect(page).to be_accessible.according_to :wcag2a, :section508
-    #
-    #   # it should create another one
-    #   find('#add_adoption_button').click
-    #   select_status('in_progress')
-    #   select_facility_combo_box(2)
-    #   submit_form
-    #   expect(page).to have_selector(".adoption-success-alert", visible: true)
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('Success!')
-    #     expect(page).to have_content('In-progress adoptions: 2')
-    #   end
-    #
-    #   # it should allow the user to create a CRH adoption
-    #   find('#add_adoption_button').click
-    #   select_status('in_progress')
-    #   find_all('.usa-combo-box__input')[0].click
-    #   find_all('.usa-combo-box__input')[0].set('VISN 1')
-    #   find_all('.usa-combo-box__list-option').first.click
-    #   submit_form
-    #   expect(page).to have_selector(".adoption-success-alert", visible: true)
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('Success!')
-    #     expect(page).to have_content('In-progress adoptions: 3')
-    #   end
-    #
-    #   # it should update the overview section and display the adoption
-    #   visit practice_path(@practice)
-    #   expect(page).to have_selector("#map", visible: true)
-    #   within(:css, ".practice-viewer-adoptions-accordion") do
-    #     expect(page).to have_content('In-progress adoptions (3)')
-    #     find("button[aria-controls='in_progress']").click
-    #   end
-    #   within(:css, "#in_progress") do
-    #     expect(page).to have_content("ME: Caribou VA Clinic (Caribou)")
-    #     expect(page).to have_content("Started adoption on 12/1990")
-    #     expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
-    #     expect(page).to have_content("VISN 1 Clinical Resource Hub")
-    #   end
-    #
-    #   # it shouldn't create the same facility twice for a practice
-    #   visit practice_adoptions_path(@practice)
-    #   find('#add_adoption_button').click
-    #   select_status('completed')
-    #   select_facility_combo_box(0)
-    #   submit_form
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('An adoption for Caribou VA Clinic in ME already exists in the entry list. If it is not listed, please report a bug.')
-    #   end
-    #
-    #   # make sure this applies to CRHs as well
-    #   select_status('completed')
-    #   find_all('.usa-combo-box__input')[0].click
-    #   find_all('.usa-combo-box__input')[0].set('VISN 1')
-    #   find_all('.usa-combo-box__list-option').first.click
-    #   submit_form
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('An adoption for VISN 1 Clinical Resource Hub already exists in the entry list. If it is not listed, please report a bug.')
-    #   end
-    #
-    #   # it shouldn't create an adoption if the end date is greater than the start date
-    #   select_status('completed')
-    #   select_facility_combo_box(1)
-    #   fill_in 'date_started_month', with: '11'
-    #   fill_in 'date_started_year', with: '2000'
-    #   fill_in 'date_ended_month', with: '3'
-    #   fill_in 'date_ended_year', with: '1999'
-    #   submit_form
-    #   expect(page).to have_selector(".usa-alert--error", visible: true)
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('There was a problem with your adoption.')
-    #     expect(page).to have_content('The start date cannot be after the end date.')
-    #   end
-    #
-    #   # it shouldn't create an adoption with an incomplete dates for non in-progress adoptions
-    #   fill_in 'date_started_year', with: ''
-    #   submit_form
-    #   expect(page).to have_selector(".usa-alert--error", visible: true)
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('There was a problem with your adoption.')
-    #     expect(page).to have_content('Provide a complete start date.')
-    #   end
-    #   fill_in 'date_started_year', with: '1998'
-    #   fill_in 'date_ended_month', with: ''
-    #   submit_form
-    #   expect(page).to have_selector(".usa-alert--error", visible: true)
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('There was a problem with your adoption.')
-    #     expect(page).to have_content('Provide a complete end date.')
-    #   end
-    #
-    #   # it should create an adoption with start and end dates
-    #   fill_in 'date_ended_month', with: '3'
-    #   submit_form
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_no_content('There was a problem with your adoption.')
-    #     expect(page).to have_content('Success!')
-    #   end
-    #   find("button[aria-controls='successful_adoptions']").click
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('NY: White Plains VA Clinic (11/1998 - 03/1999)')
-    #     expect(page).to have_content('Successful adoption: 1')
-    #   end
-    #
-    #   # it should delete an adoption entry
-    #   find("button[aria-controls='in-progress_adoptions']").click
-    #   expect(page).to have_selector("#in-progress_adoptions", visible: true)
-    #   find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
-    #   within(:css, "#diffusion_history_#{@practice.diffusion_histories.first.id}") do
-    #     click_link('Delete')
-    #   end
-    #   page.accept_alert
-    #   expect(page).to have_content('Adoption was successfully deleted.')
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('In-progress adoptions: 2')
-    #   end
-    #
-    #   # it shouldn't update an unsuccessful adoption if no reasons are selected
-    #   expect(page).to have_selector(".usa-alert--info", visible: true)
-    #   expect(page).to have_selector("button[aria-controls*='in-progress_adoptions']", visible: true)
-    #   click_button('In-progress adoptions: 2')
-    #   sleep 0.2
-    #   expect(page).to have_selector("button[aria-controls='diffusion_history_2']", visible: true)
-    #   find_all("button[aria-controls*='diffusion_history']").first.click
-    #   form_id = '2'
-    #   within(:css, "#diffusion_history_#{form_id}") do
-    #     find("label[for*='status_unsuccessful'").click
-    #     submit_form
-    #     expect(page).to have_content('There was a problem with your adoption.')
-    #     expect(page).to have_content('A reason must be selected for the unsuccessful adoption.')
-    #   end
-    #   unsuccessful_reasons = find_all("label[for*='unsuccessful_reason']")
-    #   unsuccessful_reasons.first.click
-    #   unsuccessful_reasons.last.click
-    #   expect(page).to have_content("(0/50 characters)")
-    #   submit_form
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_content('There was a problem with your adoption.')
-    #     expect(page).to have_content("Provide text for the 'Other' reason the adoption was unsuccessful.")
-    #   end
-    #   within(:css, "#diffusion_history_#{form_id}") do
-    #     fill_in 'Other Reason', with: 'gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMPZnIOVER50CHARACTERS'
-    #   end
-    #
-    #   # it shouldn't update an adoption if the end date is greater than the start date
-    #   fill_in "date_started_month#{form_id}", with: '11'
-    #   fill_in "date_started_year#{form_id}", with: '2000'
-    #   fill_in "date_ended_month#{form_id}", with: '3'
-    #   fill_in "date_ended_year#{form_id}", with: '1999'
-    #   submit_form
-    #   within(:css, "#diffusion_history_#{form_id}") do
-    #     expect(page).to have_content('The start date cannot be after the end date.')
-    #   end
-    #
-    #   # it should update an adoption with start and end dates
-    #   fill_in "date_ended_month#{form_id}", with: '3'
-    #   fill_in "date_ended_year#{form_id}", with: '2001'
-    #   submit_form
-    #   within(:css, '#adoptions') do
-    #     expect(page).to have_no_content('There was a problem with your adoption.')
-    #     expect(page).to have_content('Success!')
-    #     expect(page).to have_content('Unsuccessful adoption: 1')
-    #     find_all("button[aria-controls*='adoptions']").last.click
-    #     find_all("button[aria-controls*='diffusion_history']").first.click
-    #     expect(page).to have_content('NY: Yonkers VA Clinic (11/2000 - 03/2001)')
-    #     within(:css, "#diffusion_history_#{form_id}") do
-    #       expect(find_field('Successful').checked?).to eq false
-    #       expect(find_field('In-progress').checked?).to eq false
-    #       expect(find_field('Unsuccessful').checked?).to eq true
-    #       expect(find_field("date_started_month#{form_id}").value).to eq '11'
-    #       expect(find_field("date_started_year#{form_id}").value).to eq '2000'
-    #       expect(find_field("date_ended_month#{form_id}").value).to eq '3'
-    #       expect(find_field("date_ended_year#{form_id}").value).to eq '2001'
-    #       expect(find("#unsuccessful_reason_#{form_id}_0", visible: false).checked?).to eq true
-    #       expect(find("#unsuccessful_reason_#{form_id}_1", visible: false).checked?).to eq false
-    #       expect(find("#unsuccessful_reason_#{form_id}_2", visible: false).checked?).to eq false
-    #       expect(find("#unsuccessful_reason_#{form_id}_3", visible: false).checked?).to eq false
-    #       expect(find("#unsuccessful_reason_#{form_id}_4", visible: false).checked?).to eq false
-    #       expect(find("#unsuccessful_reason_#{form_id}_5", visible: false).checked?).to eq true
-    #       expect(find_field("unsuccessful_reasons_other").value).to eq "gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMPZnIOVER50CHARACTERS"
-    #     end
-    #   end
-    #
-    #   # check the PV to make sure the adoption count is correct
-    #   visit practice_path(@practice)
-    #   within(:css, ".practice-viewer-adoptions-accordion") do
-    #     expect(page).to have_content('Successful adoption (1)')
-    #     expect(page).to have_content('In-progress adoption (1)')
-    #     expect(page).to have_content('Unsuccessful adoption (1)')
-    #   end
-    #   find("button[aria-controls='successful']").click
-    #   within(:css, "#successful") do
-    #     expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
-    #     expect(page).to have_content("Started adoption on 11/1998, ended on 03/1999.")
-    #   end
-    #   find("button[aria-controls='in_progress']").click
-    #   within(:css, "#in_progress") do
-    #     expect(page).to have_content("VISN 1 Clinical Resource Hub")
-    #   end
-    #   find("button[aria-controls='unsuccessful']").click
-    #   within(:css, "#unsuccessful") do
-    #     expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
-    #     expect(page).to have_content("Started adoption on 11/2000, ended on 03/2001.")
-    #     expect(page).to have_content("Lack of sufficient leadership/key stakeholder buy-in")
-    #     expect(page).to have_content("gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMP...")
-    #     expect(page).to have_no_content("OVER50CHARACTERS")
-    #   end
-    # end
+    it 'should interact with practice adoptions' do
+      # it should be there
+      expect(page).to have_content('Adoptions')
+      expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_introduction_path(@practice))
+      expect(page).to have_link(class: 'usa-button--secondary', href: practice_overview_path(@practice))
+
+      # it should display certain parts of the form on status selection
+      open_new_adoption_form
+      # open facility status modal
+      find_all('.facility-status-modal-header').first.click
+      expect(page).to have_content('Facilities that have started but not completed adopting the innovation.')
+      expect(page).to have_content('Facilities that have met adoption goals and implemented the innovation.')
+      find_all('.usa-modal__close').first.click
+      expect(page).to_not have_content('Facilities that have started but not completed adopting the innovation.')
+      expect(page).to_not have_content('Facilities that have met adoption goals and implemented the innovation.')
+      within(:css, '#adoption_form') do
+        expect(page).to have_content('Status')
+        expect(page).to have_content('Start date (optional)')
+        expect(page).to have_no_content('End date (optional)')
+        expect(page).to have_no_content('Why was this adoption unsuccessful?')
+        select_status('completed')
+        expect(page).to have_content('Start date (optional)')
+        expect(page).to have_content('End date (optional)')
+        expect(page).to have_no_content('Why was this adoption unsuccessful?')
+        select_status('unsuccessful')
+        expect(page).to have_content('Why was this adoption unsuccessful?')
+        expect(page).to have_no_content('(0/50 characters)')
+        select_status('in_progress')
+        expect(page).to have_content('Start date (optional)')
+        expect(page).to have_no_content('End date (optional)')
+        expect(page).to have_no_content('Why was this adoption unsuccessful?')
+      end
+
+      # it should clear the form on cancel
+      within(:css, '#adoption_form') do
+        select_status('in_progress')
+        select_facility_combo_box(0)
+        find('#clear_entry').click
+      end
+      open_new_adoption_form
+      within(:css, '#adoption_form') do
+        expect(page.find("#status_in_progress")).not_to be_checked
+        expect(page).to have_no_content('Caribou VA Clinic')
+      end
+
+      # it should not let an adoption without a facility be created
+      select_status('in_progress')
+      submit_form
+      expect(page).to have_selector(".usa-alert--error", visible: true)
+      within(:css, '#adoptions') do
+        expect(page).to have_content('There was a problem with your adoption.')
+        expect(page).to have_content('A facility must be selected.')
+      end
+
+      # it should create an adoption
+      select_facility_combo_box(0)
+      fill_in 'date_started_month', with: '12'
+      fill_in 'date_started_year', with: '1990'
+      submit_form
+      expect(page).to have_selector(".adoption-success-alert", visible: true)
+      within(:css, '#adoptions') do
+        expect(page).to have_content('Success!')
+        expect(page).to have_content('In-progress adoption: 1')
+      end
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+
+      # it should create another one
+      find('#add_adoption_button').click
+      select_status('in_progress')
+      select_facility_combo_box(2)
+      submit_form
+      expect(page).to have_selector(".adoption-success-alert", visible: true)
+      within(:css, '#adoptions') do
+        expect(page).to have_content('Success!')
+        expect(page).to have_content('In-progress adoptions: 2')
+      end
+
+      # it should allow the user to create a CRH adoption
+      find('#add_adoption_button').click
+      select_status('in_progress')
+      find_all('.usa-combo-box__input')[0].click
+      find_all('.usa-combo-box__input')[0].set('VISN 1')
+      find_all('.usa-combo-box__list-option').first.click
+      submit_form
+      expect(page).to have_selector(".adoption-success-alert", visible: true)
+      within(:css, '#adoptions') do
+        expect(page).to have_content('Success!')
+        expect(page).to have_content('In-progress adoptions: 3')
+      end
+
+      # it should update the overview section and display the adoption
+      visit practice_path(@practice)
+      expect(page).to have_selector("#map", visible: true)
+      within(:css, ".practice-viewer-adoptions-accordion") do
+        expect(page).to have_content('In-progress adoptions (3)')
+        find("button[aria-controls='in_progress']").click
+      end
+      within(:css, "#in_progress") do
+        expect(page).to have_content("ME: Caribou VA Clinic (Caribou)")
+        expect(page).to have_content("Started adoption on 12/1990")
+        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
+        expect(page).to have_content("VISN 1 Clinical Resource Hub")
+      end
+
+      # it shouldn't create the same facility twice for a practice
+      visit practice_adoptions_path(@practice)
+      find('#add_adoption_button').click
+      select_status('completed')
+      select_facility_combo_box(0)
+      submit_form
+      within(:css, '#adoptions') do
+        expect(page).to have_content('An adoption for Caribou VA Clinic in ME already exists in the entry list. If it is not listed, please report a bug.')
+      end
+
+      # make sure this applies to CRHs as well
+      select_status('completed')
+      find_all('.usa-combo-box__input')[0].click
+      find_all('.usa-combo-box__input')[0].set('VISN 1')
+      find_all('.usa-combo-box__list-option').first.click
+      submit_form
+      within(:css, '#adoptions') do
+        expect(page).to have_content('An adoption for VISN 1 Clinical Resource Hub already exists in the entry list. If it is not listed, please report a bug.')
+      end
+
+      # it shouldn't create an adoption if the end date is greater than the start date
+      select_status('completed')
+      select_facility_combo_box(1)
+      fill_in 'date_started_month', with: '11'
+      fill_in 'date_started_year', with: '2000'
+      fill_in 'date_ended_month', with: '3'
+      fill_in 'date_ended_year', with: '1999'
+      submit_form
+      expect(page).to have_selector(".usa-alert--error", visible: true)
+      within(:css, '#adoptions') do
+        expect(page).to have_content('There was a problem with your adoption.')
+        expect(page).to have_content('The start date cannot be after the end date.')
+      end
+
+      # it shouldn't create an adoption with an incomplete dates for non in-progress adoptions
+      fill_in 'date_started_year', with: ''
+      submit_form
+      expect(page).to have_selector(".usa-alert--error", visible: true)
+      within(:css, '#adoptions') do
+        expect(page).to have_content('There was a problem with your adoption.')
+        expect(page).to have_content('Provide a complete start date.')
+      end
+      fill_in 'date_started_year', with: '1998'
+      fill_in 'date_ended_month', with: ''
+      submit_form
+      expect(page).to have_selector(".usa-alert--error", visible: true)
+      within(:css, '#adoptions') do
+        expect(page).to have_content('There was a problem with your adoption.')
+        expect(page).to have_content('Provide a complete end date.')
+      end
+
+      # it should create an adoption with start and end dates
+      fill_in 'date_ended_month', with: '3'
+      submit_form
+      within(:css, '#adoptions') do
+        expect(page).to have_no_content('There was a problem with your adoption.')
+        expect(page).to have_content('Success!')
+      end
+      find("button[aria-controls='successful_adoptions']").click
+      within(:css, '#adoptions') do
+        expect(page).to have_content('NY: White Plains VA Clinic (11/1998 - 03/1999)')
+        expect(page).to have_content('Successful adoption: 1')
+      end
+
+      # it should delete an adoption entry
+      find("button[aria-controls='in-progress_adoptions']").click
+      expect(page).to have_selector("#in-progress_adoptions", visible: true)
+      find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
+      within(:css, "#diffusion_history_#{@practice.diffusion_histories.first.id}") do
+        click_link('Delete')
+      end
+      page.accept_alert
+      expect(page).to have_content('Adoption was successfully deleted.')
+      within(:css, '#adoptions') do
+        expect(page).to have_content('In-progress adoptions: 2')
+      end
+
+      # it shouldn't update an unsuccessful adoption if no reasons are selected
+      expect(page).to have_selector(".usa-alert--info", visible: true)
+      expect(page).to have_selector("button[aria-controls*='in-progress_adoptions']", visible: true)
+      click_button('In-progress adoptions: 2')
+      sleep 0.2
+      expect(page).to have_selector("button[aria-controls='diffusion_history_2']", visible: true)
+      find_all("button[aria-controls*='diffusion_history']").first.click
+      form_id = '2'
+      within(:css, "#diffusion_history_#{form_id}") do
+        find("label[for*='status_unsuccessful'").click
+        submit_form
+        expect(page).to have_content('There was a problem with your adoption.')
+        expect(page).to have_content('A reason must be selected for the unsuccessful adoption.')
+      end
+      unsuccessful_reasons = find_all("label[for*='unsuccessful_reason']")
+      unsuccessful_reasons.first.click
+      unsuccessful_reasons.last.click
+      expect(page).to have_content("(0/50 characters)")
+      submit_form
+      within(:css, '#adoptions') do
+        expect(page).to have_content('There was a problem with your adoption.')
+        expect(page).to have_content("Provide text for the 'Other' reason the adoption was unsuccessful.")
+      end
+      within(:css, "#diffusion_history_#{form_id}") do
+        fill_in 'Other Reason', with: 'gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMPZnIOVER50CHARACTERS'
+      end
+
+      # it shouldn't update an adoption if the end date is greater than the start date
+      fill_in "date_started_month#{form_id}", with: '11'
+      fill_in "date_started_year#{form_id}", with: '2000'
+      fill_in "date_ended_month#{form_id}", with: '3'
+      fill_in "date_ended_year#{form_id}", with: '1999'
+      submit_form
+      within(:css, "#diffusion_history_#{form_id}") do
+        expect(page).to have_content('The start date cannot be after the end date.')
+      end
+
+      # it should update an adoption with start and end dates
+      fill_in "date_ended_month#{form_id}", with: '3'
+      fill_in "date_ended_year#{form_id}", with: '2001'
+      submit_form
+      within(:css, '#adoptions') do
+        expect(page).to have_no_content('There was a problem with your adoption.')
+        expect(page).to have_content('Success!')
+        expect(page).to have_content('Unsuccessful adoption: 1')
+        find_all("button[aria-controls*='adoptions']").last.click
+        find_all("button[aria-controls*='diffusion_history']").first.click
+        expect(page).to have_content('NY: Yonkers VA Clinic (11/2000 - 03/2001)')
+        within(:css, "#diffusion_history_#{form_id}") do
+          expect(find_field('Successful').checked?).to eq false
+          expect(find_field('In-progress').checked?).to eq false
+          expect(find_field('Unsuccessful').checked?).to eq true
+          expect(find_field("date_started_month#{form_id}").value).to eq '11'
+          expect(find_field("date_started_year#{form_id}").value).to eq '2000'
+          expect(find_field("date_ended_month#{form_id}").value).to eq '3'
+          expect(find_field("date_ended_year#{form_id}").value).to eq '2001'
+          expect(find("#unsuccessful_reason_#{form_id}_0", visible: false).checked?).to eq true
+          expect(find("#unsuccessful_reason_#{form_id}_1", visible: false).checked?).to eq false
+          expect(find("#unsuccessful_reason_#{form_id}_2", visible: false).checked?).to eq false
+          expect(find("#unsuccessful_reason_#{form_id}_3", visible: false).checked?).to eq false
+          expect(find("#unsuccessful_reason_#{form_id}_4", visible: false).checked?).to eq false
+          expect(find("#unsuccessful_reason_#{form_id}_5", visible: false).checked?).to eq true
+          expect(find_field("unsuccessful_reasons_other").value).to eq "gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMPZnIOVER50CHARACTERS"
+        end
+      end
+
+      # check the PV to make sure the adoption count is correct
+      visit practice_path(@practice)
+      within(:css, ".practice-viewer-adoptions-accordion") do
+        expect(page).to have_content('Successful adoption (1)')
+        expect(page).to have_content('In-progress adoption (1)')
+        expect(page).to have_content('Unsuccessful adoption (1)')
+      end
+      find("button[aria-controls='successful']").click
+      within(:css, "#successful") do
+        expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
+        expect(page).to have_content("Started adoption on 11/1998, ended on 03/1999.")
+      end
+      find("button[aria-controls='in_progress']").click
+      within(:css, "#in_progress") do
+        expect(page).to have_content("VISN 1 Clinical Resource Hub")
+      end
+      find("button[aria-controls='unsuccessful']").click
+      within(:css, "#unsuccessful") do
+        expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
+        expect(page).to have_content("Started adoption on 11/2000, ended on 03/2001.")
+        expect(page).to have_content("Lack of sufficient leadership/key stakeholder buy-in")
+        expect(page).to have_content("gAKpvmOJpIhmvVuIhGIVWaqshyvnYgyaeBvwDKXyZgkrMMP...")
+        expect(page).to have_no_content("OVER50CHARACTERS")
+      end
+    end
 
     describe 'Adoption status tooltip' do
       def open_successful_adoption_accordion

@@ -33,8 +33,8 @@ class PracticesController < ApplicationController
     @search_terms = @practice.categories.not_none.not_other
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
-    @pr_diffusion_histories = @practice.diffusion_histories.where(clinical_resource_hub_id: nil)
-    @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
+    diffusion_histories = @practice.diffusion_histories
+    @diffusion_history_markers = Gmaps4rails.build_markers(diffusion_histories.where(clinical_resource_hub_id: nil)) do |dhg, marker|
       facility = @va_facilities.find(dhg.va_facility_id)
       marker.lat facility.latitude
       marker.lng facility.longitude
@@ -75,6 +75,9 @@ class PracticesController < ApplicationController
     va_facility_origin_facilities = VaFacility.where(id: PracticeOriginFacility.get_va_facility_ids_by_practice(@practice.id)).get_relevant_attributes
     crh_origin_facilities = ClinicalResourceHub.where(id: PracticeOriginFacility.get_clinical_resource_hub_ids_by_practice(@practice.id))
     @origin_facilities = Naturalsorter::Sorter.sort_by_method(va_facility_origin_facilities + crh_origin_facilities, 'official_station_name', true, true)
+    @successful_adoptions = helpers.sort_adoptions_by_state_and_station_name(diffusion_histories.get_by_successful_status)
+    @in_progress_adoptions = helpers.sort_adoptions_by_state_and_station_name(diffusion_histories.get_by_in_progress_status)
+    @unsuccessful_adoptions = helpers.sort_adoptions_by_state_and_station_name(diffusion_histories.get_by_unsuccessful_status)
 
     if helpers.is_user_a_guest? && !@practice.is_public
       respond_to do |format|
