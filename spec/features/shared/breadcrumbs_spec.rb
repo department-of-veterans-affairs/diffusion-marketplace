@@ -108,8 +108,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should not display breadcrumbs for the visns index' do
-      click_button('Browse by locations')
-      find("a[href='/visns']").click
+      visit '/visns'
       expect(page).to_not have_css('#breadcrumbs')
     end
 

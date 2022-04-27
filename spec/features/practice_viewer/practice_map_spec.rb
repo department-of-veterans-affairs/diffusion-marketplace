@@ -173,4 +173,19 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       end
     end
   end
+
+  context 'edge cases' do
+    it 'should only show the adoption accordions and \'Diffusion tracker\' title text if the practice ONLY has CRH adoptions' do
+      @practice.diffusion_histories.destroy_all
+      dh = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history: dh, status: 'In progress')
+
+      visit practice_path(@practice)
+      expect(page).to_not have_content('Does not include Clinical Resource Hubs (CRH)')
+      expect(page).to_not have_selector('#map')
+      expect(page).to have_content('Successful adoptions (0)')
+      expect(page).to have_content('In-progress adoption (1)')
+      expect(page).to have_content('Unsuccessful adoptions (0)')
+    end
+  end
 end
