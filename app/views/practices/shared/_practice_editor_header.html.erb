@@ -1,18 +1,27 @@
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
 <div class="usa-overlay"></div>
-<header class="usa-header usa-header--basic bg-ink" id="dm-practice-editor-header">
-  <div class="usa-nav-container maxw-full">
+<header class="usa-header usa-header--extended bg-ink" id="dm-practice-editor-header">
     <div class="usa-navbar">
-      <div class="usa-logo" id="basic-logo">
-        <em class="usa-logo__text">
-          <div class="display-flex">
-            <img class="width-4 height-4 margin-top-2px dm-header--va-seal" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
-            <p class="margin-0 margin-left-1 text-white line-height-sans-1 padding-top-2px desktop-lg:padding-top-05">
-              <span class="text-bold font-sans-sm desktop-lg:font-sans-lg">Diffusion Marketplace</span><br>
-              <span class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</span>
-            </p>
-          </div>
-        </em>
+      <div class="usa-logo" id="extended-logo">
+
+            <img
+              class="width-6 height-6 dm-header--va-seal display-inline-block text-middle"
+              src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"
+            />
+
+        <div class="margin-0 margin-left-1 text-white line-height-sans-1 display-inline-block text-middle">
+          <p class="text-bold font-sans-sm desktop-lg:font-sans-lg margin-bottom-1">Diffusion Marketplace</p>
+          <p class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</p>
+        </div>
+<!--        <p class="margin-0 margin-left-1 text-white line-height-sans-1 display-inline-block text-middle">-->
+<!--          <span class="text-bold font-sans-sm desktop-lg:font-sans-lg">Diffusion Marketplace</span>-->
+<!--          <span class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</span>-->
+<!--        </p>Z-->
+      </div>
+      <button class="dm-button--close-icon bg-ink text-white" aria-label="Close this window">
+        <span class="usa-sr-only">Close this window</span>
+        <i class="fas fa-times"></i>
+      </button>
       </div>
       <button class="usa-menu-btn">Menu</button>
     </div>
@@ -50,10 +59,5 @@
           <%= button_tag 'Save and publish', class: 'usa-button dm-button--success margin-right-4', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}"}%>
         <% end %>
       <% end %>
-      <button class="dm-button--close-icon bg-ink text-white" aria-label="Close this window">
-        <span class="usa-sr-only">Close this window</span>
-        <i class="fas fa-times"></i>
-      </button>
     </nav>
-  </div>
 </header>
