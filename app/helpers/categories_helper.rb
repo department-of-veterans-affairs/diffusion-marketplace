@@ -34,16 +34,10 @@ module CategoriesHelper
   def store_chosen_categories(s_query, chosen_categories)
     s_query = s_query.downcase
     category_ids_and_names = Category.not_other.pluck(:id, :name).map { |cat| { id: cat.first, name: cat.last.downcase } }
-    # gather categories based on the users keyword search term(s)
-    matching_categories = category_ids_and_names.find do |cat|
-      if s_query.blank?
-        next
-      end
-      s_query.strip === cat[:name]
-    end
-    # if there are any matches, create a 'Category select' Ahoy event
-    matching_categories.each do |mc|
-      ahoy.track('Category selected', { category_id: mc[:id] })
+    matching_category = category_ids_and_names.find { |cat| s_query.strip.downcase === cat[:name] }
+
+    if matching_category.present?
+      ahoy.track('Category selected', { category_id: matching_category[:id] })
     end
 
     if chosen_categories.present?
