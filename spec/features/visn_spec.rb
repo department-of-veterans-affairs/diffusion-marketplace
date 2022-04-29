@@ -363,14 +363,14 @@ describe 'VISN pages', type: :feature do
         expect(page).to_not have_content('1a-Highest complexity')
       end
 
-      it 'should take the user to the show page of the facility they click on within the facilities table' do
-        visit '/visns/2'
-        expect(page).to have_selector('.visn-facilities-table', visible: true)
-        click_link('Fourth Test Name (Fourth Common Name)')
-        expect(page).to have_content('This facility has created 0 innovations and has adopted 1 innovation.')
-        expect(page).to have_selector('#va_facility_map', visible: true)
-        expect(page).to have_current_path('/facilities/fourth-common-name')
-      end
+      # it 'should take the user to the show page of the facility they click on within the facilities table' do
+      #   visit '/visns/2'
+      #   expect(page).to have_selector('.visn-facilities-table', visible: true)
+      #   click_link('Fourth Test Name (Fourth Common Name)')
+      #   expect(page).to have_content('This facility has created 0 innovations and has adopted 1 innovation.')
+      #   expect(page).to have_selector('#va_facility_map', visible: true)
+      #   expect(page).to have_current_path('/facilities/fourth-common-name')
+      # end
     end
   end
 end
