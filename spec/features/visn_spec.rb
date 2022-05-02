@@ -367,6 +367,7 @@ describe 'VISN pages', type: :feature do
         visit '/visns/2'
         expect(page).to have_selector('.visn-facilities-table', visible: true)
         click_link('Fourth Test Name (Fourth Common Name)')
+        sleep 2
         expect(page).to have_content('This facility has created 0 innovations and has adopted 1 innovation.')
         expect(page).to have_selector('#va_facility_map', visible: true)
         expect(page).to have_current_path('/facilities/fourth-common-name')
