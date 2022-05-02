@@ -1,5 +1,15 @@
 #dm-practice-editor-header {
-  &.usa-header--basic {
+  &.usa-header--extended {
+    .usa-navbar {
+      @include u-display('block', !important);
+      @include u-padding(4, !important);
+    }
+
+    .usa-nav {
+      @include u-padding-x(4, !important);
+      @include u-padding-y(2, !important);
+    }
+
     .usa-nav__primary-item {
       .usa-current::after {
         @include u-bg('accent-cool-light', !important);
@@ -21,6 +31,10 @@
 
   .usa-nav__link {
     @include u-text('white', !important);
+
+    &:first-of-type {
+      @include u-margin-left(0, !important);
+    }
   }
 
   .dm-button--close-icon {
