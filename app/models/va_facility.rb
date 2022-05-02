@@ -21,6 +21,14 @@ class VaFacility < ApplicationRecord
   scope :order_by_station_name, -> { order(:official_station_name) }
   scope :order_by_state_and_station_name, -> { order(:street_address_state, :official_station_name) }
 
+  def practices_created_count
+    Practice.published_enabled_approved.get_by_created_facility(id).size
+  end
+
+  def practices_adopted_count
+    Practice.published_enabled_approved.get_by_adopted_facility(id).size
+  end
+
   def clear_va_facility_cache
     Cache.new.delete_cache_key('va_facilities')
   end
