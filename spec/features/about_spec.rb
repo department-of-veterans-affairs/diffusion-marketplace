@@ -57,5 +57,11 @@ describe 'About us page', type: :feature do
       expect(ActionMailer::Base.deliveries.last.subject).to eq('(About) Test subject')
       expect(page).to have_content('You successfully sent a message to the Diffusion Marketplace team.')
     end
+
+    it 'should not exist for public users' do
+      logout
+      visit '/about'
+      expect(page).to have_no_content('Contact us')
+    end
   end
 end

@@ -7,11 +7,11 @@
     <%= render partial: 'search', formats: [:js] %>
   <% end %>
 <% end %>
-<%
-  if params["query"].present?
-    update_category_usages
-  end
-%>
+
+<% if params["query"].present? %>
+    <%= update_category_usages %>
+<% end %>
+
 <div id="search-page">
   <section class="grid-container margin-bottom-neg-3 tablet:margin-bottom-5 margin-top-5">
     <%= render partial: "shared/messages", locals: {small_text: false} %>

@@ -1,6 +1,4 @@
 module CategoriesHelper
-
-
   def get_most_popular_categories
     pop_cat_names = []
     categories_count = Ahoy::Event.where(name: "Category selected").where("time > ?", Time.now-90.days).pluck(:properties).map { |d| d["category_id"].to_i }.tally
@@ -35,21 +33,19 @@ module CategoriesHelper
 
   def store_chosen_categories(s_query, chosen_categories)
     s_query = s_query.downcase
-    cat_names = Category.not_other.pluck(:name).map { |cat| cat.downcase }
-    cat_ids = Category.not_other.pluck(:id)
-    id_ctr = 0
-    if cat_names.present?
-      cat_names.each do |internal_cat|
-        if s_query.include?(internal_cat) || s_query == internal_cat
-          ahoy.track('Category selected', {category_id: cat_ids[id_ctr]})
-        end
-        id_ctr += 1
-      end
+    category_ids_and_names = Category.not_other.pluck(:id, :name).map { |cat| { id: cat.first, name: cat.last.downcase } }
+    matching_category = category_ids_and_names.find { |cat| s_query.strip.downcase === cat[:name] }
+
+    if matching_category.present?
+      ahoy.track('Category selected', { category_id: matching_category[:id] })
     end
+
     if chosen_categories.present?
       chosen_categories.each do |chosen_cat|
         cat_rec = Category.find_by(name: chosen_cat)
-        ahoy.track('Category selected', {category_id: cat_rec.id }) unless cat_rec.blank?
+        if cat_rec.present?
+          ahoy.track('Category selected', { category_id: cat_rec.id })
+        end
       end
     end
   end
