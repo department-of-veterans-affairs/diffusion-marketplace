@@ -59,7 +59,6 @@ class VaFacilitiesController < ApplicationController
   end
 
   def created_practices_count(id)
-    #practices_created_count
     if helpers.is_user_a_guest?
       Practice.public_facing.get_by_created_facility(id).size
     else
@@ -67,8 +66,6 @@ class VaFacilitiesController < ApplicationController
     end
   end
   def adopted_practices_count(id)
-    #practices_adopted_count
-    #Practice.published_enabled_approved.get_by_adopted_facility(id).size
     if helpers.is_user_a_guest?
       Practice.public_facing.get_by_adopted_facility(id).size
     else
