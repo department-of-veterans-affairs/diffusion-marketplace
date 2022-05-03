@@ -1,31 +1,22 @@
 #dm-practice-editor-header {
-  &.usa-header--extended {
-    .usa-navbar {
-      @include u-display('block', !important);
-      @include u-padding(4, !important);
-    }
+  .usa-navbar {
+    @include u-display('block', !important);
+    @include u-padding(4, !important);
+    max-width: 100%;
+    width: 100%;
+  }
 
-    .usa-nav {
-      @include u-padding-x(4, !important);
-      @include u-padding-y(2, !important);
-    }
+  .usa-nav {
+    @include u-padding-x(4, !important);
+    @include u-padding-y(2, !important);
+  }
 
-    .usa-nav__primary-item {
-      .usa-current::after {
-        @include u-bg('accent-cool-light', !important);
-        @include u-border(0);
-        @include u-height(2px);
-        bottom: 0.5rem !important;
-      }
-    }
-
-    .usa-nav__link {
-      &:hover {
-        @include u-text('accent-cool-light', !important);
-        &::after {
-          @extend .usa-current;
-        }
-      }
+  .usa-nav__primary-item {
+    .usa-current::after {
+      @include u-bg('accent-cool-light', !important);
+      @include u-border(0);
+      @include u-height(2px);
+      bottom: 0.5rem !important;
     }
   }
 
@@ -35,17 +26,36 @@
     &:first-of-type {
       @include u-margin-left(0, !important);
     }
-  }
-
-  .dm-button--close-icon {
-    @include u-border(0);
 
     &:hover {
-      cursor: pointer;
-    }
+      @include u-text('accent-cool-light', !important);
 
-    i {
-      font-size: 22px;
+      &:after {
+        @extend .usa-current;
+      }
+
+      &:active {
+        @include u-text($theme-color-primary, !important);
+
+        &:after {
+          @include u-bg($theme-color-primary, !important);
+          @include u-border(0);
+          @include u-height(2px);
+          bottom: 0.5rem !important;
+        }
+      }
     }
+  }
+}
+
+.dm-button--close-icon {
+  @include u-border(0);
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  i {
+    font-size: 22px;
   }
 }
