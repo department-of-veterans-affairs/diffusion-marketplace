@@ -1,7 +1,5 @@
 class VaFacilitiesController < ApplicationController
   include PracticeUtils
-  helper_method :created_practices_count
-  helper_method :adopted_practices_count
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
@@ -56,21 +54,6 @@ class VaFacilitiesController < ApplicationController
     created_practices = helpers.is_user_a_guest? ? Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, true) : Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, false)
     @created_pr_count = created_practices.size
     @created_practices_categories = get_categories_by_practices(created_practices, [])
-  end
-
-  def created_practices_count(id)
-    if helpers.is_user_a_guest?
-      Practice.public_facing.get_by_created_facility(id).size
-    else
-      Practice.published_enabled_approved.get_by_created_facility(id).size
-    end
-  end
-  def adopted_practices_count(id)
-    if helpers.is_user_a_guest?
-      Practice.public_facing.get_by_adopted_facility(id).size
-    else
-      Practice.published_enabled_approved.get_by_adopted_facility(id).size
-    end
   end
 
   # GET /facilities/:id/created_practices
