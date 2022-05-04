@@ -42,7 +42,6 @@ GIT
       neat (= 1.8)
       rails-assets-normalize-css (= 3.0.3)
 
-
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
