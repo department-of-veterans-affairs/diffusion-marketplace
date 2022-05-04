@@ -26,7 +26,7 @@ class NTLMAuthentication
 
     unless public_ips.include?(request.env["HTTP_X_FORWARDED_FOR"].split(',').first)
       auth = Rack::Auth::NTLMSSO.new(@app)
-      auth.call(env)
+      return auth.call(env)
     end
     @app.call(env)
   end
