@@ -354,7 +354,7 @@ class SavePracticeService
 
   def remove_main_display_image
     if @practice_params[:delete_main_display_image].present? && @practice_params[:delete_main_display_image] == 'true'
-      @practice.update(main_display_image: nil)
+      @practice.update(main_display_image: nil, main_display_image_alt_text: nil)
     end
   end
 

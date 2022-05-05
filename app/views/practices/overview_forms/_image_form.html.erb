@@ -92,11 +92,10 @@
           message: 'Please enter alt text'
         }
         %>
-        <input <%= resource&.id ? 'required' : '' %>
-               class="usa-input <%= resource&.id ? 'dm-required-field' : '' %>"
-               value="<%= resource&.image_alt_text %>" type="text"
+        <textarea <%= resource&.id ? 'required' : '' %>
+               class="usa-textarea resource-image-alt-text <%= resource&.id ? 'dm-required-field' : '' %>" type="text"
                name="practice[practice_<%= area %>_attributes][<%= placeholder %>][image_alt_text]"
-               id="practice_<%= area %>_attributes_<%= placeholder %>_image_alt_text" />
+               id="practice_<%= area %>_attributes_<%= placeholder %>_image_alt_text"><%= resource.image_alt_text if resource&.image_alt_text  %></textarea>
       </div>
     </div>
   </section>

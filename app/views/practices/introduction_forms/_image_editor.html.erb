@@ -40,13 +40,19 @@
       Edit image
     </a>
     <div class="dm-cropper-delete-image">
-      <%= form.label :delete_main_display_image, 'Remove image', class: "dm-button--unstyled-warning dm-cropper-delete-image-label #{has_main_display_image ? '' : 'display-none' }" %>
+      <%= form.label :delete_main_display_image, 'Remove image', class: "dm-button--unstyled-warning dm-cropper-delete-image-label margin-bottom-0 #{has_main_display_image ? '' : 'display-none' }" %>
       <%= form.check_box :delete_main_display_image, { class: "dm-cropper-delete-image usa-checkbox__input #{has_main_display_image ? '' : 'display-none'}" }, 'true', 'false' %>
     </div>
 
     <div>
-      <%= form.label :main_display_image_alt_text, 'Thumbnail alt text', class: "usa-label" %>
-      <%= form.text_field :main_display_image_alt_text, class: "usa-input", required: has_main_display_image %>
+      <%= form.label :main_display_image_alt_text, class: "usa-label margin-top-0" do %>
+        <p class="usa-prose-body">Describe this image for visually impaired users</p>
+        <p class="usa-prose-caption">
+          This is a literal description of what is happening in an image for people who use screen-readers
+          (e.g. A nurse in green scrubs helps an elderly Veteran in a blue sweater brush their teeth).
+        </p>
+      <% end %>
+      <%= form.text_area :main_display_image_alt_text, class: "usa-textarea grid-col-8 main-display-image-alt-text", required: has_main_display_image %>
     </div>
   </div>
 </section>
