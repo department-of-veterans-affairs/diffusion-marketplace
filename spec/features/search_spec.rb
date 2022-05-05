@@ -792,6 +792,25 @@ describe 'Search', type: :feature do
     end
   end
 
+  describe 'adding to the popular categories counts' do
+    it 'should only create a \'Category selected\' Ahoy event if the user enters a keyword that matches the name of an existing category in the DB' do
+      category_selected_event = Ahoy::Event.where(name: "Category selected")
+      expect(category_selected_event.count).to eq(0)
+      # start by sending an empty query
+      visit_search_page
+      search
+      expect { search }.not_to change { category_selected_event.count }
+      # now send in a close match
+      fill_in('dm-practice-search-field', with: 'telehealt')
+      search
+      expect { search }.not_to change { category_selected_event.count }
+      # now send in an exact match
+      fill_in('dm-practice-search-field', with: 'telehealth')
+      search
+      expect { search }.to change { category_selected_event.count }.from(0).to(1)
+    end
+  end
+
   describe 'Mobile flow' do
     before do
         page.driver.browser.manage.window.resize_to(340, 580)

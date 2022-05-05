@@ -4,8 +4,8 @@
     <% created_count = crh_created_practices_count(facility.visn_id) %>
     <% adopted_count = crh_adopted_practices_count(facility.visn_id) %>
   <% else %>
-    <% created_count = facility.practices_created_count %>
-    <% adopted_count = facility.practices_adopted_count %>
+    <% created_count = created_practices_count(facility.id) %>
+    <% adopted_count = adopted_practices_count(facility.id) %>
   <% end %>
   <tr>
     <th scope="row" role="rowheader" class="grid-col-4"><a class="usa-link" href='<%= path %>'><%= facility["official_station_name"] %>
