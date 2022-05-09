@@ -136,14 +136,12 @@ class SavePracticeService
         if has_duplicate_partner_params && existing_practice_partner.present?
           duplicate_practice_partners_to_be_created = practice_partner_params.select { |hash_key, hash_value| hash_value[:practice_partner_id] === partner_id }.keys
           # remove all of the keys that have a practice_partner_id value that match the current partner_id and reset the counts
-          modify_practice_partner_params.delete_duplicate_params(duplicate_practice_partners_to_be_created)
-          modify_practice_partner_params.reset_param_id_counts(partner_id_counts, partner_id)
+          modify_practice_partner_params.delete_duplicate_params_and_reset_param_id_counts(duplicate_practice_partners_to_be_created, partner_id_counts, partner_id)
         end
 
         # prevent duplicate practice partner creation when a user tries to submit more than one of the same would-be partner and reset the counts
         if (unsaved_practice_partner_ids.include?(partner_id)) || (existing_practice_partner.present? && has_duplicate_partner_params)
-          modify_practice_partner_params.delete_param(key)
-          modify_practice_partner_params.reset_param_id_counts(partner_id_counts, partner_id)
+          modify_practice_partner_params.delete_param_and_reset_param_id_counts(key, partner_id_counts, partner_id)
         else
           unsaved_practice_partner_ids << partner_id unless partner_id.nil?
         end
@@ -569,15 +567,13 @@ class SavePracticeService
         # prevent duplicate origin facility creation when a user tries to submit more than one of the same would-be origin facility and reset the counts
         if va_facility_id.present?
           if (unsaved_va_facility_ids.include?(va_facility_id)) || (existing_origin_facility.present? && has_duplicate_origin_facility_params)
-            modify_origin_facility_params.delete_param(key)
-            modify_origin_facility_params.reset_param_id_counts(facility_id_counts, va_facility_id)
+            modify_origin_facility_params.delete_param_and_reset_param_id_counts(key, facility_id_counts, va_facility_id)
           else
             unsaved_va_facility_ids << va_facility_id unless va_facility_id.nil?
           end
         elsif crh_id.present?
           if (unsaved_crh_ids.include?(crh_id)) || (existing_origin_facility.present? && has_duplicate_origin_facility_params)
-            modify_origin_facility_params.delete_param(key)
-            modify_origin_facility_params.reset_param_id_counts(facility_id_counts, crh_id)
+            modify_origin_facility_params.delete_param_and_reset_param_id_counts(key, facility_id_counts, crh_id)
           else
             unsaved_crh_ids << crh_id unless crh_id.nil?
           end

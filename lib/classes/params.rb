@@ -33,5 +33,15 @@ class Params
     def reset_param_id_counts(id_counts, id)
       id_counts[id] = 1
     end
+
+    def delete_param_and_reset_param_id_counts(param_key, id_counts, id)
+      delete_param(param_key)
+      reset_param_id_counts(id_counts, id)
+    end
+
+    def delete_duplicate_params_and_reset_param_id_counts(duplicate_params, id_counts, id)
+      delete_duplicate_params(duplicate_params)
+      reset_param_id_counts(id_counts, id)
+    end
   end
 end
