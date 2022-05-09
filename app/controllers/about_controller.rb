@@ -3,6 +3,12 @@ class AboutController < ApplicationController
   end
 
   def email
+    debugger
+    if params["turnkey"].length > 0
+      #log dbg info........ then redirect
+      redirect_to root_path
+      return
+    end
     # TODO remove once we add captcha to form
     if helpers.is_user_a_guest?
       respond_to do |format|

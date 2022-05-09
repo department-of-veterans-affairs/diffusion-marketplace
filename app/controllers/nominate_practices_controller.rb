@@ -6,6 +6,12 @@ class NominatePracticesController < ApplicationController
 
   def email
     # TODO remove once we add captcha to form
+    debugger
+    if params["turnkey"].length > 0
+      #log dbg info........ then redirect
+        redirect_to root_path
+        return
+    end
     if helpers.is_user_a_guest?
       respond_to do |format|
         format.html { redirect_to root_path }
