@@ -116,7 +116,7 @@
     </div>
   </section>
 
-  <% unless is_user_a_guest? %>
+  <%# unless is_user_a_guest? %>
     <section class="about-us-contact-section grid-row" role="region" aria-label="Contact us">
       <div class="grid-col-12 desktop:grid-col-8">
         <h2 class="usa-prose-h2 margin-bottom-4 margin-top-0">Contact us</h2>
@@ -127,5 +127,5 @@
         <%= render partial: 'shared/email_form', locals: { path: about_path, additional_label_text: nil } %>
       </div>
     </section>
-  <% end %>
+  <%# end %>
 </div>
