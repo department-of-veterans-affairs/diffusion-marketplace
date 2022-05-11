@@ -19,7 +19,10 @@ class ApplicationRecord < ActiveRecord::Base
       # this presumes the object path is s3 ready that has a beginning forward slash
       # need to take out first `/` from the path, `.sub` takes care of that
       path = obj.path(style).sub('/', '')
-      s3_presigned_url(path)
+      # any special characters also need to be escaped
+      parser = URI::Parser.new
+      parsed_path = parser.escape(path).gsub(/[\?\(\)\[\]\+]/){|m| "%#{m.ord.to_s(16).upcase}" }
+      s3_presigned_url(parsed_path)
     end
   end
 
