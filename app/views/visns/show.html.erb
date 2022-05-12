@@ -4,7 +4,7 @@
   <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'show', formats: [:js] %>
-    <%# set visnNumber before loading the crh/show file %>
+    <%# set visnNumber before loading the visn/show file %>
     var visnNumber = '<%= @visn.number %>';
   <% end %>
   <%= javascript_include_tag 'visns/show', 'data-turbolinks-track': 'reload' %>

@@ -1,7 +1,4 @@
-<% label_text = '' %>
-<%
-  label_text = 'Sort by' if local_assigns[:is_crh_show]
-%>
+<% label_text =  local_assigns[:is_crh_show] ? 'Sort by' : '' %>
 <section id="<%= section_id %>" class="<%= section_classes %>">
   <div class="<%= first_div_classes %>">
     <p class="font-sans-normal grid-col-8 line-height-26 margin-top-5" id="results-summary"></p>
