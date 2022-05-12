@@ -2,9 +2,9 @@ class VaFacilitiesController < ApplicationController
   include PracticeUtils, VaFacilitiesHelper
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
   def index
-    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name.includes([:visn])
-    @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
-    @facilities = (@facilities.includes(:visn).sort_by(&:official_station_name.downcase) + @clinical_resource_hubs.includes([:visn]).sort_by(&:id))
+    va_facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name.includes([:visn])
+    clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
+    @facilities = (va_facilities.includes(:visn).sort_by(&:official_station_name.downcase) + clinical_resource_hubs.includes([:visn]).sort_by(&:id))
     @visns = Visn.cached_visns.select(:name, :number)
     @types = VaFacility.cached_va_facilities.order_by_station_name.get_complexity
   end
