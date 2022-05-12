@@ -1,7 +1,7 @@
 <div>
   <h5 class="font-sans-3xs margin-bottom-2 text-bold">CATEGORIES:</h5>
   <% if search_terms.count > 10 %>
-    <% search_terms.slice(0..9).each do |term| %>
+    <% search_terms[0..9].each do |term| %>
       <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
     <% end %>
 
