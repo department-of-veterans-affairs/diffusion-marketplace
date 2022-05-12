@@ -3,12 +3,12 @@
     <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
     <h3 class="font-sans-lg margin-y-2">Search categories</h3>
     <% if search_terms.count > 10 %>
-      <% search_terms.slice(0..9).each do |term| %>
+      <% search_terms[0..9].each do |term| %>
         <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
       <% end %>
-      <% remaining_terms = search_terms.slice(10..-1) %>
+      <% remaining_terms = search_terms[10..-1] %>
       <div id="search_terms_truncated_mobile" style="display: none">
-        <% search_terms.slice(10..-1).each do |term| %>
+        <% remaining_terms.each do |term| %>
           <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
         <% end %>
       </div>

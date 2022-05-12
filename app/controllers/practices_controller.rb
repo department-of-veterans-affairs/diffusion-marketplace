@@ -30,7 +30,7 @@ class PracticesController < ApplicationController
   # GET /innovations/1
   # GET /practices/1.json
   def show
-    @search_terms = @practice.categories.not_none.not_other
+    @search_terms = Naturalsorter::Sorter.sort(@practice.categories.get_category_names.sort, true)
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
     diffusion_histories = @practice.diffusion_histories
