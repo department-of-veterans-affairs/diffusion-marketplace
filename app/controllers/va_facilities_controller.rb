@@ -1,9 +1,10 @@
 class VaFacilitiesController < ApplicationController
-  include PracticeUtils
+  include PracticeUtils, VaFacilitiesHelper
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
-
   def index
-    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :official_station_name).order_by_station_name
+    va_facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name.includes([:visn])
+    clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
+    @facilities = (va_facilities.includes(:visn).sort_by(&:official_station_name.downcase) + clinical_resource_hubs.includes([:visn]).sort_by(&:id))
     @visns = Visn.cached_visns.select(:name, :number)
     @types = VaFacility.cached_va_facilities.order_by_station_name.get_complexity
   end
@@ -11,20 +12,25 @@ class VaFacilitiesController < ApplicationController
   def load_facilities_index_rows
     if params[:facility].present?
       @facilities = [VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).find(params[:facility])]
+
+    elsif params[:crh].present?
+      @facilities = [ClinicalResourceHub.find_by_id(params[:crh].to_i)]
     else
       @facilities = VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).get_relevant_attributes
+      @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
 
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })
+        visn_id = Visn.where(number: params["visn"].to_i).first().id
+        @clinical_resource_hubs = @clinical_resource_hubs.where(visn_id: visn_id)
       end
-
       if params[:complexity].present?
+        @clinical_resource_hubs = []
         @facilities = @facilities.where(va_facilities: { fy17_parent_station_complexity_level: params[:complexity] })
       end
+      @facilities += @clinical_resource_hubs
     end
-
     table_rows_html = render_to_string('va_facilities/_index_table_row', layout: false, locals: { facilities: @facilities })
-
     respond_to do |format|
       format.html
       format.json { render :json => { rowsHtml: table_rows_html, count: @facilities.length } }

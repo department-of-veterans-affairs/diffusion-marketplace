@@ -205,6 +205,13 @@ module NavigationHelper
       end
     end
 
+    if controller == 'clinical_resource_hubs'
+      if action == 'show'
+        empty_breadcrumbs
+        add_facility_index_breadcrumb
+      end
+    end
+
     ### PRACTICE PARTNER BREADCRUMBS
     def add_partners_breadcrumb
       session[:breadcrumbs] << { 'display': 'Partners', 'path': practice_partners_path }

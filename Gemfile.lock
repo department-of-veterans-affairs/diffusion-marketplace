@@ -645,7 +645,7 @@ DEPENDENCIES
   pry (~> 0.12.2)
   puma (>= 4.3.5)
   rack_session_access
-  rails (~> 6.0.0)
+  rails (~> 6.0.4.8)
   rails-assets-jquery!
   rails-assets-jquery.scrollTo!
   rails-assets-sticky!

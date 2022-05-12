@@ -30,6 +30,9 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should allow practice editors to edit a practice they\'re associated with' do
+            visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
+            VaFacility.create!(visn: visn_1, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
+
             login_as(@user_2, :scope => :user, :run_callbacks => false)
             visit practice_introduction_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508

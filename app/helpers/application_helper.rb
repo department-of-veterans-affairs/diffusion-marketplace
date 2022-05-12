@@ -51,14 +51,14 @@ module ApplicationHelper
     if practice.initiating_facility_type?
       if practice.facility? && practice.practice_origin_facilities.present?
         fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
-        locs = practice.practice_origin_facilities.where(facility_type: fac_type)
+        locs = practice.practice_origin_facilities.includes([:va_facility, :clinical_resource_hub]).where(facility_type: fac_type)
         facility_names = String.new
-        locs.includes([:va_facility]).each_with_index do |loc, index|
-          va_fac = loc.va_facility
-          official_station_name = va_fac.official_station_name
-          common_name = va_fac.common_name
+        locs.each_with_index do |loc, index|
+          has_va_facility = loc.va_facility.present?
+          official_station_name = has_va_facility ? loc.va_facility.official_station_name : loc.clinical_resource_hub.official_station_name
+          common_name = loc.va_facility.common_name if has_va_facility
 
-          facility_names += "#{facility_name_with_common_name(official_station_name, common_name) if loc.va_facility_id.present?}#{', ' if locs.size != index + 1 && locs.size > 1}"
+          facility_names += "#{has_va_facility ? facility_name_with_common_name(official_station_name, common_name) : official_station_name}#{', ' if locs.size != index + 1 && locs.size > 1}"
         end
         facility_names
       elsif practice.initiating_facility?
@@ -140,5 +140,37 @@ module ApplicationHelper
   def url_generator(string)
     parser = URI::Parser.new
     parser.escape(string)
+  end
+
+  def get_facility_locations_by_visn(visn)
+    sorted_facility_locations = VaFacility.get_by_visn(visn).get_locations.sort
+    location_list = ''
+
+    # Add other US territories to us_states helper method array
+    va_facility_locations = us_states.concat(
+        [
+            ["Virgin Islands", "VI"],
+            ["Philippines Islands", "PI"],
+            ["Guam", "GU"],
+            ["American Samoa", "AS"]
+        ]
+    )
+
+    # iterate through the facility locations and add text
+    sorted_facility_locations.each do |sfl|
+      va_facility_locations.each do |vfl|
+        full_name = vfl.first === "Virgin Islands" || vfl.first === "Philippines Islands" ? "the #{vfl.first}" : vfl.first
+        if vfl[1] === sfl
+          if sorted_facility_locations.count > 1 && sorted_facility_locations.last === sfl
+            location_list += "and #{full_name}"
+          elsif sorted_facility_locations.count > 2
+            location_list += "#{full_name}, "
+          else
+            location_list += sorted_facility_locations.count == 1 ? "#{full_name}" : "#{full_name} "
+          end
+        end
+      end
+    end
+    location_list
   end
 end

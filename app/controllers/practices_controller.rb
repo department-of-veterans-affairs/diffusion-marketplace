@@ -19,7 +19,7 @@ class PracticesController < ApplicationController
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
   before_action :fetch_visns, only: [:show, :search, :introduction]
-  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
+  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :introduction]
 
   # GET /practices
   # GET /practices.json
@@ -33,8 +33,8 @@ class PracticesController < ApplicationController
     @search_terms = Naturalsorter::Sorter.sort(@practice.categories.get_category_names.sort, true)
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
-    @pr_diffusion_histories = @practice.diffusion_histories
-    @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
+    diffusion_histories = @practice.diffusion_histories
+    @diffusion_history_markers = Gmaps4rails.build_markers(diffusion_histories.where(clinical_resource_hub_id: nil)) do |dhg, marker|
       facility = @va_facilities.find(dhg.va_facility_id)
       marker.lat facility.latitude
       marker.lng facility.longitude
@@ -70,6 +70,14 @@ class PracticesController < ApplicationController
                   })
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
+
+    # get the VaFacilities and ClinicalResourceHubs associated with the practice's origin facilities and then order them alphabetically
+    va_facility_origin_facilities = VaFacility.where(id: PracticeOriginFacility.get_va_facility_ids_by_practice(@practice.id)).get_relevant_attributes
+    crh_origin_facilities = ClinicalResourceHub.where(id: PracticeOriginFacility.get_clinical_resource_hub_ids_by_practice(@practice.id))
+    @origin_facilities = Naturalsorter::Sorter.sort_by_method(va_facility_origin_facilities + crh_origin_facilities, 'official_station_name', true, true)
+    @successful_adoptions = helpers.sort_adoptions_by_state_and_station_name(diffusion_histories.get_by_successful_status)
+    @in_progress_adoptions = helpers.sort_adoptions_by_state_and_station_name(diffusion_histories.get_by_in_progress_status)
+    @unsuccessful_adoptions = helpers.sort_adoptions_by_state_and_station_name(diffusion_histories.get_by_unsuccessful_status)
 
     if helpers.is_user_a_guest? && !@practice.is_public
       respond_to do |format|
@@ -158,16 +166,24 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @visn_grouped_facilities = @va_facilities.includes([:visn]).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
+    @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
+    # combine the va_facilities query with the CRH query, sort them by 'official_station_name', group them by their VISN's number, and then sort by VISN number
+    @visn_grouped_facilities = (@va_facilities.includes([:visn]) + @clinical_resource_hubs.includes([:visn])).sort_by(&:official_station_name.downcase).group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] }
     pr = helpers.is_user_a_guest? ? Practice.published_enabled_approved.public_facing.sort_by_retired : Practice.published_enabled_approved.sort_by_retired
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
-
     @practices_json = Practice.cached_json_practices(helpers.is_user_a_guest?)
 
     @diffusion_histories = []
     pr.each do |p|
-      p.diffusion_histories.includes([:va_facility]).each do |dh|
-        @diffusion_histories << {practice_id: dh.practice_id, facility_number: dh.va_facility.station_number}
+      p.diffusion_histories.includes([:va_facility, :clinical_resource_hub]).each do |dh|
+        va_facility = dh.va_facility
+        crh = dh.clinical_resource_hub
+
+        @diffusion_histories << {
+          practice_id: dh.practice_id,
+          va_facility_number: va_facility.present? ? va_facility.station_number : nil,
+          clinical_resource_hub_name: crh.present? ? crh.official_station_name : nil
+        }
       end
     end
     @parent_categories = Category.get_cached_categories_grouped_by_parent
@@ -240,19 +256,23 @@ class PracticesController < ApplicationController
     @page_views_for_practice_count = fetch_page_view_for_practice_count(@practice.id, @duration)
     @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
-    @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
+    if @duration === '30'
+      @adoptions_by_practice = fetch_adoption_counts_by_practice_last_30_days(@practice)
+    else
+      @adoptions_by_practice = fetch_adoption_counts_by_practice_all_time(@practice)
+    end
 
-    @adoptions_total_30 = fetch_adoptions_total_by_practice(@practice.id)
-    @adoptions_total_at = fetch_adoptions_total_by_practice(@practice.id, "0")
+    @adoptions_total_30 = fetch_adoption_counts_by_practice_last_30_days(@practice)
+    @adoptions_total_at = fetch_adoption_counts_by_practice_all_time(@practice)
 
-    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Completed")
-    @adoptions_successful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Completed")
-    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "In progress")
-    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "In progress")
-    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Unsuccessful")
-    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Unsuccessful")
+    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'Completed')
+    @adoptions_successful_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'Completed')
+    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'In progress')
+    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'In progress')
+    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'Unsuccessful')
+    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'Unsuccessful')
 
-    @facility_ids_for_practice_30 = fetch_adoption_facilities_for_practice(@practice.id, "30", @va_facilities)
+    @facility_ids_for_practice_30 = fetch_adoption_facilities_for_practice_last_30_days(@practice)
     @rural_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "R")
     @urban_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "U")
     @a_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1a-High Complexity")
@@ -261,7 +281,7 @@ class PracticesController < ApplicationController
     @medium_complexity_2_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "2 -Medium Complexity")
     @low_complexity_3_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "3 -Low Complexity")
 
-    @facility_ids_for_practice_at = fetch_adoption_facilities_for_practice(@practice.id, "0", @va_facilities)
+    @facility_ids_for_practice_at = fetch_adoption_facilities_for_practice_all_time(@practice)
     @rural_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "R")
     @urban_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "U")
     @a_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1a-High Complexity")
@@ -312,9 +332,11 @@ class PracticesController < ApplicationController
 
   # /practices/slug/introduction
   def introduction
+    @va_facilities_and_crhs = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     @parent_categories = Category.get_parent_categories
     @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
-    @practice_partners = @practice.practice_partners
+    @ordered_practice_partners = PracticePartnerPractice.where(practice_id: @practice.id).order_by_id
+    @ordered_practice_origin_facilities = PracticeOriginFacility.where(practice_id: @practice.id).order_by_id
     render 'practices/form/introduction'
   end
 
@@ -371,6 +393,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/adoptions
   def adoptions
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     render 'practices/form/adoptions'
   end
 
@@ -398,42 +421,47 @@ class PracticesController < ApplicationController
   end
 
   def create_or_update_diffusion_history
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     # set attributes for later use
-    facility_id = params[:va_facility_id].to_i
+    is_crh = params[:va_facility_id].start_with?('crh')
+    facility_id = params[:va_facility_id].split('-')[1].to_i
     status = params[:status]
     unsuccessful_reasons = params[:unsuccessful_reasons] || []
     unsuccessful_reasons_other = params[:unsuccessful_reasons_other] || nil
+    find_va_facility_dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
+    find_crh_dh = DiffusionHistory.find_by(practice: @practice, clinical_resource_hub_id: facility_id)
 
     if params[:date_started].present? && !(params[:date_started].values.include?(''))
       start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
     end
+
     if (params[:date_ended].present? && !(params[:date_ended].values.include?(''))) && params[:status].downcase != 'in progress'
       end_time = DateTime.new(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
     end
 
+    existing_dh = is_crh ? find_crh_dh : find_va_facility_dh
+    existing_dh_facility = is_crh ? @va_facilities.find { |vaf| vaf.id === facility_id && vaf.official_station_name.include?('Clinical Resource Hub') } : @va_facilities.find { |vaf| vaf.id === facility_id }
+
     # if there is a diffusion_history_id, we're updating something
     @dh = DiffusionHistory.find(params[:diffusion_history_id]) if params[:diffusion_history_id].present?
     if @dh.present?
-      # is the user changing to a facility that they already have listed?
-      # if so, tell them no
-      existing_dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
-      if existing_dh && existing_dh.id != @dh.id
-        params[:existing_dh] = @va_facilities.find(facility_id)
+      # figure out if the user already has this diffusion history
+      # if so, tell them!
+      if existing_dh.present? && existing_dh.id != @dh.id
+        params[:exists] = existing_dh_facility
       end
     else
-      # or else, we're creating something
-      # figure out if the user already has this diffusion history
-      @dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
-      # if so, tell them!
-      if @dh
-        params[:exists] = @va_facilities.find(facility_id)
+      # if they're creating a new diffusion history, figure out if the facility they chose is already being used in a current diffusion history
+      if existing_dh.present?
+        # if so, tell them!
+        params[:exists] = existing_dh_facility
       else
-        # if not, create a new one
-        @dh = DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
+        # if not, create a new diffusion history
+        @dh = is_crh ? DiffusionHistory.create(practice: @practice, clinical_resource_hub_id: facility_id) : DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
       end
     end
 
-    if params[:exists].blank? && params[:existing_dh].blank?
+    if params[:exists].blank?
       if params[:diffusion_history_status_id]
         # update the diffusion history status
         dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
@@ -568,7 +596,7 @@ class PracticesController < ApplicationController
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
                                      categories_attributes: [:id, :_destroy, :name, :parent_category_id, :is_other],
-                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id, :va_facility_id],
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :va_facility_id, :clinical_resource_hub_id, :facility_type_and_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
                                      duration: {},
@@ -680,31 +708,35 @@ def clear_origin_facilities
 end
 
 def set_initiating_fac_params(params)
-  facility_type = params[:practice][:initiating_facility_type]
-
-  if facility_type == "facility"
-    params[:practice][:practice_origin_facilities_attributes].values.each do |value|
-      if value[:va_facility_id].nil?
-        params[:practice][:practice_origin_facilities_attributes] = nil
-      end
+  origin_facility_params = params[:practice][:practice_origin_facilities_attributes]
+  case params[:practice][:initiating_facility_type]
+  when "facility"
+=begin
+    if all of the origin facility params being sent in do not have a facility_id and the user switched from another originating facility type, set the
+    practice_origin_facilities_attributes params to nil.
+=end
+    origin_facility_id_counts = Params::ParamsData.new(origin_facility_params).get_id_counts_from_params(:facility_id)
+    if (@practice.initiating_facility.present? || @practice.initiating_department_office_id.present?) && origin_facility_id_counts[nil] === origin_facility_params.keys.length
+      params[:practice][:practice_origin_facilities_attributes] = nil
     end
+
     @practice.initiating_facility = ""
     @practice.initiating_department_office_id = ""
-  elsif facility_type == "visn"
+  when "visn"
     if params[:editor_visn_select].present?
       @practice.initiating_facility = params[:editor_visn_select]
       @practice.initiating_department_office_id = ""
     else
       @practice.initiating_facility = ""
     end
-  elsif facility_type == "department"
+  when "department"
     if params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
       @practice.initiating_facility = params[:practice][:initiating_facility]
       @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
     else
       @practice.initiating_facility = ""
     end
-  elsif facility_type == "other"
+  else
     if params[:initiating_facility_other].present?
       @practice.initiating_facility = params[:initiating_facility_other]
       @practice.initiating_department_office_id = ""
