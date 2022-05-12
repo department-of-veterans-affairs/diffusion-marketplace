@@ -5,7 +5,7 @@
       <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
     <% end %>
 
-    <% remaining_terms = search_terms.slice(0..9) %>
+    <% remaining_terms = search_terms[10..-1] %>
     <div id="search_terms_truncated_desktop" style="display: none">
       <% remaining_terms.each do |term| %>
         <%= render partial: 'practices/show/search_terms/category', locals: {term: term} %>
