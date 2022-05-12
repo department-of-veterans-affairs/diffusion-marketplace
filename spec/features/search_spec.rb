@@ -12,6 +12,7 @@ describe 'Search', type: :feature do
     Visn.find_or_create_by!(name: "VA Healthcare - VISN 4", number: 4)
     Visn.find_or_create_by!(name: "VA Capitol Health Care Network", number: 5)
     visn_7 = Visn.find_or_create_by!(name: "VA Southeast Network", number: 7)
+    visn_8 = Visn.find_or_create_by!(name: "VA Sunshine Healthcare Network", number: 8)
     visn_10 = Visn.find_or_create_by!(name: "VA Healthcare System", number: 10)
     visn_16 = Visn.find_or_create_by!(name: "South Central VA Health Care Network", number: 16)
     visn_19 = Visn.find_or_create_by!(name: "Rocky Mountain Network", number: 19)
@@ -36,6 +37,7 @@ describe 'Search', type: :feature do
     facility_14 = VaFacility.create!(visn: visn_21, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
     facility_15 = VaFacility.create!(visn: visn_22, station_number: "649GA", official_station_name: "Kingman VA Clinic", common_name: "Kingman", street_address_state: "AZ")
     facility_16 = VaFacility.create!(visn: visn_23, station_number: "438GD", official_station_name: "Aberdeen VA Clinic", common_name: "Aberdeen", street_address_state: "SD")
+    @clinical_resource_hub_1 = ClinicalResourceHub.create!(visn: visn_8, official_station_name: "VISN 8 Clinical Resource Hub (Remote)")
 
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'patrick.star@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -182,6 +184,15 @@ describe 'Search', type: :feature do
 
   def select_practice_partner(index)
     all('.practice-partner-search-checkbox-label')[index].click
+  end
+
+  def add_crh_adoptions_and_practice_origin_facilities
+    PracticeOriginFacility.create!(practice: @practice13, facility_type: 0, clinical_resource_hub: @clinical_resource_hub_1)
+    PracticeOriginFacility.create!(practice: @practice14, facility_type: 0, clinical_resource_hub: @clinical_resource_hub_1)
+    new_dh_1 = DiffusionHistory.create!(practice_id: @practice14.id, clinical_resource_hub: @clinical_resource_hub_1)
+    DiffusionHistoryStatus.create!(diffusion_history_id: new_dh_1.id, status: 'Completed')
+    new_dh_2 = DiffusionHistory.create!(practice_id: @practice12.id, clinical_resource_hub: @clinical_resource_hub_1)
+    DiffusionHistoryStatus.create!(diffusion_history_id: new_dh_2.id, status: 'Completed')
   end
 
   describe 'initial page load' do
@@ -397,6 +408,30 @@ describe 'Search', type: :feature do
         expect(page).to have_content(@practice5.name)
         expect(page).to have_content(@practice7.name)
         expect(page).to have_content(@practice12.name)
+
+        # filter for clinical resource hubs for both originating facility and adopting facility
+        add_crh_adoptions_and_practice_origin_facilities
+
+        # reset the practice cache
+        visit_search_page
+
+        toggle_filters_accordion
+        click_button('Reset filters')
+        set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
+        update_results
+
+        expect(page).to have_content('2 results')
+        expect(page).to have_content(@practice13.name)
+        expect(page).to have_content(@practice14.name)
+
+        toggle_filters_accordion
+        click_button('Reset filters')
+        set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
+        update_results
+
+        expect(page).to have_content('2 results')
+        expect(page).to have_content(@practice12.name)
+        expect(page).to have_content(@practice14.name)
       end
 
       it 'should select all subcategories when selecting the parent category' do
@@ -498,6 +533,20 @@ describe 'Search', type: :feature do
         expect(page).to have_content('Filters (2)')
         expect(page).to have_content('1 result')
         expect(page).to have_content(@practice.name)
+
+        # search for practices with the search bar and clinical resource hub filters
+        add_crh_adoptions_and_practice_origin_facilities
+        visit_search_page
+
+        fill_in('dm-practice-search-field', with: 'important')
+        toggle_filters_accordion
+        set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
+        set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
+        update_results
+
+        expect(page).to have_content('Filters (2)')
+        expect(page).to have_content('1 result')
+        expect(page).to have_content(@practice14.name)
       end
 
       it 'should only display checkboxes for major practice partners in the search filters' do
@@ -530,6 +579,19 @@ describe 'Search', type: :feature do
           expect(page).to have_content(@practice3.name)
           expect(page).to have_content(@practice5.name)
           expect(page).to have_content(@practice6.name)
+
+          # make sure practices with CRH origin facilities show up as intended
+          add_crh_adoptions_and_practice_origin_facilities
+          visit_search_page
+
+          toggle_filters_accordion
+          set_combobox_val(0, 'VISN-8')
+          update_results
+
+          expect(page).to have_content('Filters (1)')
+          expect(page).to have_content('2 results')
+          expect(page).to have_content(@practice13.name)
+          expect(page).to have_content(@practice14.name)
         end
 
         it 'should, when the user selects a facility, only collect practices that have a practice_origin_facility that matches the selected facility' do
@@ -555,6 +617,19 @@ describe 'Search', type: :feature do
           expect(page).to have_content('2 results')
           expect(page).to have_content(@practice.name)
           expect(page).to have_content(@practice3.name)
+
+          # make sure practices with CRH adoptions show up as intended
+          add_crh_adoptions_and_practice_origin_facilities
+          visit_search_page
+
+          toggle_filters_accordion
+          set_combobox_val(1, 'VISN-8')
+          update_results
+
+          expect(page).to have_content('Filters (1)')
+          expect(page).to have_content('2 results')
+          expect(page).to have_content(@practice12.name)
+          expect(page).to have_content(@practice14.name)
         end
 
         it 'should, when the user selects a facility, only collect practices that have an adopting facility that matches the selected facility' do
@@ -676,6 +751,18 @@ describe 'Search', type: :feature do
         all('.dm-practice-link').first.click
 
         expect(page).to have_link('Search', href: '/search?query=test')
+      end
+
+      it 'should allow the user to keyword search on Clinical Resource Hubs' do
+        add_crh_adoptions_and_practice_origin_facilities
+        visit_search_page
+
+        fill_in('dm-practice-search-field', with: 'resource hub')
+        search
+
+        expect(page).to have_content(@practice12.name)
+        expect(page).to have_content(@practice13.name)
+        expect(page).to have_content(@practice14.name)
       end
     end
   end

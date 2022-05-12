@@ -83,16 +83,12 @@
         summaryEl.height(summaryEl[0].scrollHeight - 14);
     }
 
-
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
         toggleInputsOnRadioSelect();
         toggleInputsOnLoad();
         expandSummaryTextArea();
-        // relies on `_facilitySelect.js` utility file to be loaded prior to this file
-        filterFacilitiesOnRadioSelect(facilityData);
-        getFacilitiesByState(facilityData);
         // relies on `_visnSelect.js` utility file to be loaded prior to this file
         if (selectedVisn !== "false" && selectedVisn !== "") {
             selectVisn(originData, selectedVisn)
@@ -117,5 +113,3 @@ function showOtherAwardFields() {
         $('#other_awards_container').addClass('display-none');
     }
 }
-
-

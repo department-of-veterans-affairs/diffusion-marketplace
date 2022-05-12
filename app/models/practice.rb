@@ -41,7 +41,7 @@ class Practice < ApplicationRecord
       end
     end
   end
-  
+
   def clear_searchable_cache
     cache_keys = ["searchable_practices_json", "searchable_public_practices_json", "s3_signer"]
     cache_keys.each do |cache_key|
@@ -206,10 +206,16 @@ class Practice < ApplicationRecord
   scope :published_enabled_approved, -> { where(published: true, enabled: true, approved: true, hidden: false) }
   scope :sort_by_retired, -> { order("retired asc") }
   scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
-  scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }
+  scope :get_by_adopted_facility_and_crh, -> (facility_id, crh_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).or(left_outer_joins(:diffusion_histories).where(diffusion_histories: {clinical_resource_hub_id: crh_id})).uniq }
+  scope :get_by_adopted_crh, -> (crh_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {clinical_resource_hub_id: crh_id}).uniq }
+
+  scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }).uniq }
+  scope :get_by_created_facility_and_crh, -> (facility_id, crh_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }).or(where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { clinical_resource_hub_id: crh_id })).uniq }
+  scope :get_by_created_crh, -> (crh_id) { where(practice_origin_facilities: { clinical_resource_hub_id: crh_id }).uniq }
+
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
   scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
-  scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
+  scope :get_with_va_facility_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).where(diffusion_histories: { clinical_resource_hub_id: nil }).uniq }
 
   belongs_to :user, optional: true
 
@@ -279,7 +285,7 @@ class Practice < ApplicationRecord
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
-  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: :reject_practice_origin_facilities
+  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes| attributes['facility_id'].blank? }
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
@@ -457,8 +463,8 @@ class Practice < ApplicationRecord
       category_names: get_category_names(self.categories.not_other.not_none),
       initiating_facility_name: origin_display(self),
       practice_partner_names: practice_partners.pluck(:name),
-      origin_facilities: practice_origin_facilities.get_va_facilities,
-      adoption_facilities: diffusion_histories.get_va_facilities,
+      origin_facilities: practice_origin_facilities.get_va_facilities + practice_origin_facilities.get_clinical_resource_hubs,
+      adoption_facilities: diffusion_histories.get_va_facilities + diffusion_histories.get_clinical_resource_hubs,
       adoption_count: diffusion_histories.size
     )
   end

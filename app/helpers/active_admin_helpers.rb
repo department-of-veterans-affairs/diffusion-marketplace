@@ -17,7 +17,7 @@ module ActiveAdminHelpers
 
   def get_adoption_values(p, complete_map)
     facility_data = VaFacility.cached_va_facilities.get_relevant_attributes
-    practice_diffusion_histories = p.diffusion_histories.map { |dh|
+    practice_diffusion_histories = p.diffusion_histories.exclude_clinical_resource_hubs.map { |dh|
       selected_facility = facility_data.select { |fd| fd.station_number === dh.va_facility.station_number }
 
       dh_status = dh.diffusion_history_statuses.first
@@ -60,20 +60,20 @@ module ActiveAdminHelpers
   def all_adoption_counts
     set_date_values
     {
-      adoptions_this_month: DiffusionHistory.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-      adoptions_one_month_ago: DiffusionHistory.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-      adoptions_two_months_ago: DiffusionHistory.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
-      total_adoptions: DiffusionHistory.count
+      adoptions_this_month: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+      adoptions_one_month_ago: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+      adoptions_two_months_ago: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+      total_adoptions: DiffusionHistory.exclude_clinical_resource_hubs.count
     }
   end
 
   def adoption_counts_by_practice(p)
     set_date_values
     {
-      adopted_this_month: p.diffusion_histories.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-      adopted_one_month_ago: p.diffusion_histories.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-      adopted_two_months_ago: p.diffusion_histories.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
-      total_adopted: p.diffusion_histories.count
+      adopted_this_month: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+      adopted_one_month_ago: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+      adopted_two_months_ago: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+      total_adopted: p.diffusion_histories.exclude_clinical_resource_hubs.count
     }
   end
 

@@ -130,7 +130,7 @@ ActiveAdmin.register_page "Adoptions" do
       end
     end
 
-    if DiffusionHistory.any?
+    if DiffusionHistory.exclude_clinical_resource_hubs.any?
       panel 'All adoptions' do
         columns class: 'all-adoptions-columns' do
           table_for all_adoption_counts do

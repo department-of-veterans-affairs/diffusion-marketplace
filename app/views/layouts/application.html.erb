@@ -88,7 +88,7 @@
       class="<%= params[:controller] %> <%= params[:action] %>-main <%= yield(:main_classes) %><%= ' additional-return-to-top-padding' if params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) %>"
     >
       <% if session[:breadcrumbs].any? || session[:heading].present? %>
-        <%= render 'shared/breadcrumbs' %>
+        <%= render partial: 'shared/breadcrumbs', locals: {classes: params[:controller] === 'clinical_resource_hubs' && params[:action] === 'show' ? 'margin-top-96' : nil} %>
       <% end %>
       <%= yield %>
     </main>

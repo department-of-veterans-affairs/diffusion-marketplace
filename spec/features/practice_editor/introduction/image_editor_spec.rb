@@ -5,6 +5,9 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
     admin = User.create!(email: 'admin-dmva@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     admin.add_role(User::USER_ROLES[0].to_sym)
 
+    visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
+    VaFacility.create!(visn: visn_1, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
+
     @acceptable_img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
     @unacceptable_img_dimension_path = "#{Rails.root}/spec/assets/unacceptable_img_dimension.jpg"
     @unacceptable_img_size_path = "#{Rails.root}/spec/assets/unacceptable_img_size.png"

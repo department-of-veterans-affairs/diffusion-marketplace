@@ -1,10 +1,9 @@
 class VisnsController < ApplicationController
   include PracticeUtils
   before_action :set_visn, only: [:show, :load_facilities_show_rows]
+  before_action :set_visns_and_visns_origin_and_adoption_counts, only: :index
 
   def index
-    @visns = Visn.cached_visns
-    @visns_counts = set_visns_counts
     @visn_markers = Gmaps4rails.build_markers(@visns) do |visn, marker|
       marker.lat visn[:latitude].to_s
       marker.lng visn[:longitude].to_s
@@ -30,6 +29,7 @@ class VisnsController < ApplicationController
   def show
     @primary_visn_liaison = VisnLiaison.find_by(visn: @visn, primary: true)
     @visn_va_facilities = VaFacility.get_by_visn(@visn).get_relevant_attributes
+    @visn_crh = ClinicalResourceHub.cached_clinical_resource_hubs.find_by(visn: @visn)
 
     @visn_va_facility_markers = Gmaps4rails.build_markers(@visn_va_facilities) do |facility, marker|
       marker.lat facility[:latitude].to_s
@@ -55,13 +55,13 @@ class VisnsController < ApplicationController
     # set '@practices_json' to avoid js console error when utilizing the practices/search.js.erb file
     @practices_json = []
     visn_va_facilities_ids = @visn_va_facilities.get_ids
-    @practices_created_by_visn = @visn.get_created_practices(visn_va_facilities_ids, is_user_guest: helpers.is_user_a_guest?)
+    @practices_created_by_visn = @visn.get_created_practices(visn_va_facilities_ids, @visn_crh.id, is_user_guest: helpers.is_user_a_guest?)
     @practices_created_json = practices_json(@practices_created_by_visn, current_user)
     # get the unique categories for innovations created in a VISN
     @practices_created_categories = []
     get_categories_by_practices(@practices_created_by_visn, @practices_created_categories)
 
-    @practices_adopted_by_visn = @visn.get_adopted_practices(visn_va_facilities_ids, is_user_guest: helpers.is_user_a_guest?)
+    @practices_adopted_by_visn = @visn.get_adopted_practices(visn_va_facilities_ids, @visn_crh.id, is_user_guest: helpers.is_user_a_guest?)
     @practices_adopted_json = practices_json(@practices_adopted_by_visn, current_user)
     # get the unique categories for practices adopted in a VISN
     @practices_adopted_categories = []
@@ -70,6 +70,10 @@ class VisnsController < ApplicationController
 
   def load_facilities_show_rows
     @facilities = VaFacility.get_by_visn(@visn).select(:common_name, :id, :official_station_name, :slug, :station_number, :fy17_parent_station_complexity_level)
+    @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
+    visn_id = Visn.find_by(number: params["number"].to_i).id
+    @visn_clinical_resource_hubs = @clinical_resource_hubs.find_by(visn_id: visn_id)
+    @facilities += Array(@visn_clinical_resource_hubs)
 
     table_rows_html = render_to_string('visns/_show_table_row', layout: false, locals: { facilities: @facilities })
 
@@ -86,14 +90,25 @@ class VisnsController < ApplicationController
     @visn = Visn.find_by!(number: params[:number])
   end
 
-  def set_visns_counts
-    visn_counts = []
-    @visns.each do |visn|
+  def set_visns
+    @visns = Visn.cached_visns
+  end
+
+  def set_visns_origin_and_adoption_counts(visns)
+    @visns_counts = []
+    visns.each do |visn|
       va_facility_ids = VaFacility.get_by_visn(visn).get_ids
-      created = visn.get_created_practices(va_facility_ids, is_user_guest: helpers.is_user_a_guest?).size
-      adopted = visn.get_adopted_practices(va_facility_ids, is_user_guest: helpers.is_user_a_guest?).size
-      visn_counts.push({number: visn[:number], created: created, adopted: adopted})
+      visn_crh = visn.clinical_resource_hub
+      created = visn.get_created_practices(va_facility_ids, visn_crh.id, is_user_guest: helpers.is_user_a_guest?).size
+      adopted = visn.get_adopted_practices(va_facility_ids, visn_crh.id, is_user_guest: helpers.is_user_a_guest?).size
+
+      @visns_counts.push({number: visn[:number], created: created, adopted: adopted})
     end
-    visn_counts
+    @visns_counts
+  end
+
+  def set_visns_and_visns_origin_and_adoption_counts
+    set_visns
+    set_visns_origin_and_adoption_counts(@visns)
   end
 end
