@@ -5,7 +5,7 @@ class AboutController < ApplicationController
 
   def email
     debugger
-    if params["turnkey"].length > 0
+    if params["phone"].length > 0
       log_spam_attempt
       redirect_to root_path
       return

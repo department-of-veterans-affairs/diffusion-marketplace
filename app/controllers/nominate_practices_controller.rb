@@ -9,7 +9,7 @@ class NominatePracticesController < ApplicationController
   def email
     # TODO remove once we add captcha to form
     debugger
-    if params["turnkey"].length > 0
+    if params["phone"].length > 0
       log_spam_attempt
         redirect_to root_path
         return
