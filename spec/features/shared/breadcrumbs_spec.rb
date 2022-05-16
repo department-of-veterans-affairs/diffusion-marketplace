@@ -76,7 +76,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should not display breadcrumbs for the search page when clicking "Browse all innovations"' do
-      click_link('Browse all innovations')
+      expect(page).to have_link('Browse all innovations', href: search_path)
       expect(page).to_not have_css('#breadcrumbs')
     end
 
@@ -198,11 +198,11 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('VISN index')
-        expect(page).to have_content('2')
+        expect(page).to have_content('1')
         expect(page).to have_link(href: '/visns')
-        expect(page).to have_link(href: '/visns/2')
+        expect(page).to have_link(href: '/visns/1')
       end
-      find('a[href="/visns/2"]').click
+      find('a[href="/visns/1"]').click
       fill_in('visn-search-field', with: 'best')
       find('#visn-search-button').click
       find('.dm-practice-link').click
@@ -210,10 +210,10 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to have_current_path(practice_path(@user_practice))
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('VISN index')
-        expect(page).to have_content('2')
+        expect(page).to have_content('1')
         expect(page).to have_no_content('The Best Innovation Ever')
         expect(page).to have_link(href: '/visns')
-        expect(page).to have_link(href: '/visns/2?query=best')
+        expect(page).to have_link(href: '/visns/1?query=best')
         expect(page).to_not have_link(href: '/innovations/the-best-innovation-ever')
       end
     end
