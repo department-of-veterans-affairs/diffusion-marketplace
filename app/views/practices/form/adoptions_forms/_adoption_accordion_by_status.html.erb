@@ -11,22 +11,26 @@
   <div id="<%= adoption_text.downcase %>_adoptions" class="usa-accordion__content padding-bottom-05 padding-top-0 padding-x-05 bg-base-lightest" hidden="true">
     <% adoptions_by_type.each do |a| %>
       <% dhs = a.diffusion_history_statuses[0] %>
+      <% facility = a.va_facility %>
       <div class="usa-accordion margin-top-0 child-adoption-accordion">
         <h2 class="usa-accordion__heading margin-top-0 padding-top-05 padding-bottom-0">
           <button class="usa-accordion__button text-normal adoptions-edit bg-white child-accordion-button"
                   aria-expanded="false"
                   aria-controls="diffusion_history_<%= a.id %>">
             <span class="line-height-sans-505 display-inline-block text-top">
-              <% facility = a.va_facility %>
-              <%= facility.street_address_state %>: <%= facility.official_station_name %> <%= show_common_name(facility.official_station_name, facility.common_name) %>
+              <% if facility.present? %>
+                <%= facility.street_address_state %>: <%= facility.official_station_name %> <%= show_common_name(facility.official_station_name, facility.common_name) %>
+              <% else %>
+                <%= a.clinical_resource_hub.official_station_name %>
+              <% end %>
               (<%= dhs.start_time.present? ? month_year_date_format(dhs.start_time) : 'TBD' %>
               - <%= dhs.end_time.present? ? month_year_date_format(dhs.end_time) : 'TBD' %>)
             </span>
           </button>
         </h2>
         <div id="diffusion_history_<%= a.id %>" class="usa-accordion__content usa-prose overflow-visible">
-          <% if params[:existing_dh] && @dh&.id == a.id %>
-            <%= render partial: 'practices/form/adoptions_forms/existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
+          <% if params[:exists] && @dh&.id === a.id %>
+            <%= render partial: 'practices/form/adoptions_forms/existing_adoption_warning', locals: {facility: params[:exists]} %>
           <% end %>
           <%= render partial: 'practices/form/adoptions_forms/adoption_form', locals: { adoption: dhs } %>
         </div>

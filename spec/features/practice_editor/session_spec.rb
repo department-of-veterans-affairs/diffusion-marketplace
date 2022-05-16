@@ -7,6 +7,9 @@ describe 'Practice editor sessions', type: :feature do
     @practice_2 = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @user)
     @user.add_role(User::USER_ROLES[0].to_sym)
     @user_2.add_role(User::USER_ROLES[0].to_sym)
+
+    visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
+    VaFacility.create!(visn: visn_1, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
   end
 
   it 'should not allow a user to edit a practice that is locked' do

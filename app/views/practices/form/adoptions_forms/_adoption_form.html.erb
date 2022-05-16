@@ -35,16 +35,24 @@
   </div>
 
   <% if adoption %>
-    <%= f.hidden_field("va_facility_id", value: adoption.diffusion_history.va_facility_id, id: "editor_facility_select_#{form_id}") %>
+    <% dh_va_facility_id = adoption.diffusion_history.va_facility_id %>
+    <%= f.hidden_field("va_facility_id",
+          value: dh_va_facility_id.present? ? dh_va_facility_id : "crh_#{adoption.diffusion_history.clinical_resource_hub_id}",
+          id: "editor_facility_select_#{form_id}")
+    %>
   <% else %>
     <div class="margin-bottom-5">
     <% facility_select_selector = 'editor_facility_select' %>
     <label for="<%= facility_select_selector %>" class="usa-label line-height-26">Facility</label>
     <div class="usa-combo-box margin-top-1 margin-bottom-2">
       <select id="<%= facility_select_selector %>" class="usa-select" name="va_facility_id">
-        <% @va_facilities.all.each do |vaf| %>
-          <option value=<%= vaf[:id] %>>
-            <%= vaf[:street_address_state] + ': ' + vaf[:official_station_name] + ' (' + vaf[:common_name] + ')' %>
+        <% @va_facilities.each do |vaf| %>
+          <option value=<%= vaf[:street_address_state].present? ? "facility-#{vaf[:id]}" : "crh-#{vaf[:id]}" %>>
+            <% if vaf[:street_address_state].present? %>
+              <%= vaf[:street_address_state] + ': ' + vaf[:official_station_name] + ' (' + vaf[:common_name] + ')' %>
+            <% else %>
+              <%= vaf[:official_station_name] %>
+            <% end %>
           </option>
         <% end %>
       </select>

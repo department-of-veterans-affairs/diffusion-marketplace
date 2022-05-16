@@ -2,12 +2,16 @@ require 'rails_helper'
 
 describe 'Practice editor - introduction', type: :feature, js: true do
   before do
-    Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
+    visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
     visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
     visn_21 = Visn.create!(id: 16, name: "Sierra Pacific Network", number: 21)
 
     facility_1 = VaFacility.create!(visn: visn_21, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
     VaFacility.create!(visn: visn_7, station_number: "521", official_station_name: "Birmingham VA Medical Center", common_name: "Birmingham-Alabama", street_address_state: "AL")
+    ClinicalResourceHub.create!(visn: visn_1, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_7, official_station_name: "VISN 7 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_21, official_station_name: "VISN 21 Clinical Resource Hub (Remote)")
+
 
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
@@ -140,23 +144,21 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(find(:css, '#initiating_facility_type_visn').selected?).to eq(false)
         expect(find(:css, '#initiating_facility_type_department').selected?).to eq(false)
         expect(find(:css, '#initiating_facility_type_other').selected?).to eq(false)
-        expect(find(:css, 'select#editor_state_select_1').value).to eq('CA')
-        expect(find(:css, 'select#practice_practice_origin_facilities_attributes_0_va_facility_id').value).to eq(@pr_facility.va_facility_id.to_s)
+        expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq("CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)")
 
         # add another facility
-        find('.dm-add-practice-originating-facilities-link').click
-        last_fac_field = find_all('.practice-editor-origin-facility-li').last
-        last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
-        last_fac_fac_select = last_fac_field.find('select[id*="va_facility_id"]')
-        select('Alabama', from: last_fac_state_select[:name])
-        select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
+        click_add_another('.dm-add-practice-originating-facilities-link')
+        within(all('.practice-editor-origin-li').last) do
+          set_combo_box_val('Birmingham VA')
+        end
         # delete first facility
-        first_fac_field = find_all('.practice-editor-origin-facility-li').first
-        first_fac_field.find('.dm-origin-trash').click
+        within(all('.practice-editor-origin-li').first) do
+          click_link('Delete entry')
+        end
         click_save
         visit_practice_show
         expect(page).to have_content('Birmingham VA Medical Center (Birmingham-Alabama)')
-        expect(page).to have_no_content('Palo Alto VA Medical Center-Menlo Park')
+        expect(page).to have_no_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
 
         # set VISN
         visit_practice_edit
@@ -196,6 +198,126 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_content('Xavier Institute')
       end
 
+      context 'edge cases' do
+        before do
+          # make sure first facility entry is present
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+        end
+
+        it 'should not allow a user to create two new duplicate origin facilities' do
+          # first new origin facility
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('VISN 1')
+          end
+          # second, identical new origin facility
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('VISN 1')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('VISN 1 Clinical Resource Hub (Remote)')
+          expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_2_facility_id')
+        end
+
+        it 'should not allow a user to create a duplicate of an existing origin facility' do
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('Palo Alto')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+          expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_1_facility_id')
+        end
+
+        it 'should not allow a user to change an existing facility to another existing facility' do
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('VISN 1')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('VISN 1 Clinical Resource Hub (Remote)')
+          # try to change the Palo Alto entry to VISN 1 Clinical Resource Hub
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('Palo Alto')
+          end
+          click_save
+
+          expect(page).to have_content('There was an error updating practice origin facilities. The innovation was not saved.')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('VISN 1 Clinical Resource Hub (Remote)')
+          expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_2_facility_id')
+        end
+
+        it 'should allow a user to change an existing origin facility to a different one and create a new entry using the facility that was previously saved' do
+          # change the existing origin facility input's value to a different facility
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('Birmingham VA')
+          end
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('Palo Alto')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('AL: Birmingham VA Medical Center (Birmingham-Alabama)')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+        end
+
+        it 'should allow a user to change an existing origin facility from a VaFacility to a ClinicalResourceHub or vice versa' do
+          # change the existing origin facility input's value to a CRH
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('VISN 1')
+          end
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('Birmingham VA')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('VISN 1 Clinical Resource Hub (Remote)')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('AL: Birmingham VA Medical Center (Birmingham-Alabama)')
+        end
+
+        it 'should not save a new origin facility if a user deletes an existing one and then tries to create one using the same soon to be deleted facility' do
+          # add a second origin facility
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('Birmingham VA')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('AL: Birmingham VA Medical Center (Birmingham-Alabama)')
+          # delete the first facility and then create a new one using the same soon to be deleted facility
+          within(all('.practice-editor-origin-li').first) do
+            click_link('Delete entry')
+          end
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          within(all('.practice-editor-origin-li').last) do
+            set_combo_box_val('Palo Alto')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_1_facility_id').value).to eq('AL: Birmingham VA Medical Center (Birmingham-Alabama)')
+          expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_2_facility_id')
+        end
+
+        it 'should not save empty entries' do
+          # add a second blank origin facility
+          click_add_another('.dm-add-practice-originating-facilities-link')
+          click_save
+
+          expect(page).to have_content('Innovation was successfully updated.')
+          expect(find(:css, 'input#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq('CA: Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+          expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_1_facility_id')
+        end
+      end
+
       it 'should display an error and revert changes if fields are not populated' do
         # select the VISN radio option, but do not select a VISN
         click_origin_type('initiating_facility_type_visn')
@@ -211,7 +333,13 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_no_content('Birmingham VA Medical Center (Birmingham-Alabama)')
         expect(page).to have_content('VISN-1')
 
+        # switch back the facility option, but do not add a facility
         visit_practice_edit
+        click_origin_type('initiating_facility_type_facility')
+        click_save
+        expect(page).to_not have_content('Innovation was successfully updated.')
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved.')
+
         click_origin_type('initiating_facility_type_department')
         select('VBA', :from => 'editor_department_select')
         select('Alabama', :from => 'editor_office_state_select')
@@ -240,19 +368,13 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     end
 
     context 'partners' do
-      def set_practice_partner_combo_box_val(value)
-        find('.usa-combo-box__input').click
-        find('.usa-combo-box__input').set(value)
-        all('.usa-combo-box__list-option').first.click
-      end
-
       it 'should allow changing partners' do
         expect(find(:css, '#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
         expect(find(:css, '#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
         # add another partner
-        find('#link_to_add_link_practice_partner_practices').click
+        click_add_another('#link_to_add_link_practice_partner_practices')
         within(all('.dm-practice-editor-practice-partner-li').last) do
-          set_practice_partner_combo_box_val('Awesome')
+          set_combo_box_val('Awesome')
         end
         # remove the Diffusion of Excellence partner
         within(all('.dm-practice-editor-practice-partner-li')[0]) do
@@ -264,34 +386,95 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to_not have_link('Diffusion of Excellence')
         expect(page).to_not have_link(@pr_partner_3.name)
         expect(page).to have_link('Office of Rural Health')
-        # make sure the user can't create two of the same unsaved practice partner
-        visit_practice_edit
-        find('#link_to_add_link_practice_partner_practices').click
-        within(all('.dm-practice-editor-practice-partner-li').last) do
-          set_practice_partner_combo_box_val('Diffusion')
+      end
+
+      context 'edge cases' do
+        before do
+          # make sure the first two practice partner entries are present
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
         end
 
-        find('#link_to_add_link_practice_partner_practices').click
-        within(all('.dm-practice-editor-practice-partner-li').last) do
-          set_practice_partner_combo_box_val('Diffusion')
+        it 'should not allow a user to create two new duplicate practice partners' do
+          # first new practice partner
+          click_add_another('#link_to_add_link_practice_partner_practices')
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Awesome')
+          end
+          # second, identical new practice partner
+          click_add_another('#link_to_add_link_practice_partner_practices')
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Awesome')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_2_practice_partner_id').value).to eq('Awesome Practice Partner')
+          expect(page).not_to have_selector('input#practice_practice_partner_practices_attributes_3_practice_partner_id')
         end
-        click_save
-        expect(find(:css, '#practice_practice_partner_practices_attributes_2_practice_partner_id').value).to eq('Diffusion of Excellence')
-        expect(page).to have_selector('.dm-practice-editor-practice-partner-li', count: 3)
-        # make sure the user can't create a duplicate practice partner if that same practice partner is already in the list of partners
-        # remove the 'Office of Rural Health' partner from the list
-        within(all('.dm-practice-editor-practice-partner-li')[0]) do
-          click_link('Delete entry')
+
+        it 'should not allow a user to create a duplicate of an existing practice partner' do
+          click_add_another('#link_to_add_link_practice_partner_practices')
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Diffusion')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+          expect(page).not_to have_selector('input#practice_practice_partner_practices_attributes_2_practice_partner_id')
         end
-        # try to create a new 'Office of Rural Health' partner at the same time
-        find('#link_to_add_link_practice_partner_practices').click
-        within(all('.dm-practice-editor-practice-partner-li').last) do
-          set_practice_partner_combo_box_val('Office')
+
+        it 'should not allow a user to change an existing practice partner to another existing practice partner' do
+          click_add_another('#link_to_add_link_practice_partner_practices')
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Rural Health')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
+
+          # try to change the Office of Rural Health entry to Diffusion of Excellence
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Diffusion')
+          end
+          click_save
+
+          expect(page).to have_content('There was an error updating practice partners. The innovation was not saved.')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
+          expect(page).not_to have_selector('input#practice_practice_partner_practices_attributes_2_practice_partner_id')
         end
-        click_save
-        # make sure the first entry ('Office of Rural Health') never got destroyed and that there are still only 3 partners in the list
-        expect(find(:css, '#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Office of Rural Health')
-        expect(page).to have_selector('.dm-practice-editor-practice-partner-li', count: 3)
+
+        it 'should allow a user to change an existing practice partner to a different one and create a new entry using the partner that was previously saved' do
+          # change the existing practice partner input's value to a different partner
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Awesome')
+          end
+          click_add_another('#link_to_add_link_practice_partner_practices')
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Office of')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Awesome Practice Partner')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_2_practice_partner_id').value).to eq('Office of Rural Health')
+        end
+
+        it 'should not save a new practice partner if a user deletes an existing one and then tries to create one using the same soon to be deleted partner' do
+          # delete the first partner and then create a new one using the same soon to be deleted partner
+          within(all('.dm-practice-editor-practice-partner-li').first) do
+            click_link('Delete entry')
+          end
+          click_add_another('#link_to_add_link_practice_partner_practices')
+          within(all('.dm-practice-editor-practice-partner-li').last) do
+            set_combo_box_val('Diffusion of')
+          end
+          click_save
+
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
+          expect(find(:css, 'input#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
+          expect(page).not_to have_selector('input#practice_practice_origin_facilities_attributes_2_facility_id')
+        end
       end
     end
 
@@ -403,4 +586,14 @@ end
 
 def click_maturity_level(elem_id)
   find("##{elem_id}").sibling('label').click
+end
+
+def set_combo_box_val(value)
+  find('.usa-combo-box__input').click
+  find('.usa-combo-box__input').set(value)
+  all('.usa-combo-box__list-option').first.click
+end
+
+def click_add_another(link_class)
+  find(link_class).click
 end

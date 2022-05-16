@@ -2,7 +2,6 @@
 <% provide :footer_classes, 'bg-gray-0' %>
 <% provide :head_tags do %>
   <%= javascript_include_tag '_assign_facility_name', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_visnSelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_officeSelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
@@ -13,7 +12,6 @@
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
     var facilityData = <%= raw @va_facilities.to_json %>;
-    <%# initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
     var originData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json")).to_json %>;
     var visnData = '<%= raw @visns.to_json %>';
@@ -177,70 +175,95 @@
                 </div>
               </div>
 
-              <div id="facility_select_form" class="margin-bottom-5 position-relative">
-                <ul class="practice-editor-origin-ul" role="listbox" title="Innovation origin facilities" aria-label="Practice editor origin facility list">
-                  <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
+              <div id="facility_select_form" class="margin-bottom-5 position-relative grid-col-8">
+                <ul class="practice-editor-origin-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
+                  <%= f.fields_for :practice_origin_facilities, @ordered_practice_origin_facilities, wrapper: false do |pof| %>
                     <%
-                      orig_facility_id = pof.object.id || "new_practice_origin_facilities"
+                      pof_id = pof.object.id || 'new_practice_origin_facilities'
+                      pof_va_facility_id = pof.object.va_facility_id
+                      pof_crh_id = pof.object.clinical_resource_hub_id
+                      pof_index = pof.index
                     %>
-                    <% if pof.object.va_facility_id %>
+                    <% if pof.object.id %>
+                      <%# add separators on page load %>
                       <% provide :head_tags do %>
                         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                          $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>',
-                            function(newElem) {
-                              styleOriginFacility($(newElem).closest('li'));
-                              var facility_id = '<%= pof.object.va_facility_id %>';
-                              var facilitySelector = '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>';
-                              var stateSelector ='<%= "editor_state_select_#{orig_facility_id}" %>';
-                              getFacilitiesByState(facilityData, facilitySelector, stateSelector);
-                              selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
-                              $(document).unbindArrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>', newElem);
-                            }
-                          );
+                          $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof_index}_facility_id" %>', function(newElem) {
+                            var $li = $(newElem).closest('li');
+                            var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
+                            $_destroy.attr('name', 'practice[practice_origin_facilities_attributes][<%= pof_index %>][_destroy]');
+                            $_destroy.attr('id', 'practice_practice_origin_facilities_attributes_<%= pof_index %>__destroy');
+                            $(document).unbindArrive('<%= "#practice_practice_origin_facilities_attributes_#{pof_index}_facility_id" %>', newElem);
+                          });
                         <% end %>
                       <% end %>
                     <% end %>
-                    <li class="practice-editor-origin-facility-li fields" role="option" data-id="<%= orig_facility_id %>">
-                      <div class="margin-bottom-3">
-                        <%= label_tag "editor_state_select_#{orig_facility_id}", 'State',
-                                      class: 'usa-label margin-top-0 margin-bottom-1' %>
-                        <%= select_tag('', options_for_select(us_states), id: "editor_state_select_#{orig_facility_id}",
-                                       name: "editor_state_select_#{orig_facility_id}", class: 'width-card-lg height-5 usa-select') %>
-                      </div>
+                    <li class="practice-editor-origin-li fields margin-bottom-2" role="option" data-id="<%= pof_id %>">
+                      <% if pof.object.id.present? %>
+                        <%= f.hidden_field("practice_origin_facilities_attributes][#{pof_index}][facility_type_and_id",
+                                           value: pof_va_facility_id.present? ? "va-facility-#{pof_va_facility_id}" :
+                                                  "crh-#{pof_crh_id}") %>
+                      <% end %>
                       <div class="grid-row">
-                        <div class="grid-col-12">
-                          <%= pof.label :va_facility_id, 'Facility', class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12' %>
-                          <%= pof.select :va_facility_id,
-                                         options_for_select([['-Select-', nil, selected: true, disabled: true,
-                                                              class: 'usa-select color-disabled']]),
-                                         {},
-                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-top-0'}
-                          %>
+                        <div class="usa-combo-box grid-col-12 practice-editor-origin-combo-box"
+                             data-default-value="<%= if pof.object.id.present? then pof_va_facility_id.present? ? "va-facility-#{pof_va_facility_id}" : "crh-#{pof_crh_id}" else nil end %>"
+                        >
+                          <%= pof.label :facility_id, class: 'usa-label usa-sr-only' %>
+                          <%= pof.select(:facility_id, { class: 'usa-input desktop:grid-col-12 margin-top-0' }) do %>
+                            <% @va_facilities_and_crhs.each do |fac| %>
+                              <% state = fac[:street_address_state] %>
+                              <% station_name = fac[:official_station_name] %>
+
+                              <% if state.present? %>
+                                <%= content_tag :option, "#{state + ': ' + station_name + ' (' + fac[:common_name] + ')'}", value: "va-facility-#{fac[:id]}" %>
+                              <% else %>
+                                <%= content_tag :option, station_name, value: "crh-#{fac[:id]}" %>
+                              <% end %>
+                            <% end %>
+                          <% end %>
                         </div>
 
-                        <div class="grid-col-8 trash-container">
-                          <%= pof.link_to_remove 'Delete Entry',
-                                                 class: "dm-origin-trash dm-button--unstyled-warning float-right"
-                          %>
+                        <div class="grid-col-12 trash-container">
+                          <%= f.link_to_remove 'Delete entry', class: "dm-origin-trash dm-button--unstyled-warning float-right" %>
                         </div>
                       </div>
                     </li>
                   <% end %>
                 </ul>
                 <%= f.link_to_add :practice_origin_facilities,
-                                  class: 'dm-add-another-link dm-add-practice-originating-facilities-link dm-button--unstyled-primary' do %>
+                                  id: 'link_to_add_link_practice_origin_facilities',
+                                  class: "dm-add-another-link dm-add-practice-originating-facilities-link dm-button--unstyled-primary" do %>
                   Add another
                 <% end %>
-                <% unless @practice.practice_origin_facilities.any? %>
-                  <% provide :head_tags do %>
-                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                      observePracticeEditorLiArrival($(document));
-                      $(document).arrive('#practice_origin_facilities_fields_blueprint',
-                        function(blueprint) {
-                          $('.dm-add-practice-originating-facilities-link').click();
-                          $(document).unbindArrive('#practice_origin_facilities_fields_blueprint', blueprint);
-                        }
-                      );
+                <% provide :head_tags do %>
+                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                    $(document).arrive('#practice_origin_facilities_fields_blueprint', function(blueprint) {
+                      var blueprintText = $(blueprint).data('blueprint');
+                      var newBluePrintText = blueprintText.replace('practice[_destroy]', 'practice[practice_origin_facilities_attributes][new_practice_origin_facilities][_destroy]');
+                      $(blueprint).data('blueprint', newBluePrintText);
+                      newBluePrintText = newBluePrintText.replace('practice__destroy', 'practice_practice_origin_facilities_attributes_new_practice_origin_facilities__destroy');
+                      $(blueprint).data('blueprint', newBluePrintText);
+                    });
+                  <% end %>
+                <% end %>
+                <% provide :head_tags do %>
+                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                    observePracticeEditorLiArrival(
+                    $(document),
+                    '.practice-editor-origin-li',
+                    '.practice-editor-origin-ul',
+                    '12'
+                    );
+                    attachTrashListener(
+                    $(document),
+                    '#facility_select_form',
+                    '.practice-editor-origin-li'
+                    );
+                    <% unless @ordered_practice_origin_facilities.any? %>
+                      $(document).arrive('#practice_origin_facilities_fields_blueprint', function(blueprint) {
+                        $('#link_to_add_link_practice_origin_facilities').click();
+                        $(document).unbindArrive('#practice_origin_facilities_fields_blueprint', blueprint);
+                      });
                     <% end %>
                   <% end %>
                 <% end %>
@@ -398,6 +421,7 @@
             </div>
 
 
+            <%# ### Practice Partners ### %>
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-105">
                 <p class="text-bold margin-bottom-1">
@@ -410,7 +434,7 @@
                   <legend class="usa-sr-only">Partners</legend>
                   <div id="dm-practice-partner-container" class="position-relative">
                     <ul class="dm-practice-editor-practice-partner-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
-                      <%= f.fields_for :practice_partner_practices, wrapper: false do |ppp| %>
+                      <%= f.fields_for :practice_partner_practices, @ordered_practice_partners, wrapper: false do |ppp| %>
                         <%
                           ppp_id = ppp.object.id || 'new_practice_partner_practices'
                           ppp_partner_id = ppp.object.practice_partner_id
@@ -444,7 +468,9 @@
                         </li>
                       <% end %>
                     </ul>
-                    <%= f.link_to_add :practice_partner_practices, id: 'link_to_add_link_practice_partner_practices', class: "dm-add-another-link dm-add-practice-partner-practice-link dm-button--unstyled-primary" do %>
+                    <%= f.link_to_add :practice_partner_practices,
+                                      id: 'link_to_add_link_practice_partner_practices',
+                                      class: "dm-add-another-link dm-add-practice-partner-practice-link dm-button--unstyled-primary" do %>
                       Add another
                     <% end %>
                     <% provide :head_tags do %>
@@ -472,7 +498,7 @@
                           '#dm-practice-partner-container',
                           '.dm-practice-editor-practice-partner-li'
                         );
-                        <% unless @practice_partners.any? %>
+                        <% unless @ordered_practice_partners.any? %>
                           $(document).arrive('#practice_partner_practices_fields_blueprint', function(blueprint) {
                             $('.dm-add-practice-partner-practice-link').click();
                             $(document).unbindArrive('#practice_partner_practices_fields_blueprint', blueprint);

@@ -52,6 +52,7 @@ describe 'Breadcrumbs', type: :feature do
       station_number_suffix_reservation_effective_date: "05/23/1996",
       mailing_address_city: "Sacramento"
     )
+    ClinicalResourceHub.create!(visn: visn_1, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
     dh_1 = DiffusionHistory.create!(practice: @user_practice, va_facility: fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
     login_as(@user, :scope => :user, :run_callbacks => false)
@@ -107,8 +108,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should not display breadcrumbs for the visns index' do
-      click_button('Browse by locations')
-      find("a[href='/visns']").click
+      visit '/visns'
       expect(page).to_not have_css('#breadcrumbs')
     end
 

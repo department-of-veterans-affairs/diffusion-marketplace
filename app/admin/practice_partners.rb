@@ -56,7 +56,7 @@ ActiveAdmin.register PracticePartner do
 
   member_action :set_practice_partner_importance, method: :post do
     resource.is_major = !resource.is_major
-    update_boolean_attr(resource.is_major, 'is now a major practice partner.', 'is now a minor practice partner.')
+    update_boolean_attr(resource, resource.is_major, 'is now a major practice partner.', 'is now a minor practice partner.')
   end
 
   controller do
