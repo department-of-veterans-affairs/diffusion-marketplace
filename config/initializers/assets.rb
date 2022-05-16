@@ -16,7 +16,6 @@ Rails.application.config.assets.precompile += %w(
                                                   ie.js
                                                   _render_warning_banners.js
                                                   _assign_facility_name.js
-                                                  _facilitySelect.js
                                                   practice_editor_adoptions.js
                                                   practice_page.js
                                                   _practice_editor_utilities.js
@@ -52,6 +51,7 @@ Rails.application.config.assets.precompile += %w(
                                                   _alert_message_utilities.js
                                                   _page_show.js
                                                   facility_status_definitions_modal.js
+                                                  clinical_resource_hubs/crh_show.js
                                                   practices/publication_validation.js
                                               )
 

@@ -40,11 +40,11 @@ describe 'Practice editor', type: :feature do
 
     def set_initiating_fac
       find('#initiating_facility_type_facility').sibling('label').click
-      last_fac_field = find_all('.practice-editor-origin-facility-li').last
-      last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
-      last_fac_fac_select = last_fac_field.find('select[id*="va_facility_id"]')
-      select('Alabama', from: last_fac_state_select[:name])
-      select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
+      within(all('.practice-editor-origin-li').last) do
+        find('.usa-combo-box__input').click
+        find('.usa-combo-box__input').set('Birmingham VA')
+        all('.usa-combo-box__list-option').first.click
+      end
     end
 
     def set_initiating_visn
@@ -170,6 +170,12 @@ describe 'Practice editor', type: :feature do
         # all required publish fields are now completed
         # to trigger the error, click on the facility radio button for 'Innovation origin', but do not choose a facility
         find('#initiating_facility_type_facility').sibling('label').click
+        click_publish_button
+        expect(page).to have_current_path(practice_introduction_path(@practice))
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved or published.')
+        expect(page).to_not have_selector('#practiceEditorPublicationModal', visible: true)
+        # choose the VISN radio button for 'Innovation origin', but do not choose a VISn to trigger the error again
+        find('#initiating_facility_type_visn').sibling('label').click
         click_publish_button
         expect(page).to have_current_path(practice_introduction_path(@practice))
         expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved or published.')

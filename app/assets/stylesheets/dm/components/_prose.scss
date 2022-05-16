@@ -8,6 +8,7 @@
 .usa-prose-body {
   @include u-font('body', 'sm');
   @include u-line-height('body', 5);
+  @include u-maxw('none', !important);
   @include u-measure(6);
   @include u-text('normal');
 }

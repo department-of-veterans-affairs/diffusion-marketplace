@@ -1,4 +1,5 @@
 <%
+  classes ||= nil
   action = params[:action]
   controller = params[:controller]
   original_breadcrumbs = session[:breadcrumbs]
@@ -15,7 +16,7 @@
     breadcrumbs.pop
   end
 %>
-<section class="<%= "dm-gradient-banner" if heading.present? %>">
+<section class="<%= "dm-gradient-banner" if heading.present? %> <%= classes if classes.present? %>">
   <div class="grid-container <%= "padding-y-6" if heading.present? %>">
     <% if breadcrumbs.present? %>
       <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container <%= heading.present? ? "dm-breadcrumb--gradient-bg padding-top-0 padding-bottom-105" : 'padding-y-4' %>" aria-label="Breadcrumbs">

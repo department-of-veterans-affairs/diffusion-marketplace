@@ -34,12 +34,35 @@ module PracticesHelper
     all_awards.to_s
   end
 
+#<<<<<<< HEAD
+  # search terms refers to campaigns/categories/tags
+  def get_all_search_terms(practice)
+    all_terms = []
+    # TODO: Add both campaigns and tags to this code
+    practice_categories = practice.categories.where.not(is_other: true, name: 'Other')
+    practice_categories.each do |category|
+      all_terms.push(category.name)
+    end
+    all_terms
+  end
+
+  def slice_terms(practice)
+    terms = get_all_search_terms(practice)
+    terms.slice(0..9)
+  end
+
+  def get_remaining_terms_if_sliced(practice)
+    terms = get_all_search_terms(practice)
+    terms.slice(10..-1)
+    end
+#=======
   def display_practice_name(practice)
     if practice.short_name.present?
       "#{practice.name} (#{practice.short_name})"
     else
       practice.name
     end
+# >>>>>>> feature/ie-rebrand
   end
 
   def get_person_resource_text(resource_type)
@@ -75,5 +98,10 @@ module PracticesHelper
                   facility.'
     }
     content[resource_type.to_sym]
+  end
+
+  def sort_adoptions_by_state_and_station_name(adoptions)
+    adoptions.exclude_clinical_resource_hubs.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name.downcase] } +
+      adoptions.exclude_va_facilities.sort_by { |a| a.clinical_resource_hub.visn.number }
   end
 end

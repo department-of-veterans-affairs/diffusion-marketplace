@@ -37,22 +37,6 @@ $("#adoptions").html("<%= escape_javascript(render partial: 'practices/form/adop
   })
 <% end %>
 
-<% if params[:existing_dh] %>
-  $("button[aria-controls='diffusion_history_<%= @dh.id %>']").attr('aria-expanded', true);
-  $('#diffusion_history_<%= @dh.id %>').attr('hidden', false);
-  $(PARENT_ADOPTION_ACCORDION).each(function() {
-    if (!$(this).find('#diffusion_history_<%= @dh.id %>').length) {
-        $(this).find('div').first().attr('hidden', true);
-    } else {
-        $(this).find('button').attr('aria-expanded', true);
-        $(this).find('div').first().attr('hidden', false);
-        $(this).find('.child-accordion-button').not("button[aria-controls='diffusion_history_<%= @dh.id %>']").each(function() {
-            $(this).attr('aria-expanded', false)
-        })
-    }
-  })
-<% end %>
-
 function addTooltipHtmlAfterAjax() {
     // Add the tooltip element
     $('.usa-tooltip').append(

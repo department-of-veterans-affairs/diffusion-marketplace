@@ -6,8 +6,8 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @pr_min = Practice.create!(name: 'A public minimum practice', slug: 'a-public-min-practice', approved: true, published: true, tagline: 'Test tagline', summary: 'Test summary', date_initiated: Date.new(2011, 12, 31), initiating_facility_type: 'other', initiating_facility: 'foobar facility', user: @admin)
     img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
-    @pr_max = Practice.create!(name: 'A public maximum practice', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, tagline: 'Test tagline', published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin, enabled: true)
-    @practice_2 = Practice.create!(name: 'Another public maximum practice', short_name: 'BLA', slug: 'another-public-max-practice', approved: true, tagline: 'Test tagline', published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 22), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin, enabled: true)
+    @pr_max = Practice.create!(name: 'A public maximum practice', slug: 'a-public-max-practice', approved: true, tagline: 'Test tagline', published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin, enabled: true)
+    @practice_2 = Practice.create!(name: 'Another public maximum practice', slug: 'another-public-max-practice', approved: true, tagline: 'Test tagline', published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 22), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin, enabled: true)
 
     visn_6 = Visn.create!(id: 5, name: "VA Mid-Atlantic Health Care Network", number: 6)
     visn_9 = Visn.create!(id: 8, name: "VA MidSouth Healthcare Network", number: 9)
@@ -59,6 +59,10 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       station_phone_number: "757-432-1543 x",
       fy17_parent_station_complexity_level: "1c-High Complexity"
     )
+    ClinicalResourceHub.create!(visn: visn_6, official_station_name: "VISN 6 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_9, official_station_name: "VISN 9 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_21, official_station_name: "VISN 21 Clinical Resource Hub (Remote)")
+    ClinicalResourceHub.create!(visn: visn_23, official_station_name: "VISN 23 Clinical Resource Hub (Remote)")
 
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_1)
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_2)
@@ -123,13 +127,13 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
     context 'origin section' do
       it 'should expand content on click' do
-        expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park), Robley Rex Department of Veterans Affairs Medical Center (Louisville), Omaha VA Medical Center (Omaha-Nebraska), Hampton...')
+        expect(page).to have_content('Hampton VA Medical Center, Hunter Holmes McGuire Hospital (Richmond-Virginia), Omaha VA Medical Center (Omaha-Nebraska), Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)...')
         expect(page).to have_content('See more')
         click_link('See more')
-        expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park), Robley Rex Department of Veterans Affairs Medical Center (Louisville), Omaha VA Medical Center (Omaha-Nebraska), Hampton VA Medical Center, Hunter Holmes McGuire Hospital (Richmond-Virginia)')
+        expect(page).to have_content('Hampton VA Medical Center, Hunter Holmes McGuire Hospital (Richmond-Virginia), Omaha VA Medical Center (Omaha-Nebraska), Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park), Robley Rex Department of Veterans Affairs Medical Center (Louisville)')
         expect(page).to have_content('See less')
         click_link('See less')
-        expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park), Robley Rex Department of Veterans Affairs Medical Center (Louisville), Omaha VA Medical Center (Omaha-Nebraska), Hampton...')
+        expect(page).to have_content('Hampton VA Medical Center, Hunter Holmes McGuire Hospital (Richmond-Virginia), Omaha VA Medical Center (Omaha-Nebraska), Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)...')
         expect(page).to have_content('See more')
       end
 
@@ -247,7 +251,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     end
 
     it 'should display the content correctly' do
-      expect(page).to have_content("#{@pr_max.name} (#{@pr_max.short_name})")
+      expect(page).to have_content("#{@pr_max.name}")
       expect(page).to have_current_path("/innovations/#{@pr_max.slug}")
       expect(page).to have_content('Last updated') # TODO: How to test timeago?
       expect(page).to have_content(@pr_max.summary)

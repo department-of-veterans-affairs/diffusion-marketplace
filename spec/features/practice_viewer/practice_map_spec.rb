@@ -71,7 +71,10 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       station_phone_number: "207-623-2123 x",
       fy17_parent_station_complexity_level: "1c-High Complexity"
     )
-
+    @crh = ClinicalResourceHub.create!(
+      visn: visn_1,
+      official_station_name: "VISN 1 Clinical Resource Hub",
+    )
     @dh = DiffusionHistory.create!(practice: @practice, va_facility: @fac_1)
     @dh_1 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_2)
     @dh_2 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_3)
@@ -104,34 +107,41 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       # filters button
       expect(page).to be_accessible.within '#mapFilters'
       # all markers
-      marker_count = find_all(:css, marker_div).count
+      marker_count = all(marker_div).count
+      expect(marker_count).to eq(6)
+
+      # make sure CRH adoptions are NOT shown on the map
+      dh_6 = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'In progress')
+      visit practice_path(@practice)
       expect(marker_count).to eq(6)
 
       # Filter out "Complete" status
       complete_filter_checkbox = find(:css, 'label[for="status_successful"]')
       complete_filter_checkbox.click
-      expect(page).to have_selector(marker_div, visible: true)
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to eq(3)
+      within(:css, '#map') do
+        expect(page).to have_selector(marker_div, count: 3)
+      end
 
       # Filter out "In progress" status
       in_progress_filter_checkbox = find(:css, 'label[for="status_in-progress"]')
       in_progress_filter_checkbox.click
-      expect(page).to have_selector(marker_div, visible: true)
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to eq(2)
+      within(:css, '#map') do
+        expect(page).to have_selector(marker_div, count: 2)
+      end
 
       # Filter out "Unsuccessful" status
       unsuccessful_filter_checkbox = find(:css, 'label[for="status_unsuccessful"]')
       unsuccessful_filter_checkbox.click
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to eq(0)
+      within(:css, '#map') do
+        expect(page).to_not have_selector(marker_div)
+      end
 
       # Bring back "Complete"
       complete_filter_checkbox.click
-      expect(page).to have_selector(marker_div, visible: true)
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to eq(3)
+      within(:css, '#map') do
+        expect(page).to have_selector(marker_div, count: 3)
+      end
     end
 
     it 'should allow the user to visit each adoption\'s VA facility page' do
@@ -147,6 +157,35 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
         expect(page).to have_content('This facility has created')
         expect(page).to have_content('Main number:')
       end
+    end
+  end
+
+  context 'adoption accordions' do
+    it 'should include CRH adoptions' do
+      dh_6 = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'In progress')
+      visit practice_path(@practice)
+
+      expect(page).to have_content('In-progress adoptions (2)')
+      within(:css, '.practice-viewer-adoptions-accordion') do
+        find('button[aria-controls="in_progress"]').click
+        expect(page).to have_link('VISN 1 Clinical Resource Hub', href: '/crh/1')
+      end
+    end
+  end
+
+  context 'edge cases' do
+    it 'should only show the adoption accordions and \'Diffusion tracker\' title text if the practice ONLY has CRH adoptions' do
+      @practice.diffusion_histories.destroy_all
+      dh = DiffusionHistory.create!(practice: @practice, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history: dh, status: 'In progress')
+
+      visit practice_path(@practice)
+      expect(page).to_not have_content('Does not include Clinical Resource Hubs (CRH)')
+      expect(page).to_not have_selector('#map')
+      expect(page).to have_content('Successful adoptions (0)')
+      expect(page).to have_content('In-progress adoption (1)')
+      expect(page).to have_content('Unsuccessful adoptions (0)')
     end
   end
 end

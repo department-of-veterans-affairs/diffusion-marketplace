@@ -128,7 +128,7 @@ ActiveAdmin.register Practice do
 
   member_action :enable_practice, method: :post do
     resource.enabled = !resource.enabled
-    update_boolean_attr(resource.enabled, 'Practice enabled', 'Practice disabled')
+    update_boolean_attr(resource, resource.enabled, 'Practice enabled', 'Practice disabled')
   end
 
   member_action :highlight_practice, method: :post do
@@ -166,7 +166,7 @@ ActiveAdmin.register Practice do
 
   member_action :set_practice_privacy, method: :post do
     resource.is_public = !resource.is_public
-    update_boolean_attr(resource.is_public, 'is now a public-facing innovation', 'is now a VAEC internal-facing innovation')
+    update_boolean_attr(resource, resource.is_public, 'is now a public-facing innovation', 'is now a VAEC internal-facing innovation')
   end
 
   member_action :export_practice_adoptions, method: :get do

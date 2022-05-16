@@ -13,17 +13,6 @@ describe 'Metrics section', type: :feature, js: true do
     visn_2 = Visn.create!(id: 2, name: "New York/New Jersey VA Health Care Network", number: 2)
     facility_1 = VaFacility.create!(
       visn: visn_1,
-      station_number: "402",
-      official_station_name: "Togus VA Medical Center",
-      common_name: "Togus",
-      street_address_state: "ME",
-      fy17_parent_station_complexity_level: "1a-High Complexity",
-      rurality: "U",
-      latitude: 44.2802701,
-      longitude: -69.70413586
-    )
-    facility_1 = VaFacility.create!(
-      visn: visn_1,
       station_number: "438GD",
       official_station_name: "Aberdeen VA Clinic",
       common_name: "Aberdeen",
@@ -43,6 +32,10 @@ describe 'Metrics section', type: :feature, js: true do
       rurality: "U",
       latitude: 44.33065263,
       longitude: -74.1327211,
+    )
+    @crh = ClinicalResourceHub.create!(
+      visn: visn_1,
+      official_station_name: "VISN 1 Clinical Resource Hub",
     )
     dh_1 = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_1)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
@@ -86,6 +79,31 @@ describe 'Metrics section', type: :feature, js: true do
       find('#toggle_adoptions_view_30').click
       expect(page).to have_css('.rural-adoptions-count-last-30', text: '0')
       expect(page).to have_css('.urban-adoptions-count-last-30', text: '1')
+    end
+
+    it 'should include CRH adoptions in the top section total count as well as the \'phase\' table' do
+      dh_3 = DiffusionHistory.create!(practice_id: @practice.id, clinical_resource_hub: @crh)
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_3.id, status: 'Unsuccessful', unsuccessful_reasons: [0])
+      login_as(@user1, :scope => :user, :run_callbacks => false)
+      visit practice_metrics_path(@practice)
+
+      within(:css, '.dm-metrics-overall-stats') do
+        expect(page).to have_content('2')
+      end
+
+      within(find_all('.metrics-table').first) do
+        expect(page).to have_content('1')
+        expect(page).to have_content('2')
+      end
+    end
+
+    it 'should display last time innovation was updated.' do
+      login_as(@user1, :scope => :user, :run_callbacks => false)
+      PracticeEditorSession.create(user_id: @user1.id, practice_id: @practice.id, session_start_time: DateTime.now, session_end_time: DateTime.now, created_at: DateTime.now, updated_at: DateTime.now)
+      visit practice_metrics_path(@practice)
+      expect(page).to have_content('Innovation last updated on')
+      space = " "
+      expect(page).to have_content("#{@user1.first_name}#{space}#{@user1.last_name}")
     end
   end
 
