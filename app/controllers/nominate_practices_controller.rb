@@ -8,7 +8,7 @@ class NominatePracticesController < ApplicationController
   def email
     if params["phone"].to_s.length > 0
       log_spam_attempt "Nominate"
-        redirect_to root_path
+      redirect_to root_path
     else
       if helpers.is_user_a_guest?
         respond_to do |format|
