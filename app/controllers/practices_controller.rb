@@ -116,6 +116,7 @@ class PracticesController < ApplicationController
     session_open = PracticeEditorSession.find_by(practice: @practice, user_id: current_user.id, session_end_time: nil).present?
     latest_session_user_is_current_user = PracticeEditorSession.where(practice: @practice).last.user === current_user
     updated = update_conditions if session_open || latest_session_user_is_current_user
+    is_request_from_publish_modal = params[:save_and_publish].present?
 
     #check to see if current session has expired.... if  not
     respond_to do |format|
@@ -125,7 +126,12 @@ class PracticesController < ApplicationController
           # Add back end validation error messages for Editors page just as a safety measure
           invalid_editor_email_field = updated.message.split(' ').slice(3..-1).join(' ')
           flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The innovation was not saved."
-          format.html { redirect_back fallback_location: root_path }
+          # if the request was sent via the publication modal, redirect the user to the practice's show page
+          if is_request_from_publish_modal
+            format.html { redirect_to practice_path(@practice) }
+          else
+            format.html { redirect_back fallback_location: root_path }
+          end
           format.json { render json: updated, status: :unprocessable_entity }
         elsif !session_open && latest_session_user_is_current_user
           flash[:notice] = "Your editing session for #{@practice.name} has ended. Your edits have been saved and you have been returned to the Metrics page."
@@ -143,7 +149,12 @@ class PracticesController < ApplicationController
             format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Innovation was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
+            # if the request was sent via the publication modal, redirect the user to the practice's show page
+            if is_request_from_publish_modal
+              format.html { redirect_to practice_path(@practice), notice: editor_notice + 'Innovation was successfully updated.' }
+            else
+              format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
+            end
             format.json { render json: @practice, status: :ok }
           end
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
@@ -158,7 +169,12 @@ class PracticesController < ApplicationController
           format.html { redirect_to practice_metrics_path(@practice) }
         else
           flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
-          format.html { redirect_back fallback_location: root_path }
+          # if the request was sent via the publication modal, redirect the user to the practice's show page
+          if is_request_from_publish_modal
+            format.html { redirect_to practice_path(@practice) }
+          else
+            format.html { redirect_back fallback_location: root_path }
+          end
           format.json { render json: updated, status: :unprocessable_entity }
         end
       end
@@ -404,18 +420,20 @@ class PracticesController < ApplicationController
         # if there is an error with updating the practice, alert the user
         if updated.is_a?(StandardError)
           flash[:error] = "There was an #{updated.message}. The innovation was not saved or published."
-          format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
+          format.js { render js: "window.location.replace('#{request.referrer}')" }
         else
           @practice.update(published: true, date_published: DateTime.now)
           flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
           format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
       else
-        pub_msg = render_to_string('practices/_publication_validation_message', layout: false, locals: { practice: @practice })
-        flash[:error] = "#{pub_msg}"
-        flash[:heading] = "Cannot publish yet"
-        path = "practice_#{current_endpoint}_path"
-        format.js { render js: "window.location='#{self.send(path)}'" }
+        # if the practice cannot be published, redirect the user to their previously visited editor page and display an alert along with the publication validation modal
+        if updated.is_a?(StandardError)
+          flash[:error] = "There was an #{updated.message}. The innovation was not saved."
+        else
+          flash[:notice] = "Innovation was successfully updated."
+        end
+        format.js { render js: "window.location.replace('#{request.referrer}?save_and_publish=true')" }
       end
     end
   end
@@ -690,12 +708,18 @@ class PracticesController < ApplicationController
   def update_conditions
     if params[:practice].present?
       facility_type = params[:practice][:initiating_facility_type] || nil
+      initiating_facility_params_error = ''
       if facility_type.present?
-        set_initiating_fac_params params
+        begin
+          set_initiating_fac_params params
+        rescue => e
+          initiating_facility_params_error = e
+        end
       end
 
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
-      updated = SavePracticeService.new(pr_params).save_practice
+
+      updated = initiating_facility_params_error.present? ? initiating_facility_params_error : SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction' && !updated.is_a?(StandardError)
       updated
     end
@@ -708,40 +732,36 @@ def clear_origin_facilities
 end
 
 def set_initiating_fac_params(params)
-  origin_facility_params = params[:practice][:practice_origin_facilities_attributes]
   case params[:practice][:initiating_facility_type]
   when "facility"
-=begin
-    if all of the origin facility params being sent in do not have a facility_id and the user switched from another originating facility type, set the
-    practice_origin_facilities_attributes params to nil.
-=end
-    origin_facility_id_counts = Params::ParamsData.new(origin_facility_params).get_id_counts_from_params(:facility_id)
-    if (@practice.initiating_facility.present? || @practice.initiating_department_office_id.present?) && origin_facility_id_counts[nil] === origin_facility_params.keys.length
-      params[:practice][:practice_origin_facilities_attributes] = nil
-    end
+    origin_facility_params = params[:practice][:practice_origin_facilities_attributes]
 
-    @practice.initiating_facility = ""
-    @practice.initiating_department_office_id = ""
+    if origin_facility_params.values.select { |pof| pof["facility_id"] }.empty?
+      raise StandardError.new 'error updating initiating facility'
+    else
+      @practice.initiating_facility = ""
+      @practice.initiating_department_office_id = ""
+    end
   when "visn"
     if params[:editor_visn_select].present?
       @practice.initiating_facility = params[:editor_visn_select]
       @practice.initiating_department_office_id = ""
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   when "department"
     if params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
       @practice.initiating_facility = params[:practice][:initiating_facility]
       @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   else
     if params[:initiating_facility_other].present?
       @practice.initiating_facility = params[:initiating_facility_other]
       @practice.initiating_department_office_id = ""
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   end
 end

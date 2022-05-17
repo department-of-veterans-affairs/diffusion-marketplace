@@ -6,7 +6,7 @@ describe 'Practice editor', type: :feature, js: true do
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
-    visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    visn_1 = Visn.create!(name: 'VISN 1', number: 1)
     @fac_1 = VaFacility.create!(
       visn: visn_1,
       station_number: "402GA",

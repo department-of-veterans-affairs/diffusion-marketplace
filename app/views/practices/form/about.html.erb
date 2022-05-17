@@ -4,6 +4,7 @@
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
+    <%= render partial: 'practices/publication_validation', formats: [:js] %>
   <% end %>
 <% end %>
 
@@ -187,3 +188,6 @@
     </div>
   </div>
 </div>
+<% if params[:save_and_publish].present? %>
+  <%= render partial: 'practices/shared/publication_validation_modal' %>
+<% end %>

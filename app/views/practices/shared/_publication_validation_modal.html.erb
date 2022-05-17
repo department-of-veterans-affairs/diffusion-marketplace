@@ -1,0 +1,94 @@
+<div id="practiceEditorPublicationModal" class="bg-base-light">
+  <div class="publication-modal display-block position-fixed width-full height-full overflow-auto top-0 left-0">
+    <div class="publication-modal-content margin-x-auto bg-white radius-md position-relative">
+      <button class="close-publication-modal close text-base-darker bg-white padding-05 border-0 position-absolute top-0 right-0" aria-label="Close publication modal"><i class="fas fa-times"></i></button>
+      <h2 class="margin-bottom-1 margin-top-0 font-sans-xl usa-prose-h2">Cannot publish yet</h2>
+      <p class="usa-prose-body margin-bottom-2">
+        These sections need to be complete before we can publish your innovation:
+      </p>
+      <% if @practice %>
+        <%
+          s_name = @practice.name
+          tagline = @practice.tagline
+          initiating_facility = @practice.has_facility?
+          initiating_facility_type = @practice.initiating_facility_type
+          summary = @practice.summary
+          date_initiated = @practice.date_initiated
+          adoptions = @practice.diffusion_histories
+          overview_problem = @practice.overview_problem
+          overview_solution = @practice.overview_solution
+          overview_results = @practice.overview_results
+        %>
+
+        <%# Introduction errors %>
+        <% if s_name.blank? || tagline.blank? || initiating_facility_type.blank? || initiating_facility.blank? || date_initiated.blank? || summary.blank? %>
+          <div class="margin-top-1">
+            <p class="usa-prose-h4">Introduction</p>
+            <ul class="usa-prose-ul padding-left-3 margin-top-1">
+              <% if s_name.blank? %>
+                <li>Name</li>
+              <% end %>
+              <% if tagline.blank? %>
+                <li>Tagline</li>
+              <% end %>
+              <% if date_initiated.blank? %>
+                <li>Date created</li>
+              <% end %>
+              <% if initiating_facility_type.blank? || initiating_facility.blank? %>
+                <li>Innovation origin</li>
+              <% end %>
+              <% if summary.blank? %>
+                <li>Summary</li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%# Overview errors %>
+        <% if overview_problem.blank? || overview_solution.blank? || overview_results.blank? %>
+          <div class="margin-top-1">
+            <p class="usa-prose-h4">Overview</p>
+            <ul class="usa-prose-ul padding-left-3 margin-top-1">
+              <% if overview_problem.blank? %>
+                <li>Problem statement</li>
+              <% end %>
+              <% if overview_solution.blank? %>
+                <li>Solution statement</li>
+              <% end %>
+              <% if overview_results.blank? %>
+                <li>Results statement</li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%# Adoptions error %>
+        <% if adoptions.blank? %>
+          <div class="margin-top-1">
+            <p class="usa-prose-h4">Adoptions</p>
+            <ul class="usa-prose-ul padding-left-3 margin-top-1">
+              <li>At least one adoption</li>
+            </ul>
+          </div>
+        <% end %>
+
+        <%# Contact error %>
+        <%
+          email = @practice.support_network_email
+        %>
+        <% if email.blank? %>
+          <div class="margin-top-1">
+            <p class="usa-prose-h4">Contact</p>
+            <ul class="usa-prose-ul padding-left-3 margin-top-1">
+              <li>Email</li>
+            </ul>
+          </div>
+        <% end %>
+      <% end %>
+      <div class="margin-top-4 text-left">
+        <button id="publication-modal-save-button" class="usa-button margin-right-4">Save as draft and exit</button>
+        <button class="usa-button margin-0 back-to-editor-button dm-button--unstyled-primary">Continue editing</button>
+      </div>
+    </div>
+  </div>
+</div>

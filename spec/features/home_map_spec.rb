@@ -11,7 +11,7 @@ describe 'Map of Diffusion', type: :feature do
     @pr_3 = Practice.create!(name: 'Practice C', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice C Tagline', date_initiated: Time.now(), user: @user)
     @pr_4 = Practice.create!(name: 'Practice D', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice D Tagline', date_initiated: Time.now(), user: @user)
     @pr_5 = Practice.create!(name: 'Practice E', enabled: true, approved: true, summary: 'Test summary', published: true, tagline: 'Practice E Tagline', date_initiated: Time.now(), user: @user)
-    @visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    @visn_1 = Visn.create!(name: 'VISN 1', number: 1)
     @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
     @fac_1 = VaFacility.create!(
       visn: @visn_1,
