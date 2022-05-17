@@ -6,6 +6,16 @@ describe 'Practice editor', type: :feature, js: true do
     @published_pr = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
     @unpublished_pr = Practice.create!(name: 'An unpublished practice', slug: 'a-unpublished-practice', approved: true, published: false, tagline: 'Test tagline', user: @admin)
     @admin.add_role(User::USER_ROLES[0].to_sym)
+    visn_1 = Visn.create!(name: 'VISN 1', number: 1)
+    VaFacility.create!(
+      visn: visn_1,
+      station_number: "402GA",
+      official_station_name: "Caribou VA Clinic",
+      common_name: "Caribou",
+      latitude: "44.2802701",
+      longitude: "-69.70413586",
+      street_address_state: "ME"
+    )
     page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
