@@ -140,7 +140,59 @@ ActiveAdmin.register Page do
                       });
                     "
     end
+    script do
+      raw "function initTinyMCE(selector) {
+        tinymce.init({
+              selector: selector,
+              menubar: false,
+              plugins: 'link, lists',
+              toolbar:
+                'undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | forecolor backcolor | link bullist numlist superscript subscript | outdent indent | removeformat',
+              link_title: false,
+              link_assume_external_targets: false
+            });
+        }"
+    end
+    # load tinymce for new accordions or paragraph components
+    script do
+      raw "$(document).change('.polyselect', function(e) {
+        var componentType = $(e.target).val();
+        var componentId = $(e.target).data('componentId');
+        var typeText;
+        if (componentType === 'PageAccordionComponent') {
+          typeText = 'accordion';
+        } else if (componentType === 'PageParagraphComponent') {
+          typeText = 'paragraph';
+        }
+        var componentTextareaId = '#page_page_components_attributes_' + typeText + '_' + componentId + '_component_attributes_text'
+          if (componentType === 'PageAccordionComponent' || componentType === 'PageParagraphComponent') {
+            initTinyMCE(componentTextareaId)
+          }
+        })"
+    end
+    # reloads tinymce when drag and dropping
+    script do
+      raw "$(document).on('mouseup','.handle', function(e) {
+            var componentType = $(e.target).closest('ol').find('.polyselect').val();
+            if (componentType === 'PageParagraphComponent' || componentType === 'PageAccordionComponent') {
+              var textareaContainer = $(e.target).closest('ol').find(`.polyform[style*='list-item']`);
+              var dmTinyMCE = $(textareaContainer).find('textarea.tinymce').attr('id');
+              tinymce.get(dmTinyMCE).remove();
+              initTinyMCE('#' + dmTinyMCE)
+            }
+         })"
+    end
+    # remove extra tinymce classes for color dropdowns that are being added
+    script do
+      raw "$(document).arrive('.tox.tox-silver-sink.tox-tinymce-aux', function(e) {
+            var componentCount = $('.ui-sortable').find('.page_components').length;
+            if ($('.tox.tox-silver-sink.tox-tinymce-aux').length > (componentCount * 2)) {
+              $(e).remove()
+            }
+          })"
+    end
   end
+
 
   controller do
     def create
@@ -182,5 +234,4 @@ ActiveAdmin.register Page do
       end
     end
   end
-
 end

@@ -112,8 +112,6 @@ GEM
       sassc
       sassc-rails
       xdan-datetimepicker-rails (~> 2.5.1)
-    activeadmin_quill_editor (0.3.4)
-      activeadmin (~> 2.0)
     activejob (6.0.4.8)
       activesupport (= 6.0.4.8)
       globalid (>= 0.3.6)
@@ -330,7 +328,7 @@ GEM
     local_time (2.1.0)
     lodash-rails (4.17.21)
       railties (>= 3.1)
-    loofah (2.16.0)
+    loofah (2.17.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -369,10 +367,10 @@ GEM
       connection_pool (~> 2.2)
     net-ldap (0.17.0)
     nio4r (2.5.8)
-    nokogiri (1.13.4)
+    nokogiri (1.13.5)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.13.4-x86_64-darwin)
+    nokogiri (1.13.5-x86_64-darwin)
       racc (~> 1.4)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
@@ -537,6 +535,8 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    tinymce-rails (6.0.2)
+      railties (>= 3.1.1)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -588,7 +588,6 @@ DEPENDENCIES
   active_skin
   activeadmin (~> 2.8.0)
   activeadmin_addons
-  activeadmin_quill_editor
   activerecord-nulldb-adapter
   acts_as_list
   acts_as_votable
@@ -661,6 +660,7 @@ DEPENDENCIES
   rspec_junit_formatter
   rubyzip
   sass-rails
+  sassc
   shoulda-matchers
   sidekiq
   simplecov
@@ -668,6 +668,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   sprockets
   survey_monkey_api!
+  tinymce-rails
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)

@@ -250,9 +250,12 @@ ActiveAdmin.register Practice do
           end
         end
       end
-      f.input :retired, label: 'Innovation retired?'
-      f.input :retired_reason, label: 'Retired reason', as: :quill_editor, wrapper_html: { class: 'retired-reason-container' }
       f.input :is_public, label: 'Innovation public?'
+      f.input :retired, label: 'Innovation retired?'
+      div class: 'dm-retired-reason-container' do
+        f.label :retired_reason, class: 'label'
+        f.text_area :retired_reason, label: 'Retired reason', class: 'tinymce grid-col-12'
+      end
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
