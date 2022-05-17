@@ -1,8 +1,6 @@
 class NominatePracticesController < ApplicationController
 
   def index
-    # TODO remove once we add captcha to form
-    redirect_to root_path if helpers.is_user_a_guest?
   end
 
   def email
