@@ -178,7 +178,7 @@ ActiveAdmin.register Page do
               var textareaContainer = $(e.target).closest('ol').find(`.polyform[style*='list-item']`);
               var dmTinyMCE = $(textareaContainer).find('textarea.tinymce').attr('id');
               tinymce.get(dmTinyMCE).remove();
-              initTinyMCE('#' + dmTinyMCE)
+              initTinyMCE('#' + dmTinyMCE);
             }
          })"
     end
@@ -187,7 +187,7 @@ ActiveAdmin.register Page do
       raw "$(document).arrive('.tox.tox-silver-sink.tox-tinymce-aux', function(e) {
             var componentCount = $('.ui-sortable').find('.page_components').length;
             if ($('.tox.tox-silver-sink.tox-tinymce-aux').length > (componentCount * 2)) {
-              $(e).remove()
+              $(e).remove();
             }
           })"
     end
