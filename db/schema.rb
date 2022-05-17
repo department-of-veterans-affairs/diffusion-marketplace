@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_12_155536) do
+ActiveRecord::Schema.define(version: 2022_05_16_103608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -394,6 +394,18 @@ ActiveRecord::Schema.define(version: 2022_01_12_155536) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["practice_id"], name: "index_financial_files_on_practice_id"
+  end
+
+  create_table "form_spams", force: :cascade do |t|
+    t.string "form"
+    t.string "original_url"
+    t.string "ip_address"
+    t.string "email"
+    t.string "subject"
+    t.string "message"
+    t.string "phony"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
