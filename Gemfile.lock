@@ -43,6 +43,15 @@ GIT
       rails-assets-normalize-css (= 3.0.3)
 
 GEM
+  remote: https://rails-assets.org/
+  specs:
+    rails-assets-jquery (3.6.0)
+    rails-assets-jquery.scrollTo (2.1.2)
+      rails-assets-jquery (>= 1.8)
+    rails-assets-sticky (1.0.4)
+      rails-assets-jquery
+
+GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
@@ -636,7 +645,7 @@ DEPENDENCIES
   pry (~> 0.12.2)
   puma (>= 4.3.5)
   rack_session_access
-  rails (~> 6.0.0)
+  rails (~> 6.0.4.8)
   rails-assets-jquery!
   rails-assets-jquery.scrollTo!
   rails-assets-sticky!
