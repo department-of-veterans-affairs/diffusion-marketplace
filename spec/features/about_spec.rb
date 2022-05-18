@@ -67,6 +67,8 @@ describe 'About us page', type: :feature do
       fill_in('Subject line', with: 'Test subject')
       fill_in('Your message', with: 'This is a test message')
       fill_in 'phone', with: 'this is spam'
+      # make sure the mailer count does not increase
+      expect { click_button('Send message') }.to change { ActionMailer::Base.deliveries.count }.by(0)
       # make sure the FormSpam records increase by 1
       expect { click_button('Send message') }.to change(FormSpam, :count).by(1)
       # make sure user is redirected to home page.
