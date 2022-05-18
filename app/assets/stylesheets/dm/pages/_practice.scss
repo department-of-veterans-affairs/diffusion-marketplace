@@ -825,6 +825,10 @@ li.small-disc:before {
   }
 }
 
+.main-display-image-caption {
+  @include u-text($theme-color-base-dark, !important);
+}
+
 // Overview
 #overview {
   .dm-resource-image-editor {

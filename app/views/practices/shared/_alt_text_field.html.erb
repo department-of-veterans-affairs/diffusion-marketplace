@@ -1,0 +1,12 @@
+<div>
+  <%= form.label alt_text_attr, class: "usa-label margin-top-0" do %>
+    <p class="usa-prose-body">Describe this image for visually impaired users</p>
+    <p class="usa-prose-caption <%= image_class %>-image-caption">
+      This is a literal description of what is happening in an image for people who use screen-readers
+      (e.g. A nurse in green scrubs helps an elderly Veteran in a blue sweater brush their teeth).
+    </p>
+  <% end %>
+  <%= form.text_area alt_text_attr,
+                  class: "usa-textarea #{html_classes} #{image_class}-image-alt-text",
+                  required: image_attr.present? %>
+</div>
