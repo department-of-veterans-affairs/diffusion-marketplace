@@ -141,7 +141,8 @@ gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'
 gem 'caxlsx'
-gem 'activeadmin_quill_editor'
+gem 'tinymce-rails'
+gem 'sassc'
 
 gem "chartkick"
 gem 'groupdate'

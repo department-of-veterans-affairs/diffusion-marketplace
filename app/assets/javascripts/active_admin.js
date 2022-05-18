@@ -2,8 +2,8 @@
 //= require chartkick
 //= require Chart.bundle
 //= require active_admin/base
-//= require activeadmin/quill_editor/quill
-//= require activeadmin/quill_editor_input
+//= require arrive.min
+//= require tinymce
 
 const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
@@ -88,18 +88,37 @@ const MAX_DESCRIPTION_LENGTH = 140;
 
   function getPageDescriptionCharacterCountOnPageLoad() {
       let descriptionInput = $('#page_description');
-
       let characterCounterEle = $('.page-description-character-counter');
-      $(characterCounterEle).css('color', CHARACTER_COUNTER_VALID_COLOR);
+      if (descriptionInput.length > 0 && characterCounterEle.length > 0) {
+        $(characterCounterEle).css("color", CHARACTER_COUNTER_VALID_COLOR);
 
-      let descriptionCurrentLength = descriptionInput.val().length;
-      let characterCounterText = '(' + descriptionCurrentLength + '/' + MAX_DESCRIPTION_LENGTH + ' characters)';
+        let descriptionCurrentLength = descriptionInput.val().length;
+        let characterCounterText =
+          "(" +
+          descriptionCurrentLength +
+          "/" +
+          MAX_DESCRIPTION_LENGTH +
+          " characters)";
 
-      characterCounterEle.text(characterCounterText);
+        characterCounterEle.text(characterCounterText);
 
-      if (descriptionCurrentLength >= MAX_DESCRIPTION_LENGTH) {
-          characterCounterEle.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        if (descriptionCurrentLength >= MAX_DESCRIPTION_LENGTH) {
+          characterCounterEle.css("color", CHARACTER_COUNTER_INVALID_COLOR);
+        }
       }
+
+  }
+
+  function _initTinyMCE() {
+    tinymce.init({
+      selector: "textarea.tinymce",
+      menubar: false,
+      plugins: "link, lists",
+      toolbar:
+        "undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | forecolor backcolor | link bullist numlist superscript subscript | outdent indent | removeformat",
+      link_title: false,
+      link_assume_external_targets: false,
+    });
   }
 
   function pageDescriptionCharacterCounter() {
@@ -126,20 +145,8 @@ const MAX_DESCRIPTION_LENGTH = 140;
     addPageDescriptionCharacterCounterText();
     getPageDescriptionCharacterCountOnPageLoad();
     pageDescriptionCharacterCounter();
+    _initTinyMCE();
 
-  $("#practice_retired").click(function() {
-      var practiceRetired = document.getElementById("practice_retired").checked;
-      var htmlContent = document.getElementsByClassName("ql-editor");
-      if (!practiceRetired){
-          if(htmlContent.length > 0){
-              htmlContent[0].innerHTML = "";
-          }
-          $(".ql-editor").attr('contenteditable', false);
-      }
-      else{
-          $(".ql-editor").attr('contenteditable', true);
-      }
-  });
     // switches out polymorphic forms in page component
     $(document).on("change", ".polyselect", function () {
       $(".polyform.component-" + $(this).data("component-id")).hide();
