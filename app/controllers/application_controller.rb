@@ -97,7 +97,7 @@ class ApplicationController < ActionController::Base
     email = params["email"]
     subject = params["subject"]
     message = params["message"]
-    phony = params["phone"]
-    FormSpam.create(form: form, original_url: url_orig, ip_address: ip_address, email: email, subject: subject, message: message, phony: phony)
+    phone = params["phone"]
+    FormSpam.create(form: form, original_url: url_orig, ip_address: ip_address, email: email, subject: subject, message: message, phone: phone)
   end
 end

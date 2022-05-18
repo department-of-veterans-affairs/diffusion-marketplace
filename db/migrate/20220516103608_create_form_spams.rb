@@ -7,7 +7,7 @@ class CreateFormSpams < ActiveRecord::Migration[5.2]
       t.string :email
       t.string :subject
       t.string :message
-      t.string :phony
+      t.string :phone
       t.timestamps
     end
   end

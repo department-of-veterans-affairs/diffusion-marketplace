@@ -2,11 +2,11 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
@@ -706,6 +706,7 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.datetime "session_end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "process_id"
     t.index ["practice_id"], name: "index_practice_editor_sessions_on_practice_id"
     t.index ["user_id"], name: "index_practice_editor_sessions_on_user_id"
   end
@@ -993,12 +994,12 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
     t.string "highlight_attachment_file_name"
     t.string "highlight_attachment_content_type"
     t.integer "highlight_attachment_file_size"
     t.datetime "highlight_attachment_updated_at"
-    t.boolean "is_public", default: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
@@ -1333,16 +1334,8 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
   create_table "visns", force: :cascade do |t|
     t.string "name"
     t.integer "number"
-    t.string "street_address"
-    t.string "city"
-    t.string "state"
-    t.string "zip_code"
-    t.decimal "latitude", precision: 11, scale: 8
-    t.decimal "longitude", precision: 11, scale: 8
-    t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["number"], name: "index_visns_on_number", unique: true
   end
 
   create_table "votes", id: :serial, force: :cascade do |t|
