@@ -57,20 +57,5 @@ describe 'About us page', type: :feature do
       expect(ActionMailer::Base.deliveries.last.subject).to eq('(About) Test subject')
       expect(page).to have_content('You successfully sent a message to the Diffusion Marketplace team.')
     end
-    #spam detector................................................................
-    it 'should log and redirect user to homepage if phone field is populated' do
-      fill_in('Your email', with: 'test@test.com')
-      # all fields should be required
-      click_button('Send message')
-      message = find('#subject').native.attribute('validationMessage')
-      expect(message).to eq('Please fill out this field.')
-      fill_in('Subject line', with: 'Test subject')
-      fill_in('Your message', with: 'This is a test message')
-      page.execute_script("$('.phone').val('spam')")
-      # make sure the FormSpam records increase by 1
-      expect { click_button('Send message') }.to change(FormSpam, :count).by(1)
-      # make sure user is redirected to home page.
-      expect(page).to have_current_path(root_path)
-    end
   end
 end

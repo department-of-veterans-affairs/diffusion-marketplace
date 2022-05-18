@@ -30,21 +30,6 @@ describe 'Nominate a practice page', type: :feature do
       expect(page).to have_content('Message sent. The Diffusion Marketplace team will review your nomination.')
     end
 
-    it 'should log and redirect user to homepage if phone field is populated' do
-      fill_in('Your email address', with: 'test@test.com')
-      fill_in('Subject line', with: 'Test subject')
-      # all fields should be required
-      click_button('Send message')
-      message = find('#message').native.attribute('validationMessage')
-      expect(message).to eq('Please fill out this field.')
-      fill_in('Your message Please include information about where your innovation is being implemented.', with: 'This is a test message')
-      page.execute_script("$('.phone').val('spam')")
-      # make sure the FormSpam records increase by 1
-      expect { click_button('Send message') }.to change(FormSpam, :count).by(1)
-      # make sure user is redirected to home page.
-      expect(page).to have_current_path(root_path)
-    end
-
     it 'should redirect the user to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL' do
       visit '/nominate-a-practice'
       expect(page).to have_current_path(nominate_an_innovation_path)
