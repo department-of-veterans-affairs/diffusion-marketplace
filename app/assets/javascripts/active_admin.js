@@ -155,7 +155,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
       }
       var componentTextareaId = '#page_page_components_attributes_' + typeText + '_' + componentId + '_component_attributes_text'
       if (componentType === 'PageAccordionComponent' || componentType === 'PageParagraphComponent') {
-        _initTinyMCE(componentTextareaId)
+        _initTinyMCE(componentTextareaId);
       }
     })
   }
