@@ -49,5 +49,7 @@ module DiffusionMarketplace
 
     # Reroute exceptions to custom logic
     config.exceptions_app = self.routes
+    config.tinymce.install = :compile
+    config.tinymce.install = :copy
   end
 end
