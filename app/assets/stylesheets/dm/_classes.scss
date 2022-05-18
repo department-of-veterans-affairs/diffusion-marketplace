@@ -340,5 +340,12 @@ to confirm the class DOES NOT EXIST before adding a new class
 }
 
 .form_h_field{
-  display: none;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  z-index: -1;
+  autocomplete: off;
 }
