@@ -403,7 +403,7 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.string "email"
     t.string "subject"
     t.string "message"
-    t.string "phony"
+    t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
