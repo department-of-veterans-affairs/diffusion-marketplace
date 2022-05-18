@@ -66,7 +66,7 @@ describe 'About us page', type: :feature do
       expect(message).to eq('Please fill out this field.')
       fill_in('Subject line', with: 'Test subject')
       fill_in('Your message', with: 'This is a test message')
-      fill_in 'phone', with: 'this is spam'
+      page.execute_script("$('.phone').val('spam')")
       # make sure the mailer count does not increase
       expect { click_button('Send message') }.to change { ActionMailer::Base.deliveries.count }.by(0)
       # make sure the FormSpam records increase by 1
