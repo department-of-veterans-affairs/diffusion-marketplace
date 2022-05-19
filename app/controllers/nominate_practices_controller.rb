@@ -1,10 +1,10 @@
 class NominatePracticesController < ApplicationController
-
+  include FormSpamsHelper
   def index
   end
 
   def email
-    if params["phone"].to_s.length > 0
+    if params["phone"].present?
       log_spam_attempt "Nominate"
       redirect_to root_path
     else
