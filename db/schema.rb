@@ -706,7 +706,6 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.datetime "session_end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "process_id"
     t.index ["practice_id"], name: "index_practice_editor_sessions_on_practice_id"
     t.index ["user_id"], name: "index_practice_editor_sessions_on_user_id"
   end
