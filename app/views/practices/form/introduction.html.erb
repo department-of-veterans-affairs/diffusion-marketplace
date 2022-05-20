@@ -78,13 +78,16 @@
 
             <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @practice } %>
 
-            <%= render partial: 'practices/shared/alt_text_field', locals: {
-              form: f,
-              alt_text_attr: :main_display_image_alt_text,
-              image_class: 'main-display',
-              html_classes: 'grid-col-8',
-              image_attr: @practice.main_display_image
-            } %>
+            <div class="main-display-image-alt-text-container <%=  'display-none' unless @practice.main_display_image.present? %>">
+              <%= render partial: 'practices/shared/image_alt_text_label', locals: {
+                practice_field: "practice_main_display_image_alt_text",
+                label_classes: 'margin-top-0',
+                form_field: "practice_main_display_image_alt_text"
+              }
+              %>
+              <%= f.text_area :main_display_image_alt_text,
+                                 class: "usa-textarea grid-col-8 main-display-image-alt-text" %>
+            </div>
 
             <div class="margin-top-3 margin-bottom-5">
               <%= f.label :summary, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>

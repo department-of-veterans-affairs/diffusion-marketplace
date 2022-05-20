@@ -28,10 +28,11 @@
             <p class="usa-alert__body">
             </p>
           </div>
-          <%= render partial: 'practices/overview_error_partials/attachment', locals: {
-              area: area,
-              resource_type: 'image',
-              message: 'Please upload an image'
+          <%= render partial: 'practices/overview_field_error', locals: {
+            area: area,
+            resource_type: 'image',
+            field_name: 'attachment',
+            message: 'Please upload an image'
           }
           %>
           <%# resource attachment %>
@@ -69,11 +70,17 @@
 
       <%# caption input %>
       <div class="<%= area %>-input-container">
-        <%= label_tag "practice_#{area}_name", 'Caption', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
-        <%= render partial: 'practices/overview_error_partials/name', locals: {
-            area: area,
-            resource_type: 'image',
-            message: 'Please enter a caption'
+        <%= render partial: 'practices/shared/caption_label', locals: {
+          practice_field: "practice_#{area}_name",
+          label_classes: 'overview-resource-label',
+          form_field: "practice_#{area}_attributes_#{placeholder}_name"
+        }
+        %>
+        <%= render partial: 'practices/overview_field_error', locals: {
+          area: area,
+          resource_type: 'image',
+          field_name: 'name',
+          message: 'Please enter a caption'
         }
         %>
         <input <%= resource&.id ? 'required' : '' %>
@@ -85,10 +92,16 @@
 
       <%# alt text input %>
       <div class="<%= area %>-input-container">
-        <%= label_tag "practice_#{area}_image_alt_text", 'Alt text', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_image_alt_text" %>
-        <%= render partial: 'practices/overview_error_partials/name', locals: {
+        <%= render partial: 'practices/shared/image_alt_text_label', locals: {
+                   practice_field: "practice_#{area}_image_alt_text",
+                   label_classes: 'overview-resource-label',
+                   form_field: "practice_#{area}_attributes_#{placeholder}_image_alt_text"
+        }
+        %>
+        <%= render partial: 'practices/overview_field_error', locals: {
           area: area,
           resource_type: 'image',
+          field_name: 'image_alt_text',
           message: 'Please enter alt text'
         }
         %>

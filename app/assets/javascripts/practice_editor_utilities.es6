@@ -216,7 +216,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         document.getElementById(container).style.display = 'block';
 
         //clear form_inputs
-        $.each(formToClear.find('input:not([type="hidden"])'), function (i, ele) {
+        $.each(formToClear.find('input:not([type="hidden"]), textarea:not([type="hidden"])'), function (i, ele) {
             $(ele).val(null);
 
             if (ele.type === 'file' && sType === 'file') {
@@ -389,6 +389,7 @@ function validateFormFields(formSelector, sArea, sType, target) {
     } else if (sType === 'image') {
         const sAttachment = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_image`);
         const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_image_name');
+        const sAltText = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_image_image_alt_text');
 
         if (sAttachment.value === "") {
             displayAttachmentErrorStyles(sAttachment, 'div.margin-y-1');
@@ -403,6 +404,13 @@ function validateFormFields(formSelector, sArea, sType, target) {
             return false;
         } else {
             hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
+        }
+
+        if (sAltText.value === "") {
+            displayTextInputErrorStyles(sAltText, `.${sArea}-input-container`);
+            return false;
+        } else {
+            hideTextInputErrorStyles(sAltText, `.${sArea}-input-container`);
         }
     }
 }

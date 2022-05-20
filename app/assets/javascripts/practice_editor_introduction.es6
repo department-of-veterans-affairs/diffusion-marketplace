@@ -1,3 +1,6 @@
+const MAIN_DISPLAY_IMAGE_ALT_TEXT_CONTAINER = '.main-display-image-alt-text-container';
+const MAIN_DISPLAY_IMAGE_ALT_TEXT_INPUT = '#practice_main_display_image_alt_text';
+
 (($) => {
 
     const $document = $(document);
@@ -83,6 +86,12 @@
         summaryEl.height(summaryEl[0].scrollHeight - 14);
     }
 
+    function makeMainDisplayImageAltTextRequired() {
+        if ($('.dm-cropper-images-container').children().length) {
+            $(MAIN_DISPLAY_IMAGE_ALT_TEXT_INPUT).attr('required', 'required');
+        }
+    }
+
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
@@ -101,6 +110,7 @@
         if (selectedOffice !== "false" && selectedDepartment !== "false" && selectedOffice !== "" && selectedDepartment !== "") {
             selectOffice(originData, selectedDepartment, selectedOffice)
         }
+        makeMainDisplayImageAltTextRequired();
     }
 
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
@@ -113,3 +123,27 @@ function showOtherAwardFields() {
         $('#other_awards_container').addClass('display-none');
     }
 }
+
+function hideMainDisplayImageAltTextField() {
+    $(document).on('click', '#practice_delete_main_display_image', function() {
+        $('#practice_main_display_image_alt_text').val('');
+        addClassToElement(MAIN_DISPLAY_IMAGE_ALT_TEXT_CONTAINER, 'display-none');
+        $(MAIN_DISPLAY_IMAGE_ALT_TEXT_INPUT).removeAttr('required');
+    });
+}
+
+function showMainDisplayImageAltTextField() {
+    $(document).on('input', '#practice_main_display_image', function () {
+        if ($(this).val()) {
+            removeClassFromElement('.main-display-image-alt-text-container', 'display-none');
+            $(MAIN_DISPLAY_IMAGE_ALT_TEXT_INPUT).attr('required', 'required');
+        }
+    });
+}
+
+function toggleMainDisplayImageAltTextField() {
+    showMainDisplayImageAltTextField();
+    hideMainDisplayImageAltTextField();
+}
+
+$(toggleMainDisplayImageAltTextField);
