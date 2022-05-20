@@ -965,6 +965,10 @@ li.small-disc:before {
 
 .usa-label--error {
   margin-top: 1.5rem !important;
+
+  .usa-prose-body {
+    font-weight: 800 !important;
+  }
 }
 
 tr.border_bottom td {
