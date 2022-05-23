@@ -400,10 +400,6 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.string "form"
     t.string "original_url"
     t.string "ip_address"
-    t.string "email"
-    t.string "subject"
-    t.string "message"
-    t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
