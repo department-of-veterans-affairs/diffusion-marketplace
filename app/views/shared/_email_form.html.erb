@@ -1,9 +1,10 @@
 <%= form_tag "#{path}", method: 'post' do %>
   <label class="usa-label margin-top-4 margin-bottom-2" for="email">Your email address</label>
   <input class="usa-input" id="email" name="email" type="email" required/>
-
   <label class="usa-label margin-top-4 margin-bottom-2" for="subject">Subject line</label>
   <input class="usa-input" id="subject" name="subject" type="text" required/>
+  <label class="usa-label form_h_field margin-top-4 margin-bottom-2" for="phone">Phone</label>
+  <input class="usa-input form_h_field" id="phone" name="phone" type="phone"/>
 
   <label class="usa-label margin-top-4 margin-bottom-2" for="message">
     Your message

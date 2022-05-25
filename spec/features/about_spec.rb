@@ -57,11 +57,16 @@ describe 'About us page', type: :feature do
       expect(ActionMailer::Base.deliveries.last.subject).to eq('(About) Test subject')
       expect(page).to have_content('You successfully sent a message to the Diffusion Marketplace team.')
     end
-
-    it 'should not exist for public users' do
-      logout
-      visit '/about'
-      expect(page).to have_no_content('Contact us')
+    #spam detector................................................................
+    it 'should log and redirect user to homepage if phone field is populated' do
+      fill_in('Your email', with: 'test@test.com')
+      fill_in('Subject line', with: 'Test subject')
+      fill_in('Your message', with: 'This is a test message')
+      fill_in('phone', visible: false, with: 'this is spam')
+      # make sure the FormSpam records increase by 1
+      expect { click_button('Send message') }.to change(FormSpam, :count).by(1)
+      # make sure user is redirected to home page.
+      expect(page).to have_current_path(root_path)
     end
   end
 end

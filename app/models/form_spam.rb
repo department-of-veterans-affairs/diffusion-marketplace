@@ -1,0 +1,3 @@
+class FormSpam < ApplicationRecord
+
+end
