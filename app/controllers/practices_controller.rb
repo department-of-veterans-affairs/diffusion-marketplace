@@ -117,7 +117,7 @@ class PracticesController < ApplicationController
     latest_session_user_is_current_user = PracticeEditorSession.where(practice: @practice).last.user === current_user
     updated = update_conditions if session_open || latest_session_user_is_current_user
     is_request_from_publish_modal = params[:save_and_publish].present?
-
+    is_request_from_close_modal = params[:is_from_close_modal].present?
     #check to see if current session has expired.... if  not
     respond_to do |format|
       if updated
@@ -150,7 +150,7 @@ class PracticesController < ApplicationController
             format.json { render :show, status: :ok, location: @practice }
           else
             # if the request was sent via the publication modal, redirect the user to the practice's show page
-            if is_request_from_publish_modal
+            if is_request_from_publish_modal || is_request_from_close_modal
               format.html { redirect_to practice_path(@practice), notice: editor_notice + 'Innovation was successfully updated.' }
             else
               format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
