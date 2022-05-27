@@ -28,7 +28,7 @@ describe 'Page Builder', type: :feature do
       select 'programming', from: 'page_page_group_id'
 
       # bottom create page button
-      find('input[name="commit_1"]').click
+      find_all('input[type="submit"]').first.click
 
       expect(page).to have_content('Slug has already been taken')
     end
@@ -40,7 +40,7 @@ describe 'Page Builder', type: :feature do
       fill_in 'URL', with: 'test-page-1'
       fill_in 'Description', with: 'In vehicula leo vitae mattis eleifend. Praesent volutpat ipsum et tincidunt laoreet. Nullam mattis rutrum posuere. Nunc leo neque, molestie nec'
       select 'programming', from: 'page_page_group_id'
-      find('input[name="commit_1"]').click
+      find_all('input[type="submit"]').first.click
 
       expect(page).to have_content('Validation failed. Page description cannot be longer than 140 characters.')
       expect(Page.last.slug).to_not eq('test-page-1')
@@ -62,7 +62,7 @@ describe 'Page Builder', type: :feature do
     select 'programming', from: 'page[page_group_id]'
 
     # bottom create page button
-    find('input[name="commit_1"]').click
+    find_all('input[type="submit"]').first.click
 
     expect(page).to have_current_path(admin_page_path(Page.last.id))
 
@@ -85,7 +85,7 @@ describe 'Page Builder', type: :feature do
       select 'programming', from: 'page_page_group_id'
 
       # bottom create page button
-      find('input[name="commit_1"]').click
+      find_all('input[type="submit"]').first.click
 
       expect(page).to have_current_path(admin_page_path(Page.last.id))
       expect(page).to have_content('Awesome Landing Page')

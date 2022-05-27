@@ -129,18 +129,8 @@ ActiveAdmin.register Page do
       render partial: 'page_components_form', locals: {f: f, page_components: :page_components}
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons
-
-    # to fix two submit buttons with the same id and name
-    script do
-      raw "$(document).ready(function($) {
-                        $.each($('.input_action'), function(i, e) {
-                            e.id = e.id + '_' + i;
-                            $('#' + e.id + ' input').attr('name', 'commit_' + i);
-                        });
-                      });
-                    "
-    end
   end
+
 
   controller do
     def create
@@ -182,5 +172,4 @@ ActiveAdmin.register Page do
       end
     end
   end
-
 end

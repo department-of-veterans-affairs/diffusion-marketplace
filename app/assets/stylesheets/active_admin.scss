@@ -13,7 +13,6 @@
 @import 'active_admin/base';
 @import 'active_skin';
 @import 'wigu/active_admin_theme';
-@import 'activeadmin/quill_editor_input';
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "uswds/uswds";
@@ -227,14 +226,19 @@
   display: none !important;
 }
 
-.retired-reason-container {
+.dm-retired-reason-container {
   label {
+    @include u-margin-top(5);
     @include u-position('absolute');
+    @include u-text('bold');
+    @include u-text('uppercase');
     left: 10px;
+    color: #8494a8;
   }
 
-  #practice_retired_reason {
-    margin-left: 20%;
+  .tox-tinymce {
+    width: 80%;
+    float: right;
   }
 }
 

@@ -49,17 +49,4 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
       end
     end
   end
-  context 'public user' do
-    it 'contact us and nominate an innovation should not exist' do
-      visit '/'
-      within('footer') do
-        expect(page).to have_link('Home')
-        expect(page).to have_no_link('Contact us')
-        expect(page).to have_no_link('Nominate an innovation')
-        expect(page).to have_link('Open calls')
-        expect(page).to have_link('Privacy policy')
-        expect(page).to have_link('Terms and conditions')
-      end
-    end
-  end
 end
