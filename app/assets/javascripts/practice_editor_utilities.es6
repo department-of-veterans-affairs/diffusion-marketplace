@@ -197,11 +197,12 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         `;
 
         link_form.append(deleteEntryHtml);
-        $.each(link_form.find('input'), function (i, ele) {
+        $.each(link_form.find('input, textarea'), function (i, ele) {
             ele.required = true;
             $(ele).addClass('dm-required-field');
             $(ele).attr('name', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
             $(ele).attr('id', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
+            $(ele).attr('image_alt_text', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
         });
         $.each(link_form.find('label'), function (i, ele) {
             $(ele).attr('for', $(ele).attr('for').replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
