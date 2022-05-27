@@ -264,13 +264,17 @@
 
   a {
     background-image: image-url('crisis-line-logo.png');
-    background-color: color($theme-color-primary-lighter) !important;
-    color: color($theme-color-base-ink)!important;
+    background-color: #801C11;
+    color: #FFF;
     background-repeat: no-repeat;
     line-height: 15px !important;
     background-size: 27px 17.5px;
     background-position: 16px center;
     padding: 8px 16px 8px 56px;
+        
+    &:active, &:focus, &:hover {
+      background-color: #801C11; 
+    }
 
     @media all and (min-width: 64rem) {
       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
@@ -295,13 +299,17 @@
 
   a {
     background-image: image-url('crisis-line-logo.png');
-    background-color: color($theme-color-primary-lighter) !important;
-    color: color($theme-color-base-ink)!important;
+    background-color: #801C11; 
+    color: #FFF;
     background-repeat: no-repeat;
     line-height: 15px !important;
     background-size: 27px 17.5px;
     background-position: 16px center;
     padding: 8px 16px 8px 56px;
+
+    &:active, &:focus, &:hover  {
+      background-color: #801C11; 
+    }
 
     @media all and (min-width: 64rem) {
       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
