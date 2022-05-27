@@ -1,5 +1,7 @@
 class PracticeResultsResource < ApplicationRecord
   acts_as_list scope: :practice
+
+  before_validation :trim_whitespace
   before_save :reset_s3_signer_cache
   after_create :attachment_crop
 
@@ -28,5 +30,9 @@ class PracticeResultsResource < ApplicationRecord
 
   def attachment_crop
     process_attachment_crop({crop_w: @crop_w, crop_h: @crop_h, crop_x: @crop_x, crop_y: @crop_y})
+  end
+
+  def trim_whitespace
+    self.image_alt_text&.strip!
   end
 end

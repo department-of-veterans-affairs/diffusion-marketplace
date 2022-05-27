@@ -39,6 +39,11 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_no_content('Save edits')
         end
       end
+
+      it 'should not display the alt text field' do
+        expect(page).to_not have_content('Describe this image for visually impaired users')
+        expect(page).to_not have_selector('#practice_main_display_image_alt_text', visible: true)
+      end
     end
 
     context 'for a practice with a thumbnail' do
@@ -60,6 +65,11 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_no_content('Save edits')
         end
       end
+
+      it 'should display the alt text field' do
+        expect(page).to have_content('Describe this image for visually impaired users')
+        expect(page).to have_selector('#practice_main_display_image_alt_text', visible: true)
+      end
     end
   end
 
@@ -69,6 +79,13 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
         visit practice_introduction_path(@pr_without_thumbnail)
         upload_img @acceptable_img_path
         click_save
+        # make sure the alt text field is ree
+        alt_text_validation_message = page.find('#practice_main_display_image_alt_text').native.attribute('validationMessage')
+        expect(alt_text_validation_message).to eq('Please fill out this field.')
+      end
+
+      it 'should require the user to complete the alt text field for the main display image before saving' do
+        
       end
 
       it 'should display the image and save it' do
@@ -320,4 +337,8 @@ end
 
 def upload_img(img_path)
   find('.dm-cropper-upload-image').attach_file(img_path)
+end
+
+def add_alt_text
+  fill_in('#practice_main_display_image_alt_text', with: 'Some awesome alt text')
 end
