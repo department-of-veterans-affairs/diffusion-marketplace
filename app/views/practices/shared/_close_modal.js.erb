@@ -1,0 +1,9 @@
+$(document).on("click", "#practice-editor-modal-save-button", function () {
+  let form = $("#form");
+  form.append(`<input type='hidden' name='is_from_close_modal' value=true>`);
+  if (form[0].checkValidity()) {
+    form.submit();
+  } else {
+    form[0].reportValidity();
+  }
+});

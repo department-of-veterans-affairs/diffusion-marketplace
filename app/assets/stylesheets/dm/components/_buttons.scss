@@ -126,14 +126,14 @@
 .dm-button--unstyled-warning {
   @extend .usa-button;
   @extend .usa-button--unstyled;
-  @include u-text('error');
+  @include u-text('error', !important);
 
   &:hover {
-    @include u-text('error-dark');
+    @include u-text('error-dark', !important);
   }
 
   &:active {
-    @include u-text('error-darker');
+    @include u-text('error-darker', !important);
   }
 }
 

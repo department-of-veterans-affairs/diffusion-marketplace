@@ -1,0 +1,54 @@
+<!--
+  Do not put in head tags, otherwise test will fail
+  event listener does not get attached in modal so needed to create separate file from practice_editor_header.es6
+-->
+<%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+  <%= render partial: 'practices/shared/close_modal', formats: [:js] %>
+<% end %>
+
+<div
+  class="usa-modal usa-modal--lg display-none"
+  id="dm-practice-editor-close-modal"
+  aria-labelledby="dm-practice-editor-close-modal-heading"
+  aria-describedby="dm-practice-editor-close-modal-description"
+>
+  <div class="usa-modal__content margin-top-105">
+    <div class="usa-modal__main margin-x-0">
+      <h2 class="usa-modal__heading" id="dm-practice-editor-close-modal-heading">
+        Unsaved changes
+      </h2>
+      <div class="usa-prose">
+        <p id="dm-practice-editor-close-modal-description">
+          Are you sure you want to exit? Any unsaved changes will be lost.
+        </p>
+      </div>
+      <div class="usa-modal__footer margin-top-5 padding-top-05">
+        <ul class="usa-button-group width-full">
+          <li class="usa-button-group__item margin-right-2">
+            <button type="button" class="usa-button" id="practice-editor-modal-save-button" data-close-modal>
+              Save as draft and exit
+            </button>
+          </li>
+          <li class="usa-button-group__item">
+            <button
+              type="button"
+              class="usa-button usa-button--unstyled padding-105 text-center"
+              data-close-modal
+            >
+              Continue editing
+            </button>
+          </li>
+          <li class="usa-button-group__item flex-fill text-right">
+            <a href="<%= practice_path(@practice) %>" class="dm-button--unstyled-warning padding-105 text-center">
+              Exit and lose changes
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  <button class="usa-button usa-modal__close dm-modal-close-button" aria-label="Close this window" data-close-modal>
+    <span class="usa-sr-only">Close this window</span>
+    <i class="fas fa-times"></i>
+  </button>
+  </div>
+</div>
