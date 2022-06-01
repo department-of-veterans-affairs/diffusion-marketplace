@@ -78,14 +78,10 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
       before do
         visit practice_introduction_path(@pr_without_thumbnail)
         upload_img @acceptable_img_path
+        # the alt text field should appear after uploading an image
+        expect(page).to have_selector('#practice_main_display_image_alt_text', visible: true)
+        add_alt_text
         click_save
-        # make sure the alt text field is ree
-        alt_text_validation_message = page.find('#practice_main_display_image_alt_text').native.attribute('validationMessage')
-        expect(alt_text_validation_message).to eq('Please fill out this field.')
-      end
-
-      it 'should require the user to complete the alt text field for the main display image before saving' do
-        
       end
 
       it 'should display the image and save it' do
@@ -101,6 +97,10 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
         end
+        expect(page).to have_content('Some awesome alt text')
+        # make sure the alt text appears on the practice show page
+        visit practice_path(@pr_without_thumbnail)
+        expect(page).to have_css("img[src*='acceptable_img.jpg'][alt='Some awesome alt text']")
       end
     end
 
@@ -153,6 +153,8 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
         visit practice_introduction_path(@pr_with_thumbnail)
         expect(page).to have_css('.dm-cropper-thumbnail-modified')
         click_remove_img
+        # make sure the alt text field is hidden when the image is removed
+        expect(page).to_not have_selector('#practice_main_display_image_alt_text', visible: true)
         click_save
       end
 
@@ -170,6 +172,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
         end
+        expect(page).to_not have_content('Some awesome alt text')
       end
     end
 
@@ -177,9 +180,12 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
       before do
         visit practice_introduction_path(@pr_without_thumbnail)
         upload_img @acceptable_img_path
+        expect(page).to have_selector('#practice_main_display_image_alt_text', visible: true)
+        add_alt_text
         find(:css, '.dm-cropper-thumbnail-modified')
         expect(page).to have_css('.dm-cropper-thumbnail-modified')
         click_remove_img
+        expect(page).to_not have_selector('#practice_main_display_image_alt_text', visible: true)
       end
 
       it 'should remove the image' do
@@ -196,6 +202,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
         end
+        expect(page).to_not have_content('Some awesome alt text')
       end
     end
 
@@ -340,5 +347,5 @@ def upload_img(img_path)
 end
 
 def add_alt_text
-  fill_in('#practice_main_display_image_alt_text', with: 'Some awesome alt text')
+  fill_in('practice[main_display_image_alt_text]', with: 'Some awesome alt text')
 end

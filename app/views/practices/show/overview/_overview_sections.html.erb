@@ -28,14 +28,16 @@
   <div class="grid-row grid-gap">
     <% grouped_resources['image'].each do |pr| %>
       <div class="margin-bottom-2 practice-editor-impact-photo-container">
+        <% alt_text = pr.image_alt_text %>
         <%= image_tag pr.attachment_s3_presigned_url(:thumb),
                       class: 'height-mobile practice-editor-impact-photo',
-                      alt: pr.image_alt_text
+                      alt: alt_text.present? ? alt_text : resource_image_default_alt_text(pr)
         %>
-        <% if pr.name.present? %>
+        <% name = pr.name %>
+        <% if name.present? %>
           <div class="margin-top-1">
             <h5 class="text-uppercase display-inline margin-y-0">Above:</h5>
-            <p class="display-inline line-height-26"><%= pr.name %></p>
+            <p class="display-inline line-height-26"><%= name %></p>
           </div>
         <% end %>
       </div>
