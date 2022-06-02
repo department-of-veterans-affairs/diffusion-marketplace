@@ -51,7 +51,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should not display the image resource form' do
-          expect(page).to have_no_content('Caption')
+          expect(page).to have_no_content('Write a caption that provides context')
           expect(page).to have_no_css('#problem_resources_image_form')
           expect(page).to have_no_css('#solution_resources_image_form')
           expect(page).to have_no_css('#results_resources_image_form')
