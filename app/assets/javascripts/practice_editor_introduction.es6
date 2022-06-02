@@ -1,5 +1,3 @@
-const MAIN_DISPLAY_IMAGE_ALT_TEXT_CONTAINER = '.main-display-image-alt-text-container';
-
 (($) => {
 
     const $document = $(document);
@@ -115,25 +113,3 @@ function showOtherAwardFields() {
         $('#other_awards_container').addClass('display-none');
     }
 }
-
-function hideMainDisplayImageAltTextField() {
-    $(document).on('click', '#practice_delete_main_display_image', function() {
-        $('#practice_main_display_image_alt_text').val('');
-        addClassToElement(MAIN_DISPLAY_IMAGE_ALT_TEXT_CONTAINER, 'display-none');
-    });
-}
-
-function showMainDisplayImageAltTextField() {
-    $(document).on('input', '#practice_main_display_image', function () {
-        if ($(this).val()) {
-            removeClassFromElement('.main-display-image-alt-text-container', 'display-none');
-        }
-    });
-}
-
-function toggleMainDisplayImageAltTextField() {
-    showMainDisplayImageAltTextField();
-    hideMainDisplayImageAltTextField();
-}
-
-$(toggleMainDisplayImageAltTextField);
