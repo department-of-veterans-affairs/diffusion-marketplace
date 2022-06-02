@@ -95,6 +95,7 @@ describe 'Editing a practice\'s main display image and main display image alt te
       end
 
       it 'should save the alt text and apply it to the image in the editor and on the show page' do
+        debugger
         # make sure the alt text appears on the introduction page
         expect(page).to have_field('practice[main_display_image_alt_text]', with: 'Some awesome alt text')
         expect(page).to have_css("img[src*='acceptable_img.jpg'][alt='Some awesome alt text']")
