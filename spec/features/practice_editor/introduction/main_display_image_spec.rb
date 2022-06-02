@@ -20,11 +20,11 @@ describe 'Editing a practice\'s main display image and main display image alt te
   end
 
   describe 'Section content on load' do
-    before do
-      visit practice_introduction_path(@pr_with_thumbnail)
-    end
-
     context 'for a practice without a thumbnail' do
+      before do
+        visit practice_introduction_path(@pr_without_thumbnail)
+      end
+
       it 'should not display an image' do
         within('section.dm-image-editor') do
           expect(page).to have_content('Drag file here or choose from folder')
@@ -37,12 +37,16 @@ describe 'Editing a practice\'s main display image and main display image alt te
           expect(page).to have_no_content('Edit image')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
-          expect(page).to have_field('practice[main_display_image_alt_text]', with: '')
         end
+        expect(page).to have_field('practice[main_display_image_alt_text]', with: '')
       end
     end
 
     context 'for a practice with a thumbnail' do
+      before do
+        visit practice_introduction_path(@pr_with_thumbnail)
+      end
+
       it 'should display an image' do
         within('section.dm-image-editor') do
           expect(page).to have_content('Thumbnail')
@@ -60,6 +64,7 @@ describe 'Editing a practice\'s main display image and main display image alt te
     end
 
     it 'should display an optional alt text field' do
+      visit practice_introduction_path(@pr_with_thumbnail)
       # make sure the main display image alt text field is empty
       expect(page).to have_field('practice[main_display_image_alt_text]', with: '')
     end
@@ -198,7 +203,8 @@ describe 'Editing a practice\'s main display image and main display image alt te
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
         end
-        expect(page).to have_field('practice[main_display_image_alt_text]', with: '')
+        # unless the user removes the image AND then saves, the alt text field will remain populated
+        expect(page).to have_field('practice[main_display_image_alt_text]', with: 'Some awesome alt text')
       end
     end
 
