@@ -64,7 +64,7 @@ class SavePracticeService
       end
 
       # if the user tries to add alt text for the main display image when they have not yet uploaded one, do not save the text
-      if @practice_params[:main_display_image_alt_text].present? && @practice.main_display_image.nil?
+      if @practice_params[:main_display_image_alt_text].present? && !@practice.main_display_image.present?
         @practice_params[:main_display_image_alt_text] = nil
       end
 
