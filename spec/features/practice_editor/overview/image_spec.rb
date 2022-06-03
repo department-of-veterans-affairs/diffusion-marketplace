@@ -10,10 +10,34 @@ describe 'Practice editor', type: :feature, js: true do
     @img_path_2 = "#{Rails.root}/spec/assets/charmander.png"
     @img_path_3 = "#{Rails.root}/spec/assets/SpongeBob.png"
     @img_path_err = "#{Rails.root}/spec/assets/unacceptable_img_size.png"
-    PracticeProblemResource.create(practice: @pr_with_resources, name: 'existing problem image', attachment: File.new(@img_path_1), resource_type: 0)
-    PracticeSolutionResource.create(practice: @pr_with_resources, name: 'existing solution image', attachment: File.new(@img_path_1), resource_type: 0)
-    PracticeResultsResource.create(practice: @pr_with_resources, name: 'existing results image',  attachment: File.new(@img_path_1), resource_type: 0)
-    PracticeMultimedium.create(practice: @pr_with_resources, name: 'existing multimedia image',  attachment: File.new(@img_path_1), resource_type: 0)
+    PracticeProblemResource.create(
+      practice: @pr_with_resources,
+      name: 'existing problem image',
+      attachment: File.new(@img_path_1),
+      resource_type: 0,
+      image_alt_text: 'problem image alt text'
+    )
+    PracticeSolutionResource.create(
+      practice: @pr_with_resources,
+      name: 'existing solution image',
+      attachment: File.new(@img_path_1),
+      resource_type: 0,
+      image_alt_text: 'solution image alt text'
+    )
+    PracticeResultsResource.create(
+      practice: @pr_with_resources,
+      name: 'existing results image',
+      attachment: File.new(@img_path_1),
+      resource_type: 0,
+      image_alt_text: 'results image alt text'
+    )
+    PracticeMultimedium.create(
+      practice: @pr_with_resources,
+      name: 'existing multimedia image',
+      attachment: File.new(@img_path_1),
+      resource_type: 0,
+      image_alt_text: 'multimedia image alt text'
+    )
     @frame_index = { problem: 0, solution: 1, results: 2, multimedia: 3 }
     login_as(@admin, :scope => :user, :run_callbacks => false)
     page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
@@ -27,7 +51,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should not display the image resource form' do
-          expect(page).to have_no_content('Caption')
+          expect(page).to have_no_content('Write a caption that provides context')
           expect(page).to have_no_css('#problem_resources_image_form')
           expect(page).to have_no_css('#solution_resources_image_form')
           expect(page).to have_no_css('#results_resources_image_form')
@@ -45,6 +69,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('IMAGES')
             expect(page).to have_css("img[src*='acceptable_img.jpg']")
             expect(caption_field.value).to eq("existing #{area} image")
+            expect(alt_text_field.value).to eq("#{area} image alt text")
             expect(page).to have_content('Delete entry')
           end
         end
@@ -75,7 +100,7 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('Drag file here or choose from folder')
         expect(page).to have_no_content('Remove image')
         expect(page).to have_no_content('Edit image')
-        expect(page).to have_content('Caption')
+        expect(page).to have_content('Write a caption that provides context')
         expect(caption_field.value).to eq ''
       end
 
@@ -109,6 +134,7 @@ describe 'Practice editor', type: :feature, js: true do
           add_resource
           expect(page).to have_content('Please enter a caption')
           caption_field.set("new practice #{area} image")
+          add_alt_text('Some amazing alt text')
           add_resource
           expect(find_all('.overview_error_msg').length).to eq 0
           is_clear_form
@@ -121,13 +147,14 @@ describe 'Practice editor', type: :feature, js: true do
           check_crop_values 2
           expect(page).to have_content('IMAGES')
           expect(caption_field.value).to eq("new practice #{area} image")
+          expect(alt_text_field.value).to eq('Some amazing alt text')
           expect(page).to have_content('Delete entry')
         end
 
         save_practice
         visit practice_path(@pr_no_resources)
         expect(page).to have_content("Images")
-        expect(page).to have_css("img[src*='charmander.png']")
+        expect(page).to have_css("img[src*='charmander.png'][alt='Some amazing alt text']")
         expect(page).to have_content("new practice #{area} image")
       end
 
@@ -145,6 +172,31 @@ describe 'Practice editor', type: :feature, js: true do
 
       it 'multimedia section - should save image' do
         complete_add_image_test 'multimedia'
+      end
+
+      it 'should allow the user to add multiple images to one resource type' do
+        # add one image to results resource type
+        complete_add_image_test 'results'
+        # now add another
+        visit practice_overview_path(@pr_no_resources)
+        area_name = set_area_name 'results'
+        click_image_form 'results'
+        within(:css, "##{area_name}_image_form") do
+          is_clear_form
+          add_resource
+          upload_image @img_path_3
+          caption_field.set("another new practice results image")
+          add_alt_text('Some spectacular alt text')
+          add_resource
+        end
+        # go back to the practice's show page and make sure both images are present
+        save_practice
+        visit practice_path(@pr_no_resources)
+        expect(page).to have_content("Images")
+        expect(page).to have_css("img[src*='charmander.png'][alt='Some amazing alt text']")
+        expect(page).to have_content("new practice results image")
+        expect(page).to have_css("img[src*='SpongeBob.png'][alt='Some spectacular alt text']")
+        expect(page).to have_content("another new practice results image")
       end
     end
 
@@ -165,6 +217,7 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, "#display_#{area_name}_image") do
           expect(page).to have_css('img')
           expect(caption_field.value).to eq("new practice #{area} image")
+          expect(alt_text_field.value).to eq('')
           check_crop_values 0
           crop_image
           check_crop_values 2
@@ -204,6 +257,7 @@ describe 'Practice editor', type: :feature, js: true do
         area_name = set_area_name area
         within(:css, "#display_#{area_name}_image") do
           caption_field.set("edited practice #{area} image")
+          add_alt_text('Some wonderful edited alt text')
           check_crop_values 0
           crop_image
           check_crop_values 1
@@ -211,7 +265,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         save_practice
         visit practice_path(@pr_with_resources)
-        expect(page).to have_css("img[src*='acceptable_img.jpg']")
+        expect(page).to have_css("img[src*='acceptable_img.jpg'][alt='Some wonderful edited alt text']")
         expect(page).to have_content("edited practice #{area} image")
       end
 
@@ -242,17 +296,20 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, "#display_#{area_name}_image") do
           click_button('Delete entry')
           expect(page).to have_no_content("existing #{area} image")
+          expect(page).to have_no_content("#{area} image alt text")
         end
 
         within(:css, "##{area}_section") do
           click_image_form area
           upload_image @img_path_3
           caption_field.set("new practice #{area} image")
+          add_alt_text('Some extravagant alt text')
           add_resource
         end
 
         within(:css, "#display_#{area_name}_image") do
           expect(caption_field.value).to eq("new practice #{area} image")
+          expect(alt_text_field.value).to eq('Some extravagant alt text')
           click_button('Delete entry')
         end
 
@@ -289,6 +346,14 @@ describe 'Practice editor', type: :feature, js: true do
 
   def caption_field
     find_all('input[type="text"]').first
+  end
+
+  def alt_text_field
+    find('.resource-image-alt-text')
+  end
+
+  def add_alt_text(text)
+    find('.resource-image-alt-text').set(text)
   end
 
   def crop_image
@@ -341,7 +406,10 @@ describe 'Practice editor', type: :feature, js: true do
     visit practice_path(@pr_with_resources)
     expect(page).to have_content('Overview')
     expect(page).to have_content("Images")
-    expect(page).to have_css("img[src*='acceptable_img.jpg']")
+    expect(page).to have_css("img[src*='acceptable_img.jpg'][alt='problem image alt text']")
+    expect(page).to have_css("img[src*='acceptable_img.jpg'][alt='solution image alt text']")
+    expect(page).to have_css("img[src*='acceptable_img.jpg'][alt='results image alt text']")
+    expect(page).to have_css("img[src*='acceptable_img.jpg'][alt='multimedia image alt text']")
     expect(page).to have_content("existing problem image")
     expect(page).to have_content("existing solution image")
     expect(page).to have_content("existing problem image")

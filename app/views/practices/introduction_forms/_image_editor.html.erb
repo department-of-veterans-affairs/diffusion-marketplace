@@ -11,18 +11,21 @@
       If you want to upload an image that features a Veteran you must have
       <%= link_to 'Form 3203', Constants::FORM_3203_URL, target: '_blank' %>.
       Waivers must be filled out with the 'External to VA' check box selected.
+      Please avoid using logos or images with text.
     </label>
     <div class="dm-image-error-text margin-bottom-2 usa-alert usa-alert--error usa-alert--slim display-none">
       <p class="usa-alert__body"></p>
     </div>
     <%= form.file_field :main_display_image, class: "dm-cropper-upload-image usa-file-input", accept: 'image/*' %>
+    <% has_main_display_image = practice.main_display_image.present? %>
     <div class="dm-cropper-images-container grid-col-6 margin-top-2">
-      <% if practice.main_display_image.present? %>
+      <% if has_main_display_image %>
+        <% alt_text = practice.main_display_image_alt_text %>
         <%= image_tag practice.main_display_image_s3_presigned_url(),
-                      alt: "practice thumbnail for #{practice.name}",
+                      alt: "#{alt_text if alt_text.present?}",
                       class: 'dm-cropper-thumbnail-original display-none' %>
         <%= image_tag practice.main_display_image_s3_presigned_url(:thumb),
-                      alt: "practice thumbnail for #{practice.name}",
+                      alt: "#{alt_text if alt_text.present?}",
                       class: 'dm-cropper-thumbnail-modified' %>
       <% end %>
     </div>
@@ -35,12 +38,12 @@
     <a class="dm-cropper-save-edit usa-button display-none" aria-controls='image-save-edit' aria-expanded='false'>
       Save edits
     </a>
-    <a class="dm-cropper-edit-mode usa-button usa-button--outline <%= practice.main_display_image.present? ? '' : 'display-none' %>" aria-controls="image-crop" aria-expanded='false'>
+    <a class="dm-cropper-edit-mode usa-button usa-button--outline <%= has_main_display_image ? '' : 'display-none' %>" aria-controls="image-crop" aria-expanded='false'>
       Edit image
     </a>
     <div class="dm-cropper-delete-image">
-      <%= form.label :delete_main_display_image, 'Remove image', class: "dm-button--unstyled-warning dm-cropper-delete-image-label #{practice.main_display_image.present? ? '' : 'display-none' }" %>
-      <%= form.check_box :delete_main_display_image, { class: "dm-cropper-delete-image usa-checkbox__input #{practice.main_display_image.present? ? '' : 'display-none'}" }, 'true', 'false' %>
+      <%= form.label :delete_main_display_image, 'Remove image', class: "dm-button--unstyled-warning dm-cropper-delete-image-label margin-bottom-0 #{has_main_display_image ? '' : 'display-none' }" %>
+      <%= form.check_box :delete_main_display_image, { class: "dm-cropper-delete-image usa-checkbox__input #{has_main_display_image ? '' : 'display-none'}" }, 'true', 'false' %>
     </div>
   </div>
 </section>

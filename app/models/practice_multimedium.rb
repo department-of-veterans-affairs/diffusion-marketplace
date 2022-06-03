@@ -1,5 +1,7 @@
 class PracticeMultimedium < ApplicationRecord
   acts_as_list scope: :practice
+
+  before_validation :trim_whitespace
   after_create :attachment_crop
   after_save :reset_s3_signer_cache
 
@@ -28,5 +30,9 @@ class PracticeMultimedium < ApplicationRecord
 
   def reset_s3_signer_cache
     Cache.new.delete_cache_key('s3_signer')
+  end
+
+  def trim_whitespace
+    self.image_alt_text&.strip!
   end
 end

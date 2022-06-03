@@ -583,7 +583,7 @@ class PracticesController < ApplicationController
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
                                      :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
                                      :initiating_facility_type, :initiating_department_office_id,
-                                     :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,
+                                     :main_display_image, :main_display_image_alt_text, :crop_x, :crop_y, :crop_h, :crop_w,
                                      :tagline, :delete_main_display_image,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
                                      :overview_problem, :overview_solution, :overview_results, :maturity_level,

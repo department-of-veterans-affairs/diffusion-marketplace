@@ -63,6 +63,11 @@ class SavePracticeService
         update_practice_partner_practices
       end
 
+      # if the user tries to add alt text for the main display image when they have not yet uploaded one, do not save the text
+      if @practice_params[:main_display_image_alt_text].present? && @practice_params[:main_display_image].nil? && !@practice.main_display_image.present?
+        @practice_params[:main_display_image_alt_text] = nil
+      end
+
       updated = @practice.update(@practice_params)
       rescue_method(:update_department_practices)
       rescue_method(:remove_attachments)
@@ -354,7 +359,7 @@ class SavePracticeService
 
   def remove_main_display_image
     if @practice_params[:delete_main_display_image].present? && @practice_params[:delete_main_display_image] == 'true'
-      @practice.update(main_display_image: nil)
+      @practice.update(main_display_image: nil, main_display_image_alt_text: nil)
     end
   end
 

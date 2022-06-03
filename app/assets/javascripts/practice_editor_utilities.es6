@@ -197,11 +197,14 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         `;
 
         link_form.append(deleteEntryHtml);
-        $.each(link_form.find('input'), function (i, ele) {
-            ele.required = true;
-            $(ele).addClass('dm-required-field');
+        $.each(link_form.find('input, textarea'), function (i, ele) {
+            if ($(ele).is('input')) {
+                ele.required = true;
+                $(ele).addClass('dm-required-field');
+            }
             $(ele).attr('name', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
             $(ele).attr('id', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
+            $(ele).attr('image_alt_text', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
         });
         $.each(link_form.find('label'), function (i, ele) {
             $(ele).attr('for', $(ele).attr('for').replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
@@ -216,7 +219,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         document.getElementById(container).style.display = 'block';
 
         //clear form_inputs
-        $.each(formToClear.find('input:not([type="hidden"])'), function (i, ele) {
+        $.each(formToClear.find('input:not([type="hidden"]), textarea:not([type="hidden"])'), function (i, ele) {
             $(ele).val(null);
 
             if (ele.type === 'file' && sType === 'file') {
