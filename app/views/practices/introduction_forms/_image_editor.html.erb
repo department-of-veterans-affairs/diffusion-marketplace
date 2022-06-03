@@ -22,10 +22,10 @@
       <% if has_main_display_image %>
         <% alt_text = practice.main_display_image_alt_text %>
         <%= image_tag practice.main_display_image_s3_presigned_url(),
-                      alt: alt_text.present? ? alt_text : "practice thumbnail for #{practice.name}",
+                      alt: "#{alt_text if alt_text.present?}",
                       class: 'dm-cropper-thumbnail-original display-none' %>
         <%= image_tag practice.main_display_image_s3_presigned_url(:thumb),
-                      alt: alt_text.present? ? alt_text : "practice thumbnail for #{practice.name}",
+                      alt: "#{alt_text if alt_text.present?}",
                       class: 'dm-cropper-thumbnail-modified' %>
       <% end %>
     </div>

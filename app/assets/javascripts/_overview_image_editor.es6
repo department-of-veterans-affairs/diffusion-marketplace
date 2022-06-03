@@ -116,8 +116,7 @@
 
       reader.onload = (function() {
         return function(event) {
-          let resource_area = $imgImgsContainer.closest('section').parent().attr('id').split('_')[0];
-          let imgOrgElement = `<img src="${event.target.result}" class="dm-cropper-thumbnail-original" alt="Queued ${resource_area} image"/>`;
+          let imgOrgElement = `<img src="${event.target.result}" class="dm-cropper-thumbnail-original" alt=""/>`;
           $imgImgsContainer.empty();
           $imgImgsContainer.append(imgOrgElement);
           $errorText.addClass('display-none')

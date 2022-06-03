@@ -228,8 +228,7 @@ describe 'Practice editor', type: :feature, js: true do
         visit practice_path(@pr_no_resources)
         expect(page).to have_content("Images")
         expect(page).to have_content("edited practice #{area} image")
-        # make sure the default alt text is added to the image
-        expect(page).to have_css("img[src*='charmander.png'][alt='#{area.capitalize} image 1']")
+        expect(page).to have_css("img[src*='charmander.png']")
       end
 
       it 'problem section - should allow user to edit newly added image' do
