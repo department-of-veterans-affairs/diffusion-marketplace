@@ -7,8 +7,7 @@
           <%= render partial: "shared/messages", locals: {small_text: false} %>
           <h1 class="margin-bottom-3">Instructions</h1>
           <div class="usa-prose-intro">
-            Please follow these instructions to build your innovation page. Your page is modular, meaning that most sections in the editor are optional and you can choose to fill out only the sections
-            that make sense for your innovation.
+            Follow these instructions to build your innovation page. Your page is modular, meaning that some sections in the editor are optional. You can choose to fill out only the sections that make sense for your innovation. Required fields are denoted with an asterisk (*).
           </div>
         </section>
           <section class="desktop:grid-col-11 margin-bottom-5">
@@ -24,11 +23,10 @@
             <h2>Formatting and editing</h2>
             <div>
               <ul class="line-height-26 font-sans-md instructions-list padding-left-0">
-                <li class="small-disc margin-bottom-1">Please fill out all fields marked as required. All other fields are optional.</li>
+                <li class="small-disc margin-bottom-1">Please fill out all fields marked with an asterisk(*). All other fields are optional.</li>
                 <li class="small-disc margin-bottom-1">Ensure your work is accurate, formatted consistently, and as complete as possible before publishing.</li>
                 <li class="small-disc margin-bottom-1">Use sentence case (only capitalizing the first word in titles) and spell out acronyms. Capitalize proper nouns and names.</li>
                 <li class="small-disc margin-bottom-1">You will be able to edit your innovation once it’s published.</li>
-                <li class="small-disc"><%= link_to "View an example", practice_path(ENV.fetch('EXAMPLE_PRACTICE_SLUG', 'project-happen')), class: 'usa-link' %> of a well-formatted completed innovation.</li>
               </ul>
             </div>
           </section>
