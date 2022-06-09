@@ -147,12 +147,9 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
         select('VISN-6', :from => 'editor_visn_select')
         find('#practice-editor-save-button').click
         visit practice_path(@pr_max)
-
-        new_window = window_opened_by { click_link 'VISN-6' }
-        within_window new_window do
+        click_link 'VISN-6'
           expect(page).to have_content('6: VA Mid-Atlantic Health Care Network')
           expect(page).to have_content('This VISN has 2 facilities')
-        end
       end
     end
 
