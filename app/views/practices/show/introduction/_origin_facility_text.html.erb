@@ -6,11 +6,9 @@
   <span class="origin-facilities-display-text">
     <% origin_facilities.each_with_index do |facility, index| %>
       <% if facility[:street_address_state].present? %>
-        <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: "usa-link"%>
-        <%= ', ' unless index + 1 === origin_facilities_count %>
+      <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: "usa-link"%><%= ', ' unless index + 1 === origin_facilities_count %>
       <% else %>
-        <%= link_to "#{facility.official_station_name}", clinical_resource_hub_path(facility), class: "usa-link"%>
-        <%= ', ' unless index + 1 === origin_facilities_count %>
+        <%= link_to "#{facility.official_station_name}", clinical_resource_hub_path(facility), class: "usa-link"%><%= ', ' unless index + 1 === origin_facilities_count %>
       <% end %>
     <% end %>
   </span>
