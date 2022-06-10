@@ -14,7 +14,7 @@
   </span>
 <% elsif @practice.visn? %>
   <% visns = Visn.cached_visns.select(:id, :number) %>
-  <%= link_to display_name, visn_path(visns.get_by_initiating_facility(@practice.initiating_facility.to_i)), target: '_blank', class: "usa-link" %>
+  <%= link_to display_name, visn_path(visns.get_by_initiating_facility(@practice.initiating_facility.to_i)), class: "usa-link" %>
 <% else %>
   <% if display_name.length > 180 %>
     <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
