@@ -176,6 +176,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_no_content('Birmingham VA Medical Center (Birmingham-Alabama)')
         expect(page).to have_content('VISN-1')
         # make sure the VISN text is a link to the VISN's show page
+        click_link 'VISN-1'
         expect(page).to have_content('1: VA New England Healthcare System')
         expect(page).to have_content('This VISN has 0 facilities')
 
