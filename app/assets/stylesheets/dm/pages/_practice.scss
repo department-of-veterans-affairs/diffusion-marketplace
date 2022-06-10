@@ -803,9 +803,22 @@ li.small-disc:before {
 /*********************************
  EDITING GUIDE
 **********************************/
-.editing-guide-help {
+
+#dm-editing-guide-modal {
+  .dm-editing-guide-modal-close {
+    background-color: inherit;
+    color: #2e2e2e;
+    @include u-margin-right(0);
+    @include u-padding-right(0);
+    @include u-position('absolute');
+    top: 46px;
+    right: 22px;
+  }
+
+  .editing-guide-help {
   background-color: #faf3d1;
   border-color: #FFBE2E;
+  }
 }
 
 /*********************************
