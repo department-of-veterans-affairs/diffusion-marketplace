@@ -256,8 +256,9 @@ class PracticesController < ApplicationController
   end
 
   # GET /practices/1/instructions
+  # Redirected now that instructions open in modal 6/2022
   def instructions
-    render 'practices/form/instructions'
+    redirect_to_metrics_path
   end
 
   # /practices/slug/overview
@@ -359,34 +360,34 @@ class PracticesController < ApplicationController
   # /practices/slug/impact
   # redirect to instructions page due to removal of impact page 11/19/20
   def impact
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/documentation
   # redirect to instructions page due to removal of impact page 11/19/20
   def documentation
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/resources
   # redirect to instructions page due to removal of impact page 11/19/20
   def resources
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/departments
   def departments
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/timeline
   def timeline
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/risk_and_mitigation
   def risk_and_mitigation
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/contact
@@ -401,7 +402,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/checklist
   def checklist
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   def published
@@ -546,8 +547,8 @@ class PracticesController < ApplicationController
     end
   end
 
-  def redirect_to_instructions_path
-    redirect_to practice_instructions_path(@practice)
+  def redirect_to_metrics_path
+    redirect_to practice_metrics_path(@practice)
   end
 
   # Use callbacks to share common setup or constraints between actions.
