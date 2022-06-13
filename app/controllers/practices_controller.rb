@@ -335,7 +335,7 @@ class PracticesController < ApplicationController
   end
 
   def practice_name
-    render 'practices/form/instructions'
+    render 'practices/form/metrics'
   end
 
   def implementation
