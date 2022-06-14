@@ -807,7 +807,7 @@ li.small-disc:before {
 #dm-editing-guide-modal {
   .dm-editing-guide-modal-close {
     background-color: inherit;
-    color: #2e2e2e;
+    color: color($theme-color-base-darkest);
     @include u-margin-right(0);
     @include u-padding-right(0);
     @include u-position('absolute');
@@ -816,8 +816,8 @@ li.small-disc:before {
   }
 
   .editing-guide-help {
-  background-color: #faf3d1;
-  border-color: #FFBE2E;
+    background-color: color($theme-color-warning-lighter);
+    border-color: color($theme-color-warning);
   }
 }
 
