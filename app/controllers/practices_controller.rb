@@ -30,6 +30,7 @@ class PracticesController < ApplicationController
   # GET /innovations/1
   # GET /practices/1.json
   def show
+    @allowed_hosts = ['https://dev.marketplace.va.gov', 'https://staging.marketplace.va.gov', 'https://marketplace.va.gov', 'http://localhost:3200']
     @search_terms = Naturalsorter::Sorter.sort(@practice.categories.get_category_names.sort, true)
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
