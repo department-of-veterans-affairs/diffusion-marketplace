@@ -81,11 +81,7 @@
         <% end %>
         <div class="margin-top-1 width-full line-height-26">
           <li class="small-disc"><%= pr.description %>
-            <% if @allowed_hosts.include?(pr.link_url)  %>
-              <a class="usa-link" href="<%= pr.link_url %>"> <%= pr.name %></a>
-             <% else %>
-              <a class="usa-link usa-link--external" target="_blank" href="<%= pr.link_url %>" %><%= pr.name %></a>
-             <% end %>
+              <a class="usa-link <%= @allowed_hosts.include?(pr.link_url) ? '' : 'usa-link--external' %>" <%= @allowed_hosts.include?(pr.link_url) ? '' : 'target="_blank" ' %> href="<%= pr.link_url %>"> <%= pr.name %></a>
           </li>
         </div>
       <% end %>
