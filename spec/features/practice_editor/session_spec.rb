@@ -34,9 +34,6 @@ describe 'Practice editor sessions', type: :feature do
     visit practice_overview_path(@practice)
     expect(page).to have_content(locked_msg)
 
-    visit practice_contact_path(@practice)
-    expect(page).to have_content(locked_msg)
-
     visit practice_about_path(@practice)
     expect(page).to have_content(locked_msg)
   end
