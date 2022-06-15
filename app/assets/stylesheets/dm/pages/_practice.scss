@@ -230,10 +230,6 @@
   resize: none;
 }
 
-.milestone-textarea {
-  width: 640px !important;
-}
-
 .hidden-timeline, .hidden-risk-mitigation, .hidden-impact, .hidden-va-employee, .hidden-practice-creator {
   display: none;
 }
@@ -829,16 +825,18 @@ li.small-disc:before {
   }
 }
 
+.practice-editor-origin-li, .dm-practice-editor-practice-partner-li {
+  .usa-combo-box {
+    max-width: unset !important;
+  }
+}
+
 .dm-practice-editor-practice-partner-li {
   .usa-combo-box__input {
     margin-top: -30px !important;
   }
 }
 .practice-editor-origin-li {
-   .usa-combo-box {
-     max-width: unset !important;
-   }
-
   .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
     top: 0.5rem;
   }
