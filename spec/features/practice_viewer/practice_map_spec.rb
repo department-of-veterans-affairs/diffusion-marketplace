@@ -151,12 +151,10 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       # click on the generated marker to open the modal
       find('div[style*="width: 31px"][role="button"]').click
       # make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
-      new_window = window_opened_by { click_link('Farmington VA Clinic (Farmington-New Mexico)') }
-      within_window new_window do
+      click_link('Farmington VA Clinic (Farmington-New Mexico)')
         expect(page).to have_content('Farmington VA Clinic')
         expect(page).to have_content('This facility has created')
         expect(page).to have_content('Main number:')
-      end
     end
   end
 

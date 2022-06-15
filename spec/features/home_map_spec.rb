@@ -300,12 +300,10 @@ describe 'Map of Diffusion', type: :feature do
     # click on the first generated marker
     find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
     # in the marker modal, make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
-    new_window_1 = window_opened_by { click_link('Caribou VA Clinic') }
-    within_window new_window_1 do
+    click_link('Caribou VA Clinic')
       expect(page).to have_content('Caribou VA Clinic')
       expect(page).to have_content('This facility has created')
       expect(page).to have_content('Main number:')
-    end
 
     # switch back to the first window and test the larger modal after clicking 'View more'
     page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
