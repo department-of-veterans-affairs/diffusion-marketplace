@@ -808,6 +808,11 @@ li.small-disc:before {
     right: 22px;
   }
 
+  .usa-modal__main {
+    margin-left: 41px;
+    max-width: 47rem;
+  }
+
   .editing-guide-help {
     background-color: color($theme-color-warning-lighter);
     border-color: color($theme-color-warning);
