@@ -304,19 +304,6 @@ describe 'Map of Diffusion', type: :feature do
       expect(page).to have_content('Caribou VA Clinic')
       expect(page).to have_content('This facility has created')
       expect(page).to have_content('Main number:')
-
-    # switch back to the first window and test the larger modal after clicking 'View more'
-    #page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
-    page.evaluate_script('window.history.back()')
-    find('#homeMapMarkerViewMoreTrigger-402GA').click
-
-    within(:css, '#homeMapMarkerViewMoreModal-402GA') do
-      click_link('Caribou VA Clinic')
-        expect(page).to have_content('Caribou VA Clinic')
-        expect(page).to have_content('This facility has created')
-        expect(page).to have_content('Main number:')
-
-    end
   end
 
   it 'should only display markers for facilities that have adoptions for public-facing practices if the user is a guest' do
