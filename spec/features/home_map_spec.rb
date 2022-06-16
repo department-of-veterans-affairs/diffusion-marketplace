@@ -311,12 +311,11 @@ describe 'Map of Diffusion', type: :feature do
     find('#homeMapMarkerViewMoreTrigger-402GA').click
 
     within(:css, '#homeMapMarkerViewMoreModal-402GA') do
-      new_window_2 = window_opened_by { click_link('Caribou VA Clinic') }
-      within_window new_window_2 do
+      click_link('Caribou VA Clinic')
         expect(page).to have_content('Caribou VA Clinic')
         expect(page).to have_content('This facility has created')
         expect(page).to have_content('Main number:')
-      end
+
     end
   end
 
