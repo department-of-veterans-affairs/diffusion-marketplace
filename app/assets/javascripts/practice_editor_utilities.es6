@@ -134,7 +134,7 @@ function styleOriginFacility($newEl,
 
         $.each($originFacilityElements, (i, el) => {
             const $separator = $(el).find('.add-another-separator');
-            if ($(el).data('id') !== dataId) {
+            if ($(el).data('id') !== dataId || dataId.length === 0) {
                 if ($separator.length === 0) {
                     const addAnotherSeparatorHtml = `<div class="grid-col-${separatorCols} border-y-1px border-gray-5 add-another-separator margin-y-2"></div>`;
                     $(el).append(addAnotherSeparatorHtml);
