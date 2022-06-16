@@ -27,7 +27,7 @@ describe 'Practice editor', type: :feature, js: true do
 
             within(:css, editing_guide) do
                 expect(page).to have_content('Follow these instructions to build your innovation page')
-                expect(page).to have_content("What you'll need")
+                expect(page).to have_content("What you need")
                 expect(page).to have_content('Privacy policy')
                 expect(page).to have_content('Formatting and editing')
                 expect(page).to have_link(href: Constants::FORM_3203_URL)
