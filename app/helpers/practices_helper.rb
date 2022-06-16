@@ -4,6 +4,10 @@ module PracticesHelper
     @office_data["departments"][0]["offices"].to_json
   end
 
+  def url_is_internal(s_url)
+    s_url.downcase().include?('marketplace.va.gov') || s_url.downcase().include?('localhost')
+  end
+
   def options_for_states
     @state_options = us_states
     x = 0
