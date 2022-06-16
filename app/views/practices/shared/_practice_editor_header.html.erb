@@ -6,6 +6,7 @@
   save_btn_classes = @practice.published ? 'dm-button--success margin-right-0' : 'dm-button--inverse-secondary margin-right-2'
 %>
 <%= render partial: 'practices/shared/close_modal' unless is_editors_or_adoptions %>
+<%= render partial: 'practices/shared/editing_guide_modal' %>
 
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
 <div class="usa-overlay"></div>
@@ -44,8 +45,7 @@
             <%= link_to 'Metrics', practice_metrics_path(@practice), class: "margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link #{'usa-current' if params[:action] === 'metrics' }" %>
           </li>
           <li class="usa-nav__primary-item">
-            <% # TODO CHANGE THIS TO OPEN EDITING GUIDE MODAL %>
-            <%= link_to 'Editing guide', practice_instructions_path(@practice), class: "margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link" %>
+            <a href="#dm-editing-guide-modal" class="margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link" aria-controls="dm-editing-guide-modal" data-open-modal>Editing guide</a>
           </li>
           <li class="usa-nav__primary-item">
             <%= link_to 'Edit your innovation', practice_editors_path(@practice), class: "margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link #{'usa-current' if NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action]) }" %>

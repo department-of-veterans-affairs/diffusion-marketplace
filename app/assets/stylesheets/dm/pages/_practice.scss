@@ -161,13 +161,6 @@
   margin-bottom: 44px;
 }
 
-.instructions-list {
-  padding-left: 20px;
-
-  li {
-    margin-bottom: 16px;
-  }
-}
 
 .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash,
 .va-employee-trash, .dm-origin-trash, .documentation-trash, .permission-trash, .resource-trash {
@@ -797,6 +790,32 @@ li.small-disc:before {
 #contact {
   .report-abuse-cancel {
     border: none !important;
+  }
+}
+
+/*********************************
+ EDITING GUIDE
+**********************************/
+
+#dm-editing-guide-modal {
+  .dm-editing-guide-modal-close {
+    background-color: inherit;
+    color: color($theme-color-base-darkest);
+    @include u-margin-right(0);
+    @include u-padding-right(0);
+    @include u-position('absolute');
+    top: 46px;
+    right: 22px;
+  }
+
+  .usa-modal__main {
+    margin-left: 41px;
+    max-width: 47rem;
+  }
+
+  .editing-guide-help {
+    background-color: color($theme-color-warning-lighter);
+    border-color: color($theme-color-warning);
   }
 }
 

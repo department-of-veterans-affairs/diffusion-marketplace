@@ -5,8 +5,15 @@
     });
   }
 
+  function preventEditingGuideModalFlickerOnPageLoad() {
+    $(document).arrive('header', { existing: true }, () => {
+      $('#editing-guide-modal').find('.usa-modal').removeClass('display-none');
+    });
+  }
+
   function initPracticeEditorHeaderFns() {
     preventCloseModalFlickerOnPageLoad();
+    preventEditingGuideModalFlickerOnPageLoad();
   }
 
   $(document).on("turbolinks:load", initPracticeEditorHeaderFns);
