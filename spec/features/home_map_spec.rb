@@ -307,7 +307,7 @@ describe 'Map of Diffusion', type: :feature do
 
     # switch back to the first window and test the larger modal after clicking 'View more'
     #page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
-    page.go_back
+    page.evaluate_script('window.history.back()')
     find('#homeMapMarkerViewMoreTrigger-402GA').click
 
     within(:css, '#homeMapMarkerViewMoreModal-402GA') do
