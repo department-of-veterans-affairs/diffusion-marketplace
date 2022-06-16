@@ -33,7 +33,6 @@ Rails.application.routes.draw do
     get '/edit/departments', action: 'departments', as: 'departments'
     get '/edit/timeline', action: 'timeline', as: 'timeline'
     get '/edit/risk_and_mitigation', action: 'risk_and_mitigation', as: 'risk_and_mitigation'
-    get '/edit/contact', action: 'contact', as: 'contact'
     get '/edit/checklist', action: 'checklist', as: 'checklist'
     get '/edit/adoptions', action: 'adoptions', as: 'adoptions'
     post '/edit/create_or_update_diffusion_history/', action: 'create_or_update_diffusion_history', as: 'create_or_update_diffusion_history'
@@ -64,7 +63,6 @@ Rails.application.routes.draw do
   get '/practices/:id/edit/adoptions', to: redirect('/innovations/%{id}/edit/adoptions', status: 302)
   get '/practices/:id/edit/overview', to: redirect('/innovations/%{id}/edit/overview', status: 302)
   get '/practices/:id/edit/implementation', to: redirect('/innovations/%{id}/edit/implementation', status: 302)
-  get '/practices/:id/edit/contact', to: redirect('/innovations/%{id}/edit/contact', status: 302)
   get '/practices/:id/edit/about', to: redirect('/innovations/%{id}/edit/about', status: 302)
 
   resources :practice_partners, path: :partners

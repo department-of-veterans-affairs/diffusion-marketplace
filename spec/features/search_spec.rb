@@ -148,19 +148,6 @@ describe 'Search', type: :feature do
     find('#practice-editor-save-button', visible: false).click
   end
 
-  def publish_practice(practice)
-    update_practice_introduction(practice)
-    visit(practice_adoptions_path(practice))
-    find('#add_adoption_button').click
-    find("label[for*='status_completed']").click
-    find('#editor_facility_select').click
-    find("#editor_facility_select--list--option-0").click
-    find('#adoption_form_submit').click
-    visit(practice_contact_path(practice))
-    fill_in('practice_support_network_email', with: 'dm@va.gov')
-    click_button('Publish')
-  end
-
   def cache_keys
     Rails.cache.redis.keys
   end

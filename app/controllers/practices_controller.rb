@@ -3,7 +3,7 @@ class PracticesController < ApplicationController
   prepend_before_action :skip_timeout, only: [:session_time_remaining]
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,
-                                      :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
+                                      :departments, :timeline, :risk_and_mitigation, :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics, :editors,
                                       :extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :set_facility_data, only: [:show]
@@ -13,11 +13,11 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: :create
-  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
+  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
-  before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
+  before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :adoptions, :about, :implementation]
   before_action :fetch_visns, only: [:show, :search, :introduction]
   before_action :fetch_va_facilities, only: [:show, :search, :metrics, :introduction]
 
@@ -384,11 +384,6 @@ class PracticesController < ApplicationController
   # /practices/slug/risk_and_mitigation
   def risk_and_mitigation
     redirect_to_metrics_path
-  end
-
-  # /practices/slug/contact
-  def contact
-    render 'practices/form/contact'
   end
 
   # /practices/slug/about

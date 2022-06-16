@@ -154,11 +154,6 @@ module NavigationHelper
         empty_breadcrumbs
       end
 
-      # Contact breadcrumbs
-      if action == 'contact'
-        empty_breadcrumbs
-      end
-
       # About breadcrumbs
       if action == 'about'
         empty_breadcrumbs
