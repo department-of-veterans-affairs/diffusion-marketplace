@@ -4,8 +4,12 @@ module PracticesHelper
     @office_data["departments"][0]["offices"].to_json
   end
   def url_is_internal(s_url)
-      allowed_hosts = ['https://dev.marketplace.va.gov', 'https://staging.marketplace.va.gov', 'https://marketplace.va.gov', 'http://localhost:3200']
-      allowed_hosts.include?(s_url.downcase())
+    #allowed_hosts = ['https://dev.marketplace.va.gov', 'https://staging.marketplace.va.gov', 'https://marketplace.va.gov', 'http://localhost:3200']
+    allowed_hosts = ['marketplace.va.gov', 'localhost:3200']
+    allowed_hosts.each do |ah|
+      return true if s_url.downcase().include?(ah)
+    end
+    return false
   end
 
   def options_for_states
