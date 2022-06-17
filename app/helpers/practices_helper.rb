@@ -3,12 +3,10 @@ module PracticesHelper
     @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
     @office_data["departments"][0]["offices"].to_json
   end
-  def url_is_internal(s_url)
-    allowed_hosts = ['marketplace.va.gov', 'localhost:3200']
-    allowed_hosts.each do |ah|
-      return true if s_url.downcase().include?(ah)
-    end
-    return false
+
+  def is_url_internal?(s_url)
+    internal_urls = ['marketplace.va.gov', 'localhost:3200']
+    internal_urls.any? { |url| s_url.downcase.include?(url) }
   end
 
   def options_for_states

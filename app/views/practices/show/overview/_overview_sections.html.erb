@@ -81,7 +81,7 @@
         <% end %>
         <div class="margin-top-1 width-full line-height-26">
           <li class="small-disc"><%= pr.description %>
-              <a class="usa-link <%= url_is_internal(pr.link_url) ? '' : 'usa-link--external' %>" <%= url_is_internal(pr.link_url) ? '' : 'target="_blank" ' %> href="<%= pr.link_url %>"> <%= pr.name %></a>
+              <a class="usa-link <%= is_url_internal?(pr.link_url) ? '' : 'usa-link--external' %>" <%= is_url_internal?(pr.link_url) ? '' : 'target="_blank" ' %> href="<%= pr.link_url %>"> <%= pr.name %></a>
           </li>
         </div>
       <% end %>
