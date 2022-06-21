@@ -23,7 +23,7 @@ namespace :va_facilities do
                   mobile: vaf["Mobile"],
                   parent_station_number: vaf["Parent_Station_Number"],
                   official_parent_station_name: vaf["Parent_Station_Name"],
-                  fy17_parent_station_complexity_level: vaf["Parent_Station_Complexity_Level_2017"],
+                  fy17_parent_station_complexity_level: vaf["Parent_Station_Complexity_Level"],
                   operational_status: vaf["Operational_Status_Active_A_Or_Planned_P_Or_Temporarily_Deactivated_T_Or_Permanently_Deactivated_D"],
                   ownership_type: vaf["Ownership_Type"],
                   delivery_mechanism: vaf["Delivery_Mechanism"],
@@ -92,7 +92,7 @@ namespace :va_facilities do
               facility.mobile = vaf["Mobile"]
               facility.parent_station_number = vaf["Parent_Station_Number"]
               facility.official_parent_station_name = vaf["Parent_Station_Name"]
-              facility.fy17_parent_station_complexity_level = vaf["Parent_Station_Complexity_Level_2017"]
+              facility.fy17_parent_station_complexity_level = vaf["Parent_Station_Complexity_Level"]
               facility.operational_status = vaf["Operational_Status_Active_A_Or_Planned_P_Or_Temporarily_Deactivated_T_Or_Permanently_Deactivated_D"]
               facility.ownership_type = vaf["Ownership_Type"]
               facility.delivery_mechanism = vaf["Delivery_Mechanism"]
