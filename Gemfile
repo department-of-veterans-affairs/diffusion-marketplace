@@ -116,7 +116,7 @@ gem 'font-awesome-sass', '~> 5.13.0'
 gem 'sidekiq'
 
 gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
-gem 'mechanize', '2.7.7'
+gem 'mechanize', '2.8.5'
 
 gem 'roo', '~> 2.8.0'
 

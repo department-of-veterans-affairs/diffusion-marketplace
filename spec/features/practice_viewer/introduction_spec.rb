@@ -138,24 +138,19 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       end
 
       it 'should provide a link for each origin VA facility or VISN that directs the user to the show page of that facility/VISN' do
-        new_window = window_opened_by { click_link('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)') }
-        within_window new_window do
-          expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park')
-          expect(page).to have_content('This facility has created')
-          expect(page).to have_content('Main number:')
-        end
+        click_link('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
+        expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park')
+        expect(page).to have_content('This facility has created')
+        expect(page).to have_content('Main number:')
         visit practice_introduction_path(@pr_max)
         page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
         find('#initiating_facility_type_visn').sibling('label').click
         select('VISN-6', :from => 'editor_visn_select')
         find('#practice-editor-save-button', visible: false).click
         visit practice_path(@pr_max)
-
-        new_window = window_opened_by { click_link 'VISN-6' }
-        within_window new_window do
+        click_link 'VISN-6'
           expect(page).to have_content('6: VA Mid-Atlantic Health Care Network')
           expect(page).to have_content('This VISN has 2 facilities')
-        end
       end
     end
 

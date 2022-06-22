@@ -85,7 +85,9 @@
           <% pr.link_url = "http://" + pr.link_url %>
         <% end %>
         <div class="margin-top-1 width-full line-height-26">
-          <li class="small-disc"><%= pr.description %> <a class="usa-link <%= pr.link_url.downcase().include?('marketplace.gov') ? '' : 'usa-link--external' %>" href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
+          <li class="small-disc"><%= pr.description %>
+              <a class="usa-link <%= is_url_internal?(pr.link_url) ? '' : 'usa-link--external' %>" <%= is_url_internal?(pr.link_url) ? '' : 'target="_blank" ' %> href="<%= pr.link_url %>"> <%= pr.name %></a>
+          </li>
         </div>
       <% end %>
     </div>
