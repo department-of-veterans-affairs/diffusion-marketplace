@@ -12,9 +12,8 @@ ActiveAdmin.register_page "Dashboard" do
     helper_method :create_search_count_totals_table
     before_action :set_dashboard_values
 
-    def site_visits(start_time, end_time)
-      # is_duplicate was added to "properties" to remove duplicate 'Site visit' and 'Practice show' counts as a result of turbolinks loading the page twice, triggering two ahoy_event to be saved
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where(time: start_time..end_time).group("properties->>'ip_address'").count
+    def site_visits_count(start_time, end_time)
+      Ahoy::Event.site_visits_by_time_range(start_time, end_time).size
     end
 
     def custom_page_visits_by_range(start_time, end_time, page)
@@ -61,10 +60,10 @@ ActiveAdmin.register_page "Dashboard" do
 
     def set_dashboard_values
       set_date_values
-      @enabled_published_practices = Practice.where(enabled: true, published: true)
+      @approved_enabled_published_practices = Practice.published_enabled_approved
       site_visit_stats = site_visits(@beginning_of_last_month, @end_of_last_month)
-      @practices = @enabled_published_practices.order(name: :asc)
-      @practices_views = @enabled_published_practices.sort_by(&:current_month_views).reverse!
+      @practices_sorted_by_name = @approved_enabled_published_practices.sort_a_to_z
+      @practices_views = @approved_enabled_published_practices.sort_by(&:current_month_views).reverse!
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
       @custom_pages = Page.all.map{ |pg| {slug: pg.slug, group: PageGroup.find(pg.page_group_id).slug }}
@@ -77,9 +76,9 @@ ActiveAdmin.register_page "Dashboard" do
       }
 
       @practices_added_stats = {
-        added_this_month: @enabled_published_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-        added_one_month_ago: @enabled_published_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        total_practices_created: @enabled_published_practices.count
+        added_this_month: @approved_enabled_published_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+        added_one_month_ago: @approved_enabled_published_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+        total_practices_created: @approved_enabled_published_practices.count
       }
 
       @practices_favorited_stats = {
@@ -88,7 +87,7 @@ ActiveAdmin.register_page "Dashboard" do
         total_favorited: UserPractice.where(favorited: true).count
       }
 
-      @practices_favorites = @enabled_published_practices.sort_by(&:current_month_favorited).reverse
+      @practices_favorites = @approved_enabled_published_practices.sort_by(&:current_month_favorited).reverse
 
       @practices_emailed = {
         emails_this_month: get_practice_emails_totals(@beginning_of_current_month, @end_of_current_month),
@@ -101,8 +100,6 @@ ActiveAdmin.register_page "Dashboard" do
         comments_one_month_ago: Commontator::Comment.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
         total_comments: Commontator::Comment.count
       }
-
-      @approved_enabled_published_practices = Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC"))
 
       @practice_views_array = []
       @site_visits_by_month = []
@@ -225,7 +222,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           sheet.add_row ["Bookmarked Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
-          @practices.each do |value|
+          @practices_sorted_by_name.each do |value|
             sheet.add_row [
                               value.name,
                               value.current_month_favorited,
@@ -241,7 +238,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           sheet.add_row ["Comment Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
-          @practices.each do |value|
+          @practices_sorted_by_name.each do |value|
             sheet.add_row [
                               value.name,
                               value.commontator_thread.comments.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
@@ -256,7 +253,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           sheet.add_row ["Email Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
-          @practices.each do |value|
+          @practices_sorted_by_name.each do |value|
             sheet.add_row [
                               value.name,
                               value.emailed_count_by_range(@beginning_of_current_month, @end_of_current_month),
@@ -450,7 +447,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           h4("Bookmarked Counts by Innovation", title: "Number of times each innovation has been bookmarked", class: "dm-tooltip")
 
-          table_for practices do
+          table_for practices_sorted_by_name do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
             column("#{date_headers[:current]}") {|pr| pr.current_month_favorited}
             column("Last Month") {|pr| pr.last_month_favorited}
@@ -467,7 +464,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           h4("Comment Counts by Innovation", title: "Number of comments on each innovation page", class: "dm-tooltip")
 
-          table_for practices do
+          table_for practices_sorted_by_name do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
             column("#{date_headers[:current]}") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_current_month...end_of_current_month).count}
             column("Last Month") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month...end_of_last_month).count}
@@ -485,7 +482,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           h4("Email Counts by Innovation", title: "Number of times an innovation was emailed via the innovation page for each innovation", class: "dm-tooltip")
 
-          table_for(practices, id: "dm-practices-emailed-by-practice") do
+          table_for(practices_sorted_by_name, id: "dm-practices-emailed-by-practice") do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
             column("#{date_headers[:current]}") {|pr| pr.emailed_count_by_range(beginning_of_current_month, end_of_current_month) || 0 }
             column("Last Month") {|pr| pr.emailed_count_by_range(beginning_of_last_month, end_of_last_month) || 0}
