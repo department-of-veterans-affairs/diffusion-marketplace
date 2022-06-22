@@ -3,7 +3,7 @@
 
   function _preventCrisisLineModalFlickerOnPageLoad() {
     $(document).arrive('header', { existing: true }, () => {
-      $('#va-crisis-line-modal').find('.usa-modal').removeClass('display-none');
+      removeDisplayNoneFromModal('#va-crisis-line-modal');
     });
   }
 

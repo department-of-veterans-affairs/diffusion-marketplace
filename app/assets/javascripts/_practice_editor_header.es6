@@ -1,20 +1,14 @@
 (($) => {
-  function preventCloseModalFlickerOnPageLoad() {
-    $(document).arrive("header", { existing: true }, () => {
-      $("#dm-practice-editor-close-modal").find(".usa-modal--lg").removeClass("display-none");
-    });
-  }
+    function preventHeaderModalFlickerOnPageLoad() {
+        $(document).arrive('header', { existing: true }, () => {
+            removeDisplayNoneFromModal('#dm-practice-editor-close-modal');
+            removeDisplayNoneFromModal('#editing-guide-modal');
+        });
+    }
 
-  function preventEditingGuideModalFlickerOnPageLoad() {
-    $(document).arrive('header', { existing: true }, () => {
-      $('#editing-guide-modal').find('.usa-modal').removeClass('display-none');
-    });
-  }
+    function initPracticeEditorHeaderFns() {
+        preventHeaderModalFlickerOnPageLoad();
+    }
 
-  function initPracticeEditorHeaderFns() {
-    preventCloseModalFlickerOnPageLoad();
-    preventEditingGuideModalFlickerOnPageLoad();
-  }
-
-  $(document).on("turbolinks:load", initPracticeEditorHeaderFns);
+    $(document).on("turbolinks:load", initPracticeEditorHeaderFns);
 })(window.jQuery);
