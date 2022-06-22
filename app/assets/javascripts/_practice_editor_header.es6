@@ -2,7 +2,7 @@
     function preventHeaderModalFlickerOnPageLoad() {
         $(document).arrive('header', { existing: true }, () => {
             removeDisplayNoneFromModal('#dm-practice-editor-close-modal');
-            removeDisplayNoneFromModal('#editing-guide-modal');
+            removeDisplayNoneFromModal('#dm-editing-guide-modal');
         });
     }
 
