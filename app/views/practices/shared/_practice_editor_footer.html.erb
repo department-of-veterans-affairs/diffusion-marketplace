@@ -1,6 +1,4 @@
-
 <%
-  # TODO: remove contact from keys
   path_options = {
     editors: {
       back: nil,
@@ -21,10 +19,6 @@
     implementation: {
       back: practice_overview_path(@practice),
       continue: practice_about_path(@practice)
-    },
-    contact: {
-      back: nil,
-      continue: nil
     },
     about: {
       back: practice_implementation_path(@practice),
@@ -53,12 +47,13 @@
     <div class="bg-base-lightest">
       <div class="desktop:padding-y-2 grid-container">
         <div class="grid-row">
-        <%
-          action_as_sym = params[:action].present? ? params[:action].to_sym : nil
-          back_path = path_options[action_as_sym][:back] || nil
-          continue_path = path_options[action_as_sym][:continue] || nil
-        %>
-        <%= render partial: 'practices/shared/back_and_continue_buttons', locals: { back_path: back_path, continue_path: continue_path } %>
+          <%
+            action_as_sym = params[:action].present? ? params[:action].to_sym : nil
+            back_path = path_options[action_as_sym][:back] || nil
+            continue_path = path_options[action_as_sym][:continue] || nil
+          %>
+          <%= render partial: 'practices/shared/back_and_continue_buttons', locals: { back_path: back_path, continue_path: continue_path } %>
+        </div>
       </div>
     </div>
   <% end %>
