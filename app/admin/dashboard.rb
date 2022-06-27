@@ -12,36 +12,28 @@ ActiveAdmin.register_page "Dashboard" do
     helper_method :create_search_count_totals_table
     before_action :set_dashboard_values
 
-    def site_visits_count(start_time, end_time)
-      Ahoy::Event.site_visits_by_time_range(start_time, end_time).size
+    def site_visit_count_by_date_range(start_date, end_date)
+      Ahoy::Event.site_visits_by_date_range(start_date, end_date).size
     end
 
-    def custom_page_visits_by_range(start_time, end_time, page)
-      if page[:slug] === 'home'
-        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' is null").where(time: start_time..end_time).group("properties->>'ip_address'").count
-      else
-        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' = '#{page[:slug]}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
-      end
+    def custom_page_visit_count_by_date_range(page, start_date, end_date)
+      Ahoy::Event.custom_page_visits_by_date_range(page, start_date, end_date).size
     end
 
-    def custom_page_visits(page)
-      if page[:slug] === 'home'
-        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' is null").count
-      else
-        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' = '#{page[:slug]}'").count
-      end
+    def custom_page_visit_count(page)
+      Ahoy::Event.custom_page_visits(page).size
     end
 
     def get_custom_pages_stats(custom_pages)
       traffic_stats = []
       custom_pages.each do |cp|
-        stats = custom_page_visits_by_range(@beginning_of_last_month, @end_of_last_month, cp)
+        stats = custom_page_visit_count_by_date_range(cp, @beginning_of_last_month, @end_of_last_month)
         slug = cp[:slug] === 'home' ? cp[:group] : "#{cp[:group]}/#{cp[:slug]}"
         prop = {
           slug: slug,
           unique_visitors: 0,
           number_of_page_views: 0,
-          total_views: custom_page_visits(cp)
+          total_views: custom_page_visit_count(cp)
         }
 
         if !stats.empty?
@@ -54,51 +46,56 @@ ActiveAdmin.register_page "Dashboard" do
       traffic_stats.sort_by { |pg| pg[:slug] }
     end
 
-    def get_practice_emails_totals(start_time, end_time)
-      Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' is not null").where(time: start_time..end_time).count
+    def get_practice_email_totals_by_date_range(start_date, end_date)
+      Ahoy::Event.practice_emails_excluding_null_practice_id.by_date_range(start_date, end_date).size
     end
 
     def set_dashboard_values
       set_date_values
       @approved_enabled_published_practices = Practice.published_enabled_approved
-      site_visit_stats = site_visits(@beginning_of_last_month, @end_of_last_month)
+      site_visit_stats = site_visit_count_by_date_range(@beginning_of_last_month, @end_of_last_month)
       @practices_sorted_by_name = @approved_enabled_published_practices.sort_a_to_z
-      @practices_views = @approved_enabled_published_practices.sort_by(&:current_month_views).reverse!
+      # @practices_views = @approved_enabled_published_practices.sort_by(&:current_month_views).reverse!
+      debugger
+      @practice_views_all_time = Ahoy::Event.views_for_multiple_practices(@approved_enabled_published_practices.ids)
+      @all_practice_views_for_current_month = Ahoy::Event.views_by_date_range_for_multiple_practices(
+        @approved_enabled_published_practices.ids, Date.today.beginning_of_month, Date.today.end_of_month
+      ).group(:properties).count.sort_by { |key, value| value }.reverse!
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
-      @custom_pages = Page.all.map{ |pg| {slug: pg.slug, group: PageGroup.find(pg.page_group_id).slug }}
+      @custom_pages = Page.all.map { |pg| {slug: pg.slug, group: PageGroup.find(pg.page_group_id).slug } }
       @custom_pages_traffic_stats = get_custom_pages_stats(@custom_pages)
+
+      debugger
 
       @general_traffic_stats = {
         unique_visitors: site_visit_stats.keys.length,
         number_of_page_views: site_visit_stats.sum {|_k, v| v},
-        total_accounts: User.all.count
+        total_accounts: User.all.size
       }
 
       @practices_added_stats = {
-        added_this_month: @approved_enabled_published_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-        added_one_month_ago: @approved_enabled_published_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        total_practices_created: @approved_enabled_published_practices.count
+        added_this_month: @approved_enabled_published_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).size,
+        added_one_month_ago: @approved_enabled_published_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).size,
+        total_practices_created: @approved_enabled_published_practices.size
       }
 
       @practices_favorited_stats = {
-        favorited_this_month: UserPractice.where(time_favorited: @beginning_of_current_month..@end_of_current_month).count,
-        favorited_one_month_ago: UserPractice.where(time_favorited: @beginning_of_last_month..@end_of_last_month).count,
-        total_favorited: UserPractice.where(favorited: true).count
+        favorited_this_month: UserPractice.favorited_by_date_range(@beginning_of_current_month, @end_of_current_month).size,
+        favorited_one_month_ago: UserPractice.favorited_by_date_range(@beginning_of_last_month, @end_of_last_month).size,
+        total_favorited: UserPractice.favorited.size
       }
 
-      @practices_favorites = @approved_enabled_published_practices.sort_by(&:current_month_favorited).reverse
-
       @practices_emailed = {
-        emails_this_month: get_practice_emails_totals(@beginning_of_current_month, @end_of_current_month),
-        emails_one_month_ago: get_practice_emails_totals(@beginning_of_last_month, @end_of_last_month),
-        total_emails: Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' is not null").count
+        emails_this_month: get_practice_email_totals_by_date_range(@beginning_of_current_month, @end_of_current_month),
+        emails_one_month_ago: get_practice_email_totals_by_date_range(@beginning_of_last_month, @end_of_last_month),
+        total_emails: Ahoy::Event.practice_emails.size
       }
 
       @practices_comment_stats = {
-        comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-        comments_one_month_ago: Commontator::Comment.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        total_comments: Commontator::Comment.count
+        comments_this_month: Commontator::Comment.created_by_date_range(@beginning_of_current_month, @end_of_current_month).size,
+        comments_one_month_ago: Commontator::Comment.created_by_date_range(@beginning_of_last_month, @end_of_last_month).size,
+        total_comments: Commontator::Comment.all.size
       }
 
       @practice_views_array = []
@@ -125,14 +122,13 @@ ActiveAdmin.register_page "Dashboard" do
           end
         end
 
-        @new_users[month_and_year] = User.where(created_at: beg_of_month..end_of_month).count
-        @user_visitors[month_and_year] = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where(time: beg_of_month..end_of_month).group(:user_id).count.keys.length
+        @new_users[month_and_year] = User.where(created_at: beg_of_month..end_of_month).size
+        @user_visitors[month_and_year] = Ahoy::Event.site_visits.exclude_null_ips_and_duplicates.where.not(user_id: nil).by_date_range(beg_of_month, end_of_month).group(:user_id).size.keys.length
 
         # Get site visits by month
-        site_visits = site_visits(beg_of_month, end_of_month)
+        site_visits = site_visit_count_by_date_range(beg_of_month, end_of_month)
         site_visit_ct = site_visits.sum {|_k, v| v}
         @site_visits_by_month << [month_and_year, site_visit_ct]
-
         @month_and_year_array << [month_and_year]
         start_date += 1.months
       end
@@ -275,7 +271,6 @@ ActiveAdmin.register_page "Dashboard" do
   end
 
   content title: proc {I18n.t("active_admin.dashboard")} do
-    enabled_published_practices = Practice.where(enabled: true, published: true)
     div(class: 'dashboard-legend-container') do
       div(class: 'dashboard-legend') do
         h3 do
@@ -313,11 +308,11 @@ ActiveAdmin.register_page "Dashboard" do
         end # column
         user_info = [{
                          in_the_last: 'New Users',
-                         '24_hours': User.where('created_at >= ?', 1.day.ago).count,
-                         week: User.where('created_at >= ?', 1.week.ago).count,
-                         month: User.where('created_at >= ?', 1.month.ago).count,
-                         three_months: User.where('created_at >= ?', 3.months.ago).count,
-                         year: User.where('created_at >= ?', 1.year.ago).count
+                         '24_hours': User.created_by_date(1.day.ago).size,
+                         week: User.created_by_date(1.week.ago).size,
+                         month: User.created_by_date(1.month.ago).size,
+                         three_months: User.created_by_date(3.months.ago).size,
+                         year: User.created_by_date(1.year.ago).size
                      }, {
                          in_the_last: 'Unique User Visits',
                          '24_hours': Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.day.ago).group(:user_id).count.keys.length,
@@ -348,13 +343,38 @@ ActiveAdmin.register_page "Dashboard" do
         columns do
           column do
             panel('Innovation Views Leaderboard', class: 'dm-panel-container', id: 'dm-practice-views-leaderboard') do
-              table_for practices_views.each, id: 'practice-views-table' do
-                column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
-                column("#{date_headers[:current]}") {|practice| practice.current_month_views}
-                column("#{date_headers[:one_month_ago]}") {|practice| practice.last_month_views}
-                column("#{date_headers[:two_month_ago]}") {|practice| practice.two_months_ago_views}
-                column("#{date_headers[:three_month_ago]}") {|practice| practice.three_months_ago_views}
-                column("Total lifetime views") {|practice| practice.views}
+              table_for practices_views.first.each, id: 'practice-views-table' do |key, value|
+                practice = Practice.find_by(id: key)
+                column(:name) { link_to(practice.name, admin_practice_path(practice)) }
+                column("#{date_headers[:current]}") {
+                  Ahoy::Event.views_by_date_range_for_single_practice(
+                    practice.id,
+                    Date.today.at_beginning_of_month,
+                    Date.today.at_end_of_month
+                  )
+                }
+                column("#{date_headers[:one_month_ago]}") {
+                  Ahoy::Event.views_by_date_range_for_single_practice(
+                    practice.id,
+                    (Date.today - 1.months).at_beginning_of_month,
+                    (Date.today - 1.months).at_end_of_month
+                  )
+                }
+                column("#{date_headers[:two_month_ago]}") {
+                  Ahoy::Event.views_by_date_range_for_single_practice(
+                    practice.id,
+                    (Date.today - 2.months).at_beginning_of_month,
+                    (Date.today - 2.months).at_end_of_month
+                  )
+                }
+                column("#{date_headers[:three_month_ago]}") {
+                  Ahoy::Event.views_by_date_range_for_single_practice(
+                    practice.id,
+                    (Date.today - 3.months).at_beginning_of_month,
+                    (Date.today - 3.months).at_end_of_month
+                  )
+                }
+                column("Total lifetime views") { |practice| practice.views }
               end
 
               script do

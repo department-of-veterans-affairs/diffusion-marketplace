@@ -355,9 +355,11 @@ class Practice < ApplicationRecord
   def favorited_count_by_range(start_date, end_date)
     user_practices.where({time_favorited: start_date...end_date}).count
   end
+
   def emailed_count
     Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").count
   end
+
   def emailed_count_by_range(start_date, end_date)
     Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").where(time: start_date..end_date).count
   end
