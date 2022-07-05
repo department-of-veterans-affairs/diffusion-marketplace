@@ -181,12 +181,24 @@ const MAX_DESCRIPTION_LENGTH = 140;
     })
   }
 
+  // Remove content creator's ability to choose whether 
+  // links open in a new tab or current tab
+  function _removeTinyMCEOpenLinkInDropdown() {
+    $(document).arrive('.tox-dialog__title', function(e) {
+      if ($('.tox-dialog__title').text() == "Insert/Edit Link" ) {
+        var openLinkInDropdown = $('.tox-label:contains("Open link in")').parent();
+        openLinkInDropdown.css("display","none");
+      }
+    })
+  }
+
   function _loadPageBuilderFns() {
     var $body = $('body');
     if ($body.hasClass('admin_pages') && $body.hasClass('edit')) {
       _addTinyMCEOnSelection();
       _preventDuplicateTinyMCEColorSelectors();
       _initializeTinyMCEOnDragAndDrop();
+      _removeTinyMCEOpenLinkInDropdown();
       _modifySubmitBtnIDonPageBuilder();
     }
   }
