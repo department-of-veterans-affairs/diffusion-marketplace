@@ -14,7 +14,7 @@ namespace :va_facilities do
               classification = vaf["CoCClassification"].blank? ? "Unclassified" : vaf["CoCClassification"]
               VaFacility.create!(
                   visn: visn,
-                  sta3n: vaf["STA3N"],
+                  sta3n: vaf["STA3N"].to_s,
                   station_number: vaf["Station_Number"],
                   official_station_name: vaf["Official_Station_Name"],
                   common_name: vaf["LocationDescriptiveName"],
@@ -37,18 +37,18 @@ namespace :va_facilities do
 
                   operational_date: vaf["Operational_Date"],
                   date_of_first_workload: vaf["DateOfFirstWorkload"],
-                  points_of_service: vaf["Points_Of_Service"],
+                  points_of_service: vaf["Points_Of_Service"].to_s,
                   street_address: vaf["Street_Address"],
                   street_address_city: vaf["Street_Address_City"],
                   street_address_state: vaf["Street_Address_State"],
-                  street_address_zip_code: vaf["Street_Address_Zip_Code"],
-                  street_address_zip_code_extension: vaf["Street_Address_Zip_Code_Extension"],
+                  street_address_zip_code: vaf["Street_Address_Zip_Code"].to_s,
+                  street_address_zip_code_extension: vaf["Street_Address_Zip_Code_Extension"].to_s,
                   county_street_address: vaf["County_Street_Address"],
                   mailing_address: vaf["Mailing_Address"],
                   mailing_address_city: vaf["Mailing_Address_City"],
                   mailing_address_state: vaf["Mailing_Address_State"],
-                  mailing_address_zip_code: vaf["Mailing_Address_Zip_Code"],
-                  mailing_address_zip_code_extension: vaf["Mailing_Address_Zip_Code_Extension"],
+                  mailing_address_zip_code: vaf["Mailing_Address_Zip_Code"].to_s,
+                  mailing_address_zip_code_extension: vaf["Mailing_Address_Zip_Code_Extension"].to_s,
                   county_mailing_address: vaf["County_Mailing_Address"],
                   station_phone_number: vaf["Station_Phone_Number"],
                   station_main_fax_number: vaf["Station_Main_Fax_Number"],
@@ -82,7 +82,7 @@ namespace :va_facilities do
             facility = VaFacility.where(station_number: vaf["Station_Number"]).first
             if facility.present? && visn.number === vaf["VISN"].to_i
               facility.visn = visn
-              facility.sta3n = vaf["STA3N"]
+              facility.sta3n = vaf["STA3N"].to_s
               facility.station_number = vaf["Station_Number"]
               facility.official_station_name = vaf["Official_Station_Name"]
               facility.common_name = vaf["LocationDescriptiveName"]
@@ -99,18 +99,18 @@ namespace :va_facilities do
               facility.staffing_type = vaf["Staffing_Type"]
               facility.operational_date = vaf["Operational_Date"]
               facility.date_of_first_workload = vaf["DateOfFirstWorkload"]
-              facility.points_of_service = vaf["Points_Of_Service"]
+              facility.points_of_service = vaf["Points_Of_Service"].to_s
               facility.street_address = vaf["Street_Address"]
               facility.street_address_city = vaf["Street_Address_City"]
               facility.street_address_state = vaf["Street_Address_State"]
-              facility.street_address_zip_code = vaf["Street_Address_Zip_Code"]
-              facility.street_address_zip_code_extension = vaf["Street_Address_Zip_Code_Extension"]
+              facility.street_address_zip_code = vaf["Street_Address_Zip_Code"].to_s
+              facility.street_address_zip_code_extension = vaf["Street_Address_Zip_Code_Extension"].to_s
               facility.county_street_address = vaf["County_Street_Address"]
               facility.mailing_address = vaf["Mailing_Address"]
               facility.mailing_address_city = vaf["Mailing_Address_City"]
               facility.mailing_address_state = vaf["Mailing_Address_State"]
-              facility.mailing_address_zip_code = vaf["Mailing_Address_Zip_Code"]
-              facility.mailing_address_zip_code_extension = vaf["Mailing_Address_Zip_Code_Extension"]
+              facility.mailing_address_zip_code = vaf["Mailing_Address_Zip_Code"].to_s
+              facility.mailing_address_zip_code_extension = vaf["Mailing_Address_Zip_Code_Extension"].to_s
               facility.county_mailing_address = vaf["County_Mailing_Address"]
               facility.station_phone_number = vaf["Station_Phone_Number"]
               facility.station_main_fax_number = vaf["Station_Main_Fax_Number"]
