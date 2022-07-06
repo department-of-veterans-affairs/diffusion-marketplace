@@ -19,7 +19,7 @@ module ActiveAdminHelpers
     facility_data = VaFacility.cached_va_facilities.get_relevant_attributes
     practice_diffusion_histories = p.diffusion_histories.exclude_clinical_resource_hubs.map { |dh|
       selected_facility = facility_data.select { |fd| fd.station_number === dh.va_facility.station_number }
-
+      origin_facilities = origin_display_name(Practice.find_by(id: dh.practice_id))
       dh_status = dh.diffusion_history_statuses.first
       {
         facility_name: selected_facility[0].official_station_name,
@@ -29,9 +29,11 @@ module ActiveAdminHelpers
         status: dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete' ? 'Successful' : dh_status.status,
         rurality: selected_facility[0].rurality,
         complexity: selected_facility[0].fy17_parent_station_complexity_level,
+        sta3n: selected_facility[0].sta3n,
         station_number: selected_facility[0].station_number,
         visn: selected_facility[0].visn,
-        practice_name: dh.practice.name
+        practice_name: dh.practice.name,
+        origin_facilities: origin_facilities
       }
     }
     sorted_diffusion_histories = practice_diffusion_histories.sort_by { |pdh| [pdh[:state], pdh[:facility_name]] }
@@ -182,7 +184,9 @@ module ActiveAdminHelpers
                      options[:add_practice_name] ? 'Practice' : nil,
                     'State',
                     'Location',
+                    'Originating Facility',
                     'VISN',
+                    'STA3N',
                     'Station Number',
                     'Adoption Date',
                     'Adoption Status',
@@ -198,7 +202,9 @@ module ActiveAdminHelpers
                           hash[:practice_name],
                           hash[:state],
                           adoption_facility_name(hash),
+                          hash[:origin_facilities],
                           hash[:visn].number,
+                          hash[:sta3n],
                           hash[:station_number],
                           adoption_date(hash),
                           adoption_status(hash),
@@ -211,7 +217,9 @@ module ActiveAdminHelpers
         sheet.add_row [
                         data_array[:state],
                         adoption_facility_name(data_array),
+                        data_array[:origin_facilities],
                         data_array[:visn].number,
+                        data_array[:sta3n],
                         data_array[:station_number],
                         adoption_date(data_array),
                         adoption_status(data_array),
