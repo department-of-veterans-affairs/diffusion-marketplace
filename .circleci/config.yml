@@ -72,6 +72,7 @@ jobs:
           # Bundler 2.2.0 fails to install libv8
           # https://github.com/rubyjs/libv8/issues/310
           command: |
+            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo apt-get update --allow-releaseinfo-change
             sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
             gem install bundler -v 2.1.4
