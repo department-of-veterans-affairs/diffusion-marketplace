@@ -1,5 +1,5 @@
 namespace :va_facilities do
-  desc 'Create new VA facility records based on the data from the vamc.json file'
+  desc 'Create new VA facility records based on the data from the va_facilities.json file'
 
   task :create_or_update_va_facilities => :environment do
     ctr = 0
