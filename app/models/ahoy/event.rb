@@ -16,7 +16,7 @@ class Ahoy::Event < ApplicationRecord
   scope :by_date_or_earlier, -> (date) { where('time >= ?', date) }
   scope :by_date_range, -> (start_date, end_date) { where(time: start_date..end_date) }
   scope :site_visits_by_date_range, -> (start_date, end_date) {
-    site_visits_excluding_null_ips_and_duplicates.by_date_range(start_date, end_date).group("properties->>'ip_address'")
+    site_visits_excluding_null_ips_and_duplicates.by_date_range(start_date, end_date)
   }
   scope :site_visits_by_unique_users_and_date_or_earlier, -> (date) {
     site_visits_excluding_null_ips_and_duplicates.where.not(user_id: nil).by_date_or_earlier(date)

@@ -1,16 +1,12 @@
 include ActiveAdminHelpers
 
-ActiveAdmin.register_page "Dashboard" do
-  menu priority: 1, label: proc {I18n.t("active_admin.dashboard")}
+ActiveAdmin.register_page "Site Metrics" do
+  menu priority: 1, label: proc {I18n.t("active_admin.site_metrics")}
 
   controller do
     helper_method :set_date_values
     helper_method :adoption_xlsx_styles
-    helper_method :get_search_term_counts_by_type
-    helper_method :create_search_terms_table_by_type
-    helper_method :get_search_count_totals_by_date_range
-    helper_method :create_search_count_totals_table
-    before_action :set_dashboard_values
+    before_action :set_metrics_values
 
     def get_custom_pages_stats(custom_pages)
       traffic_stats = []
@@ -34,40 +30,36 @@ ActiveAdmin.register_page "Dashboard" do
       traffic_stats.sort_by { |pg| pg[:slug] }
     end
 
-    def set_dashboard_values
+    def set_metrics_values
       set_date_values
       @published_enabled_approved_practices = Practice.cached_practices
       @practices_sorted_by_name = @published_enabled_approved_practices.sort_a_to_z.pluck(:id, :name)
-      @practices_sorted_by_most_views_this_month = @published_enabled_approved_practices.sort_by(&:current_month_views).reverse!.pluck(:id, :name)
 
-      @practice_views_for_current_month_with_names = Ahoy::Event.practice_views_for_multiple_practices_by_date_range(
-        @published_enabled_approved_practices.ids, Date.today.beginning_of_month, Date.today.end_of_month
-      ).group(:properties).count.sort_by { |key, value| value }.reverse!.each { |views_array| views_array << Practice.find_by(id: views_array.first.first).name }
-
-      @total_practice_views_for_last_month = Ahoy::Event.practice_views_for_multiple_practices_by_date_range(
-        @published_enabled_approved_practices.ids, (Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month
-      ).group(:properties).count.sort_by { |key, value| value }.reverse!.collect! { |views_array| views_array.last }.sum
-
-      @total_practice_views_for_two_months_ago = Ahoy::Event.practice_views_for_multiple_practices_by_date_range(
-        @published_enabled_approved_practices.ids, (Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month
-      ).group(:properties).count.sort_by { |key, value| value }.reverse!.collect! { |views_array| views_array.last }.sum
-
-      @total_practice_views_for_three_months_ago = Ahoy::Event.practice_views_for_multiple_practices_by_date_range(
-        @published_enabled_approved_practices.ids, (Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month
-      ).group(:properties).count.sort_by { |key, value| value }.reverse!.collect! { |views_array| views_array.last }.sum
-
-      @total_practice_views_all_time = Ahoy::Event.practice_views_for_multiple_practices(
-        @published_enabled_approved_practices.ids
-      ).group(:properties).count.sort_by { |key, value| value }.reverse!.each { |views_array| views_array << Practice.find_by(id: views_array.first.first).name }
-
-      @total_current_month_views = @practice_views_for_current_month_with_names.collect! { |practice_views_array| practice_views_array.second }.sum
-      @total_lifetime_views = @total_practice_views_all_time.collect! { |practice_views_array| practice_views_array.second }.sum
-
-      @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
-
+      # Page Builder Stats
       @custom_pages = Page.all.map { |pg| {slug: pg.slug, group: PageGroup.find_by(id: pg.page_group_id).slug } }
       @custom_pages_traffic_stats = get_custom_pages_stats(@custom_pages)
 
+      # User Info
+      @user_info = [
+        {
+          in_the_last: 'New Users',
+          '24_hours': User.created_by_date_or_earlier(1.day.ago).count,
+          week: User.created_by_date_or_earlier(1.week.ago).count,
+          month: User.created_by_date_or_earlier(1.month.ago).count,
+          three_months: User.created_by_date_or_earlier(3.months.ago).count,
+          year: User.created_by_date_or_earlier(1.year.ago).count
+        },
+        {
+          in_the_last: 'Unique User Visits',
+          '24_hours': Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(1.day.ago).group(:user_id).count.keys.length,
+          week: Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(1.week.ago).group(:user_id).count.keys.length,
+          month: Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(1.month.ago).group(:user_id).count.keys.length,
+          three_months: Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(3.months.ago).group(:user_id).count.keys.length,
+          year: Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(1.year.ago).group(:user_id).count.keys.length
+        }
+      ]
+
+      # General Site Metrics
       site_visit_stats_for_last_month = Ahoy::Event.site_visits_by_date_range(@beginning_of_last_month, @end_of_last_month).group("properties->>'ip_address'").count
 
       @general_traffic_stats = {
@@ -94,26 +86,7 @@ ActiveAdmin.register_page "Dashboard" do
         total_emails: Ahoy::Event.practice_emails.count
       }
 
-      @practices_hash_sorted_by_most_views_this_month = []
-      @practices_sorted_by_most_views_this_month.each do |practice|
-        @practices_hash_sorted_by_most_views_this_month << {
-          practice: [practice.first, practice.last],
-          current_month: Ahoy::Event.practice_views_for_single_practice_by_date_range(
-            practice.first, Date.today.at_beginning_of_month, Date.today.at_end_of_month
-          ).count,
-          last_month: Ahoy::Event.practice_views_for_single_practice_by_date_range(
-            practice.first, (Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month
-          ).count,
-          two_months_ago: Ahoy::Event.practice_views_for_single_practice_by_date_range(
-            practice.first, (Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month
-          ).count,
-          three_months_ago: Ahoy::Event.practice_views_for_single_practice_by_date_range(
-            practice.first, (Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month
-          ).count,
-          all_time: Ahoy::Event.practice_views_for_single_practice(practice.first).count
-        }
-      end
-
+      # Individual Practice Metrics
       @practice_stats = []
       @practices_sorted_by_name.each do |practice|
         @practice_stats << {
@@ -142,6 +115,7 @@ ActiveAdmin.register_page "Dashboard" do
         total_comments: Commontator::Comment.all.count
       }
 
+      # Monthly metrics
       @practice_views_array = []
       @site_visits_by_month = []
       @total_users_by_month = []
@@ -163,6 +137,7 @@ ActiveAdmin.register_page "Dashboard" do
           @practice_views_array << [p.last, pr_visit_ct]
         end
 
+        # Get users info by month
         @new_users[month_and_year] = User.where(created_at: beg_of_month..end_of_month).count
         @user_visitors[month_and_year] = Ahoy::Event.site_visits.exclude_null_ips_and_duplicates.where.not(user_id: nil).by_date_range(beg_of_month, end_of_month).group(:user_id).count.keys.length
 
@@ -183,38 +158,7 @@ ActiveAdmin.register_page "Dashboard" do
         total_users: @user_visitors.values
       }
 
-      @user_info = [
-        {
-          in_the_last: 'New Users',
-          '24_hours': User.created_by_date_or_earlier(1.day.ago).count,
-          week: User.created_by_date_or_earlier(1.week.ago).count,
-          month: User.created_by_date_or_earlier(1.month.ago).count,
-          three_months: User.created_by_date_or_earlier(3.months.ago).count,
-          year: User.created_by_date_or_earlier(1.year.ago).count
-        },
-        {
-          in_the_last: 'Unique User Visits',
-          '24_hours': Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(1.day.ago).group(:user_id).count.keys.length,
-          week: Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(1.week.ago).group(:user_id).count.keys.length,
-          month: Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(1.month.ago).group(:user_id).count.keys.length,
-          three_months: Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(3.months.ago).group(:user_id).count.keys.length,
-          year: Ahoy::Event.site_visits_by_unique_users_and_date_or_earlier(1.year.ago).group(:user_id).count.keys.length
-        }
-      ]
-
-      @all_search_count_totals_by_date_range = [
-        {
-          current_month_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_current_month, @end_of_current_month).count,
-          last_month_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_last_month, @end_of_last_month).count,
-          two_months_ago_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_two_months_ago, @end_of_two_months_ago).count,
-          three_months_ago_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_three_months_ago, @end_of_three_months_ago).count,
-          total: Ahoy::Event.all_search_terms.count
-        }
-      ]
-
-      @practice_search_terms = get_search_term_counts_by_type('Practice search')
-      @visn_search_terms = get_search_term_counts_by_type('VISN practice search')
-      @facility_search_terms = get_search_term_counts_by_type('Facility practice search')
+      @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
     end
 
     def add_header_row_for_month_and_year(sheet, first_column_text, array, row_style)
@@ -252,7 +196,13 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row [''], style: xlsx_divider
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
-          @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ? "#{key.to_s.tr!('_', ' ').titleize} (last month)}" : "#{key.to_s.tr!('_', ' ').titleize} (all-time)}", value], style: xlsx_entry }
+          @general_traffic_stats.each do |key, value|
+            sheet.add_row [
+              key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ?
+                "#{key.to_s.tr!('_', ' ').titleize} (last month)}" :
+                "#{key.to_s.tr!('_', ' ').titleize} (all-time)}", value
+            ], style: xlsx_entry
+          end
           sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
           @site_visits_by_month.reverse.each do |month_and_count|
             sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
@@ -359,11 +309,17 @@ ActiveAdmin.register_page "Dashboard" do
       # generating downloadable .xlsx file
       send_data metrics_xlsx_file.to_stream.read, :filename => "dm_metrics_#{Date.today}.xlsx", :type => "application/xlsx"
     end
+
   end
 
-  content title: proc {I18n.t("active_admin.dashboard")} do
-    div(class: 'dashboard-legend-container') do
-      div(class: 'dashboard-legend') do
+  content title: proc {I18n.t("active_admin.site_metrics")} do
+    div(class: 'dashboard-legend-container position-relative') do
+      # export .xlsx button
+      form action: export_metrics_path, method: :get, style: 'text-align: left' do |f|
+        f.input :submit, type: :submit, value: 'Export as .xlsx', class: 'margin-bottom-2'
+      end
+
+      div(class: 'dashboard-legend bottom-2') do
         h3 do
           'Please Note'
         end
@@ -385,8 +341,121 @@ ActiveAdmin.register_page "Dashboard" do
         end
       end
     end
+
     tabs do
-      tab :users_information do
+      tab :'General' do
+        panel 'General Traffic' do
+          span("Note: An error in general traffic tracking was corrected in February 2021")
+          table_for general_traffic_stats do
+            column('unique visitors (last month)', :unique_visitors)
+            column('number of page views (last month)', :number_of_page_views)
+            column('total accounts (all-time)', :total_accounts)
+          end
+        end # panel
+
+        if custom_pages.present?
+          panel('Custom Page Traffic', class: 'dm-panel-container', id: 'dm-custom-page-traffic') do
+            span("Note: Custom page traffic tracking began in February 2021")
+            table_for custom_pages_traffic_stats do
+              column("Page") {|pg| link_to(pg[:slug], "/#{pg[:slug]}")}
+              column('unique visitors (last month)', class: 'col-unique_visitors_custom_page') {|pg| pg[:unique_visitors_for_last_month]}
+              column('number of page views (last month)', class: 'col-page_views_custom_page') {|pg| pg[:number_of_page_views_for_last_month]}
+              column('total page views (all-time)', class: 'col-total_views_custom_page') {|pg| pg[:total_views]}
+            end
+          end # panel
+        end
+
+        panel 'Practices Created' do
+          table_for practices_added_stats do
+            column("#{date_headers[:current]}") {|ps| ps[:added_this_month]}
+            column("Last Month") {|ps| ps[:added_one_month_ago]}
+            column :total_practices_created
+          end
+        end # panel
+      end # tab
+
+      tab :'Practice Engagement' do
+        panel 'Bookmarks' do
+          h4("Bookmarked Counts", title: "Number of times an innovation was bookmarked", class: "dm-tooltip")
+
+          table_for practices_favorited_stats, id: 'favorited_stats' do
+            column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
+            column("Last Month") {|ps| ps[:favorited_one_month_ago]}
+            column :total_favorited
+          end
+
+          h4("Bookmarked Counts by Innovation", title: "Number of times each innovation has been bookmarked", class: "dm-tooltip")
+
+          # table_for practices_sorted_by_name do
+          #   column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
+          #   column("#{date_headers[:current]}") {|pr| pr.current_month_favorited}
+          #   column("Last Month") {|pr| pr.last_month_favorited}
+          #   column("#{date_headers[:total]}") {|pr| pr.favorited_count}
+          # end
+          #
+          table_for practice_stats do
+            column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
+            column("#{date_headers[:current]}") { |pr_hash| pr_hash[:bookmarks][:current_month] }
+            column("Last Month") { |pr_hash| pr_hash[:bookmarks][:last_month] }
+            column("#{date_headers[:total]}") { |pr_hash| pr_hash[:bookmarks][:all_time] }
+          end
+        end # panel
+
+        panel 'Comments' do
+          h4("Comment Counts", title: "Number of comments made this month, last month, and overall on any innovation page", class: "dm-tooltip")
+
+          table_for practices_comment_stats do
+            column("#{date_headers[:current]}") {|ps| ps[:comments_this_month]}
+            column("Last Month") {|ps| ps[:comments_one_month_ago]}
+            column :total_comments
+          end
+
+          h4("Comment Counts by Innovation", title: "Number of comments on each innovation page", class: "dm-tooltip")
+
+          # table_for practices_sorted_by_name do
+          #   column(:name) { |pr_hash| link_to(pr_hash[:practice].name, admin_practice_path(pr_hash[:practice].id)) }
+          #   column("#{date_headers[:current]}") { |pr| pr.commontator_thread.comments.where(created_at: beginning_of_current_month...end_of_current_month).count }
+          #   column("Last Month") { |pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month...end_of_last_month).count }
+          #   column("#{date_headers[:total]}") { |pr| pr.commontator_thread.comments.count }
+          # end
+
+          table_for practice_stats do
+            column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
+            column("#{date_headers[:current]}") { |pr_hash| pr_hash[:comments][:current_month] }
+            column("Last Month") { |pr_hash| pr_hash[:comments][:last_month] }
+            column("#{date_headers[:total]}") { |pr_hash| pr_hash[:comments][:all_time] }
+          end
+        end # panel
+
+        panel 'Emails' do
+          h4("Email Counts", title: "Number of times an innovation was emailed via the innovation page this month, last month, and overall", class: "dm-tooltip")
+          span("Note: Email counts tracking began in February 2021")
+
+          table_for(practices_emailed, id: "dm-practices-emailed-total") do
+            column("#{date_headers[:current]}") {|pe| pe[:emails_this_month]}
+            column("Last Month") {|pe| pe[:emails_one_month_ago]}
+            column :total_emails
+          end
+
+          h4("Email Counts by Innovation", title: "Number of times an innovation was emailed via the innovation page for each innovation", class: "dm-tooltip")
+
+          # table_for(practices_sorted_by_name, id: "dm-practices-emailed-by-practice") do
+          #   column(:name) { |pr| link_to(pr.name, admin_practice_path(pr)) }
+          #   column("#{date_headers[:current]}") { |pr| Ahoy::Event.practice_emails_for_practice_by_date_range(pr.id, beginning_of_current_month, end_of_current_month).count }
+          #   column("Last Month") { |pr| Ahoy::Event.practice_emails_for_practice_by_date_range(pr.id, beginning_of_last_month, end_of_last_month).count }
+          #   column("#{date_headers[:total]}") { |pr| Ahoy::Event.practice_emails_for_practice(pr.id).count }
+          # end
+          table_for(practice_stats, id: "dm-practices-emailed-by-practice") do
+            column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
+            column("#{date_headers[:current]}") { |pr_hash| pr_hash[:emails][:current_month] }
+            column("Last Month") { |pr_hash| pr_hash[:emails][:last_month] }
+            column("#{date_headers[:total]}") { |pr_hash| pr_hash[:emails][:all_time] }
+          end
+        end # panel
+        #TODO: add practice email counts
+      end # tab
+
+      tab :'Users' do
         columns do
           column do
             panel('New Users by Month', class: 'dm-panel-container', id: 'dm-new-users-by-month') do
@@ -421,191 +490,6 @@ ActiveAdmin.register_page "Dashboard" do
           end # column
         end # columns
       end # tab
-
-      tab :innovation_leaderboards do
-        columns do
-          column do
-            panel('Innovation Views Leaderboard', class: 'dm-panel-container', id: 'dm-practice-views-leaderboard') do
-              # table_for practices_sorted_by_most_views_this_month, id: 'practice-views-table' do
-              #   column(:name) { |practice_views_array| link_to(practice_views_array.last, admin_practice_path(practice_views_array.first)) }
-              #   column("#{date_headers[:current]}") do |practice_views_array|
-              #     Ahoy::Event.practice_views_for_single_practice_by_date_range(
-              #       practice_views_array.first,
-              #       Date.today.at_beginning_of_month,
-              #       Date.today.at_end_of_month
-              #     ).count
-              #   end
-              #   column("#{date_headers[:one_month_ago]}") do |practice_views_array|
-              #     Ahoy::Event.practice_views_for_single_practice_by_date_range(
-              #       practice_views_array.first,
-              #       (Date.today - 1.months).at_beginning_of_month,
-              #       (Date.today - 1.months).at_end_of_month
-              #     ).count
-              #   end
-              #   column("#{date_headers[:two_month_ago]}") do |practice_views_array|
-              #     Ahoy::Event.practice_views_for_single_practice_by_date_range(
-              #       practice_views_array.first,
-              #       (Date.today - 2.months).at_beginning_of_month,
-              #       (Date.today - 2.months).at_end_of_month
-              #     ).count
-              #   end
-              #   column("#{date_headers[:three_month_ago]}") do |practice_views_array|
-              #     Ahoy::Event.practice_views_for_single_practice_by_date_range(
-              #       practice_views_array.first,
-              #       (Date.today - 3.months).at_beginning_of_month,
-              #       (Date.today - 3.months).at_end_of_month
-              #     ).count
-              #   end
-              #   column("Total lifetime views") { |practice_views_array| Ahoy::Event.practice_views_for_single_practice(practice_views_array.first).count }
-              # end
-              table_for practices_hash_sorted_by_most_views_this_month, id: 'practice-views-table' do
-                column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
-                column("#{date_headers[:current]}") { |pr_hash| pr_hash[:current_month] }
-                column("#{date_headers[:one_month_ago]}") { |pr_hash| pr_hash[:last_month] }
-                column("#{date_headers[:two_month_ago]}") { |pr_hash| pr_hash[:two_months_ago] }
-                column("#{date_headers[:three_month_ago]}") { |pr_hash| pr_hash[:three_months_ago] }
-                column("Total lifetime views") { |pr_hash| pr_hash[:all_time] }
-              end
-
-              script do
-                raw "$(document).ready(function($) {
-                        $('#practice-views-table').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_views}</b></td><td><b>#{total_practice_views_for_last_month}</b></td><td><b>#{total_practice_views_for_two_months_ago}</b></td><td><b>#{total_practice_views_for_three_months_ago}</b></td><td><b>#{total_lifetime_views}</b></td></tr>');
-                      });
-                    "
-              end
-            end
-          end # column
-        end # columns
-      end # tab
-
-      tab :'Innovation search terms' do
-        h2 do
-          "List of all innovation search terms sorted by the current month's hits"
-        end
-
-        # create a table for search totals across all three search types
-        create_search_count_totals_table(all_search_count_totals_by_date_range)
-
-        # create a table for general searches, VISN searches, and facility searches
-        create_search_terms_table_by_type('General search', practice_search_terms, 'general-practice-search-terms-table')
-        create_search_terms_table_by_type('VISN search', visn_search_terms, 'visn-practice-search-terms-table') if visn_search_terms.count > 0
-        create_search_terms_table_by_type('Facility search', facility_search_terms, 'facility-practice-search-terms-table') if facility_search_terms.count > 0
-
-        script do
-          raw "$(document).ready(function(){$('tr').attr('id', '')});"
-        end
-      end # tab
-
-      tab :metrics do
-        # export .xlsx button
-        form action: export_metrics_path, method: :get, style: 'text-align: right' do |f|
-          f.input :submit, type: :submit, value: 'Export as .xlsx', style: 'margin-bottom: 1rem'
-        end
-
-        panel 'General Traffic' do
-          span("Note: An error in general traffic tracking was corrected in February 2021")
-          table_for general_traffic_stats do
-            column('unique visitors (last month)', :unique_visitors)
-            column('number of page views (last month)', :number_of_page_views)
-            column('total accounts (all-time)', :total_accounts)
-          end
-        end # panel
-
-        if custom_pages.present?
-          panel('Custom Page Traffic', class: 'dm-panel-container', id: 'dm-custom-page-traffic') do
-            span("Note: Custom page traffic tracking began in February 2021")
-            table_for custom_pages_traffic_stats do
-              column("Page") {|pg| link_to(pg[:slug], "/#{pg[:slug]}")}
-              column('unique visitors (last month)', class: 'col-unique_visitors_custom_page') {|pg| pg[:unique_visitors_for_last_month]}
-              column('number of page views (last month)', class: 'col-page_views_custom_page') {|pg| pg[:number_of_page_views_for_last_month]}
-              column('total page views (all-time)', class: 'col-total_views_custom_page') {|pg| pg[:total_views]}
-            end
-          end # panel
-        end
-
-        panel 'Practices' do
-          table_for practices_added_stats do
-            column("#{date_headers[:current]}") {|ps| ps[:added_this_month]}
-            column("Last Month") {|ps| ps[:added_one_month_ago]}
-            column :total_practices_created
-          end
-        end # panel
-
-        panel 'Practice Engagement' do
-          h4("Bookmarked Counts", title: "Number of times an innovation was bookmarked", class: "dm-tooltip")
-
-          table_for practices_favorited_stats, id: 'favorited_stats' do
-            column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
-            column("Last Month") {|ps| ps[:favorited_one_month_ago]}
-            column :total_favorited
-          end
-
-          h4("Bookmarked Counts by Innovation", title: "Number of times each innovation has been bookmarked", class: "dm-tooltip")
-
-          # table_for practices_sorted_by_name do
-          #   column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
-          #   column("#{date_headers[:current]}") {|pr| pr.current_month_favorited}
-          #   column("Last Month") {|pr| pr.last_month_favorited}
-          #   column("#{date_headers[:total]}") {|pr| pr.favorited_count}
-          # end
-          #
-          table_for practice_stats do
-            column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
-            column("#{date_headers[:current]}") { |pr_hash| pr_hash[:bookmarks][:current_month] }
-            column("Last Month") { |pr_hash| pr_hash[:bookmarks][:last_month] }
-            column("#{date_headers[:total]}") { |pr_hash| pr_hash[:bookmarks][:all_time] }
-          end
-
-          h4("Comment Counts", title: "Number of comments made this month, last month, and overall on any innovation page", class: "dm-tooltip")
-
-          table_for practices_comment_stats do
-            column("#{date_headers[:current]}") {|ps| ps[:comments_this_month]}
-            column("Last Month") {|ps| ps[:comments_one_month_ago]}
-            column :total_comments
-          end
-
-          h4("Comment Counts by Innovation", title: "Number of comments on each innovation page", class: "dm-tooltip")
-
-          # table_for practices_sorted_by_name do
-          #   column(:name) { |pr_hash| link_to(pr_hash[:practice].name, admin_practice_path(pr_hash[:practice].id)) }
-          #   column("#{date_headers[:current]}") { |pr| pr.commontator_thread.comments.where(created_at: beginning_of_current_month...end_of_current_month).count }
-          #   column("Last Month") { |pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month...end_of_last_month).count }
-          #   column("#{date_headers[:total]}") { |pr| pr.commontator_thread.comments.count }
-          # end
-
-          table_for practice_stats do
-            column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
-            column("#{date_headers[:current]}") { |pr_hash| pr_hash[:comments][:current_month] }
-            column("Last Month") { |pr_hash| pr_hash[:comments][:last_month] }
-            column("#{date_headers[:total]}") { |pr_hash| pr_hash[:comments][:all_time] }
-          end
-
-          h4("Email Counts", title: "Number of times an innovation was emailed via the innovation page this month, last month, and overall", class: "dm-tooltip")
-          span("Note: Email counts tracking began in February 2021")
-
-          table_for(practices_emailed, id: "dm-practices-emailed-total") do
-            column("#{date_headers[:current]}") {|pe| pe[:emails_this_month]}
-            column("Last Month") {|pe| pe[:emails_one_month_ago]}
-            column :total_emails
-          end
-
-          h4("Email Counts by Innovation", title: "Number of times an innovation was emailed via the innovation page for each innovation", class: "dm-tooltip")
-
-          # table_for(practices_sorted_by_name, id: "dm-practices-emailed-by-practice") do
-          #   column(:name) { |pr| link_to(pr.name, admin_practice_path(pr)) }
-          #   column("#{date_headers[:current]}") { |pr| Ahoy::Event.practice_emails_for_practice_by_date_range(pr.id, beginning_of_current_month, end_of_current_month).count }
-          #   column("Last Month") { |pr| Ahoy::Event.practice_emails_for_practice_by_date_range(pr.id, beginning_of_last_month, end_of_last_month).count }
-          #   column("#{date_headers[:total]}") { |pr| Ahoy::Event.practice_emails_for_practice(pr.id).count }
-          # end
-          table_for(practice_stats, id: "dm-practices-emailed-by-practice") do
-            column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
-            column("#{date_headers[:current]}") { |pr_hash| pr_hash[:emails][:current_month] }
-            column("Last Month") { |pr_hash| pr_hash[:emails][:last_month] }
-            column("#{date_headers[:total]}") { |pr_hash| pr_hash[:emails][:all_time] }
-          end
-          #TODO: add practice email counts
-        end # panel
-      end # tab
     end # tabs
-  end # content
-end # register_page
+  end
+end

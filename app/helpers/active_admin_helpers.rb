@@ -62,20 +62,20 @@ module ActiveAdminHelpers
   def all_adoption_counts
     set_date_values
     {
-      adoptions_this_month: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_current_month..@end_of_current_month).size,
-      adoptions_one_month_ago: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_last_month..@end_of_last_month).size,
-      adoptions_two_months_ago: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).size,
-      total_adoptions: DiffusionHistory.exclude_clinical_resource_hubs.size
+      adoptions_this_month: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+      adoptions_one_month_ago: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+      adoptions_two_months_ago: DiffusionHistory.exclude_clinical_resource_hubs.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+      total_adoptions: DiffusionHistory.exclude_clinical_resource_hubs.count
     }
   end
 
   def adoption_counts_by_practice(p)
     set_date_values
     {
-      adopted_this_month: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_current_month..@end_of_current_month).size,
-      adopted_one_month_ago: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_last_month..@end_of_last_month).size,
-      adopted_two_months_ago: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).size,
-      total_adopted: p.diffusion_histories.exclude_clinical_resource_hubs.size
+      adopted_this_month: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+      adopted_one_month_ago: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+      adopted_two_months_ago: p.diffusion_histories.exclude_clinical_resource_hubs.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+      total_adopted: p.diffusion_histories.exclude_clinical_resource_hubs.count
     }
   end
 
@@ -102,15 +102,14 @@ module ActiveAdminHelpers
       search_terms_array << {
         query: e[0],
         lifetime_count: e[1],
-        current_month_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_current_month, @end_of_current_month).size,
-        last_month_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_last_month, @end_of_last_month).size,
-        two_months_ago_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_two_months_ago, @end_of_two_months_ago).size,
-        three_months_ago_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_three_months_ago, @end_of_three_months_ago).size
+        current_month_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_current_month, @end_of_current_month).count,
+        last_month_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_last_month, @end_of_last_month).count,
+        two_months_ago_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_two_months_ago, @end_of_two_months_ago).count,
+        three_months_ago_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_three_months_ago, @end_of_three_months_ago).count
       }
     end
 
-    search_terms_array.sort_by {|k| k["current_month_count"]}.reverse!
-    search_terms_array
+    search_terms_array.sort_by { |k| k[:current_month_count] }.reverse!
   end
 
   def create_search_terms_table_by_type(panel_title, search_terms_array, table_id)
@@ -121,22 +120,22 @@ module ActiveAdminHelpers
         column do
           table_for search_terms_array, id: table_id do
             column('Term') {|st| st[:query]}
-            column("#{@date_headers[:current]}") {|st| st[:current_month_count]}
-            column("#{@date_headers[:one_month_ago]}") {|st| st[:last_month_count]}
-            column("#{@date_headers[:two_month_ago]}") {|st| st[:two_months_ago_count]}
-            column("#{@date_headers[:three_month_ago]}") {|st| st[:three_months_ago_count]}
-            column("Lifetime") {|st| st[:lifetime_count]}
+            column("#{@date_headers[:current]}") { |st| st[:current_month_count] }
+            column("#{@date_headers[:one_month_ago]}") { |st| st[:last_month_count] }
+            column("#{@date_headers[:two_month_ago]}") { |st| st[:two_months_ago_count] }
+            column("#{@date_headers[:three_month_ago]}") { |st| st[:three_months_ago_count] }
+            column("Lifetime") {|st| st[:lifetime_count] }
           end
         end
       end
     end
 
     script do
-      total_current_month_searches = search_terms_array.sum {|st| st[:current_month_count] }
-      total_last_month_searches = search_terms_array.sum {|st| st[:last_month_count]}
-      total_two_months_ago_searches = search_terms_array.sum {|st| st[:two_months_ago_count]}
-      total_three_months_ago_searches = search_terms_array.sum {|st| st[:three_months_ago_count]}
-      total_lifetime_searches = search_terms_array.sum {|st| st[:lifetime_count]}
+      total_current_month_searches = search_terms_array.sum { |st| st[:current_month_count] }
+      total_last_month_searches = search_terms_array.sum { |st| st[:last_month_count] }
+      total_two_months_ago_searches = search_terms_array.sum { |st| st[:two_months_ago_count] }
+      total_three_months_ago_searches = search_terms_array.sum { |st| st[:three_months_ago_count] }
+      total_lifetime_searches = search_terms_array.sum { |st| st[:lifetime_count] }
       raw "$(document).ready(function($) {
               $('##{table_id}').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_searches}</b></td><td><b>#{total_last_month_searches}</b></td><td><b>#{total_two_months_ago_searches}</b></td><td><b>#{total_three_months_ago_searches}</b></td><td><b>#{total_lifetime_searches}</b></td></tr>');
             });
@@ -148,16 +147,17 @@ module ActiveAdminHelpers
     set_date_values
     [
       {
-        current_month_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_current_month, @end_of_current_month).size,
-        last_month_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_last_month, @end_of_last_month).size,
-        two_months_ago_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_two_months_ago, @end_of_two_months_ago).size,
-        three_months_ago_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_three_months_ago, @end_of_three_months_ago).size,
-        total: Ahoy::Event.all_search_terms.size
+        current_month_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_current_month, @end_of_current_month).count,
+        last_month_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_last_month, @end_of_last_month).count,
+        two_months_ago_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_two_months_ago, @end_of_two_months_ago).count,
+        three_months_ago_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_three_months_ago, @end_of_three_months_ago).count,
+        total: Ahoy::Event.all_search_terms.count
       }
     ]
   end
 
   def create_search_count_totals_table(search_totals_array)
+    set_date_values
     panel 'Total search counts' do
       columns do
         column do

@@ -5,6 +5,11 @@ class Commontator::Comment < ActiveRecord::Base
   belongs_to :parent, optional: true, class_name: name, inverse_of: :children
 
   scope :created_by_date_range, -> (start_date, end_date) { where(created_at: start_date..end_date) }
+  scope :get_by_practice, -> (practice_id) { includes(:thread).where(commontator_threads: { commontable_id: practice_id }) }
+  scope :get_by_practice_and_date_range, -> (practice_id, start_date, end_date) {
+    get_by_practice(practice_id).created_by_date_range(start_date, end_date)
+  }
+
 
   has_many :children, class_name: name, foreign_key: :parent_id, inverse_of: :parent
 

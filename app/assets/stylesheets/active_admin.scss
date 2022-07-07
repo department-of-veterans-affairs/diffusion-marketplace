@@ -179,18 +179,12 @@
     text-align: center;
   }
 
-  .dashboard-legend-container {
-    position: relative;
-    margin-bottom: 8.3rem;
-  }
-
   .dashboard-legend {
     border: 1px solid #5ea3d3;
     padding: 10px;
     border-radius: 4px;
     position: absolute;
     right: 0;
-    bottom: 0;
 
     h3 {
       @include bold($theme-color-base-ink);
@@ -262,5 +256,15 @@
     color: #ffffff !important;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 1.0em;
+  }
+}
+
+.admin_site_metrics {
+  #main_content {
+    margin-top: 98px;
+  }
+
+  .ui-tabs-nav {
+    margin-left: 0;
   }
 }

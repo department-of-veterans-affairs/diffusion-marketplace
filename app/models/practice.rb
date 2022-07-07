@@ -42,8 +42,14 @@ class Practice < ApplicationRecord
     end
   end
 
+  def self.cached_practices
+    Rails.cache.fetch('published_enabled_approved_practices', expires_in: 30.minutes) do
+      Practice.published_enabled_approved
+    end
+  end
+
   def clear_searchable_cache
-    cache_keys = ["searchable_practices_json", "searchable_public_practices_json", "s3_signer"]
+    cache_keys = ["searchable_practices_json", "searchable_public_practices_json", "s3_signer", "published_enabled_approved_practices"]
     cache_keys.each do |cache_key|
       Cache.new.delete_cache_key(cache_key)
     end
@@ -86,7 +92,7 @@ class Practice < ApplicationRecord
   end
 
   def current_month_views
-    Ahoy::Event.practice_views_for_single_practice_by_date_range(id, Date.today.beginning_of_month, Date.today.end_of_month).size
+    Ahoy::Event.practice_views_for_single_practice_by_date_range(id, Date.today.beginning_of_month, Date.today.end_of_month).count
   end
 
   # favorited
