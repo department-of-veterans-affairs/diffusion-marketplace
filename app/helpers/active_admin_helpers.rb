@@ -184,7 +184,7 @@ module ActiveAdminHelpers
                      options[:add_practice_name] ? 'Practice' : nil,
                     'State',
                     'Location',
-                    'Originating Facility',
+                    'Originating Facilities',
                     'VISN',
                     'STA3N',
                     'Station Number',
