@@ -36,7 +36,7 @@ ActiveAdmin.register_page "Dashboard" do
 
     def set_dashboard_values
       set_date_values
-      @published_enabled_approved_practices = Practice.cached_practices
+      @published_enabled_approved_practices = Practice.cached_published_enabled_approved_practices
       @practices_sorted_by_name = @published_enabled_approved_practices.sort_a_to_z.pluck(:id, :name)
       @practices_sorted_by_most_views_this_month = @published_enabled_approved_practices.sort_by(&:current_month_views).reverse!.pluck(:id, :name)
 

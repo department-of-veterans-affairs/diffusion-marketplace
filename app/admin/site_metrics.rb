@@ -32,7 +32,7 @@ ActiveAdmin.register_page "Site Metrics" do
 
     def set_metrics_values
       set_date_values
-      @published_enabled_approved_practices = Practice.cached_practices
+      @published_enabled_approved_practices = Practice.cached_published_enabled_approved_practices
       @practices_sorted_by_name = @published_enabled_approved_practices.sort_a_to_z.pluck(:id, :name)
 
       # Page Builder Stats
@@ -228,11 +228,10 @@ ActiveAdmin.register_page "Site Metrics" do
             sheet.add_row sheet_row, style: xlsx_entry
           end
           sheet.add_row [''], style: xlsx_divider
-
+          # Bookmarks
           sheet.add_row ["Bookmarked Counts"], style: xlsx_sub_header_2
           @practices_favorited_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
-
           sheet.add_row ["Bookmarked Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practice_stats.each do |pr_hash|
@@ -243,20 +242,11 @@ ActiveAdmin.register_page "Site Metrics" do
               pr_hash[:bookmarks][:all_time]
             ], style: xlsx_entry
           end
-          # @practices_sorted_by_name.each do |value|
-          #   sheet.add_row [
-          #                     value.name,
-          #                     value.current_month_favorited,
-          #                     value.last_month_favorited,
-          #                     value.favorited_count
-          #                 ], style: xlsx_entry
-          # end
           sheet.add_row [""], style: xlsx_divider
-
+          # Comments
           sheet.add_row ["Comment Counts"], style: xlsx_sub_header_2
           @practices_comment_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
-
           sheet.add_row ["Comment Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practice_stats.each do |pr_hash|
@@ -267,19 +257,11 @@ ActiveAdmin.register_page "Site Metrics" do
               pr_hash[:comments][:all_time]
             ], style: xlsx_entry
           end
-          # @practices_sorted_by_name.each do |value|
-          #   sheet.add_row [
-          #                     value.name,
-          #                     value.commontator_thread.comments.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-          #                     value.commontator_thread.comments.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-          #                     value.commontator_thread.comments.count
-          #                 ], style: xlsx_entry
-          # end
           sheet.add_row [""], style: xlsx_divider
+          # Emails
           sheet.add_row ["Email Counts"], style: xlsx_sub_header_2
           @practices_emailed.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
-
           sheet.add_row ["Email Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practice_stats.each do |pr_hash|
@@ -290,15 +272,8 @@ ActiveAdmin.register_page "Site Metrics" do
               pr_hash[:emails][:all_time]
             ], style: xlsx_entry
           end
-          # @practices_sorted_by_name.each do |practice|
-          #   sheet.add_row [
-          #                   practice.name,
-          #                   Ahoy::Event.practice_emails_for_practice_by_date_range(practice.id, @beginning_of_current_month, @end_of_current_month).count,
-          #                   Ahoy::Event.practice_emails_for_practice_by_date_range(practice.id, @beginning_of_last_month, @end_of_last_month).count,
-          #                   Ahoy::Event.practice_emails_for_practice(practice.id).count
-          #                 ], style: xlsx_entry
-          # end
           sheet.add_row [""], style: xlsx_divider
+          # User stats
           sheet.add_row ['User Statistics'], style: xlsx_sub_header_1
           sheet.add_row ['Users per Month'], style: xlsx_sub_header_2
           add_header_row_for_month_and_year(sheet, '', @month_and_year_array, xlsx_sub_header_3)
@@ -386,13 +361,6 @@ ActiveAdmin.register_page "Site Metrics" do
 
           h4("Bookmarked Counts by Innovation", title: "Number of times each innovation has been bookmarked", class: "dm-tooltip")
 
-          # table_for practices_sorted_by_name do
-          #   column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
-          #   column("#{date_headers[:current]}") {|pr| pr.current_month_favorited}
-          #   column("Last Month") {|pr| pr.last_month_favorited}
-          #   column("#{date_headers[:total]}") {|pr| pr.favorited_count}
-          # end
-          #
           table_for practice_stats do
             column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
             column("#{date_headers[:current]}") { |pr_hash| pr_hash[:bookmarks][:current_month] }
@@ -411,13 +379,6 @@ ActiveAdmin.register_page "Site Metrics" do
           end
 
           h4("Comment Counts by Innovation", title: "Number of comments on each innovation page", class: "dm-tooltip")
-
-          # table_for practices_sorted_by_name do
-          #   column(:name) { |pr_hash| link_to(pr_hash[:practice].name, admin_practice_path(pr_hash[:practice].id)) }
-          #   column("#{date_headers[:current]}") { |pr| pr.commontator_thread.comments.where(created_at: beginning_of_current_month...end_of_current_month).count }
-          #   column("Last Month") { |pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month...end_of_last_month).count }
-          #   column("#{date_headers[:total]}") { |pr| pr.commontator_thread.comments.count }
-          # end
 
           table_for practice_stats do
             column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
@@ -439,12 +400,6 @@ ActiveAdmin.register_page "Site Metrics" do
 
           h4("Email Counts by Innovation", title: "Number of times an innovation was emailed via the innovation page for each innovation", class: "dm-tooltip")
 
-          # table_for(practices_sorted_by_name, id: "dm-practices-emailed-by-practice") do
-          #   column(:name) { |pr| link_to(pr.name, admin_practice_path(pr)) }
-          #   column("#{date_headers[:current]}") { |pr| Ahoy::Event.practice_emails_for_practice_by_date_range(pr.id, beginning_of_current_month, end_of_current_month).count }
-          #   column("Last Month") { |pr| Ahoy::Event.practice_emails_for_practice_by_date_range(pr.id, beginning_of_last_month, end_of_last_month).count }
-          #   column("#{date_headers[:total]}") { |pr| Ahoy::Event.practice_emails_for_practice(pr.id).count }
-          # end
           table_for(practice_stats, id: "dm-practices-emailed-by-practice") do
             column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
             column("#{date_headers[:current]}") { |pr_hash| pr_hash[:emails][:current_month] }

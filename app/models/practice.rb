@@ -42,7 +42,7 @@ class Practice < ApplicationRecord
     end
   end
 
-  def self.cached_practices
+  def self.cached_published_enabled_approved_practices
     Rails.cache.fetch('published_enabled_approved_practices', expires_in: 30.minutes) do
       Practice.published_enabled_approved
     end
@@ -64,6 +64,7 @@ class Practice < ApplicationRecord
         self.main_display_image_updated_at_changed? ||
         self.published_changed? ||
         self.enabled_changed? ||
+        self.approved_changed? ||
         self.date_initiated_changed? ||
         self.maturity_level_changed? ||
         self.overview_problem_changed? ||
