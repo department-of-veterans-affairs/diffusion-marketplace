@@ -1,7 +1,7 @@
 include ActiveAdminHelpers
 
-ActiveAdmin.register_page "Site Metrics" do
-  menu priority: 1, label: proc {I18n.t("active_admin.site_metrics")}
+ActiveAdmin.register_page 'Site Metrics' do
+  menu priority: 1, label: proc {I18n.t('active_admin.site_metrics')}
 
   controller do
     helper_method :set_date_values
