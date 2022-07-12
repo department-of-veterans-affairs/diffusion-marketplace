@@ -199,8 +199,8 @@ ActiveAdmin.register_page 'Site Metrics' do
           @general_traffic_stats.each do |key, value|
             sheet.add_row [
               key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ?
-                "#{key.to_s.tr!('_', ' ').titleize} (last month)}" :
-                "#{key.to_s.tr!('_', ' ').titleize} (all-time)}", value
+                "#{key.to_s.tr!('_', ' ').titleize} (last month)" :
+                "#{key.to_s.tr!('_', ' ').titleize} (all-time)", value
             ], style: xlsx_entry
           end
           sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
@@ -288,13 +288,13 @@ ActiveAdmin.register_page 'Site Metrics' do
   end
 
   content title: proc {I18n.t("active_admin.site_metrics")} do
-    div(class: 'dashboard-legend-container position-relative') do
+    div(class: 'position-relative') do
       # export .xlsx button
       form action: export_metrics_path, method: :get, style: 'text-align: left' do |f|
         f.input :submit, type: :submit, value: 'Export as .xlsx', class: 'margin-bottom-2'
       end
 
-      div(class: 'dashboard-legend bottom-2') do
+      div(class: 'site-metrics-legend bottom-2') do
         h3 do
           'Please Note'
         end

@@ -61,38 +61,6 @@ ActiveAdmin.register_page 'Innovation Views Leaderboard' do
     columns do
       column do
         panel('Innovation Views Leaderboard', class: 'dm-panel-container', id: 'dm-practice-views-leaderboard') do
-          # table_for practices_sorted_by_most_views_this_month, id: 'practice-views-table' do
-          #   column(:name) { |practice_views_array| link_to(practice_views_array.last, admin_practice_path(practice_views_array.first)) }
-          #   column("#{date_headers[:current]}") do |practice_views_array|
-          #     Ahoy::Event.practice_views_for_single_practice_by_date_range(
-          #       practice_views_array.first,
-          #       Date.today.at_beginning_of_month,
-          #       Date.today.at_end_of_month
-          #     ).count
-          #   end
-          #   column("#{date_headers[:one_month_ago]}") do |practice_views_array|
-          #     Ahoy::Event.practice_views_for_single_practice_by_date_range(
-          #       practice_views_array.first,
-          #       (Date.today - 1.months).at_beginning_of_month,
-          #       (Date.today - 1.months).at_end_of_month
-          #     ).count
-          #   end
-          #   column("#{date_headers[:two_month_ago]}") do |practice_views_array|
-          #     Ahoy::Event.practice_views_for_single_practice_by_date_range(
-          #       practice_views_array.first,
-          #       (Date.today - 2.months).at_beginning_of_month,
-          #       (Date.today - 2.months).at_end_of_month
-          #     ).count
-          #   end
-          #   column("#{date_headers[:three_month_ago]}") do |practice_views_array|
-          #     Ahoy::Event.practice_views_for_single_practice_by_date_range(
-          #       practice_views_array.first,
-          #       (Date.today - 3.months).at_beginning_of_month,
-          #       (Date.today - 3.months).at_end_of_month
-          #     ).count
-          #   end
-          #   column("Total lifetime views") { |practice_views_array| Ahoy::Event.practice_views_for_single_practice(practice_views_array.first).count }
-          # end
           table_for practices_hash_sorted_by_most_views_this_month, id: 'practice-views-table' do
             column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
             column("#{date_headers[:current]}") { |pr_hash| pr_hash[:current_month] }
