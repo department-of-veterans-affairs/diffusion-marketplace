@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.4.8'
+gem 'rails', '~> 6.0.5'
 # Use postgresql as the database for Active Record
 gem 'pg', '1.1.4'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
