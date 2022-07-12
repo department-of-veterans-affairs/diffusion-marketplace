@@ -161,3 +161,6 @@ gem 'route_downcaser'
 
 gem "autoprefixer-rails"
 gem 'naturalsorter', '3.0.22'
+gem 'opentelemetry-sdk'
+gem 'opentelemetry-exporter-otlp'
+gem 'opentelemetry-instrumentation-all'
