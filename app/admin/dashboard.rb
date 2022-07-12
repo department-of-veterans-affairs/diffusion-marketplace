@@ -252,7 +252,7 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row [''], style: xlsx_divider
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
-          @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ? "#{key.to_s.tr!('_', ' ').titleize} (last month)}" : "#{key.to_s.tr!('_', ' ').titleize} (all-time)}", value], style: xlsx_entry }
+          @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ? "#{key.to_s.tr!('_', ' ').titleize} (last month)" : "#{key.to_s.tr!('_', ' ').titleize} (all-time)", value], style: xlsx_entry }
           sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
           @site_visits_by_month.reverse.each do |month_and_count|
             sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
