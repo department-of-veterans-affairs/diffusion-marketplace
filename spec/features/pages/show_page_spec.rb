@@ -31,6 +31,7 @@ describe 'Page Builder - Show', type: :feature do
     youtube_video_component = PageYouTubePlayerComponent.create(url: 'https://www.youtube.com/watch?v=C0DPdy98e4c', caption: 'Test Video')
     downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
     downloadable_file_component = PageDownloadableFileComponent.create(attachment: downloadable_file, description: 'Test file')
+    paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='https://marketplace.va.gov/about'>about the marketplace</a></p><p><a href='https://wikipedia.org/'>an external link</a></p></div>")
     PageComponent.create(page: @page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: @page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component, created_at: Time.now)
@@ -38,6 +39,7 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: @page, component: cta_component, created_at: Time.now)
     PageComponent.create(page: @page, component: youtube_video_component, created_at: Time.now)
     PageComponent.create(page: @page, component: downloadable_file_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: paragraph_component, created_at: Time.now)
     # must be logged in to view pages
     login_as(user, scope: :user, run_callbacks: false)
     visit '/programming/ruby-rocks'
@@ -106,6 +108,16 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display the downloadable file' do
     expect(page).to have_css('.usa-link--external')
     expect(page).to have_content('Test file')
+  end
+
+  it 'styles external links and opens them in a new tab' do
+    internal_link = page.find_link('about the marketplace')
+    external_link = page.find_link('an external link')
+
+    expect(external_link[:class]).to eq('usa-link--external')
+    expect(external_link[:target]).to eq('_blank')
+    expect(internal_link[:class]).not_to eq('usa-link--external')
+    expect(internal_link[:target]).not_to eq('_blank')
   end
 
   it 'Should not display a warning banner on the Chrome browser' do

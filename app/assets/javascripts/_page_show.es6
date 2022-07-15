@@ -58,10 +58,37 @@
       });
     }
 
+    // Style external links and set to open in a new tab (508 accessibility)
+    function identifyExternalLinks() {
+        // identify external by HREF content
+        let extLinks = $('.dm-page-content').find("a:not([href*='marketplace.va.gov'])").not("[href^='/']");
+        
+        extLinks.each(function() {
+            let currentLink = $(this);
+
+            function isImageLink(link){
+                return link.find("img").length > 0
+            };
+
+            function isButton(link){
+                return link.hasClass("usa-button");
+            }
+
+            // Open in a new tab
+            currentLink.attr("target", "_blank");
+
+            // Do not apply visual styling to buttons and links
+            if ( !isImageLink(currentLink) && !isButton(currentLink) ) {
+                currentLink.addClass("usa-link usa-link--external");
+            }
+        });
+    }
+
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
         removeBottomMarginFromLastAccordionHeading();
         containerizeSubpageHyperlinkCards();
+        identifyExternalLinks();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
