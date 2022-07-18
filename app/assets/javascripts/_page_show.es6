@@ -58,21 +58,43 @@
       });
     }
 
-    // Style external links and set to open in a new tab (508 accessibility)
+    function isImageLink(link){
+        return link.find("img").length > 0
+    };
+
+    function isButton(link){
+        return link.hasClass("usa-button");
+    }
+
+    function isIcon(link){
+        return link.children("i").length > 0;
+    }
+
+    // Remediate internal links on old PageBuilder pages
+    function remediateInternalLinksTarget(){
+        let intLinks = $('.dm-page-content').find("a[href*='marketplace.va.gov'], a[href^='/']");
+
+        intLinks.each(function(){
+            let currentLink = $(this);
+            // Add USWDS link styling text links only
+            if (!isImageLink(currentLink) && !isButton(currentLink) && !isIcon(currentLink)){
+                currentLink.addClass("usa-link");
+            }
+
+            // Remediate any internal links created by 'Open link in: New Window'
+            if (currentLink.is("[target='_blank']")){
+                currentLink.attr("target","")
+            }
+        })
+    }
+
+    // Style PageBuilder external links and set to open in a new tab (508 accessibility)
     function identifyExternalLinks() {
         // identify external by HREF content
         let extLinks = $('.dm-page-content').find("a:not([href*='marketplace.va.gov'])").not("[href^='/']");
         
         extLinks.each(function() {
             let currentLink = $(this);
-
-            function isImageLink(link){
-                return link.find("img").length > 0
-            };
-
-            function isButton(link){
-                return link.hasClass("usa-button");
-            }
 
             // Open in a new tab
             currentLink.attr("target", "_blank");
@@ -88,8 +110,10 @@
         browsePageBuilderPageHappy();
         removeBottomMarginFromLastAccordionHeading();
         containerizeSubpageHyperlinkCards();
+        remediateInternalLinksTarget();
         identifyExternalLinks();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
 })(window.jQuery);
+
