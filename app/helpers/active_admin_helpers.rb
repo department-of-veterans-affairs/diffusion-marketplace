@@ -41,13 +41,13 @@ module ActiveAdminHelpers
   end
 
   def set_date_values
-    @beginning_of_current_month = Date.today.at_beginning_of_month.beginning_of_day
+    @beginning_of_current_month = Date.today.beginning_of_month.beginning_of_day
     @end_of_current_month = Date.today.at_end_of_month.end_of_day
-    @beginning_of_last_month = (Date.today - 1.months).at_beginning_of_month.beginning_of_day
+    @beginning_of_last_month = (Date.today - 1.months).beginning_of_month.beginning_of_day
     @end_of_last_month = (Date.today - 1.months).at_end_of_month.end_of_day
-    @beginning_of_two_months_ago = (Date.today - 2.months).at_beginning_of_month.beginning_of_day
+    @beginning_of_two_months_ago = (Date.today - 2.months).beginning_of_month.beginning_of_day
     @end_of_two_months_ago = (Date.today - 2.months).at_end_of_month.end_of_day
-    @beginning_of_three_months_ago = (Date.today - 3.months).at_beginning_of_month.beginning_of_day
+    @beginning_of_three_months_ago = (Date.today - 3.months).beginning_of_month.beginning_of_day
     @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month.end_of_day
 
     @date_headers = {

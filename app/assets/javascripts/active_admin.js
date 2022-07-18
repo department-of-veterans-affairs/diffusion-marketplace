@@ -191,6 +191,16 @@ const MAX_DESCRIPTION_LENGTH = 140;
     }
   }
 
+    function removeIdFromTrElements() {
+        // remove ids from tr elements for certain pages of the admin panel because it results in duplicate ids
+        let pathnames = ['/admin', '/admin/site_metrics', '/admin/innovation_views_leaderboard', '/admin/innovation_search_terms'];
+        if (pathnames.includes(window.location.pathname)) {
+            $('tr').each(function () {
+                $(this).removeAttr('id');
+            })
+        }
+    }
+
   var ready = function () {
     loadComponents();
     setDashboardPanelTooltipTitle();
@@ -201,6 +211,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
     pageDescriptionCharacterCounter();
     _initTinyMCE("textarea.tinymce");
     _loadPageBuilderFns();
+    removeIdFromTrElements();
 
     // switches out polymorphic forms in page component
     $(document).on("change", ".polyselect", function () {

@@ -102,7 +102,7 @@ class Practice < ApplicationRecord
   end
 
   def last_month_favorited
-    favorited_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
+    favorited_count_by_range((Date.today - 1.months).beginning_of_month, (Date.today - 1.months).at_end_of_month)
   end
 
   has_paper_trail

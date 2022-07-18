@@ -71,7 +71,7 @@ ActiveAdmin.register_page 'Site Metrics' do
       @practices_added_stats = {
         added_this_month: @published_enabled_approved_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
         added_one_month_ago: @published_enabled_approved_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        total_practices_created: @published_enabled_approved_practices.count
+        total_innovations_created: @published_enabled_approved_practices.count
       }
 
       @practices_favorited_stats = {
@@ -340,16 +340,16 @@ ActiveAdmin.register_page 'Site Metrics' do
           end # panel
         end
 
-        panel 'Practices Created' do
+        panel 'Innovations Created' do
           table_for practices_added_stats do
             column("#{date_headers[:current]}") {|ps| ps[:added_this_month]}
             column("Last Month") {|ps| ps[:added_one_month_ago]}
-            column :total_practices_created
+            column :total_innovations_created
           end
         end # panel
       end # tab
 
-      tab :'Practice Engagement' do
+      tab :'Innovation Engagement' do
         panel 'Bookmarks' do
           h4("Bookmarked Counts", title: "Number of times an innovation was bookmarked", class: "dm-tooltip")
 
@@ -361,7 +361,7 @@ ActiveAdmin.register_page 'Site Metrics' do
 
           h4("Bookmarked Counts by Innovation", title: "Number of times each innovation has been bookmarked", class: "dm-tooltip")
 
-          table_for practice_stats do
+          table_for practice_stats, id: 'favorited-stats-by-practice' do
             column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
             column("#{date_headers[:current]}") { |pr_hash| pr_hash[:bookmarks][:current_month] }
             column("Last Month") { |pr_hash| pr_hash[:bookmarks][:last_month] }
@@ -372,7 +372,7 @@ ActiveAdmin.register_page 'Site Metrics' do
         panel 'Comments' do
           h4("Comment Counts", title: "Number of comments made this month, last month, and overall on any innovation page", class: "dm-tooltip")
 
-          table_for practices_comment_stats do
+          table_for practices_comment_stats, id: 'comment-stats' do
             column("#{date_headers[:current]}") {|ps| ps[:comments_this_month]}
             column("Last Month") {|ps| ps[:comments_one_month_ago]}
             column :total_comments
@@ -380,7 +380,7 @@ ActiveAdmin.register_page 'Site Metrics' do
 
           h4("Comment Counts by Innovation", title: "Number of comments on each innovation page", class: "dm-tooltip")
 
-          table_for practice_stats do
+          table_for practice_stats, id: 'comment-stats-by-practice' do
             column(:name) { |pr_hash| link_to(pr_hash[:practice].last, admin_practice_path(pr_hash[:practice].first)) }
             column("#{date_headers[:current]}") { |pr_hash| pr_hash[:comments][:current_month] }
             column("Last Month") { |pr_hash| pr_hash[:comments][:last_month] }
@@ -410,7 +410,7 @@ ActiveAdmin.register_page 'Site Metrics' do
         #TODO: add practice email counts
       end # tab
 
-      tab :'Users' do
+      tab :'Users', id: 'users-tab' do
         columns do
           column do
             panel('New Users by Month', class: 'dm-panel-container', id: 'dm-new-users-by-month') do
@@ -424,7 +424,7 @@ ActiveAdmin.register_page 'Site Metrics' do
 
         columns do
           column do
-            panel 'User Statistics' do
+            panel 'User Statistics', id: 'user-stats-panel' do
               table_for user_info.each do
                 column(:in_the_last) { |info|
                   span(
