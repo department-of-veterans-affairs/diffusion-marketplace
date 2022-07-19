@@ -32,7 +32,7 @@ describe 'Page Builder - Show', type: :feature do
     downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
     downloadable_file_component = PageDownloadableFileComponent.create(attachment: downloadable_file, description: 'Test file')
     paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='https://marketplace.va.gov/about'>about the marketplace</a></p><p><a href='https://wikipedia.org/'>an external link</a></p></div>")
-    legacy_paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='/about' target='_blank'>relative internal link</a></p><p><a href='https://marektplace.va.gov/' target='_blank'>absolute internal link</a></p></div>")
+    legacy_paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='/about' target='_blank'>relative internal link</a></p><p><a href='https://marketplace.va.gov/' target='_blank'>absolute internal link</a></p></div>")
     PageComponent.create(page: @page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: @page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component, created_at: Time.now)
