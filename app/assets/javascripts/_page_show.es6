@@ -63,11 +63,15 @@
     };
 
     function isButton(link){
-        return link.hasClass("usa-button");
+        return link.hasClass("usa-button") || link.is("[class*='btn']") || link.is("[class*='button']");
     }
 
     function isIcon(link){
         return link.children("i").length > 0;
+    }
+
+    function isPracticeLink(link){
+        return link.hasClass("dm-practice-link");
     }
 
     // Remediate internal links on old PageBuilder pages
@@ -77,7 +81,7 @@
         intLinks.each(function(){
             let currentLink = $(this);
             // Add USWDS link styling text links only
-            if (!isImageLink(currentLink) && !isButton(currentLink) && !isIcon(currentLink)){
+            if (!isImageLink(currentLink) && !isButton(currentLink) && !isIcon(currentLink) && !isPracticeLink(currentLink)){
                 currentLink.addClass("usa-link");
             }
 
