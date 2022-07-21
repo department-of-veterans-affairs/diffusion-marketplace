@@ -44,11 +44,11 @@ class Ahoy::Event < ApplicationRecord
     practice_views.where_props(practice_id: practice_id).by_date_range(start_date, end_date)
   }
   scope :practice_views_for_multiple_practices, -> (practice_ids) {
-    practice_views.where("properties->>'practice_id' IN ('#{practice_ids.join("', '")}')")
+    practice_views.where("properties->>'practice_id' IN (?)", practice_ids.map(&:to_s))
   }
   scope :practice_views_for_multiple_practices_by_date_range, -> (practice_ids, start_date, end_date) {
     practice_views.where(
-      "properties->>'practice_id' IN ('#{practice_ids.join("', '")}')"
+      "properties->>'practice_id' IN (?)", practice_ids.map(&:to_s)
     ).by_date_range(start_date, end_date)
   }
   scope :exclude_null_search_term, -> { where("properties->>'search_term' is not null") }
