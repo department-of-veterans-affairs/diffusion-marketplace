@@ -96,16 +96,21 @@ module ActiveAdminHelpers
 
   def get_search_term_counts_by_type(ahoy_event_name)
     set_date_values
-    events = Ahoy::Event.where(name: ahoy_event_name).exclude_null_search_term.group("properties->>'search_term'").order('count_all desc').count
+    # collect the search terms from ONLY the last three months - per product manager on 7/20/22
+    events = Ahoy::Event.where(
+      name: ahoy_event_name
+    ).exclude_null_search_term.by_date_range(
+    @beginning_of_three_months_ago, @end_of_current_month
+    ).group("properties->>'search_term'").order('count_all desc').count
     search_terms_array = []
     events.each do |e|
       search_terms_array << {
         query: e[0],
-        lifetime_count: e[1],
-        current_month_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_current_month, @end_of_current_month).count,
-        last_month_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_last_month, @end_of_last_month).count,
-        two_months_ago_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_two_months_ago, @end_of_two_months_ago).count,
-        three_months_ago_count: Ahoy::Event.search_terms_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_three_months_ago, @end_of_three_months_ago).count
+        lifetime_count: Ahoy::Event.search_term_by_page_and_term(ahoy_event_name, e[0]).count,
+        current_month_count: Ahoy::Event.search_term_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_current_month, @end_of_current_month).count,
+        last_month_count: Ahoy::Event.search_term_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_last_month, @end_of_last_month).count,
+        two_months_ago_count: Ahoy::Event.search_term_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_two_months_ago, @end_of_two_months_ago).count,
+        three_months_ago_count: Ahoy::Event.search_term_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_three_months_ago, @end_of_three_months_ago).count
       }
     end
 

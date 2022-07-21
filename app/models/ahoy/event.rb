@@ -64,7 +64,10 @@ class Ahoy::Event < ApplicationRecord
   scope :all_search_terms_by_date_range, -> (start_date, end_date) {
     all_search_terms.by_date_range(start_date, end_date)
   }
-  scope :search_terms_by_page_and_term_and_date_range, -> (page_search, term, start_date, end_date) {
+  scope :search_term_by_page_and_term, -> (page_search, term) {
+    where(name: page_search).where("properties->>'search_term' = ?", term)
+  }
+  scope :search_term_by_page_and_term_and_date_range, -> (page_search, term, start_date, end_date) {
     where(name: page_search).where("properties->>'search_term' = ?", term).by_date_range(start_date, end_date)
   }
 

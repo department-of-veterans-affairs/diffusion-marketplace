@@ -33,10 +33,10 @@ ActiveAdmin.register_page 'Innovation Search Terms' do
         create_search_count_totals_table(all_search_count_totals_by_date_range)
 
         h2 do
-          "List of all innovation search terms sorted by the current month's hits"
+          "List of innovation search terms for the last three months sorted by the current month's hits"
         end
         # create a table for general searches, VISN searches, and facility searches
-        create_search_terms_table_by_type('General search', practice_search_terms, 'general-practice-search-terms-table')
+        create_search_terms_table_by_type('General search', practice_search_terms, 'general-practice-search-terms-table') if practice_search_terms.count > 0
         create_search_terms_table_by_type('VISN search', visn_search_terms, 'visn-practice-search-terms-table') if visn_search_terms.count > 0
         create_search_terms_table_by_type('Facility search', facility_search_terms, 'facility-practice-search-terms-table') if facility_search_terms.count > 0
 

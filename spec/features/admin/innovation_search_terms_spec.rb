@@ -140,4 +140,24 @@ describe 'Admin innovation search terms', type: :feature do
       end
     end
   end
+
+  it 'should only display search terms used in the last three months' do
+    Ahoy::Event.create!(visit_id: @ahoy_visit.id, name: 'Practice search', properties: { search_term: 'bizz' }, time: Time.now)
+    Ahoy::Event.create!(visit_id: @ahoy_visit.id, name: 'Practice search', properties: { search_term: 'baz' }, time: Time.now)
+    visit '/admin/innovation_search_terms'
+
+    within(:css, '#general-practice-search-terms-table') do
+      expect(page).to have_text('bizz')
+      expect(page).to have_text('baz')
+    end
+
+    Ahoy::Event.find_by(name: 'Practice search', properties: { search_term: 'bizz' }).update(time: Time.now - 4.months)
+    Ahoy::Event.find_by(name: 'Practice search', properties: { search_term: 'baz' }).update(time: Time.now - 6.months)
+    visit '/admin/innovation_search_terms'
+
+    within(:css, '#general-practice-search-terms-table') do
+      expect(page).to_not have_text('bizz')
+      expect(page).to_not have_text('baz')
+    end
+  end
 end
