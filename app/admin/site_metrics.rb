@@ -11,13 +11,17 @@ ActiveAdmin.register_page 'Site Metrics' do
     def get_custom_pages_stats(custom_pages)
       traffic_stats = []
       custom_pages.each do |cp|
-        visit_count_by_ip_address_for_last_month = Ahoy::Event.custom_page_visits_by_date_range(cp, @beginning_of_last_month, @end_of_last_month).count
-        slug = cp[:slug] === 'home' ? cp[:group] : "#{cp[:group]}/#{cp[:slug]}"
+        is_homepage = cp[:slug] === 'home'
+        visit_count_by_ip_address_for_last_month = is_homepage ?
+                                                     Ahoy::Event.custom_page_homepage_visits_by_date_range(cp, @beginning_of_last_month, @end_of_last_month).count :
+                                                     Ahoy::Event.custom_page_subpage_visits_by_date_range(cp, @beginning_of_last_month, @end_of_last_month).count
+
+        slug = is_homepage ? cp[:group] : "#{cp[:group]}/#{cp[:slug]}"
         prop = {
           slug: slug,
           unique_visitors_for_last_month: 0,
           number_of_page_views_for_last_month: 0,
-          total_views: Ahoy::Event.custom_page_visits(cp).count
+          total_views: is_homepage ? Ahoy::Event.custom_page_homepage_visits(cp).count : Ahoy::Event.custom_page_subpage_visits(cp).count
         }
 
         unless visit_count_by_ip_address_for_last_month.blank?

@@ -21,20 +21,21 @@ class Ahoy::Event < ApplicationRecord
   scope :site_visits_by_unique_users_and_date_or_earlier, -> (date) {
     site_visits_excluding_null_ips_and_duplicates.where.not(user_id: nil).by_date_or_earlier(date)
   }
-  scope :custom_page_visits, -> (page) {
-    site_visits_excluding_null_ips_and_duplicates.where(
-      "properties->>'page_group' = '#{page[:group]}'"
-    ).where(
-      "properties->>#{page[:slug] === 'home' ? "'page_slug' is null" : "'page_slug' = '#{page[:slug]}'" }"
-    )
+  ### START special Page-Builder scopes (to be used with a hashed version of Pages that include their PageGroup) ###
+  scope :custom_page_visits_by_page_group, -> (page) { site_visits_excluding_null_ips_and_duplicates.where("properties->>'page_group' = ?", page[:group]) }
+  scope :custom_page_homepage_visits, -> (page) { custom_page_visits_by_page_group(page).where("properties->>'page_slug' is null") }
+  scope :custom_page_subpage_visits, -> (page) { custom_page_visits_by_page_group(page).where("properties->>'page_slug' = ?", page[:slug]) }
+  scope :custom_page_homepage_visits_by_date_range, -> (page, start_date, end_date) {
+    custom_page_homepage_visits(page).by_date_range(start_date, end_date).group("properties->>'ip_address'")
   }
-  scope :custom_page_visits_by_date_range, -> (page, start_date, end_date) {
-    custom_page_visits(page).by_date_range(start_date, end_date).group("properties->>'ip_address'")
+  scope :custom_page_subpage_visits_by_date_range, -> (page, start_date, end_date) {
+    custom_page_subpage_visits(page).by_date_range(start_date, end_date).group("properties->>'ip_address'")
   }
+  ### END special Page-Builder scopes ###
   scope :practice_emails, -> { where(name: 'Practice email') }
   scope :exclude_null_practice_id, -> { where("properties->>'practice_id' is not null") }
   scope :practice_emails_excluding_null_practice_id, -> { practice_emails.exclude_null_practice_id }
-  scope :practice_emails_for_practice, -> (practice_id) { practice_emails.where("properties->>'practice_id' = '#{practice_id}'") }
+  scope :practice_emails_for_practice, -> (practice_id) { practice_emails.where("properties->>'practice_id' = ?", practice_id.to_s) }
   scope :practice_emails_for_practice_by_date_range, -> (practice_id, start_date, end_date) {
     practice_emails_for_practice(practice_id).by_date_range(start_date, end_date)
   }
