@@ -103,4 +103,15 @@ describe 'Admin innovation views leaderboard', type: :feature do
       expect(all('td')[5]).to have_text('7')
     end
   end
+
+  describe 'Cached practices' do
+    it 'Should reset if certain practice attributes have been updated' do
+      cache_keys = Rails.cache.redis.keys
+      expect(cache_keys).to include('published_enabled_approved_practices')
+      @practice.update(name: 'Some Cool Practice')
+      expect(cache_keys).not_to include("searchable_practices_json")
+      visit '/admin/innovation_views_leaderboard'
+      expect(cache_keys).to include('published_enabled_approved_practices')
+    end
+  end
 end

@@ -276,4 +276,15 @@ describe 'Admin site metrics', type: :feature do
     # should not navigate away from metrics page
     expect(page).to have_current_path(admin_site_metrics_path)
   end
+
+  describe 'Cached practices' do
+    it 'Should reset if certain practice attributes have been updated' do
+      cache_keys = Rails.cache.redis.keys
+      expect(cache_keys).to include('published_enabled_approved_practices')
+      @practice.update(name: 'The Coolest Practice Ever!')
+      expect(cache_keys).not_to include("searchable_practices_json")
+      visit '/admin'
+      expect(cache_keys).to include('published_enabled_approved_practices')
+    end
+  end
 end
