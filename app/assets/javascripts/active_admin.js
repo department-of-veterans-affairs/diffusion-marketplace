@@ -193,8 +193,10 @@ const MAX_DESCRIPTION_LENGTH = 140;
 
     function removeIdFromTrElements() {
         // remove ids from tr elements for certain pages of the admin panel because it results in duplicate ids
-        let pathnames = ['/admin', '/admin/site_metrics', '/admin/innovation_views_leaderboard', '/admin/innovation_search_terms'];
-        if (pathnames.includes(window.location.pathname)) {
+        let adminPathNames = ['/admin', '/admin/site_metrics', '/admin/innovation_views_leaderboard', '/admin/innovation_search_terms'];
+        let currentPathName = window.location.pathname.endsWith('/') ? window.location.pathname.slice(0, -1) : window.location.pathname
+
+        if (adminPathNames.includes(currentPathName)) {
             $('tr').each(function () {
                 $(this).removeAttr('id');
             })
