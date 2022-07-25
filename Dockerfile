@@ -1,5 +1,5 @@
 # Note: Uncomment this to run docker locally
-#FROM agilesix/ruby:2.7.5
+# FROM agilesix/ruby:2.7.5
 # Note: Comment out the next line to run docker locally
 FROM 124858472090.dkr.ecr.us-gov-west-1.amazonaws.com/diffusion-marketplace:ruby-2.7.5
 
@@ -18,6 +18,7 @@ COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-
 RUN update-ca-trust extract
 
 RUN gem install bundler --force
+RUN bundle config build.pg --with-pg-config=/usr/pgsql-12/bin/pg_config
 
 ENV RAILS_ROOT /home/nginx/app
 ENV PROXY_ROOT /home/nginx/www
