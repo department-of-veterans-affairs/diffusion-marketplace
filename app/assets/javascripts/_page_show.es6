@@ -58,35 +58,14 @@
       });
     }
 
-    function isImageLink(link){
-        return link.find("img").length > 0
-    };
-
-    function isButton(link){
-        return link.hasClass("usa-button") || link.is("[class*='btn']") || link.is("[class*='button']");
-    }
-
-    function isIcon(link){
-        return link.children("i").length > 0;
-    }
-
-    function isPracticeLink(link){
-        return link.hasClass("dm-practice-link");
-    }
-
-    // Remediate internal links on old PageBuilder pages
+    // Remediate internal links on PageBuilder paragraph and accordion components
     function remediateInternalLinksTarget(){
-        let intLinks = $('.dm-page-content').find("a[href*='marketplace.va.gov'], a[href^='/']");
+        let intLinks = $('.page-paragraph-component, .page-accordion-component').find("a[href*='marketplace.va.gov'], a[href^='/'],a[href^='.']");
 
         intLinks.each(function(){
             let currentLink = $(this);
-            // Add USWDS link styling text links only
-            if (!isImageLink(currentLink) && !isButton(currentLink) && !isIcon(currentLink) && !isPracticeLink(currentLink)){
-                currentLink.addClass("usa-link");
-            }
-
-            // Remediate any internal links created by 'Open link in: New Window'
-            if (currentLink.is("[target='_blank']")){
+            currentLink.addClass("usa-link");
+            if (currentLink.is("[target='_blank']")) {
                 currentLink.attr("target","")
             }
         })
@@ -95,18 +74,13 @@
     // Style PageBuilder external links and set to open in a new tab (508 accessibility)
     function identifyExternalLinks() {
         // identify external by HREF content
-        let extLinks = $('.dm-page-content').find("a:not([href*='marketplace.va.gov'])").not("[href^='/']");
+        let extLinks = $('.page-paragraph-component, .page-accordion-component').find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
         
         extLinks.each(function() {
             let currentLink = $(this);
 
-            // Open in a new tab
             currentLink.attr("target", "_blank");
-
-            // Do not apply visual styling to buttons and links
-            if ( !isImageLink(currentLink) && !isButton(currentLink) ) {
-                currentLink.addClass("usa-link usa-link--external");
-            }
+            currentLink.addClass("usa-link usa-link--external");
         });
     }
 
