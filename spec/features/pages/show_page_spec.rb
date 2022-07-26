@@ -27,6 +27,9 @@ describe 'Page Builder - Show', type: :feature do
     image_path_2 = File.join(Rails.root, '/spec/assets/SpongeBob.png')
     image_file_2 = File.new(image_path_2)
     image_component_2 = PageImageComponent.create(alignment: 'center', alt_text: 'image with link', page_image: image_file_2, url: 'https://va.gov')
+    image_path_3 = File.join(Rails.root, '/spec/assets/acceptable_img.jpg')
+    image_file_3 = File.new(image_path_3)
+    image_component_3 = PageImageComponent.create(alignment: 'center', alt_text: 'image with internal link', page_image: image_file_3, url: '/about')
     cta_component = PageCtaComponent.create(url: 'https://www.google.com', button_text:'Search now', cta_text: 'Curious about programming languages?')
     cta_component_internal = PageCtaComponent.create(url: '/innnovations/vione', button_text: 'Internal CTA', cta_text: 'Explore innovations')
     youtube_video_component = PageYouTubePlayerComponent.create(url: 'https://www.youtube.com/watch?v=C0DPdy98e4c', caption: 'Test Video')
@@ -38,6 +41,7 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: @page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component_2, created_at: Time.now)
+    PageComponent.create(page: @page, component: image_component_3, created_at: Time.now)
     PageComponent.create(page: @page, component: cta_component, created_at: Time.now)
     PageComponent.create(page: @page, component: cta_component_internal, created_at: Time.now)
     PageComponent.create(page: @page, component: youtube_video_component, created_at: Time.now)
@@ -94,8 +98,13 @@ describe 'Page Builder - Show', type: :feature do
     page.should have_css('.flex-justify-center')
 
     # get the parent element of the image's URL
-    link = page.find("img[src*='SpongeBob.png']").find(:xpath, '..')
-    link[:href].should == "https://va.gov/"
+    external_link = page.find("img[src*='SpongeBob.png']").find(:xpath, '..')
+    expect(external_link[:href]).to eq('https://va.gov/')
+    expect(external_link[:target]).to eq('_blank')
+
+    internal_link = page.find("img[src*='acceptable_img.jpg']").find(:xpath, '..')
+    expect(URI.parse(internal_link[:href]).path).to eq('/about')
+    expect(internal_link[:target]).not_to eq('_blank')
   end
 
   it 'Should display the call to action' do
@@ -105,7 +114,7 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_content('Curious about programming languages?')
 
     internal_cta = page.find_link('Internal CTA')
-    expect(URI.parse(internal_link[:href]).path).to eq('/innnovations/vione')
+    expect(URI.parse(internal_cta[:href]).path).to eq('/innnovations/vione')
     expect(internal_cta[:target]).to_not eq('_blank')
   end
 

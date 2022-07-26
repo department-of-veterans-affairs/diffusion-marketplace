@@ -90,7 +90,7 @@
         <% when 'PageImageComponent' %>
           <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <% if component.url.present? %>
-              <a href="<%= component.url %>" target="<%= component.url.chars.first === '/' ? '' : '_blank' %>" title="Go to <%= component.url %>">
+              <a href="<%= component.url %>" target="<%= get_link_target_attribute(component.url) %>" title="Go to <%= component.url %>">
                 <%= render partial: "page/page_image", locals: { component: component } %>
               </a>
             <% else %>
