@@ -28,6 +28,7 @@ describe 'Page Builder - Show', type: :feature do
     image_file_2 = File.new(image_path_2)
     image_component_2 = PageImageComponent.create(alignment: 'center', alt_text: 'image with link', page_image: image_file_2, url: 'https://va.gov')
     cta_component = PageCtaComponent.create(url: 'https://www.google.com', button_text:'Search now', cta_text: 'Curious about programming languages?')
+    cta_component_internal = PageCtaComponent.create(url: '/innnovations/vione', button_text: 'Internal CTA', cta_text: 'Explore innovations')
     youtube_video_component = PageYouTubePlayerComponent.create(url: 'https://www.youtube.com/watch?v=C0DPdy98e4c', caption: 'Test Video')
     downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
     downloadable_file_component = PageDownloadableFileComponent.create(attachment: downloadable_file, description: 'Test file')
@@ -38,6 +39,7 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: @page, component: image_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component_2, created_at: Time.now)
     PageComponent.create(page: @page, component: cta_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: cta_component_internal, created_at: Time.now)
     PageComponent.create(page: @page, component: youtube_video_component, created_at: Time.now)
     PageComponent.create(page: @page, component: downloadable_file_component, created_at: Time.now)
     PageComponent.create(page: @page, component: paragraph_component, created_at: Time.now)
@@ -97,9 +99,14 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the call to action' do
-    expect(find_all('.usa-button').last[:href]).to include('https://www.google.com')
+    external_cta = page.find_link('Search now')
+    expect(external_cta[:href]).to eq('https://www.google.com/')
+    expect(external_cta[:target]).to eq('_blank')
     expect(page).to have_content('Curious about programming languages?')
-    expect(page).to have_content('Search now')
+
+    internal_cta = page.find_link('Internal CTA')
+    expect(URI.parse(internal_link[:href]).path).to eq('/innnovations/vione')
+    expect(internal_cta[:target]).to_not eq('_blank')
   end
 
   it 'Should display the YouTube video' do
