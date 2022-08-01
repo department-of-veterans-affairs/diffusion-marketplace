@@ -8,4 +8,8 @@ footer {
     @include u-padding-top(0, !important);
     padding-bottom: 32px !important;
   }
+
+  nav {
+    max-width: unset !important;
+  }
 }

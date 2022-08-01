@@ -1,21 +1,26 @@
 .dm-footer-link {
-  color: color($theme-color-base-ink);
-  text-decoration: none;
-  @include u-text('semibold', !important);
+  color: color($theme-color-secondary-darker);
+  @include u-text('normal');
+  text-decoration: underline !important;
 
   &:hover {
-    color: color($theme-color-primary-vivid);
-    text-decoration: underline;
+    color: color($theme-color-secondary-darkest);
+    text-decoration: underline !important;
   }
 
   &:visited {
-    color: color($theme-color-base-ink);
-    text-decoration: none;
+    color: color($theme-color-secondary-darker);
+    text-decoration: underline !important;
 
     &:hover {
-      color: color($theme-color-primary-vivid);
-      text-decoration: underline;
+      color: color($theme-color-secondary-darkest);
+      text-decoration: underline !important;
     }
+  }
+
+  &:active {
+    color: color($theme-color-secondary-darkest);
+    text-decoration: underline !important;
   }
 }
 
@@ -46,14 +51,37 @@
 
   &-white {
     color: color($theme-color-dm-white) !important;
-    text-decoration: underline;
+    text-decoration: underline !important;
 
     &:hover {
       color: color($theme-color-base-lighter) !important;
+      text-decoration: underline !important;
     }
 
     &:active {
       color: color($theme-color-base-light) !important;
+      text-decoration: underline !important;
+    }
+  }
+
+  &-dark {
+    color: color($theme-color-base-ink);
+    text-decoration: none;
+    @include u-text('semibold', !important);
+
+    &:hover {
+      color: color($theme-color-primary-vivid);
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: color($theme-color-base-ink);
+      text-decoration: none;
+
+      &:hover {
+        color: color($theme-color-primary-vivid);
+        text-decoration: underline;
+      }
     }
   }
 }
