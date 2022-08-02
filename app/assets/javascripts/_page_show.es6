@@ -66,7 +66,7 @@
             let currentLink = $(this);
             currentLink.addClass("usa-link");
             if (currentLink.is("[target='_blank']")) {
-                currentLink.attr("target","")
+                currentLink.attr("target","");
             }
         })
     }
