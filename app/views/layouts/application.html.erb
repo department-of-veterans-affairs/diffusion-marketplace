@@ -87,7 +87,7 @@
 
   <body <% if content_for?(:body_attributes) %>
         <%= yield(:body_attributes) %>
-        <% end %> class="<%= yield(:body_classes) %>">
+        <% end %> class="display-flex margin-0 <%= yield(:body_classes) %>">
     <% is_practice_editor = params[:controller] === 'practices' && (NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action]) || params[:action] === 'metrics') %>
     <%= render 'shared/header' if !is_practice_editor %>
     <%= render 'practices/shared/practice_editor_header' if is_practice_editor %>

@@ -4,8 +4,15 @@ html {
 }
 
 body {
+  flex-direction: column;
   min-height: 100%;
-  position: relative;
+  justify-content: space-between;
+
+  main:not(.home) {
+    @media screen and (min-width: 1024px) {
+      padding-bottom: 128px;
+    }
+  }
 }
 
 p {
