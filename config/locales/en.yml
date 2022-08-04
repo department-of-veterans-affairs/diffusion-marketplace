@@ -127,3 +127,7 @@ en:
   time:
     formats:
       commontator: "%b %d %Y at %I:%M%p %Z"
+  active_admin:
+    site_metrics: 'Site Metrics'
+    innovation_views_leaderboard: 'Innovation Views Leaderboard'
+    innovation_search_terms: 'Innovation Search Terms'
