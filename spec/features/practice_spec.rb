@@ -156,15 +156,15 @@ describe 'Practices', type: :feature do
       expect(page).to have_content(@enabled_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@enabled_practice))
       click_on('Bookmark')
-      visit admin_dashboard_path
-      click_on('Metrics')
+      visit admin_root_path
+      click_on('Innovation Engagement')
       expect(page).to have_content('Enabled practice')
     end
 
     it 'should NOT display disabled practice in metrics' do
       login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit admin_dashboard_path
-      click_on('Metrics')
+      visit admin_root_path
+      click_on('Innovation Engagement')
       expect(page).to_not have_content('Disabled practice')
     end
 
