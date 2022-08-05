@@ -22,4 +22,10 @@ footer {
       border-top: 0 !important;
     }
   }
+
+  &.practice-show {
+    @media screen and (max-width: 1023px) {
+      margin-bottom: 60.2px;
+    }
+  }
 }

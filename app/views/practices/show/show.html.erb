@@ -3,8 +3,9 @@
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/show/ahoy_event_tracking.js', formats: [:js] if current_user.present? %>
   <% end %>
-
 <% end %>
+<% provide :footer_classes, 'practice-show' %>
+
 <section class="usa-section padding-y-0 margin-bottom-1 margin-top-0">
   <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
