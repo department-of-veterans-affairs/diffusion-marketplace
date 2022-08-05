@@ -1,0 +1,1 @@
+ssh ec2-user@$PROD_SERVER "sudo docker exec diffusion-marketplace_app_1 rails runner \"ActiveRecord::Base.logger = nil; puts %Q(#{PracticeEditor.joins(:user).order(Arel.sql(%Q(lower(users.email) ASC))).pluck(%Q(users.email)).uniq.join(%Q(\n))}); nil; STDOUT.flush\";"
