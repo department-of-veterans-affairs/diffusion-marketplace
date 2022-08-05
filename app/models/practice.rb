@@ -42,8 +42,14 @@ class Practice < ApplicationRecord
     end
   end
 
+  def self.cached_published_enabled_approved_practices
+    Rails.cache.fetch('published_enabled_approved_practices', expires_in: 30.minutes) do
+      Practice.published_enabled_approved
+    end
+  end
+
   def clear_searchable_cache
-    cache_keys = ["searchable_practices_json", "searchable_public_practices_json", "s3_signer"]
+    cache_keys = ["searchable_practices_json", "searchable_public_practices_json", "s3_signer", "published_enabled_approved_practices"]
     cache_keys.each do |cache_key|
       Cache.new.delete_cache_key(cache_key)
     end
@@ -58,6 +64,7 @@ class Practice < ApplicationRecord
         self.main_display_image_updated_at_changed? ||
         self.published_changed? ||
         self.enabled_changed? ||
+        self.approved_changed? ||
         self.date_initiated_changed? ||
         self.maturity_level_changed? ||
         self.overview_problem_changed? ||
@@ -85,29 +92,8 @@ class Practice < ApplicationRecord
     end
   end
 
-  # views
-  def views
-    Ahoy::Event.where(name: 'Practice show').where_props(practice_id: id).where("properties->>'is_duplicate' is null").count
-  end
-
-  def date_range_views(start_date, end_date)
-    Ahoy::Event.where(name: 'Practice show').where_props(practice_id: id).where("properties->>'is_duplicate' is null").where(time: start_date...end_date).count
-  end
-
   def current_month_views
-    date_range_views(Date.today.beginning_of_month, Date.today.end_of_month)
-  end
-
-  def last_month_views
-    date_range_views((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
-  end
-
-  def two_months_ago_views
-    date_range_views((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
-  end
-
-  def three_months_ago_views
-    date_range_views((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
+    Ahoy::Event.practice_views_for_single_practice_by_date_range(id, Date.today.beginning_of_month, Date.today.end_of_month).count
   end
 
   # favorited
@@ -116,7 +102,7 @@ class Practice < ApplicationRecord
   end
 
   def last_month_favorited
-    favorited_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
+    favorited_count_by_range((Date.today - 1.months).beginning_of_month, (Date.today - 1.months).at_end_of_month)
   end
 
   has_paper_trail
@@ -327,9 +313,11 @@ class Practice < ApplicationRecord
   COMPLEXITY_LABELS = ['Little or no complexity', 'Some complexity', 'Significant complexity', 'High or large complexity'].freeze
   TIME_ESTIMATE_OPTIONS = ['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
   NUMBER_DEPARTMENTS_OPTIONS = ['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
+
   def committed_user_count
     user_practices.where(committed: true).count
   end
+
   def number_of_adopted_facilities
     number_adopted
   end
@@ -352,12 +340,6 @@ class Practice < ApplicationRecord
 
   def favorited_count_by_range(start_date, end_date)
     user_practices.where({time_favorited: start_date...end_date}).count
-  end
-  def emailed_count
-    Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").count
-  end
-  def emailed_count_by_range(start_date, end_date)
-    Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").where(time: start_date..end_date).count
   end
 
   def create_practice_editor_for_practice

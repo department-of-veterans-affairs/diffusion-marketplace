@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
   mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
-  get '/dashboard/export', action: 'export_metrics', controller: 'admin/dashboard', as: 'export_metrics'
+  get '/site_metrics/export', action: 'export_metrics', controller: 'admin/site_metrics', as: 'export_metrics'
   get '/session_time_remaining', action: 'session_time_remaining', controller: 'practices', as: 'session_time_remaining'
   patch '/update_category_usage', action: 'update_category_usage', controller: 'categories', as: 'update_category_usage'
   patch '/extend_editor_session_time', action: 'extend_editor_session_time', controller: 'practices', as: 'extend_editor_session_time'

@@ -19,7 +19,7 @@ module ActiveAdminHelpers
     facility_data = VaFacility.cached_va_facilities.get_relevant_attributes
     practice_diffusion_histories = p.diffusion_histories.exclude_clinical_resource_hubs.map { |dh|
       selected_facility = facility_data.select { |fd| fd.station_number === dh.va_facility.station_number }
-
+      origin_facilities = origin_display_name(Practice.find_by(id: dh.practice_id))
       dh_status = dh.diffusion_history_statuses.first
       {
         facility_name: selected_facility[0].official_station_name,
@@ -29,9 +29,11 @@ module ActiveAdminHelpers
         status: dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete' ? 'Successful' : dh_status.status,
         rurality: selected_facility[0].rurality,
         complexity: selected_facility[0].fy17_parent_station_complexity_level,
+        sta3n: selected_facility[0].sta3n,
         station_number: selected_facility[0].station_number,
         visn: selected_facility[0].visn,
-        practice_name: dh.practice.name
+        practice_name: dh.practice.name,
+        origin_facilities: origin_facilities
       }
     }
     sorted_diffusion_histories = practice_diffusion_histories.sort_by { |pdh| [pdh[:state], pdh[:facility_name]] }
@@ -39,13 +41,13 @@ module ActiveAdminHelpers
   end
 
   def set_date_values
-    @beginning_of_current_month = Date.today.at_beginning_of_month.beginning_of_day
+    @beginning_of_current_month = Date.today.beginning_of_month.beginning_of_day
     @end_of_current_month = Date.today.at_end_of_month.end_of_day
-    @beginning_of_last_month = (Date.today - 1.months).at_beginning_of_month.beginning_of_day
+    @beginning_of_last_month = (Date.today - 1.months).beginning_of_month.beginning_of_day
     @end_of_last_month = (Date.today - 1.months).at_end_of_month.end_of_day
-    @beginning_of_two_months_ago = (Date.today - 2.months).at_beginning_of_month.beginning_of_day
+    @beginning_of_two_months_ago = (Date.today - 2.months).beginning_of_month.beginning_of_day
     @end_of_two_months_ago = (Date.today - 2.months).at_end_of_month.end_of_day
-    @beginning_of_three_months_ago = (Date.today - 3.months).at_beginning_of_month.beginning_of_day
+    @beginning_of_three_months_ago = (Date.today - 3.months).beginning_of_month.beginning_of_day
     @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month.end_of_day
 
     @date_headers = {
@@ -92,22 +94,27 @@ module ActiveAdminHelpers
     @xlsx_entry_text_bottom = s.add_style sz: 12, alignment: { horizontal: :left, vertical: :bottom, wrap_text: true}
   end
 
-  def get_search_term_counts_by_type(ahoy_event_name, search_terms_array)
+  def get_search_term_counts_by_type(ahoy_event_name)
     set_date_values
-    events = Ahoy::Event.where(name: ahoy_event_name).where("properties->>'search_term' is not null").group("properties->>'search_term'").order('count_all desc').count
+    # collect the search terms from ONLY the last three months - per product manager on 7/20/22
+    events = Ahoy::Event.where(
+      name: ahoy_event_name
+    ).exclude_null_search_term.by_date_range(
+    @beginning_of_three_months_ago, @end_of_current_month
+    ).group("properties->>'search_term'").order('count_all desc').count
+    search_terms_array = []
     events.each do |e|
       search_terms_array << {
         query: e[0],
-        lifetime_count: e[1],
-        current_month_count: Ahoy::Event.count_for_range(ahoy_event_name, @beginning_of_current_month, @end_of_current_month, e[0]),
-        last_month_count: Ahoy::Event.count_for_range(ahoy_event_name, @beginning_of_last_month, @end_of_last_month, e[0]),
-        two_months_ago_count: Ahoy::Event.count_for_range(ahoy_event_name, @beginning_of_two_months_ago, @end_of_two_months_ago, e[0]),
-        three_months_ago_count: Ahoy::Event.count_for_range(ahoy_event_name, @beginning_of_three_months_ago, @end_of_three_months_ago, e[0])
+        lifetime_count: Ahoy::Event.search_term_by_page_and_term(ahoy_event_name, e[0]).count,
+        current_month_count: Ahoy::Event.search_term_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_current_month, @end_of_current_month).count,
+        last_month_count: Ahoy::Event.search_term_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_last_month, @end_of_last_month).count,
+        two_months_ago_count: Ahoy::Event.search_term_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_two_months_ago, @end_of_two_months_ago).count,
+        three_months_ago_count: Ahoy::Event.search_term_by_page_and_term_and_date_range(ahoy_event_name, e[0], @beginning_of_three_months_ago, @end_of_three_months_ago).count
       }
     end
 
-    search_terms_array.sort_by {|k| k["current_month_count"]}.reverse!
-    search_terms_array
+    search_terms_array.sort_by { |k| k[:current_month_count] }.reverse!
   end
 
   def create_search_terms_table_by_type(panel_title, search_terms_array, table_id)
@@ -118,22 +125,22 @@ module ActiveAdminHelpers
         column do
           table_for search_terms_array, id: table_id do
             column('Term') {|st| st[:query]}
-            column("#{@date_headers[:current]}") {|st| st[:current_month_count]}
-            column("#{@date_headers[:one_month_ago]}") {|st| st[:last_month_count]}
-            column("#{@date_headers[:two_month_ago]}") {|st| st[:two_months_ago_count]}
-            column("#{@date_headers[:three_month_ago]}") {|st| st[:three_months_ago_count]}
-            column("Lifetime") {|st| st[:lifetime_count]}
+            column("#{@date_headers[:current]}") { |st| st[:current_month_count] }
+            column("#{@date_headers[:one_month_ago]}") { |st| st[:last_month_count] }
+            column("#{@date_headers[:two_month_ago]}") { |st| st[:two_months_ago_count] }
+            column("#{@date_headers[:three_month_ago]}") { |st| st[:three_months_ago_count] }
+            column("Lifetime") {|st| st[:lifetime_count] }
           end
         end
       end
     end
 
     script do
-      total_current_month_searches = search_terms_array.sum {|st| st[:current_month_count] }
-      total_last_month_searches = search_terms_array.sum {|st| st[:last_month_count]}
-      total_two_months_ago_searches = search_terms_array.sum {|st| st[:two_months_ago_count]}
-      total_three_months_ago_searches = search_terms_array.sum {|st| st[:three_months_ago_count]}
-      total_lifetime_searches = search_terms_array.sum {|st| st[:lifetime_count]}
+      total_current_month_searches = search_terms_array.sum { |st| st[:current_month_count] }
+      total_last_month_searches = search_terms_array.sum { |st| st[:last_month_count] }
+      total_two_months_ago_searches = search_terms_array.sum { |st| st[:two_months_ago_count] }
+      total_three_months_ago_searches = search_terms_array.sum { |st| st[:three_months_ago_count] }
+      total_lifetime_searches = search_terms_array.sum { |st| st[:lifetime_count] }
       raw "$(document).ready(function($) {
               $('##{table_id}').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_searches}</b></td><td><b>#{total_last_month_searches}</b></td><td><b>#{total_two_months_ago_searches}</b></td><td><b>#{total_three_months_ago_searches}</b></td><td><b>#{total_lifetime_searches}</b></td></tr>');
             });
@@ -141,27 +148,21 @@ module ActiveAdminHelpers
     end
   end
 
-  def get_search_count_totals_by_date_range(search_totals_array)
+  def get_search_count_totals_by_date_range
     set_date_values
-    search_term_not_null = "properties->>'search_term' is not null"
-
-    total_search_events_count = Ahoy::Event.where(
-      name: 'Practice search').where(search_term_not_null).or(
-      Ahoy::Event.where(name: 'VISN practice search').where(search_term_not_null)).or(
-      Ahoy::Event.where(name: 'Facility practice search').where(search_term_not_null)).count
-
-    search_totals_array << {
-      current_month_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_current_month, @end_of_current_month),
-      last_month_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_last_month, @end_of_last_month),
-      two_months_ago_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_two_months_ago, @end_of_two_months_ago),
-      three_months_ago_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_three_months_ago, @end_of_three_months_ago),
-      total: total_search_events_count
-    }
-
-    search_totals_array
+    [
+      {
+        current_month_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_current_month, @end_of_current_month).count,
+        last_month_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_last_month, @end_of_last_month).count,
+        two_months_ago_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_two_months_ago, @end_of_two_months_ago).count,
+        three_months_ago_count: Ahoy::Event.all_search_terms.by_date_range(@beginning_of_three_months_ago, @end_of_three_months_ago).count,
+        total: Ahoy::Event.all_search_terms.count
+      }
+    ]
   end
 
   def create_search_count_totals_table(search_totals_array)
+    set_date_values
     panel 'Total search counts' do
       columns do
         column do
@@ -182,7 +183,9 @@ module ActiveAdminHelpers
                      options[:add_practice_name] ? 'Practice' : nil,
                     'State',
                     'Location',
+                    'Originating Facilities',
                     'VISN',
+                    'STA3N',
                     'Station Number',
                     'Adoption Date',
                     'Adoption Status',
@@ -198,7 +201,9 @@ module ActiveAdminHelpers
                           hash[:practice_name],
                           hash[:state],
                           adoption_facility_name(hash),
+                          hash[:origin_facilities],
                           hash[:visn].number,
+                          hash[:sta3n],
                           hash[:station_number],
                           adoption_date(hash),
                           adoption_status(hash),
@@ -211,7 +216,9 @@ module ActiveAdminHelpers
         sheet.add_row [
                         data_array[:state],
                         adoption_facility_name(data_array),
+                        data_array[:origin_facilities],
                         data_array[:visn].number,
+                        data_array[:sta3n],
                         data_array[:station_number],
                         adoption_date(data_array),
                         adoption_status(data_array),

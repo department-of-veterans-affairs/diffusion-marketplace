@@ -5,9 +5,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.4.8'
+gem 'rails', '~> 6.0.5'
 # Use postgresql as the database for Active Record
-gem 'pg', '1.1.4'
+gem 'pg', '1.4.1'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
 gem 'puma', '>= 4.3.5'
@@ -161,3 +161,6 @@ gem 'route_downcaser'
 
 gem "autoprefixer-rails"
 gem 'naturalsorter', '3.0.22'
+gem 'opentelemetry-sdk'
+gem 'opentelemetry-exporter-otlp'
+gem 'opentelemetry-instrumentation-all'

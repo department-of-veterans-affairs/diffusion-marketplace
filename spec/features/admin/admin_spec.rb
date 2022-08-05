@@ -78,9 +78,21 @@ describe 'The admin dashboard', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_current_path(admin_root_path)
 
-      expect(page).to have_selector('#users-information', visible: true)
-      expect(page).to have_selector('#innovation-leaderboards', visible: false)
-      expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
+      expect(page).to have_link('General', href: '#general')
+      expect(page).to have_link('Innovation Engagement', href: '#innovation-engagement')
+      expect(page).to have_link('Users', href: '#users-tab')
+    end
+  end
+
+  describe 'Navigating to the admin homepage' do
+    it "should direct the user to 'admin/site_metrics' page when they browse to '/admin'" do
+      login_as(@admin, scope: :user, run_callbacks: false)
+
+      visit admin_root_path
+      expect(find('.menu_item.current')).to have_text('Site Metrics')
+      expect(page).to have_content('General')
+      expect(page).to have_content('Innovation Engagement')
+      expect(page).to have_content('Users')
     end
   end
 
@@ -93,8 +105,8 @@ describe 'The admin dashboard', type: :feature do
       expect(page).to have_current_path(admin_root_path)
 
       within(:css, '#header') do
-        click_link('Dashboard')
-        expect(page).to have_current_path(admin_dashboard_path)
+        click_link('Site Metrics')
+        expect(page).to have_current_path(admin_site_metrics_path)
 
         click_link('Categories')
         expect(page).to have_current_path(admin_categories_path)
@@ -104,6 +116,12 @@ describe 'The admin dashboard', type: :feature do
 
         click_link('Departments')
         expect(page).to have_current_path(admin_departments_path)
+
+        click_link('Innovation Search Terms')
+        expect(page).to have_current_path(admin_innovation_search_terms_path)
+
+        click_link('Innovation Views Leaderboard')
+        expect(page).to have_current_path(admin_innovation_views_leaderboard_path)
 
         click_link('Practice Partners')
         expect(page).to have_current_path(admin_practice_partners_path)
@@ -117,51 +135,6 @@ describe 'The admin dashboard', type: :feature do
         click_link('Versions')
         expect(page).to have_current_path(admin_versions_path)
       end
-    end
-  end
-
-  describe 'Dashboard tab' do
-    it 'should be there' do
-      login_as(@admin, scope: :user, run_callbacks: false)
-      visit '/admin'
-
-      within(:css, '.tabs.ui-tabs') do
-        click_link('Innovation Leaderboards')
-        expect(page).to have_selector('#users-information', visible: false)
-        expect(page).to have_selector('#innovation-leaderboards', visible: true)
-        expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
-        expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
-
-        click_link('Innovation Search Terms')
-        expect(page).to have_selector('#users-information', visible: false)
-        expect(page).to have_selector('#innovation-leaderboards', visible: false)
-        expect(page).to have_selector('#general-practice-search-terms-table', visible: true)
-        expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
-
-        click_link('Users Information')
-        expect(page).to have_selector('#users-information', visible: true)
-        expect(page).to have_selector('#innovation-leaderboards', visible: false)
-        expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
-        expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
-
-        click_link('Metrics')
-        expect(page).to have_selector('#users-information', visible: false)
-        expect(page).to have_selector('#innovation-leaderboards', visible: false)
-        expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
-        expect(page).to have_css("input[value='Export as .xlsx']", visible: true)
-      end
-    end
-
-    it 'should show allow admin to download metrics as .xlsx file' do
-      login_as(@admin, scope: :user, run_callbacks: false)
-      visit '/admin'
-
-      click_link('Metrics')
-      export_button = find(:css, "input[type='submit']")
-      export_button.click
-
-      # should not navigate away from metrics page
-      expect(page).to have_current_path(admin_root_path)
     end
   end
 

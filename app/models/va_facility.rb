@@ -17,7 +17,7 @@ class VaFacility < ApplicationRecord
   scope :get_complexity, -> { order(:fy17_parent_station_complexity_level).pluck(:fy17_parent_station_complexity_level).uniq }
   scope :get_relevant_attributes, -> {
       select(:street_address_state, :official_station_name, :id, :visn_id, :common_name, :station_number, :latitude,
-      :longitude, :slug, :fy17_parent_station_complexity_level, :rurality, :classification, :station_phone_number)
+      :longitude, :slug, :fy17_parent_station_complexity_level, :rurality, :classification, :station_phone_number, :sta3n)
   }
   scope :order_by_station_name, -> { order(:official_station_name) }
   scope :order_by_state_and_station_name, -> { order(:street_address_state, :official_station_name) }
