@@ -129,13 +129,11 @@ class Practice < ApplicationRecord
 
   PRACTICE_EDITOR_SLUGS =
       {
-          'editors': 'instructions',
           'introduction': 'editors',
           'adoptions': 'introduction',
           'overview': 'adoptions',
           'implementation': 'overview',
-          'contact': 'implementation',
-          'about': 'contact',
+          'about': 'implementation'
       }
 
   PRACTICE_EDITOR_AWARDS_AND_RECOGNITION =
@@ -417,6 +415,7 @@ class Practice < ApplicationRecord
   # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
     self.name&.strip!
+    self.main_display_image_alt_text&.strip!
   end
 
   # reject the PracticeOriginFacility if the facility field is blank OR the practice already has a PracticeOriginFacility with the same va_facility_id

@@ -1,9 +1,9 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper
+  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper, UsersHelper
   prepend_before_action :skip_timeout, only: [:session_time_remaining]
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,
-                                      :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
+                                      :departments, :timeline, :risk_and_mitigation, :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics, :editors,
                                       :extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :set_facility_data, only: [:show]
@@ -13,11 +13,11 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: :create
-  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
+  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
-  before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
+  before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :adoptions, :about, :implementation]
   before_action :fetch_visns, only: [:show, :search, :introduction]
   before_action :fetch_va_facilities, only: [:show, :search, :metrics, :introduction]
 
@@ -116,7 +116,8 @@ class PracticesController < ApplicationController
     session_open = PracticeEditorSession.find_by(practice: @practice, user_id: current_user.id, session_end_time: nil).present?
     latest_session_user_is_current_user = PracticeEditorSession.where(practice: @practice).last.user === current_user
     updated = update_conditions if session_open || latest_session_user_is_current_user
-
+    is_request_from_publish_modal = params[:save_and_publish].present?
+    is_request_from_close_modal = params[:is_from_close_modal].present?
     #check to see if current session has expired.... if  not
     respond_to do |format|
       if updated
@@ -125,7 +126,12 @@ class PracticesController < ApplicationController
           # Add back end validation error messages for Editors page just as a safety measure
           invalid_editor_email_field = updated.message.split(' ').slice(3..-1).join(' ')
           flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The innovation was not saved."
-          format.html { redirect_back fallback_location: root_path }
+          # if the request was sent via the publication modal, redirect the user to the practice's show page
+          if is_request_from_publish_modal
+            format.html { redirect_to practice_path(@practice) }
+          else
+            format.html { redirect_back fallback_location: root_path }
+          end
           format.json { render json: updated, status: :unprocessable_entity }
         elsif !session_open && latest_session_user_is_current_user
           flash[:notice] = "Your editing session for #{@practice.name} has ended. Your edits have been saved and you have been returned to the Metrics page."
@@ -143,7 +149,12 @@ class PracticesController < ApplicationController
             format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Innovation was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
+            # if the request was sent via the publication modal, redirect the user to the practice's show page
+            if is_request_from_publish_modal || is_request_from_close_modal
+              format.html { redirect_to practice_path(@practice), notice: editor_notice + 'Innovation was successfully updated.' }
+            else
+              format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
+            end
             format.json { render json: @practice, status: :ok }
           end
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
@@ -158,7 +169,12 @@ class PracticesController < ApplicationController
           format.html { redirect_to practice_metrics_path(@practice) }
         else
           flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
-          format.html { redirect_back fallback_location: root_path }
+          # if the request was sent via the publication modal, redirect the user to the practice's show page
+          if is_request_from_publish_modal
+            format.html { redirect_to practice_path(@practice) }
+          else
+            format.html { redirect_back fallback_location: root_path }
+          end
           format.json { render json: updated, status: :unprocessable_entity }
         end
       end
@@ -240,8 +256,9 @@ class PracticesController < ApplicationController
   end
 
   # GET /practices/1/instructions
+  # Redirected now that instructions open in modal 6/2022
   def instructions
-    render 'practices/form/instructions'
+    redirect_to_metrics_path
   end
 
   # /practices/slug/overview
@@ -317,10 +334,6 @@ class PracticesController < ApplicationController
     render 'practices/form/metrics'
   end
 
-  def practice_name
-    render 'practices/form/instructions'
-  end
-
   def implementation
     render 'practices/form/implementation'
   end
@@ -343,39 +356,34 @@ class PracticesController < ApplicationController
   # /practices/slug/impact
   # redirect to instructions page due to removal of impact page 11/19/20
   def impact
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/documentation
   # redirect to instructions page due to removal of impact page 11/19/20
   def documentation
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/resources
   # redirect to instructions page due to removal of impact page 11/19/20
   def resources
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/departments
   def departments
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/timeline
   def timeline
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   # /practices/slug/risk_and_mitigation
   def risk_and_mitigation
-    redirect_to_instructions_path
-  end
-
-  # /practices/slug/contact
-  def contact
-    render 'practices/form/contact'
+    redirect_to_metrics_path
   end
 
   # /practices/slug/about
@@ -385,7 +393,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/checklist
   def checklist
-    redirect_to_instructions_path
+    redirect_to_metrics_path
   end
 
   def published
@@ -404,18 +412,20 @@ class PracticesController < ApplicationController
         # if there is an error with updating the practice, alert the user
         if updated.is_a?(StandardError)
           flash[:error] = "There was an #{updated.message}. The innovation was not saved or published."
-          format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
+          format.js { render js: "window.location.replace('#{request.referrer}')" }
         else
           @practice.update(published: true, date_published: DateTime.now)
           flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
           format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
       else
-        pub_msg = render_to_string('practices/_publication_validation_message', layout: false, locals: { practice: @practice })
-        flash[:error] = "#{pub_msg}"
-        flash[:heading] = "Cannot publish yet"
-        path = "practice_#{current_endpoint}_path"
-        format.js { render js: "window.location='#{self.send(path)}'" }
+        # if the practice cannot be published, redirect the user to their previously visited editor page and display an alert along with the publication validation modal
+        if updated.is_a?(StandardError)
+          flash[:error] = "There was an #{updated.message}. The innovation was not saved."
+        else
+          flash[:notice] = "Innovation was successfully updated."
+        end
+        format.js { render js: "window.location.replace('#{request.referrer}?save_and_publish=true')" }
       end
     end
   end
@@ -528,8 +538,8 @@ class PracticesController < ApplicationController
     end
   end
 
-  def redirect_to_instructions_path
-    redirect_to practice_instructions_path(@practice)
+  def redirect_to_metrics_path
+    redirect_to practice_metrics_path(@practice)
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -561,11 +571,11 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:need_training, :short_name, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
+    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
                                      :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
                                      :initiating_facility_type, :initiating_department_office_id,
-                                     :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,
+                                     :main_display_image, :main_display_image_alt_text, :crop_x, :crop_y, :crop_h, :crop_w,
                                      :tagline, :delete_main_display_image,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
                                      :overview_problem, :overview_solution, :overview_results, :maturity_level,
@@ -690,12 +700,18 @@ class PracticesController < ApplicationController
   def update_conditions
     if params[:practice].present?
       facility_type = params[:practice][:initiating_facility_type] || nil
+      initiating_facility_params_error = ''
       if facility_type.present?
-        set_initiating_fac_params params
+        begin
+          set_initiating_fac_params params
+        rescue => e
+          initiating_facility_params_error = e
+        end
       end
 
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
-      updated = SavePracticeService.new(pr_params).save_practice
+
+      updated = initiating_facility_params_error.present? ? initiating_facility_params_error : SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction' && !updated.is_a?(StandardError)
       updated
     end
@@ -708,40 +724,36 @@ def clear_origin_facilities
 end
 
 def set_initiating_fac_params(params)
-  origin_facility_params = params[:practice][:practice_origin_facilities_attributes]
   case params[:practice][:initiating_facility_type]
   when "facility"
-=begin
-    if all of the origin facility params being sent in do not have a facility_id and the user switched from another originating facility type, set the
-    practice_origin_facilities_attributes params to nil.
-=end
-    origin_facility_id_counts = Params::ParamsData.new(origin_facility_params).get_id_counts_from_params(:facility_id)
-    if (@practice.initiating_facility.present? || @practice.initiating_department_office_id.present?) && origin_facility_id_counts[nil] === origin_facility_params.keys.length
-      params[:practice][:practice_origin_facilities_attributes] = nil
-    end
+    origin_facility_params = params[:practice][:practice_origin_facilities_attributes]
 
-    @practice.initiating_facility = ""
-    @practice.initiating_department_office_id = ""
+    if origin_facility_params.values.select { |pof| pof["facility_id"] }.empty?
+      raise StandardError.new 'error updating initiating facility'
+    else
+      @practice.initiating_facility = ""
+      @practice.initiating_department_office_id = ""
+    end
   when "visn"
     if params[:editor_visn_select].present?
       @practice.initiating_facility = params[:editor_visn_select]
       @practice.initiating_department_office_id = ""
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   when "department"
     if params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
       @practice.initiating_facility = params[:practice][:initiating_facility]
       @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   else
     if params[:initiating_facility_other].present?
       @practice.initiating_facility = params[:initiating_facility_other]
       @practice.initiating_department_office_id = ""
     else
-      @practice.initiating_facility = ""
+      raise StandardError.new 'error updating initiating facility'
     end
   end
 end

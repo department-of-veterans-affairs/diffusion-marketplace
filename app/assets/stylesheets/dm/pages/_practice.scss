@@ -161,13 +161,6 @@
   margin-bottom: 44px;
 }
 
-.instructions-list {
-  padding-left: 20px;
-
-  li {
-    margin-bottom: 16px;
-  }
-}
 
 .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash,
 .va-employee-trash, .dm-origin-trash, .documentation-trash, .permission-trash, .resource-trash {
@@ -235,10 +228,6 @@
 .practice-editor-video-caption, .practice-editor-image-caption, .risk-description-textarea, .mitigation-description-textarea,
 .staff-training-description {
   resize: none;
-}
-
-.milestone-textarea {
-  width: 640px !important;
 }
 
 .hidden-timeline, .hidden-risk-mitigation, .hidden-impact, .hidden-va-employee, .hidden-practice-creator {
@@ -801,6 +790,32 @@ li.small-disc:before {
 }
 
 /*********************************
+ EDITING GUIDE
+**********************************/
+
+#dm-editing-guide-modal {
+  .dm-editing-guide-modal-close {
+    background-color: inherit;
+    color: color($theme-color-base-darkest);
+    @include u-margin-right(0);
+    @include u-padding-right(0);
+    @include u-position('absolute');
+    top: 46px;
+    right: 22px;
+  }
+
+  .usa-modal__main {
+    margin-left: 41px;
+    max-width: 47rem;
+  }
+
+  .editing-guide-help {
+    background-color: color($theme-color-warning-lighter);
+    border-color: color($theme-color-warning);
+  }
+}
+
+/*********************************
  PRACTICE EDITOR
 **********************************/
 // Introduction
@@ -810,19 +825,25 @@ li.small-disc:before {
   }
 }
 
+.practice-editor-origin-li, .dm-practice-editor-practice-partner-li {
+  .usa-combo-box {
+    max-width: unset !important;
+  }
+}
+
 .dm-practice-editor-practice-partner-li {
   .usa-combo-box__input {
     margin-top: -30px !important;
   }
 }
 .practice-editor-origin-li {
-   .usa-combo-box {
-     max-width: unset !important;
-   }
-
   .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
     top: 0.5rem;
   }
+}
+
+.main-display-image-caption {
+  @include u-text($theme-color-base-dark, !important);
 }
 
 // Overview
@@ -961,6 +982,10 @@ li.small-disc:before {
 
 .usa-label--error {
   margin-top: 1.5rem !important;
+
+  .usa-prose-body {
+    font-weight: 800 !important;
+  }
 }
 
 tr.border_bottom td {
@@ -1002,4 +1027,8 @@ tr.border_bottom td {
       display: none;
     }
   }
+}
+
+.main-display-image-alt-text, .resource-image-alt-text  {
+  resize: none !important;
 }

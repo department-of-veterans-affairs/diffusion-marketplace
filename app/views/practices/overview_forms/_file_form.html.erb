@@ -17,10 +17,11 @@
       <div class="dm-usa-file-upload-error-text margin-bottom-2 usa-alert usa-alert--error usa-alert--slim display-none">
         <p class="usa-alert__body">Sorry, you cannot upload a file larger than 32MB.</p>
       </div>
-      <%= render partial: 'practices/overview_error_partials/attachment', locals: {
-          area: area,
-          resource_type: 'file',
-          message: 'Please upload a file'
+      <%= render partial: 'practices/overview_field_error', locals: {
+        area: area,
+        resource_type: 'file',
+        field_name: 'attachment',
+        message: 'Please upload a file'
       }
       %>
       <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>_attributes_<%= placeholder %>_attachment" class="usa-file-input usa-hint <%= area %>-file-attachment <%= resource&.id ? 'dm-required-field' : '' %>" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
@@ -28,20 +29,22 @@
   <% end %>
   <div class="<%= area %>-input-container">
     <%= label_tag "practice_#{area}_name", 'File name', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
-    <%= render partial: 'practices/overview_error_partials/name', locals: {
-        area: area,
-        resource_type: 'file',
-        message: 'Please enter a file name'
+    <%= render partial: 'practices/overview_field_error', locals: {
+      area: area,
+      resource_type: 'file',
+      field_name: 'name',
+      message: 'Please enter a file name'
     }
     %>
     <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-8 <%= resource&.id ? 'dm-required-field' : '' %>" value="<%= resource&.name %>" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
   </div>
   <div class="<%= area %>-input-container">
     <%= label_tag "practice_#{area}_description", 'File description', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_description" %>
-    <%= render partial: 'practices/overview_error_partials/description', locals: {
-        area: area,
-        resource_type: 'file',
-        message: 'Please enter a file description'
+    <%= render partial: 'practices/overview_field_error', locals: {
+      area: area,
+      resource_type: 'file',
+      field_name: 'description',
+      message: 'Please enter a file description'
     }
     %>
     <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12 <%= resource&.id ? 'dm-required-field' : '' %>" value="<%= resource&.description %>"  type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description"/>

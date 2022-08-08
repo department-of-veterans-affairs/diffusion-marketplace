@@ -13,7 +13,7 @@ describe 'Breadcrumbs', type: :feature do
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Innovation Ever', user: @user, initiating_facility: 'Test facility name', initiating_facility_type: 'other', tagline: 'Test tagline', is_public: true, published: true, approved: true, enabled: true, summary: 'test innovation summary')
     @user_practice2 = Practice.create!(name: 'Another Best Innovation', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2', highlight_attachment: File.new(@img_path_1), highlight: true, highlight_body: 'highlighted innovation', is_public: true, published: true, approved: true, enabled: true)
-    visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    visn_1 = Visn.create!(name: 'VISN 1', number: 1)
     fac_1 = VaFacility.create!(
       visn: visn_1,
       station_number: "421",
@@ -76,7 +76,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should not display breadcrumbs for the search page when clicking "Browse all innovations"' do
-      click_link('Browse all innovations')
+      expect(page).to have_link('Browse all innovations', href: search_path)
       expect(page).to_not have_css('#breadcrumbs')
     end
 
@@ -124,8 +124,9 @@ describe 'Breadcrumbs', type: :feature do
       click_link('View innovation')
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Home')
-        expect(page).to have_content('Another Best Innovation')
+        expect(page).to have_no_content('Another Best Innovation')
         expect(page).to have_link(href: '/')
         expect(page).to_not have_link(href: '/innovations/another-best-innovation')
       end
@@ -142,11 +143,10 @@ describe 'Breadcrumbs', type: :feature do
       click_on('Go to The Best Innovation Ever')
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Search')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_link(href: '/')
-        expect(page).to_not have_link(href: '/innovations/the-best-innovation-ever')
+        expect(page).to have_no_content('The Best Innovation Ever')
+        expect(page).to have_link(href: '/search?query=the%20best')
       end
 
       find('a[href="/search?query=the%20best"]').click
@@ -198,24 +198,22 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('VISN index')
-        expect(page).to have_content('2')
+        expect(page).to have_content('1')
         expect(page).to have_link(href: '/visns')
-        expect(page).to have_link(href: '/visns/2')
+        expect(page).to have_link(href: '/visns/1')
       end
-      find('a[href="/visns/2"]').click
+      find('a[href="/visns/1"]').click
       fill_in('visn-search-field', with: 'best')
       find('#visn-search-button').click
       find('.dm-practice-link').click
       expect(page).to have_css("#pr-view-introduction", visible: true)
       expect(page).to have_current_path(practice_path(@user_practice))
       within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
         expect(page).to have_content('VISN index')
-        expect(page).to have_content('2')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_link(href: '/')
+        expect(page).to have_content('1')
+        expect(page).to have_no_content('The Best Innovation Ever')
         expect(page).to have_link(href: '/visns')
-        expect(page).to have_link(href: '/visns/2?query=best')
+        expect(page).to have_link(href: '/visns/1?query=best')
         expect(page).to_not have_link(href: '/innovations/the-best-innovation-ever')
       end
     end
@@ -235,11 +233,9 @@ describe 'Breadcrumbs', type: :feature do
       find('a[href="/innovations/the-best-innovation-ever"]').click
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
         expect(page).to have_content('Facility index')
         expect(page).to have_content('A first facility Test Common Name')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_link(href: '/')
+        expect(page).to have_no_content('The Best Innovation Ever')
         expect(page).to have_link(href: '/facilities')
         expect(page).to have_link(href: '/facilities/a-first-facility-test-common-name')
         expect(page).to_not have_link(href: '/innovations/the-best-innovation-ever')
@@ -253,8 +249,9 @@ describe 'Breadcrumbs', type: :feature do
       visit practice_path(@user_practice)
 
       within(:css, '#breadcrumbs') do
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
+        expect(page).to have_no_content('The Best Innovation Ever')
       end
     end
 
@@ -262,45 +259,18 @@ describe 'Breadcrumbs', type: :feature do
       visit practice_path(@user_practice)
 
       within(:css, '#breadcrumbs') do
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
+        expect(page).to have_no_content('The Best Innovation Ever')
       end
 
       # Browse to a different practice's show page
       visit practice_path(@user_practice2)
 
       within(:css, '#breadcrumbs') do
+        expect(page).to have_css('.fa-arrow-left')
         expect(page).to have_content('Home')
-        expect(page).to_not have_content('The Best Innovation Ever')
-        expect(page).to have_content('Another Best Innovation')
-      end
-    end
-
-    it 'should show proper breadcrumbs in the practice editor' do
-      login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit practice_instructions_path(@user_practice)
-
-      within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_content('Edit')
-      end
-      expect(page).to have_selector('#instructions', visible: true)
-      find_all('.usa-sidenav__item')[1].click
-
-      within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_content('Edit')
-      end
-      expect(page).to have_selector('#dm-practice-nav', visible: true)
-      find_all('.usa-sidenav__item')[0].click
-
-      within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
-        expect(page).to have_content('The Best Innovation Ever')
-        expect(page).to have_content('Edit')
-        expect(page).to have_content('Metrics')
+        expect(page).to have_no_content('Best Innovation')
       end
     end
   end

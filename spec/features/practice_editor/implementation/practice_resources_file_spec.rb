@@ -11,6 +11,7 @@ describe 'Practice editor', type: :feature, js: true do
     @file_path_3 = "#{Rails.root}/spec/assets/charmander.png"
     @file_path_size_error = "#{Rails.root}/spec/assets/unacceptable_img_size.png"
     login_as(@admin, :scope => :user, :run_callbacks => false)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   describe 'Implementation page -- resource link:' do
@@ -177,6 +178,6 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def save_practice
-    find('#practice-editor-save-button').click
+    find('#practice-editor-save-button', visible: false).click
   end
 end

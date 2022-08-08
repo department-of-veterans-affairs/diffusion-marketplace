@@ -9,6 +9,7 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.paths << Rails.root.join('node_modules')
 
 Rails.application.config.assets.precompile += %w(
+                                                  shared/_utilityFunctions.js
                                                   session_timeout_poller.js
                                                   _visnSelect.js
                                                   _officeSelect.js
@@ -18,6 +19,7 @@ Rails.application.config.assets.precompile += %w(
                                                   practice_editor_adoptions.js
                                                   practice_page.js
                                                   _practice_editor_utilities.js
+                                                  _practice_editor_header.js
                                                   _introduction_image_editor.js
                                                   _overview_image_editor.js
                                                   _usa_file_input.js
@@ -51,6 +53,7 @@ Rails.application.config.assets.precompile += %w(
                                                   _page_show.js
                                                   facility_status_definitions_modal.js
                                                   clinical_resource_hubs/crh_show.js
+                                                  practices/publication_validation.js
                                               )
 
 # Precompile additional assets.

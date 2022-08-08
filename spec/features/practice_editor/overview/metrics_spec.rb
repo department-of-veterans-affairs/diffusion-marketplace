@@ -11,7 +11,8 @@ describe 'Practice editor', type: :feature, js: true do
 
     describe 'Overview page' do
         before do
-            login_as(@admin, :scope => :user, :run_callbacks => false)
+          login_as(@admin, :scope => :user, :run_callbacks => false)
+          page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
         end
 
         def first_metric_field

@@ -14,6 +14,7 @@ describe 'Practice', type: :feature, js: true do
   describe 'Implementation page' do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
+      page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
     end
 
     def set_combobox_val(index, value)
@@ -58,7 +59,7 @@ describe 'Practice', type: :feature, js: true do
       expect(page).to have_content('Chaplaincy')
       expect(page).to have_no_content('None') # should not see None option
       set_combobox_val(0, 'Admissions')
-      find('#practice-editor-save-button').click
+      find('#practice-editor-save-button', visible: false).click
       expect(find_all('.usa-combo-box__input').first.value).to eq 'Admissions'
 
       # check departments in practice view
@@ -77,7 +78,7 @@ describe 'Practice', type: :feature, js: true do
       find_all('.usa-combo-box__clear-input').first.click
       expect(find_all('.usa-combo-box__input').first.value).to eq ''
       find_all('.dm-origin-trash').first.click
-      find('#practice-editor-save-button').click
+      find('#practice-editor-save-button', visible: false).click
       expect(find_all('.usa-combo-box__input').first.value).to eq 'Anesthetics'
       expect(find_all('.usa-combo-box__input')[1].value).to eq 'Chaplaincy'
 
@@ -92,7 +93,7 @@ describe 'Practice', type: :feature, js: true do
       visit practice_implementation_path(@practice)
       set_combobox_val(0, 'Admissions')
       expect(find_all('.usa-combo-box__input').first.value).to eq 'Admissions'
-      find('#practice-editor-save-button').click
+      find('#practice-editor-save-button', visible: false).click
 
       # check departments in practice view
       visit practice_path(@practice)

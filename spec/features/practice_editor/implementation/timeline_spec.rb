@@ -11,6 +11,7 @@ describe 'Practice editor', type: :feature, js: true do
         before do
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_implementation_path(@practice)
+            page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
             expect(page).to be_accessible.according_to :wcag2a, :section508
             @time_frame = '3 Months'
             @milestone = 'Test milestone'

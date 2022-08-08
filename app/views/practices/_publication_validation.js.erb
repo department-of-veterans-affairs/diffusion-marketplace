@@ -1,0 +1,102 @@
+var publicationValidation = {
+    form: '#form',
+    modal: '#practiceEditorPublicationModal',
+    practiceSlug: '<%= @practice.slug %>',
+    scrollPosition: 0,
+    body: 'body'
+};
+
+function removeParamsFromUrl() {
+    window.history.replaceState({ turbolinks: {}}, null, window.location.pathname);
+}
+
+function validatePracticeEditorForm({railsFireEvent}) {
+    validateForm({form: $(publicationValidation.form), railsFireEvent});
+}
+
+function preventScrolling() {
+    publicationValidation.scrollPosition = $(window).scrollTop();
+    $(publicationValidation.body).css('top', `-${publicationValidation.scrollPosition}px`);
+    $(publicationValidation.body).addClass('overflow-y-scroll');
+    $(publicationValidation.body).addClass('position-fixed');
+    $(publicationValidation.body).addClass('width-full');
+}
+
+function enableScrolling() {
+    $(publicationValidation.body).removeClass('overflow-y-scroll');
+    $(publicationValidation.body).removeClass('position-fixed');
+    $(publicationValidation.body).removeClass('width-full');
+    $(publicationValidation.body).css('top', '');
+    $(window).scrollTop(publicationValidation.scrollPosition);
+}
+
+function hidePublicationModal() {
+    $(publicationValidation.modal).addClass('publication-modal-hidden');
+    enableScrolling();
+}
+
+function hidePublicationModalAndRemoveParamsUrl() {
+    hidePublicationModal();
+    removeParamsFromUrl();
+}
+
+function hidePublicationModalOnButtonClick() {
+    $(document).on('click', '.back-to-editor-button, .close-publication-modal', function () {
+        hidePublicationModalAndRemoveParamsUrl();
+    });
+}
+
+// close the publication modal when the user clicks anywhere outside of it
+function hidePublicationModalOnBodyElementClick() {
+    $(publicationValidation.body).off().on('click', function (e) {
+        if ($(e.target).parent().attr('id') === 'practiceEditorPublicationModal') {
+            hidePublicationModalAndRemoveParamsUrl();
+        }
+    });
+}
+
+function saveEditorProgressOnPublish() {
+    $(document).on('click', '#publish-practice-button', function(e) {
+        let $formActionUrl = $('#publish-practice-button').data('form-action');
+        // set the action to `practice_publication_validation_path`
+        changeFormActionUrl($(publicationValidation.form), $formActionUrl);
+        $(publicationValidation.form).attr('data-remote', true);
+        e.preventDefault();
+        validatePracticeEditorForm({railsFireEvent: true});
+    });
+}
+
+function saveEditorProgressOnModalSave() {
+    $(document).on('click', '#publication-modal-save-button', function () {
+        hidePublicationModal();
+        /*
+          add a hidden input to the form. Design wants the user to be redirected to the practice's show page after clicking 'Save as draft and exit',
+          so this will allow us to have an identifier in the params that will let us check if the request is being sent from the publish modal.
+        */
+        let hiddenInput = 'publication-modal-hidden-input';
+        $('<input />')
+            .attr('type', 'hidden')
+            .attr('name', 'save_and_publish')
+            .attr('value', true)
+            .addClass(hiddenInput)
+            .appendTo(publicationValidation.form);
+        validatePracticeEditorForm({railsFireEvent: false});
+        // remove the hidden input
+        $(`.${hiddenInput}`).remove();
+        removeParamsFromUrl();
+    });
+}
+
+function execPublicationValidationFunctions() {
+    saveEditorProgressOnPublish();
+    saveEditorProgressOnModalSave();
+    hidePublicationModalOnButtonClick();
+    hidePublicationModalOnBodyElementClick();
+    if (window.location.search === '?save_and_publish=true') {
+        preventScrolling();
+    }
+}
+
+$(document).ready(function() {
+   execPublicationValidationFunctions();
+});

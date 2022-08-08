@@ -1,0 +1,40 @@
+<%
+  sessions = PracticeEditorSession.where(practice_id: @practice.id).where.not(session_end_time: nil)
+  session = sessions.present? ? sessions.last : nil
+%>
+<% if session.present? %>
+  <%
+    session_end_datetime = session.session_end_time
+    session_date = "#{session_end_datetime.strftime("%-m/%-d/%Y")}"
+    session_time = "#{session_end_datetime.strftime("%I:%M %p")} "
+    session_user = session.user
+    last_updated_text = "#{@practice.name} last updated on #{session_date} at #{session_time} by #{is_full_name_present(session_user) ? user_full_name(session_user) : session_user.email}"
+  %>
+  <div class="usa-prose-caption margin-bottom-1 text-base-dark">
+    <%= last_updated_text %>
+  </div>
+<% end %>
+<div class="usa-step-indicator" aria-label="progress">
+  <ol class="usa-step-indicator__segments">
+    <%
+      page_titles = ['editors', 'introduction', 'adoptions', 'overview', 'implementation', 'about']
+      action = params[:action]
+    %>
+    <% page_titles.each_with_index do |pt, i| %>
+      <% 
+        current_page_index = page_titles.index(action)
+        status = ''
+        if current_page_index > i
+          status = '--complete'
+        elsif current_page_index === i
+          status = '--current'
+        end
+      %>
+      <li class="usa-step-indicator__segment usa-step-indicator__segment<%= status %>">
+        <span class="usa-step-indicator__segment-label">
+          <%= link_to pt.capitalize, eval("practice_#{pt}_path(@practice)") %>
+        </span>
+      </li>
+    <% end %>
+  </ol>
+</div>

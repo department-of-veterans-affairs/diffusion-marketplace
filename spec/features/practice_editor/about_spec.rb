@@ -16,14 +16,16 @@ describe 'Practice editor', type: :feature do
             @creator_field_role = 'practice[va_employees_attributes][0][role]'
             @creator_field_name_2 = 'practice[va_employees_attributes][1][name]'
             @creator_field_role_2 = 'practice[va_employees_attributes][1][role]'
+            @practice_main_email = 'test@mail.com'
+            @email_field_name = 'practice[practice_emails_attributes][0][address]'
+            @email_field_name_2 = 'practice[practice_emails_attributes][1][address]'
+            visit practice_about_path(@practice)
         end
 
         it 'should be there' do
-            visit practice_about_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('About')
             expect(page).to have_content('This section helps people understand how your innovation started and introduces the original team.')
-            expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/contact")
         end
 
         def fill_in_origin_story_field
@@ -58,8 +60,28 @@ describe 'Practice editor', type: :feature do
             find('#practice-editor-save-button')
         end
 
+        def fill_in_main_email_field
+            fill_in('Main email address', with: @practice_main_email)
+        end
+
+        def first_cc_email_field_input
+            all('.pe-address-input').first
+        end
+
+        def first_cc_email_field
+            find_all('.practice-editor-contact-li').first
+        end
+
+        def last_cc_email_field_input
+            all('.pe-address-input').last
+        end
+
+        def last_cc_email_field
+            find_all('.practice-editor-contact-li').last
+        end
+
         it 'should allow the user to update the origin story' do
-            visit practice_about_path(@practice)
+            fill_in_main_email_field
             # create the origin story
             fill_in_origin_story_field
             save_button.click
@@ -83,7 +105,7 @@ describe 'Practice editor', type: :feature do
         end
 
         it 'should allow the user to update team members' do
-            visit practice_about_path(@practice)
+            fill_in_main_email_field
             # create one team member and save
             fill_in_origin_story_field
             first_creator_name_field_input.set(@creator_name)
@@ -176,6 +198,80 @@ describe 'Practice editor', type: :feature do
             expect(page).to_not have_content('Original team')
             expect(page).to_not have_content(@creator_name)
             expect(page).to_not have_content(@creator_role)
+        end
+
+        it 'should require the user to fill out the main email address field' do
+            save_button.click
+            email_message = page.find('.main-practice-email-input').native.attribute('validationMessage')
+            expect(email_message).to eq('Please fill out this field.')
+        end
+
+        it 'should allow the user to update the email data on the page' do
+            # create the main email address
+            fill_in_main_email_field
+            save_button.click
+
+            # see if the main email shows up in the show view
+            visit '/innovations/an-awesome-practice'
+            expect(page).to have_content('Email')
+            within(:css, '#contact') do
+                expect(page).to have_content(@practice_main_email)
+            end
+
+            # Edit the main email
+            visit practice_about_path(@practice)
+            fill_in('Main email address', with: 'main_test@test.com')
+            save_button.click
+            expect(page).to have_field('Main email address', with: "main_test@test.com")
+
+
+            # check if the main email with updated text shows up in the show view
+            visit '/innovations/an-awesome-practice'
+            expect(page).to have_content('main_test@test.com')
+
+            # create one cc email and save
+            visit practice_about_path(@practice)
+            first_cc_email_field_input.set('test2@test.com')
+
+            save_button.click
+            expect(page).to have_field(@email_field_name, with: 'test2@test.com')
+
+            # Edit the cc email
+            first_cc_email_field_input.set('test22@test.com')
+            save_button.click
+            expect(page).to have_field(@email_field_name, with: 'test22@test.com')
+
+            # create another cc email and save
+            find('.add-practice-email-link').click
+            last_cc_email_field_input.set('second_test@test.com')
+
+            save_button.click
+            expect(page).to have_field(@email_field_name, with: 'test22@test.com')
+            expect(page).to have_field(@email_field_name_2, with: 'second_test@test.com')
+
+            # delete first cc email
+            input_field_id = first_cc_email_field_input[:id]
+            within(first_cc_email_field) do
+                click_link('Delete entry')
+                expect(page).to_not have_selector("##{input_field_id}")
+            end
+            save_button.click
+            within(:css, '.practice-editor-contact-ul') do
+                expect(page).to have_field(@email_field_name, with: 'second_test@test.com')
+            end
+
+            # delete "second" cc email
+            expect(page).to have_field(@email_field_name, with: 'second_test@test.com')
+            input_field_id = first_cc_email_field_input[:id]
+            find('.add-practice-email-link').click
+            within(first_cc_email_field) do
+                click_link('Delete entry')
+                expect(page).to_not have_selector("##{input_field_id}")
+            end
+            save_button.click
+            within(:css, '.practice-editor-contact-ul') do
+                expect(page).to_not have_selector("##{input_field_id}")
+            end
         end
     end
 end

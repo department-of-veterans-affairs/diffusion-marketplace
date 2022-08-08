@@ -53,6 +53,7 @@
     <%= csp_meta_tag %>
     <meta name="viewport" content= "width=device-width, initial-scale=1, minimum-scale=1">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'false' %>
+    <%= javascript_include_tag 'shared/_utilityFunctions', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}", 'data-turbolinks-track': 'false' %>
     <%= javascript_include_tag "//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js", 'data-turbolinks-track': 'false' %>
     <%= javascript_include_tag "//cdn.rawgit.com/printercu/google-maps-utility-library-v3-read-only/master/infobox/src/infobox_packed.js", 'data-turbolinks-track': 'false' %>
@@ -68,6 +69,11 @@
       <% end %>
       <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'false' %>
     <% end %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+      var forceModal = <%= @force_terms_and_conditions_modal %>;
+    <% end %>
+    <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'reload' %>
+
     <%= javascript_include_tag '_header_utilities', 'data-turbolinks-track': 'false' %>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <meta name="turbolinks-cache-control" content="no-preview">
@@ -82,7 +88,9 @@
   <body <% if content_for?(:body_attributes) %>
         <%= yield(:body_attributes) %>
         <% end %> class="<%= yield(:body_classes) %>">
-    <%= render 'shared/header' %>
+    <% is_practice_editor = params[:controller] === 'practices' && (NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action]) || params[:action] === 'metrics') %>
+    <%= render 'shared/header' if !is_practice_editor %>
+    <%= render 'practices/shared/practice_editor_header' if is_practice_editor %>
     <main
       id="main-content"
       class="<%= params[:controller] %> <%= params[:action] %>-main <%= yield(:main_classes) %><%= ' additional-return-to-top-padding' if params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) %>"
@@ -92,9 +100,11 @@
       <% end %>
       <%= yield %>
     </main>
+    <%= render 'shared/footer' unless is_practice_editor %>
+    <%= render 'practices/shared/practice_editor_footer' if is_practice_editor %>
+
     <% if current_user.present? %>
       <%= render partial: 'shared/terms_and_conditions_modal' %>
     <% end %>
-    <%= render 'shared/footer' %>
   </body>
 </html>

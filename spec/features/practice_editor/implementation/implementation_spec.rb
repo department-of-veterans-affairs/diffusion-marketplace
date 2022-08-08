@@ -17,13 +17,5 @@ describe 'Practice editor', type: :feature, js: true do
       end
       expect(page).to be_accessible.according_to :wcag2a, :section508
     end
-
-    it 'should have the correct continue and back links' do
-      visit practice_implementation_path(@practice)
-      within(:css, '.implementation') do
-        expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/overview")
-        expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/contact")
-      end
-    end
   end
 end

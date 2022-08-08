@@ -1,6 +1,7 @@
 <% if @practice.main_display_image.present? %>
+  <% alt_text = @practice.main_display_image_alt_text %>
   <img
     class="dm-thumbnail-image display-block"
     src="<%= @practice.main_display_image_s3_presigned_url(:thumb) %>"
-    alt="<%= @practice.name %> main image"/>
+    alt="<%= alt_text if alt_text.present? %>"/>
 <% end %>

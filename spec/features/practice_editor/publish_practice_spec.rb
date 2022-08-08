@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Practice editor', type: :feature, js: true do
+describe 'Practice editor', type: :feature do
   before do
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: false, user: @admin)
@@ -9,7 +9,7 @@ describe 'Practice editor', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     Category.create!(name: 'Pulmonary Care')
     Category.create!(name: 'Other')
-    visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    visn_1 = Visn.create!(name: 'VISN 1', number: 1)
     VaFacility.create!(
       visn: visn_1,
       station_number: "402GA",
@@ -30,7 +30,6 @@ describe 'Practice editor', type: :feature, js: true do
       visit practice_introduction_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       @save_button = find('#practice-editor-save-button')
-      @publish_button = find('#publish-practice-button')
     end
 
     def set_pr_required_fields
@@ -67,47 +66,126 @@ describe 'Practice editor', type: :feature, js: true do
       fill_in('practice_overview_results', with: 'Practice overview results statement')
     end
 
+    def click_publish_button
+      find('#publish-practice-button').click
+    end
+
+    def click_close_modal_button
+      find('.close-publication-modal').click
+    end
+
     it 'should display an error modal only when missing required fields exists' do
-      @publish_button.click
-      expect(page).to have_selector(".dm-publication-validation--alert", visible: true)
-      expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('You can save your work as a draft at any time, but these sections need to be completed before publishing:')
-      expect(page).to have_content('Introduction')
-      expect(page).to have_content('Tagline')
-      expect(page).to have_content('Date created')
-      expect(page).to have_content('Innovation origin')
-      expect(page).to have_content('Summary')
-      expect(page).to have_content('Overview')
-      expect(page).to have_content('Problem statement')
-      expect(page).to have_content('Solution statement')
-      expect(page).to have_content('Results statement')
-      expect(page).to have_content('Adoptions')
-      expect(page).to have_content('At least one adoption')
-      expect(page).to have_content('Contact')
-      expect(page).to have_content('Email')
+      click_publish_button
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
+      within(:css, '#practiceEditorPublicationModal') do
+        expect(page).to have_content('Cannot publish yet')
+        expect(page).to have_content('These sections need to be complete before we can publish your innovation:')
+        expect(page).to have_content('Introduction')
+        expect(page).to have_content('Tagline')
+        expect(page).to have_content('Date created')
+        expect(page).to have_content('Innovation origin')
+        expect(page).to have_content('Summary')
+        expect(page).to have_content('Overview')
+        expect(page).to have_content('Problem statement')
+        expect(page).to have_content('Solution statement')
+        expect(page).to have_content('Results statement')
+        expect(page).to have_content('Adoptions')
+        expect(page).to have_content('At least one adoption')
+        expect(page).to have_content('Contact')
+        expect(page).to have_content('Email')
+        # exit the modal with the "Continue editing" button
+        click_button('Continue editing')
+      end
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: false)
       set_pr_required_fields
       set_initiating_fac
-      @publish_button.click
-      expect(page).to have_selector(".dm-publication-validation--alert", visible: true)
-      expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('You can save your work as a draft at any time, but these sections need to be completed before publishing:')
-      expect(page).to have_content('Date created')
-      expect(page).to have_content('Innovation origin')
-      expect(page).to have_content('Summary')
-      expect(page).to have_content('At least one adoption')
-      expect(page).to have_content('Email')
-
+      click_publish_button
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
+      within(:css, '#practiceEditorPublicationModal') do
+        expect(page).to have_content('Cannot publish yet')
+        expect(page).to have_content('These sections need to be complete before we can publish your innovation:')
+        expect(page).to have_content('At least one adoption')
+        expect(page).to have_content('Email')
+      end
+      # exit the modal by clicking anywhere outside of the modal
+      find('body').click
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: false)
       visit practice_adoptions_path(@practice)
       set_adoption
-      @publish_button.click
-      page.has_css?('.dm-publication-validation--alert')
-      expect(page).to have_no_content('At least one adoption')
-      expect(page).to have_content('Email')
+      visit practice_overview_path(@practice)
+      click_publish_button
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
+      within(:css, '#practiceEditorPublicationModal') do
+        expect(page).to have_no_content('At least one adoption')
+        expect(page).to have_content('Email')
+        # exit the modal by clicking on the 'X' icon
+        click_close_modal_button
+      end
+      expect(page).to have_selector('#practiceEditorPublicationModal', visible: false)
+      # save the practice through the modal and make sure the user is redirected to the practice's show page
+      click_publish_button
+      click_button('Save as draft and exit')
+      expect(page).to have_content('Innovation was successfully updated.')
+      expect(page.current_path).to eq('/innovations/a-public-practice')
+    end
+
+    context 'alerts' do
+      it 'should show save alerts along with the publication modal when a user attempts to publish a practice that has missing required publish fields' do
+        set_initiating_fac
+        click_publish_button
+        expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
+        click_close_modal_button
+        expect(page).to have_content('Innovation was successfully updated.')
+      end
+
+      it 'should show save errors along with the publication modal when a user attempts to publish a practice that has missing required publish fields' do
+        # to trigger the error, click on the facility radio button for 'Innovation origin', but do not choose a facility
+        find('#initiating_facility_type_facility').sibling('label').click
+        click_publish_button
+        expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
+        click_close_modal_button
+        expect(page).to_not have_content('Innovation was successfully updated.')
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved.')
+      end
+
+      it 'should show save errors, but not display the publish modal, when a user attempts to publish a practice that has all required publish fields filled out' do
+        # Fill out all required fields
+        visit practice_about_path(@practice)
+        fill_in('Main email address', with: 'test@email.com')
+        @save_button.click
+
+        visit practice_adoptions_path(@practice)
+        set_adoption
+
+        visit practice_overview_path(@practice)
+        set_overview_required_fields
+        @save_button.click
+
+        visit practice_introduction_path(@practice)
+        fill_in('Tagline', with: 'test tagline')
+        set_pr_required_fields
+        set_initiating_visn
+        @save_button.click
+        expect(page).to have_content('Innovation was successfully updated.')
+        # all required publish fields are now completed
+        # to trigger the error, click on the facility radio button for 'Innovation origin', but do not choose a facility
+        find('#initiating_facility_type_facility').sibling('label').click
+        click_publish_button
+        expect(page).to have_current_path(practice_introduction_path(@practice))
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved or published.')
+        expect(page).to_not have_selector('#practiceEditorPublicationModal', visible: true)
+        # choose the VISN radio button for 'Innovation origin', but do not choose a VISn to trigger the error again
+        find('#initiating_facility_type_visn').sibling('label').click
+        click_publish_button
+        expect(page).to have_current_path(practice_introduction_path(@practice))
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved or published.')
+        expect(page).to_not have_selector('#practiceEditorPublicationModal', visible: true)
+      end
     end
 
     it 'Should save and publish the practice if all required fields are met' do
       # set contact email
-      visit practice_contact_path(@practice2)
+      visit practice_about_path(@practice2)
       email = 'test@email.com'
       fill_in('Main email address', with: email)
       @save_button.click
@@ -125,8 +203,7 @@ describe 'Practice editor', type: :feature, js: true do
       visit practice_overview_path(@practice2)
       set_overview_required_fields
 
-
-      @publish_button.click
+      click_publish_button
       expect(page).to have_no_content('Cannot publish yet')
       expect(page).to have_content("#{@practice2.name} has been successfully published to the Diffusion Marketplace")
       # Publish button should be gone if the practice has been published

@@ -3,9 +3,7 @@
 
   function _preventTermsAndConditionsFlickerOnPageLoad() {
     $(document).arrive("header", { existing: true }, () => {
-      $("#dm-terms-and-conditions-modal")
-        .find(".usa-modal")
-        .removeClass("display-none");
+      removeDisplayNoneFromModal("#dm-terms-and-conditions-modal");
     });
   }
 

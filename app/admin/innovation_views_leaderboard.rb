@@ -57,7 +57,7 @@ ActiveAdmin.register_page 'Innovation Views Leaderboard' do
     end
   end
 
-  content title: proc {I18n.t("active_admin.dashboard")} do
+  content title: proc {I18n.t("active_admin.innovation_views_leaderboard")} do
     columns do
       column do
         panel('Innovation Views Leaderboard', class: 'dm-panel-container', id: 'dm-practice-views-leaderboard') do

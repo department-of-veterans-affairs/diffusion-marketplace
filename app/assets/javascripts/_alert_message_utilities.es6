@@ -15,17 +15,9 @@ const CLOSE_ALERT_MESSAGE_ELE = '.close-alert-message';
       .css("padding-right", "3.83333rem");
   }
 
-  function attachScrollToTopListener() {
-    $document.arrive(".js-publication-validation--alert", { existing: true }, () => {
-        window.scrollTo(0, 0);
-      }
-    );
-  }
-
   function execAlertMessageFunctions() {
     removeAlertMessage();
     addRightPaddingToAlertMessages();
-    attachScrollToTopListener();
   }
 
   $document.on("turbolinks:load", execAlertMessageFunctions);

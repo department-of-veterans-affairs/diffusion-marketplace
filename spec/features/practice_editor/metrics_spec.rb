@@ -97,13 +97,11 @@ describe 'Metrics section', type: :feature, js: true do
       end
     end
 
-    it 'should display last time innovation was updated.' do
+    it 'should not display the last time the innovation was updated.' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
       PracticeEditorSession.create(user_id: @user1.id, practice_id: @practice.id, session_start_time: DateTime.now, session_end_time: DateTime.now, created_at: DateTime.now, updated_at: DateTime.now)
       visit practice_metrics_path(@practice)
-      expect(page).to have_content('Innovation last updated on')
-      space = " "
-      expect(page).to have_content("#{@user1.first_name}#{space}#{@user1.last_name}")
+      expect(page).to_not have_content('Innovation last updated on')
     end
   end
 

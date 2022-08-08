@@ -1,6 +1,7 @@
-<% provide :main_classes, 'bg-gray-2' %>
-<% provide :footer_classes, 'bg-gray-2' %>
+<% provide :main_classes, 'bg-gray-0' %>
+<% provide :footer_classes, 'bg-gray-0' %>
 <% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_assign_facility_name', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_visnSelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_officeSelect', 'data-turbolinks-track': 'reload' %>
@@ -11,6 +12,7 @@
 
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
+    <%= render partial: 'practices/publication_validation', formats: [:js] %>
     var facilityData = <%= raw @va_facilities.to_json %>;
     var officeData = '<%= raw fetch_offices %>';
     var originData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json")).to_json %>;
@@ -32,16 +34,13 @@
   p_partners = @practice.practice_partners
 %>
 
-<%= render 'practice_editor_sidenav' %>
-<div class="grid-container position-relative">
+<div class="grid-container">
   <div class="grid-row grid-gap">
-    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
-    <div id="introduction" class="desktop:grid-col-9 grid-col-12 padding-0">
+    <div id="introduction" class="grid-col-12 margin-top-4">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <%= render partial: "practices/shared/step_indicator" %>
       <section class="usa-section padding-y-0 introduction">
-        <h1>Introduction</h1>
-        <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+        <h1 class="margin-top-0">Introduction</h1>
         <div class="usa-prose-intro">
           Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.
         </div>
@@ -61,19 +60,6 @@
               <p class="usa-error-message <%= @practice.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :name) %></span>
               </p>
             </div>
-            <div class="margin-bottom-5 margin-top-3">
-              <div>
-                <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' %>
-                <span>Type the acronym for your innovation.</span>
-              </div>
-              <div>
-                <%= f.text_field :short_name, class: "grid-col-3 usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: false %>
-              </div>
-              <p class="usa-error-message <%= @practice.errors[:short_name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">
-                <span class="font-family-sans"><%= show_errors(@practice, :short_name) %></span>
-              </p>
-            </div>
-
             <div class="usa-character-count">
               <div class="usa-form-group">
                 <div class="margin-bottom-5 margin-top-3">
@@ -90,9 +76,18 @@
               </div>
             </div>
 
-
             <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @practice } %>
 
+            <div>
+              <%= render partial: 'practices/shared/image_alt_text_label', locals: {
+                practice_field: "practice_main_display_image_alt_text",
+                label_classes: 'margin-top-0',
+                form_field: "practice_main_display_image_alt_text"
+              }
+              %>
+              <%= f.text_area :main_display_image_alt_text,
+                                 class: "usa-textarea grid-col-8 main-display-image-alt-text" %>
+            </div>
 
             <div class="margin-top-3 margin-bottom-5">
               <%= f.label :summary, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
@@ -131,7 +126,6 @@
                 </div>
               </div>
             </div>
-
 
             <div class="margin-top-3 margin-bottom-5">
               <p class="text-bold margin-bottom-2">
@@ -548,7 +542,6 @@
                   end
 
                   categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories + cat_placeholders.last : []
-
                   sliced_categories = split_data_into_three_columns(categories)
                 %>
 
@@ -590,11 +583,10 @@
             </div>
           </fieldset>
         <% end %>
-
-        <div class="grid-row">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_editors_path(@practice), continue_path: practice_adoptions_path(@practice) }%>
-        </div>
       </section>
     </div>
   </div>
 </div>
+<% if params[:save_and_publish].present? %>
+  <%= render partial: 'practices/shared/publication_validation_modal' %>
+<% end %>

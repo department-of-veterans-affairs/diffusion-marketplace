@@ -1,25 +1,24 @@
-<% provide :main_classes, 'bg-gray-2' %>
-<% provide :footer_classes, 'bg-gray-2' %>
+<% provide :main_classes, 'bg-gray-0' %>
+<% provide :footer_classes, 'bg-gray-0' %>
 <% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_overview_image_editor', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_usa_file_input', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
+    <%= render partial: 'practices/publication_validation', formats: [:js] %>
   <% end %>
 <% end %>
 
-<%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap">
-    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
-    <div id="overview" class="desktop:grid-col-9 grid-col-12 padding-0">
+    <div id="overview" class="grid-col-12 margin-top-4">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <%= render partial: "practices/shared/step_indicator" %>
       <section class="usa-section padding-top-0 padding-bottom-0 introduction">
-        <h1>Overview</h1>
-        <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+        <h1 class="margin-top-0">Overview</h1>
         <div class="usa-prose-intro">
           Describe the journey of your innovation from problem identification and the implementation of your solution
           through to measured results and outcomes.
@@ -444,10 +443,10 @@
             </div>
           </fieldset>
         <% end %>
-        <div class="grid-row">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_adoptions_path(@practice), continue_path: practice_implementation_path(@practice) }%>
-        </div>
       </section>
     </div>
   </div>
 </div>
+<% if params[:save_and_publish].present? %>
+  <%= render partial: 'practices/shared/publication_validation_modal' %>
+<% end %>

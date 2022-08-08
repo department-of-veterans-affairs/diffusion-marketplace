@@ -39,6 +39,27 @@ module PracticesHelper
     all_awards.to_s
   end
 
+  # search terms refers to campaigns/categories/tags
+  def get_all_search_terms(practice)
+    all_terms = []
+    # TODO: Add both campaigns and tags to this code
+    practice_categories = practice.categories.where.not(is_other: true, name: 'Other')
+    practice_categories.each do |category|
+      all_terms.push(category.name)
+    end
+    all_terms
+  end
+
+  def slice_terms(practice)
+    terms = get_all_search_terms(practice)
+    terms.slice(0..9)
+  end
+
+  def get_remaining_terms_if_sliced(practice)
+    terms = get_all_search_terms(practice)
+    terms.slice(10..-1)
+  end
+
   def display_practice_name(practice)
     if practice.short_name.present?
       "#{practice.name} (#{practice.short_name})"

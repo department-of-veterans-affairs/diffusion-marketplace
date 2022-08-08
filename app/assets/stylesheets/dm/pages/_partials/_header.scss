@@ -1,4 +1,4 @@
-.usa-header--extended {
+#dm-nav-header {
   .dm-header--mobile-searchbar {
     .dm-navbar-search-form {
       @include u-margin-bottom(4);
@@ -317,6 +317,28 @@
 
     i {
       font-size: 32px;
+    }
+  }
+}
+
+#dm-practice-editor-close-modal {
+  .usa-modal__main {
+    min-width: 100%;
+    padding: 0.5rem 7.5rem 2.5rem 2.5rem !important;
+  }
+
+
+  .dm-modal-close-button {
+    @include u-margin-right(0);
+    @include u-padding-right(0);
+    @include u-position('absolute');
+    top: 46px;
+    right: 22px;
+  }
+
+  .dm-button--unstyled-warning {
+    &:visited {
+      @include u-text('error');
     }
   }
 }

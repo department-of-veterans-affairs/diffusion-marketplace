@@ -437,7 +437,7 @@ function submitFormOnPageLoadWithCreatedPracticesAsDefault() {
 
 function preventComplexityModalFlickerOnPageLoad() {
     $(document).arrive('.visn-facilities-table', { existing: true }, () => {
-        $('#facility-complexity-modal').find('.usa-modal').removeClass('display-none');
+        removeDisplayNoneFromModal('#facility-complexity-modal');
     });
 }
 

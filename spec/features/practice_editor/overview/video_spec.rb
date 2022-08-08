@@ -26,7 +26,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should not display the video resource form' do
           expect(page).to have_no_content('Link (paste the full Youtube address)')
-          expect(page).to have_no_content('Caption')
+          expect(page).to have_no_content('Write a caption that provides context')
           expect(page).to have_no_css('#problem_resources_video_form')
           expect(page).to have_no_css('#solution_resources_video_form')
           expect(page).to have_no_css('#results_resources_video_form')
@@ -72,7 +72,7 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, "##{area}_section") do
           click_video_form area
           expect(page).to have_content('Link (paste the full Youtube address)')
-          expect(page).to have_content('Caption')
+          expect(page).to have_content('Write a caption that provides context')
           add_resource
           expect(page).to have_content('Please enter a valid YouTube url')
           url_field.set(@video_url_2)
@@ -278,7 +278,7 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def save_practice
-    find('#practice-editor-save-button').click
+    find('#practice-editor-save-button', visible: false).click
   end
 
   def no_resource_pr_test_setup
@@ -286,6 +286,7 @@ describe 'Practice editor', type: :feature, js: true do
     expect(page).to have_content('Overview')
     expect(page).to have_no_content("Videos")
     visit practice_overview_path(@pr_no_resources)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 
   def with_resource_pr_test_setup
@@ -301,5 +302,6 @@ describe 'Practice editor', type: :feature, js: true do
     expect(page).to have_content("existing solution video")
     expect(page).to have_content("existing problem video")
     visit practice_overview_path(@pr_with_resources)
+    page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
   end
 end
