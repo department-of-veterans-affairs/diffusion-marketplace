@@ -26,15 +26,27 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
           expect(page).to have_link('Home')
           expect(page).to have_link('Contact us')
           expect(page).to have_link('Nominate an innovation')
+          expect(page).to have_link('Choose VA')
+          expect(page).to have_link('About VA')
+          expect(page).to have_link('Accessibility support')
+          expect(page).to have_link('Performance reports')
+          expect(page).to have_link('FOIA requests')
+          expect(page).to have_link('Disclaimers')
           expect(page).to have_link('Open calls')
-          expect(page).to have_link('Privacy policy')
           expect(page).to have_link('Terms and conditions')
+          expect(page).to have_link('Privacy policy')
+          expect(page).to have_link('No FEAR Act data')
+          expect(page).to have_link('Whistleblower Protection')
+          expect(page).to have_link('Office of the Inspector General')
+          expect(page).to have_link('Open data')
+          expect(page).to have_link('Vulnerability Disclosure Policy')
+          expect(page).to have_link('Visit USA.gov')
         end
       end
 
       context 'clicking on the open calls link' do
         it 'should redirect to open calls page' do
-          click_on 'Open calls'
+          click_link('Open calls')
           expect(page).to have_current_path('/open-calls')
         end
       end
@@ -43,8 +55,7 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
     describe 'footer diffusion marketplace text' do
       it 'should exist' do
         within('footer') do
-          expect(page).to have_content('Diffusion Marketplace')
-          expect(page).to have_content('Department of Veterans Affairs')
+          expect(page).to have_content('An official website of the U.S. Department of Veterans Affairs')
         end
       end
     end

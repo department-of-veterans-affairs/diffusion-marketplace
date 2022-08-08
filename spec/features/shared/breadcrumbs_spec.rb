@@ -103,7 +103,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should not display breadcrumbs for the nominate an innovation page' do
-      find("a[href='/nominate-an-innovation']").click
+      find("a[href='/nominate-an-innovation'][class='dm-footer-link margin-bottom-2']").click
       expect(page).to_not have_css('#breadcrumbs')
     end
 
