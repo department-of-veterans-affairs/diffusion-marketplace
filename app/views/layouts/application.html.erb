@@ -88,9 +88,12 @@
   <body <% if content_for?(:body_attributes) %>
         <%= yield(:body_attributes) %>
         <% end %> class="display-flex margin-0 <%= yield(:body_classes) %>">
-    <% is_practice_editor = params[:controller] === 'practices' && (NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action]) || params[:action] === 'metrics') %>
-    <%= render 'shared/header' if !is_practice_editor %>
-    <%= render 'practices/shared/practice_editor_header' if is_practice_editor %>
+    <%
+      is_practice_editor = params[:controller] === 'practices' && NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action])
+      is_practice_metrics_page = params[:controller] === 'practices' && params[:action] === 'metrics'
+    %>
+    <%= render 'shared/header' unless is_practice_editor || is_practice_metrics_page %>
+    <%= render 'practices/shared/practice_editor_header' if is_practice_editor || is_practice_metrics_page %>
     <main
       id="main-content"
       class="<%= params[:controller] %> <%= params[:action] %>-main <%= yield(:main_classes) %><%= ' return-to-top-padding' if params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) %>"
@@ -100,8 +103,7 @@
       <% end %>
       <%= yield %>
     </main>
-    <%= render 'shared/footer' unless is_practice_editor %>
-    <%= render 'practices/shared/practice_editor_footer' if is_practice_editor %>
+    <%= render 'shared/footer' %>
 
     <% if current_user.present? %>
       <%= render partial: 'shared/terms_and_conditions_modal' %>
