@@ -1,34 +1,3 @@
-<%
-  path_options = {
-    editors: {
-      back: nil,
-      continue: practice_introduction_path(@practice)
-    },
-    introduction: {
-      back: practice_editors_path(@practice),
-      continue: practice_adoptions_path(@practice)
-    },
-    adoptions: {
-      back: practice_introduction_path(@practice),
-      continue: practice_overview_path(@practice)
-    },
-    overview: {
-      back: practice_adoptions_path(@practice),
-      continue: practice_implementation_path(@practice)
-    },
-    implementation: {
-      back: practice_overview_path(@practice),
-      continue: practice_about_path(@practice)
-    },
-    about: {
-      back: practice_implementation_path(@practice),
-      continue: nil
-    }
-  } if @practice.present?
-
-  is_practice_editor = params[:controller] === 'practices' && NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action])
-%>
-
 <footer class="usa-footer usa-footer--big <%= yield(:footer_classes) %>">
   <%# only show return to top on mobile views, practice show page and long practice editor pages (per design 9/21/21) %>
   <div
@@ -36,22 +5,6 @@
   >
     <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to top</button>
   </div>
-
-  <%# 'Back' and 'Continue' buttons for practice editor %>
-  <% if is_practice_editor %>
-    <div class="bg-base-lightest">
-      <div class="desktop:padding-y-2 grid-container">
-        <div class="grid-row">
-          <%
-            action_as_sym = params[:action].present? ? params[:action].to_sym : nil
-            back_path = path_options[action_as_sym][:back] || nil
-            continue_path = path_options[action_as_sym][:continue] || nil
-          %>
-          <%= render partial: 'practices/shared/back_and_continue_buttons', locals: { back_path: back_path, continue_path: continue_path } %>
-        </div>
-      </div>
-    </div>
-  <% end %>
 
   <div class="usa-footer__primary-section bg-primary-darker padding-y-4 desktop:padding-x-7">
     <nav class="usa-footer__nav margin-x-auto padding-0" aria-label="Footer navigation">
