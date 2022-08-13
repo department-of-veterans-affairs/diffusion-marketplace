@@ -123,6 +123,7 @@ Rails.application.routes.draw do
   get '/terms-and-conditions', controller: 'terms_and_conditions', action: 'index'
   match '/404', to: 'errors#page_not_found_404', via: :all
   match '/500', to: 'errors#internal_server_error_500', via: :all
+  resources :communities
 
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'

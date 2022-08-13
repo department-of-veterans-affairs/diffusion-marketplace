@@ -24,6 +24,8 @@ class User < ApplicationRecord
   has_many :practice_editors, dependent: :destroy
 
   has_many :practice_editor_sessions
+  has_many :community_leaders, dependent: :destroy
+  has_many :communities, through: :community_leaders
 
   # This allows users to post comments with the use of the Commontator gem
   acts_as_commontator

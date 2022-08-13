@@ -9,7 +9,6 @@ class Category < ApplicationRecord
   acts_as_list
 
   has_many :category_practices, dependent: :destroy
-  has_many :practices, through: :categories
   has_many :practices, through: :category_practices
 
   scope :with_practices,   -> { not_other.not_none.joins(:practices).where(practices: {approved: true, published: true, enabled: true} ).order_by_name.uniq }
