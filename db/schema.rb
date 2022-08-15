@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_16_103608) do
+ActiveRecord::Schema.define(version: 2022_08_11_203911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -283,6 +283,58 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.datetime "updated_at", null: false
     t.index ["closer_type", "closer_id"], name: "index_commontator_threads_on_closer_type_and_closer_id"
     t.index ["commontable_type", "commontable_id"], name: "index_commontator_threads_on_c_id_and_c_type", unique: true
+  end
+
+  create_table "communities", force: :cascade do |t|
+    t.string "name"
+    t.text "home_description"
+    t.string "intro_header"
+    t.text "intro_text"
+    t.string "external_url"
+    t.text "quote_text"
+    t.string "quote_name"
+    t.text "about_description"
+    t.text "leader_bio"
+    t.text "featured_practice_description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "home_image_file_name"
+    t.string "home_image_content_type"
+    t.bigint "home_image_file_size"
+    t.datetime "home_image_updated_at"
+    t.string "featured_practice_image_file_name"
+    t.string "featured_practice_image_content_type"
+    t.bigint "featured_practice_image_file_size"
+    t.datetime "featured_practice_image_updated_at"
+  end
+
+  create_table "community_faqs", force: :cascade do |t|
+    t.bigint "community_id"
+    t.text "question"
+    t.text "answer"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id"], name: "index_community_faqs_on_community_id"
+  end
+
+  create_table "community_leaders", force: :cascade do |t|
+    t.bigint "community_id"
+    t.bigint "user_id"
+    t.boolean "featured", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id"], name: "index_community_leaders_on_community_id"
+    t.index ["user_id"], name: "index_community_leaders_on_user_id"
+  end
+
+  create_table "community_practices", force: :cascade do |t|
+    t.bigint "community_id"
+    t.bigint "practice_id"
+    t.boolean "featured", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id"], name: "index_community_practices_on_community_id"
+    t.index ["practice_id"], name: "index_community_practices_on_practice_id"
   end
 
   create_table "costs", force: :cascade do |t|
@@ -993,12 +1045,12 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
     t.string "highlight_attachment_file_name"
     t.string "highlight_attachment_content_type"
     t.integer "highlight_attachment_file_size"
     t.datetime "highlight_attachment_updated_at"
-    t.boolean "is_public", default: false
     t.text "main_display_image_alt_text"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
@@ -1380,6 +1432,11 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
   add_foreign_key "commontator_comments", "commontator_comments", column: "parent_id", on_update: :restrict, on_delete: :cascade
   add_foreign_key "commontator_comments", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
   add_foreign_key "commontator_subscriptions", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "community_faqs", "communities"
+  add_foreign_key "community_leaders", "communities"
+  add_foreign_key "community_leaders", "users"
+  add_foreign_key "community_practices", "communities"
+  add_foreign_key "community_practices", "practices"
   add_foreign_key "costs", "practices"
   add_foreign_key "department_practices", "departments"
   add_foreign_key "department_practices", "practices"
