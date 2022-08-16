@@ -1,26 +1,26 @@
 .dm-footer-link {
   color: color($theme-color-secondary-darker);
   @include u-text('normal');
-  text-decoration: underline !important;
+  text-decoration: underline;
 
   &:hover {
     color: color($theme-color-secondary-darkest);
-    text-decoration: underline !important;
+    text-decoration: underline;
   }
 
   &:visited {
     color: color($theme-color-secondary-darker);
-    text-decoration: underline !important;
+    text-decoration: underline;
 
     &:hover {
       color: color($theme-color-secondary-darkest);
-      text-decoration: underline !important;
+      text-decoration: underline;
     }
   }
 
   &:active {
     color: color($theme-color-secondary-darkest);
-    text-decoration: underline !important;
+    text-decoration: underline;
   }
 }
 
