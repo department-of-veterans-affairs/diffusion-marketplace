@@ -287,6 +287,7 @@ ActiveRecord::Schema.define(version: 2022_08_11_203911) do
 
   create_table "communities", force: :cascade do |t|
     t.string "name"
+    t.string "slug"
     t.string "distribution_email"
     t.text "home_description"
     t.string "intro_header"
