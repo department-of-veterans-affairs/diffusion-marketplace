@@ -126,7 +126,7 @@ module ApplicationHelper
   end
 
   def get_link_target_attribute(url)
-    if url.include?(ENV.fetch('HOSTNAME'))
+    if url.include?(ENV.fetch('HOSTNAME')) || url.start_with?('/') || url.start_with?('.')
       ''
     else
       '_blank'

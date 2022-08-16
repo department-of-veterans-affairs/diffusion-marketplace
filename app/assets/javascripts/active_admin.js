@@ -181,12 +181,26 @@ const MAX_DESCRIPTION_LENGTH = 140;
     })
   }
 
+  // Remove content creator's ability to choose whether 
+  // links open in a new tab or current tab
+  function _modifyTinyMCELinkEditor() {
+    $(document).arrive('.tox-dialog__title', function(e) {
+      if ($('.tox-dialog__title').text() == "Insert/Edit Link" ) {
+        var UrlField = $('.tox-form label:contains("URL")');
+        UrlField.append('<span class="inline-hints">(For external URLs, use full URL i.e. https://google.com)</span>');
+        var openLinkInDropdown = $('.tox-label:contains("Open link in")').parent();
+        openLinkInDropdown.css("display","none");
+      }
+    })
+  }
+
   function _loadPageBuilderFns() {
     var $body = $('body');
     if ($body.hasClass('admin_pages') && $body.hasClass('edit')) {
       _addTinyMCEOnSelection();
       _preventDuplicateTinyMCEColorSelectors();
       _initializeTinyMCEOnDragAndDrop();
+      _modifyTinyMCELinkEditor();
       _modifySubmitBtnIDonPageBuilder();
     }
   }

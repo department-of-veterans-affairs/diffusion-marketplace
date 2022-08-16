@@ -58,11 +58,40 @@
       });
     }
 
+    // Remediate internal links on PageBuilder paragraph and accordion components
+    function remediateInternalLinksTarget(){
+        let intLinks = $('.page-paragraph-component, .page-accordion-component').find("a[href*='marketplace.va.gov'], a[href^='/'],a[href^='.']");
+
+        intLinks.each(function(){
+            let currentLink = $(this);
+            currentLink.addClass("usa-link");
+            if (currentLink.is("[target='_blank']")) {
+                currentLink.attr("target","");
+            }
+        })
+    }
+
+    // Style PageBuilder external links and set to open in a new tab (508 accessibility)
+    function identifyExternalLinks() {
+        // identify external by HREF content
+        let extLinks = $('.page-paragraph-component, .page-accordion-component').find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
+        
+        extLinks.each(function() {
+            let currentLink = $(this);
+
+            currentLink.attr("target", "_blank");
+            currentLink.addClass("usa-link usa-link--external");
+        });
+    }
+
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
         removeBottomMarginFromLastAccordionHeading();
         containerizeSubpageHyperlinkCards();
+        remediateInternalLinksTarget();
+        identifyExternalLinks();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
 })(window.jQuery);
+
