@@ -24,8 +24,10 @@ footer {
   }
 
   &.practice-show {
-    @media screen and (max-width: 1023px) {
-      margin-bottom: 60.2px;
+    .usa-footer__primary-section {
+      @media screen and (max-width: 1023px) {
+        margin-bottom: 60.2px;
+      }
     }
   }
 }
