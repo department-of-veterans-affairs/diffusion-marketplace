@@ -171,7 +171,11 @@ describe 'Page Builder - Show', type: :feature do
 
     visit '/admin/pages'
     all('.edit_link').last.click
-    find('.toggle-card-styling').click
+    expect(page).to have_content('ADD CARD STYLING')
+    expect(page).to have_css('.toggle-card-styling')
+    # scroll down the page so the 'Add card styling' checkbox is visible
+    scroll_to(0, 1500)
+    check('Add card styling')
     find('#page_submit_action_1').click
     expect(page).to have_content('Page was successfully updated.')
     visit '/programming/ruby-rocks'

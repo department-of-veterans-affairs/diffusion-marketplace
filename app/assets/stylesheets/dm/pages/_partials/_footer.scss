@@ -1,11 +1,33 @@
 footer {
-  // Keeps footer at the bottom of the page
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-
   .usa-footer__return-to-top {
     @include u-padding-top(0, !important);
     padding-bottom: 32px !important;
+  }
+
+  nav {
+    max-width: unset !important;
+    border-bottom: 0 !important;
+  }
+
+  .usa-footer__primary-section {
+    @include grid-container('mobile');
+    @include u-maxw(full);
+
+    @media screen and (min-width: 1024px) {
+      @include u-padding-x(7)
+    }
+
+    .usa-footer__primary-content {
+      visibility: visible !important;
+      border-top: 0 !important;
+    }
+  }
+
+  &.practice-show {
+    .usa-footer__primary-section {
+      @media screen and (max-width: 1023px) {
+        margin-bottom: 60.2px;
+      }
+    }
   }
 }

@@ -119,6 +119,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       # Filter out "Complete" status
       complete_filter_checkbox = find(:css, 'label[for="status_successful"]')
       complete_filter_checkbox.click
+      expect(page).to have_selector(marker_div)
       within(:css, '#map') do
         expect(page).to have_selector(marker_div, count: 3)
       end

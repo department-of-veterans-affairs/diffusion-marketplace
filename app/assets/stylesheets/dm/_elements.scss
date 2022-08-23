@@ -4,8 +4,21 @@ html {
 }
 
 body {
+  flex-direction: column;
   min-height: 100%;
-  position: relative;
+  justify-content: space-between;
+
+  main:not(.home.index-main) {
+    @media screen and (min-width: 640px) {
+      padding-bottom: 128px;
+    }
+
+    &.return-to-top-padding {
+      @media screen and (min-width: 640px) and (max-width: 1023px) {
+        padding-bottom: 64px;
+      }
+    }
+  }
 }
 
 p {
