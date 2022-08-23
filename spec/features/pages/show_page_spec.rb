@@ -173,6 +173,8 @@ describe 'Page Builder - Show', type: :feature do
     all('.edit_link').last.click
     expect(page).to have_content('ADD CARD STYLING')
     expect(page).to have_css('.toggle-card-styling')
+    # passes locally, but not on CI
+    sleep 0.1
     check('Add card styling')
     find('#page_submit_action_1').click
     expect(page).to have_content('Page was successfully updated.')
