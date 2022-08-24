@@ -25,7 +25,8 @@ class PageComponent < ApplicationRecord
       'Practices': 'PagePracticeListComponent',
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
       'YouTube Player': 'PageYouTubePlayerComponent',
-      'Horizontal Separator': 'PageHrComponent'
+      'Horizontal Separator': 'PageHrComponent',
+      'Google Map': 'PageMapComponent'
   }
 
   def build_component(params)

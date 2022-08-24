@@ -41,6 +41,7 @@ ActiveAdmin.register Page do
   end
 
   show do
+    debugger
     attributes_table do
       row('Complete URL') { |page|
         page_link = page.slug == 'home' ? "/#{page.page_group.friendly_id}" : "/#{page.page_group.friendly_id}/#{page.slug}"
@@ -78,6 +79,7 @@ ActiveAdmin.register Page do
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name != ''
             para component&.description if pc.component_type == 'PageDownloadableFileComponent' && component&.description != ''
+            para component&.description if pc.component_type == 'PageMapComponent' && component&.description != ''
           end
         }.join('').html_safe
       end
@@ -126,6 +128,7 @@ ActiveAdmin.register Page do
     end
 
     f.inputs "Page Components" do
+      debugger
       render partial: 'page_components_form', locals: {f: f, page_components: :page_components}
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons

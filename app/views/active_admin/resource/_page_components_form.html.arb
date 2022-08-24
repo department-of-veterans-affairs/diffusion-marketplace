@@ -14,4 +14,5 @@ f.has_many page_components, heading: nil, sortable: :position, sortable_start: 1
   pc.template.concat(render partial: 'page_hr_component_form', locals: {component: component.class == PageHrComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_downloadable_file_component_form', locals: {component: component.class == PageDownloadableFileComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_cta_component_form', locals: {component: component.class == PageCtaComponent ? component : nil, placeholder: placeholder})
+  pc.template.concat(render partial: 'page_map_component_form', locals: {component: component.class == PageMapComponent ? component : nil, placeholder: placeholder})
 end
