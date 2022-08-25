@@ -520,10 +520,10 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
     t.text "alt_text"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "component_image_file_name"
-    t.string "component_image_content_type"
-    t.bigint "component_image_file_size"
-    t.datetime "component_image_updated_at"
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.bigint "image_file_size"
+    t.datetime "image_updated_at"
     t.index ["page_component_id"], name: "index_page_component_images_on_page_component_id"
   end
 
@@ -542,7 +542,7 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
   create_table "page_compound_body_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "title"
-    t.text "body"
+    t.text "text"
     t.string "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

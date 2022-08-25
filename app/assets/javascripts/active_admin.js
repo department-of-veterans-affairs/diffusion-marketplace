@@ -4,6 +4,7 @@
 //= require active_admin/base
 //= require arrive.min
 //= require tinymce
+//= require ./practice_editor_utilities
 
 const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
@@ -217,6 +218,71 @@ const MAX_DESCRIPTION_LENGTH = 140;
         }
     }
 
+    function addGUIDToPageComponentImageOnArrive() {
+        $(document).arrive('.page-component-image-li', function(newEle) {
+            let guid = createGUID();
+            let textareaId = $(newEle).find('textarea').attr('id');
+            $(newEle).attr('data-id', `page_component_image_${guid}_li`);
+            _initTinyMCE(`#${textareaId}`);
+        });
+    }
+
+    function appendPageComponentImageLiHtmlToImageList(targetUl, addAnotherDataVal) {
+        let guid = createGUID();
+        let imageLi =
+        `
+            <li id="page_page_components_attributes_${addAnotherDataVal}_page_component_images_${guid}_li"
+                data-id="page_component_image_${guid}_li"
+                class="page-component-image-li">
+                <input type="hidden"
+                       name="page[page_components_attributes][${addAnotherDataVal}][page_component_images_attributes][${guid}][id]"/>
+                       
+                <div class="page-component-image-attribute-container">
+                    <label for="page_page_components_attributes_${addAnotherDataVal}_page_component_images_attributes_${guid}_image">
+                        Image
+                    </label>
+                    <input type="file"
+                           accept=".jpg, .jpeg, .png"
+                           id="page_page_components_attributes_${addAnotherDataVal}_page_component_images_attributes_${guid}_image"
+                           name="page[page_components_attributes][${addAnotherDataVal}][page_component_images_attributes][${guid}][image]"/>
+                    <p class="inline-hints">File types allowed: jpg, png. Max file size: 25MB</p>
+                </div>
+                
+                <div class="page-component-image-attribute-container">
+                    <label for="page_page_components_attributes_${addAnotherDataVal}_page_component_images_attributes_${guid}_caption" class="label">
+                        Caption
+                    </label>
+                    <textarea id="page_page_components_attributes_${addAnotherDataVal}_page_component_images_attributes_${guid}_caption" 
+                              class="tinymce"
+                              name="page[page_components_attributes][${addAnotherDataVal}][page_component_images_attributes][${guid}][caption]"
+                              rows="18">
+                    </textarea>
+                </div>
+                
+                <div class="page-component-image-attribute-container">
+                    <label for="page_page_components_attributes_${addAnotherDataVal}_page_component_images_attributes_${guid}_alt_text">
+                        Alternative Text
+                    </label>
+                    <input type="text" 
+                           id="page_page_components_attributes_${addAnotherDataVal}_page_component_images_attributes_${guid}_alt_text"
+                           name="page[page_components_attributes][${addAnotherDataVal}][page_component_images_attributes][${guid}][alt_text]" 
+                           required/>
+                    <p class="inline-hints">Alternate text that gets rendered in case the image cannot load</p>
+                </div>
+            </li>
+        `
+        return $(targetUl).append(imageLi);
+    }
+
+    function appendPageComponentImageLiOnAddImageButtonClick() {
+        $(document).on('click', '.add-another-page-component-image', function() {
+            appendPageComponentImageLiHtmlToImageList(
+                $(this).closest('.add-another-page-component-image-row').prev(),
+                $(this).data('add-another')
+            )
+        })
+    }
+
   var ready = function () {
     loadComponents();
     setDashboardPanelTooltipTitle();
@@ -228,6 +294,8 @@ const MAX_DESCRIPTION_LENGTH = 140;
     _initTinyMCE("textarea.tinymce");
     _loadPageBuilderFns();
     removeIdFromTrElements();
+    addGUIDToPageComponentImageOnArrive();
+    appendPageComponentImageLiOnAddImageButtonClick();
 
     // switches out polymorphic forms in page component
     $(document).on("change", ".polyselect", function () {

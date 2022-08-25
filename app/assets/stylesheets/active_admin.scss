@@ -268,3 +268,29 @@
     margin-left: 0;
   }
 }
+
+.page-component-images-ul {
+  padding: 10px;
+
+  .page-component-image-attribute-container, .page-component-image-preview-container {
+    padding: 10px 0 10px 0;
+  }
+}
+
+.add-another-page-component-image-row, .page-component-image-preview-container {
+  div {
+    display: inline-block;
+  }
+
+  .placeholder {
+    width: 20%;
+  }
+
+  .add-another-page-component-image-container, .page-component-image-container {
+    width: calc(80% - 22px);
+  }
+}
+
+.page-component-image {
+  max-width: 300px;
+}

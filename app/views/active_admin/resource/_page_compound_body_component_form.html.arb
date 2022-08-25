@@ -1,0 +1,121 @@
+# TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD'
+component ||= nil
+
+html = Arbre::Context.new do
+  li "", id: "PageCompoundBodyComponent_poly_#{placeholder}", class: "input polyform component-#{placeholder}" do
+    fieldset class: "inputs" do
+      legend do
+        span 'Compound body component'
+      end
+
+      if component
+        input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+      end
+      ol do
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
+          # Title
+          label 'Title', for: "page_page_components_attributes_#{placeholder}_component_attributes_title", class: 'label'
+
+          input value: component&.title || nil,
+            id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][title]",
+            class: 'tinymce',
+            type: 'text'
+        end
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_input" do
+          # Body text
+          label 'Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
+
+          textarea component&.text,
+            id: "page_page_components_attributes_#{placeholder}_component_attributes_text",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
+            class: 'tinymce',
+            rows:'18' do
+                component&.send(:text).try :html_safe
+          end
+          para 'Supplementary text to title', class: 'inline-hints'
+        end
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
+          label 'URL', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
+          input value: component&.url || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
+          para 'Enter a brief and descriptive URL suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth"',
+               class: 'inline-hints'
+        end
+
+        ul id: "page_page_components_attributes_#{placeholder}_page_component_images_ul", class: 'page-component-images-ul' do
+          if component && component.page_component.page_component_images.any?
+            component.page_component.page_component_images.each_with_index do |pci, index|
+              record_placement = index
+              li id: "page_page_components_attributes_#{placeholder}_page_component_images_#{record_placement}_li border-bottom-2",
+                 'data-id': "page_component_image_#{placeholder}_li",
+                 class: 'page-component-image-li' do
+                input type: 'hidden',
+                      value: pci.id,
+                      name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{record_placement}[id]"
+
+                div class: 'page-component-image-attribute-container' do
+                  label 'Image',
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_image",
+                        class: 'label'
+                  input value: pci.image, type: 'file', accept: '.jpg, .jpeg, .png',
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_image",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{record_placement}][image]",
+                        class: 'margin-0'
+                  para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+                end
+
+                if pci.image.present?
+                  div class: 'page-component-image-preview-container' do
+                    div class: 'placeholder'
+                    div class: 'page-component-image-container' do
+                      img class: 'page-component-image', src: pci.image_s3_presigned_url, alt: pci.alt_text
+                    end
+                  end
+                end
+
+                div class: 'page-component-image-attribute-container' do
+                  label 'Caption',
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_caption",
+                        class: 'label'
+
+                  textarea pci.caption,
+                           id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_caption",
+                           name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{record_placement}][caption]",
+                           class: 'tinymce',
+                           rows:'18'
+                  para 'Text that accurately describes the image', class: 'inline-hints'
+                end
+
+                div class: 'page-component-image-attribute-container' do
+                  label 'Alternative Text',
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_alt_text",
+                        class: 'label'
+                  input value: pci.alt_text, type: 'text', required: 'required',
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_alt_text",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{record_placement}][alt_text]"
+                  para 'Alternate text that gets rendered in case the image cannot load', class: 'inline-hints'
+                end
+              end
+            end
+          end
+        end
+
+        div class: 'add-another-page-component-image-row margin-y-1' do
+          div class: 'placeholder'
+          div class: 'add-another-page-component-image-container' do
+            button class: 'add-another-page-component-image', 'data-add-another': "#{placeholder}", type: 'button' do
+              span 'Add Image'
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+return html.to_s

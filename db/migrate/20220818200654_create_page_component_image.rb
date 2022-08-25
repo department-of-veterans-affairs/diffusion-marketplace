@@ -6,6 +6,6 @@ class CreatePageComponentImage < ActiveRecord::Migration[6.0]
       t.text :alt_text
       t.timestamps
     end
-    add_attachment :page_component_images, :component_image
+    add_attachment :page_component_images, :image
   end
 end

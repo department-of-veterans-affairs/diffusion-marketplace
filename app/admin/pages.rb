@@ -3,12 +3,42 @@ ActiveAdmin.register Page do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible, :template_type, :has_chrome_warning_banner,
+  permit_params :title,
+                :page_group_id,
+                :slug,
+                :description,
+                :published,
+                :ever_published,
+                :is_visible,
+                :template_type,
+                :has_chrome_warning_banner,
                 page_components_attributes: [
-                  :id, :component_type, :position, :_destroy, component_attributes: [
-                    :url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment,
-                    :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, :card, practices: []
-                  ]
+                  :id,
+                  :component_type,
+                  :position,
+                  :_destroy,
+                  component_attributes: [
+                    :url,
+                    :description,
+                    :title,
+                    :text,
+                    :heading_type,
+                    :subtopic_title,
+                    :subtopic_description,
+                    :alignment,
+                    :page_image,
+                    :caption,
+                    :alt_text,
+                    :html_tag,
+                    :display_name,
+                    :attachment,
+                    :cta_text,
+                    :button_text,
+                    :card,
+                    :body,
+                    practices: []
+                  ],
+                  page_component_images_attributes: {}
                 ]
 
   #
@@ -69,7 +99,16 @@ ActiveAdmin.register Page do
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
             para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent'
             para component&.description if pc.component_type == 'PageHeader3Component'
-            para component&.text.html_safe unless pc.component_type == 'PageHrComponent' || pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent' || pc.component_type == 'PageCtaComponent'
+            para component&.text.html_safe unless pc.component_type == 'PageHrComponent' ||
+              pc.component_type == 'PagePracticeListComponent' ||
+              pc.component_type == 'PageHeader2Component' ||
+              pc.component_type == 'PageSubpageHyperlinkComponent' ||
+              pc.component_type == 'PageHeader3Component' ||
+              pc.component_type == 'PageYouTubePlayerComponent' ||
+              pc.component_type == 'PageImageComponent' ||
+              pc.component_type == 'PageDownloadableFileComponent' ||
+              pc.component_type == 'PageCtaComponent' ||
+              pc.component_type == 'PageCompoundBodyComponent'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageYouTubePlayerComponent'
