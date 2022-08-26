@@ -20,20 +20,14 @@ html = Arbre::Context.new do
           input value: component&.title || nil,
             id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
             name: "page[page_components_attributes][#{placeholder}][component_attributes][title]",
-            class: 'tinymce',
             type: 'text'
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_input" do
-          # Body text
-          label 'Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
+          label 'Text', for: "page_page_components_attributes_compound_body_#{placeholder}_component_attributes_text", class: 'label'
 
-          textarea component&.text,
-            id: "page_page_components_attributes_#{placeholder}_component_attributes_text",
-            name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
-            class: 'tinymce',
-            rows:'18' do
-                component&.send(:text).try :html_safe
+          textarea component&.text, id: "page_page_components_attributes_compound_body_#{placeholder}_component_attributes_text", name: "page[page_components_attributes][#{placeholder}][component_attributes][text]", class: 'tinymce', rows:'18' do
+              component&.send(:text).try :html_safe
           end
           para 'Supplementary text to title', class: 'inline-hints'
         end
@@ -50,21 +44,20 @@ html = Arbre::Context.new do
         ul id: "page_page_components_attributes_#{placeholder}_page_component_images_ul", class: 'page-component-images-ul' do
           if component && component.page_component.page_component_images.any?
             component.page_component.page_component_images.each_with_index do |pci, index|
-              record_placement = index
-              li id: "page_page_components_attributes_#{placeholder}_page_component_images_#{record_placement}_li border-bottom-2",
+              li id: "page_page_components_attributes_#{placeholder}_page_component_images_#{index}_li border-bottom-2",
                  'data-id': "page_component_image_#{placeholder}_li",
                  class: 'page-component-image-li' do
                 input type: 'hidden',
                       value: pci.id,
-                      name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{record_placement}[id]"
+                      name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][id]"
 
                 div class: 'page-component-image-attribute-container' do
                   label 'Image',
-                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_image",
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
                         class: 'label'
                   input value: pci.image, type: 'file', accept: '.jpg, .jpeg, .png',
-                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_image",
-                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{record_placement}][image]",
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][image]",
                         class: 'margin-0'
                   para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
                 end
@@ -80,12 +73,12 @@ html = Arbre::Context.new do
 
                 div class: 'page-component-image-attribute-container' do
                   label 'Caption',
-                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_caption",
+                        for: "page_page_components_attributes_compound_body_#{placeholder}_page_component_images_attributes_#{index}_caption",
                         class: 'label'
 
                   textarea pci.caption,
-                           id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_caption",
-                           name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{record_placement}][caption]",
+                           id: "page_page_components_attributes_compound_body_#{placeholder}_page_component_images_attributes_#{index}_caption",
+                           name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][caption]",
                            class: 'tinymce',
                            rows:'18'
                   para 'Text that accurately describes the image', class: 'inline-hints'
@@ -93,11 +86,11 @@ html = Arbre::Context.new do
 
                 div class: 'page-component-image-attribute-container' do
                   label 'Alternative Text',
-                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_alt_text",
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
                         class: 'label'
                   input value: pci.alt_text, type: 'text', required: 'required',
-                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{record_placement}_alt_text",
-                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{record_placement}][alt_text]"
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][alt_text]"
                   para 'Alternate text that gets rendered in case the image cannot load', class: 'inline-hints'
                 end
               end

@@ -173,15 +173,6 @@ const MAX_DESCRIPTION_LENGTH = 140;
     })
   }
 
-  function _preventDuplicateTinyMCEColorSelectors() {
-    $(document).arrive('.tox.tox-silver-sink.tox-tinymce-aux', function(e) {
-      var componentCount = $('.ui-sortable').find('.page_components').length;
-      if ($('.tox.tox-silver-sink.tox-tinymce-aux').length > (componentCount * 2)) {
-        $(e).remove();
-      }
-    })
-  }
-
   // Remove content creator's ability to choose whether 
   // links open in a new tab or current tab
   function _modifyTinyMCELinkEditor() {
@@ -221,9 +212,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
     function addGUIDToPageComponentImageOnArrive() {
         $(document).arrive('.page-component-image-li', function(newEle) {
             let guid = createGUID();
-            let textareaId = $(newEle).find('textarea').attr('id');
             $(newEle).attr('data-id', `page_component_image_${guid}_li`);
-            _initTinyMCE(`#${textareaId}`);
         });
     }
 
@@ -249,10 +238,10 @@ const MAX_DESCRIPTION_LENGTH = 140;
                 </div>
                 
                 <div class="page-component-image-attribute-container">
-                    <label for="page_page_components_attributes_${addAnotherDataVal}_page_component_images_attributes_${guid}_caption" class="label">
+                    <label for="page_page_components_attributes_compound_body_${addAnotherDataVal}_page_component_images_attributes_${guid}_caption" class="label">
                         Caption
                     </label>
-                    <textarea id="page_page_components_attributes_${addAnotherDataVal}_page_component_images_attributes_${guid}_caption" 
+                    <textarea id="page_page_components_attributes_compound_body_${addAnotherDataVal}_page_component_images_attributes_${guid}_caption" 
                               class="tinymce"
                               name="page[page_components_attributes][${addAnotherDataVal}][page_component_images_attributes][${guid}][caption]"
                               rows="18">
@@ -283,6 +272,13 @@ const MAX_DESCRIPTION_LENGTH = 140;
         })
     }
 
+    function initTinyMCEOnTextAreaArrival() {
+        $(document).arrive('textarea.tinymce', { existing: false }, function(newEle) {
+            let textareaId = $(newEle).attr('id');
+            _initTinyMCE(`#${textareaId}`);
+        });
+    }
+
   var ready = function () {
     loadComponents();
     setDashboardPanelTooltipTitle();
@@ -296,6 +292,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
     removeIdFromTrElements();
     addGUIDToPageComponentImageOnArrive();
     appendPageComponentImageLiOnAddImageButtonClick();
+    initTinyMCEOnTextAreaArrival();
 
     // switches out polymorphic forms in page component
     $(document).on("change", ".polyselect", function () {
