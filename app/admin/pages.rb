@@ -7,7 +7,8 @@ ActiveAdmin.register Page do
                 page_components_attributes: [
                   :id, :component_type, :position, :_destroy, component_attributes: [
                     :url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment,
-                    :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, :card, practices: []
+                    :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, :card,
+                    :display_successful, :display_in_progress, :display_unsuccessful, practices: []
                   ]
                 ]
 
@@ -41,7 +42,6 @@ ActiveAdmin.register Page do
   end
 
   show do
-    debugger
     attributes_table do
       row('Complete URL') { |page|
         page_link = page.slug == 'home' ? "/#{page.page_group.friendly_id}" : "/#{page.page_group.friendly_id}/#{page.slug}"
@@ -70,7 +70,7 @@ ActiveAdmin.register Page do
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
             para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent'
             para component&.description if pc.component_type == 'PageHeader3Component'
-            para component&.text.html_safe unless pc.component_type == 'PageHrComponent' || pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent' || pc.component_type == 'PageCtaComponent'
+            para component&.text.html_safe unless pc.component_type == 'PageHrComponent' || pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent' || pc.component_type == 'PageCtaComponent' || pc.component_type == 'PageMapComponent'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageYouTubePlayerComponent'
@@ -128,7 +128,6 @@ ActiveAdmin.register Page do
     end
 
     f.inputs "Page Components" do
-      debugger
       render partial: 'page_components_form', locals: {f: f, page_components: :page_components}
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons
@@ -148,13 +147,14 @@ ActiveAdmin.register Page do
 
     def create_or_update_page
       begin
+        debugger
         page_params = params[:page]
         page_description = page_params[:description]
         page_id = params[:id]
         page = page_id.present? ? Page.find(page_id) : nil
         # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21). This adds a custom message to match other page-builder validation errors.
         raise StandardError.new 'Validation failed. Page description cannot be longer than 140 characters.' if page_description.length > 140
-
+        debugger
         if page.nil?
           page = Page.create!(permitted_params[:page])
         else

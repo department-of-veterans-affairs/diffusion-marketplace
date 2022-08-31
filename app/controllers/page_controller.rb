@@ -1,5 +1,20 @@
 class PageController < ApplicationController
   def show
+    @va_facility = VaFacility.where(id: [1639, 1640, 1419, 1583])
+    @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
+      marker.lat facility.latitude
+      marker.lng facility.longitude
+      marker.picture({
+                         url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
+                         width: 34,
+                         height: 46,
+                         scaledWidth: 34,
+                         scaledHeight: 46
+                     })
+      marker.shadow nil
+      marker.json({ id: facility.id })
+    end
+    debugger
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @page_components = @page.page_components
