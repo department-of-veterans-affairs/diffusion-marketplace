@@ -277,7 +277,7 @@
   }
 }
 
-.add-another-page-component-image-row, .page-component-image-preview-container {
+.page-component-image-preview-container {
   div {
     display: inline-block;
   }
@@ -286,9 +286,14 @@
     width: 20%;
   }
 
-  .add-another-page-component-image-container, .page-component-image-container {
+  .page-component-image-container {
     width: calc(80% - 22px);
   }
+}
+
+.add-another-page-component-image {
+  bottom: 10px;
+  left: 370px;
 }
 
 .page-component-image {
