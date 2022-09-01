@@ -147,7 +147,6 @@ ActiveAdmin.register Page do
 
     def create_or_update_page
       begin
-        debugger
         page_params = params[:page]
         page_description = page_params[:description]
         page_id = params[:id]
