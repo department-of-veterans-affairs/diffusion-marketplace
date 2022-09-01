@@ -7,5 +7,5 @@
     <%= javascript_include_tag 'page/page_map', 'data-turbolinks-track': 'reload' %>
   <% end %>
   <div id="page_builder_map" class="display-none" style="width: 100%; height: 275px;"></div>
-  <%#= render partial: 'shared/loading_spinner', locals: { display: true, classes: 'flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10 dm-facilities-show-map-loading-spinner text-center' } %>
+  <%= render partial: 'shared/loading_spinner', locals: { display: true, classes: 'flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10 dm-facilities-show-map-loading-spinner text-center' } %>
 <% end %>
