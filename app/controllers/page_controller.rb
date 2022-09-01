@@ -1,23 +1,17 @@
 class PageController < ApplicationController
   def show
-    @va_facility = VaFacility.where(id: [1639, 1640, 1419, 1583])
-    @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
-      marker.lat facility.latitude
-      marker.lng facility.longitude
-      marker.picture({
-                         url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
-                         width: 34,
-                         height: 46,
-                         scaledWidth: 34,
-                         scaledHeight: 46
-                     })
-      marker.shadow nil
-      marker.json({ id: facility.id })
-    end
-    debugger
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @page_components = @page.page_components
+    @page_components.each do |pc|
+      if pc.component_type == "PageMapComponent"
+        practices_list = PageMapComponent.select(:practices).where(id: pc.component_id).to_a
+        adopting_facilities = get_adopting_facilities_for_these_practices practices_list
+        debugger
+        build_map_component adopting_facilities
+      end
+    end
+
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
@@ -30,6 +24,26 @@ class PageController < ApplicationController
     respond_to do |format|
       format.html
       format.js
+    end
+  end
+
+
+  def build_map_component adopting_facilities_list
+    debugger
+    @va_facility = VaFacility.where(id: [adopting_facilities_list.to_i])
+    #@va_facility = VaFacility.where(id: [2137,2137,2405,1523,2024])
+    @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
+      marker.lat facility.latitude
+      marker.lng facility.longitude
+      marker.picture({
+                         url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
+                         width: 34,
+                         height: 46,
+                         scaledWidth: 34,
+                         scaledHeight: 46
+                     })
+      marker.shadow nil
+      marker.json({ id: facility.id })
     end
   end
 
@@ -64,5 +78,18 @@ class PageController < ApplicationController
           page_param: page_practice_list_index.to_s,
           link_extra: "data-remote='true' class='dm-paginated-#{page_practice_list_index}-link dm-paginated-#{page_practice_list_index}-practices-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
         )
+  end
+
+  def get_adopting_facilities_for_these_practices practices_list
+    va_facilities_list = ""
+    practices_list[0]["practices"].each do |pr|
+      diffusion_histories = DiffusionHistory.where(practice_id: pr)
+      diffusion_histories.each do |dh|
+        unless dh.va_facility_id.nil?
+          va_facilities_list += dh.va_facility_id.to_s + ","
+        end
+      end
+    end
+    va_facilities_list.chop
   end
 end

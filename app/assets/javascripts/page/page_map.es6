@@ -16,6 +16,7 @@ function initialize() {
 
     handler.buildMap({
             provider: {
+                // center: {lat: 95, lng: 37},
                 center: {lat: Number(mapData[0].lat), lng: Number(mapData[0].lng)},
                 zoom: 4,
                 zoomControlOptions: {
@@ -25,7 +26,7 @@ function initialize() {
                 mapTypeControl: false,
                 streetViewControl: false
             },
-            internal: {id: 'va_facility_map'},
+            internal: {id: 'page_builder_map'},
             markers: {
                 options: {
                     rich_marker: true
@@ -38,7 +39,7 @@ function initialize() {
         });
 
     google.maps.event.addListener(handler.getMap(), "idle", function () {
-        $("#va_facility_map").removeClass("display-none");
+        $("#page_builder_map").removeClass("display-none");
         $(".dm-facilities-show-map-loading-spinner").addClass("display-none");
     });
 }
