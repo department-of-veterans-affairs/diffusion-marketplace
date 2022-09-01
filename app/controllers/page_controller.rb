@@ -10,7 +10,7 @@ class PageController < ApplicationController
         adopting_facilities = get_adopting_facilities_for_these_practices practices_list
         debugger
         build_map_component adopting_facilities
-        @adoptions_count = adopting_facilities.split(",").length
+        @adoptions_count = adopting_facilities.count
       end
     end
 
@@ -31,8 +31,8 @@ class PageController < ApplicationController
 
 
   def build_map_component adopting_facilities_list
-    #@va_facility = VaFacility.where(id: [adopting_facilities_list.to_i])
-    @va_facility = VaFacility.where(id: [2137,2137,2405,1523,2024])
+    @va_facility = VaFacility.where(id: adopting_facilities_list)
+    #@va_facility = VaFacility.where(id: [2137,2137,2405,1523,2024])
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
       marker.lat facility.latitude
       marker.lng facility.longitude
@@ -82,15 +82,16 @@ class PageController < ApplicationController
   end
 
   def get_adopting_facilities_for_these_practices practices_list
-    va_facilities_list = ""
+    va_facilities_list = []
     practices_list[0]["practices"].each do |pr|
       diffusion_histories = DiffusionHistory.where(practice_id: pr)
       diffusion_histories.each do |dh|
         unless dh.va_facility_id.nil?
-          va_facilities_list += dh.va_facility_id.to_s + ","
+          va_facilities_list.push dh.va_facility_id
         end
       end
     end
-    va_facilities_list.chop
+    debugger
+    va_facilities_list
   end
 end
