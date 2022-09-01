@@ -3,12 +3,13 @@ class PageController < ApplicationController
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @page_components = @page.page_components
+    @adoptions_count = 0
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
         practices_list = PageMapComponent.select(:practices).where(id: pc.component_id).to_a
         adopting_facilities = get_adopting_facilities_for_these_practices practices_list
-        debugger
         build_map_component adopting_facilities
+        @adoptions_count = adopting_facilities.split(",").length
       end
     end
 
