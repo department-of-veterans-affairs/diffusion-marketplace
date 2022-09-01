@@ -153,7 +153,6 @@ ActiveAdmin.register Page do
         page = page_id.present? ? Page.find(page_id) : nil
         # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21). This adds a custom message to match other page-builder validation errors.
         raise StandardError.new 'Validation failed. Page description cannot be longer than 140 characters.' if page_description.length > 140
-        debugger
         if page.nil?
           page = Page.create!(permitted_params[:page])
         else

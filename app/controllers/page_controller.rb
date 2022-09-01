@@ -8,7 +8,6 @@ class PageController < ApplicationController
       if pc.component_type == "PageMapComponent"
         practices_list = PageMapComponent.select(:practices).where(id: pc.component_id).to_a
         adopting_facilities = get_adopting_facilities_for_these_practices practices_list
-        debugger
         build_map_component adopting_facilities
         @adoptions_count = adopting_facilities.count
       end
@@ -32,7 +31,6 @@ class PageController < ApplicationController
 
   def build_map_component adopting_facilities_list
     @va_facility = VaFacility.where(id: adopting_facilities_list)
-    #@va_facility = VaFacility.where(id: [2137,2137,2405,1523,2024])
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
       marker.lat facility.latitude
       marker.lng facility.longitude
@@ -91,7 +89,6 @@ class PageController < ApplicationController
         end
       end
     end
-    debugger
     va_facilities_list
   end
 end
