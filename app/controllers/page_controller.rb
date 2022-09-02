@@ -6,9 +6,8 @@ class PageController < ApplicationController
     @adoptions_count = 0
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
-        debugger
-        practices_list = PageMapComponent.select(:practices).where(id: pc.component_id).to_a
-        adopting_facilities = get_adopting_facilities_for_these_practices practices_list
+        @practices_list = PageMapComponent.select(:practices).where(id: pc.component_id).to_a
+        adopting_facilities = get_adopting_facilities_for_these_practices @practices_list
         build_map_component adopting_facilities
         @adoptions_count = adopting_facilities.count
       end
@@ -29,8 +28,7 @@ class PageController < ApplicationController
     end
   end
 
-
-  def build_map_component adopting_facilities_list
+  def build_map_component(adopting_facilities_list)
     @va_facility = VaFacility.where(id: adopting_facilities_list)
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
       marker.lat facility.latitude
@@ -44,7 +42,7 @@ class PageController < ApplicationController
                      })
       marker.shadow nil
       marker.json({ id: facility.id })
-      marker.infowindow render_to_string(partial: 'maps/community_map_infowindow', locals: { diffusion_histories: facility, facility: facility })
+      marker.infowindow render_to_string(partial: 'maps/community_map_infowindow', locals: { diffusion_histories: facility, facility: facility, practice_list: @practices_list })
     end
   end
 
@@ -81,7 +79,7 @@ class PageController < ApplicationController
         )
   end
 
-  def get_adopting_facilities_for_these_practices practices_list
+  def get_adopting_facilities_for_these_practices(practices_list)
     va_facilities_list = []
     practices_list[0]["practices"].each do |pr|
       diffusion_histories = DiffusionHistory.where(practice_id: pr)
