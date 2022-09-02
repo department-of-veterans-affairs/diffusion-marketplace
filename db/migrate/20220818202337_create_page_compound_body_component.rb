@@ -5,6 +5,8 @@ class CreatePageCompoundBodyComponent < ActiveRecord::Migration[6.0]
       t.string :title
       t.text :text
       t.string :url
+      t.string :title_header
+      t.string :text_alignment
       t.timestamps
     end
   end

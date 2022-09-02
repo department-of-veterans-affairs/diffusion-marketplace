@@ -248,8 +248,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
                         </label>
                         <input type="text" 
                                id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text"
-                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][alt_text]" 
-                               required/>
+                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][alt_text]"/>
                         <p class="inline-hints">Alternate text that gets rendered in case the image cannot load</p>
                     </div>
                     
@@ -267,8 +266,8 @@ const MAX_DESCRIPTION_LENGTH = 140;
                 </li>`;
     }
 
-    function appendLiHTMLToList(targetUl, liHTML) {
-        return $(targetUl).append(liHTML);
+    function appendLiHTMLToList(targetOl, liHTML) {
+        return $(targetOl).append(liHTML);
     }
 
     function appendNewNestedComponentLiOnAddLinkClick(addLinkSelector, liHTML) {
@@ -283,19 +282,25 @@ const MAX_DESCRIPTION_LENGTH = 140;
                 $(this).prev(),
                 newLiHtml
             );
+            // Add a horizontal separator to the end of the li
+            const separator = '<div class="add-another-separator border-y-1px border-gray-5 margin-top-2"></div>';
+            $(this).prev().children('.page-component-image-li').not('.display-none').eq(-2).append(separator);
         });
     }
 
-    function hideAndUpdateLiDeleteValOnDeleteLinkClick(deleteLinkSelector, liSelector) {
+    function updateLiOnDeleteLinkClick(deleteLinkSelector, liSelector) {
         $(document).on('click', deleteLinkSelector, function() {
             $(this).prev().val('1');
-            $(this).closest(liSelector).css('display', 'none');
+            const closestLi = $(this).closest(liSelector);
+            closestLi.addClass('display-none');
+            // remove the previous li's horizontal separator
+            closestLi.prev().find('.add-another-separator').remove();
         });
     }
 
     function initTinyMCEOnTextAreaArrival() {
-        $(document).arrive('.page-component-image-li', function(newEle) {
-            let textareaId = $(newEle).find('textarea.tinymce').attr('id');
+        $(document).arrive('textarea.tinymce', function() {
+            let textareaId = $(this).attr('id');
             _initTinyMCE(`#${textareaId}`);
         });
     }
@@ -315,7 +320,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
         '.add-another-page-component-image',
         pageComponentImageHTML()
     );
-    hideAndUpdateLiDeleteValOnDeleteLinkClick('.dm-page-builder-trash', '.page-component-image-li');
+    updateLiOnDeleteLinkClick('.dm-page-builder-trash', '.page-component-image-li');
     initTinyMCEOnTextAreaArrival();
 
         // switches out polymorphic forms in page component

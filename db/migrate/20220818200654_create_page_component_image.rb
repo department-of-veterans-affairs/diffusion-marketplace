@@ -4,6 +4,7 @@ class CreatePageComponentImage < ActiveRecord::Migration[6.0]
       t.belongs_to :page_component, foreign_key: true
       t.text :caption
       t.text :alt_text
+      t.string :url
       t.timestamps
     end
     add_attachment :page_component_images, :image

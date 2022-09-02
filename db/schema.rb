@@ -518,6 +518,7 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
     t.bigint "page_component_id"
     t.text "caption"
     t.text "alt_text"
+    t.string "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "image_file_name"
@@ -544,6 +545,8 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
     t.string "title"
     t.text "text"
     t.string "url"
+    t.string "title_header"
+    t.string "text_alignment"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["page_component_id"], name: "index_page_compound_body_components_on_page_component_id"

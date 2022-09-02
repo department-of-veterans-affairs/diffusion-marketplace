@@ -3,7 +3,7 @@ placeholder ||= 'NEW_PAGE_COMPONENT_RECORD'
 component ||= nil
 
 html = Arbre::Context.new do
-  div id: 'dm-page-compound-body-component-container', class: 'position-relative' do
+  div class: 'dm-page-compound-body-component-container position-relative' do
     li "", id: "PageCompoundBodyComponent_poly_#{placeholder}", class: "input polyform component-#{placeholder}" do
       fieldset class: "inputs" do
         legend do
@@ -38,13 +38,31 @@ html = Arbre::Context.new do
             input value: component&.url || nil, type: 'text', required: 'required',
                   id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                   name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
-            para 'Enter a brief and descriptive URL suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth"',
-                 class: 'inline-hints'
+            para class: 'inline-hints' do
+              span 'For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").'
+              span 'For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").'
+            end
           end
 
-          ul id: "page_page_components_attributes_#{placeholder}_page_component_images_ul", class: 'page-component-images-ul' do
-            if component && component.page_component.page_component_images.any?
-              component.page_component.page_component_images.each_with_index do |pci, index|
+          li class: 'select input', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment_input" do
+            label 'Alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment", class: 'label'
+            select value: component&.text_alignment || nil,
+                   id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment",
+                   name: "page[page_components_attributes][#{placeholder}][component_attributes][text_alignment]" do
+              option 'Left', selected: component&.text_alignment === 'Left' || component&.text_alignment.blank?
+              option 'Right', selected: component&.text_alignment === 'Right'
+            end
+            para "Choose the text alignment for this 'Compound Body' component (left or right). Defaults to left.", class: 'inline-hints'
+          end
+
+          div class: 'page-component-images-header display-flex flex-align-center' do
+            span 'Page component images'
+          end
+
+          ol id: "page_page_components_attributes_#{placeholder}_page_component_images_ol", class: 'page-component-images-ol' do
+            page_component_images = component&.page_component&.page_component_images
+            if component && page_component_images&.any?
+              page_component_images.each_with_index do |pci, index|
                 li id: "page_page_components_attributes_#{placeholder}_page_component_images_#{index}_li border-bottom-2",
                    'data-id': "page_component_image_#{placeholder}_li",
                    class: 'page-component-image-li' do
@@ -53,13 +71,14 @@ html = Arbre::Context.new do
                         name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][id]"
 
                   div class: 'page-component-image-attribute-container' do
-                    label 'Image',
+                    label 'Image *Required*',
                           for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
                           class: 'label'
-                    input value: pci.image, type: 'file', accept: '.jpg, .jpeg, .png',
+                    input value: pci.image_file_name, type: 'file', accept: '.jpg, .jpeg, .png',
                           id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
                           name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][image]",
-                          class: 'margin-0'
+                          class: 'margin-0',
+                          required: 'required'
                     para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
                   end
 
@@ -69,6 +88,17 @@ html = Arbre::Context.new do
                       div class: 'page-component-image-container' do
                         img class: 'page-component-image', src: pci.image_s3_presigned_url, alt: pci.alt_text
                       end
+                    end
+                  end
+
+                  div class: 'page-component-image-attribute-container' do
+                    label 'Image URL', for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_url", class: 'label'
+                    input value: pci.url || nil, type: 'text',
+                          id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_url",
+                          name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][url]"
+                    para class: 'inline-hints' do
+                      span 'For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").'
+                      span 'For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").'
                     end
                   end
 
@@ -86,7 +116,7 @@ html = Arbre::Context.new do
                   end
 
                   div class: 'page-component-image-attribute-container' do
-                    label 'Alternative Text',
+                    label 'Alternative Text *Required*',
                           for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
                           class: 'label'
                     input value: pci.alt_text, type: 'text', required: 'required',
@@ -106,6 +136,10 @@ html = Arbre::Context.new do
                         span 'Delete entry'
                       end
                     end
+                  end
+
+                  unless page_component_images.length === index + 1
+                    div class: 'add-another-separator border-y-1px border-gray-5 margin-top-2'
                   end
                 end
               end

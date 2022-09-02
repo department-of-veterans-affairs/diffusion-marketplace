@@ -97,7 +97,10 @@ ActiveAdmin.register Page do
             para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
-            para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent'
+            para component&.title if pc.component_type == 'PageHeader3Component' ||
+              pc.component_type == 'PageSubpageHyperlinkComponent' ||
+              pc.component_type == 'PageAccordionComponent' ||
+              pc.component_type == 'PageCompoundBodyComponent'
             para component&.description if pc.component_type == 'PageHeader3Component'
             para component&.text.html_safe unless pc.component_type == 'PageHrComponent' ||
               pc.component_type == 'PagePracticeListComponent' ||
@@ -172,6 +175,8 @@ ActiveAdmin.register Page do
 
 
   controller do
+    before_action :delete_incomplete_page_component_images_params, only: [:create, :update]
+
     def create
       create_or_update_page
     end
@@ -198,7 +203,12 @@ ActiveAdmin.register Page do
         end
 
         respond_to do |format|
-          format.html { redirect_to admin_page_path(page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
+          if @incomplete_image_components > 0
+            flash[:warning] = "One or more 'Compound Body' components had missing required fields for its image(s). The page was saved, but the image(s) were not."
+            format.html { redirect_to admin_page_path(page) }
+          else
+            format.html { redirect_to admin_page_path(page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
+          end
         end
       rescue => e
         respond_to do |format|
@@ -209,6 +219,41 @@ ActiveAdmin.register Page do
           end
         end
       end
+    end
+
+    private
+
+    def delete_incomplete_page_component_images_params
+      ### If there are any 'PageComponentImages' that have missing required fields, delete them from the params
+      page_component_attributes_params = params[:page][:page_components_attributes]
+
+      if page_component_attributes_params.present?
+        # Select any 'PageCompoundBodyComponent' components from the params
+        page_compound_body_component_params = page_component_attributes_params.select { |key, value| value[:component_type] === 'PageCompoundBodyComponent' }
+
+        if page_compound_body_component_params.present?
+          @incomplete_image_components = 0
+
+          page_compound_body_component_params.each do |cbp_param_key, cbp_param_val|
+            page_component_images_params = cbp_param_val[:page_component_images_attributes]
+
+            if page_component_images_params.present?
+              page_component_images_params.each do |pci_key, pci_val|
+                existing_component_image = PageComponentImage.find_by(id: pci_val[:id])
+                has_no_alt_text = pci_val[:alt_text].blank?
+                has_no_image = pci_val[:image].blank? && existing_component_image && existing_component_image.image.blank?
+
+                if has_no_alt_text || has_no_image
+                  @incomplete_image_components += 1
+                  params.dig(:page, :page_components_attributes, cbp_param_key, :page_component_images_attributes).delete(pci_key)
+                end
+              end
+            end
+          end
+        end
+      end
+
+      @incomplete_image_components
     end
   end
 end
