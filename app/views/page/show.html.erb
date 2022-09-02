@@ -86,6 +86,23 @@
             </a>
           </div>
 
+        <%# Event %>
+        <% when 'PageEventComponent' %>
+          <div class="page-event-component <%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
+            <h3 class="margin-bottom-2">
+              <a href="<%= component.url %>">
+                <%= component.title %>
+              </a>
+            </h3>
+            </a>
+            <div id="a<%= component.id %>" class="usa-prose">
+              <% if component.text.present? %>
+                <%= component.text.html_safe %>
+              <% end %>
+            </div>
+          </div>
+
+
           <%# Image %>
         <% when 'PageImageComponent' %>
           <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">

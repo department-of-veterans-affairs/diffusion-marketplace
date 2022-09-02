@@ -22,6 +22,7 @@ class PageComponent < ApplicationRecord
       'Body text': 'PageParagraphComponent',
       'Call to Action': 'PageCtaComponent',
       'Downloadable File': 'PageDownloadableFileComponent',
+      'Event': 'PageEventComponent',
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
       'Image': 'PageImageComponent',

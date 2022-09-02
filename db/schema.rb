@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_18_202337) do
+ActiveRecord::Schema.define(version: 2022_09_01_222852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -577,6 +577,16 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["page_component_id"], name: "index_page_downloadable_file_components_on_page_component_id"
+  end
+
+  create_table "page_event_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "url"
+    t.string "text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_component_id"], name: "index_page_event_components_on_page_component_id"
   end
 
   create_table "page_groups", force: :cascade do |t|
@@ -1436,6 +1446,7 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
   add_foreign_key "page_compound_body_components", "page_components"
   add_foreign_key "page_cta_components", "page_components"
   add_foreign_key "page_downloadable_file_components", "page_components"
+  add_foreign_key "page_event_components", "page_components"
   add_foreign_key "page_header2_components", "page_components"
   add_foreign_key "page_header3_components", "page_components"
   add_foreign_key "page_header_components", "page_components"
