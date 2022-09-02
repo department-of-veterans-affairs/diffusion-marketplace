@@ -87,23 +87,34 @@
           </div>
 
         <%# Event %>
-        <% when 'PageEventComponent' %>
-          <div class="page-event-component <%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
-            <h3 class="margin-bottom-2">
-              <a href="<%= component.url %>">
-                <%= component.title %>
-              </a>
-            </h3>
-            </a>
-            <div id="a<%= component.id %>" class="usa-prose">
-              <% if component.text.present? %>
-                <%= component.text.html_safe %>
+        <% when 'PageEventComponent'%>
+          <% elc = @event_list_components %>
+          <% if component.id == @event_ids.first %>
+            <div class="page-events-list-component">
+              <% elc[:events]&.each do |event|%>
+                <div class="page-event-component <%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
+                  <h3 class="margin-bottom-2">
+                    <a href="<%= event.url %>">
+                      <%= event.title %>
+                    </a>
+                  </h3>
+                  <div id="a<%= event.id %>" class="usa-prose">
+                    <% if event.text.present? %>
+                      <%= event.text.html_safe %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+              <% if elc[:pagy].count > 3 %>
+                <div class="text-center dm-load-more-events-btn-container" >
+                  <% link = pagy_link_proc(elc[:pagy]) %>
+                  <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+                </div>
               <% end %>
             </div>
-          </div>
+          <% end %>
 
-
-          <%# Image %>
+        <%# Image %>
         <% when 'PageImageComponent' %>
           <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <% if component.url.present? %>
@@ -113,6 +124,24 @@
             <% else %>
               <%= render partial: "page/page_image", locals: { component: component } %>
             <% end %>
+          </div>
+
+        <%# News %>
+        <% when 'PageNewsComponent' %>
+          <div class="page-news-component <%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
+              <p><%= component&.published_date %></p>
+              <h3 class="margin-bottom-2">
+                <a href="<%= component.url %>">
+                  <%= component.title %>
+                </a>
+              </h3>
+              </a>
+              <div id="a<%= component.id %>" class="usa-prose">
+                <% if component.text.present? %>
+                  <%= component.text.html_safe %>
+                <% end %>
+              </div>
+            </div>
           </div>
 
           <%# Practice List %>

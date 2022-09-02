@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_01_222852) do
+ActiveRecord::Schema.define(version: 2022_09_02_230740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -646,6 +646,15 @@ ActiveRecord::Schema.define(version: 2022_09_01_222852) do
     t.datetime "page_image_updated_at"
     t.string "url"
     t.index ["page_component_id"], name: "index_page_image_components_on_page_component_id"
+  end
+
+  create_table "page_news_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "url"
+    t.string "text"
+    t.datetime "published_date"
+    t.index ["page_component_id"], name: "index_page_news_components_on_page_component_id"
   end
 
   create_table "page_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1452,6 +1461,7 @@ ActiveRecord::Schema.define(version: 2022_09_01_222852) do
   add_foreign_key "page_header_components", "page_components"
   add_foreign_key "page_hr_components", "page_components"
   add_foreign_key "page_image_components", "page_components"
+  add_foreign_key "page_news_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
   add_foreign_key "page_you_tube_player_components", "page_components"

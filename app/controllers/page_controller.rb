@@ -9,6 +9,12 @@ class PageController < ApplicationController
     set_pagy_practice_list_array(@page_components)
     @pagy_type = params.keys.first.to_i || nil
     @practice_list_component_index = 0
+    @event_ids = []
+    @event_list_components = {}
+    set_pagy_event_list_items_array(@page_components)
+    @first_news_id = nil
+    @last_news_id = nil
+    set_pagy_news_list_items_array(@page_components)
     unless @page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
@@ -19,6 +25,37 @@ class PageController < ApplicationController
   end
 
   private
+
+  def set_pagy_event_list_items_array(page_components)
+    page_event_list_index = 0
+    params_index = params["#{page_event_list_index}"]
+    event_ids = []
+    events = []
+    page_components.each_with_index do |pc, index|
+      if pc.component_type === 'PageEventComponent'
+        component = pc.component_type.constantize.find(pc.component_id)
+        events << component
+        @event_ids << pc.component_id
+      end
+
+      if events.present?
+        pagy_events, paginated_events = get_pagy_events_array(events,params_index)
+        @event_list_components = {
+          pagy: pagy_events,
+          events: paginated_events
+        }
+      end
+    end
+  end
+
+  def get_pagy_events_array (events, params_index)
+    return pagy_array(
+          events,
+          items: 3,
+          link_extra: "data-remote='true' class='dm-paginated-events-link dm-paginated-events-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
+        )
+  end
+
 
   def set_pagy_practice_list_array(page_components)
     page_practice_list_index = 0
