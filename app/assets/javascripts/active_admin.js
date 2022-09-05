@@ -232,6 +232,21 @@ const MAX_DESCRIPTION_LENGTH = 140;
                     </div>
                     
                     <div class="page-component-image-attribute-container">
+                        <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_url">
+                            Image URL
+                        </label>
+                        <input type="text" 
+                               id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_url"
+                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][url]"/>
+                        <p class="inline-hints">
+                            <span>For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").</span>
+                            <span>
+                                For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").
+                            </span>
+                        </p>
+                    </div>
+                    
+                    <div class="page-component-image-attribute-container">
                         <label for="page_page_components_attributes_compound_body_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_caption" class="label">
                             Caption
                         </label>
@@ -270,7 +285,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
         return $(targetOl).append(liHTML);
     }
 
-    function appendNewNestedComponentLiOnAddLinkClick(addLinkSelector, liHTML) {
+    function appendNewNestedComponentLiOnAddLinkClick(addLinkSelector, liHTML, liClass) {
         $(document).on('click', addLinkSelector, function() {
             const guid = createGUID();
             /*
@@ -282,19 +297,28 @@ const MAX_DESCRIPTION_LENGTH = 140;
                 $(this).prev(),
                 newLiHtml
             );
-            // Add a horizontal separator to the end of the li
+            // Add a horizontal separator to the end of the previous visible li
             const separator = '<div class="add-another-separator border-y-1px border-gray-5 margin-top-2"></div>';
-            $(this).prev().children('.page-component-image-li').not('.display-none').eq(-2).append(separator);
+            $(this).prev().children(liClass).not('.display-none').eq(-2).append(separator);
         });
     }
 
-    function updateLiOnDeleteLinkClick(deleteLinkSelector, liSelector) {
+    function updateLiOnDeleteLinkClick(deleteLinkSelector, closestLiSelector, visibleLiSelector, liClassName, lastAttrLiSelector) {
         $(document).on('click', deleteLinkSelector, function() {
             $(this).prev().val('1');
-            const closestLi = $(this).closest(liSelector);
-            closestLi.addClass('display-none');
-            // remove the previous li's horizontal separator
-            closestLi.prev().find('.add-another-separator').remove();
+            const $closestLi = $(this).closest(closestLiSelector);
+            $closestLi.addClass('display-none');
+            // Remove the previous li's add-another-separator
+            if (!$closestLi.nextAll(visibleLiSelector).first().hasClass(liClassName)) {
+                $closestLi.prevAll(visibleLiSelector).first().find('.add-another-separator').remove();
+            }
+
+            const $lastAttrLiSelector = $(this).closest('.polyform').find(lastAttrLiSelector);
+
+            // If there are no list items visible, add bottom padding to the last component attribute's li container for the 'Add' link
+            if (!$(this).closest('ol').children().not('.display-none').length && $lastAttrLiSelector.css('padding-bottom') !== '36px') {
+                $lastAttrLiSelector.css('padding-bottom', '36px');
+            }
         });
     }
 
@@ -305,23 +329,57 @@ const MAX_DESCRIPTION_LENGTH = 140;
         });
     }
 
-  var ready = function () {
-    loadComponents();
-    setDashboardPanelTooltipTitle();
-    setColHeaderTooltipTitle();
-    removeMaxLengthAttrFromPageDescription();
-    addPageDescriptionCharacterCounterText();
-    getPageDescriptionCharacterCountOnPageLoad();
-    pageDescriptionCharacterCounter();
-    _initTinyMCE("textarea.tinymce");
-    _loadPageBuilderFns();
-    removeIdFromTrElements();
-    appendNewNestedComponentLiOnAddLinkClick(
-        '.add-another-page-component-image',
-        pageComponentImageHTML()
-    );
-    updateLiOnDeleteLinkClick('.dm-page-builder-trash', '.page-component-image-li');
-    initTinyMCEOnTextAreaArrival();
+
+
+    function showPageComponentImagesHeaderOnAddLinkClick() {
+        $(document).on('click', '.add-another-page-component-image', function() {
+            // If there are is at least one visible 'page-component-image-li' elements, show the header if it's not visible already
+            const $pageComponentImageHeader = $(this).siblings('.page-component-images-header');
+            if ($(this).prev().children('.page-component-image-li').not('.display-none').length
+                && $pageComponentImageHeader.not(':visible')) {
+                $pageComponentImageHeader.removeClass('display-none');
+            }
+        });
+    }
+
+    function hidePageComponentImagesHeaderOnDeleteLinkClick() {
+        $(document).on('click', '.dm-page-builder-trash', function() {
+            // If there are no visible 'page-component-image-li' elements, hide the header
+            const $pageComponentImagesOl = $(this).closest('.page-component-images-ol')
+            if (!$pageComponentImagesOl.children('.page-component-image-li').not('.display-none').length) {
+                $pageComponentImagesOl.prev().addClass('display-none');
+            }
+        });
+    }
+
+    var ready = function () {
+        loadComponents();
+        setDashboardPanelTooltipTitle();
+        setColHeaderTooltipTitle();
+        removeMaxLengthAttrFromPageDescription();
+        addPageDescriptionCharacterCounterText();
+        getPageDescriptionCharacterCountOnPageLoad();
+        pageDescriptionCharacterCounter();
+        _initTinyMCE("textarea.tinymce");
+        _loadPageBuilderFns();
+        removeIdFromTrElements();
+        initTinyMCEOnTextAreaArrival();
+        // <-- PageComponentImage functions START -->
+        appendNewNestedComponentLiOnAddLinkClick(
+            '.add-another-page-component-image',
+            pageComponentImageHTML(),
+            '.page-component-image-li'
+        );
+        updateLiOnDeleteLinkClick(
+            '.dm-page-builder-trash',
+            '.page-component-image-li',
+            '.page-component-image-li:visible',
+            'page-component-image-li',
+            '.text-alignment-container'
+        );
+        showPageComponentImagesHeaderOnAddLinkClick();
+        hidePageComponentImagesHeaderOnDeleteLinkClick();
+        // <-- PageComponentImage functions END -->
 
         // switches out polymorphic forms in page component
         $(document).on("change", ".polyselect", function () {

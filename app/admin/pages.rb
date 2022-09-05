@@ -36,6 +36,8 @@ ActiveAdmin.register Page do
                     :button_text,
                     :card,
                     :body,
+                    :title_header,
+                    :text_alignment,
                     practices: []
                   ],
                   page_component_images_attributes: {}
@@ -204,7 +206,7 @@ ActiveAdmin.register Page do
 
         respond_to do |format|
           if @incomplete_image_components > 0
-            flash[:warning] = "One or more 'Compound Body' components had missing required fields for its image(s). The page was saved, but the image(s) were not."
+            flash[:warning] = "One or more 'Compound Body' components had missing required fields for its image(s). The page was saved, but those image(s) were not."
             format.html { redirect_to admin_page_path(page) }
           else
             format.html { redirect_to admin_page_path(page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
@@ -243,7 +245,7 @@ ActiveAdmin.register Page do
                 has_no_alt_text = pci_val[:alt_text].blank?
                 has_no_image = pci_val[:image].blank? && existing_component_image && existing_component_image.image.blank?
 
-                if has_no_alt_text || has_no_image
+                if (has_no_alt_text || has_no_image) && pci_val[:_destroy] != '1'
                   @incomplete_image_components += 1
                   params.dig(:page, :page_components_attributes, cbp_param_key, :page_component_images_attributes).delete(pci_key)
                 end

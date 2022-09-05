@@ -269,7 +269,7 @@
   }
 }
 
-.dm-page-compound-body-component-container {
+.compound-body-component-li {
   padding: 10px;
 
   .page-component-images-header {
@@ -304,7 +304,7 @@
 
   .add-another-page-component-image {
     bottom: 10px;
-    left: 370px;
+    right: calc(80% - 33px - 2em - 1px);
   }
 
   .page-component-image {
