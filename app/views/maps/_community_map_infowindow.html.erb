@@ -6,11 +6,23 @@
       facility_name = facility.official_station_name
       facility_id = facility.id
       practice_list = @practices_list
-      practice_names = practices_to_display_in_info_window facility_id, practice_list.split(",")
+      names = []
+      taglines = []
+      short_names = []
+      practices_to_display_in_info_window facility_id, practice_list.split(","), names, taglines, short_names
     %>
     <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'usa-link font-sans-md text-bold' %>
-    <div class="text-bold margin-top-3 font-sans-2xs">
-      <%= practice_names %>
+    <div class="text-bold margin-top-3 font-sans-3xs">
+      <% i = 0 %>
+      <% while i < names.length do %>
+        <div class="map-infowindow-border margin-top-2 margin-bottom-2">
+        <%= names[i] %> <%= "(" +  short_names[i] + ")" %>
+          <div class="text-normal font-sans-3xs margin-top-3 margin-bottom-3">
+          <%= taglines[i] %>
+          </div>
+        </div>
+        <% i = i + 1 %>
+      <% end %>
     </div>
   </div>
 </div>

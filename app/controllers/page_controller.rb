@@ -6,10 +6,14 @@ class PageController < ApplicationController
     @adoptions_count = 0
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
-        @practices_list = PageMapComponent.select(:practices).where(id: pc.component_id).to_a
-        adopting_facilities = get_adopting_facilities_for_these_practices @practices_list
-        build_map_component adopting_facilities
-        @adoptions_count = adopting_facilities.count
+        @practices_list = PageMapComponent.select(:practices, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
+        @display_successful = @practices_list[0][:display_successful]
+        @display_in_progress = @practices_list[0][:display_in_progress]
+        @display_unsuccessful = @practices_list[0][:display_unsuccessful]
+
+        adoptions = get_adopting_facilities_for_these_practices @practices_list
+        build_map_component adoptions
+        @adoptions_count = adoptions.count
       end
     end
 
@@ -84,8 +88,15 @@ class PageController < ApplicationController
     practices_list[0]["practices"].each do |pr|
       diffusion_histories = DiffusionHistory.where(practice_id: pr)
       diffusion_histories.each do |dh|
+        dhs = DiffusionHistoryStatus.where(diffusion_history_id: dh[:id]).first.status
         unless dh.va_facility_id.nil?
-          va_facilities_list.push dh.va_facility_id
+          if dhs == "Completed" && @display_successful
+            va_facilities_list.push dh.va_facility_id
+          elsif dhs == "In progress" && @display_in_progress
+            va_facilities_list.push dh.va_facility_id
+          elsif dhs == "Unsuccessful" && @display_unsuccessful
+            va_facilities_list.push dh.va_facility_id
+          end
         end
       end
     end
