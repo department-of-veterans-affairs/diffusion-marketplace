@@ -178,9 +178,6 @@
           <%
             description = component.description
             title = component.title
-            display_successful = component&.display_successful?
-            display_in_progress = component&.display_in_progress?
-            display_unsuccessful = component&.display_unsuccessful?
             next_component = @page.page_components.find_by(position: pc.position + 1)
           %>
           <div class="margin-bottom-5 font-sans-lg text-bold margin-top-9">

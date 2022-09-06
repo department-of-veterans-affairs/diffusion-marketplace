@@ -6,6 +6,7 @@ class PageController < ApplicationController
     @adoptions_count = 0
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
+        @num_facilities = 0
         @practices_list = PageMapComponent.select(:practices, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
         @display_successful = @practices_list[0][:display_successful]
         @display_in_progress = @practices_list[0][:display_in_progress]
@@ -33,8 +34,9 @@ class PageController < ApplicationController
   end
 
   def build_map_component(adopting_facilities_list)
-    @va_facility = VaFacility.where(id: adopting_facilities_list)
-    @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
+    va_facilities = VaFacility.where(id: adopting_facilities_list)
+    @num_facilities = va_facilities.count
+    @va_facility_marker = Gmaps4rails.build_markers(va_facilities) do |facility, marker|
       marker.lat facility.latitude
       marker.lng facility.longitude
       marker.picture({

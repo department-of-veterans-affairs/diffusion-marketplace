@@ -10,9 +10,11 @@
       taglines = []
       short_names = []
       practices_to_display_in_info_window facility_id, practice_list.split(","), names, taglines, short_names
+      @num_practices_adopted = names.count
     %>
     <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'usa-link font-sans-md text-bold' %>
     <div class="text-bold margin-top-3 font-sans-3xs">
+      <h4> <%= @num_practices_adopted %> Total Adoption<% if @num_practices_adopted != 1 %>s<% end %>. </h4>
       <% i = 0 %>
       <% while i < names.length do %>
         <div class="map-infowindow-border margin-top-2 margin-bottom-2">
