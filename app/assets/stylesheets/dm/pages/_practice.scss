@@ -993,14 +993,15 @@ li.small-disc:before {
   height: 339px !important;
 }
 .map-infowindow-border{
+  width: 550px !important;
   border-width: 0.01rem !important;
   border-color: lightgray !important;
   border-style: dotted !important;
-  border-radius: 10px !important;
-  padding: 3% 3% 2% 5% !important;
+  border-radius: 4px !important;
+  padding: 2% 3% 2% 4% !important;
 }
 .padding-for-map-component-infowindow-text{
-  padding-left: 5%;
+  padding-left: 4%;
 }
 
 tr.border_bottom td {
