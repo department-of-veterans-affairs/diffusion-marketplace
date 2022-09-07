@@ -543,8 +543,10 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
   create_table "page_compound_body_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "title"
+    t.boolean "large_title", default: false
     t.text "text"
     t.string "url"
+    t.string "url_link_text"
     t.string "title_header"
     t.string "text_alignment"
     t.datetime "created_at", precision: 6, null: false

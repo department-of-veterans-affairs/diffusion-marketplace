@@ -38,6 +38,8 @@ ActiveAdmin.register Page do
                     :body,
                     :title_header,
                     :text_alignment,
+                    :url_link_text,
+                    :large_title,
                     practices: []
                   ],
                   page_component_images_attributes: {}
@@ -99,6 +101,7 @@ ActiveAdmin.register Page do
             para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
+            para "Title header: #{component&.title_header}" if pc.component_type == 'PageCompoundBodyComponent'
             para component&.title if pc.component_type == 'PageHeader3Component' ||
               pc.component_type == 'PageSubpageHyperlinkComponent' ||
               pc.component_type == 'PageAccordionComponent' ||
@@ -114,6 +117,7 @@ ActiveAdmin.register Page do
               pc.component_type == 'PageDownloadableFileComponent' ||
               pc.component_type == 'PageCtaComponent' ||
               pc.component_type == 'PageCompoundBodyComponent'
+            para "Text alignment: #{component&.text_alignment}" if pc.component_type == 'PageCompoundBodyComponent'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageYouTubePlayerComponent'
@@ -122,6 +126,18 @@ ActiveAdmin.register Page do
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name != ''
             para component&.description if pc.component_type == 'PageDownloadableFileComponent' && component&.description != ''
+            if pc.page_component_images.present?
+              para 'Images:'
+              pc.page_component_images.each do |pci|
+
+                para do
+                  img src: "#{pci.image_s3_presigned_url}", class: 'maxw-10'
+                end
+                para pci.url if pci.url.present?
+                para pci.caption if pci.caption.present?
+                para pci.alt_text
+              end
+            end
           end
         }.join('').html_safe
       end

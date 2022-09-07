@@ -222,12 +222,13 @@ const MAX_DESCRIPTION_LENGTH = 140;
                            
                     <div class="page-component-image-attribute-container">
                         <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_image">
-                            Image
+                            Image *Required*
                         </label>
                         <input type="file"
                                accept=".jpg, .jpeg, .png"
                                id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_image"
-                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][image]"/>
+                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][image]"
+                               class="margin-top-0"/>
                         <p class="inline-hints">File types allowed: jpg, png. Max file size: 25MB</p>
                     </div>
                     
@@ -259,7 +260,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
                     
                     <div class="page-component-image-attribute-container">
                         <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text">
-                            Alternative Text
+                            Alternative Text *Required*
                         </label>
                         <input type="text" 
                                id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text"
@@ -273,7 +274,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
                                    value="0" 
                                    id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2__destroy"
                                    name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][_destroy]"/>
-                            <a class="dm-page-builder-trash dm-button--unstyled-warning float-right" href="javascript:void(0)">
+                            <a class="dm-page-builder-trash dm-button--unstyled-warning" href="javascript:void(0)">
                                 Delete Entry
                             </a>
                         </div>
@@ -285,7 +286,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
         return $(targetOl).append(liHTML);
     }
 
-    function appendNewNestedComponentLiOnAddLinkClick(addLinkSelector, liHTML, liClass) {
+    function updateListItemsOnAddLinkClick(addLinkSelector, liHTML, liClass) {
         $(document).on('click', addLinkSelector, function() {
             const guid = createGUID();
             /*
@@ -303,9 +304,11 @@ const MAX_DESCRIPTION_LENGTH = 140;
         });
     }
 
-    function updateLiOnDeleteLinkClick(deleteLinkSelector, closestLiSelector, visibleLiSelector, liClassName, lastAttrLiSelector) {
+    function updateListItemsOnDeleteLinkClick(deleteLinkSelector, closestLiSelector, visibleLiSelector, liClassName, lastAttrLiSelector) {
         $(document).on('click', deleteLinkSelector, function() {
+            // Update the value of the hidden '_destroy' input to '1'
             $(this).prev().val('1');
+
             const $closestLi = $(this).closest(closestLiSelector);
             $closestLi.addClass('display-none');
             // Remove the previous li's add-another-separator
@@ -314,9 +317,9 @@ const MAX_DESCRIPTION_LENGTH = 140;
             }
 
             const $lastAttrLiSelector = $(this).closest('.polyform').find(lastAttrLiSelector);
-
             // If there are no list items visible, add bottom padding to the last component attribute's li container for the 'Add' link
-            if (!$(this).closest('ol').children().not('.display-none').length && $lastAttrLiSelector.css('padding-bottom') !== '36px') {
+            if (!$(this).closest('ol').children().not('.display-none').length &&
+                $lastAttrLiSelector.css('padding-bottom') !== '36px') {
                 $lastAttrLiSelector.css('padding-bottom', '36px');
             }
         });
@@ -365,12 +368,12 @@ const MAX_DESCRIPTION_LENGTH = 140;
         removeIdFromTrElements();
         initTinyMCEOnTextAreaArrival();
         // <-- PageComponentImage functions START -->
-        appendNewNestedComponentLiOnAddLinkClick(
+        updateListItemsOnAddLinkClick(
             '.add-another-page-component-image',
             pageComponentImageHTML(),
             '.page-component-image-li'
         );
-        updateLiOnDeleteLinkClick(
+        updateListItemsOnDeleteLinkClick(
             '.dm-page-builder-trash',
             '.page-component-image-li',
             '.page-component-image-li:visible',

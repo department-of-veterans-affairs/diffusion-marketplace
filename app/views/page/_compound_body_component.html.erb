@@ -1,0 +1,63 @@
+<%# Text %>
+<div class="grid-col-6">
+  <%
+    title_header = component.title_header
+    title = component.title
+    text = component.text
+    url = component.url
+    link_text = component.url_link_text
+  %>
+  <%# Title header %>
+  <% if title_header.present? %>
+    <h6 class="usa-prose-h6 margin-bottom-2"><%= component.title_header %></h6>
+  <% end %>
+  <%# Title %>
+  <% if title.present? %>
+    <h2 class="<%= component.large_title ? 'usa-prose-h1' : 'usa-prose-h2' %> margin-bottom-2">
+      <%= component.title %>
+    </h2>
+  <% end %>
+  <%# Text %>
+  <% if text.present? %>
+    <div>
+      <%= text.html_safe %>
+    </div>
+  <% end %>
+  <%# URL and URL link text %>
+  <% url = component.url %>
+  <% if url.present? %>
+    <a href="<%= url %>"
+       target="<%= get_link_target_attribute(url) %>"
+       title="Go to <%= url %>"
+       class="usa-link <%= 'usa-link--external' if url.include?(ENV.fetch('HOSTNAME')) %>">
+      <%= link_text unless link_text.blank? %>
+    </a>
+  <% end %>
+</div>
+
+<%# Images %>
+<% images = component.page_component.page_component_images %>
+<div class="<%= images.present? ? 'grid-col-6' : 'grid-col-12' %>">
+  <% images.each do |image| %>
+    <%
+      signed_image = image.image_s3_presigned_url
+      alt_text = image.alt_text
+      image_url = image.url
+      caption = image.caption
+    %>
+    <div class="grid-col-12">
+      <% if image_url.present? %>
+        <a href="<%= image_url %>">
+          <img src="<%= signed_image %>" alt="<%= alt_text %>"/>
+        </a>
+      <% else %>
+        <img src="<%= signed_image %>" alt="<%= alt_text %>"/>
+      <% end %>
+    <% if caption.present? %>
+      <div>
+        <%= caption.html_safe %>
+      </div>
+    <% end %>
+    </div>
+  <% end %>
+</div>

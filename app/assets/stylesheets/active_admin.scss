@@ -319,3 +319,15 @@
     @include u-color($theme-color-base-ink, !important);
   }
 }
+
+.dm-page-builder-trash {
+  color: color($theme-color-error) !important;
+
+  &:hover {
+    color: color($theme-color-error-dark) !important;
+  }
+}
+
+.toggle-large-title-styling {
+  margin-top: 7px;
+}

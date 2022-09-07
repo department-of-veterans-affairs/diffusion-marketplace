@@ -7,7 +7,7 @@ html = Arbre::Context.new do
          class: "input polyform component-#{placeholder} compound-body-component-li position-relative" do
     fieldset class: "inputs" do
       legend do
-        span 'Compound body component'
+        span 'Text and Images'
       end
 
       if component
@@ -34,6 +34,17 @@ html = Arbre::Context.new do
             type: 'text'
         end
 
+        li class: 'checkbox input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_large_title_input" do
+          if component
+            input type: 'hidden', value: '0', name: "page[page_components_attributes][#{placeholder}][component_attributes][large_title]"
+          end
+          label 'Larger font title', for: "page_page_components_attributes_#{placeholder}_component_attributes_large_title", class: 'label'
+          input value: '1', type: 'checkbox', checked: component&.large_title?,
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_large_title",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][large_title]",
+                class: "toggle-large-title-styling"
+        end
+
         # WYSIWYG Text
         li class: 'string input optional stringish text-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_input" do
           label 'Text', for: "page_page_components_attributes_compound_body_#{placeholder}_component_attributes_text", class: 'label'
@@ -51,13 +62,23 @@ html = Arbre::Context.new do
         # URL
         li class: 'string input optional stringish url-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
           label 'URL', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
-          input value: component&.url || nil, type: 'text', required: 'required',
+          input value: component&.url || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
           para class: 'inline-hints' do
             span 'For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").'
             span 'For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").'
           end
+        end
+
+        # URL link text
+        li class: 'string input optional stringish url-link-text-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text_input" do
+          label 'URL link text', for: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text", class: 'label'
+          input value: component&.url_link_text || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url_link_text]"
+          para 'Enter the text that will displayed for the link to the URL above', class: 'inline-hints'
         end
 
         page_component_images = component&.page_component&.page_component_images
@@ -79,12 +100,12 @@ html = Arbre::Context.new do
 
         # Page component images header bar
         div class: "page-component-images-header display-flex flex-align-center #{'display-none' if page_component_images.blank?}" do
-          span 'Page component images'
+          span 'Image list'
         end
 
         # PageComponentImage list
         ol id: "page_page_components_attributes_#{placeholder}_page_component_images_ol", class: 'page-component-images-ol' do
-          if component && page_component_images&.any?
+          if component && page_component_images&.present?
             page_component_images.each_with_index do |pci, index|
               li id: "page_page_components_attributes_#{placeholder}_page_component_images_#{index}_li border-bottom-2",
                  'data-id': "page_component_image_#{placeholder}_li",
@@ -101,8 +122,7 @@ html = Arbre::Context.new do
                   input value: pci.image_file_name, type: 'file', accept: '.jpg, .jpeg, .png',
                         id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
                         name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][image]",
-                        class: 'margin-0',
-                        required: 'required'
+                        class: 'margin-top-0'
                   para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
                 end
 
@@ -147,7 +167,7 @@ html = Arbre::Context.new do
                   label 'Alternative Text *Required*',
                         for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
                         class: 'label'
-                  input value: pci.alt_text, type: 'text', required: 'required',
+                  input value: pci.alt_text, type: 'text',
                         id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
                         name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][alt_text]"
                   para 'Alternate text that gets rendered in case the image cannot load', class: 'inline-hints'
@@ -160,7 +180,7 @@ html = Arbre::Context.new do
                           value: '0',
                           id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}__destroy",
                           name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][_destroy]"
-                    a class: 'dm-page-builder-trash',
+                    a class: 'dm-page-builder-trash dm-button--unstyled-warning',
                            href: 'javascript:void(0)' do
                       span 'Delete entry'
                     end
