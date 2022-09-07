@@ -990,8 +990,15 @@ li.small-disc:before {
 .map-infowindow-border{
   border-width: 0.01rem !important;
   border-color: lightgray !important;
-  border-style: solid !important;
-  border-radius: 25px !important;
+  border-style: dotted !important;
+  border-radius: 10px !important;
+  padding-left: 5% !important;
+  padding-top: 3% !important;
+  padding-right: 3% !important;
+  padding-bottom: 2% !important;
+}
+.padding-for-map-component-infowindow-text{
+  padding-left: 5%;
 }
 
 tr.border_bottom td {

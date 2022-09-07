@@ -12,16 +12,16 @@
       practices_to_display_in_info_window facility_id, practice_list.split(","), names, taglines, short_names
       @num_practices_adopted = names.count
     %>
-    <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'usa-link font-sans-md text-bold' %>
+    <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'padding-for-map-component-infowindow-text usa-link font-sans-md text-bold' %>
     <div class="margin-top-2 text-normal font-sans-3xs">
-      <strong><%= @num_practices_adopted %> XR Innovation<% if @num_practices_adopted != 1 %>s<% end %></strong>
+      <strong class="padding-for-map-component-infowindow-text"><%= @num_practices_adopted %> XR Innovation<% if @num_practices_adopted != 1 %>s<% end %></strong>
     </div>
-    <div class="text-bold margin-top-3 font-sans-3xs">
+    <div class="text-bold font-sans-3xs">
       <% i = 0 %>
       <% while i < names.length do %>
-        <div class="map-infowindow-border margin-top-2 margin-bottom-2">
+        <div class="map-infowindow-border margin-bottom-2">
         <%= names[i] %> <% if short_names[i].to_s.length > 0 %> <%= "(" +  short_names[i] + ")" %> <% end %>
-          <div class="text-normal font-sans-3xs margin-top-3 margin-bottom-3">
+          <div class="text-normal font-sans-3xs margin-top-3">
           <%= taglines[i] %>
           </div>
         </div>
