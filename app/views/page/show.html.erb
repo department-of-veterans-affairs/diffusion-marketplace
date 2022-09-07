@@ -180,15 +180,15 @@
             title = component.title
             next_component = @page.page_components.find_by(position: pc.position + 1)
           %>
-          <div class="margin-bottom-5 font-sans-lg text-bold margin-top-9">
+          <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9">
             <%= content_tag(:span, title, class: 'margin-right-1') if title != '' %>
-          </div>
-          <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-9' : 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
-            <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
-            There are currently <%=  @adoptions_count %> successful adoptions.
           </div>
           <div class="margin-bottom-1">
             <%= render partial: "page/page_map", locals: { component: component } %>
+          </div>
+          <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-9' : 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
+            <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
+<!--            There are currently <%#=  @adoptions_count %> successful adoptions.-->
           </div>
         <% end %>
       <% end %>

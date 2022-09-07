@@ -11,7 +11,6 @@ class PageController < ApplicationController
         @display_successful = @practices_list[0][:display_successful]
         @display_in_progress = @practices_list[0][:display_in_progress]
         @display_unsuccessful = @practices_list[0][:display_unsuccessful]
-
         adoptions = get_adopting_facilities_for_these_practices @practices_list
         build_map_component adoptions
         @adoptions_count = adoptions.count
