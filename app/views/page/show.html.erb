@@ -188,7 +188,7 @@
           </div>
           <div class="margin-top-2 grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-9' : 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
             <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
-            There are currently <%=  @adoptions_count %> successful adoptions.
+<!--            There are currently <%#=  @adoptions_count %> successful adoptions.-->
           </div>
         <% end %>
       <% end %>

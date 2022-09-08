@@ -20,6 +20,14 @@ html = Arbre::Context.new do
           para 'Enter a title for the map.', class: 'inline-hints'
         end
 
+        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_short_name_input" do
+          label 'Short Name', for: "page_page_components_attributes_#{placeholder}_component_attributes_short_name", class: 'label'
+          input value: component&.short_name || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_short_name",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][short_name]"
+          para 'Enter a short name or acronym for the map.', class: 'inline-hints'
+        end
+
         li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
           label 'Description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
           input value: component&.description || nil, type: 'text', required: 'required',

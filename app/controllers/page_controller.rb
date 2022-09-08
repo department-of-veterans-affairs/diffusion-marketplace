@@ -7,7 +7,8 @@ class PageController < ApplicationController
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
         @num_facilities = 0
-        @practices_list = PageMapComponent.select(:practices, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
+        @practices_list = PageMapComponent.select(:practices, :short_name, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
+        @short_name = @practices_list[0][:short_name]
         @display_successful = @practices_list[0][:display_successful]
         @display_in_progress = @practices_list[0][:display_in_progress]
         @display_unsuccessful = @practices_list[0][:display_unsuccessful]
