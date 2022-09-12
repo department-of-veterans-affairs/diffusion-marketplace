@@ -81,13 +81,60 @@ html = Arbre::Context.new do
           para 'Enter the text that will displayed for the link to the URL above', class: 'inline-hints'
         end
 
+        uswds_margin_units = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        uswds_margin_link = 'https://designsystem.digital.gov/utilities/margin-and-padding/'
+
+        # Margin bottom
+        li class: 'select input margin-bottom-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom_input" do
+          label 'Margin bottom', for: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom", class: 'label'
+          select value: component&.margin_bottom || nil,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][margin_bottom]" do
+            uswds_margin_units.each do |unit|
+              option "#{unit}", selected: component&.margin_bottom === unit
+            end
+          end
+
+          para class: 'inline-hints' do
+            span "Choose the bottom margin for this 'Compound Body' component (option are based on USWDS units:"
+            a 'USWDS margin units',
+              href: uswds_margin_link,
+              class: 'usa-link usa-link--external',
+              target: '_blank'
+            span 'Defaults to 0'
+          end
+        end
+
+        # Margin top
+        li class: 'select input margin-top-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top_input" do
+          label 'Margin top', for: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top", class: 'label'
+          select value: component&.margin_top || nil,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][margin_top]" do
+            uswds_margin_units.each do |unit|
+              option "#{unit}", selected: component&.margin_top === unit
+            end
+          end
+
+          para class: 'inline-hints' do
+            span "Choose the top margin for this 'Compound Body' component (option are based on USWDS units:"
+            a 'USWDS margin units',
+              href: uswds_margin_link,
+              class: 'usa-link usa-link--external',
+              target: '_blank'
+            span 'Defaults to 0'
+          end
+        end
+
         page_component_images = component&.page_component&.page_component_images
 
         # Text alignment
         li class: 'select input text-alignment-container',
            id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment_input",
            style: "#{'padding-bottom: 36px' if page_component_images.blank?}" do
-          label 'Alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment", class: 'label'
+          label 'Text alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment", class: 'label'
           select value: component&.text_alignment || nil,
                  id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment",
                  name: "page[page_components_attributes][#{placeholder}][component_attributes][text_alignment]" do

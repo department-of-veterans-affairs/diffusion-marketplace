@@ -549,6 +549,8 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
     t.string "url_link_text"
     t.string "title_header"
     t.string "text_alignment"
+    t.integer "margin_top"
+    t.integer "margin_bottom"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["page_component_id"], name: "index_page_compound_body_components_on_page_component_id"

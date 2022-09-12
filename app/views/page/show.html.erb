@@ -177,7 +177,8 @@
 
         <%# Text and Images %>
         <% when 'PageCompoundBodyComponent' %>
-          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+          <div
+            class="compound-body-component-grid <%= last_component === index ? 'margin-bottom-0' : "margin-bottom-#{component.margin_bottom}" %> <%= "margin-top-#{component.margin_top}" %><%= page_narrow_classes %>">
             <%= render partial: 'compound_body_component', locals: { component: component } %>
           </div>
         <% end %>

@@ -304,7 +304,13 @@ const MAX_DESCRIPTION_LENGTH = 140;
         });
     }
 
-    function updateListItemsOnDeleteLinkClick(deleteLinkSelector, closestLiSelector, visibleLiSelector, liClassName, lastAttrLiSelector) {
+    function updateListItemsOnDeleteLinkClick(
+        deleteLinkSelector,
+        closestLiSelector,
+        visibleLiSelector,
+        liClassName,
+        lastAttrLiSelector
+    ) {
         $(document).on('click', deleteLinkSelector, function() {
             // Update the value of the hidden '_destroy' input to '1'
             $(this).prev().val('1');

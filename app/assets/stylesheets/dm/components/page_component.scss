@@ -75,4 +75,50 @@
       }
     }
   }
+
+  .compound-body-component-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2px;
+
+    .grid-item-text, .grid-item-images {
+      grid-row: 1 / 1;
+    }
+
+    .grid-item-text {
+      grid-column: 1 / 6;
+
+      &.no-images {
+        grid-column: 1 / 7;
+      }
+
+      &.right-align {
+        grid-column: 8 / 13;
+
+        &.no-images {
+          grid-column: 7 / 13;
+        }
+      }
+    }
+
+    .grid-item-images {
+      grid-column: 9 / 13;
+
+      &.left-align {
+        grid-column: 1 / 5;
+      }
+
+      .image-container {
+        height: 225px;
+
+        img {
+          object-fit: cover;
+        }
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+  }
 }

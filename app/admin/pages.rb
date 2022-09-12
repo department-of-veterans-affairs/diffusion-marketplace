@@ -40,6 +40,8 @@ ActiveAdmin.register Page do
                     :text_alignment,
                     :url_link_text,
                     :large_title,
+                    :margin_bottom,
+                    :margin_top,
                     practices: []
                   ],
                   page_component_images_attributes: {}
@@ -126,6 +128,8 @@ ActiveAdmin.register Page do
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name != ''
             para component&.description if pc.component_type == 'PageDownloadableFileComponent' && component&.description != ''
+            para component&.margin_bottom if pc.component_type == 'PageCompoundBodyComponent'
+            para component&.margin_top if pc.component_type == 'PageCompoundBodyComponent'
             if pc.page_component_images.present?
               para 'Images:'
               pc.page_component_images.each do |pci|
@@ -259,19 +263,22 @@ ActiveAdmin.register Page do
               page_component_images_params.each do |pci_key, pci_val|
                 existing_component_image = PageComponentImage.find_by(id: pci_val[:id])
                 has_no_alt_text = pci_val[:alt_text].blank?
-                has_no_image = pci_val[:image].blank? && existing_component_image && existing_component_image.image.blank?
+                has_no_image = pci_val[:image].blank? && existing_component_image&.image.blank?
 
                 if (has_no_alt_text || has_no_image) && pci_val[:_destroy] != '1'
                   @incomplete_image_components += 1
-                  params.dig(:page, :page_components_attributes, cbp_param_key, :page_component_images_attributes).delete(pci_key)
+                  params.dig(
+                    :page,
+                    :page_components_attributes,
+                    cbp_param_key,
+                    :page_component_images_attributes
+                  ).delete(pci_key)
                 end
               end
             end
           end
         end
       end
-
-      @incomplete_image_components
     end
   end
 end

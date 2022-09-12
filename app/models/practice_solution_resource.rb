@@ -34,6 +34,6 @@ class PracticeSolutionResource < ApplicationRecord
   end
 
   def trim_whitespace
-    self.image_alt_text&.strip!
+    self.image_alt_text&.strip
   end
 end

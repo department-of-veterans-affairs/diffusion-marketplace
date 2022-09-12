@@ -1,5 +1,8 @@
+<% images = component.page_component.page_component_images %>
+
 <%# Text %>
-<div class="grid-col-6">
+<div
+  class="grid-item-text<%= ' no-images' if images.blank? %><%= ' right-align' if component.text_alignment === 'Right' %>">
   <%
     title_header = component.title_header
     title = component.title
@@ -9,55 +12,66 @@
   %>
   <%# Title header %>
   <% if title_header.present? %>
-    <h6 class="usa-prose-h6 margin-bottom-2"><%= component.title_header %></h6>
+    <h6 class="usa-prose-h6 margin-top-0 margin-bottom-2">
+      <%= component.title_header %>
+    </h6>
   <% end %>
   <%# Title %>
   <% if title.present? %>
-    <h2 class="<%= component.large_title ? 'usa-prose-h1' : 'usa-prose-h2' %> margin-bottom-2">
+    <h2 class="margin-top-0 margin-bottom-2<%= component.large_title ? ' usa-prose-h1' : ' usa-prose-h2' %>">
       <%= component.title %>
     </h2>
   <% end %>
   <%# Text %>
   <% if text.present? %>
-    <div>
+    <div class="line-height-26">
       <%= text.html_safe %>
     </div>
   <% end %>
   <%# URL and URL link text %>
-  <% url = component.url %>
-  <% if url.present? %>
+  <% if url.present? && link_text.present? %>
     <a href="<%= url %>"
        target="<%= get_link_target_attribute(url) %>"
        title="Go to <%= url %>"
-       class="usa-link <%= 'usa-link--external' if url.include?(ENV.fetch('HOSTNAME')) %>">
-      <%= link_text unless link_text.blank? %>
+       class="usa-link-bold display-inline-block margin-top-2<%= ' usa-link--external' unless is_internal_link?(url) %>">
+      <%= link_text %>
     </a>
   <% end %>
 </div>
 
 <%# Images %>
-<% images = component.page_component.page_component_images %>
-<div class="<%= images.present? ? 'grid-col-6' : 'grid-col-12' %>">
-  <% images.each do |image| %>
-    <%
-      signed_image = image.image_s3_presigned_url
-      alt_text = image.alt_text
-      image_url = image.url
-      caption = image.caption
-    %>
-    <div class="grid-col-12">
-      <% if image_url.present? %>
-        <a href="<%= image_url %>">
-          <img src="<%= signed_image %>" alt="<%= alt_text %>"/>
-        </a>
-      <% else %>
-        <img src="<%= signed_image %>" alt="<%= alt_text %>"/>
+<% if images.present? %>
+  <div class="grid-item-images<%= ' left-align' if component.text_alignment === 'Right' %>">
+    <div class="grid-row grid-gap-2px">
+      <% images.each do |image| %>
+        <%
+          signed_image = image.image_s3_presigned_url
+          alt_text = image.alt_text
+          image_url = image.url
+          caption = image.caption
+          column_count = if images.count > 6
+                           '1'
+                         elsif images.count === 5
+                           '2'
+                         else
+                           "#{12 / images.count}"
+                         end
+        %>
+          <div class="grid-col-<%= column_count %> image-container">
+            <% if image_url.present? %>
+              <a href="<%= image_url %>" aria-label="Go to <%= image_url %>">
+                <img src="<%= signed_image %>" alt="<%= alt_text %>" class="height-full width-full"/>
+              </a>
+            <% else %>
+              <img src="<%= signed_image %>" alt="<%= alt_text %>" class="height-full width-full"/>
+            <% end %>
+            <% if caption.present? %>
+              <div class="dm-word-break-break-word dm-hyphens-auto">
+                <%= caption.html_safe %>
+              </div>
+            <% end %>
+          </div>
       <% end %>
-    <% if caption.present? %>
-      <div>
-        <%= caption.html_safe %>
-      </div>
-    <% end %>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
