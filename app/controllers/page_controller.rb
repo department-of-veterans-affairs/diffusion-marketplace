@@ -4,8 +4,10 @@ class PageController < ApplicationController
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @page_components = @page.page_components
     @adoptions_count = 0
+    @num_map_components = 0
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
+        @num_map_components += 1
         @num_facilities = 0
         @practices_list = PageMapComponent.select(:practices, :short_name, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
         @short_name = @practices_list[0][:short_name]
