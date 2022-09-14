@@ -42,7 +42,7 @@ class PageController < ApplicationController
       marker.lat facility.latitude
       marker.lng facility.longitude
       marker.picture({
-                         url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
+                         url: view_context.image_path('map-marker-default.svg'),
                          width: 34,
                          height: 46,
                          scaledWidth: 34,
