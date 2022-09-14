@@ -52,7 +52,7 @@ html = Arbre::Context.new do
           textarea component&.text,
              id: "page_page_components_attributes_compound_body_#{placeholder}_component_attributes_text",
              name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
-             class: 'tinymce',
+             class: 'tinymce compound-body-component-text',
              rows:'18' do
               component&.send(:text).try :html_safe
           end
@@ -102,7 +102,7 @@ html = Arbre::Context.new do
               href: uswds_margin_link,
               class: 'usa-link usa-link--external',
               target: '_blank'
-            span 'Defaults to 0'
+            span "Ex: '3' would equate to 'margin-bottom-3'. Defaults to 0."
           end
         end
 
@@ -124,7 +124,7 @@ html = Arbre::Context.new do
               href: uswds_margin_link,
               class: 'usa-link usa-link--external',
               target: '_blank'
-            span 'Defaults to 0'
+            span "Ex: '3' would equate to 'margin-top-3'. Defaults to 0."
           end
         end
 
@@ -204,20 +204,20 @@ html = Arbre::Context.new do
                   textarea pci.caption,
                            id: "page_page_components_attributes_compound_body_#{placeholder}_page_component_images_attributes_#{index}_caption",
                            name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][caption]",
-                           class: 'tinymce',
+                           class: 'tinymce page-component-image-caption',
                            rows:'18'
-                  para 'Text that accurately describes the image', class: 'inline-hints'
+                  para 'Text that accurately describes the image.', class: 'inline-hints'
                 end
 
                 # Image alt text
                 div class: 'page-component-image-attribute-container image-alt-text-container' do
-                  label 'Alternative Text *Required*',
+                  label 'Alternative text *required*',
                         for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
                         class: 'label'
                   input value: pci.alt_text, type: 'text',
                         id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
                         name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][alt_text]"
-                  para 'Alternate text that gets rendered in case the image cannot load', class: 'inline-hints'
+                  para 'Alternative text that gets rendered in case the image cannot be viewed.', class: 'inline-hints'
                 end
 
                 # Trash container

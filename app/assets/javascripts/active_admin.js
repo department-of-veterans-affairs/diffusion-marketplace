@@ -252,7 +252,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
                             Caption
                         </label>
                         <textarea id="page_page_components_attributes_compound_body_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_caption" 
-                                  class="tinymce"
+                                  class="tinymce compound-body-component-text"
                                   name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][caption]"
                                   rows="18">
                         </textarea>
@@ -260,12 +260,12 @@ const MAX_DESCRIPTION_LENGTH = 140;
                     
                     <div class="page-component-image-attribute-container">
                         <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text">
-                            Alternative Text *Required*
+                            Alternative text *required*
                         </label>
                         <input type="text" 
                                id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text"
                                name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][alt_text]"/>
-                        <p class="inline-hints">Alternate text that gets rendered in case the image cannot load</p>
+                        <p class="inline-hints">Alternative text that gets rendered in case the image cannot be viewed.</p>
                     </div>
                     
                     <div class="display-flex flex-justify-end">

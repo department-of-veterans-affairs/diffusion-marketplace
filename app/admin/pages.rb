@@ -225,7 +225,7 @@ ActiveAdmin.register Page do
         end
 
         respond_to do |format|
-          if @incomplete_image_components > 0
+          if @incomplete_image_components.present? && @incomplete_image_components > 0
             flash[:warning] = "One or more 'Compound Body' components had missing required fields for its image(s). The page was saved, but those image(s) were not."
             format.html { redirect_to admin_page_path(page) }
           else
