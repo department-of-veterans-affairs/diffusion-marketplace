@@ -7,7 +7,6 @@ class PageController < ApplicationController
     @num_map_components = 0
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
-        @num_map_components += 1
         @num_facilities = 0
         @practices_list = PageMapComponent.select(:practices, :short_name, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
         @short_name = @practices_list[0][:short_name]
@@ -16,6 +15,7 @@ class PageController < ApplicationController
         @display_unsuccessful = @practices_list[0][:display_unsuccessful]
         adoptions = get_adopting_facilities_for_these_practices @practices_list
         build_map_component adoptions
+        @num_map_components += 1
         @adoptions_count = adoptions.count
       end
     end
