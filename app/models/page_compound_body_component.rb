@@ -1,11 +1,11 @@
 class PageCompoundBodyComponent < ApplicationRecord
   has_one :page_component, as: :component, autosave: true
 
-  validates :text_alignment, inclusion: {
+  validates :text_alignment, allow_blank: true, inclusion: {
     in: %w[Left Right],
-    message: "%{value} is not a valid alignment"
+    message: "%{value} is not a valid text alignment"
   }
-  validates :margin_bottom, :margin_top, inclusion: {
+  validates :margin_bottom, :margin_top, allow_blank: true, inclusion: {
     in: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     message: "%{value} is not a valid %{attribute} size"
   }
