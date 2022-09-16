@@ -9,6 +9,10 @@ class PageCompoundBodyComponent < ApplicationRecord
     in: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     message: "%{value} is not a valid %{attribute} size"
   }
-  validates_with InternalUrlValidator, on: [:create, :update], if: Proc.new { |component| component.url.present? && component.url.chars.first === '/' }
-  validates_with ExternalUrlValidator, on: [:create, :update], if: Proc.new { |component| component.url.present? && component.url.chars.first != '/' }
+  validates_with InternalUrlValidator,
+                 on: [:create, :update],
+                 if: Proc.new { |component| component.url.present? && component.url.chars.first === '/' }
+  validates_with ExternalUrlValidator,
+                 on: [:create, :update],
+                 if: Proc.new { |component| component.url.present? && component.url.chars.first != '/' }
 end

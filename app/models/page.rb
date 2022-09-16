@@ -14,13 +14,13 @@ class Page < ApplicationRecord
 
   validates :slug, format: { with: Regexp.new('\A' + SLUG_FORMAT.source + '\z'), message: "invalid characters in URL" }
   validate :downcase_fields
-  before_create :downcase_fields
+  before_validation :downcase_fields
 
   enum template_type: {default: 0, narrow: 1}
 
   private
 
   def downcase_fields
-    self.slug = self.slug.downcase
+    self.slug = self.slug&.downcase
   end
 end
