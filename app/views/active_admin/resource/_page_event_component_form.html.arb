@@ -29,7 +29,7 @@ html = Arbre::Context.new do
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
-          label 'URL', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_date", class: 'label'
+          label 'URL', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_url", class: 'label'
           input value: component&.url || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"

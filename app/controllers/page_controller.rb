@@ -12,9 +12,9 @@ class PageController < ApplicationController
     @event_ids = []
     @event_list_components = {}
     set_pagy_event_list_items_array(@page_components)
-    @first_news_id = nil
-    @last_news_id = nil
-    set_pagy_news_list_items_array(@page_components)
+    @news_items_components = {}
+    @news_items_ids = []
+    set_pagy_news_items_array(@page_components)
     unless @page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
@@ -53,6 +53,38 @@ class PageController < ApplicationController
           events,
           items: 3,
           link_extra: "data-remote='true' class='dm-paginated-events-link dm-paginated-events-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
+        )
+  end
+
+
+  def set_pagy_news_items_array(page_components)
+    page_news_list_index = 0
+    # params_index = params["#{page_news_item_list_index}"]
+    params_index = 0
+    news_items = []
+    page_components.each_with_index do |pc, index|
+      if pc.component_type === 'PageNewsComponent'
+        component = pc.component_type.constantize.find(pc.component_id)
+        news_items << component
+        @news_items_ids << pc.component_id
+        page_news_list_index += 1
+      end
+
+      if news_items.present?
+        pagy_news_items, paginated_news_items = get_pagy_news_items_array(news_items,params_index)
+        @news_items_components = {
+          pagy: pagy_news_items,
+          news_items: paginated_news_items
+        }
+      end
+    end
+  end
+
+  def get_pagy_news_items_array (news_items, params_index)
+    return pagy_array(
+          news_items,
+          items: 3,
+          link_extra: "data-remote='true' class='dm-paginated-news_items-link dm-paginated-news_items-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
         )
   end
 
