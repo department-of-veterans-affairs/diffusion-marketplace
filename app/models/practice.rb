@@ -2,6 +2,7 @@ class Practice < ApplicationRecord
   include ActiveModel::Dirty
   include PracticeEditorUtils
   include VaEmail
+  include ExtraSpaceRemover
   extend PracticeUtils
 
   before_validation :trim_whitespace
@@ -414,7 +415,7 @@ class Practice < ApplicationRecord
 
   # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
-    ModelUtils::Helpers.new.strip_attributes(
+    strip_attributes(
       [
         self.name,
         self.main_display_image_alt_text
