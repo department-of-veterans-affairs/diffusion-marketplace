@@ -54,6 +54,7 @@ RSpec.describe PageComponentImage, type: :model do
 
     context 'URLs' do
       it_behaves_like 'URL validators' do
+        let(:validations) { @validations }
         let(:record) { @image }
       end
     end

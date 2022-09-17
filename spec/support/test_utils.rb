@@ -1,3 +1,5 @@
+include ::RSpec::Matchers
+
 module TestUtils
   class Validations
     def expect_valid_record(record)

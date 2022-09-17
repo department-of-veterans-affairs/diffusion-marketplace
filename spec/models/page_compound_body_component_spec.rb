@@ -72,6 +72,7 @@ RSpec.describe PageCompoundBodyComponent, type: :model do
 
     context 'URLs' do
       it_behaves_like 'URL validators' do
+        let(:validations) { @validations }
         let(:record) { @component }
       end
     end
