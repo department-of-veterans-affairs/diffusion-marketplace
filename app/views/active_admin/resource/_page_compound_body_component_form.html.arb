@@ -178,7 +178,7 @@ html = Arbre::Context.new do
                   div class: 'page-component-image-preview-container' do
                     div class: 'placeholder'
                     div class: 'page-component-image-container' do
-                      img class: 'page-component-image', src: pci.image_s3_presigned_url, alt: pci.alt_text
+                      img class: 'page-component-image', src: pci.image_s3_presigned_url(:thumb), alt: pci.alt_text
                     end
                   end
                 end

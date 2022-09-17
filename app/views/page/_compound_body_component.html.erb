@@ -45,7 +45,7 @@
     <div class="grid-row grid-gap-2px">
       <% images.each do |image| %>
         <%
-          signed_image = image.image_s3_presigned_url
+          signed_image = image.image_s3_presigned_url(:thumb)
           alt_text = image.alt_text
           image_url = image.url
           caption = image.caption

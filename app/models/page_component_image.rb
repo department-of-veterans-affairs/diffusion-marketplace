@@ -1,6 +1,6 @@
 class PageComponentImage < ApplicationRecord
   belongs_to :page_component
-  has_attached_file :image
+  has_attached_file :image, styles: { thumb: '768x432>' }
 
   validates_attachment :image,
                        presence: { message: "Image can't be blank" },

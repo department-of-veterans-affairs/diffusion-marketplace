@@ -414,8 +414,12 @@ class Practice < ApplicationRecord
 
   # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
-    self.name&.strip
-    self.main_display_image_alt_text&.strip
+    ModelUtils::Helpers.new.strip_attributes(
+      [
+        self.name,
+        self.main_display_image_alt_text
+      ]
+    )
   end
 
   # reject the PracticeOriginFacility if the facility field is blank OR the practice already has a PracticeOriginFacility with the same va_facility_id

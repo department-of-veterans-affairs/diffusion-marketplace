@@ -33,6 +33,6 @@ class PracticeProblemResource < ApplicationRecord
   end
 
   def trim_whitespace
-    self.image_alt_text&.strip
+    ModelUtils::Helpers.new.strip_attributes([self.image_alt_text])
   end
 end

@@ -1,5 +1,4 @@
 class Category < ApplicationRecord
-
   before_validation :trim_whitespace
   before_save :clear_categories_cache_on_save
   after_save :reset_categories_cache
@@ -27,7 +26,7 @@ class Category < ApplicationRecord
   end
 
   def trim_whitespace
-    self.name&.strip
+    ModelUtils::Helpers.new.strip_attributes([self.name])
   end
 
   def self.get_parent_categories
