@@ -1,7 +1,7 @@
-include ::RSpec::Matchers
-
 module TestUtils
   class Validations
+    include RSpec::Matchers
+
     def expect_valid_record(record)
       expect(record).to be_valid
       expect(record.errors.messages).to be_blank
