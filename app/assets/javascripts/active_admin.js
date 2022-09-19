@@ -256,6 +256,9 @@ const MAX_DESCRIPTION_LENGTH = 140;
                                   name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][caption]"
                                   rows="18">
                         </textarea>
+                        <p class="inline-hints">
+                            Text that accurately describes the image.
+                        </p>
                     </div>
                     
                     <div class="page-component-image-attribute-container">

@@ -141,6 +141,9 @@ describe 'Page Builder', type: :feature do
         save_page
 
         expect(page).to have_content('Page was successfully updated.')
+        expect(page).to have_content('Text and Images')
+        expect(page).to have_content('Amazing description')
+        expect(page).to have_content('Hello Universe')
         # Destroy one
         expect(@page.page_components.count).to eq(2)
         visit edit_admin_page_path(@page)
@@ -186,6 +189,9 @@ describe 'Page Builder', type: :feature do
           save_page
 
           expect(page).to have_content('Page was successfully created.')
+          expect(page).to have_content('URL: /visns')
+          expect(page).to have_content('Awesome caption')
+          expect(page).to have_content('Alt text: test alt text')
           expect(PageComponentImage.count).to eq(1)
           visit edit_admin_page_path(Page.last)
           expect(page).to have_field('URL', with: '/visns')
