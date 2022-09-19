@@ -989,13 +989,13 @@ li.small-disc:before {
 }
 
 .map-infowindow-size{
-  width: 100% !important;
-  max-width: 575px !important;
+  width: 575px !important;
+  min-width: 200px !important;
   height: 339px !important;
 }
 .map-infowindow-border{
-  width: 100% !important;
-  max-width: 560px !important;
+  width: 560px !important;
+  min-width: 200px !important;
   border-width: 0.01rem !important;
   border-color: lightgray !important;
   border-style: dotted !important;
