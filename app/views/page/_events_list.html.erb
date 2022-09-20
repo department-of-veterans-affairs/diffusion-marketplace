@@ -1,0 +1,14 @@
+<% events.each do |event|%>
+    <div class="page-event-component">
+        <h3 class="margin-bottom-2">
+        <a href="<%= event.url %>">
+            <%= event.title %>
+        </a>
+        </h3>
+        <div id="a<%= event.id %>" class="usa-prose">
+        <% if event.text.present? %>
+            <%= event.text.html_safe %>
+        <% end %>
+        </div>
+    </div>
+<% end %>

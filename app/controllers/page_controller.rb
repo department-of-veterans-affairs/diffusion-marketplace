@@ -27,7 +27,7 @@ class PageController < ApplicationController
   private
 
   def set_pagy_event_list_items_array(page_components)
-    page_event_list_index = 0
+    page_event_list_index = 0 # TODO: support multiple event lists per page
     params_index = params["#{page_event_list_index}"]
     event_ids = []
     events = []
@@ -37,22 +37,23 @@ class PageController < ApplicationController
         events << component
         @event_ids << pc.component_id
       end
+    end
 
-      if events.present?
-        pagy_events, paginated_events = get_pagy_events_array(events,params_index)
-        @event_list_components = {
-          pagy: pagy_events,
-          events: paginated_events
-        }
-      end
+    if events.present?
+      pagy_events, paginated_events = get_pagy_events_array(events,page_event_list_index, params_index)
+      @event_list_components[0] = {
+        pagy: pagy_events,
+        events: paginated_events
+      }
     end
   end
 
-  def get_pagy_events_array (events, params_index)
+  def get_pagy_events_array (events, page_event_list_index, params_index)
     return pagy_array(
           events,
           items: 3,
-          link_extra: "data-remote='true' class='dm-paginated-events-link dm-paginated-events-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
+          page_param: page_event_list_index.to_s,
+          link_extra: "data-remote='true' class='dm-paginated-#{page_event_list_index}-link dm-paginated-#{page_event_list_index}-events-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
         )
   end
 
