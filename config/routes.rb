@@ -124,6 +124,8 @@ Rails.application.routes.draw do
   match '/404', to: 'errors#page_not_found_404', via: :all
   match '/500', to: 'errors#internal_server_error_500', via: :all
 
+  get '/signed_image', controller: 'application', action: 'signed_image'
+
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
 end
