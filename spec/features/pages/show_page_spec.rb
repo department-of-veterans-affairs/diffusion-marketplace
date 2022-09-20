@@ -248,6 +248,9 @@ describe 'Page Builder - Show', type: :feature do
       end
 
       it 'should display the text and images correctly based on the designs (as of 9/20/22)' do
+        visit edit_admin_page_path(Page.last)
+        # Add a CompoundBodyComponent and fill in fields
+        add_compound_body_component_and_fill_in_fields
         find_all('input[type="submit"]').first.click
         expect(page).to have_content('Page was successfully updated.')
         # With no PageComponentImages present, the CompoundBodyComponent text should take up all twelve columns

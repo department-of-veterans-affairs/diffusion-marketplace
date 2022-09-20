@@ -99,40 +99,63 @@ ActiveAdmin.register Page do
             para do
               b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)} #{'(Card)' if pc.component_type == 'PageSubpageHyperlinkComponent' && component&.card?}"
             end
+            # Heading type
             para component&.heading_type if pc.component_type == 'PageHeaderComponent'
+            # Subtopic title
             para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
+            # Subtopic description
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
+            # Alignment
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
+            # Title header
             para "Title header: #{component&.title_header}" if pc.component_type == 'PageCompoundBodyComponent' && component&.title_header.present?
-            para component&.title if pc.component_type == 'PageHeader3Component' ||
-              pc.component_type == 'PageSubpageHyperlinkComponent' ||
-              pc.component_type == 'PageAccordionComponent' ||
-              pc.component_type == 'PageCompoundBodyComponent' && component&.title.present?
-            para "Large title" if pc.component_type == 'PageCompoundBodyComponent' && component&.large_title
-            para component&.description if pc.component_type == 'PageHeader3Component'
-            para component&.text.html_safe unless pc.component_type == 'PageHrComponent' ||
-              pc.component_type == 'PagePracticeListComponent' ||
-              pc.component_type == 'PageHeader2Component' ||
-              pc.component_type == 'PageSubpageHyperlinkComponent' ||
-              pc.component_type == 'PageHeader3Component' ||
-              pc.component_type == 'PageYouTubePlayerComponent' ||
-              pc.component_type == 'PageImageComponent' ||
-              pc.component_type == 'PageDownloadableFileComponent' ||
-              pc.component_type == 'PageCtaComponent'
+            # Title
+            if (pc.component_type == 'PageHeader3Component' ||
+                pc.component_type == 'PageSubpageHyperlinkComponent' ||
+                pc.component_type == 'PageAccordionComponent' ||
+                pc.component_type == 'PageCompoundBodyComponent') && component&.title.present?
+              para "Title: #{component.title}"
+            end
+            # Large title
+            para "Large title: #{component.large_title}" if pc.component_type == 'PageCompoundBodyComponent' && component&.large_title
+            # Description
+            if (pc.component_type == 'PageHeader3Component' ||
+                pc.component_type == 'PageDownloadableFileComponent') && component&.description.present?
+              para component.description
+            end
+            # Text
+            if (pc.component_type == 'PageAccordionComponent' ||
+               pc.component_type == 'PageParagraphComponent' ||
+               pc.component_type == 'PageCompoundBodyComponent') && component&.text.present?
+              para component.text.html_safe
+            end
+            # Text alignment
             para "Text alignment: #{component&.text_alignment}" if pc.component_type == 'PageCompoundBodyComponent'
+            # Practice list count
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
+            # Practice list
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
-            para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' ||
-              pc.component_type == 'PageYouTubePlayerComponent' ||
-              pc.component_type == 'PageCompoundBodyComponent' if component&.url.present?
+            # URL
+            if (pc.component_type == 'PageSubpageHyperlinkComponent' ||
+                pc.component_type == 'PageYouTubePlayerComponent' ||
+                pc.component_type == 'PageCompoundBodyComponent') && component&.url.present?
+              para "URL: #{component.url}"
+            end
+            # URL link text
             para "URL link text: #{component&.url_link_text}" if pc.component_type == 'PageCompoundBodyComponent' && component&.url_link_text.present?
+            # Caption
             para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
+            # Alt text
             para component&.alt_text if pc.component_type == 'PageImageComponent'
+            # Attachment file name
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
-            para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name != ''
-            para component&.description if pc.component_type == 'PageDownloadableFileComponent' && component&.description != ''
+            # Display name
+            para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
+            # Margin bottom
             para "Margin bottom: #{component&.margin_bottom}" if pc.component_type == 'PageCompoundBodyComponent'
-            para "Margin bottom: #{component&.margin_top}" if pc.component_type == 'PageCompoundBodyComponent'
+            # Margin top
+            para "Margin top: #{component&.margin_top}" if pc.component_type == 'PageCompoundBodyComponent'
+            # PageComponentImages
             if pc.page_component_images.present?
               para 'Images:'
               pc.page_component_images.each do |pci|
