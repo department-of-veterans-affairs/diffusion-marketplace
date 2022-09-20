@@ -188,18 +188,11 @@ describe 'Page Builder - Show', type: :feature do
   context 'CompoundBodyComponents and associated PageComponentImages' do
     it 'should be visible and configured correctly based on user input' do
       visit edit_admin_page_path(Page.last)
-      # Add a CompoundBodyComponent and fill out some fields
-      click_link('Add New Page component')
-      select('Text and Images', from: 'page_page_components_attributes_0_component_type')
-      fill_in("page_page_components_attributes_0_component_attributes_title", with: 'Cool Title')
-      within_frame(all('.tox-edit-area__iframe')[0]) do
-        find('body').set('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
-      end
-      select(0, from: 'page_page_components_attributes_0_component_attributes_margin_bottom')
-      select(4, from: 'page_page_components_attributes_0_component_attributes_margin_top')
+      # Add a CompoundBodyComponent and fill in fields
+      add_compound_body_component_and_fill_in_fields
       find_all('input[type="submit"]').first.click
       expect(page).to have_content('Page was successfully updated.')
-      # With no PageComponentImages present, the CompoundBodyComponent should take up six columns
+      # With no PageComponentImages present, the CompoundBodyComponent text should take up six columns
       visit '/programming/javascript'
       expect(page).to have_selector('div.compound-body-component-grid.margin-bottom-0.margin-top-4')
       within(:css, '.compound-body-component-grid') do
@@ -208,24 +201,24 @@ describe 'Page Builder - Show', type: :feature do
         expect(page).to have_text('Cool Title')
         expect(page).to have_text('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
       end
-      # Now edit the existing CompoundBodyComponent and add a PageComponentImage
+      # Edit the existing CompoundBodyComponent and add a PageComponentImage
       visit edit_admin_page_path(Page.last)
       # Add larger title, change the text alignment, and added a URL and URL link text
       find('#page_page_components_attributes_0_component_attributes_large_title').click
       select('Right', from: 'page_page_components_attributes_0_component_attributes_text_alignment')
       fill_in('page_page_components_attributes_0_component_attributes_url', with: '/')
       fill_in('page_page_components_attributes_0_component_attributes_url_link_text', with: 'A link to the homepage')
-      # Image
-      click_link('Add image')
-      find('input[type="file"]').attach_file(@image_path)
-      fill_in('Image URL', with: '/search')
-      within_frame(all('.tox-edit-area__iframe')[1]) do
-        find('body').set('Some cool caption')
-      end
-      fill_in('Alternative text *required*', with: 'A cute charmander')
+      # Add image
+      add_page_component_image_to_component(
+        '#PageCompoundBodyComponent_poly_0',
+      @image_path,
+        '/search',
+        'Some cool caption',
+        'A cute charmander'
+      )
       find_all('input[type="submit"]').first.click
       expect(page).to have_content('Page was successfully updated.')
-      # With one PageComponentImage present, the CompoundBodyComponent should now only take up five columns.
+      # With one PageComponentImage present, the CompoundBodyComponent text should now only take up five columns.
       # The associated PageComponentImage should take up four columns.
       visit '/programming/javascript'
       # Make sure the updated CompoundBodyComponent fields are represented
@@ -247,6 +240,76 @@ describe 'Page Builder - Show', type: :feature do
           expect(page).to have_text('Some cool caption')
         end
       end
+    end
+
+    context 'mobile view' do
+      before do
+        page.driver.browser.manage.window.resize_to(340, 580)
+      end
+
+      it 'should display the text and images correctly based on the designs (as of 9/20/22)' do
+        find_all('input[type="submit"]').first.click
+        expect(page).to have_content('Page was successfully updated.')
+        # With no PageComponentImages present, the CompoundBodyComponent text should take up all twelve columns
+        # and only one row
+        visit '/programming/javascript'
+        within(:css, '.compound-body-component-grid') do
+          expect(find('.grid-item-text').matches_style?('grid-column' => '1 / 13')).to be(true)
+          expect(find('.grid-item-text').matches_style?('grid-row' => '1 / 1')).to be(true)
+        end
+        # Add a PageComponentImage to the existing CompoundBodyComponent
+        visit edit_admin_page_path(Page.last)
+        add_page_component_image_to_component(
+          '#PageCompoundBodyComponent_poly_0',
+          @image_path,
+          '/about',
+          'An awesome caption',
+          'A wild charmander'
+        )
+        find_all('input[type="submit"]').first.click
+        expect(page).to have_content('Page was successfully updated.')
+        # With a PageComponentImage present, the image (and caption, if present as well) should sit on top of the
+        # CompoundBodyComponent text, which means the image should now be on the first row (above) and the text on the second (below).
+        # The image (and caption, if present) should take up twelve columns
+        visit '/programming/javascript'
+        within(:css, '.compound-body-component-grid') do
+          # Image above
+          expect(find('.grid-item-images').matches_style?('grid-column' => '1 / 13')).to be(true)
+          expect(find('.grid-item-images').matches_style?('grid-row' => '1 / 2')).to be(true)
+          # Text below
+          expect(find('.grid-item-text').matches_style?('grid-column' => '1 / 13')).to be(true)
+          expect(find('.grid-item-text').matches_style?('grid-row' => '2 / 2')).to be(true)
+        end
+      end
+    end
+  end
+
+  def add_compound_body_component_and_fill_in_fields
+    click_link('Add New Page component')
+    select('Text and Images', from: 'page_page_components_attributes_0_component_type')
+    fill_in("page_page_components_attributes_0_component_attributes_title", with: 'Cool Title')
+    within_frame(all('.tox-edit-area__iframe')[0]) do
+      find('body').set('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+    end
+    select(0, from: 'page_page_components_attributes_0_component_attributes_margin_bottom')
+    select(4, from: 'page_page_components_attributes_0_component_attributes_margin_top')
+  end
+
+  def add_page_component_image_to_component(
+    component_li_id,
+    image_path,
+    image_url,
+    image_caption,
+    image_alt_text
+  )
+    within(:css, component_li_id) do
+      click_link('Add image')
+      find('input[type="file"]').attach_file(image_path)
+      fill_in('Image URL', with: image_url)
+      within_frame(all('.tox-edit-area__iframe')[1]) do
+        find('body').set(image_caption)
+      end
+      fill_in('Alternative text *required*', with: image_alt_text)
     end
   end
 end

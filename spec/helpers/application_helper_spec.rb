@@ -231,6 +231,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     before do
       ENV['HOSTNAME'] = 'marketplace.va.gov'
     end
+
     after do
       ENV['HOSTNAME'] = nil
     end
@@ -239,7 +240,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(is_internal_link?('test')).to eq(false)
       expect(is_internal_link?('/search')).to eq(true)
       expect(is_internal_link?('.visns')).to eq(true)
-      expect(is_internal_link?('dev.marketplace.va.gov/hello-world')).to eq(true)
+      expect(is_internal_link?('dev.marketplace.va.gov/partners')).to eq(true)
     end
   end
 end
