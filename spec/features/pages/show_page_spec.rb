@@ -93,6 +93,7 @@ describe 'Page Builder - Show', type: :feature do
 
   it 'Should display the accordion component' do
     expect(page).to have_content('FAQ 1')
+    find('.usa-accordion__button').first.click
     expect(page).to have_content('FAQ 1 text')
   end
 
