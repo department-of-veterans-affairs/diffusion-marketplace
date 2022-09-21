@@ -125,6 +125,15 @@
       .image-container {
         max-width: 400px;
 
+      a {
+        &:focus {
+          img {
+            outline: 0.25rem solid #2491ff;
+            outline-offset: 0;
+          }
+        }
+      }
+
         img {
           height: 225px;
           object-fit: cover;

@@ -221,6 +221,7 @@ describe 'Page Builder - Show', type: :feature do
       # With one PageComponentImage present, the CompoundBodyComponent text should now only take up five columns.
       # The associated PageComponentImage should take up four columns.
       visit '/programming/javascript'
+      expect(page).to be_accessible.according_to :wcag2a, :section508
       # Make sure the updated CompoundBodyComponent fields are represented
       within(:css, '.compound-body-component-grid') do
         # Right-aligned text
@@ -275,6 +276,7 @@ describe 'Page Builder - Show', type: :feature do
         # CompoundBodyComponent text, which means the image should now be on the first row (above) and the text on the second (below).
         # The image (and caption, if present) should take up twelve columns
         visit '/programming/javascript'
+        expect(page).to be_accessible.according_to :wcag2a, :section508
         within(:css, '.compound-body-component-grid') do
           # Image above
           expect(find('.grid-item-images').matches_style?('grid-column' => '1 / 13')).to be(true)
