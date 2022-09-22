@@ -59,36 +59,34 @@ class PageController < ApplicationController
 
 
   def set_pagy_news_items_array(page_components)
-    page_news_list_index = 0
-    # params_index = params["#{page_news_item_list_index}"]
-    params_index = 0
+    page_news_item_list_index = 0 # TODO: support multiple news item lists per page
+    params_index = params["#{page_news_item_list_index}"]
     news_items = []
     page_components.each_with_index do |pc, index|
       if pc.component_type === 'PageNewsComponent'
         component = pc.component_type.constantize.find(pc.component_id)
         news_items << component
         @news_items_ids << pc.component_id
-        page_news_list_index += 1
       end
+    end
 
-      if news_items.present?
-        pagy_news_items, paginated_news_items = get_pagy_news_items_array(news_items,params_index)
-        @news_items_components = {
-          pagy: pagy_news_items,
-          news_items: paginated_news_items
-        }
-      end
+    if news_items.present?
+      pagy_news_items, paginated_news_items = get_pagy_news_items_array(news_items,page_news_item_list_index, params_index)
+      @news_items_components[0] = {
+        pagy: pagy_news_items,
+        news_items: paginated_news_items
+      }
     end
   end
 
-  def get_pagy_news_items_array (news_items, params_index)
+  def get_pagy_news_items_array (news_items, page_news_item_list_index, params_index)
     return pagy_array(
           news_items,
-          items: 3,
-          link_extra: "data-remote='true' class='dm-paginated-news_items-link dm-paginated-news_items-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
+          items: 2,
+          page_param: page_news_item_list_index.to_s,
+          link_extra: "data-remote='true' class='dm-paginated-#{page_news_item_list_index}-link dm-paginated-#{page_news_item_list_index}-news-items-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
         )
   end
-
 
   def set_pagy_practice_list_array(page_components)
     page_practice_list_index = 0

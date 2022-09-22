@@ -117,48 +117,20 @@
 
         <%# News %>
         <% when 'PageNewsComponent' %>
-          <% nic = @news_items_components %>
+          <% component_index = 0 %>
+          <% nic = @news_items_components[0] %>
+
           <% if component.id == @news_items_ids.first %>
-            <ul class="usa-card-group news-component-list <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-          <% end %>
-          <!-- Individual news items -->
-          <% if component.id == @news_items_ids.first %>
-            <% nic[:news_items]&.each do |news_item| %>
-              <li class="page-news-component usa-card tablet:grid-col-6">
-                <div class="usa-card__container">
-                  <div class="usa-card__header">
-                    <h3 class="margin-bottom-2">
-                      <a href="<%= news_item.url %>">
-                        <%= news_item.title %>
-                      </a>
-                    </h3>
-                  </div>
-                  <div id="a<%= news_item.id %>" class="usa-prose usa-card__body">
-                    <% if news_item.text.present? %>
-                      <%= news_item.text.html_safe %>n
-                    <% end %>
-                  </div>
-                  <div class="usa-card__footer">
-                    <span class="news-published-date"><%= component&.published_date.strftime("%B %e, %Y") %></span>
-                  </div>
-                </div>
-              </li>
+            <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news-items <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <%= render partial:'news_list', locals: {news_items: nic[:news_items]} %>
+            </ul>
+            <% if nic[:pagy].count > 2 # TODO: update this to 8 after you're done debugging %>
+              <div class="text-center dm-load-more-news-items-<%= component_index %>-btn-container" >
+                <% link = pagy_link_proc(nic[:pagy]) %>
+                <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+              </div>
             <% end %>
           <% end %>
-          <!-- close div -->
-          <!-- this needs to be replaced with the last item in the pagy list -->
-          <% if component.id == @news_items_ids.last %>
-            </ul>
-          <% end %>
-          <!-- Load more -->
-            <!-- TODO: update this to 8 after you're done debugging -->
-          <% if component.id == @news_items_ids.last && nic[:pagy].count > 4 %>
-            <div class="display-block text-center dm-load-more-events-btn-container" >
-              <% link = pagy_link_proc(nic[:pagy]) %>
-              <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
-            </div>
-          <% end %>
-          <!-- end -->
 
           <%# Practice List %>
           <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>

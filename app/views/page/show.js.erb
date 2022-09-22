@@ -67,3 +67,39 @@ function paginatedEventListPageComponent() {
 }
 
 $(paginatedEventListPageComponent)
+
+function paginatedNewsItemListPageComponent() {
+  <% if @news_items_components.present? %>
+    var type = "<%= @pagy_type %>";
+    var newsItemsClass = ".dm-paginated-" + type + "-news-items";
+
+    <% data_set = @news_items_components[@pagy_type.to_i][:news_items] %>
+    <% pagy = @news_items_components[@pagy_type.to_i][:pagy] %>
+
+    <% current_page = pagy.page %>
+    <% next_page = pagy.next %>
+
+
+    // Append the next set of practice cards to the current set
+    $(newsItemsClass).append("<%= escape_javascript render(partial: 'news_list', locals: {
+      news_items: data_set,
+      component_index: @pagy_type})
+    %>")
+
+    // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
+    var currentPageClass = ".dm-paginated-" + type + "-link";
+    var loadMoreBtnContainer = ".dm-load-more-news-items-" + type + "-btn-container";
+
+    <% if next_page.present? %>
+      $(currentPageClass).remove();
+
+      <% link = pagy_link_proc(pagy) %>
+      $(loadMoreBtnContainer).append(`<%= link.call(next_page, 'Load more').html_safe %>`);
+    <% else %>
+      // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
+      $(currentPageClass).remove();
+    <% end %>
+  <% end %>
+}
+
+$(paginatedNewsItemListPageComponent)
