@@ -3,11 +3,8 @@ class PageController < ApplicationController
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @page_components = @page.page_components
-    @adoptions_count = 0
-    @num_map_components = 0
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
-        @num_facilities = 0
         @practices_list = PageMapComponent.select(:practices, :short_name, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
         @short_name = @practices_list[0][:short_name]
         @display_successful = @practices_list[0][:display_successful]
@@ -15,7 +12,6 @@ class PageController < ApplicationController
         @display_unsuccessful = @practices_list[0][:display_unsuccessful]
         adoptions = get_adopting_facilities_for_these_practices @practices_list
         build_map_component adoptions
-        @num_map_components += 1
         @adoptions_count = adoptions.count
       end
     end
@@ -35,9 +31,11 @@ class PageController < ApplicationController
     end
   end
 
+
+  private
+
   def build_map_component(adopting_facilities_list)
     va_facilities = VaFacility.where(id: adopting_facilities_list)
-    @num_facilities = va_facilities.count
     @va_facility_marker = Gmaps4rails.build_markers(va_facilities) do |facility, marker|
       marker.lat facility.latitude
       marker.lng facility.longitude
@@ -54,7 +52,6 @@ class PageController < ApplicationController
     end
   end
 
-  private
 
   def set_pagy_practice_list_array(page_components)
     page_practice_list_index = 0

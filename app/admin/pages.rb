@@ -68,7 +68,7 @@ ActiveAdmin.register Page do
             para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
-            para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent'
+            para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent' || pc.component_type == 'PageMapComponent'
             para component&.description if pc.component_type == 'PageHeader3Component'
             para component&.text.html_safe unless pc.component_type == 'PageHrComponent' || pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent' || pc.component_type == 'PageCtaComponent' || pc.component_type == 'PageMapComponent'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
@@ -80,6 +80,7 @@ ActiveAdmin.register Page do
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name != ''
             para component&.description if pc.component_type == 'PageDownloadableFileComponent' && component&.description != ''
             para component&.description if pc.component_type == 'PageMapComponent' && component&.description != ''
+            para component&.short_name if pc.component_type == 'PageMapComponent' && component&.short_name != ''
           end
         }.join('').html_safe
       end
