@@ -9,7 +9,7 @@
       names = []
       taglines = []
       short_names = []
-      practices_to_display_in_info_window facility_id, practice_list.split(","), names, taglines, short_names
+      practices_to_display_in_info_window facility_id, practice_list, names, taglines, short_names
       @num_practices_adopted = names.count
     %>
     <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'padding-for-map-component-infowindow-text usa-link font-sans-md text-bold' %>

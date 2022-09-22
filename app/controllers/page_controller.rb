@@ -5,11 +5,12 @@ class PageController < ApplicationController
     @page_components = @page.page_components
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
-        @practices_list = PageMapComponent.select(:practices, :short_name, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
-        @short_name = @practices_list[0][:short_name]
-        @display_successful = @practices_list[0][:display_successful]
-        @display_in_progress = @practices_list[0][:display_in_progress]
-        @display_unsuccessful = @practices_list[0][:display_unsuccessful]
+        #@practices_list = PageMapComponent.select(:practices, :short_name, :display_successful, :display_unsuccessful, :display_in_progress).where(id: pc.component_id).to_a
+        @practices_list = PageMapComponent.find_by_id(pc.component_id)
+        @short_name = @practices_list.short_name
+        @display_successful = @practices_list.display_successful
+        @display_in_progress = @practices_list.display_in_progress
+        @display_unsuccessful = @practices_list.display_unsuccessful
         adoptions = get_adopting_facilities_for_these_practices @practices_list
         build_map_component adoptions
         @adoptions_count = adoptions.count
@@ -86,7 +87,7 @@ class PageController < ApplicationController
 
   def get_adopting_facilities_for_these_practices(practices_list)
     va_facilities_list = []
-    practices_list[0]["practices"].each do |pr|
+    practices_list.practices.each do |pr|
       diffusion_histories = DiffusionHistory.where(practice_id: pr)
       diffusion_histories.each do |dh|
         dhs = DiffusionHistoryStatus.where(diffusion_history_id: dh[:id]).first.status
