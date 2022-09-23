@@ -1,5 +1,6 @@
 function paginatedPracticeListPageComponent() {
   <% if @practice_list_components.present? %>
+    <% if params["practices-0"].present? %>
     var type = "<%= @pagy_type %>";
     var practicesClass = ".dm-paginated-" + type + "-practices";
 
@@ -16,7 +17,7 @@ function paginatedPracticeListPageComponent() {
     %>")
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-    var currentPageClass = ".dm-paginated-" + type + "-link";
+    var currentPageClass = ".dm-paginated-practices-" + type + "-link";
     var loadMoreBtnContainer = ".dm-load-more-practices-" + type + "-btn-container";
 
     <% if next_page.present? %>
@@ -28,6 +29,7 @@ function paginatedPracticeListPageComponent() {
       // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
       $(currentPageClass).remove();
     <% end %>
+    <% end %>
   <% end %>
 }
 
@@ -35,6 +37,7 @@ $(paginatedPracticeListPageComponent)
 
 function paginatedEventListPageComponent() {
   <% if @event_list_components.present? %>
+    <% if params["events-0"].present? %>
     var type = "<%= @pagy_type %>";
     var eventsClass = ".dm-paginated-" + type + "-events";
 
@@ -51,7 +54,7 @@ function paginatedEventListPageComponent() {
     %>")
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-    var currentPageClass = ".dm-paginated-" + type + "-link";
+    var currentPageClass = ".dm-paginated-events-" + type + "-link";
     var loadMoreBtnContainer = ".dm-load-more-events-" + type + "-btn-container";
 
     <% if next_page.present? %>
@@ -63,6 +66,7 @@ function paginatedEventListPageComponent() {
       // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
       $(currentPageClass).remove();
     <% end %>
+    <% end %>
   <% end %>
 }
 
@@ -70,6 +74,7 @@ $(paginatedEventListPageComponent)
 
 function paginatedNewsItemListPageComponent() {
   <% if @news_items_components.present? %>
+   <% if params["news-0"].present? %>
     var type = "<%= @pagy_type %>";
     var newsItemsClass = ".dm-paginated-" + type + "-news-items";
 
@@ -87,7 +92,7 @@ function paginatedNewsItemListPageComponent() {
     %>")
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-    var currentPageClass = ".dm-paginated-" + type + "-link";
+    var currentPageClass = ".dm-paginated-news-items-" + type + "-link";
     var loadMoreBtnContainer = ".dm-load-more-news-items-" + type + "-btn-container";
 
     <% if next_page.present? %>
@@ -98,6 +103,7 @@ function paginatedNewsItemListPageComponent() {
     <% else %>
       // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
       $(currentPageClass).remove();
+    <% end %>
     <% end %>
   <% end %>
 }
