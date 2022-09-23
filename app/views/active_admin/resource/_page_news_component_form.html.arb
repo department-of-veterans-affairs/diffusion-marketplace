@@ -25,7 +25,7 @@ html = Arbre::Context.new do
           input value: component&.title || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
-          para 'Section header styled as secondary heading/"H2"', class: 'inline-hints'
+          para 'News item title styled as an /"H3"', class: 'inline-hints'
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
@@ -33,7 +33,7 @@ html = Arbre::Context.new do
           input value: component&.url || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
-          para 'Registration or event link', class: 'inline-hints'
+          para 'Link to news item hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
         end
 
         li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date_input" do
@@ -41,7 +41,7 @@ html = Arbre::Context.new do
           input value: component&.published_date || nil, type: 'date', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][published_date]"
-          para 'Date when news was originally published', class: 'inline-hints'
+          para 'Original publication date', class: 'inline-hints'
         end
 
 
@@ -49,12 +49,12 @@ html = Arbre::Context.new do
           if component
             input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
           end
-          label 'Text', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
+          label 'Description', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
 
           textarea component&.text, id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", name: "page[page_components_attributes][#{placeholder}][component_attributes][text]", class: 'tinymce', rows: 18 do
             component&.send(:text).try :html_safe
           end
-          para 'Supplementary text to headings and descriptions.', class: 'inline-hints'
+          para '', class: 'inline-hints'
         end
       end
     end
