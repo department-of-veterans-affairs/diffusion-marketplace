@@ -3,9 +3,9 @@ module PageHelper
     dh = DiffusionHistory.where(va_facility_id: facility_id)
     dh.each do |dh|
       if practice_list.practices.include?(dh.practice_id.to_s)
-        names.push Practice.find_by_id(dh.practice_id).name
-        short_names.push Practice.find_by_id(dh.practice_id).short_name
-        taglines.push Practice.find_by_id(dh.practice_id).tagline
+        names.push dh.practice.name
+        short_names.push dh.practice.short_name
+        taglines.push dh.practice.tagline
       end
     end
   end
