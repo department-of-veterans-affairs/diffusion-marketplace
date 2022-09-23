@@ -45,7 +45,7 @@ class PageController < ApplicationController
                      })
       marker.shadow nil
       marker.json({ id: facility.id })
-      marker.infowindow render_to_string(partial: 'maps/community_map_infowindow', locals: { diffusion_histories: facility, facility: facility, practice_list: @practices_list })
+      marker.infowindow render_to_string(partial: 'maps/page_map_infowindow', locals: { diffusion_histories: facility, facility: facility, practice_list: @practices_list })
     end
   end
 
