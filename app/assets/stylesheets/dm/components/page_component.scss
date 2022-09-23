@@ -148,14 +148,16 @@
 
   .page-event-component {
     border-top: 1px solid black;
+    .event-title {
+      a, a:visited{
+        color: color($theme-color-primary-vivid);
+      }
+    }
   }
-<<<<<<< HEAD
-=======
 
   .page-news-component {
     a, a:visited {
       color: color($theme-color-primary-vivid);
     }
   }
->>>>>>> f8bffb95 (Finish wiring up Pagy for News items and move rendering to partial)
 }
