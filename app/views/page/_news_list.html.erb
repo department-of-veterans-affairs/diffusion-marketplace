@@ -2,19 +2,17 @@
     <li class="page-news-component usa-card tablet:grid-col-6">
         <div class="usa-card__container">
             <div class="usa-card__header">
-            <h3 class="margin-bottom-2">
-                <a href="<%= news_item.url %>">
-                <%= news_item.title %>
-                </a>
-            </h3>
+                <h3 class="margin-bottom-2 news-item-title">
+                    <a href="<%= news_item.url %>">
+                        <%= news_item.title %>
+                    </a>
+                </h3>
             </div>
-            <div id="a<%= news_item.id %>" class="usa-prose usa-card__body">
-            <% if news_item.text.present? %>
-                <%= news_item.text.html_safe %>n
-            <% end %>
+            <div id="a<%= news_item.id %>" class="news-item-description usa-prose usa-card__body">
+                <%= news_item.text.html_safe %>
             </div>
             <div class="usa-card__footer">
-            <span class="news-published-date"><%= news_item&.published_date.strftime("%B %e, %Y") %></span>
+                <span class="news-published-date"><%= news_item&.published_date.strftime("%B %e, %Y") %></span>
             </div>
         </div>
     </li>
