@@ -2,8 +2,6 @@
   <div class="margin-top-1 visn-card-text">
     <%
       station_name = facility.official_station_name
-      station_number = facility.station_number
-      facility_name = facility.official_station_name
       facility_id = facility.id
       practice_list = @practices_list
       names = []
@@ -12,7 +10,13 @@
       practices_to_display_in_info_window facility_id, practice_list, names, taglines, short_names
       @num_practices_adopted = names.count
     %>
-    <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'padding-for-map-component-infowindow-text usa-link font-sans-md text-bold' %>
+    <p>
+      <%= link_to va_facility_path(facility) do %>
+        <div class='padding-for-map-component-infowindow-text usa-link font-sans-md text-bold'>
+        <%= "#{station_name} #{ show_common_name(station_name, facility.common_name)}" %>
+        </div>
+      <% end %>
+    </p>
     <div class="margin-top-1 text-normal theme-type-scale-sm padding-for-map-component-infowindow-text">
       <%= @num_practices_adopted %> <% if @short_name.length > 0 %> <%= @short_name %> <% else %> Total <% end %> Innovation<% if @num_practices_adopted != 1 %>s<% end %>
     </div>
