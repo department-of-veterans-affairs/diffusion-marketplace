@@ -7,7 +7,7 @@ class PageController < ApplicationController
       if pc.component_type == "PageMapComponent"
         @practices_list = PageMapComponent.find_by_id(pc.component_id)
         @short_name = @practices_list.short_name
-        adoptions = get_adopting_facilities_for_these_practices(@practices_list, @practices_list.display_successful, @practices_list.display_in_progress, @practices_list.display_unsuccessful)
+        adoptions = get_adopting_facilities_for_these_practices(@practices_list, @practices_list.display_successful_adoptions, @practices_list.display_in_progress_adoptions, @practices_list.display_unsuccessful_adoptions)
         build_map_component adoptions
         @adoptions_count = adoptions.count
       end

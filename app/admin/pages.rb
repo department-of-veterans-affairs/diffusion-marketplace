@@ -8,7 +8,7 @@ ActiveAdmin.register Page do
                   :id, :component_type, :position, :_destroy, component_attributes: [
                     :url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment,
                     :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, :card,
-                    :display_successful, :display_in_progress, :display_unsuccessful, :short_name, practices: []
+                    :display_successful_adoptions, :display_in_progress_adoptions, :display_unsuccessful_adoptions, :short_name, practices: []
                   ]
                 ]
 
