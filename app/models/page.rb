@@ -13,7 +13,6 @@ class Page < ApplicationRecord
                           case_sensitive: false
 
   validates :slug, format: { with: Regexp.new('\A' + SLUG_FORMAT.source + '\z'), message: "invalid characters in URL" }
-  validate :downcase_fields
   before_validation :downcase_fields
 
   enum template_type: {default: 0, narrow: 1}
