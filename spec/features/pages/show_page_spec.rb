@@ -194,8 +194,8 @@ describe 'Page Builder - Show', type: :feature do
       expect(page).to have_content('Page was successfully updated.')
       # With no PageComponentImages present, the CompoundBodyComponent text should take up six columns
       visit '/programming/javascript'
-      expect(page).to have_selector('div.compound-body-component-grid.margin-bottom-0.margin-top-4')
-      within(:css, '.compound-body-component-grid') do
+      expect(page).to have_selector('div.page-compound-body-component.margin-bottom-0.margin-top-4')
+      within(:css, '.page-compound-body-component') do
         expect(find('.grid-item-text').matches_style?('grid-column' => '1 / 7')).to be(true)
         expect(page).to have_selector('h2', class: 'usa-prose-h2')
         expect(page).to have_text('Cool Title')
@@ -223,7 +223,7 @@ describe 'Page Builder - Show', type: :feature do
       visit '/programming/javascript'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       # Make sure the updated CompoundBodyComponent fields are represented
-      within(:css, '.compound-body-component-grid') do
+      within(:css, '.page-compound-body-component') do
         # Right-aligned text
         expect(page).to have_selector('div.grid-item-text.right-align')
         # Five columns worth of text, but on the right side of the grid now
@@ -257,7 +257,7 @@ describe 'Page Builder - Show', type: :feature do
         # With no PageComponentImages present, the CompoundBodyComponent text should take up all twelve columns
         # and only one row
         visit '/programming/javascript'
-        within(:css, '.compound-body-component-grid') do
+        within(:css, '.page-compound-body-component') do
           expect(find('.grid-item-text').matches_style?('grid-column' => '1 / 13')).to be(true)
           expect(find('.grid-item-text').matches_style?('grid-row' => '1 / 1')).to be(true)
         end
@@ -277,7 +277,7 @@ describe 'Page Builder - Show', type: :feature do
         # The image (and caption, if present) should take up twelve columns
         visit '/programming/javascript'
         expect(page).to be_accessible.according_to :wcag2a, :section508
-        within(:css, '.compound-body-component-grid') do
+        within(:css, '.page-compound-body-component') do
           # Image above
           expect(find('.grid-item-images').matches_style?('grid-column' => '1 / 13')).to be(true)
           expect(find('.grid-item-images').matches_style?('grid-row' => '1 / 2')).to be(true)

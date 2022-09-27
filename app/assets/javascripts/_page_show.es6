@@ -74,7 +74,8 @@
     // Style PageBuilder external links and set to open in a new tab (508 accessibility)
     function identifyExternalLinks() {
         // identify external by HREF content
-        let extLinks = $('.page-paragraph-component, .page-accordion-component').find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
+        const componentClasses = '.page-paragraph-component, .page-accordion-component, .page-compound-body-component';
+        let extLinks = $(componentClasses).find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
         
         extLinks.each(function() {
             let currentLink = $(this);
