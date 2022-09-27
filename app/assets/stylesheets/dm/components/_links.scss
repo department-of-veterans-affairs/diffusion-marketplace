@@ -88,6 +88,6 @@
 
 .usa-link {
   &-bold {
-    font-weight: 800;
+    @include u-text('bold')
   }
 }
