@@ -148,16 +148,5 @@
 
   .page-event-component {
     border-top: 1px solid black;
-    .event-title {
-      a, a:visited{
-        color: color($theme-color-primary-vivid);
-      }
-    }
-  }
-
-  .page-news-component {
-    a, a:visited {
-      color: color($theme-color-primary-vivid);
-    }
   }
 }
