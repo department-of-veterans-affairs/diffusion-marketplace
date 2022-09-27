@@ -1,3 +1,9 @@
+const COMPONENT_CLASSES = [
+    '.page-paragraph-component',
+    '.page-accordion-component',
+    '.page-compound-body-component'
+].join(', ');
+
 (($) => {
     const $document = $(document);
 
@@ -59,8 +65,8 @@
     }
 
     // Remediate internal links on PageBuilder paragraph and accordion components
-    function remediateInternalLinksTarget(){
-        let intLinks = $('.page-paragraph-component, .page-accordion-component').find("a[href*='marketplace.va.gov'], a[href^='/'],a[href^='.']");
+    function remediateInternalLinksTarget() {
+        let intLinks = $(COMPONENT_CLASSES).find("a[href*='marketplace.va.gov'], a[href^='/'],a[href^='.']");
 
         intLinks.each(function(){
             let currentLink = $(this);
@@ -74,8 +80,7 @@
     // Style PageBuilder external links and set to open in a new tab (508 accessibility)
     function identifyExternalLinks() {
         // identify external by HREF content
-        const componentClasses = '.page-paragraph-component, .page-accordion-component, .page-compound-body-component';
-        let extLinks = $(componentClasses).find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
+        let extLinks = $(COMPONENT_CLASSES).find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
         
         extLinks.each(function() {
             let currentLink = $(this);
