@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_18_202337) do
+ActiveRecord::Schema.define(version: 2022_09_26_221108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -684,6 +684,11 @@ ActiveRecord::Schema.define(version: 2022_08_18_202337) do
     t.boolean "is_visible", default: true, null: false
     t.integer "template_type", default: 0
     t.boolean "has_chrome_warning_banner", default: false
+    t.text "image_alt_text"
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.bigint "image_file_size"
+    t.datetime "image_updated_at"
     t.index ["page_group_id"], name: "index_pages_on_page_group_id"
   end
 

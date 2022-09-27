@@ -2,6 +2,7 @@ class Page < ApplicationRecord
   has_paper_trail
   belongs_to :page_group
   has_many :page_components, -> { order(position: :asc) }, dependent: :destroy, autosave: true
+  has_attached_file :image, styles: { thumb: '768x432>' }
   accepts_nested_attributes_for :page_components, allow_destroy: true
   validates :slug, presence: true, length: {maximum: 255}
   validates :title, presence: true
@@ -13,6 +14,7 @@ class Page < ApplicationRecord
                           case_sensitive: false
 
   validates :slug, format: { with: Regexp.new('\A' + SLUG_FORMAT.source + '\z'), message: "invalid characters in URL" }
+  validates :image_alt_text, presence: { message: "Image alt text can't be blank", if: :image }
   before_validation :downcase_fields
 
   enum template_type: {default: 0, narrow: 1}

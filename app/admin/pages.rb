@@ -12,6 +12,8 @@ ActiveAdmin.register Page do
                 :is_visible,
                 :template_type,
                 :has_chrome_warning_banner,
+                :image,
+                :image_alt_text,
                 page_components_attributes: [
                   :id,
                   :component_type,
@@ -208,6 +210,14 @@ ActiveAdmin.register Page do
       f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
+      f.input :image, label: 'Image', hint: 'File types allowed: jpg, png. Max file size: 25MB'
+      li do
+        f.label :image_alt_text, "Image alternative text *required*"
+        f.textarea :image_alt_text,
+                   class: 'height-7'
+        para "Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of "\
+              "the information this image is trying to convey.", class: 'inline-hints'
+      end
       f.input :is_visible, label: 'Title and Description are visible?', hint: 'This field allows you to show or hide the page title and description.'
       f.input :page_group, label: 'Group', hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
       f.input :has_chrome_warning_banner, label: 'Switch to Chrome warning banner', hint: 'Check this if the page has any call to action or link that only works or is optimal in the Chrome Browser.'
