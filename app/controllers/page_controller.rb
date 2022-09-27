@@ -6,15 +6,13 @@ class PageController < ApplicationController
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
-    set_pagy_practice_list_array(@page_components)
     @pagy_type = params.keys.first.to_i || nil
     @practice_list_component_index = 0
     @event_ids = []
     @event_list_components = {}
-    set_pagy_event_list_items_array(@page_components)
     @news_items_components = {}
     @news_items_ids = []
-    set_pagy_news_items_array(@page_components)
+    collect_paginated_components(@page_components)
     unless @page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
@@ -26,17 +24,30 @@ class PageController < ApplicationController
 
   private
 
+  def collect_paginated_components(page_components)
+    practice_lists = []
+    events = []
+    news_items = []
+    page_components.each_with_index do |pc, index|
+      practice_lists << pc if pc.component_type === 'PagePracticeListComponent'
+      events << pc if pc.component_type === 'PageEventComponent'
+      news_items << pc if pc.component_type === 'PageNewsComponent'
+    end
+
+    set_pagy_practice_list_array(practice_lists)
+    set_pagy_event_list_items_array(events)
+    set_pagy_news_items_array(news_items)
+  end
+
   def set_pagy_event_list_items_array(page_components)
     page_event_list_index = 0 # TODO: support multiple event lists per page
     params_index = params["#{page_event_list_index}"]
     event_ids = []
     events = []
     page_components.each_with_index do |pc, index|
-      if pc.component_type === 'PageEventComponent'
-        component = pc.component
-        events << component
-        @event_ids << pc.component_id
-      end
+      component = pc.component
+      events << component
+      @event_ids << pc.component_id
     end
 
     if events.present?
@@ -62,11 +73,9 @@ class PageController < ApplicationController
     params_index = params["#{page_news_item_list_index}"]
     news_items = []
     page_components.each_with_index do |pc, index|
-      if pc.component_type === 'PageNewsComponent'
-        component = pc.component
-        news_items << component
-        @news_items_ids << pc.component_id
-      end
+      component = pc.component
+      news_items << component
+      @news_items_ids << pc.component_id
     end
 
     if news_items.present?
@@ -92,20 +101,18 @@ class PageController < ApplicationController
     params_index = params["#{page_practice_list_index}"]
 
     page_components.each_with_index do |pc, index|
-      if pc.component_type === 'PagePracticeListComponent'
-        component = pc.component
-        practices_ids = component.practices
-        practices = helpers.is_user_a_guest? ? Practice.where(id: practices_ids).public_facing.sort_by_retired.sort_a_to_z : Practice.where(id: practices_ids).published_enabled_approved.sort_by_retired.sort_a_to_z
+      component = pc.component
+      practices_ids = component.practices
+      practices = helpers.is_user_a_guest? ? Practice.where(id: practices_ids).public_facing.sort_by_retired.sort_a_to_z : Practice.where(id: practices_ids).published_enabled_approved.sort_by_retired.sort_a_to_z
 
-        if @practice_list_components[page_practice_list_index].present?
-          @practice_list_components[page_practice_list_index][:pagy], @practice_list_components[page_practice_list_index][:paginated] = get_pagy_practices_array(practices, page_practice_list_index, params_index)
-        else
-        pagy_practices, paginated_practices = get_pagy_practices_array(practices, page_practice_list_index, params_index)
-        practice_list_pagy = { pagy: pagy_practices, practices: paginated_practices}
-        @practice_list_components.push(practice_list_pagy)
-        end
-        page_practice_list_index += 1
+      if @practice_list_components[page_practice_list_index].present?
+        @practice_list_components[page_practice_list_index][:pagy], @practice_list_components[page_practice_list_index][:paginated] = get_pagy_practices_array(practices, page_practice_list_index, params_index)
+      else
+      pagy_practices, paginated_practices = get_pagy_practices_array(practices, page_practice_list_index, params_index)
+      practice_list_pagy = { pagy: pagy_practices, practices: paginated_practices}
+      @practice_list_components.push(practice_list_pagy)
       end
+      page_practice_list_index += 1
     end
   end
 
