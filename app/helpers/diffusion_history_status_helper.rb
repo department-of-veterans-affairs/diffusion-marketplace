@@ -1,7 +1,6 @@
 module DiffusionHistoryStatusHelper
 
   def get_adopting_facilities_for_these_practices(practices_list, successful_adoptions, in_progress_adoptions, unsuccessful_adoptions)
-    debugger
     va_facilities_list = []
     practices_list.practices.each do |pr|
       diffusion_histories = DiffusionHistory.where(practice_id: pr)

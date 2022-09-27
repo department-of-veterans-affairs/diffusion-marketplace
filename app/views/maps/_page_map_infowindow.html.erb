@@ -7,7 +7,8 @@
       names = []
       taglines = []
       short_names = []
-      practices_to_display_in_info_window facility_id, practice_list, names, taglines, short_names
+      slugs = []
+      practices_to_display_in_info_window facility_id, practice_list, names, taglines, short_names, slugs
       @num_practices_adopted = names.count
     %>
     <p class="margin-0 padding-x-4">
@@ -20,7 +21,9 @@
       <% i = 0 %>
       <% while i < names.length do %>
         <div class="radius-lg border border-solid padding-x-4 padding-y-105 border-base-lightest margin-bottom-2">
-        <%= names[i] %> <% if short_names[i].to_s.length > 0 %> <%= "(" +  short_names[i] + ")" %> <% end %>
+          <a class="usa-link" href="/innovations/<%= slugs[i] %>">
+            <%= names[i] %> <% if short_names[i].to_s.length > 0 %> <%= "(" +  short_names[i] + ")" %> <% end %>
+          </a>
           <div class="text-normal font-sans-3xs margin-top-3">
           <%= taglines[i] %>
           </div>
