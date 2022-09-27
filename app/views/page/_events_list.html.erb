@@ -1,7 +1,7 @@
 <% events.each do |event|%>
     <div class="page-event-component">
         <h3 class="event-title margin-bottom-3">
-            <a href="<%= event.url %>">
+            <a href="<%= event.url %>"  class="<%= get_link_classes(event.url) %>" target="<%= get_link_target_attribute(event.url) %>" >
                 <%= event.title %>
             </a>
         </h3>

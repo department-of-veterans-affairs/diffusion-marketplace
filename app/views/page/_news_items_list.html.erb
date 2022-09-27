@@ -3,7 +3,7 @@
         <div class="usa-card__container">
             <div class="usa-card__header">
                 <h3 class="margin-bottom-2 news-item-title">
-                    <a href="<%= news_item.url %>">
+                    <a href="<%= news_item.url %>" class="<%= get_link_classes(news_item.url) %>" target="<%= get_link_target_attribute(news_item.url) %>">
                         <%= news_item.title %>
                     </a>
                 </h3>

@@ -86,7 +86,7 @@ function paginatedNewsItemListPageComponent() {
 
 
     // Append the next set of practice cards to the current set
-    $(newsItemsClass).append("<%= escape_javascript render(partial: 'news_list', locals: {
+    $(newsItemsClass).append("<%= escape_javascript render(partial: 'news_items_list', locals: {
       news_items: data_set,
       component_index: @pagy_type})
     %>")
