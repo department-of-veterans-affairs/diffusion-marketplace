@@ -668,9 +668,9 @@ ActiveRecord::Schema.define(version: 2022_08_30_113020) do
     t.string "short_name"
     t.string "description"
     t.string "practices", default: [], array: true
-    t.boolean "display_successful", default: false
-    t.boolean "display_in_progress", default: false
-    t.boolean "display_unsuccessful", default: false
+    t.boolean "display_successful_adoptions", default: false
+    t.boolean "display_in_progress_adoptions", default: false
+    t.boolean "display_unsuccessful_adoptions", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["page_component_id"], name: "index_page_map_components_on_page_component_id"
