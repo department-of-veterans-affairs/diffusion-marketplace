@@ -1,5 +1,5 @@
 <div class="line-height-sans-1 map-infowindow-size">
-  <div class="margin-top-1 visn-card-text">
+  <div class="margin-top-1">
     <%
       station_name = facility.official_station_name
       facility_id = facility.id
@@ -10,20 +10,16 @@
       practices_to_display_in_info_window facility_id, practice_list, names, taglines, short_names
       @num_practices_adopted = names.count
     %>
-    <p>
-      <%= link_to va_facility_path(facility) do %>
-        <div class='padding-for-map-component-infowindow-text usa-link font-sans-md text-bold'>
-        <%= "#{station_name} #{ show_common_name(station_name, facility.common_name)}" %>
-        </div>
-      <% end %>
+    <p class="margin-0 padding-x-4">
+      <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'usa-link font-sans-md text-bold' %>
     </p>
-    <div class="margin-top-1 text-normal theme-type-scale-sm padding-for-map-component-infowindow-text">
+    <div class="margin-top-1 text-normal theme-type-scale-sm padding-x-4">
       <%= @num_practices_adopted %> <% if @short_name.length > 0 %> <%= @short_name %> <% else %> Total <% end %> Innovation<% if @num_practices_adopted != 1 %>s<% end %>
     </div>
     <div class="text-bold font-sans-3xs">
       <% i = 0 %>
       <% while i < names.length do %>
-        <div class="map-infowindow-border margin-bottom-2">
+        <div class="radius-lg border border-solid padding-x-4 padding-y-105 border-base-lightest margin-bottom-2">
         <%= names[i] %> <% if short_names[i].to_s.length > 0 %> <%= "(" +  short_names[i] + ")" %> <% end %>
           <div class="text-normal font-sans-3xs margin-top-3">
           <%= taglines[i] %>

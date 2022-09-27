@@ -17,7 +17,7 @@ function initialize() {
     handler.buildMap({
             provider: {
                 center: {lat: 39.8097343, lng: -98.5556199},
-                zoom: 4.1,
+                zoom: 3.8,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT
                 },

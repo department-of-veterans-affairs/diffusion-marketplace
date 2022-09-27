@@ -7,7 +7,7 @@ class PageController < ApplicationController
       if pc.component_type == "PageMapComponent"
         @practices_list = PageMapComponent.find_by_id(pc.component_id)
         @short_name = @practices_list.short_name
-        adoptions = get_adopting_facilities_for_these_practices(@practices_list, @practices_list.display_successful_adoptions, @practices_list.display_in_progress_adoptions, @practices_list.display_unsuccessful_adoptions)
+        adoptions = helpers.get_adopting_facilities_for_these_practices(@practices_list, @practices_list.display_successful_adoptions, @practices_list.display_in_progress_adoptions, @practices_list.display_unsuccessful_adoptions)
         build_map_component adoptions
         @adoptions_count = adoptions.count
       end
@@ -81,23 +81,23 @@ class PageController < ApplicationController
         )
   end
 
-  def get_adopting_facilities_for_these_practices(practices_list, successful_adoptions, in_progress_adoptions, unsuccessful_adoptions)
-    va_facilities_list = []
-    practices_list.practices.each do |pr|
-      diffusion_histories = DiffusionHistory.where(practice_id: pr)
-      diffusion_histories.each do |dh|
-        dhs = DiffusionHistoryStatus.where(diffusion_history_id: dh[:id]).first.status
-        unless dh.va_facility_id.nil?
-          if dhs == "Completed" && successful_adoptions
-            va_facilities_list.push dh.va_facility_id
-          elsif dhs == "In progress" && in_progress_adoptions
-            va_facilities_list.push dh.va_facility_id
-          elsif dhs == "Unsuccessful" && unsuccessful_adoptions
-            va_facilities_list.push dh.va_facility_id
-          end
-        end
-      end
-    end
-    va_facilities_list
-  end
+  # def get_adopting_facilities_for_these_practices(practices_list, successful_adoptions, in_progress_adoptions, unsuccessful_adoptions)
+  #   va_facilities_list = []
+  #   practices_list.practices.each do |pr|
+  #     diffusion_histories = DiffusionHistory.where(practice_id: pr)
+  #     diffusion_histories.each do |dh|
+  #       dhs = DiffusionHistoryStatus.where(diffusion_history_id: dh[:id]).first.status
+  #       unless dh.va_facility_id.nil?
+  #         if (dhs == 'Completed' || dhs == 'Implemented' || dhs == 'Complete') && successful_adoptions
+  #           va_facilities_list.push dh.va_facility_id
+  #         elsif (dhs == 'In progress' || dhs == 'Planning' || dhs == 'Implementing') && in_progress_adoptions
+  #           va_facilities_list.push dh.va_facility_id
+  #         elsif dhs == "Unsuccessful" && unsuccessful_adoptions
+  #           va_facilities_list.push dh.va_facility_id
+  #         end
+  #       end
+  #     end
+  #   end
+  #   va_facilities_list
+  # end
 end
