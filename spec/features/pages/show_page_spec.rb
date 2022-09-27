@@ -37,6 +37,9 @@ describe 'Page Builder - Show', type: :feature do
     downloadable_file_component = PageDownloadableFileComponent.create(attachment: downloadable_file, description: 'Test file')
     paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='https://marketplace.va.gov/about'>about the marketplace</a></p><p><a href='https://wikipedia.org/'>an external link</a></p></div>")
     legacy_paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='../../about' target='_blank'>relative internal link with dot</a></p><p><a href='/about' target='_blank'>relative internal link with slash</a></p><p><a href='https://marketplace.va.gov/' target='_blank'>absolute internal link</a></p></div>")
+    event_component = PageEventComponent.create(title: 'Event', url: 'https://wikipedia.org', text: 'event description')
+    news_component = PageNewsComponent.create(title: 'News item', url: 'https://wikipedia.org', text: 'news item description', published_date: Date.current )
+
     PageComponent.create(page: @page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: @page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component, created_at: Time.now)
@@ -48,6 +51,8 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: @page, component: downloadable_file_component, created_at: Time.now)
     PageComponent.create(page: @page, component: paragraph_component, created_at: Time.now)
     PageComponent.create(page: @page, component: legacy_paragraph_component, created_at: Time.now)
+    4.times { PageComponent.create(page: @page, component: event_component, created_at: Time.now) }
+    7.times { PageComponent.create(page: @page, component: news_component, created_at: Time.now) }
     # must be logged in to view pages
     login_as(user, scope: :user, run_callbacks: false)
     visit '/programming/ruby-rocks'
@@ -78,7 +83,7 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_no_content('The last practice')
     expect(page).to have_css('.dm-practice-link')
     expect(page).to have_content('Load more')
-    find('.dm-paginated-0-link').click
+    find('.dm-paginated-practices-0-link').click
     expect(page).to have_content('The last practice')
   end
 
@@ -126,6 +131,16 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display the downloadable file' do
     expect(page).to have_css('.usa-link--external')
     expect(page).to have_content('Test file')
+  end
+
+  it 'paginates event components' do
+    expect(page).to have_css('.event-component-list')
+    expect(page).to have_css('.dm-load-more-events-0-btn-container')
+  end
+
+  it 'paginates news components' do
+    expect(page).to have_css('.news-component-list')
+    expect(page).to have_css('.dm-load-more-news-items-0-btn-container')
   end
 
   it 'styles external links and opens them in a new tab' do

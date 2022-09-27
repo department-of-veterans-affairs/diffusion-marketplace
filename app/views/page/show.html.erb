@@ -91,7 +91,7 @@
           <% component_index = 0 %>
           <% elc = @event_list_components[0] %>
           <% if component.id == @event_ids.first %>
-            <div class="dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+            <div class="event-component-list dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
               <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
             </div>
             <% if elc[:pagy].count > 3 %>
