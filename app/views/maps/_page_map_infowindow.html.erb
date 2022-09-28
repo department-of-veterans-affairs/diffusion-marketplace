@@ -14,7 +14,7 @@
     <p class="margin-0 padding-x-4">
       <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'usa-link font-sans-md text-bold' %>
     </p>
-    <div class="margin-top-1 text-normal theme-type-scale-sm padding-x-4">
+    <div class="margin-top-0 text-normal theme-type-scale-sm padding-x-4">
       <%= @num_practices_adopted %> <% if @short_name.length > 0 %> <%= @short_name %> <% else %> Total <% end %> Innovation<% if @num_practices_adopted != 1 %>s<% end %>
     </div>
     <div class="text-bold font-sans-3xs">
