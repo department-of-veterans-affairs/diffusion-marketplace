@@ -87,7 +87,6 @@ describe 'Page Builder - Show', type: :feature do
   it 'should display the map' do
     expect(page).to have_content('test map')
     expect(page).to have_content('map description')
-    expect(html).to have_selector('div#page_builder_map')
     expect(html).to have_selector('div.grid-col-12')
     expect(html).to have_selector('desktop:grid-col-7')
     expect(html).to have_selector('div.community_map_styles')
