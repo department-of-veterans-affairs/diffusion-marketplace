@@ -88,7 +88,6 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_content('test map')
     expect(page).to have_content('map description')
     expect(html).to have_selector('div', class: 'grid-col-12')
-    expect(html).to have_selector('div', class:  'desktop:grid-col-7')
     expect(html).to have_selector('div', class: 'community_map_styles')
     expect(html).to have_selector('div', class: 'gm-style')
   end
