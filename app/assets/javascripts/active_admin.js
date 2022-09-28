@@ -229,7 +229,7 @@ const MAX_DESCRIPTION_LENGTH = 140;
                                id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_image"
                                name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][image]"
                                class="margin-top-0"/>
-                        <p class="inline-hints">File types allowed: jpg, png. Max file size: 25MB</p>
+                        <p class="inline-hints">File types allowed: jpg, jpeg, and png. Max file size: 25MB</p>
                     </div>
                     
                     <div class="page-component-image-attribute-container">

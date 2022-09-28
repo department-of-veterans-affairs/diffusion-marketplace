@@ -170,7 +170,7 @@ html = Arbre::Context.new do
                         id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
                         name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][image]",
                         class: 'margin-top-0'
-                  para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+                  para 'File types allowed: jpg, jpeg, and png. Max file size: 25MB', class: 'inline-hints'
                 end
 
                 # Image preview

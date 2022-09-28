@@ -14,6 +14,7 @@ ActiveAdmin.register Page do
                 :has_chrome_warning_banner,
                 :image,
                 :image_alt_text,
+                :delete_image_and_alt_text,
                 page_components_attributes: [
                   :id,
                   :component_type,
@@ -162,7 +163,7 @@ ActiveAdmin.register Page do
               para 'Images:'
               pc.page_component_images.each do |pci|
                 para do
-                  img src: "#{pci.image_s3_presigned_url}", class: 'maxw-10'
+                  img src: "#{pci.image_s3_presigned_url(:thumb)}", class: 'maxw-10'
                 end
                 para "URL: #{pci.url}" if pci.url.present?
                 para "Caption: #{pci.caption}" if pci.caption.present?
@@ -210,18 +211,48 @@ ActiveAdmin.register Page do
       f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
-      f.input :image, label: 'Image', hint: 'File types allowed: jpg, png. Max file size: 25MB'
-      li do
-        f.label :image_alt_text, "Image alternative text *required*"
-        f.textarea :image_alt_text,
-                   class: 'height-7'
-        para "Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of "\
-              "the information this image is trying to convey.", class: 'inline-hints'
+      f.input :image,
+              value: f.resource.image_file_name,
+              type: 'file',
+              accept: '.jpg, .jpeg, .png',
+              label: 'Image',
+              hint: 'File types allowed: jpg, jpeg, and png. Max file size: 25MB'
+      # Page image preview
+      image = f.resource.image
+      if image.present?
+        div class: 'page-image-preview-container' do
+          div class: 'placeholder'
+          div class: 'page-image-container' do
+            img class: 'page-image', src: f.resource.image_s3_presigned_url(:thumb), alt: f.resource.image_alt_text
+          end
+        end
       end
-      f.input :is_visible, label: 'Title and Description are visible?', hint: 'This field allows you to show or hide the page title and description.'
-      f.input :page_group, label: 'Group', hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
-      f.input :has_chrome_warning_banner, label: 'Switch to Chrome warning banner', hint: 'Check this if the page has any call to action or link that only works or is optimal in the Chrome Browser.'
-      f.input :published, input_html: { disabled: true }, as: :datepicker, label: 'Published', hint: 'Date when page was published. This field is readonly. Do not touch.'
+      f.input :image_alt_text,
+              label: 'Image alternative text (required if image present)',
+              as: :text,
+              input_html: { class: 'height-7' },
+              hint: "Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of "\
+                    "the information this image is trying to convey."
+      if image.present?
+          f.input :delete_image_and_alt_text,
+                  as: :boolean,
+                  label: 'Delete image and alternative text',
+                  input_html: { class: 'margin-left-2px' }
+      end
+      f.input :is_visible,
+              label: 'Title and Description are visible?',
+              hint: 'This field allows you to show or hide the page title and description.'
+      f.input :page_group,
+              label: 'Group',
+              hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" '\
+                    'is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
+      f.input :has_chrome_warning_banner,
+              label: 'Switch to Chrome warning banner',
+              hint: 'Check this if the page has any call to action or link that only works or is optimal in the Chrome Browser.'
+      f.input :published,
+              input_html: { disabled: true },
+              as: :datepicker, label: 'Published',
+              hint: 'Date when page was published. This field is readonly. Do not touch.'
     end
 
     f.inputs "Page Components" do
@@ -232,6 +263,8 @@ ActiveAdmin.register Page do
 
 
   controller do
+    before_action :set_page
+    before_action :delete_page_image_and_alt_text, only: [:create, :update]
     before_action :delete_incomplete_page_component_images_params, only: [:create, :update]
 
     def create
@@ -244,33 +277,43 @@ ActiveAdmin.register Page do
 
     private
 
+    def set_page
+      page_id = params[:id]
+      @page = page_id.present? ? Page.find(page_id) : nil
+    end
+
     def create_or_update_page
       begin
         page_params = params[:page]
         page_description = page_params[:description]
-        page_id = params[:id]
-        page = page_id.present? ? Page.find(page_id) : nil
-        # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21). This adds a custom message to match other page-builder validation errors.
+        # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21).
+        # This adds a custom message to match other page-builder validation errors.
         raise StandardError.new 'Validation failed. Page description cannot be longer than 140 characters.' if page_description.length > 140
+        # raise a standard error if the user tries to send a Page image without filling out the 'image_alt_text' field
+        unless page_params[:delete_image].present?
+          if (@page&.image.present? || page_params[:image].present?) && page_params[:image_alt_text].blank?
+            raise StandardError.new 'Validation failed. Page cannot have an optional image without alternative text.'
+          end
+        end
 
-        if page.nil?
-          page = Page.create!(permitted_params[:page])
+        if @page.nil?
+          Page.create!(permitted_params[:page])
         else
-          page.update(permitted_params[:page])
+          @page.update(permitted_params[:page])
         end
 
         respond_to do |format|
           if @incomplete_image_components.present? && @incomplete_image_components > 0
             flash[:warning] = "One or more 'Compound Body' components had missing required fields for its image(s). The page was saved, but those image(s) were not."
-            format.html { redirect_to admin_page_path(page) }
+            format.html { redirect_to admin_page_path(@page) }
           else
-            format.html { redirect_to admin_page_path(page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
+            format.html { redirect_to admin_page_path(@page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
           end
         end
       rescue => e
         respond_to do |format|
           if params[:action] === 'update'
-            format.html { redirect_to edit_admin_page_path(page), flash: { error:  "#{e.message}"} }
+            format.html { redirect_to edit_admin_page_path(@page), flash: { error:  "#{e.message}"} }
           else
             format.html { redirect_to new_admin_page_path, flash: { error:  "#{e.message}"} }
           end
@@ -279,6 +322,16 @@ ActiveAdmin.register Page do
     end
 
     private
+
+    def delete_page_image_and_alt_text
+      if @page.present? && params[:page][:delete_image] === '1'
+        # set the 'image' attribute to nil
+        @page.image = nil
+        # set the 'image_alt_text' in the params to nil, in order to avoid issue with backend validation
+        # where it checks for an existing image first (the 'image_alt_text' key is still in the params at this point)
+        params[:page][:image_alt_text] = nil
+      end
+    end
 
     def delete_incomplete_page_component_images_params
       ### If there are any 'PageComponentImages' that have missing required fields, delete them from the params
