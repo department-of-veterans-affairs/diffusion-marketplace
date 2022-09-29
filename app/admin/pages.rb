@@ -160,7 +160,7 @@ ActiveAdmin.register Page do
               para 'Images:'
               pc.page_component_images.each do |pci|
                 para do
-                  img src: "#{pci.image_s3_presigned_url}", class: 'maxw-10'
+                  img src: "#{pci.image_s3_presigned_url(:thumb)}", class: 'maxw-10'
                 end
                 para "URL: #{pci.url}" if pci.url.present?
                 para "Caption: #{pci.caption}" if pci.caption.present?
