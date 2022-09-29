@@ -6,7 +6,7 @@ class PageController < ApplicationController
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
-    @pagy_type = params.keys.first.to_i || nil
+    @pagy_type = params.keys.first || nil
     @practice_list_component_index = 0
     @event_ids = []
     @event_list_components = {}

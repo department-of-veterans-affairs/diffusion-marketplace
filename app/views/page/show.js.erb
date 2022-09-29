@@ -1,11 +1,11 @@
 function paginatedPracticeListPageComponent() {
-  <% if @practice_list_components.present? %>
-    <% if params["practices-0"].present? %>
-    var type = "<%= @pagy_type %>";
-    var practicesClass = ".dm-paginated-" + type + "-practices";
+  <% type = @pagy_type.split('-')[0] %>
+  <% component_index = @pagy_type.split('-')[1] %>
+  <% if type == "practices" %>
+    var practicesClass = ".dm-paginated-" + <%= component_index %> + "-practices";
 
-    <% data_set = @practice_list_components[@pagy_type.to_i][:practices] %>
-    <% pagy = @practice_list_components[@pagy_type.to_i][:pagy] %>
+    <% data_set = @practice_list_components[component_index.to_i][:practices] %>
+    <% pagy = @practice_list_components[component_index.to_i][:pagy] %>
 
     <% current_page = pagy.page %>
     <% next_page = pagy.next %>
@@ -13,12 +13,12 @@ function paginatedPracticeListPageComponent() {
     // Append the next set of practice cards to the current set
     $(practicesClass).append("<%= escape_javascript render(partial: 'shared/practice_cards_row', locals: {
       practices: data_set,
-      component_index: @pagy_type})
+      component_index: component_index.to_i})
     %>")
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-    var currentPageClass = ".dm-paginated-practices-" + type + "-link";
-    var loadMoreBtnContainer = ".dm-load-more-practices-" + type + "-btn-container";
+    var currentPageClass = ".dm-paginated-practices-" + <%= component_index %> + "-link";
+    var loadMoreBtnContainer = ".dm-load-more-practices-" + <%= component_index %> + "-btn-container";
 
     <% if next_page.present? %>
       $(currentPageClass).remove();
@@ -28,7 +28,6 @@ function paginatedPracticeListPageComponent() {
     <% else %>
       // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
       $(currentPageClass).remove();
-    <% end %>
     <% end %>
   <% end %>
 }
@@ -36,13 +35,13 @@ function paginatedPracticeListPageComponent() {
 $(paginatedPracticeListPageComponent)
 
 function paginatedEventListPageComponent() {
-  <% if @event_list_components.present? %>
-    <% if params["events-0"].present? %>
-    var type = "<%= @pagy_type %>";
-    var eventsClass = ".dm-paginated-" + type + "-events";
+  <% type = @pagy_type.split('-')[0] %>
+  <% component_index = @pagy_type.split('-')[1] %>
+  <% if type == "events" %>
+    var eventsClass = ".dm-paginated-" + <%= component_index %> + "-events";
 
-    <% data_set = @event_list_components[@pagy_type.to_i][:events] %>
-    <% pagy = @event_list_components[@pagy_type.to_i][:pagy] %>
+    <% data_set = @event_list_components[component_index.to_i][:events] %>
+    <% pagy = @event_list_components[component_index.to_i][:pagy] %>
 
     <% current_page = pagy.page %>
     <% next_page = pagy.next %>
@@ -50,22 +49,20 @@ function paginatedEventListPageComponent() {
     // Append the next set of practice cards to the current set
     $(eventsClass).append("<%= escape_javascript render(partial: 'events_list', locals: {
       events: data_set,
-      component_index: @pagy_type})
+      component_index: component_index.to_i})
     %>")
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-    var currentPageClass = ".dm-paginated-events-" + type + "-link";
-    var loadMoreBtnContainer = ".dm-load-more-events-" + type + "-btn-container";
+    var currentPageClass = ".dm-paginated-events-" + <%= component_index %> + "-link";
+    var loadMoreBtnContainer = ".dm-load-more-events-" + <%= component_index %> + "-btn-container";
 
     <% if next_page.present? %>
       $(currentPageClass).remove();
-
       <% link = pagy_link_proc(pagy) %>
       $(loadMoreBtnContainer).append(`<%= link.call(next_page, 'Load more').html_safe %>`);
     <% else %>
       // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
       $(currentPageClass).remove();
-    <% end %>
     <% end %>
   <% end %>
 }
@@ -73,13 +70,13 @@ function paginatedEventListPageComponent() {
 $(paginatedEventListPageComponent)
 
 function paginatedNewsItemListPageComponent() {
-  <% if @news_items_components.present? %>
-   <% if params["news-0"].present? %>
-    var type = "<%= @pagy_type %>";
-    var newsItemsClass = ".dm-paginated-" + type + "-news-items";
+  <% type = @pagy_type.split('-')[0] %>
+  <% component_index = @pagy_type.split('-')[1] %>
+  <% if type == "news" %>
+    var newsItemsClass = ".dm-paginated-" + <%= component_index %> + "-news-items";
 
-    <% data_set = @news_items_components[@pagy_type.to_i][:news_items] %>
-    <% pagy = @news_items_components[@pagy_type.to_i][:pagy] %>
+    <% data_set = @news_items_components[component_index.to_i][:news_items] %>
+    <% pagy = @news_items_components[component_index.to_i][:pagy] %>
 
     <% current_page = pagy.page %>
     <% next_page = pagy.next %>
@@ -88,12 +85,12 @@ function paginatedNewsItemListPageComponent() {
     // Append the next set of practice cards to the current set
     $(newsItemsClass).append("<%= escape_javascript render(partial: 'news_items_list', locals: {
       news_items: data_set,
-      component_index: @pagy_type})
+      component_index: component_index.to_i})
     %>")
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-    var currentPageClass = ".dm-paginated-news-items-" + type + "-link";
-    var loadMoreBtnContainer = ".dm-load-more-news-items-" + type + "-btn-container";
+    var currentPageClass = ".dm-paginated-news-items-" + <%= component_index %> + "-link";
+    var loadMoreBtnContainer = ".dm-load-more-news-items-" + <%= component_index %> + "-btn-container";
 
     <% if next_page.present? %>
       $(currentPageClass).remove();
@@ -103,7 +100,6 @@ function paginatedNewsItemListPageComponent() {
     <% else %>
       // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
       $(currentPageClass).remove();
-    <% end %>
     <% end %>
   <% end %>
 }
