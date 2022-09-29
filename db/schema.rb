@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_16_103608) do
+ActiveRecord::Schema.define(version: 2022_08_18_202337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -514,6 +514,20 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.index ["page_component_id"], name: "index_page_accordion_components_on_page_component_id"
   end
 
+  create_table "page_component_images", force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.text "caption"
+    t.text "alt_text"
+    t.string "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.bigint "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["page_component_id"], name: "index_page_component_images_on_page_component_id"
+  end
+
   create_table "page_components", force: :cascade do |t|
     t.bigint "page_id"
     t.integer "position"
@@ -524,6 +538,22 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.index ["component_id"], name: "index_page_components_on_component_id"
     t.index ["page_id"], name: "index_page_components_on_page_id"
     t.index ["position"], name: "index_page_components_on_position"
+  end
+
+  create_table "page_compound_body_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.boolean "large_title", default: false
+    t.text "text"
+    t.string "url"
+    t.string "url_link_text"
+    t.string "title_header"
+    t.string "text_alignment"
+    t.integer "margin_top"
+    t.integer "margin_bottom"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_component_id"], name: "index_page_compound_body_components_on_page_component_id"
   end
 
   create_table "page_cta_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -993,12 +1023,12 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
     t.string "highlight_attachment_file_name"
     t.string "highlight_attachment_content_type"
     t.integer "highlight_attachment_file_size"
     t.datetime "highlight_attachment_updated_at"
-    t.boolean "is_public", default: false
     t.text "main_display_image_alt_text"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
@@ -1401,7 +1431,9 @@ ActiveRecord::Schema.define(version: 2022_05_16_103608) do
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "page_accordion_components", "page_components"
+  add_foreign_key "page_component_images", "page_components"
   add_foreign_key "page_components", "pages"
+  add_foreign_key "page_compound_body_components", "page_components"
   add_foreign_key "page_cta_components", "page_components"
   add_foreign_key "page_downloadable_file_components", "page_components"
   add_foreign_key "page_header2_components", "page_components"

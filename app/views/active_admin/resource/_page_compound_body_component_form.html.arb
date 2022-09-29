@@ -1,0 +1,256 @@
+# TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD'
+component ||= nil
+
+html = Arbre::Context.new do
+  li "", id: "PageCompoundBodyComponent_poly_#{placeholder}",
+         class: "input polyform component-#{placeholder} compound-body-component-li position-relative" do
+    fieldset class: "inputs" do
+      legend do
+        span 'Text and Images'
+      end
+
+      if component
+        input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+      end
+      ol class: 'page-component-ol' do
+        # Title header
+        li class: 'string input optional stringish title-header-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_header_input" do
+          label 'Title header', for: "page_page_components_attributes_#{placeholder}_component_attributes_title_header", class: 'label'
+
+          input value: component&.title_header || nil,
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_title_header",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][title_header]",
+                type: 'text'
+        end
+
+        # Title
+        li class: 'string input optional stringish title-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
+          label 'Title', for: "page_page_components_attributes_#{placeholder}_component_attributes_title", class: 'label'
+
+          input value: component&.title || nil,
+            id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][title]",
+            type: 'text'
+        end
+
+        li class: 'checkbox input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_large_title_input" do
+          if component
+            input type: 'hidden', value: '0', name: "page[page_components_attributes][#{placeholder}][component_attributes][large_title]"
+          end
+          label 'Larger font title', for: "page_page_components_attributes_#{placeholder}_component_attributes_large_title", class: 'label'
+          input value: '1', type: 'checkbox', checked: component&.large_title?,
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_large_title",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][large_title]",
+                class: "toggle-large-title-styling"
+        end
+
+        # WYSIWYG Text
+        li class: 'string input optional stringish text-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_input" do
+          label 'Text', for: "page_page_components_attributes_compound_body_#{placeholder}_component_attributes_text", class: 'label'
+
+          textarea component&.text,
+             id: "page_page_components_attributes_compound_body_#{placeholder}_component_attributes_text",
+             name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
+             class: 'tinymce compound-body-component-text',
+             rows:'18' do
+              component&.send(:text).try :html_safe
+          end
+          para 'Supplementary text to title', class: 'inline-hints'
+        end
+
+        # URL
+        li class: 'string input optional stringish url-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
+          label 'URL', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
+          input value: component&.url || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
+          para class: 'inline-hints' do
+            span 'For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").'
+            span 'For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").'
+          end
+        end
+
+        # URL link text
+        li class: 'string input optional stringish url-link-text-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text_input" do
+          label 'URL link text', for: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text", class: 'label'
+          input value: component&.url_link_text || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url_link_text]"
+          para 'Enter the text that will displayed for the link to the URL above', class: 'inline-hints'
+        end
+
+        uswds_margin_units = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        uswds_margin_link = 'https://designsystem.digital.gov/utilities/margin-and-padding/'
+
+        # Margin bottom
+        li class: 'select input margin-bottom-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom_input" do
+          label 'Margin bottom', for: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom", class: 'label'
+          select value: component&.margin_bottom || nil,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][margin_bottom]" do
+            uswds_margin_units.each do |unit|
+              option "#{unit}", selected: component&.margin_bottom === unit
+            end
+          end
+
+          para class: 'inline-hints' do
+            span "Choose the bottom margin for this 'Compound Body' component (option are based on USWDS units:"
+            a 'USWDS margin units',
+              href: uswds_margin_link,
+              class: 'usa-link usa-link--external',
+              target: '_blank'
+            span "Ex: '3' would equate to 'margin-bottom-3'. Defaults to 0."
+          end
+        end
+
+        # Margin top
+        li class: 'select input margin-top-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top_input" do
+          label 'Margin top', for: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top", class: 'label'
+          select value: component&.margin_top || nil,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][margin_top]" do
+            uswds_margin_units.each do |unit|
+              option "#{unit}", selected: component&.margin_top === unit
+            end
+          end
+
+          para class: 'inline-hints' do
+            span "Choose the top margin for this 'Compound Body' component (option are based on USWDS units:"
+            a 'USWDS margin units',
+              href: uswds_margin_link,
+              class: 'usa-link usa-link--external',
+              target: '_blank'
+            span "Ex: '3' would equate to 'margin-top-3'. Defaults to 0."
+          end
+        end
+
+        page_component_images = component&.page_component&.page_component_images
+
+        # Text alignment
+        li class: 'select input text-alignment-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment_input",
+           style: "#{'padding-bottom: 36px' if page_component_images.blank?}" do
+          label 'Text alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment", class: 'label'
+          select value: component&.text_alignment || nil,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][text_alignment]" do
+            option 'Left', selected: component&.text_alignment === 'Left' || component&.text_alignment.blank?
+            option 'Right', selected: component&.text_alignment === 'Right'
+          end
+          para "Choose the text alignment for this 'Compound Body' component (left or right). Defaults to left.",
+               class: 'inline-hints'
+        end
+
+        # Page component images header bar
+        div class: "page-component-images-header display-flex flex-align-center #{'display-none' if page_component_images.blank?}" do
+          span 'Image list'
+        end
+
+        # TODO: Figure out a way to make the PageComponentImage list html a shareable partial
+        # PageComponentImage list
+        ol id: "page_page_components_attributes_#{placeholder}_page_component_images_ol", class: 'page-component-images-ol' do
+          if component && page_component_images&.present?
+            page_component_images.each_with_index do |pci, index|
+              li id: "page_page_components_attributes_#{placeholder}_page_component_images_#{index}_li border-bottom-2",
+                 'data-id': "page_component_image_#{placeholder}_li",
+                 class: 'page-component-image-li' do
+                input type: 'hidden',
+                      value: pci.id,
+                      name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][id]"
+
+                # Image file
+                div class: 'page-component-image-attribute-container image-file-container' do
+                  label 'Image *Required*',
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
+                        class: 'label'
+                  input value: pci.image_file_name, type: 'file', accept: '.jpg, .jpeg, .png',
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][image]",
+                        class: 'margin-top-0'
+                  para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+                end
+
+                # Image preview
+                if pci.image.present?
+                  div class: 'page-component-image-preview-container' do
+                    div class: 'placeholder'
+                    div class: 'page-component-image-container' do
+                      img class: 'page-component-image', src: pci.image_s3_presigned_url(:thumb), alt: pci.alt_text
+                    end
+                  end
+                end
+
+                # Image URL
+                div class: 'page-component-image-attribute-container image-url-container' do
+                  label 'Image URL', for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_url", class: 'label'
+                  input value: pci.url || nil, type: 'text',
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_url",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][url]"
+                  para class: 'inline-hints' do
+                    span 'For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").'
+                    span 'For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").'
+                  end
+                end
+
+                # Image caption
+                div class: 'page-component-image-attribute-container image-caption-container' do
+                  label 'Caption',
+                        for: "page_page_components_attributes_compound_body_#{placeholder}_page_component_images_attributes_#{index}_caption",
+                        class: 'label'
+
+                  textarea pci.caption,
+                           id: "page_page_components_attributes_compound_body_#{placeholder}_page_component_images_attributes_#{index}_caption",
+                           name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][caption]",
+                           class: 'tinymce page-component-image-caption',
+                           rows:'18'
+                  para 'Text that accurately describes the image.', class: 'inline-hints'
+                end
+
+                # Image alt text
+                div class: 'page-component-image-attribute-container image-alt-text-container' do
+                  label 'Alternative text *required*',
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
+                        class: 'label'
+                  input value: pci.alt_text, type: 'text',
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][alt_text]"
+                  para 'Alternative text that gets rendered in case the image cannot be viewed.', class: 'inline-hints'
+                end
+
+                # Trash container
+                div class: 'display-flex flex-justify-end' do
+                  div class: 'trash-container' do
+                    input type: 'hidden',
+                          value: '0',
+                          id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}__destroy",
+                          name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][_destroy]"
+                    a class: 'dm-page-builder-trash dm-button--unstyled-warning',
+                           href: 'javascript:void(0)' do
+                      span 'Delete entry'
+                    end
+                  end
+                end
+
+                # Separator line
+                unless page_component_images.count === index + 1
+                  div class: 'add-another-separator border-y-1px border-gray-5 margin-top-2'
+                end
+              end
+            end
+          end
+        end
+
+        # 'Add another' link
+        a class: 'add-another add-another-page-component-image position-absolute cursor-pointer', 'data-add-another': "#{placeholder}", href: 'javascript:void(0)' do
+          span 'Add image'
+        end
+      end
+    end
+  end
+end
+
+return html.to_s
