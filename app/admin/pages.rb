@@ -69,9 +69,7 @@ ActiveAdmin.register Page do
       page_link = page_link.downcase
       link_to(page_link, page_link, target: '_blank', title: 'opens page in new tab')
     }
-    column(:description) { |page|
-      page.description.truncate(200)
-    }
+    column(:description)
     column(:published)
     actions do |page|
       publish_action_str = page.published ? "Unpublish" : "Publish"
@@ -93,6 +91,10 @@ ActiveAdmin.register Page do
       row :description
       row :has_chrome_warning_banner
       row :published
+      if resource.image.present?
+        row(:image) { |page| img src: "#{page.image_s3_presigned_url(:thumb)}", class: 'maxw-10' }
+        row(:image_alt_text)
+      end
       row :created_at
       row :updated_at
       row 'Components' do |p|
@@ -324,7 +326,7 @@ ActiveAdmin.register Page do
     private
 
     def delete_page_image_and_alt_text
-      if @page.present? && params[:page][:delete_image] === '1'
+      if @page.present? && params[:page][:delete_image_and_alt_text] === '1'
         # set the 'image' attribute to nil
         @page.image = nil
         # set the 'image_alt_text' in the params to nil, in order to avoid issue with backend validation
