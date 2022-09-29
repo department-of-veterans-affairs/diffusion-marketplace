@@ -150,6 +150,7 @@ html = Arbre::Context.new do
           span 'Image list'
         end
 
+        # TODO: Figure out a way to make the PageComponentImage list html a shareable partial
         # PageComponentImage list
         ol id: "page_page_components_attributes_#{placeholder}_page_component_images_ol", class: 'page-component-images-ol' do
           if component && page_component_images&.present?

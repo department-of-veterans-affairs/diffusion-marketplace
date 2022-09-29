@@ -68,7 +68,7 @@
           <div class="grid-col-12 desktop:grid-col-<%= column_count %><%= ' margin-bottom-6' unless images.length === index + 1 %> desktop:margin-bottom-0">
             <div class="image-container">
               <% if image_url.present? %>
-                <a href="<%= image_url %>" aria-label="Go to <%= image_url %>">
+                <a href="<%= image_url %>" aria-label="Go to <%= image_url %>" class="page-image-component-image-link">
                   <img src="<%= signed_image %>" alt="<%= alt_text %>" class="height-full width-full display-block"/>
                 </a>
               <% else %>
