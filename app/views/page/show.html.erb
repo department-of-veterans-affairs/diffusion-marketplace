@@ -174,6 +174,7 @@
               <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
             <% end %>
           </div>
+          <%# Map Component %>
         <% when 'PageMapComponent' %>
           <%
             description = component.description
@@ -188,6 +189,12 @@
           </div>
           <div class="margin-top-2 grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
             <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
+          </div>
+            <%# Text and Images %>
+        <% when 'PageCompoundBodyComponent' %>
+          <div
+            class="page-compound-body-component <%= last_component === index ? 'margin-bottom-0' : "margin-bottom-#{component.margin_bottom}" %> <%= "margin-top-#{component.margin_top}" %><%= page_narrow_classes %>">
+            <%= render partial: 'compound_body_component', locals: { component: component } %>
           </div>
         <% end %>
       <% end %>

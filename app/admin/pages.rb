@@ -3,13 +3,52 @@ ActiveAdmin.register Page do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible, :template_type, :has_chrome_warning_banner,
+  permit_params :title,
+                :page_group_id,
+                :slug,
+                :description,
+                :published,
+                :ever_published,
+                :is_visible,
+                :template_type,
+                :has_chrome_warning_banner,
                 page_components_attributes: [
-                  :id, :component_type, :position, :_destroy, component_attributes: [
-                    :url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment,
-                    :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, :card,
-                    :display_successful_adoptions, :display_in_progress_adoptions, :display_unsuccessful_adoptions, :short_name, practices: []
-                  ]
+                  :id,
+                  :component_type,
+                  :position,
+                  :_destroy,
+                  component_attributes: [
+                    :url,
+                    :description,
+                    :title,
+                    :text,
+                    :heading_type,
+                    :subtopic_title,
+                    :subtopic_description,
+                    :alignment,
+                    :page_image,
+                    :caption,
+                    :alt_text,
+                    :html_tag,
+                    :display_name,
+                    :attachment,
+                    :cta_text,
+                    :button_text,
+                    :card,
+                    :display_successful_adoptions,
+                    :display_in_progress_adoptions,
+                    :display_unsuccessful_adoptions,
+                    :short_name,
+                    :body,
+                    :title_header,
+                    :text_alignment,
+                    :url_link_text,
+                    :large_title,
+                    :margin_bottom,
+                    :margin_top,
+                    practices: []
+                  ],
+                  page_component_images_attributes: {}
                 ]
 
   #
@@ -64,23 +103,81 @@ ActiveAdmin.register Page do
             para do
               b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)} #{'(Card)' if pc.component_type == 'PageSubpageHyperlinkComponent' && component&.card?}"
             end
+            # Heading type
             para component&.heading_type if pc.component_type == 'PageHeaderComponent'
+            # Subtopic title
             para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
+            # Subtopic description
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
+            # Alignment
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
-            para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent' || pc.component_type == 'PageMapComponent'
-            para component&.description if pc.component_type == 'PageHeader3Component'
+
             para component&.text.html_safe unless pc.component_type == 'PageHrComponent' || pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent' || pc.component_type == 'PageCtaComponent' || pc.component_type == 'PageMapComponent'
+
+            # Title header
+            para "Title header: #{component&.title_header}" if pc.component_type == 'PageCompoundBodyComponent' && component&.title_header.present?
+            # Title
+            if (pc.component_type == 'PageHeader3Component' ||
+                pc.component_type == 'PageSubpageHyperlinkComponent' ||
+                pc.component_type == 'PageAccordionComponent' ||
+                pc.component_type == 'PageMapComponent' ||
+                pc.component_type == 'PageCompoundBodyComponent') && component&.title.present?
+              para "Title: #{component.title}"
+            end
+            # Large title
+            para "Large title: #{component.large_title}" if pc.component_type == 'PageCompoundBodyComponent' && component&.large_title
+            # Description
+            if (pc.component_type == 'PageHeader3Component' ||
+                pc.component_type == 'PageDownloadableFileComponent') || pc.component_type == 'PageMapComponent' && component&.description.present?
+              para component.description
+            end
+            # Text
+            if (pc.component_type == 'PageAccordionComponent' ||
+               pc.component_type == 'PageParagraphComponent' ||
+               pc.component_type == 'PageCompoundBodyComponent') && component&.text.present?
+              para component.text.html_safe
+            end
+            # Text alignment
+            para "Text alignment: #{component&.text_alignment}" if pc.component_type == 'PageCompoundBodyComponent'
+            # Practice list count
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
+            # Practice list
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
-            para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageYouTubePlayerComponent'
+            # URL
+            if (pc.component_type == 'PageSubpageHyperlinkComponent' ||
+                pc.component_type == 'PageYouTubePlayerComponent' ||
+                pc.component_type == 'PageCompoundBodyComponent') && component&.url.present?
+              para "URL: #{component.url}"
+            end
+            # URL link text
+            para "URL link text: #{component&.url_link_text}" if pc.component_type == 'PageCompoundBodyComponent' && component&.url_link_text.present?
+            # Caption
             para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
+            # Alt text
             para component&.alt_text if pc.component_type == 'PageImageComponent'
+            # Attachment file name
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
-            para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name != ''
-            para component&.description if pc.component_type == 'PageDownloadableFileComponent' && component&.description != ''
-            para component&.description if pc.component_type == 'PageMapComponent' && component&.description != ''
+            # Short Name
             para component&.short_name if pc.component_type == 'PageMapComponent' && component&.short_name != ''
+
+            # Display name
+            para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
+            # Margin bottom
+            para "Margin bottom: #{component&.margin_bottom}" if pc.component_type == 'PageCompoundBodyComponent'
+            # Margin top
+            para "Margin top: #{component&.margin_top}" if pc.component_type == 'PageCompoundBodyComponent'
+            # PageComponentImages
+            if pc.page_component_images.present?
+              para 'Images:'
+              pc.page_component_images.each do |pci|
+                para do
+                  img src: "#{pci.image_s3_presigned_url(:thumb)}", class: 'maxw-10'
+                end
+                para "URL: #{pci.url}" if pci.url.present?
+                para "Caption: #{pci.caption}" if pci.caption.present?
+                para "Alt text: #{pci.alt_text}"
+              end
+            end
           end
         }.join('').html_safe
       end
@@ -136,6 +233,8 @@ ActiveAdmin.register Page do
 
 
   controller do
+    before_action :delete_incomplete_page_component_images_params, only: [:create, :update]
+
     def create
       create_or_update_page
     end
@@ -161,7 +260,12 @@ ActiveAdmin.register Page do
         end
 
         respond_to do |format|
-          format.html { redirect_to admin_page_path(page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
+          if @incomplete_image_components.present? && @incomplete_image_components > 0
+            flash[:warning] = "One or more 'Compound Body' components had missing required fields for its image(s). The page was saved, but those image(s) were not."
+            format.html { redirect_to admin_page_path(page) }
+          else
+            format.html { redirect_to admin_page_path(page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
+          end
         end
       rescue => e
         respond_to do |format|
@@ -169,6 +273,44 @@ ActiveAdmin.register Page do
             format.html { redirect_to edit_admin_page_path(page), flash: { error:  "#{e.message}"} }
           else
             format.html { redirect_to new_admin_page_path, flash: { error:  "#{e.message}"} }
+          end
+        end
+      end
+    end
+
+    private
+
+    def delete_incomplete_page_component_images_params
+      ### If there are any 'PageComponentImages' that have missing required fields, delete them from the params
+      page_component_attributes_params = params[:page][:page_components_attributes]
+
+      if page_component_attributes_params.present?
+        # Select any 'PageCompoundBodyComponent' components from the params
+        page_compound_body_component_params = page_component_attributes_params.select { |key, value| value[:component_type] === 'PageCompoundBodyComponent' }
+
+        if page_compound_body_component_params.present?
+          @incomplete_image_components = 0
+
+          page_compound_body_component_params.each do |cbp_param_key, cbp_param_val|
+            page_component_images_params = cbp_param_val[:page_component_images_attributes]
+
+            if page_component_images_params.present?
+              page_component_images_params.each do |pci_key, pci_val|
+                existing_component_image = PageComponentImage.find_by(id: pci_val[:id])
+                has_no_alt_text = pci_val[:alt_text].blank?
+                has_no_image = pci_val[:image].blank? && existing_component_image&.image.blank?
+
+                if (has_no_alt_text || has_no_image) && pci_val[:_destroy] != '1'
+                  @incomplete_image_components += 1
+                  params.dig(
+                    :page,
+                    :page_components_attributes,
+                    cbp_param_key,
+                    :page_component_images_attributes
+                  ).delete(pci_key)
+                end
+              end
+            end
           end
         end
       end
