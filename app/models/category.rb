@@ -1,4 +1,5 @@
 class Category < ApplicationRecord
+  include ExtraSpaceRemover
 
   before_validation :trim_whitespace
   before_save :clear_categories_cache_on_save
@@ -27,7 +28,7 @@ class Category < ApplicationRecord
   end
 
   def trim_whitespace
-    self.name&.strip!
+    strip_attributes([self.name])
   end
 
   def self.get_parent_categories

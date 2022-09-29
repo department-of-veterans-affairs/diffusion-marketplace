@@ -174,6 +174,13 @@
               <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
             <% end %>
           </div>
+
+        <%# Text and Images %>
+        <% when 'PageCompoundBodyComponent' %>
+          <div
+            class="page-compound-body-component <%= last_component === index ? 'margin-bottom-0' : "margin-bottom-#{component.margin_bottom}" %> <%= "margin-top-#{component.margin_top}" %><%= page_narrow_classes %>">
+            <%= render partial: 'compound_body_component', locals: { component: component } %>
+          </div>
         <% end %>
       <% end %>
     </div>

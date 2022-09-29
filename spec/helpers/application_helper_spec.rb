@@ -226,4 +226,21 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe 'is_internal_link?' do
+    before do
+      ENV['HOSTNAME'] = 'marketplace.va.gov'
+    end
+
+    after do
+      ENV['HOSTNAME'] = nil
+    end
+
+    it 'should return a boolean based on if the param passed in includes the HOSTNAME or starts with a forward slash or a period' do
+      expect(is_internal_link?('test')).to eq(false)
+      expect(is_internal_link?('/search')).to eq(true)
+      expect(is_internal_link?('.visns')).to eq(true)
+      expect(is_internal_link?('dev.marketplace.va.gov/partners')).to eq(true)
+    end
+  end
 end

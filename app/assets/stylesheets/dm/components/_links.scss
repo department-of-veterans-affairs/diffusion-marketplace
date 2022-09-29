@@ -85,3 +85,9 @@
     }
   }
 }
+
+.usa-link {
+  &-bold {
+    @include u-text('bold')
+  }
+}
