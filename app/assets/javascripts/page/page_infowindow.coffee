@@ -12,7 +12,7 @@ class @PageInfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from ba
 
   infobox: (boxText)->
     content: boxText
-    pixelOffset: new google.maps.Size(-180, 200)
+    pixelOffset: new google.maps.Size(-150, 200)
     boxStyle: {
       width: "450px",
       height: "300px",
