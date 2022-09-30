@@ -2,6 +2,9 @@ function initialize() {
     const handler = Gmaps.build('Google', {
         markers: {
             clusterer: null
+        },
+        builders: {
+            Marker: PageInfoBoxBuilder
         }
     });
     let markers;
