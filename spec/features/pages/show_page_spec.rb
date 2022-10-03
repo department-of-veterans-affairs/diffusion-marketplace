@@ -65,7 +65,7 @@ describe 'Page Builder - Show', type: :feature do
     DiffusionHistoryStatus.create!(diffusion_history: dh_5, status: 'Implementing')
     dh_6 = DiffusionHistory.create!(practice: @practices[5], va_facility: @fac_3)
     DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'Unsuccessful', unsuccessful_reasons: [0])
-    dh_7 = DiffusionHistory.create!(practice: @practices[6], clinical_resource_hub: nil)
+    dh_7 = DiffusionHistory.create!(practice: @practices[6], va_facility: @fac_3)
     DiffusionHistoryStatus.create!(diffusion_history: dh_7, status: 'Unsuccessful', unsuccessful_reasons: [0])
 
     page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
