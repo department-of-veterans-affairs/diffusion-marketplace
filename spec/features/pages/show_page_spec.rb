@@ -14,6 +14,44 @@ describe 'Page Builder - Show', type: :feature do
       Practice.create!(name: 'A superb practice', approved: true, published: true, tagline: 'Test tagline', user: user),
       Practice.create!(name: 'The last practice', approved: true, published: true, tagline: 'Test tagline', user: user)
     ]
+    @visn_1 = Visn.create!(name: 'VISN 1', number: 1)
+    @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
+    @fac_1 = VaFacility.create!(
+        visn: @visn_1,
+        station_number: "402GA",
+        official_station_name: "Caribou VA Clinic",
+        common_name: "Caribou",
+        latitude: "44.2802701",
+        longitude: "-69.70413586",
+        street_address_state: "ME",
+        rurality: "R",
+        fy17_parent_station_complexity_level: "1c-High Complexity",
+        station_phone_number: "207-623-2123 x"
+    )
+    @fac_2 = VaFacility.create!(
+        visn: @visn_2,
+        station_number: "526GA",
+        official_station_name: "White Plains VA Clinic",
+        common_name: "White Plains",
+        latitude: "41.03280396",
+        longitude: "-73.76256942",
+        street_address_state: "NY",
+        rurality: "U",
+        fy17_parent_station_complexity_level: "1b-High Complexity",
+        station_phone_number: "207-623-2123 x"
+    )
+    @fac_3 = VaFacility.create!(
+        visn: @visn_2,
+        station_number: "526GB",
+        official_station_name: "Yonkers VA Clinic",
+        common_name: "Yonkers",
+        latitude: "40.93287478",
+        longitude: "-73.89691934",
+        street_address_state: "NY",
+        rurality: "U",
+        fy17_parent_station_complexity_level: "1a-High Complexity",
+        station_phone_number: "207-623-2123 x"
+    )
 
     dh_1 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
@@ -105,12 +143,12 @@ describe 'Page Builder - Show', type: :feature do
     expect(html).to have_selector('div.grid-col-12')
   end
 
-  if 'should display the map info window when marker is clicked'
-    # element = find('map#gmimap0', visible: false)
-    # element.click
-    # expect(page).to have_content('map short name')
-
-  end
+  it 'should display the map info window when marker is clicked' do
+    debugger
+    marker = find("map#gmimap0 area", visible: false)
+    marker.click
+    expect(page).to have_content('map-short-name')
+    end
 
   it 'Should display the subpage hyperlink' do
     expect(find_all('.usa-link').first[:href]).to include('/programming/javascript')
