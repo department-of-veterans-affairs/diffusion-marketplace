@@ -11,6 +11,7 @@ function initialize() {
     let dataMarkers;
 
     function buildMapMarkers(data) {
+        debugger
         dataMarkers = _.map(data, function (json, index) {
             json.marker = markers[index];
             return json;
@@ -20,7 +21,7 @@ function initialize() {
     handler.buildMap({
             provider: {
                 center: {lat: 39.8097343, lng: -98.5556199},
-                zoom: 4.0,
+                zoom: 4.2,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT
                 },

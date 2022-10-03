@@ -15,6 +15,21 @@ describe 'Page Builder - Show', type: :feature do
       Practice.create!(name: 'The last practice', approved: true, published: true, tagline: 'Test tagline', user: user)
     ]
 
+    dh_1 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_1)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
+    dh_2 = DiffusionHistory.create!(practice: @practices[1], va_facility: @fac_2)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Implemented')
+    dh_3 = DiffusionHistory.create!(practice: @practices[2], va_facility: @fac_1)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Planning')
+    dh_4 = DiffusionHistory.create!(practice: @practices[3], va_facility: @fac_1)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'In progress')
+    dh_5 = DiffusionHistory.create!(practice: @practices[4], va_facility: @fac_2)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_5, status: 'Implementing')
+    dh_6 = DiffusionHistory.create!(practice: @practices[5], va_facility: @fac_3)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'Unsuccessful', unsuccessful_reasons: [0])
+    dh_7 = DiffusionHistory.create!(practice: @practices[6], clinical_resource_hub: nil)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_7, status: 'Unsuccessful', unsuccessful_reasons: [0])
+
     page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
     @page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     Page.create(page_group: page_group, title: 'javascript', description: 'cool stuff', slug: 'javascript', created_at: Time.now, published: Time.now)
@@ -37,7 +52,7 @@ describe 'Page Builder - Show', type: :feature do
     downloadable_file_component = PageDownloadableFileComponent.create(attachment: downloadable_file, description: 'Test file')
     paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='https://marketplace.va.gov/about'>about the marketplace</a></p><p><a href='https://wikipedia.org/'>an external link</a></p></div>")
     legacy_paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='../../about' target='_blank'>relative internal link with dot</a></p><p><a href='/about' target='_blank'>relative internal link with slash</a></p><p><a href='https://marketplace.va.gov/' target='_blank'>absolute internal link</a></p></div>")
-    map_component = PageMapComponent.create(title: "test map", short_name: "map", description: "map description", practices: [1, 2, 3], display_successful_adoptions: true, display_in_progress_adoptions: true, display_unsuccessful_adoptions: true)
+    map_component = PageMapComponent.create(title: "test map", short_name: "map short name", description: "map description", practices: [1, 2, 3], display_successful_adoptions: true, display_in_progress_adoptions: true, display_unsuccessful_adoptions: true)
     PageComponent.create(page: @page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: @page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component, created_at: Time.now)
@@ -88,6 +103,13 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_content('test map')
     expect(page).to have_content('map description')
     expect(html).to have_selector('div.grid-col-12')
+  end
+
+  if 'should display the map info window when marker is clicked'
+    # element = find('map#gmimap0', visible: false)
+    # element.click
+    # expect(page).to have_content('map short name')
+
   end
 
   it 'Should display the subpage hyperlink' do
