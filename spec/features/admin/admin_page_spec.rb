@@ -228,7 +228,6 @@ describe 'Page Builder', type: :feature do
         end
 
         it 'should allow the user to create a PageMapComponent' do
-          debugger
           # Create one
           visit edit_admin_page_path(@page)
           click_link('Add New Page component')

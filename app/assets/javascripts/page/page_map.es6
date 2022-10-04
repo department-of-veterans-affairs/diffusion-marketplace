@@ -11,7 +11,6 @@ function initialize() {
     let dataMarkers;
 
     function buildMapMarkers(data) {
-        debugger
         dataMarkers = _.map(data, function (json, index) {
             json.marker = markers[index];
             return json;
