@@ -236,6 +236,10 @@
 
   .page-image-container {
     width: calc(80% - 22px);
+
+    img {
+      max-width: 300px;
+    }
   }
 }
 

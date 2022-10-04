@@ -216,9 +216,9 @@ ActiveAdmin.register Page do
       f.input :image,
               value: f.resource.image_file_name,
               type: 'file',
-              accept: '.jpg, .jpeg, .png',
               label: 'Image',
-              hint: 'File types allowed: jpg, jpeg, and png. Max file size: 25MB'
+              hint: 'File types allowed: jpg, jpeg, and png. Max file size: 25MB',
+              input_html: { accept: '.jpg, .jpeg, .png' }
       # Page image preview
       image = f.resource.image
       if image.present?
