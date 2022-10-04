@@ -234,7 +234,7 @@ describe 'Page Builder', type: :feature do
           select('Google Map', from: 'page_page_components_attributes_0_component_type')
           fill_in("page_page_components_attributes_0_component_attributes_title", with: 'Diffusion Map')
           fill_in("page_page_components_attributes_0_component_attributes_short_name", with: 'Diffusion Map short name')
-          select('Best Innovation Ever', from: 'page_page_components_attributes_0_component_attributes_practices')
+          select('Best Innovation Ever', from: 'page_page_components_attributes_0_component_attributes_map')
           page.check('page_page_components_attributes_0_component_attributes_display_successful_adoptions', option: true)
           page.check('page_page_components_attributes_0_component_attributes_display_in_progress_adoptions', option: true)
           page.check('page_page_components_attributes_0_component_attributes_display_unsuccessful_adoptions', option: true)
