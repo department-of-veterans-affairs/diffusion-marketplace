@@ -111,8 +111,17 @@ ActiveAdmin.register Page do
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
             # Alignment
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
-
-            para component&.text.html_safe unless pc.component_type == 'PageHrComponent' || pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent' || pc.component_type == 'PageCtaComponent' || pc.component_type == 'PageMapComponent'
+            # Text
+            para component&.text.html_safe unless (pc.component_type == 'PageHrComponent' ||
+                pc.component_type == 'PagePracticeListComponent' ||
+                pc.component_type == 'PageHeader2Component' ||
+                pc.component_type == 'PageSubpageHyperlinkComponent' ||
+                pc.component_type == 'PageHeader3Component' ||
+                pc.component_type == 'PageYouTubePlayerComponent' ||
+                pc.component_type == 'PageImageComponent' ||
+                pc.component_type == 'PageDownloadableFileComponent' ||
+                pc.component_type == 'PageCtaComponent' ||
+                pc.component_type == 'PageMapComponent')
 
             # Title header
             para "Title header: #{component&.title_header}" if pc.component_type == 'PageCompoundBodyComponent' && component&.title_header.present?
@@ -128,7 +137,9 @@ ActiveAdmin.register Page do
             para "Large title: #{component.large_title}" if pc.component_type == 'PageCompoundBodyComponent' && component&.large_title
             # Description
             if (pc.component_type == 'PageHeader3Component' ||
-                pc.component_type == 'PageDownloadableFileComponent') || pc.component_type == 'PageMapComponent' && component&.description.present?
+                pc.component_type == 'PageDownloadableFileComponent' ||
+                pc.component_type == 'PageMapComponent') &&
+                component&.description.present?
               para component.description
             end
             # Text
@@ -253,6 +264,7 @@ ActiveAdmin.register Page do
         page = page_id.present? ? Page.find(page_id) : nil
         # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21). This adds a custom message to match other page-builder validation errors.
         raise StandardError.new 'Validation failed. Page description cannot be longer than 140 characters.' if page_description.length > 140
+
         if page.nil?
           page = Page.create!(permitted_params[:page])
         else
