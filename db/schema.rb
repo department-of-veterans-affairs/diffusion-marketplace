@@ -310,35 +310,6 @@ ActiveRecord::Schema.define(version: 2022_09_02_230740) do
     t.datetime "featured_practice_image_updated_at"
   end
 
-  create_table "community_faqs", force: :cascade do |t|
-    t.bigint "community_id"
-    t.text "question"
-    t.text "answer"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["community_id"], name: "index_community_faqs_on_community_id"
-  end
-
-  create_table "community_leaders", force: :cascade do |t|
-    t.bigint "community_id"
-    t.bigint "user_id"
-    t.boolean "featured", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["community_id"], name: "index_community_leaders_on_community_id"
-    t.index ["user_id"], name: "index_community_leaders_on_user_id"
-  end
-
-  create_table "community_practices", force: :cascade do |t|
-    t.bigint "community_id"
-    t.bigint "practice_id"
-    t.boolean "featured", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["community_id"], name: "index_community_practices_on_community_id"
-    t.index ["practice_id"], name: "index_community_practices_on_practice_id"
-  end
-
   create_table "costs", force: :cascade do |t|
     t.string "description"
     t.integer "position"
@@ -633,16 +604,6 @@ ActiveRecord::Schema.define(version: 2022_09_02_230740) do
     t.index ["page_component_id"], name: "index_page_downloadable_file_components_on_page_component_id"
   end
 
-  create_table "page_event_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.bigint "page_component_id"
-    t.string "title"
-    t.string "url"
-    t.string "text"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["page_component_id"], name: "index_page_event_components_on_page_component_id"
-  end
-
   create_table "page_groups", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -714,15 +675,6 @@ ActiveRecord::Schema.define(version: 2022_09_02_230740) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["page_component_id"], name: "index_page_map_components_on_page_component_id"
-  end
-
-  create_table "page_news_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.bigint "page_component_id"
-    t.string "title"
-    t.string "url"
-    t.string "text"
-    t.date "published_date"
-    t.index ["page_component_id"], name: "index_page_news_components_on_page_component_id"
   end
 
   create_table "page_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1497,11 +1449,6 @@ ActiveRecord::Schema.define(version: 2022_09_02_230740) do
   add_foreign_key "commontator_comments", "commontator_comments", column: "parent_id", on_update: :restrict, on_delete: :cascade
   add_foreign_key "commontator_comments", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
   add_foreign_key "commontator_subscriptions", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
-  add_foreign_key "community_faqs", "communities"
-  add_foreign_key "community_leaders", "communities"
-  add_foreign_key "community_leaders", "users"
-  add_foreign_key "community_practices", "communities"
-  add_foreign_key "community_practices", "practices"
   add_foreign_key "costs", "practices"
   add_foreign_key "department_practices", "departments"
   add_foreign_key "department_practices", "practices"
@@ -1528,14 +1475,12 @@ ActiveRecord::Schema.define(version: 2022_09_02_230740) do
   add_foreign_key "page_compound_body_components", "page_components"
   add_foreign_key "page_cta_components", "page_components"
   add_foreign_key "page_downloadable_file_components", "page_components"
-  add_foreign_key "page_event_components", "page_components"
   add_foreign_key "page_header2_components", "page_components"
   add_foreign_key "page_header3_components", "page_components"
   add_foreign_key "page_header_components", "page_components"
   add_foreign_key "page_hr_components", "page_components"
   add_foreign_key "page_image_components", "page_components"
   add_foreign_key "page_map_components", "page_components"
-  add_foreign_key "page_news_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
   add_foreign_key "page_you_tube_player_components", "page_components"
