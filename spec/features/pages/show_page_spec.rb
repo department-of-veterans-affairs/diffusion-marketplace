@@ -144,7 +144,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'should display the map info window when marker is clicked' do
-    find("img[src*='transparent.png']").click
+    find('map#gmimap0').click(x: 10, y: 10) # offset x an y within the size of the marker
     expect(page).to have_content('map-short-name')
     end
 
