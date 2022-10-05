@@ -96,9 +96,9 @@ describe 'Page Builder - Show', type: :feature do
 
   it 'Should display the accordion component' do
     expect(page).to have_content('FAQ 1')
-    page.find('#accordion_anchor_1')
+    expect(page).to have_css('#accordion_anchor_1')
     expect(page).to have_content('FAQ 2')
-    page.find('#accordion_anchor_2')
+    expect(page).to have_css('#accordion_anchor_2')
   end
 
   it 'Should display the page image' do
