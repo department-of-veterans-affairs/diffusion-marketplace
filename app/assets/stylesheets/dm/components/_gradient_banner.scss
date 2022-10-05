@@ -26,13 +26,16 @@
 .gradient-banner-with-image {
   @media screen and (max-width: 1023px) {
     @include u-position('relative');
+    // (182 / 2) + 80
+    // Half of the image height plus 80px (closest USWDS style). Based off of Figma designs 10/3/2022
     margin-bottom: 171px;
   }
 
   .dm-breadcrumb-heading {
     @media screen and (max-width: 1023px) {
       // 91px + 16px - 24px
-      // Half of image height, plus desired space between text and image, minus Y axis padding. Based off of Figma designs 10/3/2022.
+      // Half of image height, plus desired space between text and image (closest USWDS style), minus Y axis padding.
+      // Based off of Figma designs 10/3/2022.
       padding-bottom: 83px;
     }
   }
@@ -41,18 +44,19 @@
     @media screen and (max-width: 1023px) {
       @include u-position('absolute');
       @include u-left(0);
-      // Half of the image height (182px) as of 10/3/2022 per Figma design. This provides the half-and-half effect.
+      // 182 / 2
+      // Half of the image height (182px) as of 10/3/2022 per Figma design. This provides the "half-and-half" effect for the image.
       bottom: -91px;
       @include u-padding-x(2);
     }
 
     .page-image-container {
-      height: 267px;
       @include u-maxw('none');
+      height: 267px;
 
       @media screen and (max-width: 1023px) {
-        height: 182px;
         max-width: 308px;
+        height: 182px;
       }
     }
 
