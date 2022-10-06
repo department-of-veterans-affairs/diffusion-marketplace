@@ -7,7 +7,7 @@ class PageController < ApplicationController
       if pc.component_type == "PageMapComponent"
         @map_component = PageMapComponent.find_by_id(pc.component_id)
         @short_name = @map_component.short_name
-        adoptions = helpers.get_adopting_facilities_for_these_practices(@map_component, @map_component.display_successful_adoptions, @map_component.display_in_progress_adoptions, @map_component.display_unsuccessful_adoptions)
+        adoptions = Page.get_adopting_facilities(@map_component)
         build_map_component adoptions
       end
     end
