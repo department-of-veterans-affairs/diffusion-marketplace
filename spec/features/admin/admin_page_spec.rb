@@ -101,7 +101,8 @@ describe 'Page Builder', type: :feature do
       # click_link '/programming/hello-world'
     end
 
-    it 'should allow the user to upload an image for the Page along with supplemental alt text for the image' do
+    it 'should allow the user to upload and delete both an image and supplemental alt text for a Page' do
+      # Upload an image/alt text
       visit new_admin_page_path
       fill_in_necessary_page_fields
       within(:css, '#page_image_input') do
@@ -115,6 +116,17 @@ describe 'Page Builder', type: :feature do
       expect(page).to have_css("img[src*='#{Page.last.image_s3_presigned_url}']")
       expect(page).to have_content('Image Alt Text'.upcase)
       expect(page).to have_content(Page.last.image_alt_text)
+      # Delete the image/alt text
+      visit edit_admin_page_path(Page.last)
+      find('#page_delete_image_and_alt_text').click
+      save_page
+
+      expect(page).to have_content('Page was successfully updated.')
+      expect(page).to_not have_content('Image'.upcase)
+      expect(Page.last.image.present?).to eq(false)
+      expect(page).to_not have_css("img[src*='#{Page.last.image_s3_presigned_url}']")
+      expect(page).to_not have_content('Image Alt Text'.upcase)
+      expect(Page.last.image_alt_text.present?).to eq(false)
     end
   end
 
