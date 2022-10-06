@@ -176,7 +176,7 @@ describe 'Page Builder - Show', type: :feature do
     # scroll down the page so the 'Add card styling' checkbox is visible
     scroll_to(0, 1500)
     check('Add card styling')
-    find('#page_submit_action_1').click
+    save_page
     expect(page).to have_content('Page was successfully updated.')
     visit '/programming/ruby-rocks'
 
@@ -185,12 +185,33 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_selector('.pb-link-card')
   end
 
+  context 'Page image and alt text' do
+    it 'should display the Page image and its alt text within the blue gradient banner header' do
+      visit edit_admin_page_path(Page.last)
+      within(:css, '#page_image_input') do
+        find('input[type="file"]').attach_file(@image_path)
+      end
+      fill_in('Image alternative text (required if image present)', with: 'Descriptive alt text')
+      save_page
+
+      expect(page).to have_content('Page was successfully updated.')
+      visit '/programming/javascript'
+
+      # Make sure the 'gradient-banner-with-image' class was added to the banner section
+      expect(page).to have_css('.gradient-banner-with-image')
+      within(:css, '.gradient-banner-with-image') do
+        expect(page).to have_css("img[src*='#{Page.last.image_s3_presigned_url}']")
+        expect(page).to have_css("img[alt*='#{Page.last.image_alt_text}']")
+      end
+    end
+  end
+
   context 'CompoundBodyComponents and associated PageComponentImages' do
     it 'should be visible and configured correctly based on user input' do
       visit edit_admin_page_path(Page.last)
       # Add a CompoundBodyComponent and fill in fields
       add_compound_body_component_and_fill_in_fields
-      find_all('input[type="submit"]').first.click
+      save_page
       expect(page).to have_content('Page was successfully updated.')
       # With no PageComponentImages present, the CompoundBodyComponent text should take up six columns
       visit '/programming/javascript'
@@ -216,7 +237,7 @@ describe 'Page Builder - Show', type: :feature do
         'Some cool caption',
         'A cute charmander'
       )
-      find_all('input[type="submit"]').first.click
+      save_page
       expect(page).to have_content('Page was successfully updated.')
       # With one PageComponentImage present, the CompoundBodyComponent text should now only take up five columns.
       # The associated PageComponentImage should take up four columns.
@@ -252,7 +273,7 @@ describe 'Page Builder - Show', type: :feature do
         visit edit_admin_page_path(Page.last)
         # Add a CompoundBodyComponent and fill in fields
         add_compound_body_component_and_fill_in_fields
-        find_all('input[type="submit"]').first.click
+        save_page
         expect(page).to have_content('Page was successfully updated.')
         # With no PageComponentImages present, the CompoundBodyComponent text should take up all twelve columns
         # and only one row
@@ -270,7 +291,7 @@ describe 'Page Builder - Show', type: :feature do
           'An awesome caption',
           'A wild charmander'
         )
-        find_all('input[type="submit"]').first.click
+        save_page
         expect(page).to have_content('Page was successfully updated.')
         # With a PageComponentImage present, the image (and caption, if present as well) should sit on top of the
         # CompoundBodyComponent text, which means the image should now be on the first row (above) and the text on the second (below).
@@ -316,5 +337,9 @@ describe 'Page Builder - Show', type: :feature do
       end
       fill_in('Alternative text *required*', with: image_alt_text)
     end
+  end
+
+  def save_page
+    find_all('input[type="submit"]').first.click
   end
 end

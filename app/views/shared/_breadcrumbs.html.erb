@@ -19,11 +19,10 @@
   is_page_builder_page = controller === 'page'
   page_image = session[:page_image]
   alt_text = session[:page_image_alt_text]
-  heading_and_image_are_present = heading.present? && page_image.present?
 %>
 
-<section class="<%= "dm-gradient-banner" if heading.present? %><%= ' gradient-banner-with-image' if page_image.present? %> <%= classes if classes.present? %>">
-  <div class="grid-container<%= if heading_and_image_are_present then ' padding-y-3' elsif heading.present? && page_image.blank? then ' padding-y-6' end %>">
+<section class="<%= 'dm-gradient-banner' if heading.present? %><%= ' gradient-banner-with-image' if page_image.present? %> <%= classes if classes.present? %>">
+  <div class="grid-container<%= ' padding-y-6' if heading.present? %>">
     <% if breadcrumbs.present? %>
       <div id="breadcrumbs"
            class="grid-col-auto usa-breadcrumb breadcrumbs-container <%= heading.present? ? "dm-breadcrumb--gradient-bg padding-top-0 padding-bottom-105" : 'padding-y-4' %>"

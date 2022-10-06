@@ -265,10 +265,13 @@ const MAX_DESCRIPTION_LENGTH = 140;
                         <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text">
                             Alternative text *required*
                         </label>
-                        <input type="text" 
-                               id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text"
-                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][alt_text]"/>
-                        <p class="inline-hints">Alternative text that gets rendered in case the image cannot be viewed.</p>
+                        <textarea id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text"
+                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][alt_text]"
+                               class="height-7"></textarea>
+                        <p class="inline-hints">
+                            Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of the 
+                            information this image is trying to convey.
+                        </p>
                     </div>
                     
                     <div class="display-flex flex-justify-end">

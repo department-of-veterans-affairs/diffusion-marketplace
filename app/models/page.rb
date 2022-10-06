@@ -25,7 +25,7 @@ class Page < ApplicationRecord
   validates :image_alt_text,
             presence: { message: "can't be blank if Page image is present" },
             if: Proc.new { |page| page.image.present? }
-  before_validation :downcase_fields
+  before_validation :downcase_slug
 
   enum template_type: { default: 0, narrow: 1 }
 
@@ -35,7 +35,7 @@ class Page < ApplicationRecord
 
   private
 
-  def downcase_fields
+  def downcase_slug
     self.slug = self.slug&.downcase
   end
 end

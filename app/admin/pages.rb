@@ -299,7 +299,7 @@ ActiveAdmin.register Page do
         end
 
         if @page.nil?
-          Page.create!(permitted_params[:page])
+          @page = Page.create!(permitted_params[:page])
         else
           @page.update(permitted_params[:page])
         end
