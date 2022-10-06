@@ -3,12 +3,12 @@
     <%
       station_name = facility.official_station_name
       facility_id = facility.id
-      practice_list = @practices_list
+      map_component = @map_component
       names = []
       taglines = []
       short_names = []
       slugs = []
-      practices_to_display_in_info_window facility_id, practice_list, names, taglines, short_names, slugs
+      practices_to_display_in_info_window facility_id, map_component, names, taglines, short_names, slugs
       @num_practices_adopted = names.count
     %>
     <p class="margin-0 padding-x-4">

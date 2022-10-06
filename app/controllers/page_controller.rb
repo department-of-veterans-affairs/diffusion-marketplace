@@ -5,9 +5,9 @@ class PageController < ApplicationController
     @page_components = @page.page_components
     @page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
-        @practices_list = PageMapComponent.find_by_id(pc.component_id)
-        @short_name = @practices_list.short_name
-        adoptions = helpers.get_adopting_facilities_for_these_practices(@practices_list, @practices_list.display_successful_adoptions, @practices_list.display_in_progress_adoptions, @practices_list.display_unsuccessful_adoptions)
+        @map_component = PageMapComponent.find_by_id(pc.component_id)
+        @short_name = @map_component.short_name
+        adoptions = helpers.get_adopting_facilities_for_these_practices(@map_component, @map_component.display_successful_adoptions, @map_component.display_in_progress_adoptions, @map_component.display_unsuccessful_adoptions)
         build_map_component adoptions
       end
     end
@@ -44,7 +44,7 @@ class PageController < ApplicationController
                      })
       marker.shadow nil
       marker.json({ id: facility.id })
-      marker.infowindow render_to_string(partial: 'maps/page_map_infowindow', locals: { diffusion_histories: facility, facility: facility, practice_list: @practices_list })
+      marker.infowindow render_to_string(partial: 'maps/page_map_infowindow', locals: { diffusion_histories: facility, facility: facility, practice_list: @map_component })
     end
   end
 
