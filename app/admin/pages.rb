@@ -265,9 +265,10 @@ ActiveAdmin.register Page do
 
 
   controller do
-    before_action :set_page
-    before_action :delete_page_image_and_alt_text, only: [:create, :update]
-    before_action :delete_incomplete_page_component_images_params, only: [:create, :update]
+    before_action :set_page,
+                  :delete_page_image_and_alt_text,
+                  :delete_incomplete_page_component_images_params,
+                  only: [:create, :update]
 
     def create
       create_or_update_page
@@ -322,8 +323,6 @@ ActiveAdmin.register Page do
         end
       end
     end
-
-    private
 
     def delete_page_image_and_alt_text
       if @page.present? && params[:page][:delete_image_and_alt_text] === '1'
