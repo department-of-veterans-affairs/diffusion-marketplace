@@ -148,11 +148,6 @@ describe 'Page Builder - Show', type: :feature do
     expect(html).to have_selector('div.grid-col-12')
   end
 
-  it 'should display the map info window when marker is clicked' do
-    find('map#gmimap0').click(x: 10, y: 10) # offset x an y within the size of the marker
-    expect(page).to have_content('map-short-name')
-    end
-
   it 'Should display the subpage hyperlink' do
     expect(find_all('.usa-link').first[:href]).to include('/programming/javascript')
     expect(page).to have_content('Check out JavaScript')
