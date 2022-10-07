@@ -87,6 +87,16 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe "#set_link_classes" do
+    it "returns internal link CSS classes" do
+      expect(helper.set_link_classes("/about")).to eq("usa-link")
+    end
+
+    it "returns external link CSS classes" do
+      expect(helper.set_link_classes("https://wikipedia.org")).to eq("usa-link usa-link--external")
+    end
+  end
+
   describe "#get_link_target_attribute" do
     context "when given a" do
       it "returns 'flex-justify-end'" do

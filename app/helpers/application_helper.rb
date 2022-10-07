@@ -131,10 +131,8 @@ module ApplicationHelper
     url.start_with?('.')
   end
 
-  def get_link_classes(url)
-    classes = ["usa-link"]
-    classes << "usa-link--external" if !is_internal_link?(url)
-    classes.join(" ")
+  def set_link_classes(url)
+    "usa-link#{' usa-link--external' if !is_internal_link?(url)}"
   end
 
   def get_link_target_attribute(url)
