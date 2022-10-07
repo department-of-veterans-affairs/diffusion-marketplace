@@ -18,7 +18,7 @@ describe 'Page Builder', type: :feature do
       visit_pages_tab_of_admin_panel
       click_link 'New Page'
 
-      fill_in_necessary_page_fields
+      fill_in_necessary_page_fields('test-page')
       save_page
 
       expect(page).to have_content('Slug has already been taken')
@@ -60,7 +60,7 @@ describe 'Page Builder', type: :feature do
       select('Text and Images', from: 'page_page_components_attributes_0_component_type')
       fill_in_optional_page_component_image_fields(0, '/search', 1, 'Cool caption')
 
-      all('input[type="file"]').first.attach_file(@image_file)
+      all('input[type="file"]').last.attach_file(@image_file)
       save_page
 
       expect_page_component_image_to_not_be_saved
@@ -69,7 +69,7 @@ describe 'Page Builder', type: :feature do
     it 'should not allow the user to upload an image for the Page without corresponding alt text' do
       visit edit_admin_page_path(@page)
 
-      within(:css, '#page_image_alt_text_input') do
+      within(:css, '#page_image_input') do
         find('input[type="file"]').attach_file(@image_file)
       end
       save_page
@@ -88,7 +88,7 @@ describe 'Page Builder', type: :feature do
 
       expect(page).to have_current_path(new_admin_page_path)
 
-      fill_in_necessary_page_fields
+      fill_in_necessary_page_fields('hello-world')
       save_page
 
       expect(page).to have_current_path(admin_page_path(Page.last.id))
@@ -104,7 +104,7 @@ describe 'Page Builder', type: :feature do
     it 'should allow the user to upload and delete both an image and supplemental alt text for a Page' do
       # Upload an image/alt text
       visit new_admin_page_path
-      fill_in_necessary_page_fields
+      fill_in_necessary_page_fields('hello-world')
       within(:css, '#page_image_input') do
         find('input[type="file"]').attach_file(@image_file)
       end
@@ -201,7 +201,7 @@ describe 'Page Builder', type: :feature do
           # Create a page
           visit_pages_tab_of_admin_panel
           click_link 'New Page'
-          fill_in_necessary_page_fields
+          fill_in_necessary_page_fields('hello-world')
           # Create the CompoundBodyComponent
           click_link('Add New Page component')
           select('Text and Images', from: 'page_page_components_attributes_0_component_type')
@@ -218,7 +218,7 @@ describe 'Page Builder', type: :feature do
             1,
             'Awesome caption'
           )
-          fill_in_required_page_component_image_fields(0, 'test alt text')
+          fill_in_required_page_component_image_fields(1, 0, 'test alt text')
           save_page
 
           expect(page).to have_content('Page was successfully created.')
@@ -239,7 +239,7 @@ describe 'Page Builder', type: :feature do
             2,
             'Test caption'
           )
-          fill_in_required_page_component_image_fields(1, 'random alt text')
+          fill_in_required_page_component_image_fields(2,1, 'random alt text')
           all('.dm-page-builder-trash').first.click
           save_page
 
@@ -285,25 +285,29 @@ describe 'Page Builder', type: :feature do
   end
 
   def fill_in_optional_page_component_image_fields(
-    image_index,
+    component_image_index,
     url,
     wysiwyg_editor_index,
     wysiwyg_editor_content
   )
     click_link('Add image')
-    all(:field, 'Image URL')[image_index].set(url)
+    all(:field, 'Image URL')[component_image_index].set(url)
     within_frame(all('.tox-edit-area__iframe')[wysiwyg_editor_index]) do
       find('body').set(wysiwyg_editor_content)
     end
   end
 
-  def fill_in_required_page_component_image_fields(image_index, alt_text)
-    all('input[type="file"]')[image_index].attach_file(@image_file)
-    all(:field, 'Alternative text *required*')[image_index].set(alt_text)
+  def fill_in_required_page_component_image_fields(
+    file_input_index,
+    component_image_index,
+    alt_text
+  )
+    all('input[type="file"]')[file_input_index].attach_file(@image_file)
+    all(:field, 'Alternative text *required*')[component_image_index].set(alt_text)
   end
 
-  def fill_in_necessary_page_fields
-    fill_in 'URL', with: 'hello-world'
+  def fill_in_necessary_page_fields(url)
+    fill_in 'URL', with: url
     fill_in 'Title', with: 'Hello world!'
     fill_in 'Description', with: 'This is the first page built.'
     select('programming', from: 'Group*')
