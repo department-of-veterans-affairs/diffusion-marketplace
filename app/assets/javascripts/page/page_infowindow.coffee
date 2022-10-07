@@ -18,6 +18,6 @@ class @PageInfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from ba
       height: "300px",
       overflow: "auto",
       backgroundColor: "white",
-      padding: "52px 8px"
+      paddingBottom: "52px"
     }
     alignBottom: true

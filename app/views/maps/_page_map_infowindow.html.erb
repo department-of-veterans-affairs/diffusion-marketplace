@@ -2,33 +2,28 @@
   <div class="margin-top-1">
     <%
       station_name = facility.official_station_name
-      facility_id = facility.id
-      map_component = @map_component
-      names = []
-      taglines = []
-      short_names = []
-      slugs = []
-      get_practices_by_diffusion_histories facility_id, map_component, names, taglines, short_names, slugs
-      @num_practices_adopted = names.count
+      map_component_short_name = map_component.short_name
     %>
     <p class="margin-0 padding-x-4">
       <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'usa-link font-sans-md text-bold' %>
     </p>
     <div class="margin-top-0 text-normal theme-type-scale-sm padding-x-4">
-      <%= @num_practices_adopted %> <% if @short_name.length > 0 %> <%= @short_name %> <% else %> Total <% end %> Innovation<% if @num_practices_adopted != 1 %>s<% end %>
+      <%= adoption_count %> <%= map_component_short_name.present? ? "#{map_component_short_name}" : 'Total' %> Innovation<%= 's' if adoption_count != 1 %>
     </div>
     <div class="text-bold font-sans-3xs">
-      <% i = 0 %>
-      <% while i < names.length do %>
+      <% practice_data.each do |pd| %>
+        <%
+          short_name = pd[:short_name]
+          name = pd[:name]
+        %>
         <div class="radius-lg border border-solid padding-x-4 padding-y-105 border-base-lightest margin-bottom-2">
-          <a class="usa-link" href="/innovations/<%= slugs[i] %>">
-            <%= names[i] %> <% if short_names[i].to_s.length > 0 %> <%= "(" +  short_names[i] + ")" %> <% end %>
+          <a class="usa-link" href="/innovations/<%= pd[:slug] %>">
+            <%= short_name.present? ? "#{name} (#{short_name})" : "#{name}" %>
           </a>
           <div class="text-normal font-sans-3xs margin-top-3">
-          <%= taglines[i] %>
+            <%= pd[:tagline] %>
           </div>
         </div>
-        <% i += 1 %>
       <% end %>
     </div>
   </div>

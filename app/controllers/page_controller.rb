@@ -26,16 +26,13 @@ class PageController < ApplicationController
     page_components.each do |pc|
       if pc.component_type == "PageMapComponent"
         @map_component = PageMapComponent.find_by_id(pc.component_id)
-        @short_name = @map_component.short_name
-        adoptions = Page.get_adopting_facilities(@map_component)
-        build_map_component adoptions
+        build_map_component(@map_component.get_adopting_facility_ids)
       end
     end
-
   end
 
-  def build_map_component(adopting_facilities_list)
-    va_facilities = VaFacility.where(id: adopting_facilities_list)
+  def build_map_component(adopting_facility_ids)
+    va_facilities = VaFacility.where(id: adopting_facility_ids)
     @va_facility_marker = Gmaps4rails.build_markers(va_facilities) do |facility, marker|
       marker.lat facility.latitude
       marker.lng facility.longitude
@@ -48,7 +45,17 @@ class PageController < ApplicationController
                      })
       marker.shadow nil
       marker.json({ id: facility.id })
-      marker.infowindow render_to_string(partial: 'maps/page_map_infowindow', locals: { diffusion_histories: facility, facility: facility, practice_list: @map_component })
+      adoption_count = DiffusionHistory.where(va_facility_id: facility.id).count
+      practice_data =  @map_component.get_practice_data_by_diffusion_histories(facility.id)
+      marker.infowindow render_to_string(
+                            partial: 'maps/page_map_infowindow',
+                            locals: {
+                                facility: facility,
+                                map_component: @map_component,
+                                practice_data: practice_data,
+                                adoption_count: adoption_count
+                            }
+                        )
     end
   end
 

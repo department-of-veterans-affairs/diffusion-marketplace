@@ -19,26 +19,6 @@ class Page < ApplicationRecord
 
   private
 
-  def self.get_adopting_facilities(map_component)
-    va_facilities_list = []
-    map_component.practices.each do |pr|
-      diffusion_histories = DiffusionHistory.where(practice_id: pr)
-      diffusion_histories.each do |dh|
-        dhs = DiffusionHistoryStatus.where(diffusion_history_id: dh[:id]).first.status
-        unless dh.va_facility_id.nil?
-          if (dhs == 'Completed' || dhs == 'Implemented' || dhs == 'Complete') && map_component.display_successful_adoptions
-            va_facilities_list.push dh.va_facility_id
-          elsif (dhs == 'In progress' || dhs == 'Planning' || dhs == 'Implementing') && map_component.display_in_progress_adoptions
-            va_facilities_list.push dh.va_facility_id
-          elsif dhs == "Unsuccessful" && map_component.display_unsuccessful_adoptions
-            va_facilities_list.push dh.va_facility_id
-          end
-        end
-      end
-    end
-    va_facilities_list
-  end
-
   def downcase_fields
     self.slug = self.slug&.downcase
   end

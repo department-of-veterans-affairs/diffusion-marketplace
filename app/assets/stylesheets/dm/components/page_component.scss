@@ -146,12 +146,21 @@
     }
   }
 
-  .page-map-component{
+  .page-map-component {
     .page-marker-container {
-      height: 339px;
+      padding: 52px 8px 0 8px;
+    }
+
+    .infoBox {
+      img {
+        @include u-position('absolute');
+        @include u-right('105');
+        @include u-top('105');
+      }
     }
   }
-}
-.page_builder_map{
-  height: 440px;
+
+  .page_builder_map {
+    height: 440px;
+  }
 }
