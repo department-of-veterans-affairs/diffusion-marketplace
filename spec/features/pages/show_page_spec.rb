@@ -91,6 +91,8 @@ describe 'Page Builder - Show', type: :feature do
     paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='https://marketplace.va.gov/about'>about the marketplace</a></p><p><a href='https://wikipedia.org/'>an external link</a></p></div>")
     legacy_paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='../../about' target='_blank'>relative internal link with dot</a></p><p><a href='/about' target='_blank'>relative internal link with slash</a></p><p><a href='https://marketplace.va.gov/' target='_blank'>absolute internal link</a></p></div>")
     map_component = PageMapComponent.create(title: "test map", short_name: "map short name", description: "map description", practices: [1, 2, 3], display_successful_adoptions: true, display_in_progress_adoptions: true, display_unsuccessful_adoptions: true)
+    accordion_component = PageAccordionComponent.create(title: 'FAQ 1', text: 'FAQ 1 text')
+    accordion_component_2 = PageAccordionComponent.create(title: 'FAQ 2', text: 'FAQ 2 text')
     PageComponent.create(page: @page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: @page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component, created_at: Time.now)
@@ -103,6 +105,9 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: @page, component: paragraph_component, created_at: Time.now)
     PageComponent.create(page: @page, component: legacy_paragraph_component, created_at: Time.now)
     PageComponent.create(page: @page, component: map_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: accordion_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: accordion_component_2, created_at: Time.now)
+
     # must be logged in to view pages
     login_as(user, scope: :user, run_callbacks: false)
     visit '/programming/ruby-rocks'
@@ -152,6 +157,13 @@ describe 'Page Builder - Show', type: :feature do
     expect(find_all('.usa-link').first[:href]).to include('/programming/javascript')
     expect(page).to have_content('Check out JavaScript')
     expect(page).to have_content('It is pretty cool too')
+  end
+
+  it 'Should display the accordion component' do
+    expect(page).to have_content('FAQ 1')
+    expect(page).to have_css('#accordion_anchor_1')
+    expect(page).to have_content('FAQ 2')
+    expect(page).to have_css('#accordion_anchor_2')
   end
 
   it 'Should display the page image' do
