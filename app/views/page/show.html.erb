@@ -183,7 +183,7 @@
             next_component = @page.page_components.find_by(position: pc.position + 1)
           %>
           <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9">
-            <%= content_tag(:span, title, class: 'margin-right-1') if title != '' %>
+            <%= content_tag(:span, title, class: 'margin-right-1') if title.present? %>
           </div>
           <div class="margin-bottom-1 page-map-component">
             <%= render partial: "page/page_map", locals: { component: component } %>

@@ -3,15 +3,7 @@ class PageController < ApplicationController
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @page_components = @page.page_components
-    @page_components.each do |pc|
-      if pc.component_type == "PageMapComponent"
-        @map_component = PageMapComponent.find_by_id(pc.component_id)
-        @short_name = @map_component.short_name
-        adoptions = Page.get_adopting_facilities(@map_component)
-        build_map_component adoptions
-      end
-    end
-
+    get_map_components(@page_components)
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
@@ -29,6 +21,18 @@ class PageController < ApplicationController
 
 
   private
+
+  def get_map_components(page_components)
+    page_components.each do |pc|
+      if pc.component_type == "PageMapComponent"
+        @map_component = PageMapComponent.find_by_id(pc.component_id)
+        @short_name = @map_component.short_name
+        adoptions = Page.get_adopting_facilities(@map_component)
+        build_map_component adoptions
+      end
+    end
+
+  end
 
   def build_map_component(adopting_facilities_list)
     va_facilities = VaFacility.where(id: adopting_facilities_list)
