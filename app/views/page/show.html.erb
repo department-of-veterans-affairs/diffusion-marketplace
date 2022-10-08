@@ -121,7 +121,7 @@
 
           <% if component.id == @news_items_ids.first %>
             <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-              <%= render partial:'news_items_list', locals: {news_items: nic[:news_items]} %>
+              <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
             </ul>
             <% if nic[:pagy].count > nic[:pagy].items %>
               <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >

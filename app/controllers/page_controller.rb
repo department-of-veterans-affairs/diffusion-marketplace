@@ -57,7 +57,7 @@ class PageController < ApplicationController
       @event_list_components[0] = { pagy: pagy_settings, events: paginated_items }
       @event_ids = ids
     elsif component_type == "news"
-      @news_items_components[0] = { pagy: pagy_settings, news_items: paginated_items }
+      @news_items_components[0] = { pagy: pagy_settings, news: paginated_items }
       @news_items_ids = ids
     end
   end
