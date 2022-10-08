@@ -35,26 +35,30 @@ class PageController < ApplicationController
     end
 
     set_pagy_practice_list_array(practice_lists)
-    set_pagy_event_list_items_array(events)
-    set_pagy_news_items_array(news_items)
+    paginate_components(events, "events", 3)
+    paginate_components(news_items, "news", 6)
   end
 
-  def set_pagy_event_list_items_array(page_components)
-    page_event_list_index = 0 # TODO: support multiple event lists per page
-    params_index = params["#{page_event_list_index}"]
-    events = []
+  def paginate_components(page_components, component_type, pagination)
+    return unless page_components
+    page_item_list_index = 0
+    params_index = params["#{page_item_list_index}"]
+    items = []
+    ids = []
+
     page_components.each do |pc|
-      component = pc.component
-      events << component
-      @event_ids << pc.component_id
+      items << pc.component
+      ids << pc.component_id
     end
 
-    if events.present?
-      pagy_events, paginated_events = get_pagy_array(events, page_event_list_index, params_index, 3, 'events')
-      @event_list_components[0] = {
-        pagy: pagy_events,
-        events: paginated_events
-      }
+    pagy_settings, paginated_items = get_pagy_array(items, page_item_list_index, params_index, pagination, component_type)
+
+    if component_type == "events"
+      @event_list_components[0] = { pagy: pagy_settings, events: paginated_items }
+      @event_ids = ids
+    elsif component_type == "news"
+      @news_items_components[0] = { pagy: pagy_settings, news_items: paginated_items }
+      @news_items_ids = ids
     end
   end
 
@@ -65,25 +69,6 @@ class PageController < ApplicationController
       page_param: "#{item_class}-#{page_item_list_index.to_s}",
       link_extra: "data-remote='true' class='dm-paginated-#{item_class}-#{page_item_list_index}-link dm-paginated-#{page_item_list_index}-#{item_class}-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
     )
-  end
-
-  def set_pagy_news_items_array(page_components)
-    page_news_item_list_index = 0 # TODO: support multiple news item lists per page
-    params_index = params["#{page_news_item_list_index}"]
-    news_items = []
-    page_components.each do |pc|
-      component = pc.component
-      news_items << component
-      @news_items_ids << pc.component_id
-    end
-
-    if news_items.present?
-      pagy_news_items, paginated_news_items = get_pagy_array(news_items,page_news_item_list_index, params_index, 6, "news")
-      @news_items_components[0] = {
-        pagy: pagy_news_items,
-        news_items: paginated_news_items
-      }
-    end
   end
 
   def set_pagy_practice_list_array(page_components)
