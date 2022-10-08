@@ -73,7 +73,7 @@ function paginatedNewsItemListPageComponent() {
   <% type = @pagy_type.split('-')[0] %>
   <% component_index = @pagy_type.split('-')[1] %>
   <% if type == "news" %>
-    var newsItemsClass = ".dm-paginated-" + <%= component_index %> + "-news-items";
+    var newsItemsClass = ".dm-paginated-" + <%= component_index %> + "-news";
 
     <% data_set = @news_items_components[component_index.to_i][:news_items] %>
     <% pagy = @news_items_components[component_index.to_i][:pagy] %>
@@ -89,8 +89,8 @@ function paginatedNewsItemListPageComponent() {
     %>")
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-    var currentPageClass = ".dm-paginated-news-items-" + <%= component_index %> + "-link";
-    var loadMoreBtnContainer = ".dm-load-more-news-items-" + <%= component_index %> + "-btn-container";
+    var currentPageClass = ".dm-paginated-news-" + <%= component_index %> + "-link";
+    var loadMoreBtnContainer = ".dm-load-more-news-" + <%= component_index %> + "-btn-container";
 
     <% if next_page.present? %>
       $(currentPageClass).remove();

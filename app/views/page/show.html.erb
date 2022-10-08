@@ -120,11 +120,11 @@
           <% nic = @news_items_components[0] %>
 
           <% if component.id == @news_items_ids.first %>
-            <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news-items <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+            <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
               <%= render partial:'news_items_list', locals: {news_items: nic[:news_items]} %>
             </ul>
-            <% if nic[:pagy].count > 6 %>
-              <div class="text-center dm-load-more-news-items-<%= component_index %>-btn-container" >
+            <% if nic[:pagy].count > nic[:pagy].items %>
+              <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
                 <% link = pagy_link_proc(nic[:pagy]) %>
                 <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
               </div>

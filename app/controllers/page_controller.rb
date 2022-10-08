@@ -50,7 +50,7 @@ class PageController < ApplicationController
     end
 
     if events.present?
-      pagy_events, paginated_events = get_pagy_events_array(events,page_event_list_index, params_index)
+      pagy_events, paginated_events = get_pagy_array(events, page_event_list_index, params_index, 3, 'events')
       @event_list_components[0] = {
         pagy: pagy_events,
         events: paginated_events
@@ -58,13 +58,13 @@ class PageController < ApplicationController
     end
   end
 
-  def get_pagy_events_array (events, page_event_list_index, params_index)
+  def get_pagy_array(items, page_item_list_index, params_index, pagination, item_class)
     pagy_array(
-          events,
-          items: 3,
-          page_param: "events-#{page_event_list_index.to_s}",
-          link_extra: "data-remote='true' class='dm-paginated-events-#{page_event_list_index}-link dm-paginated-#{page_event_list_index}-events-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
-        )
+      items,
+      items: pagination,
+      page_param: "#{item_class}-#{page_item_list_index.to_s}",
+      link_extra: "data-remote='true' class='dm-paginated-#{item_class}-#{page_item_list_index}-link dm-paginated-#{page_item_list_index}-#{item_class}-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
+    )
   end
 
   def set_pagy_news_items_array(page_components)
@@ -78,21 +78,12 @@ class PageController < ApplicationController
     end
 
     if news_items.present?
-      pagy_news_items, paginated_news_items = get_pagy_news_items_array(news_items,page_news_item_list_index, params_index)
+      pagy_news_items, paginated_news_items = get_pagy_array(news_items,page_news_item_list_index, params_index, 6, "news")
       @news_items_components[0] = {
         pagy: pagy_news_items,
         news_items: paginated_news_items
       }
     end
-  end
-
-  def get_pagy_news_items_array (news_items, page_news_item_list_index, params_index)
-    pagy_array(
-          news_items,
-          items: 6,
-          page_param: "news-#{page_news_item_list_index.to_s}",
-          link_extra: "data-remote='true' class='dm-paginated-news-items-#{page_news_item_list_index}-link dm-paginated-#{page_news_item_list_index}-news-items-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
-        )
   end
 
   def set_pagy_practice_list_array(page_components)
@@ -105,22 +96,13 @@ class PageController < ApplicationController
       practices = helpers.is_user_a_guest? ? Practice.where(id: practices_ids).public_facing.sort_by_retired.sort_a_to_z : Practice.where(id: practices_ids).published_enabled_approved.sort_by_retired.sort_a_to_z
 
       if @practice_list_components[page_practice_list_index].present?
-        @practice_list_components[page_practice_list_index][:pagy], @practice_list_components[page_practice_list_index][:paginated] = get_pagy_practices_array(practices, page_practice_list_index, params_index)
+        @practice_list_components[page_practice_list_index][:pagy], @practice_list_components[page_practice_list_index][:paginated] = get_pagy_array(practices, page_practice_list_index, params_index, 6, "practices")
       else
-        pagy_practices, paginated_practices = get_pagy_practices_array(practices, page_practice_list_index, params_index)
+        pagy_practices, paginated_practices = get_pagy_array(practices, page_practice_list_index, params_index, 6, "practices")
         practice_list_pagy = { pagy: pagy_practices, practices: paginated_practices}
         @practice_list_components.push(practice_list_pagy)
       end
       page_practice_list_index += 1
     end
-  end
-
-  def get_pagy_practices_array (practices, page_practice_list_index, params_index)
-    pagy_array(
-          practices,
-          items: 6,
-          page_param: "practices-#{page_practice_list_index.to_s}",
-          link_extra: "data-remote='true' class='dm-paginated-practices-#{page_practice_list_index}-link dm-paginated-#{page_practice_list_index}-practices-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
-        )
   end
 end

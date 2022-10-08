@@ -44,7 +44,7 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
 
     create_practice_list_components(2,user,@page)
     create_event_components(7,@page)
-    create_news_components(7,@page)
+    create_news_components(13,@page)
 
     # must be logged in to view pages
     login_as(user, scope: :user, run_callbacks: false)
@@ -70,13 +70,21 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
 
   it 'paginates news components', js: true do
     expect(page).to have_css('.page-news-component', count: 6)
-    within('.dm-load-more-news-items-0-btn-container') do
+    within('.dm-load-more-news-0-btn-container') do
       click_on('Load more')
     end
-    expect(page).to have_css('.page-news-component', count: 7)
-    within('.dm-load-more-news-items-0-btn-container') do
+
+    expect(page).to have_css('.page-news-component', count: 12)
+    within('.dm-load-more-news-0-btn-container') do
+      click_on('Load more')
+    end
+    expect(page).to have_content('Load more')
+
+    expect(page).to have_css('.page-news-component', count: 13)
+    within('.dm-load-more-news-0-btn-container') do
        expect(page).not_to have_content('Load more')
     end
+
   end
 
   it 'renders a Load More for each component', js: true do
