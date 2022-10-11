@@ -18,10 +18,7 @@ describe 'Page Builder', type: :feature do
       visit_pages_tab_of_admin_panel
       click_link 'New Page'
 
-      fill_in 'URL', with: 'test-page'
-      fill_in 'Title', with: 'Test Page'
-      fill_in 'Description', with: 'This page will not get created.'
-      select 'programming', from: 'page_page_group_id'
+      fill_in_necessary_page_fields('test-page')
       save_page
 
       expect(page).to have_content('Slug has already been taken')
@@ -63,35 +60,74 @@ describe 'Page Builder', type: :feature do
       select('Text and Images', from: 'page_page_components_attributes_0_component_type')
       fill_in_optional_page_component_image_fields(0, '/search', 1, 'Cool caption')
 
-      all('input[type="file"]').first.attach_file(@image_file)
+      all('input[type="file"]').last.attach_file(@image_file)
       save_page
 
       expect_page_component_image_to_not_be_saved
     end
+
+    it 'should not allow the user to upload an image for the Page without corresponding alt text' do
+      visit edit_admin_page_path(@page)
+
+      within(:css, '#page_image_input') do
+        find('input[type="file"]').attach_file(@image_file)
+      end
+      save_page
+
+      expect(page).to have_content('Validation failed. Page cannot have an optional image without alternative text.')
+      expect(@page.image.present?).to eq(false)
+    end
   end
 
-  it 'Should make the page' do
-    visit_pages_tab_of_admin_panel
+  describe 'creating the page' do
+    it 'Should make the page' do
+      visit_pages_tab_of_admin_panel
 
-    expect(page).to have_current_path(admin_pages_path)
-    click_link 'New Page'
+      expect(page).to have_current_path(admin_pages_path)
+      click_link 'New Page'
 
-    expect(page).to have_current_path(new_admin_page_path)
+      expect(page).to have_current_path(new_admin_page_path)
 
-    fill_in 'URL', with: 'hello-world'
-    fill_in 'Title', with: 'Hello world!'
-    fill_in 'Description', with: 'This is the first page built.'
-    select 'programming', from: 'page[page_group_id]'
-    save_page
+      fill_in_necessary_page_fields('hello-world')
+      save_page
 
-    expect(page).to have_current_path(admin_page_path(Page.last.id))
+      expect(page).to have_current_path(admin_page_path(Page.last.id))
 
-    expect(page).to have_content('Hello world!')
-    expect(page).to have_content('This is the first page built.')
-    expect(page).to have_content('/programming/hello-world')
+      expect(page).to have_content('Hello world!')
+      expect(page).to have_content('This is the first page built.')
+      expect(page).to have_content('/programming/hello-world')
 
-    # TODO: Figure out how to prevent database cleaning after opening new tab
-    # click_link '/programming/hello-world'
+      # TODO: Figure out how to prevent database cleaning after opening new tab
+      # click_link '/programming/hello-world'
+    end
+
+    it 'should allow the user to upload and delete both an image and supplemental alt text for a Page' do
+      # Upload an image/alt text
+      visit new_admin_page_path
+      fill_in_necessary_page_fields('hello-world')
+      within(:css, '#page_image_input') do
+        find('input[type="file"]').attach_file(@image_file)
+      end
+      fill_in('Image alternative text (required if image present)', with: 'Descriptive alt text')
+      save_page
+
+      expect(page).to have_content('Page was successfully created.')
+      expect(page).to have_content('Image'.upcase)
+      expect(page).to have_css("img[src*='#{Page.last.image_s3_presigned_url}']")
+      expect(page).to have_content('Image Alt Text'.upcase)
+      expect(page).to have_content(Page.last.image_alt_text)
+      # Delete the image/alt text
+      visit edit_admin_page_path(Page.last)
+      find('#page_delete_image_and_alt_text').click
+      save_page
+
+      expect(page).to have_content('Page was successfully updated.')
+      expect(page).to_not have_content('Image'.upcase)
+      expect(Page.last.image.present?).to eq(false)
+      expect(page).to_not have_css("img[src*='#{Page.last.image_s3_presigned_url}']")
+      expect(page).to_not have_content('Image Alt Text'.upcase)
+      expect(Page.last.image_alt_text.present?).to eq(false)
+    end
   end
 
   describe 'Page groups' do
@@ -165,10 +201,7 @@ describe 'Page Builder', type: :feature do
           # Create a page
           visit_pages_tab_of_admin_panel
           click_link 'New Page'
-          fill_in('URL', with: 'home')
-          fill_in('Title', with: 'Test')
-          fill_in('Description', with: 'Test')
-          select('programming', from: 'Group*')
+          fill_in_necessary_page_fields('hello-world')
           # Create the CompoundBodyComponent
           click_link('Add New Page component')
           select('Text and Images', from: 'page_page_components_attributes_0_component_type')
@@ -185,7 +218,7 @@ describe 'Page Builder', type: :feature do
             1,
             'Awesome caption'
           )
-          fill_in_required_page_component_image_fields(0, 'test alt text')
+          fill_in_required_page_component_image_fields(1, 0, 'test alt text')
           save_page
 
           expect(page).to have_content('Page was successfully created.')
@@ -206,7 +239,7 @@ describe 'Page Builder', type: :feature do
             2,
             'Test caption'
           )
-          fill_in_required_page_component_image_fields(1, 'random alt text')
+          fill_in_required_page_component_image_fields(2,1, 'random alt text')
           all('.dm-page-builder-trash').first.click
           save_page
 
@@ -252,20 +285,31 @@ describe 'Page Builder', type: :feature do
   end
 
   def fill_in_optional_page_component_image_fields(
-    image_index,
+    component_image_index,
     url,
     wysiwyg_editor_index,
     wysiwyg_editor_content
   )
     click_link('Add image')
-    all(:field, 'Image URL')[image_index].set(url)
+    all(:field, 'Image URL')[component_image_index].set(url)
     within_frame(all('.tox-edit-area__iframe')[wysiwyg_editor_index]) do
       find('body').set(wysiwyg_editor_content)
     end
   end
 
-  def fill_in_required_page_component_image_fields(image_index, alt_text)
-    all('input[type="file"]')[image_index].attach_file(@image_file)
-    all(:field, 'Alternative text *required*')[image_index].set(alt_text)
+  def fill_in_required_page_component_image_fields(
+    file_input_index,
+    component_image_index,
+    alt_text
+  )
+    all('input[type="file"]')[file_input_index].attach_file(@image_file)
+    all(:field, 'Alternative text *required*')[component_image_index].set(alt_text)
+  end
+
+  def fill_in_necessary_page_fields(url)
+    fill_in 'URL', with: url
+    fill_in 'Title', with: 'Hello world!'
+    fill_in 'Description', with: 'This is the first page built.'
+    select('programming', from: 'Group*')
   end
 end

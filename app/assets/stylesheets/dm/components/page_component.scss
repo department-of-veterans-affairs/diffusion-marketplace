@@ -123,26 +123,31 @@
       }
 
       .image-container {
-        max-width: 400px;
+        height: 172px;
+        max-width: 308px;
 
-      a {
-        &:focus {
-          img {
-            outline: 0.25rem solid #2491ff;
-            outline-offset: 0;
+        @media screen and (min-width: 1024px) {
+          height: 225px;
+          @include u-maxw('none');
+        }
+
+        a {
+          &:focus {
+            img {
+              outline: 0.25rem solid #2491ff;
+              outline-offset: 0;
+            }
           }
         }
-      }
 
         img {
-          height: 225px;
           object-fit: cover;
         }
       }
     }
 
     p {
-      margin: 0;
+      @include u-margin(0);
     }
   }
 }
