@@ -666,7 +666,7 @@ ActiveRecord::Schema.define(version: 2022_09_02_230740) do
   create_table "page_map_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "title"
-    t.string "short_name"
+    t.string "map_info_window_text"
     t.string "description"
     t.string "practices", default: [], array: true
     t.boolean "display_successful_adoptions", default: false
