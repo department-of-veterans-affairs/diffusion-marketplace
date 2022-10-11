@@ -149,4 +149,8 @@
   .page-event-component {
     border-top: 1px solid black;
   }
+
+  .page-news-component {
+    @include u-margin-bottom(2);
+  }
 }
