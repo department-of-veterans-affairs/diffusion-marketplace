@@ -95,14 +95,27 @@ const COMPONENT_CLASSES = [
         });
     }
 
+    function chromeWorkaroundForAnchorTags(){
+        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        if (window.location.hash && isChrome) {
+            setTimeout(function () {
+                var hash = window.location.hash;
+                window.location.hash = "";
+                window.location.hash = hash;
+            }, 300);
+        }
+    }
+
+
+
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
         removeBottomMarginFromLastAccordionHeading();
         containerizeSubpageHyperlinkCards();
         remediateInternalLinksTarget();
         identifyExternalLinks();
+        chromeWorkaroundForAnchorTags();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
 })(window.jQuery);
-
