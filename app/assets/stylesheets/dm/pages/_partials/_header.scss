@@ -1,4 +1,12 @@
 #dm-nav-header {
+  .header-logo-link{
+    color: color($theme-color-primary-darker);
+
+    .header-logo-va {
+    border-right: 2px solid color($theme-color-primary-darker);
+    }
+  }
+
   .dm-header--mobile-searchbar {
     .dm-navbar-search-form {
       @include u-margin-bottom(4);

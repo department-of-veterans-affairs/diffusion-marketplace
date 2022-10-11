@@ -1,7 +1,9 @@
 const COMPONENT_CLASSES = [
     '.page-paragraph-component',
     '.page-accordion-component',
-    '.page-compound-body-component'
+    '.page-compound-body-component',
+    '.page-event-component p',
+    '.page-news-component p'
 ].join(', ');
 
 (($) => {
@@ -83,7 +85,7 @@ const COMPONENT_CLASSES = [
     function identifyExternalLinks() {
         // identify external by HREF content
         let extLinks = $(COMPONENT_CLASSES).find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
-        
+
         extLinks.each(function() {
             $(this).attr("target", "_blank");
             // Don't add USWDS link classes to 'PageComponentImage' image links

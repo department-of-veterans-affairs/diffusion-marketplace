@@ -86,7 +86,23 @@
             </a>
           </div>
 
-          <%# Image %>
+        <%# Event %>
+        <% when 'PageEventComponent'%>
+          <% component_index = 0 %>
+          <% elc = @event_list_components[0] %>
+          <% if component.id == @event_ids.first %>
+            <div class="event-component-list dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
+            </div>
+            <% if elc[:pagy].count > 3 %>
+              <div class="text-center dm-load-more-events-<%= component_index %>-btn-container">
+                <% link = pagy_link_proc(elc[:pagy]) %>
+                <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+              </div>
+            <% end %>
+          <% end %>
+
+        <%# Image %>
         <% when 'PageImageComponent' %>
           <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <% if component.url.present? %>
@@ -97,6 +113,23 @@
               <%= render partial: "page/page_image", locals: { component: component } %>
             <% end %>
           </div>
+
+        <%# News %>
+        <% when 'PageNewsComponent' %>
+          <% component_index = 0 %>
+          <% nic = @news_items_components[0] %>
+
+          <% if component.id == @news_items_ids.first %>
+            <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
+            </ul>
+            <% if nic[:pagy].count > nic[:pagy].items %>
+              <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
+                <% link = pagy_link_proc(nic[:pagy]) %>
+                <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+              </div>
+            <% end %>
+          <% end %>
 
           <%# Practice List %>
           <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>

@@ -6,9 +6,13 @@ class PageController < ApplicationController
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
-    set_pagy_practice_list_array(@page_components)
-    @pagy_type = params.keys.first.to_i || nil
+    @pagy_type = params.keys.first || nil
     @practice_list_component_index = 0
+    @event_ids = []
+    @event_list_components = {}
+    @news_items_components = {}
+    @news_items_ids = []
+    collect_paginated_components(@page_components)
     unless @page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
@@ -20,34 +24,70 @@ class PageController < ApplicationController
 
   private
 
+  def collect_paginated_components(page_components)
+    practice_lists = []
+    events = []
+    news_items = []
+    page_components.each do |pc|
+      practice_lists << pc if pc.component_type === 'PagePracticeListComponent'
+      events << pc if pc.component_type === 'PageEventComponent'
+      news_items << pc if pc.component_type === 'PageNewsComponent'
+    end
+
+    set_pagy_practice_list_array(practice_lists)
+    paginate_components(events, "events", 3)
+    paginate_components(news_items, "news", 6)
+  end
+
+  def paginate_components(page_components, component_type, pagination)
+    return unless page_components
+    page_item_list_index = 0
+    params_index = params["#{page_item_list_index}"]
+    items = []
+    ids = []
+
+    page_components.each do |pc|
+      items << pc.component
+      ids << pc.component_id
+    end
+
+    pagy_settings, paginated_items = get_pagy_array(items, page_item_list_index, params_index, pagination, component_type)
+
+    if component_type == "events"
+      @event_list_components[0] = { pagy: pagy_settings, events: paginated_items }
+      @event_ids = ids
+    elsif component_type == "news"
+      @news_items_components[0] = { pagy: pagy_settings, news: paginated_items }
+      @news_items_ids = ids
+    end
+  end
+
+  def get_pagy_array(items, page_item_list_index, params_index, pagination, item_class)
+    pagy_array(
+      items,
+      items: pagination,
+      page_param: "#{item_class}-#{page_item_list_index.to_s}",
+      link_extra: "data-remote='true' class='dm-paginated-#{item_class}-#{page_item_list_index}-link dm-paginated-#{page_item_list_index}-#{item_class}-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
+    )
+  end
+
   def set_pagy_practice_list_array(page_components)
     page_practice_list_index = 0
     params_index = params["#{page_practice_list_index}"]
 
-    page_components.each_with_index do |pc, index|
-      if pc.component_type === 'PagePracticeListComponent'
-        component = pc.component_type.constantize.find(pc.component_id)
-        practices_ids = component.practices
-        practices = helpers.is_user_a_guest? ? Practice.where(id: practices_ids).public_facing.sort_by_retired.sort_a_to_z : Practice.where(id: practices_ids).published_enabled_approved.sort_by_retired.sort_a_to_z
+    page_components.each do |pc|
+      component = pc.component
+      practices_ids = component.practices
+      practices = helpers.is_user_a_guest? ? Practice.where(id: practices_ids).public_facing.sort_by_retired.sort_a_to_z : Practice.where(id: practices_ids).published_enabled_approved.sort_by_retired.sort_a_to_z
 
-        if @practice_list_components[page_practice_list_index].present?
-          @practice_list_components[page_practice_list_index][:pagy], @practice_list_components[page_practice_list_index][:paginated] = get_pagy_practices_array(practices, page_practice_list_index, params_index)
-        else
-        pagy_practices, paginated_practices = get_pagy_practices_array(practices, page_practice_list_index, params_index)
+      if @practice_list_components[page_practice_list_index].present?
+        @practice_list_components[page_practice_list_index][:pagy], @practice_list_components[page_practice_list_index][:paginated] = get_pagy_array(practices, page_practice_list_index, params_index, 6, "practices")
+      else
+        pagy_practices, paginated_practices = get_pagy_array(practices, page_practice_list_index, params_index, 6, "practices")
         practice_list_pagy = { pagy: pagy_practices, practices: paginated_practices}
         @practice_list_components.push(practice_list_pagy)
-        end
-        page_practice_list_index += 1
       end
+      page_practice_list_index += 1
     end
-  end
-
-  def get_pagy_practices_array (practices, page_practice_list_index, params_index)
-    return pagy_array(
-          practices,
-          items: 6,
-          page_param: page_practice_list_index.to_s,
-          link_extra: "data-remote='true' class='dm-paginated-#{page_practice_list_index}-link dm-paginated-#{page_practice_list_index}-practices-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
-        )
   end
 end

@@ -45,6 +45,7 @@ ActiveAdmin.register Page do
                     :large_title,
                     :margin_bottom,
                     :margin_top,
+                    :published_date,
                     practices: []
                   ],
                   page_component_images_attributes: {}
