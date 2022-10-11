@@ -38,7 +38,7 @@ ActiveAdmin.register Page do
                     :display_successful_adoptions,
                     :display_in_progress_adoptions,
                     :display_unsuccessful_adoptions,
-                    :short_name,
+                    :map_info_window_text,
                     :body,
                     :title_header,
                     :text_alignment,
@@ -169,7 +169,7 @@ ActiveAdmin.register Page do
             # Attachment file name
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
             # Short Name
-            para component&.short_name if pc.component_type == 'PageMapComponent' && component&.short_name != ''
+            para component&.map_info_window_text if pc.component_type == 'PageMapComponent' && component&.map_info_window_text!= ''
 
             # Display name
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?

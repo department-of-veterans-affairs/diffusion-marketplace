@@ -235,7 +235,7 @@ describe 'Page Builder', type: :feature do
         click_link('Add New Page component')
         select('Google Map', from: 'page_page_components_attributes_0_component_type')
         fill_in("page_page_components_attributes_0_component_attributes_title", with: 'Diffusion Map')
-        fill_in("page_page_components_attributes_0_component_attributes_short_name", with: 'Diffusion Map short name')
+        fill_in("page_page_components_attributes_0_component_attributes_map_info_window_text", with: 'Diffusion Map Info Window Text')
         select('Best Innovation Ever', from: 'page_page_components_attributes_0_component_attributes_map')
         save_page
         expect(page).to have_content('Page was successfully updated.')

@@ -20,12 +20,12 @@ html = Arbre::Context.new do
           para 'Enter a title for the map.', class: 'inline-hints'
         end
 
-        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_short_name_input" do
-          label 'Short Name', for: "page_page_components_attributes_#{placeholder}_component_attributes_short_name", class: 'label'
-          input value: component&.short_name || nil, type: 'text', required: 'required',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_short_name",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][short_name]"
-          para 'Enter a short name or acronym for the map.', class: 'inline-hints'
+        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text_input" do
+          label 'Map Info Window Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text", class: 'label'
+          input value: component&.map_info_window_text || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][map_info_window_text]"
+          para 'Enter text or acronym to display in the maps info window.', class: 'inline-hints'
         end
 
         li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
