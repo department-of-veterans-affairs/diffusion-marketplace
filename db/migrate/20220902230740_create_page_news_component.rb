@@ -1,4 +1,4 @@
-class CreatePageNewsComponents < ActiveRecord::Migration[6.0]
+class CreatePageNewsComponent < ActiveRecord::Migration[6.0]
   def change
     create_table :page_news_components, id: :uuid do |t|
       t.belongs_to :page_component, foreign_key: true

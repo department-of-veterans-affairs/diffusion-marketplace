@@ -653,7 +653,7 @@ ActiveRecord::Schema.define(version: 2022_09_02_230740) do
     t.string "title"
     t.string "url"
     t.string "text"
-    t.datetime "published_date"
+    t.date "published_date"
     t.index ["page_component_id"], name: "index_page_news_components_on_page_component_id"
   end
 
