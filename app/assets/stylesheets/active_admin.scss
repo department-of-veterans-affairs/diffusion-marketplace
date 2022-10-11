@@ -214,6 +214,33 @@
       @include tooltip-icon();
     }
   }
+
+  #page_is_visible_input, #page_page_group_input, #page_has_chrome_warning_banner_input {
+    // Active admin 'hint'
+    .inline-hints {
+      @include u-display('inline-block');
+    }
+  }
+}
+
+.page-image-preview-container {
+  padding: 10px;
+
+  div {
+    display: inline-block;
+  }
+
+  .placeholder {
+    width: 20%;
+  }
+
+  .page-image-container {
+    width: calc(80% - 22px);
+
+    img {
+      max-width: 300px;
+    }
+  }
 }
 
 .display-none {

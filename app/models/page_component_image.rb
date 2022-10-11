@@ -3,12 +3,12 @@ class PageComponentImage < ApplicationRecord
   has_attached_file :image, styles: { thumb: '768x432>' }
 
   validates_attachment :image,
-                       presence: { message: "Image can't be blank" },
+                       presence: { message: "can't be blank" },
                        content_type: {
                          content_type: %w[image/jpg image/jpeg image/png],
-                         message: "Image must be one of the following types: jpg, jpeg, or png"
+                         message: "must be one of the following types: jpg, jpeg, or png"
                        }
-  validates :alt_text, presence: { message: "Alt text can't be blank" }
+  validates :alt_text, presence: { message: "can't be blank" }
   validates_with InternalUrlValidator,
                  on: [:create, :update],
                  if: Proc.new { |component| component.url.present? && component.url.chars.first === '/' }
