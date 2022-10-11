@@ -10,6 +10,8 @@ f.has_many page_components, heading: nil, sortable: :position, sortable_start: 1
   pc.template.concat(render partial: 'page_subpage_hyperlink_component_form', locals: {component: component.class == PageSubpageHyperlinkComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_accordion_component_form', locals: {component: component.class == PageAccordionComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_you_tube_player_component_form', locals: {component: component.class == PageYouTubePlayerComponent ? component : nil, placeholder: placeholder})
+  pc.template.concat(render partial: 'page_event_component_form', locals: {component: component.class == PageEventComponent ? component : nil, placeholder: placeholder})
+  pc.template.concat(render partial: 'page_news_component_form', locals: {component: component.class == PageNewsComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_image_component_form', locals: {component: component.class == PageImageComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_hr_component_form', locals: {component: component.class == PageHrComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_downloadable_file_component_form', locals: {component: component.class == PageDownloadableFileComponent ? component : nil, placeholder: placeholder})

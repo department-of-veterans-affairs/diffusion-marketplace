@@ -605,6 +605,16 @@ ActiveRecord::Schema.define(version: 2022_09_26_221108) do
     t.index ["page_component_id"], name: "index_page_downloadable_file_components_on_page_component_id"
   end
 
+  create_table "page_event_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "url"
+    t.string "text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_component_id"], name: "index_page_event_components_on_page_component_id"
+  end
+
   create_table "page_groups", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -676,6 +686,15 @@ ActiveRecord::Schema.define(version: 2022_09_26_221108) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["page_component_id"], name: "index_page_map_components_on_page_component_id"
+  end
+
+  create_table "page_news_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "url"
+    t.string "text"
+    t.date "published_date"
+    t.index ["page_component_id"], name: "index_page_news_components_on_page_component_id"
   end
 
   create_table "page_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1481,12 +1500,14 @@ ActiveRecord::Schema.define(version: 2022_09_26_221108) do
   add_foreign_key "page_compound_body_components", "page_components"
   add_foreign_key "page_cta_components", "page_components"
   add_foreign_key "page_downloadable_file_components", "page_components"
+  add_foreign_key "page_event_components", "page_components"
   add_foreign_key "page_header2_components", "page_components"
   add_foreign_key "page_header3_components", "page_components"
   add_foreign_key "page_header_components", "page_components"
   add_foreign_key "page_hr_components", "page_components"
   add_foreign_key "page_image_components", "page_components"
   add_foreign_key "page_map_components", "page_components"
+  add_foreign_key "page_news_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
   add_foreign_key "page_you_tube_player_components", "page_components"

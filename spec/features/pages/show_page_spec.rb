@@ -138,7 +138,7 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_no_content('The last practice')
     expect(page).to have_css('.dm-practice-link')
     expect(page).to have_content('Load more')
-    find('.dm-paginated-0-link').click
+    find('.dm-paginated-practices-0-link').click
     expect(page).to have_content('The last practice')
   end
 

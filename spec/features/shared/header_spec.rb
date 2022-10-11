@@ -19,8 +19,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   describe 'header logo' do
     it 'should exist' do
       within('header.usa-header') do
-        expect(page).to have_content('Diffusion Marketplace')
-        expect(page).to have_content('Department of Veterans Affairs')
+        expect(page).to have_content(/VA\nDiffusion\nMarketplace/)
         expect(page).to have_link(href: '/')
       end
     end
