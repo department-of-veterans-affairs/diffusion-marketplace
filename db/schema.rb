@@ -12,7 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2022_09_26_221108) do
 
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -284,31 +283,6 @@ ActiveRecord::Schema.define(version: 2022_09_26_221108) do
     t.datetime "updated_at", null: false
     t.index ["closer_type", "closer_id"], name: "index_commontator_threads_on_closer_type_and_closer_id"
     t.index ["commontable_type", "commontable_id"], name: "index_commontator_threads_on_c_id_and_c_type", unique: true
-  end
-
-  create_table "communities", force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.string "distribution_email"
-    t.text "home_description"
-    t.string "intro_header"
-    t.text "intro_text"
-    t.string "external_url"
-    t.text "quote_text"
-    t.string "quote_name"
-    t.text "about_description"
-    t.text "leader_bio"
-    t.text "featured_practice_description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "home_image_file_name"
-    t.string "home_image_content_type"
-    t.bigint "home_image_file_size"
-    t.datetime "home_image_updated_at"
-    t.string "featured_practice_image_file_name"
-    t.string "featured_practice_image_content_type"
-    t.bigint "featured_practice_image_file_size"
-    t.datetime "featured_practice_image_updated_at"
   end
 
   create_table "costs", force: :cascade do |t|

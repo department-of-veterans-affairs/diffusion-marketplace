@@ -15,7 +15,7 @@ describe 'Page Builder - Show', type: :feature do
       Practice.create!(name: 'The last practice', approved: true, published: true, tagline: 'Test tagline', user: user)
     ]
     @visn_1 = Visn.create!(name: 'VISN 1', number: 1)
-    @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
+    # @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
     @fac_1 = VaFacility.create!(
         visn: @visn_1,
         station_number: "402GA",
@@ -28,45 +28,45 @@ describe 'Page Builder - Show', type: :feature do
         fy17_parent_station_complexity_level: "1c-High Complexity",
         station_phone_number: "207-623-2123 x"
     )
-    @fac_2 = VaFacility.create!(
-        visn: @visn_2,
-        station_number: "526GA",
-        official_station_name: "White Plains VA Clinic",
-        common_name: "White Plains",
-        latitude: "41.03280396",
-        longitude: "-73.76256942",
-        street_address_state: "NY",
-        rurality: "U",
-        fy17_parent_station_complexity_level: "1b-High Complexity",
-        station_phone_number: "207-623-2123 x"
-    )
-    @fac_3 = VaFacility.create!(
-        visn: @visn_2,
-        station_number: "526GB",
-        official_station_name: "Yonkers VA Clinic",
-        common_name: "Yonkers",
-        latitude: "40.93287478",
-        longitude: "-73.89691934",
-        street_address_state: "NY",
-        rurality: "U",
-        fy17_parent_station_complexity_level: "1a-High Complexity",
-        station_phone_number: "207-623-2123 x"
-    )
+    # @fac_2 = VaFacility.create!(
+    #     visn: @visn_2,
+    #     station_number: "526GA",
+    #     official_station_name: "White Plains VA Clinic",
+    #     common_name: "White Plains",
+    #     latitude: "41.03280396",
+    #     longitude: "-73.76256942",
+    #     street_address_state: "NY",
+    #     rurality: "U",
+    #     fy17_parent_station_complexity_level: "1b-High Complexity",
+    #     station_phone_number: "207-623-2123 x"
+    # )
+    # @fac_3 = VaFacility.create!(
+    #     visn: @visn_2,
+    #     station_number: "526GB",
+    #     official_station_name: "Yonkers VA Clinic",
+    #     common_name: "Yonkers",
+    #     latitude: "40.93287478",
+    #     longitude: "-73.89691934",
+    #     street_address_state: "NY",
+    #     rurality: "U",
+    #     fy17_parent_station_complexity_level: "1a-High Complexity",
+    #     station_phone_number: "207-623-2123 x"
+    # )
 
     dh_1 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
-    dh_2 = DiffusionHistory.create!(practice: @practices[1], va_facility: @fac_2)
-    DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Implemented')
-    dh_3 = DiffusionHistory.create!(practice: @practices[2], va_facility: @fac_1)
-    DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Planning')
-    dh_4 = DiffusionHistory.create!(practice: @practices[3], va_facility: @fac_1)
-    DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'In progress')
-    dh_5 = DiffusionHistory.create!(practice: @practices[4], va_facility: @fac_2)
-    DiffusionHistoryStatus.create!(diffusion_history: dh_5, status: 'Implementing')
-    dh_6 = DiffusionHistory.create!(practice: @practices[5], va_facility: @fac_3)
-    DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'Unsuccessful', unsuccessful_reasons: [0])
-    dh_7 = DiffusionHistory.create!(practice: @practices[6], va_facility: @fac_3)
-    DiffusionHistoryStatus.create!(diffusion_history: dh_7, status: 'Unsuccessful', unsuccessful_reasons: [0])
+    # dh_2 = DiffusionHistory.create!(practice: @practices[1], va_facility: @fac_2)
+    # DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Implemented')
+    # dh_3 = DiffusionHistory.create!(practice: @practices[2], va_facility: @fac_1)
+    # DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Planning')
+    # dh_4 = DiffusionHistory.create!(practice: @practices[3], va_facility: @fac_1)
+    # DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'In progress')
+    # dh_5 = DiffusionHistory.create!(practice: @practices[4], va_facility: @fac_2)
+    # DiffusionHistoryStatus.create!(diffusion_history: dh_5, status: 'Implementing')
+    # dh_6 = DiffusionHistory.create!(practice: @practices[5], va_facility: @fac_3)
+    # DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'Unsuccessful', unsuccessful_reasons: [0])
+    # dh_7 = DiffusionHistory.create!(practice: @practices[6], va_facility: @fac_3)
+    # DiffusionHistoryStatus.create!(diffusion_history: dh_7, status: 'Unsuccessful', unsuccessful_reasons: [0])
 
     page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
     @page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)

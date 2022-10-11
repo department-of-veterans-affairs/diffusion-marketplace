@@ -174,8 +174,8 @@ ActiveAdmin.register Page do
             para component&.alt_text if pc.component_type == 'PageImageComponent'
             # Attachment file name
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
-            # Short Name
-            para component&.map_info_window_text if pc.component_type == 'PageMapComponent' && component&.map_info_window_text!= ''
+            # Map Info Window Text
+            para component&.map_info_window_text if pc.component_type == 'PageMapComponent' && component&.map_info_window_text != ''
 
             # Display name
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?

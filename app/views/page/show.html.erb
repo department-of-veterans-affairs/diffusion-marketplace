@@ -215,17 +215,20 @@
             title = component.title
             next_component = @page.page_components.find_by(position: pc.position + 1)
           %>
-          <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9">
-            <%= content_tag(:span, title, class: 'margin-right-1') if title.present? %>
-          </div>
+          <% if title.present? %>
+            <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9">
+              <%= content_tag(:span, title, class: 'margin-right-1') %>
+            </div>
+          <% end %>
           <div class="margin-bottom-1 page-map-component">
             <%= render partial: "page/page_map", locals: { component: component } %>
           </div>
-          <div class="margin-top-2 grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
-            <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
-          </div>
-
-           <%# Text and Images %>
+          <% if description.present? %>
+            <div class="margin-top-2 grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
+              <%= content_tag(:span, description, class: 'margin-right-1') %>
+            </div>
+          <% end %>
+          <%# Text and Images %>
         <% when 'PageCompoundBodyComponent' %>
           <div
             class="page-compound-body-component <%= last_component === index ? 'margin-bottom-0' : "margin-bottom-#{component.margin_bottom}" %> <%= "margin-top-#{component.margin_top}" %><%= page_narrow_classes %>">
