@@ -241,7 +241,7 @@ describe 'Page Builder', type: :feature do
         expect(page).to have_content('Page was successfully updated.')
         expect(page).to have_content('Google Map')
         expect(page).to have_content('Diffusion Map')
-        expect(page).to have_content('Diffusion Map short name')
+        expect(page).to have_content('Diffusion Map Info Window Text')
       end
     end
   end
