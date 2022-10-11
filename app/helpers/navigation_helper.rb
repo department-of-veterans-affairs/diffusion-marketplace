@@ -6,6 +6,8 @@ module NavigationHelper
     session[:breadcrumbs] = session[:breadcrumbs] || []
     session[:heading] = nil
     session[:description] = nil
+    session[:page_image] = nil
+    session[:page_image_alt_text] = nil
     action = params[:action]
     controller = params[:controller]
 
@@ -245,9 +247,13 @@ module NavigationHelper
           empty_breadcrumbs
         end
 
-        if @page.is_visible
+        if @page.is_visible?
           session[:heading] = @page.title
           session[:description] = @page.description
+          if @page.image.present?
+            session[:page_image] = @page.image_s3_presigned_url(:thumb)
+            session[:page_image_alt_text] = @page.image_alt_text
+          end
         end
       end
     end

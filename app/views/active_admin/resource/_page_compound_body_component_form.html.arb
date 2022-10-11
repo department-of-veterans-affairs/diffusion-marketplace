@@ -171,7 +171,7 @@ html = Arbre::Context.new do
                         id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
                         name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][image]",
                         class: 'margin-top-0'
-                  para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+                  para 'File types allowed: jpg, jpeg, and png. Max file size: 25MB', class: 'inline-hints'
                 end
 
                 # Image preview
@@ -215,10 +215,12 @@ html = Arbre::Context.new do
                   label 'Alternative text *required*',
                         for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
                         class: 'label'
-                  input value: pci.alt_text, type: 'text',
+                  textarea pci.alt_text,
                         id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
-                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][alt_text]"
-                  para 'Alternative text that gets rendered in case the image cannot be viewed.', class: 'inline-hints'
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][alt_text]",
+                        class: 'height-7'
+                  para "Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of "\
+                        "the information this image is trying to convey.", class: 'inline-hints'
                 end
 
                 # Trash container
