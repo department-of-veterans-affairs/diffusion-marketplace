@@ -9,6 +9,11 @@ describe 'Page Builder', type: :feature do
     @page_group = PageGroup.create(name: 'programming', description: 'Pages about programming go in this group.')
     @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group)
     @image_file = "#{Rails.root}/spec/assets/charmander.png"
+    @admin = User.create!(email: 'dokugamine.riruka@va.gov', password: 'Password123',
+                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @admin.add_role(:admin)
+    @practice = Practice.create!(name: 'Best Innovation Ever', user: @admin, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
+
 
     login_as(@admin, scope: :user, run_callbacks: false)
   end
@@ -254,6 +259,22 @@ describe 'Page Builder', type: :feature do
           expect(page).to_not have_field('URL', with: '/visns')
           expect(page).to_not have_field('Alternative text', with: 'test alt text')
         end
+      end
+    end
+    context 'PageMapComponent' do
+      it 'should allow the user to create a PageMapComponent' do
+        # Create one
+        visit edit_admin_page_path(@page)
+        click_link('Add New Page component')
+        select('Google Map', from: 'page_page_components_attributes_0_component_type')
+        fill_in("page_page_components_attributes_0_component_attributes_title", with: 'Diffusion Map')
+        fill_in("page_page_components_attributes_0_component_attributes_map_info_window_text", with: 'Diffusion Map Info Window Text')
+        select('Best Innovation Ever', from: 'page_page_components_attributes_0_component_attributes_map')
+        save_page
+        expect(page).to have_content('Page was successfully updated.')
+        expect(page).to have_content('Google Map')
+        expect(page).to have_content('Diffusion Map')
+        expect(page).to have_content('Diffusion Map Info Window Text')
       end
     end
   end

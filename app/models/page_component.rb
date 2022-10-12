@@ -31,6 +31,7 @@ class PageComponent < ApplicationRecord
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
       'YouTube Player': 'PageYouTubePlayerComponent',
       'Horizontal Separator': 'PageHrComponent',
+      'Google Map': 'PageMapComponent',
       'Text and Images': 'PageCompoundBodyComponent'
   }
 

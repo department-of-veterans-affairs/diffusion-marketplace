@@ -14,6 +14,23 @@ describe 'Page Builder - Show', type: :feature do
       Practice.create!(name: 'A superb practice', approved: true, published: true, tagline: 'Test tagline', user: user),
       Practice.create!(name: 'The last practice', approved: true, published: true, tagline: 'Test tagline', user: user)
     ]
+    @visn_1 = Visn.create!(name: 'VISN 1', number: 1)
+    # @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
+    @fac_1 = VaFacility.create!(
+        visn: @visn_1,
+        station_number: "402GA",
+        official_station_name: "Caribou VA Clinic",
+        common_name: "Caribou",
+        latitude: "44.2802701",
+        longitude: "-69.70413586",
+        street_address_state: "ME",
+        rurality: "R",
+        fy17_parent_station_complexity_level: "1c-High Complexity",
+        station_phone_number: "207-623-2123 x"
+    )
+
+    dh_1 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_1)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
 
     page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
     @page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
@@ -37,9 +54,9 @@ describe 'Page Builder - Show', type: :feature do
     downloadable_file_component = PageDownloadableFileComponent.create(attachment: downloadable_file, description: 'Test file')
     paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='https://marketplace.va.gov/about'>about the marketplace</a></p><p><a href='https://wikipedia.org/'>an external link</a></p></div>")
     legacy_paragraph_component = PageParagraphComponent.create(text: "<div><p><a href='../../about' target='_blank'>relative internal link with dot</a></p><p><a href='/about' target='_blank'>relative internal link with slash</a></p><p><a href='https://marketplace.va.gov/' target='_blank'>absolute internal link</a></p></div>")
+    map_component = PageMapComponent.create(title: "test map", map_info_window_text: "map info window text", description: "map description", practices: [1, 2, 3], display_successful_adoptions: true, display_in_progress_adoptions: true, display_unsuccessful_adoptions: true)
     accordion_component = PageAccordionComponent.create(title: 'FAQ 1', text: 'FAQ 1 text')
     accordion_component_2 = PageAccordionComponent.create(title: 'FAQ 2', text: 'FAQ 2 text')
-
     PageComponent.create(page: @page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: @page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: @page, component: image_component, created_at: Time.now)
@@ -51,6 +68,7 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: @page, component: downloadable_file_component, created_at: Time.now)
     PageComponent.create(page: @page, component: paragraph_component, created_at: Time.now)
     PageComponent.create(page: @page, component: legacy_paragraph_component, created_at: Time.now)
+    PageComponent.create(page: @page, component: map_component, created_at: Time.now)
     PageComponent.create(page: @page, component: accordion_component, created_at: Time.now)
     PageComponent.create(page: @page, component: accordion_component_2, created_at: Time.now)
 
@@ -86,6 +104,12 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_content('Load more')
     find('.dm-paginated-practices-0-link').click
     expect(page).to have_content('The last practice')
+  end
+
+  it 'should display the map' do
+    expect(page).to have_content('test map')
+    expect(page).to have_content('map description')
+    expect(html).to have_selector('div.grid-col-12')
   end
 
   it 'Should display the subpage hyperlink' do
