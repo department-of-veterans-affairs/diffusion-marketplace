@@ -49,15 +49,13 @@ class PageController < ApplicationController
                      })
       marker.shadow nil
       marker.json({ id: facility.id })
-      adoption_count = DiffusionHistory.where(va_facility_id: facility.id).count
       practice_data =  @map_component.get_practice_data_by_diffusion_histories(facility.id)
       marker.infowindow render_to_string(
                             partial: 'maps/page_map_infowindow',
                             locals: {
                                 facility: facility,
                                 map_component: @map_component,
-                                practice_data: practice_data,
-                                adoption_count: adoption_count
+                                practice_data: practice_data
                             }
                         )
     end
