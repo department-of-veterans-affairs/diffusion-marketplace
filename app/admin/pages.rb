@@ -117,13 +117,6 @@ ActiveAdmin.register Page do
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
             # Alignment
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
-            # Text
-            if (pc.component_type == 'PageAccordionComponent' ||
-                pc.component_type == 'PageParagraphComponent' ||
-                pc.component_type == 'PageCompoundBodyComponent') && component&.text.present?
-              para component.text.html_safe
-            end
-
             # Title header
             para "Title header: #{component&.title_header}" if pc.component_type == 'PageCompoundBodyComponent' && component&.title_header.present?
             # Title
