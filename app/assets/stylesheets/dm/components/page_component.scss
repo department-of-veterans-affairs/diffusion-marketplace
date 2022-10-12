@@ -151,6 +151,25 @@
     }
   }
 
+  .page-map-component {
+    .page-marker-container {
+      padding: 52px 8px 0 8px;
+    }
+
+    .infoBox {
+      img {
+        @include u-position('absolute');
+        @include u-right('105');
+        @include u-top('105');
+      }
+    }
+  }
+
+  .page_builder_map {
+    height: 440px;
+  }
+}
+
   .page-event-component {
     border-top: 1px solid black;
   }
@@ -158,4 +177,4 @@
   .page-news-component {
     @include u-margin-bottom(2);
   }
-}
+

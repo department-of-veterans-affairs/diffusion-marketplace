@@ -3,6 +3,7 @@ class PageController < ApplicationController
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @page_components = @page.page_components
+    get_map_components(@page_components)
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
@@ -22,7 +23,45 @@ class PageController < ApplicationController
     end
   end
 
+
   private
+
+  def get_map_components(page_components)
+    page_components.each do |pc|
+      if pc.component_type == "PageMapComponent"
+        @map_component = PageMapComponent.find_by_id(pc.component_id)
+        build_map_component(@map_component.get_adopting_facility_ids)
+      end
+    end
+  end
+
+  def build_map_component(adopting_facility_ids)
+    va_facilities = VaFacility.where(id: adopting_facility_ids)
+    @va_facility_marker = Gmaps4rails.build_markers(va_facilities) do |facility, marker|
+      marker.lat facility.latitude
+      marker.lng facility.longitude
+      marker.picture({
+                         url: view_context.image_path('map-marker-default.svg'),
+                         width: 34,
+                         height: 46,
+                         scaledWidth: 34,
+                         scaledHeight: 46
+                     })
+      marker.shadow nil
+      marker.json({ id: facility.id })
+      adoption_count = DiffusionHistory.where(va_facility_id: facility.id).count
+      practice_data =  @map_component.get_practice_data_by_diffusion_histories(facility.id)
+      marker.infowindow render_to_string(
+                            partial: 'maps/page_map_infowindow',
+                            locals: {
+                                facility: facility,
+                                map_component: @map_component,
+                                practice_data: practice_data,
+                                adoption_count: adoption_count
+                            }
+                        )
+    end
+  end
 
   def collect_paginated_components(page_components)
     practice_lists = []

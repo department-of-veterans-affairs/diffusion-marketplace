@@ -36,7 +36,7 @@
             <% end %>
           </div>
 
-          <%# Page Header 3 %>
+        <%# Page Header 3 %>
         <% when 'PageHeader3Component' %>
           <div class="<%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
             <h3 class="font-sans-lg text-<%= component.alignment.downcase %>">
@@ -49,11 +49,11 @@
             <% end %>
           </div>
 
-          <%# Page Horizontal Line %>
+        <%# Page Horizontal Line %>
         <% when 'PageHrComponent' %>
           <hr class="flex-fill border border-base-lighter bg-base-lightest dm-section-line margin-top-0 margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
 
-          <%# Accordion %>
+        <%# Accordion %>
         <% when 'PageAccordionComponent' %>
           <% accordion_ctr += 1 %>
           <div id="accordion_anchor_<%= accordion_ctr %>" class="page-accordion-component <%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
@@ -73,7 +73,7 @@
             </div>
           </div>
 
-          <%# CTA %>
+        <%# CTA %>
         <% when 'PageCtaComponent' %>
           <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <div class="font-sans-lg grid-col-12 margin-bottom-2">
@@ -118,7 +118,6 @@
         <% when 'PageNewsComponent' %>
           <% component_index = 0 %>
           <% nic = @news_items_components[0] %>
-
           <% if component.id == @news_items_ids.first %>
             <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
               <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
@@ -131,8 +130,8 @@
             <% end %>
           <% end %>
 
-          <%# Practice List %>
-          <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>
+        <%# Practice List %>
+        <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>
         <% when 'PagePracticeListComponent' %>
           <%
             component_index = @practice_list_component_index
@@ -152,7 +151,8 @@
               <% end %>
             </div>
           <% end %>
-          <%# Subpage Hyperlink %>
+
+        <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
             <% if component.card? %>
               <div class="grid-col-12 tablet:grid-col-6 pb-link-card margin-bottom-3">
@@ -183,7 +183,7 @@
               </div>
             <% end %>
 
-          <%# YouTube Player %>
+        <%# YouTube Player %>
         <% when 'PageYouTubePlayerComponent' %>
           <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <%= youtube_embed(component.url) %>
@@ -194,7 +194,7 @@
             <% end %>
           </div>
 
-          <%# Downloadable File %>
+        <%# Downloadable File %>
         <% when 'PageDownloadableFileComponent' %>
           <%
             description = component.description
@@ -208,6 +208,26 @@
             <% end %>
           </div>
 
+        <%# Map Component %>
+        <% when 'PageMapComponent' %>
+          <%
+            description = component.description
+            title = component.title
+            next_component = @page.page_components.find_by(position: pc.position + 1)
+          %>
+          <% if title.present? %>
+            <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9">
+              <%= content_tag(:span, title, class: 'margin-right-1') %>
+            </div>
+          <% end %>
+          <div class="margin-bottom-1 page-map-component">
+            <%= render partial: "page/page_map", locals: { component: component } %>
+          </div>
+          <% if description.present? %>
+            <div class="margin-top-2 grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
+              <%= content_tag(:span, description, class: 'margin-right-1') %>
+            </div>
+          <% end %>
         <%# Text and Images %>
         <% when 'PageCompoundBodyComponent' %>
           <div

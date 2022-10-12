@@ -38,6 +38,10 @@ ActiveAdmin.register Page do
                     :cta_text,
                     :button_text,
                     :card,
+                    :display_successful_adoptions,
+                    :display_in_progress_adoptions,
+                    :display_unsuccessful_adoptions,
+                    :map_info_window_text,
                     :body,
                     :title_header,
                     :text_alignment,
@@ -119,6 +123,7 @@ ActiveAdmin.register Page do
             if (pc.component_type == 'PageHeader3Component' ||
                 pc.component_type == 'PageSubpageHyperlinkComponent' ||
                 pc.component_type == 'PageAccordionComponent' ||
+                pc.component_type == 'PageMapComponent' ||
                 pc.component_type == 'PageCompoundBodyComponent') && component&.title.present?
               para "Title: #{component.title}"
             end
@@ -126,7 +131,9 @@ ActiveAdmin.register Page do
             para "Large title: #{component.large_title}" if pc.component_type == 'PageCompoundBodyComponent' && component&.large_title
             # Description
             if (pc.component_type == 'PageHeader3Component' ||
-                pc.component_type == 'PageDownloadableFileComponent') && component&.description.present?
+                pc.component_type == 'PageDownloadableFileComponent' ||
+                pc.component_type == 'PageMapComponent') &&
+                component&.description.present?
               para component.description
             end
             # Text
@@ -155,6 +162,9 @@ ActiveAdmin.register Page do
             para component&.alt_text if pc.component_type == 'PageImageComponent'
             # Attachment file name
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
+            # Map Info Window Text
+            para component&.map_info_window_text if pc.component_type == 'PageMapComponent' && component&.map_info_window_text != ''
+
             # Display name
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
             # Margin bottom

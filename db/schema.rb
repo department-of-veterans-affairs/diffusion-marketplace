@@ -648,6 +648,20 @@ ActiveRecord::Schema.define(version: 2022_09_26_221108) do
     t.index ["page_component_id"], name: "index_page_image_components_on_page_component_id"
   end
 
+  create_table "page_map_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "map_info_window_text"
+    t.string "description"
+    t.string "practices", default: [], array: true
+    t.boolean "display_successful_adoptions", default: false
+    t.boolean "display_in_progress_adoptions", default: false
+    t.boolean "display_unsuccessful_adoptions", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_map_components_on_page_component_id"
+  end
+
   create_table "page_news_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "title"
@@ -1047,12 +1061,12 @@ ActiveRecord::Schema.define(version: 2022_09_26_221108) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
-    t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
     t.string "highlight_attachment_file_name"
     t.string "highlight_attachment_content_type"
     t.integer "highlight_attachment_file_size"
     t.datetime "highlight_attachment_updated_at"
+    t.boolean "is_public", default: false
     t.text "main_display_image_alt_text"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
@@ -1466,6 +1480,7 @@ ActiveRecord::Schema.define(version: 2022_09_26_221108) do
   add_foreign_key "page_header_components", "page_components"
   add_foreign_key "page_hr_components", "page_components"
   add_foreign_key "page_image_components", "page_components"
+  add_foreign_key "page_map_components", "page_components"
   add_foreign_key "page_news_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
