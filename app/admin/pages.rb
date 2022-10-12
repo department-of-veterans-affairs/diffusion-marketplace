@@ -118,16 +118,11 @@ ActiveAdmin.register Page do
             # Alignment
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
             # Text
-            para component&.text.html_safe unless (pc.component_type == 'PageHrComponent' ||
-                pc.component_type == 'PagePracticeListComponent' ||
-                pc.component_type == 'PageHeader2Component' ||
-                pc.component_type == 'PageSubpageHyperlinkComponent' ||
-                pc.component_type == 'PageHeader3Component' ||
-                pc.component_type == 'PageYouTubePlayerComponent' ||
-                pc.component_type == 'PageImageComponent' ||
-                pc.component_type == 'PageDownloadableFileComponent' ||
-                pc.component_type == 'PageCtaComponent' ||
-                pc.component_type == 'PageMapComponent')
+            if (pc.component_type == 'PageAccordionComponent' ||
+                pc.component_type == 'PageParagraphComponent' ||
+                pc.component_type == 'PageCompoundBodyComponent') && component&.text.present?
+              para component.text.html_safe
+            end
 
             # Title header
             para "Title header: #{component&.title_header}" if pc.component_type == 'PageCompoundBodyComponent' && component&.title_header.present?
