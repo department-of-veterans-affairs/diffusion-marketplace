@@ -2,7 +2,6 @@ class @PageInfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from ba
   # override method
   create_infowindow: ->
     return null unless _.isString @args.infowindow
-
     boxText = document.createElement("div")
     boxText.setAttribute('class', 'page-marker-container') #to customize
     boxText.innerHTML = @args.infowindow
@@ -12,10 +11,10 @@ class @PageInfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from ba
 
   infobox: (boxText)->
     content: boxText
-    pixelOffset: new google.maps.Size(-260, 150)
+    pixelOffset: new google.maps.Size(-225, 150)
     boxStyle: {
-      width: "540px",
-      height: "300px",
+      maxWidth: "450px",
+      maxHeight: "300px",
       overflow: "auto",
       backgroundColor: "white",
       paddingBottom: "52px"
