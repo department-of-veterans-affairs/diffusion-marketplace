@@ -8,7 +8,7 @@
       <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'usa-link font-sans-md text-bold' %>
     </p>
     <div class="margin-top-0 text-normal theme-type-scale-sm padding-x-4">
-      <%= practice_data.count %> <%= map_info_window_text.present? ? "#{map_info_window_text}" : 'Total' %> Innovation<%= 's' if practice_data.count != 1 %>
+      <%= practice_data.length %> <%= map_info_window_text.present? ? "#{map_info_window_text}" : 'Total' %> Innovation<%= 's' if practice_data.length != 1 %>
     </div>
     <div class="text-bold font-sans-3xs">
       <% practice_data.each do |pd| %>
