@@ -50,7 +50,7 @@
 <%# Images %>
 <% if images.present? %>
   <div class="grid-item-images<%= ' left-align' if component.text_alignment === 'Right' %><%= ' margin-bottom-0' if no_text %>">
-    <div class="grid-row grid-gap-2px">
+    <div class="grid-row desktop:grid-gap-3">
       <% images.each_with_index do |image, index| %>
         <%
           signed_image = image.image_s3_presigned_url(:thumb)
