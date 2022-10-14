@@ -13,9 +13,16 @@
     });
   }
 
+    function _preventXRNetworkDropdownFlickerOnPageLoad() {
+        $(document).arrive('header', { existing: true }, () => {
+            $("#xr-network-dropdown").removeClass('display-none');
+        });
+    }
+
   function loadHeaderUtilitiesFn() {
     _preventBrowseByLocationsDropdownFlickerOnPageLoad();
     _preventCrisisLineModalFlickerOnPageLoad();
+    _preventXRNetworkDropdownFlickerOnPageLoad();
   }
 
   $document.on('turbolinks:load', loadHeaderUtilitiesFn);
