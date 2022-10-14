@@ -28,46 +28,46 @@ RSpec.describe PageCompoundBodyComponent, type: :model do
       end
     end
 
-    context 'margin_bottom' do
+    context 'padding_bottom' do
       it 'should be valid if it is a value between 0 and 10 (rails type casts, so strings work as well), inclusively' do
-        # Invalid margin_bottoms
-        @component.margin_bottom = 12
+        # Invalid padding_bottom
+        @component.padding_bottom = 12
         expect_invalid_record(
           @component,
-          :margin_bottom,
-          '12 is not a valid Margin bottom size'
+          :padding_bottom,
+          '12 is not a valid Padding bottom size'
         )
 
-        @component.margin_bottom = -4
+        @component.padding_bottom = -4
         expect_invalid_record(
           @component,
-          :margin_bottom,
-          '-4 is not a valid Margin bottom size'
+          :padding_bottom,
+          '-4 is not a valid Padding bottom size'
         )
-        # Valid margin_bottom
-        @component.margin_bottom = 7
+        # Valid padding_bottom
+        @component.padding_bottom = 7
         expect_valid_record(@component)
       end
     end
 
-    context 'margin_top' do
+    context 'padding_top' do
       it 'should be valid if it is a value between 0 and 10 (rails type casts, so strings work as well), inclusively' do
-        # Invalid margin_tops
-        @component.margin_top = -1
+        # Invalid padding_top
+        @component.padding_top = -1
         expect_invalid_record(
           @component,
-          :margin_top,
-          '-1 is not a valid Margin top size'
+          :padding_top,
+          '-1 is not a valid Padding top size'
         )
 
-        @component.margin_top = 11
+        @component.padding_top = 11
         expect_invalid_record(
           @component,
-          :margin_top,
-          '11 is not a valid Margin top size'
+          :padding_top,
+          '11 is not a valid Padding top size'
         )
-        # Valid margin_top
-        @component.margin_top = 10
+        # Valid padding_top
+        @component.padding_top = 10
         expect_valid_record(@component)
       end
     end

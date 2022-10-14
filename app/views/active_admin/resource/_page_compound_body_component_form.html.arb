@@ -81,50 +81,50 @@ html = Arbre::Context.new do
           para 'Enter the text that will displayed for the link to the URL above', class: 'inline-hints'
         end
 
-        uswds_margin_units = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        uswds_margin_link = 'https://designsystem.digital.gov/utilities/margin-and-padding/'
+        uswds_padding_units = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        uswds_padding_link = 'https://designsystem.digital.gov/utilities/margin-and-padding/'
 
-        # Margin bottom
-        li class: 'select input margin-bottom-container',
-           id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom_input" do
-          label 'Margin bottom', for: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom", class: 'label'
-          select value: component&.margin_bottom || nil,
-                 id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_bottom",
-                 name: "page[page_components_attributes][#{placeholder}][component_attributes][margin_bottom]" do
-            uswds_margin_units.each do |unit|
-              option "#{unit}", selected: component&.margin_bottom === unit
+        # Padding bottom
+        li class: 'select input padding-bottom-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_padding_bottom_input" do
+          label 'Padding bottom', for: "page_page_components_attributes_#{placeholder}_component_attributes_padding_bottom", class: 'label'
+          select value: component&.padding_bottom || nil,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_padding_bottom",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][padding_bottom]" do
+            uswds_padding_units.each do |unit|
+              option "#{unit}", selected: component&.padding_bottom === unit
             end
           end
 
           para class: 'inline-hints' do
-            span "Choose the bottom margin for this 'Compound Body' component (option are based on USWDS units:"
-            a 'USWDS margin units',
-              href: uswds_margin_link,
+            span "Choose the bottom padding for this 'Compound Body' component (option are based on USWDS units:"
+            a 'USWDS padding units',
+              href: uswds_padding_link,
               class: 'usa-link usa-link--external',
               target: '_blank'
-            span "Ex: '3' would equate to 'margin-bottom-3'. Defaults to 0."
+            span "Ex: '3' would equate to 'padding-bottom-3'. Defaults to 0."
           end
         end
 
-        # Margin top
-        li class: 'select input margin-top-container',
-           id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top_input" do
-          label 'Margin top', for: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top", class: 'label'
-          select value: component&.margin_top || nil,
-                 id: "page_page_components_attributes_#{placeholder}_component_attributes_margin_top",
-                 name: "page[page_components_attributes][#{placeholder}][component_attributes][margin_top]" do
-            uswds_margin_units.each do |unit|
-              option "#{unit}", selected: component&.margin_top === unit
+        # Padding top
+        li class: 'select input padding-top-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_padding_top_input" do
+          label 'Padding top', for: "page_page_components_attributes_#{placeholder}_component_attributes_padding_top", class: 'label'
+          select value: component&.padding_top || nil,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_padding_top",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][padding_top]" do
+            uswds_padding_units.each do |unit|
+              option "#{unit}", selected: component&.padding_top === unit
             end
           end
 
           para class: 'inline-hints' do
-            span "Choose the top margin for this 'Compound Body' component (option are based on USWDS units:"
-            a 'USWDS margin units',
-              href: uswds_margin_link,
+            span "Choose the top padding for this 'Compound Body' component (option are based on USWDS units:"
+            a 'USWDS padding units',
+              href: uswds_padding_link,
               class: 'usa-link usa-link--external',
               target: '_blank'
-            span "Ex: '3' would equate to 'margin-top-3'. Defaults to 0."
+            span "Ex: '3' would equate to 'padding-top-3'. Defaults to 0."
           end
         end
 

@@ -354,8 +354,8 @@ describe 'Page Builder - Show', type: :feature do
     within_frame(all('.tox-edit-area__iframe')[0]) do
       find('body').set('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
     end
-    select(0, from: 'page_page_components_attributes_0_component_attributes_margin_bottom')
-    select(4, from: 'page_page_components_attributes_0_component_attributes_margin_top')
+    select(0, from: 'page_page_components_attributes_0_component_attributes_padding_bottom')
+    select(4, from: 'page_page_components_attributes_0_component_attributes_padding_top')
   end
 
   def add_page_component_image_to_component(

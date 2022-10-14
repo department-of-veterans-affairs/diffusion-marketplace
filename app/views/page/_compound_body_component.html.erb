@@ -74,12 +74,12 @@
               <% else %>
                 <img src="<%= signed_image %>" alt="<%= alt_text %>" class="height-full width-full"/>
               <% end %>
-              <% if caption.present? %>
-                <div class="dm-word-break-break-word dm-hyphens-auto margin-top-105">
-                  <%= caption.html_safe %>
-                </div>
-              <% end %>
             </div>
+            <% if caption.present? %>
+              <div class="dm-word-break-break-word dm-hyphens-auto margin-top-105">
+                <%= caption.html_safe %>
+              </div>
+            <% end %>
           </div>
       <% end %>
     </div>
