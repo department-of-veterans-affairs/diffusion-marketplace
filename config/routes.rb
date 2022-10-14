@@ -130,4 +130,5 @@ Rails.application.routes.draw do
   # Accept pages with /communities prefix, e.g. /communities/xr-network/news
   get '/communities/:page_group_friendly_id' => "page#show"
   get '/communities/:page_group_friendly_id/:page_slug' => 'page#show'
+  get '/communities', to: redirect('/communities/xr-network') # temporary redirect until more communities are added
 end
