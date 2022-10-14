@@ -252,7 +252,7 @@ describe 'Page Builder - Show', type: :feature do
       expect(page).to have_content('Page was successfully updated.')
       # With no PageComponentImages present, the CompoundBodyComponent text should take up six columns
       visit '/programming/javascript'
-      expect(page).to have_selector('div.page-compound-body-component.margin-bottom-0.margin-top-4')
+      expect(page).to have_selector('div.page-compound-body-component.margin-bottom-0.padding-bottom-0.padding-top-4')
       within(:css, '.page-compound-body-component') do
         expect(find('.grid-item-text').matches_style?('grid-column' => '1 / 7')).to be(true)
         expect(page).to have_selector('h2', class: 'usa-prose-h2')
@@ -292,7 +292,7 @@ describe 'Page Builder - Show', type: :feature do
         expect(page).to have_link('A link to the homepage', href: '/')
         # Make sure the new PageComponentImage is present and any completed fields are displayed
         expect(page).to have_selector('div.grid-item-images.left-align')
-        within(:css, '.image-container') do
+        within(:css, '.grid-item-images') do
           expect(find('img')['src']).to include('charmander.png')
           expect(find('img')['alt']).to eq('A cute charmander')
           expect(page).to have_link(href: '/search')
