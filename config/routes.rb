@@ -126,4 +126,8 @@ Rails.application.routes.draw do
 
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
+
+  # Accept pages with /communities prefix, e.g. /communities/xr-network/news
+  get '/communities/:page_group_friendly_id' => "page#show"
+  get '/communities/:page_group_friendly_id/:page_slug' => 'page#show'
 end
