@@ -1,6 +1,7 @@
 module NavigationHelper
   RETURN_TO_TOP_PAGES = ['show', 'metrics', 'introduction', 'overview', 'implementation']
   PRACTICE_EDITOR_PAGES = ['introduction', 'editors', 'overview', 'implementation', 'adoptions', 'about']
+  COMMUNITIES = ['xr-network']
 
   def setup_breadcrumb_navigation
     session[:breadcrumbs] = session[:breadcrumbs] || []
@@ -239,6 +240,9 @@ module NavigationHelper
 
         if @page_slug == 'home'
           empty_breadcrumbs
+        elsif COMMUNITIES.include?(@page.page_group.slug) && @builder_landing_page.exists?
+          empty_breadcrumbs
+          add_landing_page_breadcrumb("/communities/#{params[:page_group_friendly_id]}")
         elsif @builder_landing_page.exists?
           empty_breadcrumbs
           add_landing_page_breadcrumb("/#{params[:page_group_friendly_id]}")
