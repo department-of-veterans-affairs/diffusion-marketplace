@@ -250,11 +250,11 @@ describe 'Page Builder - Show', type: :feature do
       add_compound_body_component_and_fill_in_fields
       save_page
       expect(page).to have_content('Page was successfully updated.')
-      # With no PageComponentImages present, the CompoundBodyComponent text should take up six columns
+      # With no PageComponentImages present, the CompoundBodyComponent text should take up eight columns
       visit '/programming/javascript'
       expect(page).to have_selector('div.page-compound-body-component.margin-bottom-0.margin-top-4')
       within(:css, '.page-compound-body-component') do
-        expect(find('.grid-item-text').matches_style?('grid-column' => '1 / 7')).to be(true)
+        expect(find('.grid-item-text').matches_style?('grid-column' => '1 / 9')).to be(true)
         expect(page).to have_selector('h2', class: 'usa-prose-h2')
         expect(page).to have_text('Cool Title')
         expect(page).to have_text('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
@@ -276,16 +276,16 @@ describe 'Page Builder - Show', type: :feature do
       )
       save_page
       expect(page).to have_content('Page was successfully updated.')
-      # With one PageComponentImage present, the CompoundBodyComponent text should now only take up five columns.
-      # The associated PageComponentImage should take up four columns.
+      # With one PageComponentImage present, the CompoundBodyComponent text should now only take up six columns.
+      # The associated PageComponentImage should take up five columns.
       visit '/programming/javascript'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       # Make sure the updated CompoundBodyComponent fields are represented
       within(:css, '.page-compound-body-component') do
         # Right-aligned text
         expect(page).to have_selector('div.grid-item-text.right-align')
-        # Five columns worth of text, but on the right side of the grid now
-        expect(find('.grid-item-text').matches_style?('grid-column' => '8 / 13')).to be(true)
+        # Six columns worth of text, but on the right side of the grid now
+        expect(find('.grid-item-text').matches_style?('grid-column' => '7 / 13')).to be(true)
         # The larger title gets 'h1' styling
         expect(page).to have_selector('h2', class: 'usa-prose-h1')
         # Link with link text
