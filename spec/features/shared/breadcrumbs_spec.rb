@@ -291,5 +291,13 @@ describe 'Breadcrumbs', type: :feature do
       visit '/programming/home'
       expect(page).to_not have_css('#breadcrumbs')
     end
+
+    it 'only provides a single breadcrumb for /communities subpages' do
+      visit '/communities/programming/test-page'
+      expect(page).to have_css('#breadcrumbs', visible: true)
+      expect(page).to have_css('.usa-breadcrumb__link', text: @page_group.name)
+      expect(page).to have_link(href: '/programming')
+      expect(page).not_to have_css('.usa-breadcrumb__link', text: @page.title)
+    end
   end
 end
