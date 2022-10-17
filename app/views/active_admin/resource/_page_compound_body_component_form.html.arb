@@ -97,7 +97,7 @@ html = Arbre::Context.new do
           end
 
           para class: 'inline-hints' do
-            span "Choose the bottom padding for this 'Compound Body' component (option are based on USWDS units:"
+            span "Choose the bottom padding for this 'Compound Body' component (options are based on USWDS units)"
             a 'USWDS padding units',
               href: uswds_padding_link,
               class: 'usa-link usa-link--external',
@@ -119,7 +119,7 @@ html = Arbre::Context.new do
           end
 
           para class: 'inline-hints' do
-            span "Choose the top padding for this 'Compound Body' component (option are based on USWDS units:"
+            span "Choose the top padding for this 'Compound Body' component (options are based on USWDS units)"
             a 'USWDS padding units',
               href: uswds_padding_link,
               class: 'usa-link usa-link--external',
