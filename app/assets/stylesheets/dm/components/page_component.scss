@@ -76,6 +76,7 @@
     }
   }
 
+  // Per design, these styles should mimic the homepage's 'Featured' innovation and 'Featured' topic styles as much as possible (10/14/2022)
   .page-compound-body-component {
     display: grid;
     grid-template-columns: repeat(12, 1fr);

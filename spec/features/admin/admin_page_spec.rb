@@ -301,8 +301,8 @@ describe 'Page Builder', type: :feature do
     end
     fill_in("page_page_components_attributes_#{component_index}_component_attributes_url", with: '/')
     fill_in("page_page_components_attributes_#{component_index}_component_attributes_url_link_text", with: url_link_text)
-    select(1, from: "page_page_components_attributes_#{component_index}_component_attributes_margin_bottom")
-    select(4, from: "page_page_components_attributes_#{component_index}_component_attributes_margin_top")
+    select(1, from: "page_page_components_attributes_#{component_index}_component_attributes_padding_bottom")
+    select(4, from: "page_page_components_attributes_#{component_index}_component_attributes_padding_top")
   end
 
   def fill_in_optional_page_component_image_fields(

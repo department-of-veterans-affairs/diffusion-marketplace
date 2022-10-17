@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_26_221108) do
+ActiveRecord::Schema.define(version: 2022_10_13_211727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -549,8 +549,8 @@ ActiveRecord::Schema.define(version: 2022_09_26_221108) do
     t.string "url_link_text"
     t.string "title_header"
     t.string "text_alignment"
-    t.integer "margin_top"
-    t.integer "margin_bottom"
+    t.integer "padding_top"
+    t.integer "padding_bottom"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["page_component_id"], name: "index_page_compound_body_components_on_page_component_id"
