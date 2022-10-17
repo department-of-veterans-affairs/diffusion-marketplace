@@ -252,7 +252,7 @@ describe 'Page Builder - Show', type: :feature do
       expect(page).to have_content('Page was successfully updated.')
       # With no PageComponentImages present, the CompoundBodyComponent text should take up eight columns
       visit '/programming/javascript'
-      expect(page).to have_selector('div.page-compound-body-component.margin-bottom-0.margin-top-4')
+      expect(page).to have_selector('div.page-compound-body-component.margin-bottom-0.padding-bottom-0.padding-top-4')
       within(:css, '.page-compound-body-component') do
         expect(find('.grid-item-text').matches_style?('grid-column' => '1 / 9')).to be(true)
         expect(page).to have_selector('h2', class: 'usa-prose-h2')
@@ -292,7 +292,7 @@ describe 'Page Builder - Show', type: :feature do
         expect(page).to have_link('A link to the homepage', href: '/')
         # Make sure the new PageComponentImage is present and any completed fields are displayed
         expect(page).to have_selector('div.grid-item-images.left-align')
-        within(:css, '.image-container') do
+        within(:css, '.grid-item-images') do
           expect(find('img')['src']).to include('charmander.png')
           expect(find('img')['alt']).to eq('A cute charmander')
           expect(page).to have_link(href: '/search')
@@ -354,8 +354,8 @@ describe 'Page Builder - Show', type: :feature do
     within_frame(all('.tox-edit-area__iframe')[0]) do
       find('body').set('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
     end
-    select(0, from: 'page_page_components_attributes_0_component_attributes_margin_bottom')
-    select(4, from: 'page_page_components_attributes_0_component_attributes_margin_top')
+    select(0, from: 'page_page_components_attributes_0_component_attributes_padding_bottom')
+    select(4, from: 'page_page_components_attributes_0_component_attributes_padding_top')
   end
 
   def add_page_component_image_to_component(

@@ -5,7 +5,7 @@ class PageCompoundBodyComponent < ApplicationRecord
     in: %w[Left Right],
     message: "%{value} is not a valid text alignment"
   }
-  validates :margin_bottom, :margin_top, allow_blank: true, inclusion: {
+  validates :padding_bottom, :padding_top, allow_blank: true, inclusion: {
     in: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     message: "%{value} is not a valid %{attribute} size"
   }

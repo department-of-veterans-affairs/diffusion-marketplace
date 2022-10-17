@@ -47,8 +47,8 @@ ActiveAdmin.register Page do
                     :text_alignment,
                     :url_link_text,
                     :large_title,
-                    :margin_bottom,
-                    :margin_top,
+                    :padding_bottom,
+                    :padding_top,
                     :published_date,
                     practices: []
                   ],
@@ -167,10 +167,10 @@ ActiveAdmin.register Page do
 
             # Display name
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
-            # Margin bottom
-            para "Margin bottom: #{component&.margin_bottom}" if pc.component_type == 'PageCompoundBodyComponent'
-            # Margin top
-            para "Margin top: #{component&.margin_top}" if pc.component_type == 'PageCompoundBodyComponent'
+            # Padding bottom
+            para "Padding bottom: #{component&.padding_bottom}" if pc.component_type == 'PageCompoundBodyComponent'
+            # Padding top
+            para "Padding top: #{component&.padding_top}" if pc.component_type == 'PageCompoundBodyComponent'
             # PageComponentImages
             if pc.page_component_images.present?
               para 'Images:'
