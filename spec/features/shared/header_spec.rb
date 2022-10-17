@@ -41,6 +41,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Your profile')
         expect(page).to have_content('Browse by locations')
+        expect(page).to have_content('XR Network')
       end
     end
 
@@ -59,6 +60,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_content('Shark Tank')
         expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Browse by locations')
+        expect(page).to have_content('XR Network')
         expect(page).to_not have_content('Sign in')
       end
 
