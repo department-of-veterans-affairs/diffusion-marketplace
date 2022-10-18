@@ -15,8 +15,10 @@ class PageController < ApplicationController
     @news_items_components = {}
     @news_items_ids = []
     collect_paginated_components(@page_components)
+
     if page_group.is_community? && !request.url.include?('/communities') && @page.published
-      redirect_to("/communities/#{page_group.slug}/#{page_slug}")
+      communities_path = URI.parse("/communities/#{page_group.slug}/#{page_slug}")
+      redirect_to(communities_path)
     elsif !@page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
