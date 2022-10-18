@@ -93,7 +93,7 @@ function buildPracticeCard(result) {
           'data-resource-id="' + result.item.id + '" ' +
           'alt="' + practiceName + ' Marketplace Card Image" ' +
           'class="grid-row marketplace-card-img radius-top-sm" ' +
-          'src="">';
+          'src="' + result.item.placeholder_image + '">';
     if (result.item.retired) {
         cardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
     }
@@ -132,7 +132,7 @@ function buildPracticeCard(result) {
         '</a>' +
         '</div>';
 
-    // After the html for the card has been built, add the image 'src' based on the signed url
+    // After the html for the card has been built, replace the image 'src' based on the signed url
     fetchSignedResource(practiceImage, `img[data-resource-id="${result.item.id}"]`);
 
     return cardHtml;

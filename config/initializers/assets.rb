@@ -54,7 +54,7 @@ Rails.application.config.assets.precompile += %w(
                                                   facility_status_definitions_modal.js
                                                   clinical_resource_hubs/crh_show.js
                                                   practices/publication_validation.js
-                                                  shared/_signed_image.js
+                                                  shared/_signed_resource.js
                                               )
 
 # Precompile additional assets.

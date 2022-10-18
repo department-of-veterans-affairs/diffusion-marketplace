@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def signed_image
+  def signed_resource
     s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
     signer = WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 2700)
     path = params[:path].sub('/', '')

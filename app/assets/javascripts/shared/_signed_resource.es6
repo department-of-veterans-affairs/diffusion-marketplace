@@ -4,10 +4,12 @@ function fetchSignedResource(
     dataAttributeSelector,
     resourceType = 'image'
 ) {
-    const signedImageUrl = `/signed_image?path=${resourcePath}`;
-    fetch(signedImageUrl).then(response => {
+    const signedResourceUrl = `/signed_resource?path=${resourcePath}`;
+
+    fetch(signedResourceUrl).then(response => {
         response.text().then(signedUrl => {
             const resourceElement = document.querySelector(dataAttributeSelector);
+
             if (resourceType === 'image') {
                 resourceElement.src = signedUrl;
             }
