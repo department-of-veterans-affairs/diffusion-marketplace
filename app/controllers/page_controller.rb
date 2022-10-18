@@ -17,8 +17,8 @@ class PageController < ApplicationController
     collect_paginated_components(@page_components)
 
     if page_group.is_community? && !request.url.include?('/communities') && @page.published
-      communities_path = URI.parse("/communities/#{page_group.slug}/#{page_slug}")
-      redirect_to(communities_path)
+      host_name = ENV.fetch('HOSTNAME')
+      redirect_to("#{host_name}/communities/#{page_group.slug}/#{page_slug}")
     elsif !@page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
