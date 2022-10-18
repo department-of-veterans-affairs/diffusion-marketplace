@@ -2,6 +2,7 @@ class PageController < ApplicationController
   def show
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
+    page_group = @page.page_group
     @page_components = @page.page_components
     get_map_components(@page_components)
     @path_parts = request.path.split('/')
@@ -14,7 +15,9 @@ class PageController < ApplicationController
     @news_items_components = {}
     @news_items_ids = []
     collect_paginated_components(@page_components)
-    unless @page.published
+    if page_group.is_community? && !request.url.include?('/communities') && @page.published
+      redirect_to("/communities/#{page_group.slug}/#{page_slug}")
+    elsif !@page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
     respond_to do |format|
