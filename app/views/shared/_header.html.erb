@@ -1,5 +1,12 @@
 <%= render 'shared/usa_banner' %>
 <%= render 'shared/veterans_crisis_line_modal' %>
+<%
+  xr_home_url = '/communities/xr-network'
+  xr_about_url = '/communities/xr-network/about'
+  xr_events_url = '/communities/xr-network/events'
+  xr_news_url = '/communities/xr-network/news'
+  xr_innovations_url = '/communities/xr-network/innovations'
+%>
 <!-- source: https://designsystem.digital.gov/components/header/#extended -->
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
 <header id="dm-nav-header" class="usa-header usa-header--extended bg-white">
@@ -73,7 +80,7 @@
         </li>
         <li class="usa-nav__primary-item border-base-light desktop:border-bottom-0">
           <button
-            class="margin-y-2px dm-text-no-underline desktop:margin-y-0 usa-accordion__button usa-nav__link border-base-light <%= 'usa-current' if request.fullpath === '/visns' || request.fullpath === '/facilities' || request.fullpath === '/diffusion-map' %>"
+            class="margin-y-2px dm-text-no-underline desktop:margin-y-0 usa-accordion__button usa-nav__link border-base-light <%= 'usa-current' if request.fullpath === xr_home_url || request.fullpath === xr_about_url || request.fullpath === xr_events_url || request.fullpath === xr_news_url || request.fullpath === xr_innovations_url %>"
             aria-expanded="false"
             aria-controls="xr-network-dropdown"
           >
@@ -81,27 +88,27 @@
           </button>
           <ul id="xr-network-dropdown" class="display-none usa-nav__submenu">
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === '/communities/xr-network' %>" href="/communities/xr-network">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_home_url %>" href="<%= xr_home_url %>">
                 Community
               </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === '/communities/xr-network/about' %>" href="/communities/xr-network/about">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_about_url %>" href="<%= xr_about_url %>">
                 About
               </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === '/communities/xr-network/events' %>" href="/communities/xr-network/events">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_events_url %>" href="<%= xr_events_url %>">
                 Events
               </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === '/communities/xr-network/news' %>" href="/communities/xr-network/news">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_news_url %>" href="<%= xr_news_url %>">
                 News
               </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === '/communities/xr-network/innovations' %>" href="/communities/xr-network/innovations">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_innovations_url %>" href="<%= xr_innovations_url %>">
                 Innovations
               </a>
             </li>

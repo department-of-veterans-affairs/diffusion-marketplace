@@ -150,7 +150,7 @@
         }
 
         &[aria-controls="xr-network-dropdown"] {
-          width: 133px !important;
+          width: 84px !important;
         }
 
         &[aria-controls="dm-user-profile-options"] {
@@ -216,11 +216,10 @@
           background-position: right 13% top 50%;
         }
 
-        button[aria-expanded="false"], button[aria-expanded="true"] {
-          &[aria-controls="xr-network-dropdown"] {
-            background-position: right 13% top 50%;
-          }
+        &[aria-controls="dm-user-profile-options"], &[aria-controls="xr-network-dropdown"] {
+          background-position: right 18% top 50%;
         }
+      }
 
         &[aria-controls="dm-user-profile-options"] {
           background-position: right 18% top 50%;
@@ -247,8 +246,8 @@
         right: 1rem;
       }
 
-      &#browse-by-locations-dropdown {
-               left: 26.125rem;
+      &#xr-network-dropdown {
+        left: 38.45rem;
       }
 
       &#browse-by-locations-dropdown {
@@ -273,7 +272,7 @@
       }
     }
   }
-}
+
 
 .va-crisis-line-modal-container {
   div {
