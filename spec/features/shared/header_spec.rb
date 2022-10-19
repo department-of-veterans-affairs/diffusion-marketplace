@@ -120,7 +120,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       it 'should redirect to xr about page' do
         click_on 'XR Network'
         click_on 'About'
-        expect(page).to have_current_path('/about')
+        expect(page).to have_current_path('/communities/xr-network/about')
       end
     end
 
