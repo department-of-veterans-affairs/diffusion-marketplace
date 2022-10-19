@@ -26,17 +26,18 @@
 .gradient-banner-with-image {
   @media screen and (max-width: 1023px) {
     @include u-position('relative');
-    // 91 + 80
-    // Half of the image height plus 80px (closest USWDS style). Based off of Figma designs 10/3/2022
-    margin-bottom: 171px;
+    // 87 + 40px
+    // Half of the image height plus 40px (page-builder starting top margin for the 'page-builder-page' element).
+    // Based off of Figma designs 10/3/2022
+    margin-bottom: 127px;
   }
 
   .dm-breadcrumb-heading {
     @media screen and (max-width: 1023px) {
-      // (91 - 48) + 32
+      // (87 - 32) + 32
       // (Half of image height minus bottom gradient banner padding), plus desired spacing between top of image and
       // bottom of description text (should mimic homepage gradient banner image) - per design 10/6/2022).
-      padding-bottom: 75px;
+      padding-bottom: 87px;
     }
   }
 
@@ -44,19 +45,19 @@
     @media screen and (max-width: 1023px) {
       @include u-position('absolute');
       @include u-left(0);
-      // 182 / 2
+      // 174 / 2
       // Half of the image height (182px) as of 10/3/2022 per Figma design. This provides the "half-and-half" effect for the image.
-      bottom: -91px;
+      bottom: -87px;
       @include u-padding-x(2);
     }
 
     .page-image-container {
       @include u-maxw('none');
-      height: 267px;
+      height: 223px;
 
       @media screen and (max-width: 1023px) {
         max-width: 308px;
-        height: 182px;
+        height: 174px;
       }
     }
 
