@@ -108,14 +108,6 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
-    context 'clicking on the Community link' do
-      it 'should redirect to xr home page index page' do
-        click_on 'XR Network'
-        click_on 'Community'
-        expect(page).to have_current_path('/xr-network')
-      end
-    end
-
     context 'clicking on the Diffusion map link' do
       it 'should redirect to diffusion map page' do
         click_on 'Browse by locations'
@@ -123,6 +115,15 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_current_path('/diffusion-map')
       end
     end
+
+    context 'clicking on the Community About link' do
+      it 'should redirect to xr about page' do
+        click_on 'XR Network'
+        click_on 'About'
+        expect(page).to have_current_path('/xr-network/about')
+      end
+    end
+
 
     context 'clicking on the profile link' do
       it 'should redirect to user profile page' do
