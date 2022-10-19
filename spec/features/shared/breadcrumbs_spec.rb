@@ -59,9 +59,12 @@ describe 'Breadcrumbs', type: :feature do
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
     @page_group = PageGroup.create!(name: 'programming', description: 'Pages about programming go in this group.')
     @page_group2 = PageGroup.create!(name: 'test', description: 'Pages about tests go in this group.')
+    @community_page_group = PageGroup.create!(name: 'xr-network', description: 'Pages related to a community')
     @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group, published: Time.now)
     @page2 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group2, published: Time.now)
     @page3 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group, published: Time.now)
+    @community_home_page = Page.create!(title: 'Community home page', description: 'This is a community home page', slug: 'home', page_group: @community_page_group, published: Time.now)
+    @community_sub_page = Page.create!(title: 'Community subpage', description: 'This is a community subpage', slug: 'test-page', page_group: @community_page_group, published: Time.now)
     visit '/'
   end
 
@@ -290,6 +293,14 @@ describe 'Breadcrumbs', type: :feature do
 
       visit '/programming/home'
       expect(page).to_not have_css('#breadcrumbs')
+    end
+
+    it 'provides a single breadcrumb for /communities subpages' do
+      visit '/communities/xr-network/test-page'
+      expect(page).to have_css('#breadcrumbs', visible: true)
+      expect(page).to have_css('.usa-breadcrumb__link', text: @community_page_group.name)
+      expect(page).to have_link(href: '/communities/xr-network')
+      expect(page).not_to have_css('.usa-breadcrumb__link', text: @community_sub_page.title)
     end
   end
 end
