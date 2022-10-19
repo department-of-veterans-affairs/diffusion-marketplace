@@ -22,7 +22,7 @@
 %>
 
 <section class="<%= 'dm-gradient-banner' if heading.present? %><%= ' gradient-banner-with-image' if page_image.present? %> <%= classes if classes.present? %>">
-  <div class="grid-container<%= ' padding-y-6' if heading.present? %>">
+  <div class="grid-container<%= ' padding-y-4 desktop:padding-y-8' if heading.present? %>">
     <% if breadcrumbs.present? %>
       <div id="breadcrumbs"
            class="grid-col-auto usa-breadcrumb breadcrumbs-container <%= heading.present? ? "dm-breadcrumb--gradient-bg padding-top-0 padding-bottom-105" : 'padding-y-4' %>"
@@ -49,20 +49,19 @@
       </div>
     <% end %>
     <% if heading.present? %>
-      <div class="dm-breadcrumb-heading grid-row grid-gap-2px">
+      <div class="dm-breadcrumb-heading grid-row grid-gap-3">
         <div class="grid-col-12<%= ' desktop:grid-col-7' if page_image.present? %>">
-          <h1 class="usa-prose-h1 margin-top-0 margin-bottom-3 text-white grid-col-12">
+          <h1 class="usa-prose-h1 margin-top-0 margin-bottom-4 text-white grid-col-12">
             <%= heading %>
           </h1>
           <% if description.present? %>
-            <p class="font-sans-lg usa-prose-intro line-height-36 <%= page_image.present? ? 'grid-col-12' : 'grid-col-10' %> text-white dm-word-break-break-word hyphens-auto">
+            <p class="usa-prose-body<%= page_image.present? ? ' grid-col-12' : ' grid-col-10' %> text-white dm-word-break-break-word hyphens-auto">
               <%= description %>
             </p>
           <% end %>
         </div>
         <% if page_image.present? %>
-          <div class="mobile-hide desktop:grid-col-1"></div>
-          <div class="page-image-column desktop:grid-col-4">
+          <div class="page-image-column desktop:grid-col-5">
             <div class="page-image-container">
               <img src="<%= page_image %>" alt="<%= alt_text %>" class="height-full width-full"/>
             </div>
