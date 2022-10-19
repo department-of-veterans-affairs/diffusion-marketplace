@@ -11,6 +11,10 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     page_group = PageGroup.create(name: 'competitions', slug: 'competitions', description: 'competitions page')
     Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
+    page_group_3 = PageGroup.create(name: 'home', slug: 'xr-network', description: 'xr-network pages')
+    Page.create(page_group: page_group_3, title: 'XR Network', description: 'XR Network page', slug: 'xr-network', has_chrome_warning_banner: false, created_at: Time.now, published: Time.now)
+
+
     visit practice_path(@practice)
     # ensure header desktop view
     page.driver.browser.manage.window.resize_to(1300, 1000)
@@ -101,6 +105,14 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         click_on 'Browse by locations'
         click_on 'Facility index'
         expect(page).to have_current_path('/facilities')
+      end
+    end
+
+    context 'clicking on the Community link' do
+      it 'should redirect to xr home page index page' do
+        click_on 'XR Network'
+        click_on 'Community'
+        expect(page).to have_current_path('/xr-network')
       end
     end
 
