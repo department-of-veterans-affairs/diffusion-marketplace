@@ -239,6 +239,9 @@ module NavigationHelper
 
         if @page_slug == 'home'
           empty_breadcrumbs
+        elsif @page.page_group.is_community? && @builder_landing_page.exists?
+          empty_breadcrumbs
+          add_landing_page_breadcrumb("/communities/#{params[:page_group_friendly_id]}")
         elsif @builder_landing_page.exists?
           empty_breadcrumbs
           add_landing_page_breadcrumb("/#{params[:page_group_friendly_id]}")
