@@ -89,6 +89,7 @@ function buildPracticeCard(result) {
     var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link';
     var cardImageHtml =
         '<div class="dm-practice-card-img-container">' +
+        '<input type="hidden" value="' + practiceImage + '"/>' +
         '<img ' +
           'data-resource-id="' + result.item.id + '" ' +
           'alt="' + practiceName + ' Marketplace Card Image" ' +
@@ -131,9 +132,6 @@ function buildPracticeCard(result) {
         '</div>' +
         '</a>' +
         '</div>';
-
-    // After the html for the card has been built, replace the image 'src' based on the signed url
-    fetchSignedResource(practiceImage, `img[data-resource-id="${result.item.id}"]`);
 
     return cardHtml;
 }
@@ -261,6 +259,13 @@ function searchPracticesPage() {
 
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
+            // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
+            $('#search-results .dm-practice-card').each(function() {
+                var practiceImagePath = $(this).find('input').val();
+                var practiceId = $(this).find('img').attr('data-resource-id');
+
+                fetchSignedResource(practiceImagePath, `img[data-resource-id="${practiceId}"]`);
+            });
 
             $(SEARCH_RESULTS).showMoreItems({
                 startNum: 12,

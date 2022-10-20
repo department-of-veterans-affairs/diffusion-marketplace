@@ -10,7 +10,7 @@ function fetchSignedResource(
         response.text().then(signedUrl => {
             const resourceElement = document.querySelector(dataAttributeSelector);
 
-            if (resourceType === 'image') {
+            if (resourceType === 'image' && resourceElement) {
                 resourceElement.src = signedUrl;
             }
         });
