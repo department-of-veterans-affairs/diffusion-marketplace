@@ -13,6 +13,10 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
     page_group_3 = PageGroup.create(name: 'xr-network', slug: 'xr-network', description: 'xr-network page')
     Page.create(page_group: page_group_3, title: 'XR Network', description: 'XR Network page', slug: 'home', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'XR Network About', description: 'XR Network about page', slug: 'about', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'XR Network Events', description: 'XR Network evetns page', slug: 'events', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'XR Network News', description: 'XR Network News page', slug: 'news', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'XR Network Innovations', description: 'XR Network innovations page', slug: 'innovations', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
 
     visit practice_path(@practice)
     # ensure header desktop view
