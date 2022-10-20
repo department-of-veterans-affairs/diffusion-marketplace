@@ -264,7 +264,9 @@ function searchPracticesPage() {
                 var practiceImagePath = $(this).find('input').val();
                 var practiceId = $(this).find('img').attr('data-resource-id');
 
-                fetchSignedResource(practiceImagePath, `img[data-resource-id="${practiceId}"]`);
+                if (practiceImagePath) {
+                    fetchSignedResource(practiceImagePath, `img[data-resource-id="${practiceId}"]`);
+                }
             });
 
             $(SEARCH_RESULTS).showMoreItems({
