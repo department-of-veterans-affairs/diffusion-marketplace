@@ -107,6 +107,38 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
+    context 'clicking on the About  link' do
+      it 'should redirect to XR-Network about page' do
+        click_on 'XR Network'
+        click_on 'About'
+        expect(page).to have_current_path('/communities/xr-network/about')
+      end
+    end
+
+    context 'clicking on the Events link' do
+      it 'should redirect to XR-Network events page' do
+        click_on 'XR Network'
+        click_on 'Events'
+        expect(page).to have_current_path('/communities/xr-network/events')
+      end
+    end
+
+    context 'clicking on the News link' do
+      it 'should redirect to XR-Network news page' do
+        click_on 'XR Network'
+        click_on 'News'
+        expect(page).to have_current_path('/communities/xr-network/news')
+      end
+    end
+
+    context 'clicking on the Innovations link' do
+      it 'should redirect to XR-Network innovations  page' do
+        click_on 'XR Network'
+        click_on 'Innovations'
+        expect(page).to have_current_path('/communities/xr-network/innovations')
+      end
+    end
+
 
     context 'clicking on the Facility index link' do
       it 'should redirect to Facility index page' do
