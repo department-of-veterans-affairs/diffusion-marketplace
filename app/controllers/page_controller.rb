@@ -17,8 +17,10 @@ class PageController < ApplicationController
     collect_paginated_components(@page_components)
 
     if page_group.is_community? && !request.url.include?('/communities')
+      is_landing_page = page_slug === 'home'
       host_name = ENV.fetch('HOSTNAME')
-      communities_url = "#{host_name}/communities/#{page_group.slug}/#{page_slug}"
+      communities_url = "#{host_name}/communities/#{page_group.slug}#{'/' + page_slug unless is_landing_page}"
+
       redirect_to(URI.parse(communities_url).path)
     elsif !@page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
@@ -29,7 +31,6 @@ class PageController < ApplicationController
       format.js
     end
   end
-
 
   private
 
