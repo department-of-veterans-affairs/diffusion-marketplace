@@ -23,7 +23,8 @@ RSpec.describe PageController, type: :request do
   end
 
   context 'show' do
-    it "should redirect the user with a prepended '/communities' to the URL if the Page is a community page" do
+    it "should redirect the user with a prepended '/communities' to the URL if the Page is a community page "\
+      "and the URL doesn't include '/communities'" do
       get '/xr-network'
       expect(response).to redirect_to('/communities/xr-network')
 
