@@ -20,6 +20,7 @@ RSpec.describe PageController, type: :request do
       page_group: page_group,
       published: Time.now
     )
+    host! 'www.example.com'
   end
 
   context 'show' do
