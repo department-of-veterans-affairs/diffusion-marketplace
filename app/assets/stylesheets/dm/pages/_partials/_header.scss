@@ -221,11 +221,6 @@
         }
       }
 
-        &[aria-controls="dm-user-profile-options"] {
-          background-position: right 18% top 50%;
-        }
-      }
-
       button[aria-expanded="true"] {
         background-image: asset_url("header-nav-up-arrow-desktop.svg") !important;
 
@@ -272,6 +267,7 @@
       }
     }
   }
+}
 
 
 .va-crisis-line-modal-container {

@@ -226,7 +226,7 @@ module NavigationHelper
       if action == 'show'
         @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
         @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase}) || nil
-        @builder_landing_page = Page.where(slug: 'xr-network', page_group_id: @page.page_group_id) || nil
+        @builder_landing_page = Page.where(slug: 'home', page_group_id: @page.page_group_id) || nil
         @builder_page_path = "/#{params[:page_group_friendly_id]}/#{@page_slug}"
 
         def add_landing_page_breadcrumb(path)
