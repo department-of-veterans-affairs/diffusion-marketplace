@@ -12,7 +12,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
     page_group_3 = PageGroup.create(name: 'xr-network', slug: 'xr-network', description: 'xr-network pages')
-    Page.create(page_group: page_group_3, title: 'XR Network', description: 'XR Network page', slug: 'xr-network', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'XR Network', page_group_id: page_group_3.id, description: 'XR Network page', slug: 'xr-network', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
 
 
     visit practice_path(@practice)
