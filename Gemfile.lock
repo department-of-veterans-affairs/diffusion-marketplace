@@ -48,6 +48,7 @@ GEM
     rails-assets-jquery (3.6.0)
     rails-assets-jquery.scrollTo (2.1.2)
       rails-assets-jquery (>= 1.8)
+    rails-assets-normalize-css (3.0.3)
     rails-assets-sticky (1.0.4)
       rails-assets-jquery
 
@@ -372,10 +373,10 @@ GEM
       connection_pool (~> 2.2)
     net-ldap (0.17.1)
     nio4r (2.5.8)
-    nokogiri (1.13.7)
+    nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.13.7-x86_64-darwin)
+    nokogiri (1.13.9-x86_64-darwin)
       racc (~> 1.4)
     opentelemetry-api (1.0.2)
     opentelemetry-common (0.19.6)
