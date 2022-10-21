@@ -7,15 +7,17 @@
     });
   }
 
-  function _preventBrowseByLocationsDropdownFlickerOnPageLoad() {
+  function _preventHeaderElementFlickerOnPageLoad(selector) {
     $(document).arrive('header', { existing: true }, () => {
-      $("#browse-by-locations-dropdown").removeClass('display-none');
+        $(selector).removeClass('display-none');
     });
   }
 
+
   function loadHeaderUtilitiesFn() {
-    _preventBrowseByLocationsDropdownFlickerOnPageLoad();
     _preventCrisisLineModalFlickerOnPageLoad();
+    _preventHeaderElementFlickerOnPageLoad('#browse-by-locations-dropdown')
+    _preventHeaderElementFlickerOnPageLoad('#xr-network-dropdown')
   }
 
   $document.on('turbolinks:load', loadHeaderUtilitiesFn);

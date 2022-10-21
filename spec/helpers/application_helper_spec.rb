@@ -87,6 +87,16 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe "#set_link_classes" do
+    it "returns internal link CSS classes" do
+      expect(helper.set_link_classes("/about")).to eq("usa-link")
+    end
+
+    it "returns external link CSS classes" do
+      expect(helper.set_link_classes("https://wikipedia.org")).to eq("usa-link usa-link--external")
+    end
+  end
+
   describe "#get_link_target_attribute" do
     context "when given a" do
       it "returns 'flex-justify-end'" do
@@ -224,6 +234,23 @@ RSpec.describe ApplicationHelper, type: :helper do
         mock_current_user = {id: 1}
         expect(helper.get_terms_and_conditions_body_text(mock_current_user)).to eq("VA systems are intended to be used by authorized VA network users for viewing and retrieving information; except as otherwise authorized for official business and limited personal use under VA policy. Information from this system resides on and transmits through computer systems and networks funded by VA. Access or use constitutes understanding and acceptance that there is no reasonable expectation of privacy in the use of Government networks or systems. Access or use of this system constitutes user understanding and acceptance of these terms and constitutes unconditional consent to review and action includes but is not limited to: monitoring; recording; copying; auditing; inspecting.")
       end
+    end
+  end
+
+  describe 'is_internal_link?' do
+    before do
+      ENV['HOSTNAME'] = 'marketplace.va.gov'
+    end
+
+    after do
+      ENV['HOSTNAME'] = nil
+    end
+
+    it 'should return a boolean based on if the param passed in includes the HOSTNAME or starts with a forward slash or a period' do
+      expect(is_internal_link?('test')).to eq(false)
+      expect(is_internal_link?('/search')).to eq(true)
+      expect(is_internal_link?('.visns')).to eq(true)
+      expect(is_internal_link?('dev.marketplace.va.gov/partners')).to eq(true)
     end
   end
 end

@@ -2,7 +2,10 @@ class PageComponent < ApplicationRecord
   belongs_to :page, optional: true
   acts_as_list scope: :page
   belongs_to :component, polymorphic: true, autosave: true
+  has_many :page_component_images, dependent: :destroy
+
   accepts_nested_attributes_for :component
+  accepts_nested_attributes_for :page_component_images, allow_destroy: true
 
   after_destroy :destroy_component
 
@@ -19,13 +22,17 @@ class PageComponent < ApplicationRecord
       'Body text': 'PageParagraphComponent',
       'Call to Action': 'PageCtaComponent',
       'Downloadable File': 'PageDownloadableFileComponent',
+      'Event': 'PageEventComponent',
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
       'Image': 'PageImageComponent',
+      'News': 'PageNewsComponent',
       'Practices': 'PagePracticeListComponent',
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
       'YouTube Player': 'PageYouTubePlayerComponent',
-      'Horizontal Separator': 'PageHrComponent'
+      'Horizontal Separator': 'PageHrComponent',
+      'Google Map': 'PageMapComponent',
+      'Text and Images': 'PageCompoundBodyComponent'
   }
 
   def build_component(params)

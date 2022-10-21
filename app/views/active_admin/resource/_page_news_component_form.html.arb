@@ -1,0 +1,64 @@
+### Uncomment the "f.inputs" block to render on PageComponent page to get html
+### This will help build the Arbre::Context to concat with the main template
+# f.inputs 'Paragraph',
+#          for: [:component, f.object.component || PageParagraphComponent.new],
+#          id: 'PageHeaderComponent_poly', class: 'inputs polyform' do |phc|
+#   phc.input :text, hint: 'Make this header stand out'
+#
+# end
+
+# TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD'
+component ||= nil
+html = Arbre::Context.new do
+  li "", id: "PageNewsComponent_poly_#{placeholder}", class: "input polyform component-#{placeholder}" do
+    fieldset class: "inputs" do
+      legend do
+        span 'News'
+      end
+      if component
+        input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+      end
+      ol do
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
+          label 'Title', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.title || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
+          para 'News item title styled as an /"H3"', class: 'inline-hints'
+        end
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
+          label 'URL', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.url || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
+          para 'Link to news item hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
+        end
+
+        li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date_input" do
+          label 'Publication date', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_published_date", class: 'label'
+          input value: component&.published_date || nil, type: 'date', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][published_date]"
+          para 'Original publication date', class: 'inline-hints'
+        end
+
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text_input" do
+          if component
+            input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+          end
+          label 'Description', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
+
+          textarea component&.text, id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", name: "page[page_components_attributes][#{placeholder}][component_attributes][text]", class: 'tinymce', rows: 18 do
+            component&.send(:text).try :html_safe
+          end
+          para '', class: 'inline-hints'
+        end
+      end
+    end
+  end
+end
+
+return html.to_s

@@ -9,7 +9,7 @@ module InternalUrlUtils
 
     if route.present?
       db_rec = get_record(route)
-      return db_rec.present? ? true : throw_invalid_err
+      db_rec.present? ? true : throw_invalid_err
     else
       throw_invalid_err
     end
@@ -71,6 +71,6 @@ module InternalUrlUtils
         db_record = true
       end
     end
-    return db_record
+    db_record
   end
 end

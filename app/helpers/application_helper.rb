@@ -125,8 +125,18 @@ module ApplicationHelper
     end
   end
 
+  def is_internal_link?(url)
+    url.include?(ENV.fetch('HOSTNAME')) ||
+    url.start_with?('/') ||
+    url.start_with?('.')
+  end
+
+  def set_link_classes(url)
+    "usa-link#{' usa-link--external' if !is_internal_link?(url)}"
+  end
+
   def get_link_target_attribute(url)
-    if url.include?(ENV.fetch('HOSTNAME')) || url.start_with?('/') || url.start_with?('.')
+    if is_internal_link?(url)
       ''
     else
       '_blank'

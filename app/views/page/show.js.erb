@@ -1,26 +1,39 @@
-function paginatedPracticeListPageComponent() {
-  var type = "<%= @pagy_type %>";
-  var practicesClass = ".dm-paginated-" + type + "-practices";
+function paginatedPageComponent() {
+  <% type = @pagy_type.split('-')[0] %>
+  <% component_index = @pagy_type.split('-')[1] %>
+  var paginatedItemsClass = ".dm-paginated-<%= component_index %>-<%= type %>";
 
-  <% data_set = @practice_list_components[@pagy_type.to_i][:practices] %>
-  <% pagy = @practice_list_components[@pagy_type.to_i][:pagy] %>
+  // Append the next set of items to the current set
+  <% if type == "practices" %>
+    <% component_list = @practice_list_components %>
+    $(paginatedItemsClass).append("<%= escape_javascript render(partial: 'shared/practice_cards_row', locals: {
+      practices: component_list[component_index.to_i][type.to_sym],
+      component_index: component_index.to_i})
+    %>")
+  <% elsif type == "events" %>
+    <% component_list = @event_list_components %>
+    $(paginatedItemsClass).append("<%= escape_javascript render(partial: 'events_list', locals: {
+      events: component_list[component_index.to_i][type.to_sym],
+      component_index: component_index.to_i})
+    %>")
+  <% elsif type == "news" %>
+    <% component_list = @news_items_components %>
+    $(paginatedItemsClass).append("<%= escape_javascript render(partial: 'news_items_list', locals: {
+      news_items: component_list[component_index.to_i][type.to_sym],
+      component_index: component_index.to_i})
+    %>")
+  <% end %>
 
+  <% pagy = component_list[component_index.to_i][:pagy] %>
   <% current_page = pagy.page %>
   <% next_page = pagy.next %>
 
-  // Append the next set of practice cards to the current set
-  $(practicesClass).append("<%= escape_javascript render(partial: 'shared/practice_cards_row', locals: {
-    practices: data_set,
-    component_index: @pagy_type})
-  %>")
-
-  // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-  var currentPageClass = ".dm-paginated-" + type + "-link";
-  var loadMoreBtnContainer = ".dm-load-more-practices-" + type + "-btn-container";
+  // If there's another set of items, remove the current 'Load more' link and then add one for the next page
+  var currentPageClass = ".dm-paginated-<%= type %>-<%= component_index %>-link";
+  var loadMoreBtnContainer = ".dm-load-more-<%= type %>-<%= component_index %>-btn-container";
 
   <% if next_page.present? %>
     $(currentPageClass).remove();
-
     <% link = pagy_link_proc(pagy) %>
     $(loadMoreBtnContainer).append(`<%= link.call(next_page, 'Load more').html_safe %>`);
   <% else %>
@@ -29,4 +42,4 @@ function paginatedPracticeListPageComponent() {
   <% end %>
 }
 
-$(paginatedPracticeListPageComponent)
+$(paginatedPageComponent)

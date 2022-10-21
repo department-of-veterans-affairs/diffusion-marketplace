@@ -1,3 +1,11 @@
+const COMPONENT_CLASSES = [
+    '.page-paragraph-component',
+    '.page-accordion-component',
+    '.page-compound-body-component',
+    '.page-event-component p',
+    '.page-news-component p'
+].join(', ');
+
 (($) => {
     const $document = $(document);
 
@@ -59,14 +67,16 @@
     }
 
     // Remediate internal links on PageBuilder paragraph and accordion components
-    function remediateInternalLinksTarget(){
-        let intLinks = $('.page-paragraph-component, .page-accordion-component').find("a[href*='marketplace.va.gov'], a[href^='/'],a[href^='.']");
+    function remediateInternalLinksTarget() {
+        let intLinks = $(COMPONENT_CLASSES).find("a[href*='marketplace.va.gov'], a[href^='/'],a[href^='.']");
 
         intLinks.each(function(){
-            let currentLink = $(this);
-            currentLink.addClass("usa-link");
-            if (currentLink.is("[target='_blank']")) {
-                currentLink.attr("target","");
+            // Don't add the USWDS link class to 'PageComponentImage' image links
+            if (!$(this).hasClass('page-image-component-image-link')) {
+                $(this).addClass("usa-link");
+            }
+            if ($(this).is("[target='_blank']")) {
+                $(this).attr("target","");
             }
         })
     }
@@ -74,15 +84,29 @@
     // Style PageBuilder external links and set to open in a new tab (508 accessibility)
     function identifyExternalLinks() {
         // identify external by HREF content
-        let extLinks = $('.page-paragraph-component, .page-accordion-component').find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
-        
-        extLinks.each(function() {
-            let currentLink = $(this);
+        let extLinks = $(COMPONENT_CLASSES).find("a:not([href*='marketplace.va.gov'])").not("[href^='/']").not("[href^='.']");
 
-            currentLink.attr("target", "_blank");
-            currentLink.addClass("usa-link usa-link--external");
+        extLinks.each(function() {
+            $(this).attr("target", "_blank");
+            // Don't add USWDS link classes to 'PageComponentImage' image links
+            if (!$(this).hasClass('page-image-component-image-link')) {
+                $(this).addClass("usa-link usa-link--external");
+            }
         });
     }
+
+    function chromeWorkaroundForAnchorTags(){
+        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        if (window.location.hash && isChrome) {
+            setTimeout(function () {
+                var hash = window.location.hash;
+                window.location.hash = "";
+                window.location.hash = hash;
+            }, 300);
+        }
+    }
+
+
 
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
@@ -90,8 +114,8 @@
         containerizeSubpageHyperlinkCards();
         remediateInternalLinksTarget();
         identifyExternalLinks();
+        chromeWorkaroundForAnchorTags();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
 })(window.jQuery);
-
