@@ -149,6 +149,10 @@
           width: 133px !important;
         }
 
+        &[aria-controls="xr-network-dropdown"] {
+          width: 84px !important;
+        }
+
         &[aria-controls="dm-user-profile-options"] {
           width: 78px !important;
         }
@@ -212,7 +216,7 @@
           background-position: right 13% top 50%;
         }
 
-        &[aria-controls="dm-user-profile-options"] {
+        &[aria-controls="dm-user-profile-options"], &[aria-controls="xr-network-dropdown"] {
           background-position: right 18% top 50%;
         }
       }
@@ -235,6 +239,10 @@
     .usa-nav__submenu {
       &#dm-user-profile-options {
         right: 1rem;
+      }
+
+      &#xr-network-dropdown {
+        left: 38.45rem;
       }
 
       &#browse-by-locations-dropdown {
@@ -260,6 +268,7 @@
     }
   }
 }
+
 
 .va-crisis-line-modal-container {
   div {

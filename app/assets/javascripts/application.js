@@ -58,3 +58,4 @@
 //= require jquery.collapser.js
 //= require category_usage.js
 //= require tinymce
+//= require page/page_infowindow

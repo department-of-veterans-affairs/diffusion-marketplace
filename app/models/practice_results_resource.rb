@@ -1,4 +1,6 @@
 class PracticeResultsResource < ApplicationRecord
+  include ExtraSpaceRemover
+
   acts_as_list scope: :practice
 
   before_validation :trim_whitespace
@@ -33,6 +35,6 @@ class PracticeResultsResource < ApplicationRecord
   end
 
   def trim_whitespace
-    self.image_alt_text&.strip!
+    strip_attributes([self.image_alt_text])
   end
 end

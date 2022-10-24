@@ -1,0 +1,30 @@
+<div class="line-height-sans-1">
+  <div class="margin-top-1">
+    <%
+      station_name = facility.official_station_name
+      map_info_window_text = map_component.map_info_window_text
+    %>
+    <p class="margin-0 padding-x-4">
+      <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'usa-link font-sans-md text-bold' %>
+    </p>
+    <div class="margin-top-0 text-normal theme-type-scale-sm padding-x-4">
+      <%= practice_data.length %> <%= map_info_window_text.present? ? "#{map_info_window_text}" : 'Total' %> Innovation<%= 's' if practice_data.length != 1 %>
+    </div>
+    <div class="text-bold font-sans-3xs">
+      <% practice_data.each do |pd| %>
+        <%
+          info_window_text = pd[:map_info_window_text]
+          name = pd[:name]
+        %>
+        <div class="radius-lg border border-solid padding-x-4 padding-y-105 border-base-lightest margin-bottom-2">
+          <a class="usa-link" href="/innovations/<%= pd[:slug] %>">
+            <%= info_window_text.present? ? "#{name} (#{info_window_text})" : "#{name}" %>
+          </a>
+          <div class="text-normal font-sans-3xs margin-top-3">
+            <%= pd[:tagline] %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

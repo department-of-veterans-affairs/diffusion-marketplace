@@ -333,13 +333,13 @@ to confirm the class DOES NOT EXIST before adding a new class
   @include u-maxw('none', !important);
 }
 
-.dotted{
+.dotted {
   border-bottom: 2px dotted #999 !important;
   @include u-text('ink', !important);
   text-decoration: none !important;
 }
 
-.form_h_field{
+.form_h_field {
   opacity: 0;
   position: absolute;
   top: 0;
