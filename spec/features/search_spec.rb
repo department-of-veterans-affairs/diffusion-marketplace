@@ -114,7 +114,13 @@ describe 'Search', type: :feature do
     PracticePartnerPractice.create!(practice: @practice3, practice_partner: partner_3)
     partner_4 = PracticePartner.create!(name: 'Practice Partner 4')
     PracticePartnerPractice.create!(practice: @practice5, practice_partner: partner_4)
+    ENV['S3_BUCKET_NAME'] = 'dm-test'
+
     user_login
+  end
+
+  after do
+    ENV['S3_BUCKET_NAME'] = nil
   end
 
   def visit_search_page
