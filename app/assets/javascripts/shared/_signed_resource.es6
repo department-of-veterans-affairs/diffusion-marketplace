@@ -10,11 +10,13 @@ function fetchSignedResource(
         response.text().then(signedUrl => {
             const resourceElement = document.querySelector(dataAttributeSelector);
 
-            // TODO: Add other resource types here, e.g. 'file'
-            switch (resourceType) {
-                case 'image':
-                    resourceElement.src = signedUrl;
-                    break;
+            if (resourceElement) {
+                // TODO: Add other resource types here, e.g. 'file'
+                switch (resourceType) {
+                    case 'image':
+                        resourceElement.src = signedUrl;
+                        break;
+                }
             }
         });
     });
