@@ -267,7 +267,7 @@ function searchPracticesPage() {
                 var imageSelector = $(this).find('img');
                 var imagePracticeId = imageSelector ? imageSelector.attr('data-resource-id') : null;
 
-                if (practiceId) {
+                if (imagePracticeId) {
                     fetchSignedResource(
                         practiceImagePath,
                         practiceImageUrl,
