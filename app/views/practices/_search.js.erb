@@ -261,10 +261,19 @@ function searchPracticesPage() {
             document.querySelector('#search-results').innerHTML = finalResults;
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
             $('#search-results .dm-practice-card').each(function() {
-                var practiceImagePath = $(this).find('input').val();
-                var practiceId = $(this).find('img').attr('data-resource-id');
+                // If either the 'src' or the hidden input are undefined, return an empty string
+                var practiceImagePath = $(this).find('input').val() || '';
+                var practiceImageUrl = $(this).find('img').attr('src') || '';
+                var imageSelector = $(this).find('img');
+                var imagePracticeId = imageSelector ? imageSelector.attr('data-resource-id') : null;
 
-                fetchSignedResource(practiceImagePath, `img[data-resource-id="${practiceId}"]`);
+                if (practiceId) {
+                    fetchSignedResource(
+                        practiceImagePath,
+                        practiceImageUrl,
+                        `img[data-resource-id="${imagePracticeId}"]`
+                    );
+                }
             });
 
             $(SEARCH_RESULTS).showMoreItems({

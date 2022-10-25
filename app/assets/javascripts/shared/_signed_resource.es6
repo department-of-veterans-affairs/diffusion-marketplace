@@ -1,10 +1,11 @@
 // The 'dataAttributeSelector' param can be any selector for the target element(s)
 function fetchSignedResource(
     resourcePath,
+    resourceUrl = '',
     dataAttributeSelector,
     resourceType = 'image'
 ) {
-    const signedResourceUrl = `/signed_resource?path=${resourcePath}`;
+    const signedResourceUrl = `/signed_resource?path=${resourcePath}&url=${resourceUrl}`;
 
     fetch(signedResourceUrl).then(response => {
         response.text().then(signedUrl => {
