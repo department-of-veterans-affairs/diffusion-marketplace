@@ -37,11 +37,9 @@ class ApplicationController < ActionController::Base
 
   def signed_resource
     # In order to circumvent making a request to AWS for tests, we can return the Paperclip attachment's 'url'.
-    # If there isn't one, return an empty string.
+    # If there isn't one, the default value is set to an empty string.
     if Rails.env.test?
-      url = params[:url]
-      url ||= ''
-      render plain: url
+      render plain: params[:url]
     else
       s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
       signer = WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 2700)
