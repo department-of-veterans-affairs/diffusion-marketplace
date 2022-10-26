@@ -89,8 +89,13 @@ function buildPracticeCard(result) {
     var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link';
     var cardImageHtml =
         '<div class="dm-practice-card-img-container">' +
-        '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">';
-    if(result.item.retired){
+        '<input type="hidden" value="' + practiceImage + '"/>' +
+        '<img ' +
+          'data-resource-id="' + result.item.id + '" ' +
+          'alt="' + practiceName + ' Marketplace Card Image" ' +
+          'class="grid-row marketplace-card-img radius-top-sm" ' +
+          'src="' + result.item.placeholder_image + '">';
+    if (result.item.retired) {
         cardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
     }
     cardImageHtml += '</div>';
@@ -254,6 +259,22 @@ function searchPracticesPage() {
 
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
+            // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
+            $('#search-results .dm-practice-card').each(function() {
+                // If either the 'src' or the hidden input are undefined, return an empty string
+                var practiceImagePath = $(this).find('input').val() || '';
+                var practiceImageUrl = $(this).find('img').attr('src') || '';
+                var imageSelector = $(this).find('img');
+                var imagePracticeId = imageSelector ? imageSelector.attr('data-resource-id') : null;
+
+                if (imagePracticeId) {
+                    fetchSignedResource(
+                        practiceImagePath,
+                        practiceImageUrl,
+                        `img[data-resource-id="${imagePracticeId}"]`
+                    );
+                }
+            });
 
             $(SEARCH_RESULTS).showMoreItems({
                 startNum: 12,
