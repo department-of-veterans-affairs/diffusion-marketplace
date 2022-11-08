@@ -50,6 +50,7 @@ ActiveAdmin.register Page do
                     :padding_bottom,
                     :padding_top,
                     :published_date,
+                    :has_border,
                     practices: []
                   ],
                   page_component_images_attributes: {}
@@ -183,6 +184,8 @@ ActiveAdmin.register Page do
                 para "Alt text: #{pci.alt_text}"
               end
             end
+            # Border
+            para "Has border: #{component&.has_border}" if pc.component_type == 'PageAccordionComponent'
           end
         }.join('').html_safe
       end

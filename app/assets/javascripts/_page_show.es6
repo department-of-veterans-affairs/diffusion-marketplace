@@ -21,12 +21,6 @@ const COMPONENT_CLASSES = [
         }
     }
 
-    function removeBottomMarginFromLastAccordionHeading() {
-        let accordionHeading = '.usa-accordion__heading';
-        $(accordionHeading).last().removeClass('margin-bottom-2');
-        $(accordionHeading).last().addClass('margin-bottom-0');
-    }
-
     function containerizeSubpageHyperlinkCards() {
       let cardClass = 'pb-link-card';
       let cardContainerClass = 'pb-two-column-card-link-container';
@@ -110,7 +104,6 @@ const COMPONENT_CLASSES = [
 
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
-        removeBottomMarginFromLastAccordionHeading();
         containerizeSubpageHyperlinkCards();
         remediateInternalLinksTarget();
         identifyExternalLinks();
