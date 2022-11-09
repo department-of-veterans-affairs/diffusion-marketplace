@@ -33,6 +33,16 @@ describe 'DAP Google Analytics', type: :feature do
       expect(page).not_to have_dap_snippet
     end
 
+    it 'on system pages' do
+      visit '/system/status'
+      expect(page).not_to have_dap_snippet
+    end
+
+    it 'on user pages' do
+      visit user_path(@admin)
+      expect(page).not_to have_dap_snippet
+    end
+
     it 'on unpublished pages' do
       Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group)
       visit '/programming/test-page'
