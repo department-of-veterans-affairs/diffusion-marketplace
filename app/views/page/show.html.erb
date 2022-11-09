@@ -58,7 +58,7 @@
           <% accordion_ctr += 1 %>
 
           <div id="accordion_anchor_<%= accordion_ctr %>"
-               class="page-accordion-component margin-bottom-3<%= ' margin-bottom-0' if last_component === index %> <%= page_narrow_classes %>"
+               class="page-accordion-component margin-bottom-3<%= ' margin-bottom-0' if last_component == index %> <%= page_narrow_classes %>"
           >
             <div class="usa-accordion<%= ' usa-accordion--bordered' if component.has_border %>">
               <h2 class="usa-accordion__heading">
