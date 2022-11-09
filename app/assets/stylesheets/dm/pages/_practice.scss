@@ -962,7 +962,6 @@ li.small-disc:before {
   .usa-accordion__button[aria-expanded=true].adoptions-edit {
     background-image: asset_url('minus.svg'), linear-gradient(transparent, transparent);
     background-position-x: 97.8%;
-    background-size: 20.5px 18px;
     border-bottom: 4px color($theme-color-base-lightest) solid;
   }
 }
