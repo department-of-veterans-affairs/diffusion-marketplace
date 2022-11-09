@@ -19,6 +19,10 @@ describe 'DAP Google Analytics', type: :feature do
     it 'on public practices' do
       practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
       visit practice_path(practice)
+      expect(page).to have_dap_snippet
+
+      visit '/search'
+      expect(page).to have_dap_snippet
     end
   end
 
