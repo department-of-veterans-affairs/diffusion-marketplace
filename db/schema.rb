@@ -735,7 +735,7 @@ ActiveRecord::Schema.define(version: 2022_11_07_181813) do
     t.datetime "updated_at", null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
+    t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["practice_id"], name: "index_photo_files_on_practice_id"
   end
