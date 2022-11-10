@@ -184,7 +184,7 @@ module ApplicationHelper
     location_list
   end
 
-  def ga_private?
+  def private_path? # https://github.com/digital-analytics-program/gov-wide-code#appropriate-placement
     params["controller"] == "users" || # all user pages
     params["controller"] == "system/status" || # status page
     params["controller"] == "admin" || # all admin pages
