@@ -490,10 +490,16 @@
 }
 
 #successful_adoptions, #unsuccessful_adoptions, #in-progress_adoptions {
+  @include u-border(0, !important);
+
   .child-adoption-accordion:first-child {
     .usa-accordion__heading {
       padding-top: 0 !important;
     }
+  }
+
+  .usa-accordion__content {
+    @include u-border(0, !important);
   }
 }
 

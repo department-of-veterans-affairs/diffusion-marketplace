@@ -56,9 +56,12 @@
         <%# Accordion %>
         <% when 'PageAccordionComponent' %>
           <% accordion_ctr += 1 %>
-          <div id="accordion_anchor_<%= accordion_ctr %>" class="page-accordion-component <%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
-            <div class="usa-accordion">
-              <h2 class="usa-accordion__heading margin-bottom-2">
+
+          <div id="accordion_anchor_<%= accordion_ctr %>"
+               class="page-accordion-component margin-bottom-3<%= ' margin-bottom-0' if last_component == index %> <%= page_narrow_classes %>"
+          >
+            <div class="usa-accordion<%= ' usa-accordion--bordered' if component.has_border %>">
+              <h2 class="usa-accordion__heading">
                 <button class="usa-accordion__button font-sans-sm"
                         aria-expanded="false"
                         aria-controls="a<%= component.id %>">
@@ -66,9 +69,7 @@
                 </button>
               </h2>
               <div id="a<%= component.id %>" class="usa-accordion__content usa-prose">
-                <% if component.text.present? %>
-                  <%= component.text.html_safe %>
-                <% end %>
+                <%= component.text.html_safe if component.text.present? %>
               </div>
             </div>
           </div>

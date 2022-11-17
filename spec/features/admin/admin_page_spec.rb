@@ -261,6 +261,7 @@ describe 'Page Builder', type: :feature do
         end
       end
     end
+
     context 'PageMapComponent' do
       it 'should allow the user to create a PageMapComponent' do
         # Create one
@@ -275,6 +276,24 @@ describe 'Page Builder', type: :feature do
         expect(page).to have_content('Google Map')
         expect(page).to have_content('Diffusion Map')
         expect(page).to have_content('Diffusion Map Info Window Text')
+      end
+    end
+
+    context 'PageAccordionComponent' do
+      it 'should allow the user to toggle border styling' do
+        visit edit_admin_page_path(@page)
+        # Add a 'PageAccordionComponent' and select the border option
+        click_link('Add New Page component')
+        select('Accordion', from: 'page_page_components_attributes_0_component_type')
+        fill_in('page_page_components_attributes_0_component_attributes_title', with: 'Some Accordion Title')
+        within_frame(all('.tox-edit-area__iframe')[0]) do
+          find('body').set('Foo bar')
+        end
+        find('#page_page_components_attributes_0_component_attributes_has_border').click
+        save_page
+
+        expect(page).to have_content('Page was successfully updated.')
+        expect(page).to have_text('Has border: true')
       end
     end
   end
