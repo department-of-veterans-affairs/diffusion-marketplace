@@ -88,11 +88,11 @@ const pageComponentNames = [
             .siblings("li.select.input")
             .find(".polyselect");
         $.each(selects, function (index, select) {
-            const componentType = $(select).val();
+            const componentName = $(select).val();
             // Only show the component form if the select value is a valid page component name
-            if (pageComponentNames.includes(componentType)) {
+            if (pageComponentNames.includes(componentName)) {
                 return $(
-                    "#" + componentType + "_poly_" + $(select).data("component-id")
+                    "#" + componentName + "_poly_" + $(select).data("component-id")
                 ).show();
             }
         });
@@ -420,11 +420,11 @@ const pageComponentNames = [
         // switches out polymorphic forms in page component
         $(document).on("change", ".polyselect", function () {
             $(".polyform.component-" + $(this).data("component-id")).hide();
-            const componentType = $(this).val();
+            const componentName = $(this).val();
             // Only show the component form if the select value is a valid page component name
-            if (pageComponentNames.includes(componentType)) {
+            if (pageComponentNames.includes(componentName)) {
                 return $(
-                    "#" + componentType + "_poly_" + $(this).data("component-id")
+                    "#" + componentName + "_poly_" + $(this).data("component-id")
                 ).show();
             }
         });
