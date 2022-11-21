@@ -9,7 +9,7 @@
 const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
 const MAX_DESCRIPTION_LENGTH = 140;
-const pageComponents = [
+const pageComponentNames = [
     'PageAccordionComponent',
     'PageCompoundBodyComponent',
     'PageCtaComponent',
@@ -90,7 +90,7 @@ const pageComponents = [
         $.each(selects, function (index, select) {
             const componentType = $(select).val();
             // Only show the component form if the select value is a valid page component name
-            if (pageComponents.includes(componentType)) {
+            if (pageComponentNames.includes(componentType)) {
                 return $(
                     "#" + componentType + "_poly_" + $(select).data("component-id")
                 ).show();
@@ -422,7 +422,7 @@ const pageComponents = [
             $(".polyform.component-" + $(this).data("component-id")).hide();
             const componentType = $(this).val();
             // Only show the component form if the select value is a valid page component name
-            if (pageComponents.includes(componentType)) {
+            if (pageComponentNames.includes(componentType)) {
                 return $(
                     "#" + componentType + "_poly_" + $(this).data("component-id")
                 ).show();
