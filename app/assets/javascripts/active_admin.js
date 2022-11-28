@@ -9,6 +9,23 @@
 const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
 const MAX_DESCRIPTION_LENGTH = 140;
+const pageComponentNames = [
+    'PageAccordionComponent',
+    'PageCompoundBodyComponent',
+    'PageCtaComponent',
+    'PageDownloadableFileComponent',
+    'PageEventComponent',
+    'PageHeader2Component',
+    'PageHeader3Component',
+    'PageHrComponent',
+    'PageImageComponent',
+    'PageMapComponent',
+    'PageNewsComponent',
+    'PageParagraphComponent',
+    'PagePracticeListComponent',
+    'PageSubpageHyperlinkComponent',
+    'PageYouTubePlayerComponent'
+];
 
 (function () {
     var PANEL_TOOLTIPS = {
@@ -71,9 +88,13 @@ const MAX_DESCRIPTION_LENGTH = 140;
             .siblings("li.select.input")
             .find(".polyselect");
         $.each(selects, function (index, select) {
-            return $(
-                "#" + $(select).val() + "_poly_" + $(select).data("component-id")
-            ).show();
+            const componentName = $(select).val();
+            // Only show the component form if the select value is a valid page component name
+            if (pageComponentNames.includes(componentName)) {
+                return $(
+                    "#" + componentName + "_poly_" + $(select).data("component-id")
+                ).show();
+            }
         });
     };
 
@@ -399,9 +420,13 @@ const MAX_DESCRIPTION_LENGTH = 140;
         // switches out polymorphic forms in page component
         $(document).on("change", ".polyselect", function () {
             $(".polyform.component-" + $(this).data("component-id")).hide();
-            return $(
-                "#" + $(this).val() + "_poly_" + $(this).data("component-id")
-            ).show();
+            const componentName = $(this).val();
+            // Only show the component form if the select value is a valid page component name
+            if (pageComponentNames.includes(componentName)) {
+                return $(
+                    "#" + componentName + "_poly_" + $(this).data("component-id")
+                ).show();
+            }
         });
 
         // when form is submitted, purges any page component form that is not used on the page
