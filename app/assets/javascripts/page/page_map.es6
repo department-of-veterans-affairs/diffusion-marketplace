@@ -1,4 +1,4 @@
-function initialize() {
+function initialize(map_id) {
     const handler = Gmaps.build('Google', {
         markers: {
             clusterer: null
@@ -28,7 +28,7 @@ function initialize() {
                 mapTypeControl: false,
                 streetViewControl: false
             },
-            internal: {id: 'page_builder_map'},
+            internal: {id: map_id},
             markers: {
                 options: {
                     rich_marker: true
@@ -36,16 +36,25 @@ function initialize() {
             }
         },
         function () {
-            markers = handler.addMarkers(mapData);
-            buildMapMarkers(mapData);
+            /*
+            Get the current map component's marker data via its
+            id (e.g., 'page_builder_map_1', where '1' is the id of the 'PageMapComponent's ActiveRecord).
+            This allows us to build markers for each 'PageMapComponent' on a 'Page'.
+            */
+            const componentMapData = mapData[map_id.split('_').pop()].markers;
+            markers = handler.addMarkers(componentMapData);
+            buildMapMarkers(componentMapData);
         });
 
     google.maps.event.addListener(handler.getMap(), "idle", function () {
-        $("#page_builder_map").removeClass("display-none");
+        $(`#${map_id}`).removeClass("display-none");
         $(".dm-facilities-show-map-loading-spinner").addClass("display-none");
     });
 }
 
 $(document).on("turbolinks:load", function () {
-    google.maps.event.addDomListener(window, "load", initialize);
+    // Loop through each 'PageMapComponent' element and create its map
+    $('.page_builder_map').each(function() {
+        google.maps.event.addDomListener(window, "load", initialize($(this).attr('id')));
+    })
 });

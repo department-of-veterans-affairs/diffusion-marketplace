@@ -1,10 +1,10 @@
 class PageController < ApplicationController
+  before_action :set_page, only: :show
+  before_action :set_page_components, only: :show
+
   def show
-    page_slug = params[:page_slug] ? params[:page_slug] : 'home'
-    @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     page_group = @page.page_group
-    @page_components = @page.page_components
-    get_map_components(@page_components)
+    @map_components_with_markers = build_map_component_markers
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
@@ -17,9 +17,9 @@ class PageController < ApplicationController
     collect_paginated_components(@page_components)
 
     if page_group.is_community? && !request.url.include?('/communities')
-      is_landing_page = page_slug === 'home'
+      is_landing_page = @page_slug == 'home'
       host_name = ENV.fetch('HOSTNAME')
-      communities_url = "#{host_name}/communities/#{page_group.slug}#{'/' + page_slug unless is_landing_page}"
+      communities_url = "#{host_name}/communities/#{page_group.slug}#{'/' + @page_slug unless is_landing_page}"
 
       redirect_to(URI.parse(communities_url).path)
     elsif !@page.published
@@ -34,39 +34,43 @@ class PageController < ApplicationController
 
   private
 
-  def get_map_components(page_components)
-    page_components.each do |pc|
+  def build_map_component_markers
+    map_components_with_markers = {}
+    @page_components.each do |pc|
+      # If the page component is a map, add the ActiveRecord and the map markers to the hash, using the id as the key
       if pc.component_type == "PageMapComponent"
-        @map_component = PageMapComponent.find_by_id(pc.component_id)
-        build_map_component(@map_component.get_adopting_facility_ids)
+        map_component = PageMapComponent.find_by_id(pc.component_id)
+        va_facilities = VaFacility.where(id: map_component.get_adopting_facility_ids)
+
+        map_components_with_markers[pc.id.to_s.to_sym] = {
+          component: map_component,
+          markers: Gmaps4rails.build_markers(va_facilities) do |facility, marker|
+            marker.lat facility.latitude
+            marker.lng facility.longitude
+            marker.picture({
+                             url: view_context.image_path('map-marker-default.svg'),
+                             width: 34,
+                             height: 46,
+                             scaledWidth: 34,
+                             scaledHeight: 46
+                           })
+            marker.shadow nil
+            marker.json({ id: facility.id })
+            practice_data =  map_component.get_practice_data_by_diffusion_histories(facility.id)
+            marker.infowindow render_to_string(
+                                partial: 'maps/page_map_infowindow',
+                                locals: {
+                                  facility: facility,
+                                  map_component: map_component,
+                                  practice_data: practice_data
+                                }
+                              )
+          end
+        }
       end
     end
-  end
 
-  def build_map_component(adopting_facility_ids)
-    va_facilities = VaFacility.where(id: adopting_facility_ids)
-    @va_facility_marker = Gmaps4rails.build_markers(va_facilities) do |facility, marker|
-      marker.lat facility.latitude
-      marker.lng facility.longitude
-      marker.picture({
-                         url: view_context.image_path('map-marker-default.svg'),
-                         width: 34,
-                         height: 46,
-                         scaledWidth: 34,
-                         scaledHeight: 46
-                     })
-      marker.shadow nil
-      marker.json({ id: facility.id })
-      practice_data =  @map_component.get_practice_data_by_diffusion_histories(facility.id)
-      marker.infowindow render_to_string(
-                            partial: 'maps/page_map_infowindow',
-                            locals: {
-                                facility: facility,
-                                map_component: @map_component,
-                                practice_data: practice_data
-                            }
-                        )
-    end
+    map_components_with_markers
   end
 
   def collect_paginated_components(page_components)
@@ -134,5 +138,14 @@ class PageController < ApplicationController
       end
       page_practice_list_index += 1
     end
+  end
+
+  def set_page
+    @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
+    @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
+  end
+
+  def set_page_components
+    @page_components = @page.page_components
   end
 end
