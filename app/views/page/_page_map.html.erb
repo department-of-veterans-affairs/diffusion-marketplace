@@ -1,7 +1,7 @@
 <% if ENV['GOOGLE_API_KEY'].present? %>
   <% provide :head_tags do %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-        var mapData = <%= raw @map_components_with_markers.to_json %>
+        var mapData = <%= raw @map_components_with_markers.to_json %>;
     <% end %>
     <%= javascript_include_tag 'page/page_map', 'data-turbolinks-track': 'reload' %>
   <% end %>

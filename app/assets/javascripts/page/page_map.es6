@@ -13,14 +13,17 @@ function initialize(map_id) {
     function buildMapMarkers(data) {
         dataMarkers = _.map(data, function (json, index) {
             json.marker = markers[index];
+            const serviceObj = json.marker.getServiceObject();
+            const totalAdoptions = json.total_adoption_count;
+            serviceObj.title = buildTitleAndAriaLabelForMapMarker(json, serviceObj, totalAdoptions);
             return json;
         });
     }
 
     handler.buildMap({
             provider: {
-                center: {lat: 39.8097343, lng: -98.5556199},
-                zoom: 4.2,
+                center: {lat: 38.8097343, lng: -96.5556199},
+                zoom: 4.1,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT
                 },

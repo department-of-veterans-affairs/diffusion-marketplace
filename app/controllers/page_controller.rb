@@ -47,16 +47,23 @@ class PageController < ApplicationController
           markers: Gmaps4rails.build_markers(va_facilities) do |facility, marker|
             marker.lat facility.latitude
             marker.lng facility.longitude
-            marker.picture({
-                             url: view_context.image_path('map-marker-default.svg'),
-                             width: 34,
-                             height: 46,
-                             scaledWidth: 34,
-                             scaledHeight: 46
-                           })
+            marker.picture(
+              {
+                 url: view_context.image_path('map-marker-default.svg'),
+                 width: 34,
+                 height: 46,
+                 scaledWidth: 34,
+                 scaledHeight: 46
+              }
+            )
             marker.shadow nil
-            marker.json({ id: facility.id })
             practice_data =  map_component.get_practice_data_by_diffusion_histories(facility.id)
+            marker.json(
+              {
+                facility: facility,
+                total_adoption_count: practice_data.length
+              }
+            )
             marker.infowindow render_to_string(
                                 partial: 'maps/page_map_infowindow',
                                 locals: {
