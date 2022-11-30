@@ -1,4 +1,4 @@
-function initialize(map_id) {
+function initialize(mapId) {
     const handler = Gmaps.build('Google', {
         markers: {
             clusterer: null
@@ -31,7 +31,7 @@ function initialize(map_id) {
                 mapTypeControl: false,
                 streetViewControl: false
             },
-            internal: {id: map_id},
+            internal: {id: mapId},
             markers: {
                 options: {
                     rich_marker: true
@@ -44,13 +44,13 @@ function initialize(map_id) {
             id (e.g., 'page_builder_map_1', where '1' is the id of the 'PageMapComponent's ActiveRecord).
             This allows us to build markers for each 'PageMapComponent' on a 'Page'.
             */
-            const componentMapData = mapData[map_id.split('_').pop()].markers;
+            const componentMapData = mapData[mapId.split('_').pop()].markers;
             markers = handler.addMarkers(componentMapData);
             buildMapMarkers(componentMapData);
         });
 
     google.maps.event.addListener(handler.getMap(), "idle", function () {
-        $(`#${map_id}`).removeClass("display-none");
+        $(`#${mapId}`).removeClass("display-none");
         $(".dm-facilities-show-map-loading-spinner").addClass("display-none");
     });
 }
