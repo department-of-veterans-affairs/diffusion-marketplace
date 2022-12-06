@@ -15,7 +15,7 @@ describe 'Page Builder - Show', type: :feature do
       Practice.create!(name: 'The last practice', approved: true, published: true, tagline: 'Test tagline', user: user)
     ]
     @visn_1 = Visn.create!(name: 'VISN 1', number: 1)
-    # @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
+    @visn_8 = Visn.create!(name: 'VISN 8', number: 8)
     @fac_1 = VaFacility.create!(
         visn: @visn_1,
         station_number: "402GA",
@@ -28,9 +28,37 @@ describe 'Page Builder - Show', type: :feature do
         fy17_parent_station_complexity_level: "1c-High Complexity",
         station_phone_number: "207-623-2123 x"
     )
+    @fac_2 = VaFacility.create!(
+      visn: @visn_8,
+      station_number: '12345',
+      official_station_name: "James A. Haley Veterans' Hospital",
+      common_name: 'Tampa',
+      latitude: '27.9641570',
+      longitude: '-82.4526060',
+      street_address_state: 'FL',
+      rurality: 'U',
+      fy17_parent_station_complexity_level: '1c-High Complexity',
+      station_phone_number: '123-456-7890'
+    )
+    @fac_3 = VaFacility.create!(
+      visn: @visn_8,
+      station_number: '73478',
+      official_station_name: "Orlando VA Medical Center",
+      common_name: 'Orlando',
+      latitude: '28.36668938',
+      longitude: '-81.27646415',
+      street_address_state: 'FL',
+      rurality: 'U',
+      fy17_parent_station_complexity_level: '1a-High Complexity',
+      station_phone_number: '123-456-7890'
+    )
 
     dh_1 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
+    dh_2 = DiffusionHistory.create!(practice: @practices[5], va_facility: @fac_2)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Completed')
+    dh_3 = DiffusionHistory.create!(practice: @practices[6], va_facility: @fac_3)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'In progress')
 
     page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
     @page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
@@ -71,10 +99,15 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: @page, component: map_component, created_at: Time.now)
     PageComponent.create(page: @page, component: accordion_component, created_at: Time.now)
     PageComponent.create(page: @page, component: @accordion_component_2, created_at: Time.now)
+    ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
 
     # must be logged in to view pages
     login_as(user, scope: :user, run_callbacks: false)
     visit '/programming/ruby-rocks'
+  end
+
+  after do
+    ENV['GOOGLE_API_KEY'] = nil
   end
 
   it 'Should display the blue gradient banner along with the title and description, if the is_visible attr is true' do
@@ -311,6 +344,32 @@ describe 'Page Builder - Show', type: :feature do
       end
     end
 
+    context 'PageMapComponent' do
+      it 'should allow the user to have multiple map components on a single page' do
+        visit edit_admin_page_path(Page.last)
+        # Add one map
+        add_map_component_and_fill_in_fields(0, 'Amazing Map', 'Amazing')
+        select(@practices[0].name, from: 'page_page_components_attributes_0_component_attributes_map')
+        # Add a second one
+        add_map_component_and_fill_in_fields(1, 'Spectacular Map', 'Spectacular')
+        select(@practices[5].name, from: 'page_page_components_attributes_1_component_attributes_map')
+        select(@practices[6].name, from: 'page_page_components_attributes_1_component_attributes_map')
+        save_page
+        expect(page).to have_content('Page was successfully updated.')
+
+        visit '/programming/javascript'
+        # Make sure the map components are 508 compliant
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_css('.page-map-component', count: 2)
+        within(all('.page-map-component').first) do
+          expect_marker_ct(1)
+        end
+        within(all('.page-map-component').last) do
+          expect_marker_ct(2)
+        end
+      end
+    end
+
     context 'mobile view' do
       before do
         page.driver.browser.manage.window.resize_to(340, 580)
@@ -368,6 +427,16 @@ describe 'Page Builder - Show', type: :feature do
     select(4, from: 'page_page_components_attributes_0_component_attributes_padding_top')
   end
 
+  def add_map_component_and_fill_in_fields(index, title, info_window_text)
+    click_link('Add New Page component')
+    select('Google Map', from: "page_page_components_attributes_#{index}_component_type")
+    fill_in("page_page_components_attributes_#{index}_component_attributes_title", with: title)
+    fill_in("page_page_components_attributes_#{index}_component_attributes_map_info_window_text", with: info_window_text)
+    find("#page_page_components_attributes_#{index}_component_attributes_display_successful_adoptions").set(true)
+    find("#page_page_components_attributes_#{index}_component_attributes_display_in_progress_adoptions").set(true)
+    find("#page_page_components_attributes_#{index}_component_attributes_display_unsuccessful_adoptions").set(true)
+  end
+
   def add_page_component_image_to_component(
     component_li_id,
     image_path,
@@ -388,5 +457,12 @@ describe 'Page Builder - Show', type: :feature do
 
   def save_page
     find_all('input[type="submit"]').first.click
+  end
+
+  def expect_marker_ct(count)
+    marker_div = 'div[style*="width: 34px"][role="button"]'
+    expect(page).to have_selector(marker_div, visible: true)
+    marker_count = find_all(:css, marker_div).count
+    expect(marker_count).to be(count)
   end
 end

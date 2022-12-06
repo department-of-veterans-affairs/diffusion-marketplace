@@ -52,20 +52,14 @@ function initialize() {
     dataMarkers = _.map(data, function (json, index) {
       json.marker = markers[index];
       const serviceObj = json.marker.getServiceObject();
-      let officialStationName = json.facility.official_station_name;
-      let commonName = json.facility.common_name;
       let totalAdoptions = json.completed + json.in_progress + json.unsuccessful;
       // Add title and aria-label to each map marker to improve accessibility
-      if (officialStationName.includes(commonName)) {
-          serviceObj.title = `${officialStationName}, ${totalAdoptions} total adoption${totalAdoptions !== 1 ? 's' : ''}`;
-      } else {
-          serviceObj.title = `${officialStationName} (${commonName}), ${totalAdoptions} total adoption${totalAdoptions !== 1 ? 's' : ''}`;
-      }
+      serviceObj.title = buildTitleAndAriaLabelForMapMarker(json, serviceObj, totalAdoptions);
 
       serviceObj.label = {
-        color: '#FFFFFF',
-        text: `${totalAdoptions}`,
-        fontFamily: 'Open Sans'
+          color: '#FFFFFF',
+          text: `${totalAdoptions}`,
+          fontFamily: 'Open Sans'
       };
 
       google.maps.event.addListener(serviceObj, 'click', clickCallback.bind(this, json));
