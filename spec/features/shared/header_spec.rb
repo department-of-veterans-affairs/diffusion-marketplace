@@ -256,7 +256,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
       expect(page).to have_content('We’re here anytime, day or night – 24/7')
       expect(page).to have_content('If you are a Veteran in crisis or concerned about one, connect with our caring, qualified responders for confidential help. Many of them are Veterans themselves.')
-      expect(page).to have_link('Call 800-273-8255 and select 1')
+      expect(page).to have_link('Call 988 and select 1')
 
       # close the modal
       within(:css, '#va-crisis-line-modal') do
@@ -265,7 +265,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
       expect(page).to_not have_content('We’re here anytime, day or night – 24/7')
       expect(page).to_not have_content('If you are a Veteran in crisis or concerned about one, connect with our caring, qualified responders for confidential help. Many of them are Veterans themselves.')
-      expect(page).to_not have_link('Call 800-273-8255 and select 1')
+      expect(page).to_not have_link('Call 988 and select 1')
     end
   end
 end
