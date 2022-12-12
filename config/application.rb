@@ -44,8 +44,8 @@ module DiffusionMarketplace
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.middleware.use NTLMAuthentication if ENV['VAEC_ENV'] == 'true'
     config.middleware.use HeadersFilter if ENV['RAILS_ENV'] == 'production'
+    config.middleware.use NTLMAuthentication if ENV['VAEC_ENV'] == 'true'
 
     # Reroute exceptions to custom logic
     config.exceptions_app = self.routes
