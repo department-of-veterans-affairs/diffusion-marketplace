@@ -2,8 +2,6 @@ version: '3'
 services:
   proxy:
     image: proxy
-    env_file:
-      - .env
     build:
       context: .
       dockerfile: ./proxy/Dockerfile
