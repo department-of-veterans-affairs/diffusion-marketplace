@@ -23,52 +23,52 @@ namespace :va_facilities do
                   classification: classification,
                   classification_status: vaf["ClassificationStatus"],
                   mobile: vaf["Mobile"],
-                  parent_station_number: vaf["Parent Station Number"],
+                  parent_station_number: vaf["Official Parent Station Number"],
                   official_parent_station_name: vaf["Parent Station Name"],
                   fy17_parent_station_complexity_level: vaf["FY20 Parent Station Complexity Level"],
-                  operational_status: vaf["Operational_Status_Active_A_Or_Planned_P_Or_Temporarily_Deactivated_T_Or_Permanently_Deactivated_D"],
+                  operational_status: vaf["Operational Status Active A Or Planned P Or Temporarily Deactivated T Or Permanently Deactivated D"],
                   ownership_type: vaf["Ownership Type"],
                   delivery_mechanism: vaf["Delivery Mechanism"],
-                  staffing_type: vaf["Staffing Type"],
+                  staffing_type: vaf["StaffingType"],
 
                   # these 3 not in VetCenter json schema...
-                  va_secretary_10n_approved_date: vaf["VA_Secretary_10N_Approved_Date"],
-                  planned_activation_date: vaf["Planned_Activation_Date"],
-                  station_number_suffix_reservation_effective_date: vaf["StationNumberSuffixReservationEffectiveDate"],
+                  va_secretary_10n_approved_date: vaf["VA Secretary / 10N Approved Date"],
+                  planned_activation_date: vaf["Planned Activation Date"],
+                  station_number_suffix_reservation_effective_date: vaf["Station Number Suffix Reservation Effective Date"],
 
 
-                  operational_date: vaf["Operational_Date"],
-                  date_of_first_workload: vaf["DateOfFirstWorkload"],
-                  points_of_service: vaf["Points_Of_Service"].to_s,
-                  street_address: vaf["Street_Address"],
-                  street_address_city: vaf["Street_Address_City"],
-                  street_address_state: vaf["Street_Address_State"],
-                  street_address_zip_code: vaf["Street_Address_Zip_Code"].to_s,
-                  street_address_zip_code_extension: vaf["Street_Address_Zip_Code_Extension"].to_s,
-                  county_street_address: vaf["County_Street_Address"],
-                  mailing_address: vaf["Mailing_Address"],
-                  mailing_address_city: vaf["Mailing_Address_City"],
-                  mailing_address_state: vaf["Mailing_Address_State"],
-                  mailing_address_zip_code: vaf["Mailing_Address_Zip_Code"].to_s,
-                  mailing_address_zip_code_extension: vaf["Mailing_Address_Zip_Code_Extension"].to_s,
-                  county_mailing_address: vaf["County_Mailing_Address"],
-                  station_phone_number: vaf["Station_Phone_Number"],
-                  station_main_fax_number: vaf["Station_Main_Fax_Number"],
+                  operational_date: vaf["Operational Date"],
+                  date_of_first_workload: vaf["Date Of First Workload"],
+                  points_of_service: vaf["Points of Service"].to_s,
+                  street_address: vaf["Street Address"],
+                  street_address_city: vaf["Street Address-City"],
+                  street_address_state: vaf["Street Address-State"],
+                  street_address_zip_code: vaf["Street Address-Zip Code"].to_s,
+                  street_address_zip_code_extension: vaf["Street Address-Zip Code Extension"].to_s,
+                  county_street_address: vaf["County (Street Address)"],
+                  mailing_address: vaf["Mailing Address"],
+                  mailing_address_city: vaf["Mailing Address-City"],
+                  mailing_address_state: vaf["Mailing Address-State"],
+                  mailing_address_zip_code: vaf["Mailing Address-Zip Code"].to_s,
+                  mailing_address_zip_code_extension: vaf["Mailing Address-Zip Code Extension"].to_s,
+                  county_mailing_address: vaf["County (Mailing Address)"],
+                  station_phone_number: vaf["Station Phone Number"],
+                  station_main_fax_number: vaf["Station Main Fax Number"],
 
                   # these 4 not in VetCenter json schema...
-                  after_hours_phone_number: vaf["After_Hours_Phone_Number"],
-                  pharmacy_phone_number: vaf["Pharmacy_Phone_Number"],
-                  enrollment_coordinator_phone_number: vaf["Enrollment_Coordinator_Phone_Number"],
-                  patient_advocate_phone_number: vaf["Patient_Advocate_Phone_Number"],
+                  after_hours_phone_number: vaf["After Hours Phone Number"],
+                  pharmacy_phone_number: vaf["Pharmacy Phone Number"],
+                  enrollment_coordinator_phone_number: vaf["Enrollment Coordinator Phone Number"],
+                  patient_advocate_phone_number: vaf["Patient Advocate Phone Number"],
 
                   latitude: vaf["Latitude"].to_f,
                   longitude: vaf["Longitude"].to_f,
-                  congressional_district: vaf["Congressional_District"],
+                  congressional_district: vaf["Congressional District"],
                   market: vaf["MARKET"],
                   sub_market: vaf["SUBMARKET"],
                   sector: vaf["SECTOR"],
-                  fips_code: vaf["FIPS_Code"],
-                  rurality: vaf["Rurality_U_Urban_R_Rural_H_Highly_Rural"],
+                  fips_code: vaf["FIPS Code"],
+                  rurality: vaf["Rurality: U=Urban; R=Rural; H=Highly ruralI=Insular"],
                   monday: vaf["Monday"],
                   tuesday: vaf["Tuesday"],
                   wednesday: vaf["Wednesday"],
@@ -76,12 +76,13 @@ namespace :va_facilities do
                   friday: vaf["Friday"],
                   saturday: vaf["Saturday"],
                   sunday: vaf["Sunday"],
-                  hours_note: vaf["HoursNote"],
+                  hours_note: vaf["Hours Note"],
                   hidden: hidden
               )
           else
             # update record.....
             facility = VaFacility.where(station_number: vaf["Station_Number"]).first
+            classification = vaf["Classification"].blank? ? "Unclassified" : vaf["Classification"]
             if facility.present? && visn.number === vaf["VISN"].to_i
               facility.visn = visn
               facility.sta3n = vaf["STA3N"].to_s
@@ -89,52 +90,52 @@ namespace :va_facilities do
               facility.official_station_name = vaf["Official_Station_Name"]
               facility.common_name = vaf["LocationDescriptiveName"]
               puts 'Common_name: ' + facility.common_name
-              facility.classification = vaf["CoCClassification"]
-              facility.classification_status = vaf["CoCClassificationAttribute"]
+              facility.classification = classification
+              facility.classification_status = vaf["ClassificationStatus"]
               facility.mobile = vaf["Mobile"]
-              facility.parent_station_number = vaf["Parent_Station_Number"]
-              facility.official_parent_station_name = vaf["Parent_Station_Name"]
-              facility.fy17_parent_station_complexity_level = vaf["Parent_Station_Complexity_Level"]
-              facility.operational_status = vaf["Operational_Status_Active_A_Or_Planned_P_Or_Temporarily_Deactivated_T_Or_Permanently_Deactivated_D"]
-              facility.ownership_type = vaf["Ownership_Type"]
+              facility.parent_station_number = vaf["Official Parent Station Number"]
+              facility.official_parent_station_name = vaf["Parent Station Name"]
+              facility.fy17_parent_station_complexity_level = vaf["FY20 Parent Station Complexity Level"]
+              facility.operational_status = vaf["Operational Status Active A Or Planned P Or Temporarily Deactivated T Or Permanently Deactivated D"]
+              facility.ownership_type = vaf["Ownership Type"]
               facility.delivery_mechanism = vaf["Delivery Mechanism"]
-              facility.staffing_type = vaf["Staffing_Type"]
-              facility.operational_date = vaf["Operational_Date"]
-              facility.date_of_first_workload = vaf["DateOfFirstWorkload"]
-              facility.points_of_service = vaf["Points_Of_Service"].to_s
-              facility.street_address = vaf["Street_Address"]
-              facility.street_address_city = vaf["Street_Address_City"]
-              facility.street_address_state = vaf["Street_Address_State"]
-              facility.street_address_zip_code = vaf["Street_Address_Zip_Code"].to_s
-              facility.street_address_zip_code_extension = vaf["Street_Address_Zip_Code_Extension"].to_s
-              facility.county_street_address = vaf["County_Street_Address"]
-              facility.mailing_address = vaf["Mailing_Address"]
-              facility.mailing_address_city = vaf["Mailing_Address_City"]
-              facility.mailing_address_state = vaf["Mailing_Address_State"]
-              facility.mailing_address_zip_code = vaf["Mailing_Address_Zip_Code"].to_s
-              facility.mailing_address_zip_code_extension = vaf["Mailing_Address_Zip_Code_Extension"].to_s
-              facility.county_mailing_address = vaf["County_Mailing_Address"]
-              facility.station_phone_number = vaf["Station_Phone_Number"]
-              facility.station_main_fax_number = vaf["Station_Main_Fax_Number"]
+              facility.staffing_type = vaf["StaffingType"]
+              facility.operational_date = vaf["Operational Date"]
+              facility.date_of_first_workload = vaf["Date Of First Workload"]
+              facility.points_of_service = vaf["Points of Service"].to_s
+              facility.street_address = vaf["Street Address"]
+              facility.street_address_city = vaf["Street Address-City"]
+              facility.street_address_state = vaf["Street Address-State"]
+              facility.street_address_zip_code = vaf["Street Address-Zip Code"].to_s
+              facility.street_address_zip_code_extension = vaf["Street Address-Zip Code Extension"].to_s
+              facility.county_street_address = vaf["County (Street Address)"]
+              facility.mailing_address = vaf["Mailing Address"]
+              facility.mailing_address_city = vaf["Mailing Address-City"]
+              facility.mailing_address_state = vaf["Mailing Address-State"]
+              facility.mailing_address_zip_code = vaf["Mailing Address-Zip Code"].to_s
+              facility.mailing_address_zip_code_extension = vaf["Mailing Address-Zip Code Extension"].to_s
+              facility.county_mailing_address = vaf["County (Mailing Address)"]
+              facility.station_phone_number = vaf["Station Phone Number"]
+              facility.station_main_fax_number = vaf["Station Main Fax Number"]
 
               #these 7 not in Vet Center schema...
               if (!vaf["Official_Station_Name"].include? "Vet Center")
-                facility.after_hours_phone_number = vaf["After_Hours_Phone_Number"]
-                facility.pharmacy_phone_number = vaf["Pharmacy_Phone_Number"]
-                facility.enrollment_coordinator_phone_number = vaf["Enrollment_Coordinator_Phone_Number"]
-                facility.patient_advocate_phone_number = vaf["Patient_Advocate_Phone_Number"]
-                facility.va_secretary_10n_approved_date = vaf["VA_Secretary_10N_Approved_Date"]
-                facility.planned_activation_date = vaf["Planned_Activation_Date"]
-                facility.station_number_suffix_reservation_effective_date = vaf["StationNumberSuffixReservationEffectiveDate"]
+                facility.after_hours_phone_number = vaf["After Hours Phone Number"]
+                facility.pharmacy_phone_number = vaf["Pharmacy Phone Number"]
+                facility.enrollment_coordinator_phone_number = vaf["Enrollment Coordinator Phone Number"]
+                facility.patient_advocate_phone_number = vaf["Patient Advocate Phone Number"]
+                facility.va_secretary_10n_approved_date = vaf["VA Secretary / 10N Approved Date"]
+                facility.planned_activation_date = vaf["Planned Activation Date"]
+                facility.station_number_suffix_reservation_effective_date = vaf["Station Number Suffix Reservation Effective Date"]
               end
               facility.latitude = vaf["Latitude"].to_f
               facility.longitude = vaf["Longitude"].to_f
-              facility.congressional_district = vaf["Congressional_District"]
+              facility.congressional_district = vaf["Congressional District"]
               facility.market = vaf["MARKET"]
               facility.sub_market = vaf["SUBMARKET"]
               facility.sector = vaf["SECTOR"]
-              facility.fips_code = vaf["FIPS_Code"]
-              facility.rurality = vaf["Rurality_U_Urban_R_Rural_H_Highly_Rural"]
+              facility.fips_code = vaf["FIPS Code"]
+              facility.rurality = vaf["Rurality: U=Urban; R=Rural; H=Highly ruralI=Insular"]
               facility.monday = vaf["Monday"]
               facility.tuesday = vaf["Tuesday"]
               facility.wednesday = vaf["Wednesday"]
@@ -142,7 +143,7 @@ namespace :va_facilities do
               facility.friday = vaf["Friday"]
               facility.saturday = vaf["Saturday"]
               facility.sunday = vaf["Sunday"]
-              facility.hours_note = vaf["HoursNote"]
+              facility.hours_note = vaf["Hours Note"]
               facility.save
               ctr += 1
               puts "Updated facility: #{vaf['Official_Station_Name']}, #{ctr.to_s}"
