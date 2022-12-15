@@ -4,30 +4,32 @@ namespace :va_facilities do
   task :create_or_update_va_facilities => :environment do
     ctr = 0
     file = File.read("#{Rails.root}/lib/assets/va_facilities.json")
+    debugger
     va_facilities = JSON.parse(file)
     visns = Visn.all
     visns.each do |visn|
       va_facilities.each do |vaf|
-          if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station_Number"]).empty?
-            puts 'Creating facility - ' + vaf["Official_Station_Name"]
-              hidden = vaf["CoCClassification"].blank?
-              classification = vaf["CoCClassification"].blank? ? "Unclassified" : vaf["CoCClassification"]
+        debugger
+          if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station Number"]).empty?
+            puts 'Creating facility - ' + vaf["Official Station Name"]
+              hidden = vaf["Classification"].blank?
+              classification = vaf["Classification"].blank? ? "Unclassified" : vaf["Classification"]
               VaFacility.create!(
                   visn: visn,
                   sta3n: vaf["STA3N"].to_s,
-                  station_number: vaf["Station_Number"],
-                  official_station_name: vaf["Official_Station_Name"],
-                  common_name: vaf["LocationDescriptiveName"],
+                  station_number: vaf["Station Number"],
+                  official_station_name: vaf["Official Station Name"],
+                  common_name: vaf["Location Descriptive Name"],
                   classification: classification,
-                  classification_status: vaf["CoCClassificationAttribute"],
+                  classification_status: vaf["ClassificationStatus"],
                   mobile: vaf["Mobile"],
-                  parent_station_number: vaf["Parent_Station_Number"],
-                  official_parent_station_name: vaf["Parent_Station_Name"],
-                  fy17_parent_station_complexity_level: vaf["Parent_Station_Complexity_Level"],
+                  parent_station_number: vaf["Parent Station Number"],
+                  official_parent_station_name: vaf["Parent Station Name"],
+                  fy17_parent_station_complexity_level: vaf["FY20 Parent Station Complexity Level"],
                   operational_status: vaf["Operational_Status_Active_A_Or_Planned_P_Or_Temporarily_Deactivated_T_Or_Permanently_Deactivated_D"],
-                  ownership_type: vaf["Ownership_Type"],
-                  delivery_mechanism: vaf["Delivery_Mechanism"],
-                  staffing_type: vaf["Staffing_Type"],
+                  ownership_type: vaf["Ownership Type"],
+                  delivery_mechanism: vaf["Delivery Mechanism"],
+                  staffing_type: vaf["Staffing Type"],
 
                   # these 3 not in VetCenter json schema...
                   va_secretary_10n_approved_date: vaf["VA_Secretary_10N_Approved_Date"],
@@ -95,7 +97,7 @@ namespace :va_facilities do
               facility.fy17_parent_station_complexity_level = vaf["Parent_Station_Complexity_Level"]
               facility.operational_status = vaf["Operational_Status_Active_A_Or_Planned_P_Or_Temporarily_Deactivated_T_Or_Permanently_Deactivated_D"]
               facility.ownership_type = vaf["Ownership_Type"]
-              facility.delivery_mechanism = vaf["Delivery_Mechanism"]
+              facility.delivery_mechanism = vaf["Delivery Mechanism"]
               facility.staffing_type = vaf["Staffing_Type"]
               facility.operational_date = vaf["Operational_Date"]
               facility.date_of_first_workload = vaf["DateOfFirstWorkload"]
