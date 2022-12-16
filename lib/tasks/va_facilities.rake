@@ -4,12 +4,10 @@ namespace :va_facilities do
   task :create_or_update_va_facilities => :environment do
     ctr = 0
     file = File.read("#{Rails.root}/lib/assets/va_facilities.json")
-    debugger
     va_facilities = JSON.parse(file)
     visns = Visn.all
     visns.each do |visn|
       va_facilities.each do |vaf|
-        debugger
           if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station Number"]).empty?
             puts 'Creating facility - ' + vaf["Official Station Name"]
               hidden = vaf["Classification"].blank?
@@ -81,14 +79,14 @@ namespace :va_facilities do
               )
           else
             # update record.....
-            facility = VaFacility.where(station_number: vaf["Station_Number"]).first
+            facility = VaFacility.where(station_number: vaf["Station Number"]).first
             classification = vaf["Classification"].blank? ? "Unclassified" : vaf["Classification"]
             if facility.present? && visn.number === vaf["VISN"].to_i
               facility.visn = visn
               facility.sta3n = vaf["STA3N"].to_s
-              facility.station_number = vaf["Station_Number"]
-              facility.official_station_name = vaf["Official_Station_Name"]
-              facility.common_name = vaf["LocationDescriptiveName"]
+              facility.station_number = vaf["Station Number"]
+              facility.official_station_name = vaf["Official Station Name"]
+              facility.common_name = vaf["Location Descriptive Name"]
               puts 'Common_name: ' + facility.common_name
               facility.classification = classification
               facility.classification_status = vaf["ClassificationStatus"]
@@ -119,7 +117,7 @@ namespace :va_facilities do
               facility.station_main_fax_number = vaf["Station Main Fax Number"]
 
               #these 7 not in Vet Center schema...
-              if (!vaf["Official_Station_Name"].include? "Vet Center")
+              if (!vaf["Official Station Name"].include? "Vet Center")
                 facility.after_hours_phone_number = vaf["After Hours Phone Number"]
                 facility.pharmacy_phone_number = vaf["Pharmacy Phone Number"]
                 facility.enrollment_coordinator_phone_number = vaf["Enrollment Coordinator Phone Number"]
@@ -146,7 +144,7 @@ namespace :va_facilities do
               facility.hours_note = vaf["Hours Note"]
               facility.save
               ctr += 1
-              puts "Updated facility: #{vaf['Official_Station_Name']}, #{ctr.to_s}"
+              puts "Updated facility: #{vaf['Official Station Name']}, #{ctr.to_s}"
             end
           end
         end
