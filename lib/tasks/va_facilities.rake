@@ -8,6 +8,7 @@ namespace :va_facilities do
     visns = Visn.all
     visns.each do |visn|
       va_facilities.each do |vaf|
+      facility = VaFacility.where(station_number: vaf["Station Number"]).first
           if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station Number"]).empty?
             puts 'Creating facility - ' + vaf["Official Station Name"]
               hidden = vaf["Classification"].blank?
@@ -79,7 +80,6 @@ namespace :va_facilities do
               )
           else
             # update record.....
-            facility = VaFacility.where(station_number: vaf["Station Number"]).first
             classification = vaf["Classification"].blank? ? "Unclassified" : vaf["Classification"]
             if facility.present? && visn.number === vaf["VISN"].to_i
               facility.visn = visn
