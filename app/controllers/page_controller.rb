@@ -115,7 +115,7 @@ class PageController < ApplicationController
     items = []
     ids = []
     position = page_components.first&.position
-    ids << page_components.first.component_id
+    ids << page_components.first&.component_id
 
     # create list for adjacent components of the same type
     page_components.each do |pc|
