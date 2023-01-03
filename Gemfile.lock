@@ -48,6 +48,7 @@ GEM
     rails-assets-jquery (3.6.0)
     rails-assets-jquery.scrollTo (2.1.2)
       rails-assets-jquery (>= 1.8)
+    rails-assets-normalize-css (3.0.3)
     rails-assets-sticky (1.0.4)
       rails-assets-jquery
 
@@ -287,8 +288,8 @@ GEM
     htmlentities (4.3.4)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    httparty (0.20.0)
-      mime-types (~> 3.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     humanize (2.5.1)
     i18n (1.11.0)
