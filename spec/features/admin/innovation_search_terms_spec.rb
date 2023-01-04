@@ -26,11 +26,13 @@ describe 'Admin innovation search terms', type: :feature do
     Ahoy::Event.create!(visit_id: @ahoy_visit.id, name: 'Facility practice search', properties: { search_term: 'bang' }, time: Time.now)
 
     current_year = @beginning_of_current_month.year
+    current_month = @beginning_of_current_month.strftime('%B').downcase
+    is_month_one_of_first_3_months = current_month == 'january' || current_month == 'february' || current_month == 'march'
 
-    @current_month_class = ".col-#{@beginning_of_current_month.strftime('%B').downcase}_#{current_year}_-_current_month"
-    @last_month_class = ".col-#{@beginning_of_last_month.strftime('%B').downcase}_#{current_year}_-_last_month"
-    @two_months_ago_class = ".col-#{@beginning_of_two_months_ago.strftime('%B').downcase}_#{current_year}_-_2_months_ago"
-    @three_months_ago_class = ".col-#{@beginning_of_three_months_ago.strftime('%B').downcase}_#{current_year}_-_3_months_ago"
+    @current_month_class = ".col-#{current_month}_#{current_year}_-_current_month"
+    @last_month_class = ".col-#{@beginning_of_last_month.strftime('%B').downcase}_#{is_month_one_of_first_3_months ? current_year - 1 : current_year}_-_last_month"
+    @two_months_ago_class = ".col-#{@beginning_of_two_months_ago.strftime('%B').downcase}_#{is_month_one_of_first_3_months ? current_year - 1 : current_year}_-_2_months_ago"
+    @three_months_ago_class = ".col-#{@beginning_of_three_months_ago.strftime('%B').downcase}_#{is_month_one_of_first_3_months ? current_year - 1 : current_year}_-_3_months_ago"
     @all_time_class = '.col-lifetime'
 
     login_as(@admin, scope: :user, run_callbacks: false)
