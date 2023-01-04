@@ -10,9 +10,11 @@ class PageController < ApplicationController
     @practice_list_components = []
     @pagy_type = params.keys.first || nil
     @practice_list_component_index = 0
+    @event_list_component_index = 0
+    @event_list_components = []
     @event_ids = []
-    @event_list_components = {}
-    @news_items_components = {}
+    @news_list_component_index = 0
+    @news_items_components = []
     @news_items_ids = []
     collect_paginated_components(@page_components)
 
@@ -33,6 +35,15 @@ class PageController < ApplicationController
   end
 
   private
+
+  def set_page
+    @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
+    @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
+  end
+
+  def set_page_components
+    @page_components = @page.page_components
+  end
 
   def build_map_component_markers
     map_components_with_markers = {}
@@ -90,41 +101,39 @@ class PageController < ApplicationController
       news_items << pc if pc.component_type === 'PageNewsComponent'
     end
 
-    set_pagy_practice_list_array(practice_lists)
-    paginate_components(events, "events", 3)
-    paginate_components(news_items, "news", 6)
+    set_pagy_practice_list_array(practice_lists) if practice_lists.present?
+    paginate_components(events, "events", 3) if events.present?
+    paginate_components(news_items, "news", 6) if news_items.present?
   end
 
+  # Paginate adjacent news or event components
   def paginate_components(page_components, component_type, pagination)
     return unless page_components
+
     page_item_list_index = 0
-    params_index = params["#{page_item_list_index}"]
+    params_index = params[page_item_list_index.to_s]
     items = []
     ids = []
+    position = page_components.first&.position
+    ids << page_components.first&.component_id
 
+    # create list for adjacent components of the same type
     page_components.each do |pc|
-      items << pc.component
-      ids << pc.component_id
+      if pc.position == position || pc.position == position + 1
+        (items[page_item_list_index] ||= []) << pc.component
+      else
+        # create pagy for previous list
+        add_paginated_list(component_type, page_item_list_index, params_index, items, pagination)
+        # begin a new list
+        page_item_list_index += 1
+        items[page_item_list_index] = [pc.component]
+        ids << pc.component_id
+      end
+      position = pc.position
     end
-
-    pagy_settings, paginated_items = get_pagy_array(items, page_item_list_index, params_index, pagination, component_type)
-
-    if component_type == "events"
-      @event_list_components[0] = { pagy: pagy_settings, events: paginated_items }
-      @event_ids = ids
-    elsif component_type == "news"
-      @news_items_components[0] = { pagy: pagy_settings, news: paginated_items }
-      @news_items_ids = ids
-    end
-  end
-
-  def get_pagy_array(items, page_item_list_index, params_index, pagination, item_class)
-    pagy_array(
-      items,
-      items: pagination,
-      page_param: "#{item_class}-#{page_item_list_index.to_s}",
-      link_extra: "data-remote='true' class='dm-paginated-#{item_class}-#{page_item_list_index}-link dm-paginated-#{page_item_list_index}-#{item_class}-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
-    )
+    # create pagy for the final list
+    add_paginated_list(component_type, page_item_list_index, params_index, items, pagination)
+    set_pagination_start_ids(component_type, ids)
   end
 
   def set_pagy_practice_list_array(page_components)
@@ -147,12 +156,32 @@ class PageController < ApplicationController
     end
   end
 
-  def set_page
-    @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
-    @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
+  # create a paginated list and add it to page components
+  def add_paginated_list(component_type, page_item_list_index, params_index, items, pagination)
+    pagy_settings, paginated_items = get_pagy_array(items[page_item_list_index], page_item_list_index, params_index, pagination, component_type)
+    case component_type
+    when "events"
+      @event_list_components << { pagy: pagy_settings, events: paginated_items }
+    when "news"
+      @news_items_components << { pagy: pagy_settings, news: paginated_items }
+    end
   end
 
-  def set_page_components
-    @page_components = @page.page_components
+  def get_pagy_array(items, page_item_list_index, params_index, pagination, item_class)
+    pagy_array(
+      items,
+      items: pagination,
+      page_param: "#{item_class}-#{page_item_list_index}",
+      link_extra: "data-remote='true' class='dm-paginated-#{item_class}-#{page_item_list_index}-link dm-paginated-#{page_item_list_index}-#{item_class}-#{params_index.nil? ? 2 : params_index.to_i + 1}-link dm-button--outline-secondary margin-top-105 width-auto'"
+    )
+  end
+
+  def set_pagination_start_ids(component_type, ids)
+    case component_type
+    when "events"
+      @event_ids = ids
+    when "news"
+      @news_items_ids = ids
+    end
   end
 end
