@@ -18,4 +18,4 @@ production:
   port: 3269
   default_domain: va.gov
   base: DC=va,DC=gov
-  ssl: false
+  ssl: true
