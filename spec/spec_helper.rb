@@ -152,8 +152,8 @@ end
 
 # Capybara.javascript_driver = :webkit
 # Capybara.default_driver = :sniffybara
-Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
-# Capybara.default_driver = :selenium_chrome_headless
+# Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
+Capybara.default_driver = :selenium_chrome_headless
 Capybara.enable_aria_label = true
 
 # Require and file in the 'spec/support' folder
