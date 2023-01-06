@@ -18,4 +18,3 @@ production:
   port: 636
   default_domain: va.gov
   base: DC=va,DC=gov
-  ssl: true
