@@ -14,6 +14,7 @@ ARG AWS_REGION
 
 RUN git config --global http.sslVerify false
 
+COPY EntrustServicesRootCA_BridgeCert.cer /etc/pki/ca-trust/source/anchors/EntrustServicesRootCA_BridgeCert.cer
 COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
 RUN update-ca-trust extract
 
