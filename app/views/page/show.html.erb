@@ -88,14 +88,17 @@
           </div>
 
         <%# Event %>
-        <% when 'PageEventComponent'%>
-          <% component_index = 0 %>
-          <% elc = @event_list_components[0] %>
-          <% if component.id == @event_ids.first %>
+        <% when 'PageEventComponent' %>
+          <% if @event_ids.include?(component.id) %>
+            <%
+              component_index = @event_list_component_index
+              elc = @event_list_components[component_index]
+              @event_list_component_index = component_index + 1
+            %>
             <div class="event-component-list dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
               <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
             </div>
-            <% if elc[:pagy].count > 3 %>
+            <% if elc[:pagy].count > 3  %>
               <div class="text-center dm-load-more-events-<%= component_index %>-btn-container">
                 <% link = pagy_link_proc(elc[:pagy]) %>
                 <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
@@ -117,13 +120,16 @@
 
         <%# News %>
         <% when 'PageNewsComponent' %>
-          <% component_index = 0 %>
-          <% nic = @news_items_components[0] %>
-          <% if component.id == @news_items_ids.first %>
+          <% if @news_items_ids.include?(component.id) %>
+            <%
+              component_index = @news_list_component_index
+              nic = @news_items_components[component_index]
+              @news_list_component_index = component_index + 1
+            %>
             <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
               <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
             </ul>
-            <% if nic[:pagy].count > nic[:pagy].items %>
+            <% if nic[:pagy].count > 6  %>
               <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
                 <% link = pagy_link_proc(nic[:pagy]) %>
                 <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
