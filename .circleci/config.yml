@@ -12,12 +12,6 @@ workflows:
         - test:
             requires:
               - hold
-        - deploy:
-            requires:
-              - test
-            filters:
-              branches:
-                only: master
 jobs:
   test:
     parallelism: 83
