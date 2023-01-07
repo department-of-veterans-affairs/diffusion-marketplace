@@ -136,8 +136,7 @@ class User < ApplicationRecord
         host: LDAP_CONFIG['host'], # Thankfully this is a standard name
         port: LDAP_CONFIG['port'],
         auth: {method: :simple, username: ENV['LDAP_USERNAME'], password: ENV['LDAP_PASSWORD']},
-        base: LDAP_CONFIG['base'],
-        ssl: LDAP_CONFIG['ssl']
+        base: LDAP_CONFIG['base']
     )
     if ldap.bind
       # Yay, the login credentials were valid!

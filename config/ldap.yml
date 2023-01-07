@@ -1,11 +1,11 @@
 # LDAP server configuration settings
 # Host is a Windows Domain Controller
 
-#development:
-#  host: gc.vha.med.va.gov #VHALON3DC4.v22.med.va.gov #VAISH1DC1.va.gov gc.vha.med.va.gov #vac103dc2vha.vha.med.va.gov
-#  port: 3268 #389 #3268 global catalog server?
-#  default_domain: va.gov
-#  base: DC=va,DC=gov
+development:
+  host: gc.vha.med.va.gov #VHALON3DC4.v22.med.va.gov #VAISH1DC1.va.gov gc.vha.med.va.gov #vac103dc2vha.vha.med.va.gov
+  port: 3268 #389 #3268 global catalog server?
+  default_domain: va.gov
+  base: DC=va,DC=gov
 
 #test:
 #  host: examplehost
@@ -18,4 +18,3 @@ production:
   port: 3269
   default_domain: va.gov
   base: DC=va,DC=gov
-  ssl: true
