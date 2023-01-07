@@ -21,15 +21,16 @@ COPY EntrustDerivedCredSSP.cer /etc/pki/ca-trust/source/anchors/EntrustDerivedCr
 COPY EntrustDerivedCredSSP.cer /etc/pki/ca-trust/source/anchors/EntrustDerivedCredSSP.cer
 COPY EntrustServicesRootCA_BridgeCert.cer /etc/pki/ca-trust/source/anchors/EntrustServicesRootCA_BridgeCert.cer
 COPY TreasuryCASHA384.cer /etc/pki/ca-trust/source/anchors/TreasuryCASHA384.cer
-#COPY VA-Internal-S2-ICA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA1-v1.cer
-#COPY VA-Internal-S2-ICA2-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA2-v1.cer
-#COPY VA-Internal-S2-ICA3-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA3-v1.cer
-#COPY VA-Internal-S2-ICA4.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA4.cer
-#COPY VA-Internal-S2-ICA5.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA5.cer
-#COPY VA-Internal-S2-ICA6.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA6.cer
-#COPY VA-Internal-S2-ICA7.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA7.cer
-#COPY VA-Internal-S2-ICA8.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA8.cer
-#COPY VA-Internal-S2-ICA9.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA9.cer
+
+COPY VA-Internal-S2-ICA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA1-v1.cer
+COPY VA-Internal-S2-ICA2-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA2-v1.cer
+COPY VA-Internal-S2-ICA3-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA3-v1.cer
+COPY VA-Internal-S2-ICA4.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA4.cer
+COPY VA-Internal-S2-ICA5.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA5.cer
+COPY VA-Internal-S2-ICA6.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA6.cer
+COPY VA-Internal-S2-ICA7.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA7.cer
+COPY VA-Internal-S2-ICA8.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA8.cer
+COPY VA-Internal-S2-ICA9.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA9.cer
 
 COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
 
