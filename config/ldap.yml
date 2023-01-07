@@ -13,7 +13,7 @@
 #  default_domain: EXAMPLEDOMAIN
 #  base: examplebase # OU=US-Tampa Bay,OU=North America,OU=Accounts,DC=ourdomain,DC=org
 
-production:
+production:cd
   host: VAC103DC2R04.r04.med.va.gov
   port: 636
   default_domain: va.gov
