@@ -15,6 +15,6 @@
 
 production:
   host: VAC103DC2R04.r04.med.va.gov
-  port: 3269
+  port: 636
   default_domain: va.gov
   base: DC=va,DC=gov
