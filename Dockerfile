@@ -15,12 +15,12 @@ ARG AWS_REGION
 RUN git config --global http.sslVerify false
 
 
-COPY DeptOfVA_TreasuryChain.cer /etc/pki/ca-trust/source/anchors/DeptOfVA_TreasuryChain.cer
-COPY EntrustCASHA384.cer /etc/pki/ca-trust/source/anchors/EntrustCASHA384.cer
-COPY EntrustDerivedCredSSP.cer /etc/pki/ca-trust/source/anchors/EntrustDerivedCredSSP.cer
-COPY EntrustDerivedCredSSP.cer /etc/pki/ca-trust/source/anchors/EntrustDerivedCredSSP.cer
-COPY EntrustServicesRootCA_BridgeCert.cer /etc/pki/ca-trust/source/anchors/EntrustServicesRootCA_BridgeCert.cer
-COPY TreasuryCASHA384.cer /etc/pki/ca-trust/source/anchors/TreasuryCASHA384.cer
+#COPY DeptOfVA_TreasuryChain.cer /etc/pki/ca-trust/source/anchors/DeptOfVA_TreasuryChain.cer
+#COPY EntrustCASHA384.cer /etc/pki/ca-trust/source/anchors/EntrustCASHA384.cer
+#COPY EntrustDerivedCredSSP.cer /etc/pki/ca-trust/source/anchors/EntrustDerivedCredSSP.cer
+#COPY EntrustDerivedCredSSP.cer /etc/pki/ca-trust/source/anchors/EntrustDerivedCredSSP.cer
+#COPY EntrustServicesRootCA_BridgeCert.cer /etc/pki/ca-trust/source/anchors/EntrustServicesRootCA_BridgeCert.cer
+#COPY TreasuryCASHA384.cer /etc/pki/ca-trust/source/anchors/TreasuryCASHA384.cer
 
 #COPY VA-Internal-S2-ICA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA1-v1.cer
 #COPY VA-Internal-S2-ICA2-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA2-v1.cer
@@ -33,10 +33,11 @@ COPY TreasuryCASHA384.cer /etc/pki/ca-trust/source/anchors/TreasuryCASHA384.cer
 #COPY VA-Internal-S2-ICA9.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA9.cer
 
 COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
+COPY va-dc.crt /etc/pki/ca-trust/source/anchors/va-dc.crt
 
-COPY VerizonA2SHA384.cer /etc/pki/ca-trust/source/anchors/VerizonA2SHA384.cer
-COPY VeteransAffairsCAB3.cer /etc/pki/ca-trust/source/anchors/VeteransAffairsCAB3.cer
-COPY Veterans_Affairs_User_CA_B1.cer /etc/pki/ca-trust/source/anchors/Veterans_Affairs_User_CA_B1.cer
+#COPY VerizonA2SHA384.cer /etc/pki/ca-trust/source/anchors/VerizonA2SHA384.cer
+#COPY VeteransAffairsCAB3.cer /etc/pki/ca-trust/source/anchors/VeteransAffairsCAB3.cer
+#COPY Veterans_Affairs_User_CA_B1.cer /etc/pki/ca-trust/source/anchors/Veterans_Affairs_User_CA_B1.cer
 
 RUN update-ca-trust extract
 
