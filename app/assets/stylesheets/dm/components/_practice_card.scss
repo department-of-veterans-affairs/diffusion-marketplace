@@ -5,21 +5,11 @@
   .dm-practice-link {
     color: color($theme-color-base-ink);
     text-decoration: none;
+  }
 
-    &:hover {
-      h3 {
-        cursor: pointer;
-        text-decoration: underline;
-        text-decoration-color: color($theme-color-accent-warm);
-      }
-    }
-
-    &:focus {
-      .dm-practice-card-container {
-        outline: 0.25rem solid #2491ff;
-        outline-offset: 0;
-      }
-    }
+  .practice-title-underline {
+    text-decoration: underline;
+    text-decoration-color: color($theme-color-accent-warm);
   }
   // retired banner button
   .dm-practice-retired-banner {

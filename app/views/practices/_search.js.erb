@@ -86,7 +86,8 @@ function buildPracticeCard(result) {
     var cardHtml = '';
     var practiceImage = result.item.image;
     var practiceName = result.item.name;
-    var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link';
+    var practiceLinkClasses = practiceImage ? 'dm-practice-link' : 'text-white text-no-underline';
+    var cardHeaderClasses = practiceImage ? ' margin-top-0 margin-bottom-2' : ' margin-x-2 margin-y-4';
     var cardImageHtml =
         '<div class="dm-practice-card-img-container">' +
         '<input type="hidden" value="' + practiceImage + '"/>' +
@@ -95,27 +96,38 @@ function buildPracticeCard(result) {
           'alt="' + practiceName + ' Marketplace Card Image" ' +
           'class="grid-row marketplace-card-img radius-top-sm" ' +
           'src="' + result.item.placeholder_image + '">';
+    var retiredBanner = '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+
     if (result.item.retired) {
-        cardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+        cardImageHtml += retiredBanner;
     }
+
+    var cardHeaderHtml =
+        '<h3 class="text-normal font-sans-lg multiline-ellipses-2' + cardHeaderClasses + '">' +
+        '<a href="/innovations/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" class="' + practiceLinkClasses +'">' +
+        '<span class="dm-practice-title">' +
+        practiceName +
+        '</span>' +
+        '</a>' +
+        '</h3>';
+
     cardImageHtml += '</div>';
+
     var noCardImageHtml =
         '<div class="dm-bg-gray-80">' +
-        '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
-        practiceName + '</h3>';
-    if(result.item.retired){
-        noCardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+        cardHeaderHtml;
+
+    if (result.item.retired) {
+        noCardImageHtml += retiredBanner;
     }
+
     noCardImageHtml += '</div>';
     var cardImage = practiceImage ? cardImageHtml : noCardImageHtml;
-    var practiceNameHeader =
-        '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
-        practiceName +
-        '</h3>';
-    var assignPracticeHeader = practiceImage ? practiceNameHeader : '';
+    var assignPracticeHeader = practiceImage ? cardHeaderHtml : '';
+
     cardHtml +=
-        '<div class="dm-practice-card padding-bottom-3 tablet:grid-col-6 desktop:grid-col-4">' +
-        '<a href="/innovations/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" tabindex="0" class="dm-practice-link' + practiceLinkClass + '">' +
+        '<div class="dm-practice-card padding-bottom-3 tablet:grid-col-6 desktop:grid-col-4 position-relative">' +
+        '<a href="/innovations/' + result.item.slug + '" tabindex="-1" aria-hidden="true" class="dm-practice-link-hidden position-absolute top-0 bottom-3 left-105 right-105 z-100"></a>' +
         '<div class=" dm-practice-card-container">' +
         cardImage +
         '<div class="padding-105 height-card-mobile">' +
@@ -130,7 +142,6 @@ function buildPracticeCard(result) {
         '</div>' +
         '</div>' +
         '</div>' +
-        '</a>' +
         '</div>';
 
     return cardHtml;
@@ -176,7 +187,7 @@ function openMobileFiltersModal() {
 }
 
 function toggleAccordion(accordionEl, containerEl) {
-    if (($(accordionEl).attr('aria-expanded') == 'true')) {
+    if (($(accordionEl).attr('aria-expanded') === 'true')) {
         $(accordionEl).attr('aria-expanded', 'false');
         $(containerEl).addClass('display-none');
     } else {

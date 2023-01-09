@@ -21,4 +21,9 @@ function truncateText() {
     truncateOnArrive('.practice-card-tagline', 120);
 }
 
-$(document).on('turbolinks:load', truncateText);
+function execPracticeCardFunctions() {
+    truncateText();
+    toggleUnderlineStylingForPracticeCardHeader();
+}
+
+$(document).on('turbolinks:load', execPracticeCardFunctions);
