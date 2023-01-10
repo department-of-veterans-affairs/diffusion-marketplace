@@ -35,9 +35,9 @@ RUN git config --global http.sslVerify false
 #COPY VerizonA2SHA384.cer /etc/pki/ca-trust/source/anchors/VerizonA2SHA384.cer
 #COPY VeteransAffairsCAB3.cer /etc/pki/ca-trust/source/anchors/VeteransAffairsCAB3.cer
 #COPY Veterans_Affairs_User_CA_B1.cer /etc/pki/ca-trust/source/anchors/Veterans_Affairs_User_CA_B1.cer
+#COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
 
 COPY va-dc.crt /etc/pki/ca-trust/source/anchors/va-dc.crt
-COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
 COPY VA-Internal-S2-RCA2.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA2.cer
 RUN update-ca-trust extract
 
