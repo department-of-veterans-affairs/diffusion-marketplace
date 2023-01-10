@@ -651,8 +651,8 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('6 results')
-        expect(first('h3.dm-practice-title').text).to_not eq(@practice6.name)
-        expect(first('h3.dm-practice-title').text).to eq(@practice4.name)
+        expect(first('span.dm-practice-title').text).to_not eq(@practice6.name)
+        expect(first('span.dm-practice-title').text).to eq(@practice4.name)
 
         # choose 'A to Z' option
         select('Sort by A to Z', from: 'search_sort_option')

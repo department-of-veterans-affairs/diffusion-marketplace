@@ -333,7 +333,7 @@ describe 'VISN pages', type: :feature do
         expect(all('span.dm-practice-title').first.text).to eq(@practice_3.name)
         select('Sort by A to Z', from: 'search_sort_option')
 
-        expect(all('h3.dm-practice-title').first.text).to eq(@practice_4.name)
+        expect(all('span.dm-practice-title').first.text).to eq(@practice_4.name)
 
         # now filter the results by category
         find_all('.usa-combo-box__input')[0].click
