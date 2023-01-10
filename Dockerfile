@@ -38,6 +38,7 @@ COPY VA-Internal-S2-ICA9.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-ICA
 #COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
 
 COPY va-dc.crt /etc/pki/ca-trust/source/anchors/va-dc.crt
+COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
 COPY VA-Internal-S2-RCA2.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA2.cer
 RUN update-ca-trust extract
 
