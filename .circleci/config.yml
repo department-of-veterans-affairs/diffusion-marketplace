@@ -5,19 +5,13 @@
 version: 2
 workflows:
     version: 2
-    test-deploy:
+    run-tests:
       jobs:
         - hold:
             type: approval
         - test:
             requires:
               - hold
-        - deploy:
-            requires:
-              - test
-            filters:
-              branches:
-                only: master
 jobs:
   test:
     parallelism: 83
@@ -136,27 +130,3 @@ jobs:
           path: /tmp/bundler-leak-report.txt
       - store_artifacts:
           path: /tmp/bundler-audit-report.txt
-  deploy:
-    docker:
-      - image: circleci/ruby:2.7.5-node-browsers
-    working_directory: ~/deploy
-    steps:
-      - checkout
-      - setup_remote_docker
-
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install python-pip python-dev jq
-            sudo pip install awscli
-
-      - run:
-          name: Build && Deploy
-          command: |
-            ./scripts/deploy.sh diffusion-marketplace-test diffusion-marketplace-test us-west-2 $CIRCLE_SHA1
