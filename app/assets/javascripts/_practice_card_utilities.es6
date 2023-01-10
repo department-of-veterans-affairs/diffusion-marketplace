@@ -21,6 +21,20 @@ function truncateText() {
     truncateOnArrive('.practice-card-tagline', 120);
 }
 
+function toggleUnderlineStylingForPracticeCardHeader() {
+    const hiddenLinkSelector = '.dm-practice-link-hidden';
+    const titleSelector = '.dm-practice-title';
+    const underlineClass = 'practice-title-underline';
+
+    $(document).on('mouseenter', hiddenLinkSelector, function() {
+        $(this).parent().find(titleSelector).addClass(underlineClass);
+    });
+
+    $(document).on('mouseleave', hiddenLinkSelector, function() {
+        $(this).parent().find(titleSelector).removeClass(underlineClass);
+    });
+}
+
 function execPracticeCardFunctions() {
     truncateText();
     toggleUnderlineStylingForPracticeCardHeader();
