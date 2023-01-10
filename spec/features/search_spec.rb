@@ -725,7 +725,7 @@ describe 'Search', type: :feature do
         toggle_filters_accordion
         select_category('.cat-2-label')
         update_results
-        all('.dm-practice-link').first.click
+        all('.dm-practice-link-aria-hidden').first.click
 
         expect(page).to have_link('Search', href: '/search')
       end
@@ -735,7 +735,7 @@ describe 'Search', type: :feature do
 
         fill_in('dm-practice-search-field', with: 'test')
         search
-        all('.dm-practice-link').first.click
+        all('.dm-practice-link-aria-hidden').first.click
 
         expect(page).to have_link('Search', href: '/search?query=test')
       end

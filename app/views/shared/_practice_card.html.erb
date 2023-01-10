@@ -2,7 +2,7 @@
   <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 <div class="dm-practice-card padding-bottom-3 tablet:grid-col-6 desktop:grid-col-4">
-  <a href="<%= practice_path(practice) %>" tabindex="-1" aria-hidden="true" class="dm-practice-link-hidden position-absolute top-0 bottom-3 left-105 right-105 z-100"></a>
+  <a href="<%= practice_path(practice) %>" tabindex="-1" aria-hidden="true" class="dm-practice-link-aria-hidden position-absolute top-0 bottom-3 left-105 right-105 z-100"></a>
   <% if current_user && !practice.retired %>
     <%= link_to practice_favorite_path(practice, format: :js),
                 method: :post,
@@ -20,6 +20,7 @@
     main_display_image = practice.main_display_image
     practice_link_classes = practice.main_display_image.present? ? 'dm-practice-link' : 'text-white text-no-underline'
   %>
+
   <div class="dm-practice-card-container bg-white">
     <% if main_display_image.present? %>
       <div class="dm-practice-card-img-container">

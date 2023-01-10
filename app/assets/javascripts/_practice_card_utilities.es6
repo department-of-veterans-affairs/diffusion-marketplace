@@ -22,7 +22,7 @@ function truncateText() {
 }
 
 function toggleUnderlineStylingForPracticeCardHeader() {
-    const hiddenLinkSelector = '.dm-practice-link-hidden';
+    const hiddenLinkSelector = '.dm-practice-link-aria-hidden';
     const titleSelector = '.dm-practice-title';
     const underlineClass = 'practice-title-underline';
 

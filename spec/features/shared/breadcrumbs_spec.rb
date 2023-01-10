@@ -173,7 +173,7 @@ describe 'Breadcrumbs', type: :feature do
       within(:css, '.dm-breadcrumb-heading') do
         expect(page).to have_content('Diffusion of Excellence')
       end
-      find('.dm-practice-link').click
+      find('.dm-practice-link-aria-hidden').click
       expect(page).to have_current_path(practice_path(@user_practice))
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
@@ -196,7 +196,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('VISN index')
         expect(page).to have_link(href: '/visns')
       end
-      find('.dm-practice-link').click
+      find('.dm-practice-link-aria-hidden').click
       expect(page).to have_current_path(practice_path(@user_practice))
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
@@ -208,7 +208,7 @@ describe 'Breadcrumbs', type: :feature do
       find('a[href="/visns/1"]').click
       fill_in('visn-search-field', with: 'best')
       find('#visn-search-button').click
-      find('.dm-practice-link').click
+      find('.dm-practice-link-aria-hidden').click
       expect(page).to have_css("#pr-view-introduction", visible: true)
       expect(page).to have_current_path(practice_path(@user_practice))
       within(:css, '#breadcrumbs') do
