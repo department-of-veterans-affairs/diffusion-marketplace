@@ -143,7 +143,7 @@ describe 'Breadcrumbs', type: :feature do
       find('#dm-navbar-search-desktop-button').click
       expect(page).to have_content('The Best')
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      click_on('Go to The Best Innovation Ever')
+      find("a[href='#{practice_path(@user_practice)}'][aria-hidden='true']").click
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
         expect(page).to have_css('.fa-arrow-left')

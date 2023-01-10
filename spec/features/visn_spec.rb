@@ -330,7 +330,7 @@ describe 'VISN pages', type: :feature do
 
         expect(practice_cards.count).to eq(2)
         # now sort by A to Z
-        expect(all('h3.dm-practice-title').first.text).to eq(@practice_3.name)
+        expect(all('span.dm-practice-title').first.text).to eq(@practice_3.name)
         select('Sort by A to Z', from: 'search_sort_option')
 
         expect(all('h3.dm-practice-title').first.text).to eq(@practice_4.name)

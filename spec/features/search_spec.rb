@@ -643,7 +643,7 @@ describe 'Search', type: :feature do
 
         # results should be sorted my most relevant(closest match) by default
         expect(page).to have_content('6 results')
-        expect(first('h3.dm-practice-title').text).to eq(@practice6.name)
+        expect(first('span.dm-practice-title').text).to eq(@practice6.name)
 
         toggle_filters_accordion
         select_category('.cat-3-label')
