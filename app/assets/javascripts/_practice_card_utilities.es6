@@ -26,12 +26,16 @@ function toggleUnderlineStylingForPracticeCardHeader() {
     const titleSelector = '.dm-practice-title';
     const underlineClass = 'practice-title-underline';
 
+    function findTitleSelector(targetSelector) {
+        return $(targetSelector).parent().find(titleSelector);
+    }
+
     $(document).on('mouseenter', hiddenLinkSelector, function() {
-        $(this).parent().find(titleSelector).addClass(underlineClass);
+        findTitleSelector($(this)).addClass(underlineClass);
     });
 
     $(document).on('mouseleave', hiddenLinkSelector, function() {
-        $(this).parent().find(titleSelector).removeClass(underlineClass);
+        findTitleSelector($(this)).removeClass(underlineClass);
     });
 }
 
