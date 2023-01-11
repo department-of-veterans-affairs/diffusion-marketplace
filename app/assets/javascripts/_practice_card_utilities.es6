@@ -21,27 +21,26 @@ function truncateText() {
     truncateOnArrive('.practice-card-tagline', 120);
 }
 
-function toggleUnderlineStylingForPracticeCardHeader() {
-    const hiddenLinkSelector = '.dm-practice-link-aria-hidden';
-    const titleSelector = '.dm-practice-title';
-    const underlineClass = 'practice-title-underline';
+function toggleFocusStylingForPracticeTitle() {
+    const cardContainerSelector = '.dm-practice-card-container';
+    const titleLinkSelector = '.dm-practice-link';
+    const focusClass = 'focus-outline';
 
-    function findTitleSelector(targetSelector) {
-        return $(targetSelector).parent().find(titleSelector);
+    function findCardContainerSelector(targetSelector) {
+        return $(targetSelector).closest('.dm-practice-card').find(cardContainerSelector);
     }
-
-    $(document).on('mouseenter', hiddenLinkSelector, function() {
-        findTitleSelector($(this)).addClass(underlineClass);
+    $(document).on('focus', titleLinkSelector, function() {
+        findCardContainerSelector($(this)).addClass(focusClass);
     });
 
-    $(document).on('mouseleave', hiddenLinkSelector, function() {
-        findTitleSelector($(this)).removeClass(underlineClass);
+    $(document).on('focusout', titleLinkSelector, function() {
+        findCardContainerSelector($(this)).removeClass(focusClass);
     });
 }
 
 function execPracticeCardFunctions() {
     truncateText();
-    toggleUnderlineStylingForPracticeCardHeader();
+    toggleFocusStylingForPracticeTitle();
 }
 
 $(document).on('turbolinks:load', execPracticeCardFunctions);

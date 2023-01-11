@@ -2,14 +2,21 @@
   position: relative;
   max-height: 436px;
 
+  &:hover {
+    .dm-practice-title {
+      text-decoration: underline;
+      text-decoration-color: color($theme-color-accent-warm);
+    }
+  }
+
   .dm-practice-link {
     color: color($theme-color-base-ink);
     text-decoration: none;
-  }
-
-  .practice-title-underline {
-    text-decoration: underline;
-    text-decoration-color: color($theme-color-accent-warm);
+    // The focus styling for the 'dm-practice-link' class is triggered via JavaScript in '_practice_card_utilities.es6'
+    &:focus {
+      @include u-outline(0);
+      outline-offset: 0;
+    }
   }
   // retired banner button
   .dm-practice-retired-banner {

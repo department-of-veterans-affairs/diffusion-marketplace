@@ -349,3 +349,8 @@ to confirm the class DOES NOT EXIST before adding a new class
   z-index: -1;
   autocomplete: off;
 }
+
+.focus-outline {
+  outline: 0.25rem solid color($theme-focus-color);
+  outline-offset: 0;
+}
