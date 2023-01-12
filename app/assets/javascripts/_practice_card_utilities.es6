@@ -21,4 +21,26 @@ function truncateText() {
     truncateOnArrive('.practice-card-tagline', 120);
 }
 
-$(document).on('turbolinks:load', truncateText);
+function toggleFocusStylingForPracticeTitle() {
+    const cardContainerSelector = '.dm-practice-card-container';
+    const titleLinkSelector = '.dm-practice-link';
+    const focusClass = 'focus-outline';
+
+    function findCardContainerSelector(targetSelector) {
+        return $(targetSelector).closest('.dm-practice-card').find(cardContainerSelector);
+    }
+    $(document).on('focus', titleLinkSelector, function() {
+        findCardContainerSelector($(this)).addClass(focusClass);
+    });
+
+    $(document).on('focusout', titleLinkSelector, function() {
+        findCardContainerSelector($(this)).removeClass(focusClass);
+    });
+}
+
+function execPracticeCardFunctions() {
+    truncateText();
+    toggleFocusStylingForPracticeTitle();
+}
+
+$(document).on('turbolinks:load', execPracticeCardFunctions);
