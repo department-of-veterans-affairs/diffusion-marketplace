@@ -40,6 +40,7 @@
 | `rails va_facilities:fix_data_va_facilities` | updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complexity_level')
 | `rails practice_partners:apply_is_major_flag_to_partners` | Creates/updates certain flagship practice partners and applies the 'is_major' flag to them
 | `rails practice_partners:add_new_practice_partners` | Adds new practice partners to the DB based on a spreadsheet provided in March 2022
+| `rails va_facilities:replace_blank_complexity_level_with_hyphen` | Replaces a facility's 'fy17_parent_station_complexity_level' with a hyphen if it's an empty string
 #### Ruby version
 
 - `ruby 2.7.5`
@@ -177,6 +178,7 @@ This will run:
 16. `rails va_facilities:fix_data_va_facilities` - updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complextity_level')
 17. `rails practice_partners:apply_is_major_flag_to_partners` - Creates/updates certain flagship practice partners and applies the 'is_major' flag to them
 18. `rails practice_partners:add_new_practice_partners` - Adds new practice partners to the DB based on a spreadsheet provided in March 2022
+19. `rails va_facilities:replace_blank_complexity_level_with_hyphen` - Replaces a facility's 'fy17_parent_station_complexity_level' with a hyphen if it's an empty string
 
 To reset all of the data and do the process all over again, run:
 ```bash

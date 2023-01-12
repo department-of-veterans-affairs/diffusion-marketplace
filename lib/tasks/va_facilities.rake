@@ -168,6 +168,24 @@ namespace :va_facilities do
     puts "VA complexity levels have been updated in the DB!"
   end
 
+  desc "Replace an empty string with a hyphen for 'fy17_parent_station_complexity_level'"
+  task :replace_blank_complexity_level_with_hyphen => :environment do
+    blank_complexity_level_facilities = VaFacility.where(fy17_parent_station_complexity_level: '')
+
+    blank_complexity_level_facilities.update_all(fy17_parent_station_complexity_level: '-')
+    # Rerun the query
+    blank_complexity_level_facilities.reload
+
+    if blank_complexity_level_facilities.empty?
+      puts 'All facilities that had a blank complexity level have been successfully updated!'
+    else
+      puts 'Something went wrong. The following facilities were not updated:'
+      blank_complexity_level_facilities.each do |facility|
+        puts "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}"
+      end
+    end
+  end
+
 
   def valid_json?(json)
     JSON.parse(json)

@@ -146,10 +146,12 @@
         <% complexity_levels = VaFacility.get_complexity %>
         <fieldset>
           <legend class="usa-sr-only">Facility Complexity Levels</legend>
-          <% complexity_levels.each do |c| %>
-            <input id="<%= c.gsub(' ', '').underscore %>" name="facility_complexities" type="checkbox" value="<%= c %>" class="usa-checkbox__input">
-            <label for="<%= c.gsub(' ', '').underscore %>" class="usa-checkbox__label">
-              <%= c.split('-').shift.upcase %> (<%= c.include?('High') ? 'High' : c.delete('-').split(' ')[1] %> complexity)
+          <%# Omit the '-' complexity level %>
+          <% complexity_levels.reject { |cl| cl == '-' }.each do |cl| %>
+            <input id="<%= cl.gsub(' ', '').underscore %>" name="facility_complexities" type="checkbox" value="<%= cl %>" class="usa-checkbox__input">
+            <label for="<%= cl.gsub(' ', '').underscore %>" class="usa-checkbox__label">
+              <% split_name = cl.split('-') %>
+              <%= "#{split_name.shift.upcase} (#{split_name.pop.gsub(/Complexity/, 'complexity')})" %>
             </label>
           <% end %>
         </fieldset>

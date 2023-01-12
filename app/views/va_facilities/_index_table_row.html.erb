@@ -16,7 +16,10 @@
     <% if facility.class.name === "ClinicalResourceHub" %>
         <td class="grid-col-2">-</td>
      <% else %>
-        <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.match(/^1/) ? facility.fy17_parent_station_complexity_level[0..1].upcase : facility.fy17_parent_station_complexity_level[0..0].upcase %></td>
+        <td class="grid-col-2">
+          <% complexity = facility.fy17_parent_station_complexity_level %>
+          <%= complexity.match(/^1/) ? complexity[0..1].upcase : complexity[0..0].upcase %>
+        </td>
      <% end %>
     <td class="grid-col-2"><%= created_count %></td>
     <td class="grid-col-2"><%= adopted_count  %></td>
