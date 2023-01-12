@@ -643,7 +643,7 @@ describe 'Search', type: :feature do
 
         # results should be sorted my most relevant(closest match) by default
         expect(page).to have_content('6 results')
-        expect(first('h3.dm-practice-title').text).to eq(@practice6.name)
+        expect(first('span.dm-practice-title').text).to eq(@practice6.name)
 
         toggle_filters_accordion
         select_category('.cat-3-label')
@@ -651,32 +651,32 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('6 results')
-        expect(first('h3.dm-practice-title').text).to_not eq(@practice6.name)
-        expect(first('h3.dm-practice-title').text).to eq(@practice4.name)
+        expect(first('span.dm-practice-title').text).to_not eq(@practice6.name)
+        expect(first('span.dm-practice-title').text).to eq(@practice4.name)
 
         # choose 'A to Z' option
         select('Sort by A to Z', from: 'search_sort_option')
-        expect(all('h3.dm-practice-title').first.text).to eq(@practice4.name)
-        expect(all('h3.dm-practice-title')[1].text).to eq(@practice6.name)
-        expect(all('h3.dm-practice-title')[2].text).to eq(@practice5.name)
-        expect(all('h3.dm-practice-title')[3].text).to eq(@practice3.name)
-        expect(all('h3.dm-practice-title')[4].text).to eq(@practice.name)
-        expect(all('h3.dm-practice-title')[5].text).to eq(@practice12.name)
+        expect(all('span.dm-practice-title').first.text).to eq(@practice4.name)
+        expect(all('span.dm-practice-title')[1].text).to eq(@practice6.name)
+        expect(all('span.dm-practice-title')[2].text).to eq(@practice5.name)
+        expect(all('span.dm-practice-title')[3].text).to eq(@practice3.name)
+        expect(all('span.dm-practice-title')[4].text).to eq(@practice.name)
+        expect(all('span.dm-practice-title')[5].text).to eq(@practice12.name)
 
         # choose 'most adoptions' option
         select('Sort by most adopted innovations', from: 'search_sort_option')
-        expect(all('h3.dm-practice-title').first.text).to eq(@practice.name)
-        expect(all('h3.dm-practice-title')[1].text).to eq(@practice3.name)
-        expect(all('h3.dm-practice-title')[2].text).to eq(@practice6.name)
+        expect(all('span.dm-practice-title').first.text).to eq(@practice.name)
+        expect(all('span.dm-practice-title')[1].text).to eq(@practice3.name)
+        expect(all('span.dm-practice-title')[2].text).to eq(@practice6.name)
 
         # choose 'most recently added' option
         select('Sort by most recently added', from: 'search_sort_option')
-        expect(all('h3.dm-practice-title').first.text).to eq(@practice12.name)
-        expect(all('h3.dm-practice-title')[1].text).to eq(@practice6.name)
-        expect(all('h3.dm-practice-title')[2].text).to eq(@practice5.name)
-        expect(all('h3.dm-practice-title')[3].text).to eq(@practice4.name)
-        expect(all('h3.dm-practice-title')[4].text).to eq(@practice3.name)
-        expect(all('h3.dm-practice-title')[5].text).to eq(@practice.name)
+        expect(all('span.dm-practice-title').first.text).to eq(@practice12.name)
+        expect(all('span.dm-practice-title')[1].text).to eq(@practice6.name)
+        expect(all('span.dm-practice-title')[2].text).to eq(@practice5.name)
+        expect(all('span.dm-practice-title')[3].text).to eq(@practice4.name)
+        expect(all('span.dm-practice-title')[4].text).to eq(@practice3.name)
+        expect(all('span.dm-practice-title')[5].text).to eq(@practice.name)
       end
     end
 
@@ -725,7 +725,7 @@ describe 'Search', type: :feature do
         toggle_filters_accordion
         select_category('.cat-2-label')
         update_results
-        all('.dm-practice-link').first.click
+        all('.dm-practice-link-aria-hidden').first.click
 
         expect(page).to have_link('Search', href: '/search')
       end
@@ -735,7 +735,7 @@ describe 'Search', type: :feature do
 
         fill_in('dm-practice-search-field', with: 'test')
         search
-        all('.dm-practice-link').first.click
+        all('.dm-practice-link-aria-hidden').first.click
 
         expect(page).to have_link('Search', href: '/search?query=test')
       end
