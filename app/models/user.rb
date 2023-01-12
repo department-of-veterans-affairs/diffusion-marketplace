@@ -135,6 +135,7 @@ class User < ApplicationRecord
     ldap = Net::LDAP.new(
         host: LDAP_CONFIG['host'], # Thankfully this is a standard name
         port: LDAP_CONFIG['port'],
+        encryption: :simple_tls,
         auth: {method: :simple, username: ENV['LDAP_USERNAME'], password: ENV['LDAP_PASSWORD']},
         base: LDAP_CONFIG['base']
     )
