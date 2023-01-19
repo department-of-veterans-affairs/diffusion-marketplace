@@ -48,6 +48,7 @@ GEM
     rails-assets-jquery (3.6.0)
     rails-assets-jquery.scrollTo (2.1.2)
       rails-assets-jquery (>= 1.8)
+    rails-assets-normalize-css (3.0.3)
     rails-assets-sticky (1.0.4)
       rails-assets-jquery
 
@@ -271,7 +272,7 @@ GEM
     formtastic_i18n (0.7.0)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     google-protobuf (3.21.8)
     google-protobuf (3.21.8-x64-mingw32)
@@ -291,7 +292,7 @@ GEM
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     humanize (2.5.1)
-    i18n (1.11.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     inherited_resources (1.13.1)
@@ -361,7 +362,7 @@ GEM
       rake
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.2)
+    minitest (5.17.0)
     msgpack (1.5.3)
     multi_xml (0.6.0)
     naturalsorter (3.0.22)
@@ -774,7 +775,7 @@ GEM
       rails (>= 3.2.16)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.0)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
