@@ -11,9 +11,9 @@ function truncateText() {
     truncateOnArrive('.dm-practice-title', 55);
 
     $('.dm-practice-card-origin-info').each(function(index, element) {
-        $(element).shave(35);
+        $(element).shave(39);
     });
-    truncateOnArrive('.dm-practice-card-origin-info', 35);
+    truncateOnArrive('.dm-practice-card-origin-info', 39);
 
     $('.practice-card-tagline').each(function(index, element) {
         $(element).shave(120)
