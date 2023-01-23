@@ -6,8 +6,7 @@ class VaFacilitiesController < ApplicationController
     clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
     @facilities = (va_facilities.includes(:visn).sort_by(&:official_station_name.downcase) + clinical_resource_hubs.includes([:visn]).sort_by(&:id))
     @visns = Visn.cached_visns.select(:name, :number)
-    # Omit the '-' complexity level
-    @types = VaFacility.cached_va_facilities.order_by_station_name.get_complexity.reject { |type| type == '-' }
+    @types = VaFacility.cached_va_facilities.order_by_station_name.get_complexity
   end
 
   def load_facilities_index_rows

@@ -8,7 +8,7 @@ namespace :va_facilities do
     visns = Visn.all
     visns.each do |visn|
       va_facilities.each do |vaf|
-      facility = VaFacility.where(station_number: vaf["Station Number"]).first
+      facility = VaFacility.find_by(station_number: vaf["Station Number"])
       classification = vaf["Classification"].blank? ? "Unclassified" : vaf["Classification"]
           if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station Number"]).empty?
             puts 'Creating facility - ' + vaf["Official Station Name"]
@@ -23,9 +23,9 @@ namespace :va_facilities do
                   classification_status: vaf["ClassificationStatus"],
                   mobile: vaf["Mobile"],
                   parent_station_number: vaf["Official Parent Station Number"],
-                  official_parent_station_name: vaf["Parent Station Name"],
+                  official_parent_station_name: vaf["Official Parent Station Name"],
                   fy17_parent_station_complexity_level: vaf["FY20 Parent Station Complexity Level"],
-                  operational_status: vaf["Operational Status Active A Or Planned P Or Temporarily Deactivated T Or Permanently Deactivated D"],
+                  operational_status: vaf["Operational Status: Active (A) or Planned (P) or Temporarily Deactivated (T) Permanently Deactivated (D)"],
                   ownership_type: vaf["Ownership Type"],
                   delivery_mechanism: vaf["Delivery Mechanism"],
                   staffing_type: vaf["StaffingType"],
@@ -90,10 +90,10 @@ namespace :va_facilities do
               facility.classification = classification
               facility.classification_status = vaf["ClassificationStatus"]
               facility.mobile = vaf["Mobile"]
-              facility.parent_station_number = vaf["Official Parent Station Number"]
-              facility.official_parent_station_name = vaf["Parent Station Name"]
+              facility.parent_station_number = vaf["Parent Station Number"]
+              facility.official_parent_station_name = vaf["Official Parent Station Name"]
               facility.fy17_parent_station_complexity_level = vaf["FY20 Parent Station Complexity Level"]
-              facility.operational_status = vaf["Operational Status Active A Or Planned P Or Temporarily Deactivated T Or Permanently Deactivated D"]
+              facility.operational_status = vaf["Operational Status: Active (A) or Planned (P) or Temporarily Deactivated (T) Permanently Deactivated (D)"]
               facility.ownership_type = vaf["Ownership Type"]
               facility.delivery_mechanism = vaf["Delivery Mechanism"]
               facility.staffing_type = vaf["StaffingType"]
@@ -116,7 +116,7 @@ namespace :va_facilities do
               facility.station_main_fax_number = vaf["Station Main Fax Number"]
 
               #these 7 not in Vet Center schema...
-              if (!vaf["Official Station Name"].include? "Vet Center")
+              unless vaf["Official Station Name"].include?("Vet Center")
                 facility.after_hours_phone_number = vaf["After Hours Phone Number"]
                 facility.pharmacy_phone_number = vaf["Pharmacy Phone Number"]
                 facility.enrollment_coordinator_phone_number = vaf["Enrollment Coordinator Phone Number"]
@@ -168,29 +168,11 @@ namespace :va_facilities do
     puts "VA complexity levels have been updated in the DB!"
   end
 
-  desc "Replace an empty string with a hyphen for 'fy17_parent_station_complexity_level'"
-  task :replace_blank_complexity_level_with_hyphen => :environment do
-    blank_complexity_level_facilities = VaFacility.where(fy17_parent_station_complexity_level: '')
-
-    blank_complexity_level_facilities.update_all(fy17_parent_station_complexity_level: '-')
-    # Rerun the query
-    blank_complexity_level_facilities.reload
-
-    if blank_complexity_level_facilities.empty?
-      puts 'All facilities that had a blank complexity level have been successfully updated!'
-    else
-      puts 'Something went wrong. The following facilities were not updated:'
-      blank_complexity_level_facilities.each do |facility|
-        puts "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}"
-      end
-    end
-  end
-
-
   def valid_json?(json)
     JSON.parse(json)
     return true
-  rescue JSON::ParserError => e
-    return false
+
+    rescue JSON::ParserError => e
+      return false
   end
 end
