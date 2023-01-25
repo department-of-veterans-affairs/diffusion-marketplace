@@ -10,8 +10,7 @@
     </th>
       <% if facility.class.name === "VaFacility" %>
         <td class="grid-col-2">
-          <% complexity = facility.fy17_parent_station_complexity_level %>
-          <%= complexity == '-' ? '-' : complexity.split('-').shift.upcase %>
+          <%= facility.fy17_parent_station_complexity_level.split('-').shift.upcase %>
         </td>
       <% else %>
         <td class="grid-col-2"> - </td>
