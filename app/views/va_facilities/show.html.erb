@@ -31,8 +31,9 @@
           <% when "I" %>
             isolated
         <% end %>
+        <% facility_opening_date = @va_facility.station_number_suffix_reservation_effective_date %>
         <%= @va_facility.fy17_parent_station_complexity_level %>
-        facility and serves Veterans in <%= @va_facility.mailing_address_city %>.  <% unless @va_facility.station_number_suffix_reservation_effective_date.blank? %>This facility opened in <%= @va_facility.station_number_suffix_reservation_effective_date.to_s[0..3] %>.<% end %>
+        facility and serves Veterans in <%= @va_facility.mailing_address_city %>.<%= " This facility opened in #{facility_opening_date.to_s[0..3]}." if facility_opening_date.present? %>
         <p class="margin-top-2 line-height-26">
           <span class="display-block text-bold">Address</span>
           <span class="display-block"><%= @va_facility.official_station_name %></span>
