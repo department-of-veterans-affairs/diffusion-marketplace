@@ -16,13 +16,13 @@ namespace :va_facilities do
               VaFacility.create!(
                   visn: visn,
                   sta3n: vaf["STA3N"].to_s,
-                  station_number: vaf["Station Number"],
+                  station_number: vaf["Station Number"].to_s,
                   official_station_name: vaf["Official Station Name"],
                   common_name: vaf["Location Descriptive Name"],
                   classification: classification,
                   classification_status: vaf["ClassificationStatus"],
                   mobile: vaf["Mobile"],
-                  parent_station_number: vaf["Official Parent Station Number"],
+                  parent_station_number: vaf["Official Parent Station Number"].to_s,
                   official_parent_station_name: vaf["Official Parent Station Name"],
                   fy17_parent_station_complexity_level: vaf["FY20 Parent Station Complexity Level"],
                   operational_status: vaf["Operational Status: Active (A) or Planned (P) or Temporarily Deactivated (T) Permanently Deactivated (D)"],
@@ -66,7 +66,7 @@ namespace :va_facilities do
                   market: vaf["MARKET"],
                   sub_market: vaf["SUBMARKET"],
                   sector: vaf["SECTOR"],
-                  fips_code: vaf["FIPS Code"],
+                  fips_code: vaf["FIPS Code"].to_s,
                   rurality: vaf["Rurality: U=Urban; R=Rural; H=Highly ruralI=Insular"],
                   monday: vaf["Monday"],
                   tuesday: vaf["Tuesday"],
@@ -83,14 +83,14 @@ namespace :va_facilities do
             if facility.present? && visn.number === vaf["VISN"].to_i
               facility.visn = visn
               facility.sta3n = vaf["STA3N"].to_s
-              facility.station_number = vaf["Station Number"]
+              facility.station_number = vaf["Station Number"].to_s
               facility.official_station_name = vaf["Official Station Name"]
               facility.common_name = vaf["Location Descriptive Name"]
               puts 'Common_name: ' + facility.common_name
               facility.classification = classification
               facility.classification_status = vaf["ClassificationStatus"]
               facility.mobile = vaf["Mobile"]
-              facility.parent_station_number = vaf["Parent Station Number"]
+              facility.parent_station_number = vaf["Parent Station Number"].to_s
               facility.official_parent_station_name = vaf["Official Parent Station Name"]
               facility.fy17_parent_station_complexity_level = vaf["FY20 Parent Station Complexity Level"]
               facility.operational_status = vaf["Operational Status: Active (A) or Planned (P) or Temporarily Deactivated (T) Permanently Deactivated (D)"]
@@ -131,7 +131,7 @@ namespace :va_facilities do
               facility.market = vaf["MARKET"]
               facility.sub_market = vaf["SUBMARKET"]
               facility.sector = vaf["SECTOR"]
-              facility.fips_code = vaf["FIPS Code"]
+              facility.fips_code = vaf["FIPS Code"].to_s
               facility.rurality = vaf["Rurality: U=Urban; R=Rural; H=Highly ruralI=Insular"]
               facility.monday = vaf["Monday"]
               facility.tuesday = vaf["Tuesday"]
