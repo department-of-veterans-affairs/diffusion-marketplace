@@ -530,7 +530,7 @@ class SavePracticeService
             # because a PracticeOriginFacility cannot have both foreign keys populated
             if value[:id].present? && facility_type_and_id.start_with?('crh') && value[:_destroy] === 'false'
               practice_origin_facility = PracticeOriginFacility.find_by(practice_id: @practice.id, clinical_resource_hub_id: facility_type_and_id.split('-').last)
-              practice_origin_facility.update_attributes(clinical_resource_hub_id: nil, va_facility_id: facility_id.split('-').last)
+              practice_origin_facility.update(clinical_resource_hub_id: nil, va_facility_id: facility_id.split('-').last)
             end
           else
             value[:clinical_resource_hub_id] = facility_id.split('-').last
@@ -539,7 +539,7 @@ class SavePracticeService
             # because a PracticeOriginFacility cannot have both foreign keys populated
             if value[:id].present? && facility_type_and_id.start_with?('va-facility') && value[:_destroy] === 'false'
               practice_origin_facility = PracticeOriginFacility.find_by(practice_id: @practice.id, va_facility_id: facility_type_and_id.split('-').last)
-              practice_origin_facility.update_attributes(va_facility_id: nil, clinical_resource_hub_id: facility_id.split('-').last)
+              practice_origin_facility.update(va_facility_id: nil, clinical_resource_hub_id: facility_id.split('-').last)
             end
           end
           value[:facility_id] = facility_id.split('-').last

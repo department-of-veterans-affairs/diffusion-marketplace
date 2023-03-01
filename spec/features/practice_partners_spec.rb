@@ -86,7 +86,7 @@ describe 'Practice partners pages', type: :feature do
     end
 
     it 'should redirect the user to the homepage if they try to view a minor practice partner\'s show page' do
-      @pp.update_attributes(is_major: false)
+      @pp.update(is_major: false)
       visit '/partners/diffusion-of-excellence'
       expect(page).to_not have_current_path('/partners/diffusion-of-excellence')
       expect(page).to have_current_path('/')
