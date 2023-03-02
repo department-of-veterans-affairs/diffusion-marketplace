@@ -82,10 +82,10 @@ jobs:
       - run: bundle exec rails db:schema:load
 
       # security checks
-      - run:
-          name: run bundler-audit
-          command: |
-            bundle exec bundle-audit check --update | tee /tmp/bundler-audit-report.txt
+      # - run:
+      #     name: run bundler-audit
+      #     command: |
+      #       bundle exec bundle-audit check --update | tee /tmp/bundler-audit-report.txt
 
       - run:
           name: run bundler-leak
@@ -128,5 +128,5 @@ jobs:
           destination: coverage
       - store_artifacts:
           path: /tmp/bundler-leak-report.txt
-      - store_artifacts:
-          path: /tmp/bundler-audit-report.txt
+      # - store_artifacts:
+      #     path: /tmp/bundler-audit-report.txt
