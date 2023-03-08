@@ -1,0 +1,119 @@
+/*
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+========================================
+========================================
+========================================
+----------------------------------------
+USWDS THEME CUSTOM STYLES
+----------------------------------------
+!! Copy this file to your project's
+   sass root. Don't edit the version
+   in node_modules.
+----------------------------------------
+Custom project SASS goes here.
+i.e.
+@include u-padding-right('05');
+----------------------------------------
+*/
+@use 'theme' as *;
+
+.usa-form {
+  .usa-button, .usa-button--unstyled, .usa-button--unstyled {
+    margin-top: 0.5rem;
+  }
+}
+
+// Custom styles
+
+.badge {
+  position: relative;
+  top: 15px;
+  width: 40px;
+}
+
+.dm-link-title {
+  color: color($theme-color-base-ink);
+  text-decoration: none;
+
+  &:visited {
+    color: color($theme-color-base-ink);
+  }
+
+  &:hover {
+    text-decoration: underline;
+    color: color($theme-color-primary);
+
+    > * {
+      text-decoration: underline;
+    }
+
+    img, .img {
+      cursor: pointer;
+      opacity: .9;
+    }
+
+    &:visited {
+      color: color($theme-color-primary);
+    }
+  }
+}
+
+@media all and (min-width: 40em) {
+  /* line 68, uswds-rails-029b4d4c92fc/app/assets/stylesheets/uswds/core/mixins/_utility-builder.scss */
+  .tablet\:display-block {
+    display: block;
+  }
+}
+
+@media all and (min-width: 40em) {
+  /* line 68, uswds-rails-029b4d4c92fc/app/assets/stylesheets/uswds/core/mixins/_utility-builder.scss */
+  .tablet\:display-flex {
+    display: flex;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .usa-checkbox__input:checked + .usa-checkbox__label::before, .usa-radio__input:checked + .usa-radio__label::before {
+    border: 3px solid #005ea2 !important;
+    padding: 5px !important;
+  }
+}
+
+/* line 214, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+.usa-checkbox__input:checked + .usa-checkbox__label::before,
+.usa-radio__input:checked + .usa-radio__label::before {
+  background-color: color($theme-color-primary-dark);
+  box-shadow: 0 0 0 2px color($theme-color-primary-dark);
+}
+
+/* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+.usa-radio__input:checked + .usa-radio__label::before {
+  box-shadow: 0 0 0 2px color($theme-color-primary-dark), inset 0 0 0 2px color('white');
+}
+
+@media print {
+  /* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+  .usa-radio__input:checked + .usa-radio__label::before {
+    box-shadow: inset 0 0 0 2px color('white'), inset 0 0 0 1rem color($theme-color-primary-dark), 0 0 0 2px color($theme-color-primary-dark);
+  }
+}
+
+// File input choose text
+.usa-file-input__choose {
+  color: color($theme-color-primary) !important;
+}
+
+.usa-breadcrumb__list-item:not(:last-child)::after {
+  background: url('../../../app/assets/images/angle-arrow-right.svg') no-repeat center / 0.84375ex 1.35ex !important;
+}
+
+.usa-header + main {
+  border-top: 0 !important;
+}
+
+.usa-input {
+  max-width: unset !important;
+}

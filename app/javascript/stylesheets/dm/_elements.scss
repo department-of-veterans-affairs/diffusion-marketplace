@@ -1,0 +1,61 @@
+@use "../uswds" as *;
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+body {
+  flex-direction: column;
+  min-height: 100%;
+  justify-content: space-between;
+
+  main:not(.home.index-main) {
+    @media screen and (min-width: 640px) {
+      padding-bottom: 128px;
+    }
+
+    &.return-to-top-padding {
+      @media screen and (min-width: 640px) and (max-width: 1023px) {
+        padding-bottom: 64px;
+      }
+    }
+  }
+}
+
+p {
+  @extend .measure-none;
+}
+
+h1 {
+  @extend .usa-prose-h1;
+  @include u-text('bold');
+}
+
+h2 {
+  @extend .usa-prose-h2;
+  @include u-text('bold');
+}
+
+h3 {
+  @extend .usa-prose-h3;
+  @include u-text('bold');
+}
+
+h4 {
+  @extend .usa-prose-h4;
+  @include u-text('bold');
+}
+
+h5 {
+  @extend .usa-prose-h5;
+  @include u-text('bold');
+}
+
+h6 {
+  @extend .usa-prose-h6;
+}
+
+ul {
+  @extend .usa-prose-ul;
+}

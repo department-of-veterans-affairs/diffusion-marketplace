@@ -1,0 +1,32 @@
+@use "../../uswds" as *;
+
+.login-card {
+  background-color: color('white');
+  margin: auto;
+  width: 600px;
+  border-radius: 20px;
+
+  .login-header {
+    background-image: url('../../../app/assets/images/login-header.jpg');
+    background-position: center;
+    background-size: cover;
+    color: color('white');
+    border-radius: 20px 20px 0 0;
+
+    .login-header-overlay {
+      background-color: rgba(color($theme-color-primary), 0.8);
+      padding: 2rem 5rem;
+      text-align: center;
+      border-radius: 20px 20px 0 0;
+    }
+
+    h2, h1 {
+      font-size: 3rem;
+      line-height: 3rem;
+    }
+  }
+
+  .login-body {
+    padding: 3rem 8rem;
+  }
+}

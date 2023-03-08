@@ -1,0 +1,52 @@
+@use "../../uswds" as *;
+
+.timeline-section {
+  margin-bottom: 16px;
+}
+
+.timeline-and-milestone-container {
+  margin-top: -35px;
+}
+
+.timeline-number {
+  display: inline-block;
+  vertical-align: -webkit-baseline-middle;
+  margin-left: -21px;
+  color: color('white');
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.dm-timeline-icon {
+  margin-top: 1.25rem;
+  max-height: 1rem;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline {
+  list-style-type: none !important;
+  margin: 0 auto;
+  max-width: 100%;
+  position: relative;
+
+  h4 {
+    margin-top: 1.25rem;
+  }
+}
+
+#dm-timelines {
+  padding-left: 0;
+  >li:not(:last-of-type) {
+  /* add the vertical line except for the last timeline entry */
+    &:after {
+      background-color: color($theme-color-base-ink);
+      content: '';
+      z-index: -1;
+      margin-left: 31px;
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: calc(100% + 1.5rem)
+    }
+  }
+}

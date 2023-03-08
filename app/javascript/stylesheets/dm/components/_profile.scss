@@ -1,0 +1,116 @@
+@use "../../uswds" as *;
+
+.dm-user {
+  bottom: -15px;
+  position: relative;
+}
+
+.avatar-profile-photo {
+  min-width: 100%;
+  height: 14rem !important;
+}
+
+.avatar-profile-photo-container {
+  max-width: 14rem;
+}
+
+.empty-user-avatar {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  font-size: 12em;
+}
+
+.profile-h1 {
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans !important;
+}
+
+.profile-job-title {
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans !important;
+  margin-top: 0 !important;
+}
+
+.profile-avatar-container {
+  height: 226px !important;
+  width: 226px !important;
+  position: relative;
+}
+
+.edit-profile-link {
+  color: color($theme-color-primary-vivid) !important;
+   
+  &:hover {
+    text-decoration: none !important;
+    color: color($theme-color-primary-dark) !important;
+  }
+
+  .edit-profile-icon {
+    &:after {
+      text-decoration: none;
+    }
+  }
+}
+
+.cancel-edit-profile-link {
+  &:hover {
+    text-decoration: none !important;
+  }
+
+  .cancel-edit-profile-button {
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+}
+
+.edit-profile-form {
+  max-width: unset !important;
+}
+
+.profile-bio {
+  max-width: unset !important;
+  resize: none;
+}
+
+.profile-min-height {
+  min-height: 380px;
+}
+
+.dm-cropper-delete-image {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: color($theme-color-error);
+  text-decoration: underline;
+
+  &:hover {
+    color: #B50909 !important;
+    cursor: pointer;
+  }
+}
+
+.user-avatar-upload-label {
+  color: color($theme-color-primary);
+  text-decoration: underline;
+  margin-top: 0 !important;
+  border: none !important;
+  &:hover {
+    color: color($theme-color-primary) !important;
+    cursor: pointer;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .usa-form {
+    max-width: none !important;
+  }
+
+  .profile-image-left-col-setter {
+    width: 33.5% !important;
+  }
+
+  .profile-image-right-col-setter {
+    width: 65% !important;
+  }
+}

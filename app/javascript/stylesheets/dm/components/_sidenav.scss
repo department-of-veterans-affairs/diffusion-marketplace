@@ -1,0 +1,8 @@
+@use "../../uswds" as *;
+
+// `usa-sidenav` OVERRIDES
+.usa-sidenav__item {
+  .usa-current, a:hover {
+    color: color($theme-color-primary-vivid) !important;
+  }
+}

@@ -1,0 +1,177 @@
+@use "../../uswds" as *;
+
+// index & show page
+#dm-va-facilities-index, #dm-va-facilities-show {
+  .usa-combo-box__input {
+    margin-top: 0 !important;
+
+    &::placeholder {
+      color: color($theme-color-base-ink) !important;
+    }
+  }
+
+  .usa-combo-box__list {
+    width: 100%;
+  }
+
+  .usa-table--borderless {
+    th, td {
+      background-color: color($theme-color-secondary-light);
+    }
+
+    .fas {
+      color: color($theme-color-primary-vivid);
+
+      &:hover {
+        color: color($theme-color-primary-dark);
+      }
+
+      &:active {
+        color: color($theme-color-primary-darker);
+      }
+    }
+
+    .far {
+      color: color($theme-color-base-ink);
+
+      &:hover {
+        color: color($theme-color-primary-vivid);
+      }
+
+      &:active {
+        color: color($theme-color-primary-dark);
+      }
+    }
+
+    tr:first-of-type {
+      th {
+        button {
+          position: absolute;
+        }
+      }
+    }
+  }
+}
+
+// index page
+#dm-va-facilities-index {
+  .usa-table--borderless {
+    tr:first-of-type {
+      th:first-of-type {
+        button {
+          left: 4.5em;
+        }
+      }
+
+      th:nth-of-type(2) {
+        button {
+          left: 3.7em;
+        }
+      }
+
+      th:nth-of-type(3) {
+        button {
+          left: 3.7em;
+        }
+      }
+
+      th:nth-of-type(4) {
+        button {
+          left: 6.8em;
+        }
+      }
+      th:nth-of-type(5) {
+        button {
+          left: 4.9em;
+        }
+      }
+      th:nth-of-type(6) {
+        button {
+          left: 5.5em;
+        }
+      }
+    }
+  }
+}
+
+// show page
+#dm-va-facilities-show {
+  .facility-phone-number {
+    text-decoration: none;
+    color: color($theme-color-primary);
+  }
+
+  .usa-combo-box__select {
+    margin-top: 0;
+
+    &::placeholder {
+      color: color($theme-color-base-ink) !important;
+    }
+  }
+}
+
+// show page - created practices search
+.dm-facility-created-practice-search {
+  .usa-search {
+    top: 0.625rem;
+  }
+
+  .search-no-results {
+    margin-top: 0;
+  }
+
+  #dm-created-practice-search-button {
+    height: 2.375rem;
+  }
+
+  #dm-created-practice-search-field {
+    padding: 1.125rem 0.625rem;
+    line-height: 1.75rem;
+  }
+
+  .dm-search-container {
+    position: absolute;
+    top: -0.625rem;
+  }
+}
+
+// show page - practice adoptions search
+#dm-facility-adopted-practice-search {
+  .facility-search-field {
+    width: 641px;
+    height: 37px;
+    float: left;
+  }
+
+  #dm-adopted-practices-search-field, #dm-adopted-practices-search-button {
+    height: 38px !important;
+  }
+
+  .usa-table--borderless {
+    tr:first-of-type {
+      th:first-of-type {
+        button {
+          left: 9.0em;
+        }
+      }
+
+      th:nth-of-type(2) {
+        button {
+          left: 4.3em;
+        }
+      }
+
+      th:nth-of-type(3) {
+        button {
+          left: 5.9em;
+        }
+      }
+
+      th:nth-of-type(4) {
+        button {
+          left: 5.7em;
+        }
+      }
+    }
+  }
+}

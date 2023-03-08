@@ -9,7 +9,6 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.paths << Rails.root.join('node_modules')
 
 Rails.application.config.assets.precompile += %w(
-                                                  shared/_utilityFunctions.js
                                                   session_timeout_poller.js
                                                   _visnSelect.js
                                                   _officeSelect.js
@@ -46,8 +45,6 @@ Rails.application.config.assets.precompile += %w(
                                                   va_facilities/facility_adopted_practice_search.js
                                                   _otherCategories.js
                                                   shared/_textarea_counter.js
-                                                  _header_utilities.js
-                                                  _terms_and_conditions.js
                                                   category_usage.js
                                                   _alert_message_utilities.js
                                                   _page_show.js

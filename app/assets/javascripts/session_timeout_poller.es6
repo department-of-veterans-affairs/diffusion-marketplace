@@ -1,12 +1,11 @@
 // modified from: https://medium.com/codex/user-session-inactivity-timeout-with-rails-and-devise-7269ac3a8213
-(($) => {
-  const $document = $(document);
+if (typeof(isCurrentUserPresent) != 'undefined') {
   const sessionTimeoutPollFrequency = 30; // poll every 30 seconds
   let heartBeatActivated = false;
 
   class HeartBeat {
     constructor() {
-      $document.on("turbolinks:load", () => {
+      $(document).on("turbolinks:load", () => {
         this.initHeartBeat();
       });
     }
@@ -16,12 +15,12 @@
       if (!heartBeatActivated) {
         ["mousemove", "scroll", "click", "keydown"].forEach((activity) => {
           document.addEventListener(
-            activity,
-            (ev) => {
-              this.lastActive =
-                ev.timeStamp + performance.timing.navigationStart;
-            },
-            false
+              activity,
+              (ev) => {
+                this.lastActive =
+                    ev.timeStamp + performance.timing.navigationStart;
+              },
+              false
           );
         });
         heartBeatActivated = true;
@@ -54,7 +53,7 @@
     })
   }
 
-  $document.on("turbolinks:load",
+  $(document).on("turbolinks:load", () => {
     setTimeout(pollForSessionTimeout, sessionTimeoutPollFrequency * 1000)
-  );
-})(window.jQuery);
+  });
+}

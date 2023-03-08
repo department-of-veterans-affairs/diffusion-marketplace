@@ -1,361 +1,360 @@
-@import 'activeadmin_addons/all';
-// SASS variable overrides must be declared before loading up Active Admin's styles.
+//@import 'activeadmin_addons/all';
+//// SASS variable overrides must be declared before loading up Active Admin's styles.
+////
+//// To view the variables that Active Admin provides, take a look at
+//// `app/assets/stylesheets/active_admin/mixins/_variables.scss` in the
+//// Active Admin source.
+////
+//// For example, to change the sidebar width:
+//// $sidebar-width: 242px;
 //
-// To view the variables that Active Admin provides, take a look at
-// `app/assets/stylesheets/active_admin/mixins/_variables.scss` in the
-// Active Admin source.
+//// Active Admin's got SASS!
+//@import 'active_admin/mixins';
+//@import 'active_admin/base';
+//@import 'active_skin';
+//@import 'wigu/active_admin_theme';
+//@import "font-awesome-sprockets";
+//@import "font-awesome";
+//@use "../../javascript/stylesheets/uswds/theme";
+//@use "../../javascript/stylesheets/dm/index" as *;
 //
-// For example, to change the sidebar width:
-// $sidebar-width: 242px;
-
-// Active Admin's got SASS!
-@import 'active_admin/mixins';
-@import 'active_admin/base';
-@import 'active_skin';
-@import 'wigu/active_admin_theme';
-@import "font-awesome-sprockets";
-@import "font-awesome";
-@import "uswds/uswds";
-@import "/dm_uswds/theme/uswds-theme-color";
-@import '/dm/classes';
-
-// Overriding any non-variable SASS must be done after the fact.
-// For example, to change the default status-tag color:
+//// Overriding any non-variable SASS must be done after the fact.
+//// For example, to change the default status-tag color:
+////
+////   .status_tag { background: #6090DB; }
 //
-//   .status_tag { background: #6090DB; }
-
-@mixin tooltip-icon {
-  margin-left: 0.25rem;
-  font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f059";
-}
-
-@mixin bold($font-color: $black) {
-  color: color($font-color);
-  font-weight: bold;
-}
-
-.active_admin {
-  #header {
-    h1.site_title {
-      background-color: transparent;
-      background: none;
-      padding-left: 30px;
-      text-indent: 0px;
-    }
-
-    #utility_nav {
-      background: transparent;
-      padding-right: 26px;
-    }
-  }
-
-  .attributes_table {
-    table {
-      th, td {
-        color: black;
-      }
-    }
-  }
-
-  table.index_table {
-    th, td {
-      color: black;
-    }
-  }
-
-  .attributes_table {
-    white-space: pre-line;
-  }
-
-  .panel {
-    h3 {
-      font-size: 1rem;
-      margin-top: 0;
-    }
-  }
-
-  form fieldset legend {
-    width: 10%;
-  }
-
-  form fieldset.inputs legend {
-    border: none;
-  }
-
-  .polyform {
-    display: none
-  }
-
-  .active_admin_action_button{
-    @include bold($theme-color-base-ink);
-    background-image: none;
-    border: none;
-    box-shadow: none;
-    text-shadow: none;
-    border-radius: 4px;
-    background-color: #5ea3d3;
-    display: inline-block;
-    font-size: 1.0em;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    text-decoration: none;
-    padding: 10px 20px;
-    line-height: 12px;
-      &:link,&:visited{
-        color: $theme-color-dm-white;
-        text-decoration: none;
-      }
-    &:hover{
-      background-color: #72aed8 !important;
-      text-decoration: none;
-    }
-  }
-
-  fieldset.page_components.inputs.has_many_fields {
-    padding-top: 0;
-  }
-
-  .max-width-15 {
-    max-width: 15rem;
-  }
-
-  .max-height-15 {
-    max-height: 15rem;
-  }
-
-
-  .aa-downloadable-file-link {
-    margin: 0.5em 0 0 20%;
-    font-size: 14px;
-
-    span {
-      padding-right: 5px;
-    }
-  }
-
-  .form-and-legend-container {
-    position: relative;
-    margin-top: 5.15rem;
-  }
-
-  .adoptions-legend {
-    border: 1px solid #5ea3d3;
-    padding: 10px;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-
-    h3 {
-      @include bold($theme-color-base-ink);
-      margin-top: 0;
-      text-decoration: underline;
-    }
-
-    h4 {
-      margin-top: 0;
-
-      span:first-child {
-        @include bold($theme-color-base-ink);
-      }
-    }
-
-    ul {
-      padding: 0;
-      margin-bottom: 0;
-
-      li {
-        color: #5E6469;
-        list-style-type: none;
-        font-size: 13px;
-      }
-    }
-  }
-
-  .dm-text-bold {
-    @include bold($theme-color-base-ink);
-  }
-
-  .no-adoptions-div {
-    text-align: center;
-  }
-
-  .site-metrics-legend {
-    border: 1px solid #5ea3d3;
-    padding: 10px;
-    border-radius: 4px;
-    position: absolute;
-    right: 0;
-
-    h3 {
-      @include bold($theme-color-base-ink);
-      margin-top: 0;
-      text-decoration: underline;
-    }
-
-    h4 {
-      margin-top: 0;
-    }
-
-    ul {
-      padding: 0;
-      margin-bottom: 0;
-      margin-right: 0;
-
-      li {
-        color: #5E6469;
-        list-style-type: none;
-        font-size: 13px;
-      }
-    }
-  }
-
-  .dm-tooltip {
-    &::after {
-      @include tooltip-icon();
-    }
-  }
-
-  #page_is_visible_input, #page_page_group_input, #page_has_chrome_warning_banner_input {
-    // Active admin 'hint'
-    .inline-hints {
-      @include u-display('inline-block');
-    }
-  }
-}
-
-.page-image-preview-container {
-  padding: 10px;
-
-  div {
-    display: inline-block;
-  }
-
-  .placeholder {
-    width: 20%;
-  }
-
-  .page-image-container {
-    width: calc(80% - 22px);
-
-    img {
-      max-width: 300px;
-    }
-  }
-}
-
-.display-none {
-  display: none !important;
-}
-
-.dm-retired-reason-container {
-  label {
-    @include u-margin-top(5);
-    @include u-position('absolute');
-    @include u-text('bold');
-    @include u-text('uppercase');
-    left: 10px;
-    color: #8494a8;
-  }
-
-  .tox-tinymce {
-    width: 80%;
-    float: right;
-  }
-}
-
-.index.admin_practices {
-  #collection_selection {
-    position: relative;
-  }
-
-  .table_tools {
-    position: absolute;
-
-    a:first-of-type {
-      margin-left: 0;
-    }
-  }
-
-  .admin-download-published-practices {
-    text-decoration: none !important;
-    background-color: #5ea3d3;
-    padding: 10px 20px;
-    color: #ffffff !important;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 1.0em;
-  }
-}
-
-.admin_site_metrics {
-  #main_content {
-    margin-top: 98px;
-  }
-
-  .ui-tabs-nav {
-    margin-left: 0;
-  }
-}
-
-.compound-body-component-li {
-  padding: 10px;
-
-  .page-component-images-header {
-    height: 34px;
-    background-color: #5ea3d3;
-    @include u-color($theme-color-dm-white);
-
-    span {
-      padding-left: 10px;
-    }
-  }
-
-  .page-component-images-ol {
-    .page-component-image-attribute-container, .page-component-image-preview-container {
-      padding: 10px 0 10px 0;
-    }
-  }
-
-  .page-component-image-preview-container {
-    div {
-      display: inline-block;
-    }
-
-    .placeholder {
-      width: 20%;
-    }
-
-    .page-component-image-container {
-      width: calc(80% - 22px);
-    }
-  }
-
-  .add-another-page-component-image {
-    bottom: 10px;
-    right: calc(80% - 33px - 2em - 1px);
-  }
-
-  .page-component-image {
-    max-width: 300px;
-  }
-}
-
-.flashes {
-  .flash_warning {
-    @include u-bg($theme-color-warning, !important);
-    @include u-border-bottom(0, !important);
-    @include u-color($theme-color-base-ink, !important);
-  }
-}
-
-.dm-page-builder-trash {
-  color: color($theme-color-error) !important;
-
-  &:hover {
-    color: color($theme-color-error-dark) !important;
-  }
-}
-
-.toggle-large-title-styling {
-  margin-top: 7px;
-}
+//@mixin tooltip-icon {
+//  margin-left: 0.25rem;
+//  font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f059";
+//}
+//
+//@mixin bold($font-color: $black) {
+//  color: color($font-color);
+//  font-weight: bold;
+//}
+//
+//.active_admin {
+//  #header {
+//    h1.site_title {
+//      background-color: transparent;
+//      background: none;
+//      padding-left: 30px;
+//      text-indent: 0px;
+//    }
+//
+//    #utility_nav {
+//      background: transparent;
+//      padding-right: 26px;
+//    }
+//  }
+//
+//  .attributes_table {
+//    table {
+//      th, td {
+//        color: black;
+//      }
+//    }
+//  }
+//
+//  table.index_table {
+//    th, td {
+//      color: black;
+//    }
+//  }
+//
+//  .attributes_table {
+//    white-space: pre-line;
+//  }
+//
+//  .panel {
+//    h3 {
+//      font-size: 1rem;
+//      margin-top: 0;
+//    }
+//  }
+//
+//  form fieldset legend {
+//    width: 10%;
+//  }
+//
+//  form fieldset.inputs legend {
+//    border: none;
+//  }
+//
+//  .polyform {
+//    display: none
+//  }
+//
+//  .active_admin_action_button{
+//    @include bold(theme.$theme-color-base-ink);
+//    background-image: none;
+//    border: none;
+//    box-shadow: none;
+//    text-shadow: none;
+//    border-radius: 4px;
+//    background-color: #5ea3d3;
+//    display: inline-block;
+//    font-size: 1.0em;
+//    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+//    text-decoration: none;
+//    padding: 10px 20px;
+//    line-height: 12px;
+//      &:link,&:visited{
+//        color: color('white');
+//        text-decoration: none;
+//      }
+//    &:hover{
+//      background-color: #72aed8 !important;
+//      text-decoration: none;
+//    }
+//  }
+//
+//  fieldset.page_components.inputs.has_many_fields {
+//    padding-top: 0;
+//  }
+//
+//  .max-width-15 {
+//    max-width: 15rem;
+//  }
+//
+//  .max-height-15 {
+//    max-height: 15rem;
+//  }
+//
+//
+//  .aa-downloadable-file-link {
+//    margin: 0.5em 0 0 20%;
+//    font-size: 14px;
+//
+//    span {
+//      padding-right: 5px;
+//    }
+//  }
+//
+//  .form-and-legend-container {
+//    position: relative;
+//    margin-top: 5.15rem;
+//  }
+//
+//  .adoptions-legend {
+//    border: 1px solid #5ea3d3;
+//    padding: 10px;
+//    margin-bottom: 1rem;
+//    border-radius: 4px;
+//    position: absolute;
+//    right: 0;
+//    bottom: 0;
+//
+//    h3 {
+//      @include bold($theme-color-base-ink);
+//      margin-top: 0;
+//      text-decoration: underline;
+//    }
+//
+//    h4 {
+//      margin-top: 0;
+//
+//      span:first-child {
+//        @include bold(color($theme-color-base-ink));
+//      }
+//    }
+//
+//    ul {
+//      padding: 0;
+//      margin-bottom: 0;
+//
+//      li {
+//        color: #5E6469;
+//        list-style-type: none;
+//        font-size: 13px;
+//      }
+//    }
+//  }
+//
+//  .dm-text-bold {
+//    @include bold(color($theme-color-base-ink));
+//  }
+//
+//  .no-adoptions-div {
+//    text-align: center;
+//  }
+//
+//  .site-metrics-legend {
+//    border: 1px solid #5ea3d3;
+//    padding: 10px;
+//    border-radius: 4px;
+//    position: absolute;
+//    right: 0;
+//
+//    h3 {
+//      @include bold(color($theme-color-base-ink));
+//      margin-top: 0;
+//      text-decoration: underline;
+//    }
+//
+//    h4 {
+//      margin-top: 0;
+//    }
+//
+//    ul {
+//      padding: 0;
+//      margin-bottom: 0;
+//      margin-right: 0;
+//
+//      li {
+//        color: #5E6469;
+//        list-style-type: none;
+//        font-size: 13px;
+//      }
+//    }
+//  }
+//
+//  .dm-tooltip {
+//    &::after {
+//      @include tooltip-icon();
+//    }
+//  }
+//
+//  #page_is_visible_input, #page_page_group_input, #page_has_chrome_warning_banner_input {
+//    // Active admin 'hint'
+//    .inline-hints {
+//      @include u-display('inline-block');
+//    }
+//  }
+//}
+//
+//.page-image-preview-container {
+//  padding: 10px;
+//
+//  div {
+//    display: inline-block;
+//  }
+//
+//  .placeholder {
+//    width: 20%;
+//  }
+//
+//  .page-image-container {
+//    width: calc(80% - 22px);
+//
+//    img {
+//      max-width: 300px;
+//    }
+//  }
+//}
+//
+//.display-none {
+//  display: none !important;
+//}
+//
+//.dm-retired-reason-container {
+//  label {
+//    @include u-margin-top(5);
+//    @include u-position('absolute');
+//    @include u-text('bold');
+//    @include u-text('uppercase');
+//    left: 10px;
+//    color: #8494a8;
+//  }
+//
+//  .tox-tinymce {
+//    width: 80%;
+//    float: right;
+//  }
+//}
+//
+//.index.admin_practices {
+//  #collection_selection {
+//    position: relative;
+//  }
+//
+//  .table_tools {
+//    position: absolute;
+//
+//    a:first-of-type {
+//      margin-left: 0;
+//    }
+//  }
+//
+//  .admin-download-published-practices {
+//    text-decoration: none !important;
+//    background-color: #5ea3d3;
+//    padding: 10px 20px;
+//    color: #ffffff !important;
+//    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+//    font-size: 1.0em;
+//  }
+//}
+//
+//.admin_site_metrics {
+//  #main_content {
+//    margin-top: 98px;
+//  }
+//
+//  .ui-tabs-nav {
+//    margin-left: 0;
+//  }
+//}
+//
+//.compound-body-component-li {
+//  padding: 10px;
+//
+//  .page-component-images-header {
+//    height: 34px;
+//    background-color: #5ea3d3;
+//    @include color('white');
+//
+//    span {
+//      padding-left: 10px;
+//    }
+//  }
+//
+//  .page-component-images-ol {
+//    .page-component-image-attribute-container, .page-component-image-preview-container {
+//      padding: 10px 0 10px 0;
+//    }
+//  }
+//
+//  .page-component-image-preview-container {
+//    div {
+//      display: inline-block;
+//    }
+//
+//    .placeholder {
+//      width: 20%;
+//    }
+//
+//    .page-component-image-container {
+//      width: calc(80% - 22px);
+//    }
+//  }
+//
+//  .add-another-page-component-image {
+//    bottom: 10px;
+//    right: calc(80% - 33px - 2em - 1px);
+//  }
+//
+//  .page-component-image {
+//    max-width: 300px;
+//  }
+//}
+//
+//.flashes {
+//  .flash_warning {
+//    @include u-bg($theme-color-warning, !important);
+//    @include u-border-bottom(0, !important);
+//    @include u-color($theme-color-base-ink, !important);
+//  }
+//}
+//
+//.dm-page-builder-trash {
+//  color: color($theme-color-error) !important;
+//
+//  &:hover {
+//    color: color($theme-color-error-dark) !important;
+//  }
+//}
+//
+//.toggle-large-title-styling {
+//  margin-top: 7px;
+//}

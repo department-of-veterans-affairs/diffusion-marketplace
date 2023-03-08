@@ -1,0 +1,358 @@
+/*
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+========================================
+========================================
+========================================
+----------------------------------------
+DM COMMONLY USED CLASSES - use these if you really mean it!
+IMPORTANT: Consult https://designsystem.digital.gov/utilities/
+to confirm the class DOES NOT EXIST before adding a new class
+----------------------------------------
+*/
+
+@use "../uswds" as *;
+
+// TODO: check if we need this file
+
+/* Display */
+.hidden {
+  visibility: hidden !important;
+}
+
+.maxh-15rem {
+  @include u-maxh('card-lg', !important);
+}
+
+.width-auto {
+  @include u-width('auto', !important);
+}
+
+.display-none-important {
+  @include u-display('none', !important);
+}
+
+.flex-column-important {
+  @include u-flex('column', !important);
+}
+
+/* Desktop */
+// Only show on mobile
+.desktop-hide {
+  display: block !important;
+  @media screen and (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+/* Mobile */
+// Only show on desktop
+.mobile-hide {
+  display: none !important;
+  @media screen and (min-width: 1024px) {
+    display: block !important;
+  }
+}
+
+/* Margin Center Elements */
+.margin-x-auto {
+  @include u-margin-x('auto', !important)
+}
+
+/* Margin None */
+.margin-0 {
+  @include u-margin(0, !important);
+}
+
+/* Margin top */
+.margin-top-0 {
+  @include u-margin-top(0, !important);
+}
+
+.margin-top-105 {
+  @include u-margin-top('105', !important);
+}
+
+.x05-top {
+  margin-top: 0.875rem !important;
+}
+
+.margin-top-2 {
+  @include u-margin-top(2, !important);
+}
+
+.margin-top-4-important {
+  @include u-margin-top(4, !important);
+}
+
+.margin-top-505 {
+  margin-top: 44px;
+}
+
+.margin-top-128 {
+  margin-top: 128px;
+
+  &-desktop {
+    @media screen and (min-width: 1024px) {
+      margin-top: 128px;
+    }
+  }
+}
+
+.margin-top-96 {
+  margin-top: 96px;
+}
+
+
+/* Margin Bottom */
+.margin-bottom-0 {
+  @include u-margin-bottom(0, !important);
+}
+
+.margin-bottom-1 {
+  @include u-margin-bottom(1, !important);
+}
+
+.margin-bottom-2 {
+  @include u-margin-bottom(2, !important);
+}
+
+.x1-75-bottom {
+  margin-bottom: 1.75rem !important;
+}
+
+.margin-bottom-4-important {
+  @include u-margin-bottom(4, !important);
+}
+
+.margin-bottom-5 {
+  @include u-margin-bottom(5, !important);
+}
+
+.margin-bottom-28{
+  margin-bottom: 28px;
+}
+
+.margin-bottom-405 {
+  margin-bottom: 36px;
+}
+
+.margin-bottom-128 {
+  margin-bottom: 128px;
+
+  &-desktop {
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 128px;
+    }
+  }
+}
+
+.margin-y-128 {
+  margin-bottom: 128px;
+  margin-top: 128px;
+
+  &-desktop {
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 128px;
+      margin-top: 128px;
+    }
+  }
+}
+
+/* Margin Left */
+.margin-left-1 {
+  @include u-margin-left(1, !important);
+}
+
+.margin-left-2 {
+  @include u-margin-left(2, !important);
+}
+
+/* Margin Right */
+.margin-right-0 {
+  @include u-margin-right(0, !important);
+}
+
+/* Padding None */
+.padding-0 {
+  @include u-padding(0, !important);
+}
+
+/* Padding Left */
+.padding-left-0 {
+  @include u-padding-left(0, !important);
+}
+
+/* Padding Right */
+.padding-right-0 {
+  @include u-padding-right(0, !important);
+}
+
+/* Padding Bottom */
+.padding-bottom-0 {
+  @include u-padding-bottom(0, !important);
+}
+
+.padding-bottom-05 {
+  @include u-padding-bottom('05', !important);
+}
+
+.padding-bottom-2 {
+  @include u-padding-bottom(2, !important);
+}
+
+.padding-bottom-4 {
+  @include u-padding-bottom(4, !important);
+}
+
+/* Padding Top */
+.padding-top-0 {
+  @include u-padding-top(0, !important);
+}
+
+.p1-75-top {
+  padding-top: 1.75rem !important
+}
+
+.padding-top-4 {
+  @include u-padding-top(4, !important);
+}
+
+/* z-index */
+
+.z-index-10 {
+  z-index: 10;
+}
+
+/* Height and width setters */
+.height-5 {
+  height: 40px !important;
+}
+
+.height-200px {
+  height: 200px !important;
+}
+
+.width-full {
+  @include u-width('full', !important);
+}
+
+/* box-shadows */
+.box-shadow-card {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Breaking/Truncating lines */
+.dm-hyphens-auto {
+  hyphens: auto;
+}
+
+.dm-word-break-break-word {
+  word-break: break-word;
+}
+
+/* Truncate text a given line amount */
+.truncate-text {
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  position: relative;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 !important;
+}
+
+.one-line {
+  -webkit-line-clamp: 1;
+  height: calc(1em * 1.2 * 1);
+}
+
+/* Font Awesome icon */
+.fa-icon-125 {
+  font-size: 1.25rem;
+}
+
+.line-height-15px {
+  line-height: 15px;
+}
+
+.line-height-18px {
+  line-height: 18px;
+}
+
+.line-height-19px {
+  line-height: 19px !important;
+}
+
+.line-height-25px {
+  line-height: 25px;
+}
+
+.line-height-162 {
+  line-height: 162%;
+}
+
+.line-height-135 {
+  line-height: 135%;
+}
+
+.disabled-label {
+  color: color($theme-color-secondary-dark) !important;
+}
+
+.enabled-label {
+  color: initial !important;
+}
+
+.enabled-input {
+  color: initial !important;
+  border-color: initial !important;
+}
+
+/* Horizontal Rule */
+.dm-section-line {
+  flex: 1 0;
+}
+
+.bg-gray-2{
+  background-color: color($theme-color-secondary-light) !important;
+}
+
+.rect-svg-blue-30v {
+  height: 8px;
+  width: 292px;
+  color: color($theme-color-primary-light);
+}
+
+.width-80 {
+  width: 80% !important;
+}
+
+.maxw-none {
+  @include u-maxw('none', !important);
+}
+
+.dotted {
+  border-bottom: 2px dotted #999 !important;
+  @include u-text('ink', !important);
+  text-decoration: none !important;
+}
+
+.form_h_field {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  z-index: -1;
+  autocomplete: off;
+}
+
+.focus-outline {
+  outline: 0.25rem solid color($theme-focus-color);
+  outline-offset: 0;
+}

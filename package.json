@@ -1,7 +1,47 @@
 {
-  "name": "diffusion-marketplace",
+  "name": "app",
   "private": true,
-  "dependencies": {},
-  "scripts": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@babel/core": "7",
+    "@babel/plugin-transform-runtime": "7",
+    "@babel/preset-env": "7",
+    "@babel/runtime": "7",
+    "@popperjs/core": "^2.11.6",
+    "@uswds/uswds": "agilesix/diffusion-marketplace-uswds#dm-uswds",
+    "ahoy.js": "^0.4.2",
+    "arrive": "^2.4.1",
+    "babel-loader": "8",
+    "coffeescript": "^2.7.0",
+    "compression-webpack-plugin": "9",
+    "jquery": "^3.6.3",
+    "sass": "^1.58.3",
+    "sass-loader": "^13.2.0",
+    "shakapacker": "6.5.0",
+    "terser-webpack-plugin": "5",
+    "turbolinks": "^5.2.0",
+    "webpack": "5",
+    "webpack-assets-manifest": "5",
+    "webpack-cli": "4",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-merge": "5"
+  },
+  "version": "0.1.0",
+  "babel": {
+    "presets": [
+      "./node_modules/shakapacker/package/babel/preset.js"
+    ]
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "packageManager": "yarn@3.4.1",
+  "devDependencies": {
+    "coffee-loader": "^4.0.0",
+    "css-loader": "^6.7.3",
+    "css-minimizer-webpack-plugin": "^4.2.2",
+    "expose-loader": "^4.0.0",
+    "mini-css-extract-plugin": "^2.7.3",
+    "rails-erb-loader": "^5.5.2",
+    "style-loader": "^3.3.1"
+  }
 }

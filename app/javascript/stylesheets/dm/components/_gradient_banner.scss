@@ -1,0 +1,69 @@
+@use "../../uswds" as *;
+/****************************************
+  GRADIENT BANNER
+  To use default class: <*element* class="dm-gradient-banner"...>
+  To add extension: <*element class="dm-gradient-banner-*extension-class*"...>
+*****************************************/
+
+.dm-gradient-banner {
+  background: linear-gradient(236.03deg, color($theme-color-primary-vivid) 10.06%, #182F4C 93.13%);
+  transform: matrix(1, 0, 0, -1, 0, 0);
+
+    // since the transform style from dm-gradient-banner flips the text along with the gradient colors, we need to flip the text inside of the grid-container to return it to its original state
+    .grid-container {
+      transform: matrix(1, 0, 0, -1, 0, 0);
+    }
+
+  // Per research, the banner may have varying heights. As of 8/10/21, the designs use 318px (desktop version). Add any other height options as an extension class here
+  &-318 {
+    @extend .dm-gradient-banner;
+
+    @media screen and (min-width: 1024px) {
+      height: 318px;
+    }
+  }
+}
+
+.gradient-banner-with-image {
+  @media screen and (max-width: 1023px) {
+    @include u-position('relative');
+    // 87 + 40px
+    // Half of the image height plus 40px (page-builder starting top margin for the 'page-builder-page' element).
+    // Based off of Figma designs 10/3/2022
+    margin-bottom: 127px;
+  }
+
+  .dm-breadcrumb-heading {
+    @media screen and (max-width: 1023px) {
+      // (87 - 32) + 32
+      // (Half of image height minus bottom gradient banner padding), plus desired spacing between top of image and
+      // bottom of description text (should mimic homepage gradient banner image) - per design 10/6/2022).
+      padding-bottom: 87px;
+    }
+  }
+
+  .page-image-column {
+    @media screen and (max-width: 1023px) {
+      @include u-position('absolute');
+      @include u-left(0);
+      // 174 / 2
+      // Half of the image height (182px) as of 10/3/2022 per Figma design. This provides the "half-and-half" effect for the image.
+      bottom: -87px;
+      @include u-padding-x(2);
+    }
+
+    .page-image-container {
+      @include u-maxw('none');
+      height: 223px;
+
+      @media screen and (max-width: 1023px) {
+        max-width: 308px;
+        height: 174px;
+      }
+    }
+
+    img {
+      object-fit: cover;
+    }
+  }
+}

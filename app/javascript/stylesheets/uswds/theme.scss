@@ -1,0 +1,94 @@
+// USWDS theme setting for Diffusion Marketplace
+// We only need to change the setting for a particular theme if the default is not what we want
+
+@forward '../../../../node_modules/@uswds/uswds/packages/uswds-core' with (
+  //--- GENERAL ---
+  /*
+  Had to add the images folder from https://designsystem.digital.gov/documentation/getting-started-for-developers/
+  because a lot of the images were not in the packages/src directory of the node module as of 2/14/2023
+  */
+  $theme-image-path: "../../../node_modules/@uswds/uswds/dist/img",
+  $theme-font-path: "../../../node_modules/@uswds/uswds/dist/fonts",
+  //--- THEME COLORS ---
+  // Base colors
+  $theme-color-base-family: 'gray',
+  $theme-color-base-lighter: 'gray-10',
+  $theme-color-base-light: 'gray-30',
+  $theme-color-base: 'gray-50',
+  $theme-color-base-dark: 'gray-60',
+  $theme-color-base-darker: 'gray-70',
+  $theme-color-base-darkest: 'gray-80',
+  $theme-color-base-ink: 'gray-90',
+  // Primary colors
+  $theme-color-primary-family: 'blue-warm-vivid',
+  $theme-color-primary-lighter: 'blue-warm-10v',
+  $theme-color-primary-light: 'blue-warm-30v',
+  $theme-color-primary: 'blue-warm-50v',
+  // Secondary colors
+  $theme-color-secondary-family: 'gray',
+  $theme-color-secondary-lighter: 'gray-1',
+  $theme-color-secondary-light: 'gray-2',
+  $theme-color-secondary: 'gray-3',
+  $theme-color-secondary-vivid: 'gray-4',
+  $theme-color-secondary-dark: 'gray-20',
+  $theme-color-secondary-darker: 'gray-30',
+  $theme-color-secondary-darkest: 'gray-40',
+  // Accent warm colors
+  $theme-color-accent-warm-family: 'gold-vivid',
+  $theme-color-accent-warm-lighter: 'gold-5v',
+  $theme-color-accent-warm-light: 'gold-10v',
+  $theme-color-accent-warm: 'gold-20v',
+  $theme-color-accent-warm-dark: 'gold-30v',
+  $theme-color-accent-warm-darker: 'gold-40v',
+  // Accent cool colors
+  $theme-color-accent-cool-family: 'blue-warm-vivid',
+  $theme-color-accent-cool-lighter: 'blue-warm-10v',
+  $theme-color-accent-cool-light: 'blue-warm-30v',
+  $theme-color-accent-cool: 'blue-warm-60v',
+  $theme-color-accent-cool-dark: 'blue-warm-70v',
+  $theme-color-accent-cool-darker: 'blue-warm-80v',
+  // Warning colors
+  $theme-color-warning-family: false,
+  $theme-color-warning-dark: false,
+  $theme-color-warning-darker: false,
+  // Success colors
+  $theme-color-success-dark: 'green-cool-50',
+  $theme-color-success-darker: 'green-cool-60',
+  // Info colors
+  $theme-color-info-family: false,
+  $theme-color-info-dark: false,
+  $theme-color-info-darker: false,
+  // Links
+  $theme-link-color: 'primary-vivid',
+  $theme-link-visited-color: 'violet-70',
+  //--- THEME COMPONENTS ---
+  // Breadcrumb
+  $theme-breadcrumb-min-width: 'mobile',
+  //--- THEME TYPOGRAPHY ---
+  // Type-based font settings
+  $theme-font-type-sans: 'public-sans',
+  // Role-based font settings
+  $theme-font-role-heading: 'sans',
+  // Type scale
+  $theme-type-scale-md: 7,
+  // Font weights
+  $theme-font-weight-semibold: 700,
+  $theme-font-weight-bold: 800,
+  $theme-font-weight-heavy: 900,
+  //--- THEME UTILITIES ---
+  // Utility breakpoints
+  $theme-utility-breakpoints: (
+  // 320px:
+  "mobile": true,
+  // 880px:
+  "tablet-lg": true,
+  // 1024px
+  "desktop": true,
+  // 1200px:
+  "desktop-lg": true
+),
+  // Settings
+  $width-settings: (
+    responsive: false
+  )
+);

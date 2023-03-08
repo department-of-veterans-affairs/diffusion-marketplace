@@ -1,7 +1,3 @@
-<% provide :head_tags do %>
-  <%= javascript_include_tag '_alert_message_utilities', 'data-turbolinks-track': 'false' %>
-<% end %>
-
 <% if flash.keys.present? %>
   <!-- custom header and msg -->
   <% if flash.keys.include?('url') %>

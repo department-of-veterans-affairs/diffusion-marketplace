@@ -1,4 +1,4 @@
-@import "../dm_uswds/theme/uswds-theme-color";
+@use "../../../javascript/stylesheets/uswds/theme" as *;
 
 .commontator .comment {
   &, .body blockquote {

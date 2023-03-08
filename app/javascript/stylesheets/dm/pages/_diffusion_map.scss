@@ -1,0 +1,33 @@
+@use "../../uswds" as *;
+
+#map-of-diffusion {
+  .tt-dataset-facilityNames {
+    width: 275px;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: color('white');
+    padding-bottom: 12px;
+  }
+
+  #facility_name_container {
+    .typeahead {
+      width: 275px;
+    }
+  }
+
+  .tt-hint {
+    visibility: hidden;
+  }
+}
+
+.map-filters-accordion {
+  h4 {
+    @include u-maxw('full', !important);
+  }
+
+  .usa-accordion__content {
+    border-bottom: 0.25rem solid color($theme-color-base-lightest) !important;
+    border-left: 0.25rem solid color($theme-color-base-lightest) !important;
+    border-right: 0.25rem solid color($theme-color-base-lightest) !important;
+  }
+}

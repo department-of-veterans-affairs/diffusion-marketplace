@@ -5,14 +5,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.5'
+gem 'rails', '~> 6.1.7'
 # Use postgresql as the database for Active Record
 gem 'pg', '1.4.1'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
 gem 'puma', '>= 4.3.5'
 # Use SCSS for stylesheets
-gem 'sass-rails'
+# gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -104,8 +104,6 @@ gem 'ffi'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: 'f8a3658'
-
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
 gem 'aws-sdk-s3'
@@ -136,13 +134,13 @@ gem 'acts_as_votable'
 gem 'json', '~> 2.3.0'
 
 # Active Admin
-gem 'activeadmin', '~> 2.8.0'
+gem 'activeadmin', '~> 2.13'
 gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'
 gem 'caxlsx'
 gem 'tinymce-rails'
-gem 'sassc'
+# gem 'sassc'
 
 gem "chartkick"
 gem 'groupdate'
@@ -164,3 +162,5 @@ gem 'naturalsorter', '3.0.22'
 gem 'opentelemetry-sdk'
 gem 'opentelemetry-exporter-otlp'
 gem 'opentelemetry-instrumentation-all'
+
+gem "shakapacker", "= 6.5"
