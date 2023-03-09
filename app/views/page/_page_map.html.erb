@@ -6,11 +6,5 @@
     <%= javascript_include_tag 'page/page_map', 'data-turbolinks-track': 'reload' %>
   <% end %>
 
-  <div id="page_builder_map_<%= component_id %>" class="display-none grid-col-12 desktop:grid-col-9 page_builder_map"></div>
-  <%= render partial: 'shared/loading_spinner',
-             locals: {
-               display: true,
-               classes: 'flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10 dm-facilities-show-map-loading-spinner text-center'
-             }
-  %>
+  <div id="page_builder_map_<%= component_id %>" class="grid-col-12 desktop:grid-col-9 page_builder_map"></div>
 <% end %>

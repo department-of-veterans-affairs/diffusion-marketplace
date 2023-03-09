@@ -48,11 +48,6 @@ function initialize(mapId) {
             markers = handler.addMarkers(componentMapData);
             buildMapMarkers(componentMapData);
         });
-
-    google.maps.event.addListener(handler.getMap(), "idle", function () {
-        $(`#${mapId}`).removeClass("display-none");
-        $(".dm-facilities-show-map-loading-spinner").addClass("display-none");
-    });
 }
 
 $(document).on("turbolinks:load", function () {

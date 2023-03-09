@@ -231,13 +231,6 @@ function initialize() {
       });
   }
 
-  if (isVisnsIndexPage) {
-    google.maps.event.addListener(handler.getMap(), 'idle', function () {
-      $("#visns-index-map").removeClass("display-none");
-      $(".dm-loading-spinner").addClass("display-none");
-    });
-  }
-
   google.maps.event.addListener(handler.getMap(), "tilesloaded", function () {
     changeMarkerIconOnInfoWindowClose();
   });
