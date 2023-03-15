@@ -3,6 +3,7 @@
     var chromeWarning = <%= @page.has_chrome_warning_banner %>;
   <% end %>
   <%= javascript_include_tag 'ie', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'shared/_signed_resource', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_page_show', 'data-turbolinks-track': 'reload' %>
 <% end %>
 <% accordion_ctr = 0 %>
@@ -210,7 +211,12 @@
           %>
           <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'margin-bottom-3 ' %> font-sans-sm line-height-162<%= ' margin-bottom-0' if last_component === index %>">
             <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
-            <%= link_to component.attachment_s3_presigned_url, class: 'usa-link usa-link--external', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
+            <%= link_to component.attachment_s3_presigned_url,
+                        class: 'usa-link usa-link--external page-downloadable-file-component',
+                        target: '_blank',
+                        download: display_name != '' ? display_name : component.attachment_file_name,
+                        'data-resource-id': pc.component_id,
+                        'data-resource-path': pc.component.attachment.path do %>
               <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
             <% end %>
           </div>

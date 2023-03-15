@@ -17,6 +17,9 @@ function fetchSignedResource(
                     case 'image':
                         resourceElement.src = signedUrl;
                         break;
+                    case 'file':
+                        resourceElement.href = signedUrl;
+                        break;
                 }
             }
         });

@@ -100,6 +100,23 @@ const COMPONENT_CLASSES = [
         }
     }
 
+    function fetchDownloadableFileResources() {
+        const downloadableFileComponents = document.querySelectorAll('.page-downloadable-file-component');
+        // Replace each 'PageDownloadableFileComponent's 'href' with a new signed URL
+        downloadableFileComponents.forEach(function (element) {
+            const filePath = element.getAttribute('data-resource-path');
+            const fileUrl = element.href;
+            const fileId = element.getAttribute('data-resource-id');
+
+            fetchSignedResource(
+                filePath,
+                fileUrl,
+                `a[data-resource-id="${fileId}"]`,
+                'file'
+            );
+        });
+    }
+
 
 
     function execPageBuilderFunctions() {
@@ -108,6 +125,7 @@ const COMPONENT_CLASSES = [
         remediateInternalLinksTarget();
         identifyExternalLinks();
         chromeWorkaroundForAnchorTags();
+        fetchDownloadableFileResources();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
