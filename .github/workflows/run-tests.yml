@@ -3,6 +3,10 @@ on:
   push:
     branches:
     - master
+env:
+  AWS_REGION: xxxxst-2
+  GOOGLE_TEST_API_KEY: xxxx2YyM
+  REGION: xxxxst-2
 jobs:
   hold:
     environment:
