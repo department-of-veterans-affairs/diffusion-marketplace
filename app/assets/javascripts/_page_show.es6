@@ -103,7 +103,7 @@ const COMPONENT_CLASSES = [
     function fetchDownloadableFileResources() {
         const downloadableFileComponents = document.querySelectorAll('.page-downloadable-file-component');
         // Replace each 'PageDownloadableFileComponent's 'href' with a new signed URL
-        downloadableFileComponents.forEach(function (element) {
+        downloadableFileComponents.forEach(element => {
             const filePath = element.getAttribute('data-resource-path');
             const fileUrl = element.href;
             const fileId = element.getAttribute('data-resource-id');
