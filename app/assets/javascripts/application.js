@@ -10,10 +10,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery3
-//= require jquery_ujs
 //= require _pollyfills
+//= require rails-ujs
 //= require lodash
+//= require jquery
 //= require sticky
 //= require jquery.scrollTo
 //= require cropper
@@ -57,4 +57,3 @@
 //= require category_usage.js
 //= require tinymce
 //= require page/page_infowindow
-//= require_tree .

@@ -13,15 +13,6 @@
 //
 // const images = require.context('./images', true)
 // const imagePath = (name) => images(name, true)
-var Turbolinks = require("turbolinks")
-Turbolinks.start()
-import 'arrive/minified/arrive.min';
-import '../../assets/javascripts/session_timeout_poller';
-import '../../assets/javascripts/application';
-import './shared/_utilityFunctions';
-import './terms_and_conditions';
-import './_header_utilities';
-import './_alert_message_utilities';
-import './_ahoy_event_tracking.js.erb';
+const images = require.context('../../../node_modules/@uswds/uswds/dist/img', true);
 import '../../../node_modules/@uswds/uswds/dist/js/uswds-init.min';
 import '../../../node_modules/@uswds/uswds/dist/js/uswds.min';

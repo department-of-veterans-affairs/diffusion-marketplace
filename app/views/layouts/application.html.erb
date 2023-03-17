@@ -67,6 +67,7 @@
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       var forceModal = <%= @force_terms_and_conditions_modal %>;
     <% end %>
+    <%= javascript_include_tag "application", 'data-turbolinks-track': 'false' %>
     <%= javascript_pack_tag "application", defer: false %>
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}", 'data-turbolinks-track': 'false' %>
     <%= javascript_include_tag "//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js", 'data-turbolinks-track': 'false' %>

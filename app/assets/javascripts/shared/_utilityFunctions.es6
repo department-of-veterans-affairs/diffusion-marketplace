@@ -18,5 +18,3 @@ function buildTitleAndAriaLabelForMapMarker(json, markerObject, totalAdoptions) 
         }
     }
 }
-
-export {removeDisplayNoneFromModal};

@@ -1,5 +1,3 @@
-import {removeDisplayNoneFromModal} from "./shared/_utilityFunctions";
-
 function _preventTermsAndConditionsFlickerOnPageLoad() {
   $(document).arrive("header", { existing: true }, () => {
     removeDisplayNoneFromModal("#dm-terms-and-conditions-modal");

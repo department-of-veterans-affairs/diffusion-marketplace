@@ -1,5 +1,3 @@
-import {removeDisplayNoneFromModal} from "./shared/_utilityFunctions";
-
 function _preventCrisisLineModalFlickerOnPageLoad() {
   $(document).arrive('header', { existing: true }, () => {
     removeDisplayNoneFromModal('#va-crisis-line-modal');
