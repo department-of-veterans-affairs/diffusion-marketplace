@@ -73,6 +73,7 @@
       <%= javascript_tag 'data-turbolinks-track': 'false' do %>
         var forceModal = <%= @force_terms_and_conditions_modal %>;
       <% end %>
+      <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'false' %>
     <% end %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       var forceModal = <%= @force_terms_and_conditions_modal %>;
