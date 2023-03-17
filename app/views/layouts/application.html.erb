@@ -58,23 +58,28 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content= "width=device-width, initial-scale=1, minimum-scale=1">
+    <%= javascript_include_tag 'shared/_utilityFunctions', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&callback=Function.prototype", 'data-turbolinks-track': 'false' %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/mahnunchik/markerclustererplus@master/dist/markerclusterer.min.js", 'data-turbolinks-track': 'false' %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/printercu/google-maps-utility-library-v3-read-only@master/infobox/src/infobox_packed.js", 'data-turbolinks-track': 'false' %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/googlemaps/js-rich-marker@gh-pages/src/richmarker-compiled.js", 'data-turbolinks-track': 'false' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'false' %>
+    <%= javascript_tag 'data-turbolinks-track': 'false' do %>
+      <%= render partial: 'layouts/ahoy_event_tracking', formats: [:js] %>
+    <% end %>
     <% if current_user.present? %>
+      <%= javascript_include_tag 'session_timeout_poller.js', 'data-turbolinks-track': 'false' %>
       <%= javascript_tag 'data-turbolinks-track': 'false' do %>
-        var isCurrentUserPresent = true;
         var forceModal = <%= @force_terms_and_conditions_modal %>;
       <% end %>
     <% end %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       var forceModal = <%= @force_terms_and_conditions_modal %>;
     <% end %>
-    <%= javascript_include_tag "application", 'data-turbolinks-track': 'false' %>
-    <%= javascript_pack_tag "application", defer: false %>
-    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}", 'data-turbolinks-track': 'false' %>
-    <%= javascript_include_tag "//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js", 'data-turbolinks-track': 'false' %>
-    <%= javascript_include_tag "//cdn.rawgit.com/printercu/google-maps-utility-library-v3-read-only/master/infobox/src/infobox_packed.js", 'data-turbolinks-track': 'false' %>
-    <%= javascript_include_tag "//cdn.rawgit.com/googlemaps/js-rich-marker/gh-pages/src/richmarker-compiled.js", 'data-turbolinks-track': 'false' %>
+    <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_header_utilities', 'data-turbolinks-track': 'false' %>
+    <%= javascript_pack_tag "application" %>
     <%= stylesheet_pack_tag "application" %>
-
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <meta name="turbolinks-cache-control" content="no-preview">
     <% if @reload_turbolinks %>
