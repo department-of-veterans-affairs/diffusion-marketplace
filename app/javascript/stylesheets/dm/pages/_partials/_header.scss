@@ -55,7 +55,7 @@
 
       span {
         &::after {
-          @include u-display('none', !important)
+          @include u-display('none', !important);
         }
       }
     }
