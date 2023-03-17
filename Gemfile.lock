@@ -35,11 +35,29 @@ GIT
 GEM
   remote: https://rails-assets.org/
   specs:
+    arbre (1.5.0)
+      activesupport (>= 3.0.0, < 7.1)
+      ruby2_keywords (>= 0.0.2, < 1.0)
+    formtastic (4.0.0)
+      actionpack (>= 5.2.0)
+    formtastic_i18n (0.7.0)
+    has_scope (0.8.1)
+      actionpack (>= 5.2)
+      activesupport (>= 5.2)
+    inherited_resources (1.13.1)
+      actionpack (>= 5.2, < 7.1)
+      has_scope (~> 0.6)
+      railties (>= 5.2, < 7.1)
+      responders (>= 2, < 4)
     rails-assets-jquery (3.6.3)
     rails-assets-jquery.scrollTo (2.1.2)
       rails-assets-jquery (>= 1.8)
     rails-assets-sticky (1.0.4)
       rails-assets-jquery
+    ransack (3.2.1)
+      activerecord (>= 6.1.5)
+      activesupport (>= 6.1.5)
+      i18n
 
 GEM
   remote: https://rubygems.org/

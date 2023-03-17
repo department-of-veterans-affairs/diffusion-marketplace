@@ -15,8 +15,9 @@
 @import 'wigu/active_admin_theme';
 @import "font-awesome-sprockets";
 @import "font-awesome";
-@use "../../javascript/stylesheets/uswds/theme";
-@use "../../javascript/stylesheets/dm/index" as *;
+@use "../../javascript/stylesheets/dm/index";
+// TODO: Figure out how to import USWDS styles/utilities to app/assets/stylesheets scss files
+$theme-color-base-ink: #1b1b1b;
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
@@ -28,8 +29,8 @@
   font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f059";
 }
 
-@mixin bold($font-color: $black) {
-  color: color($font-color);
+@mixin bold($font-color: black) {
+  color: $font-color;
   font-weight: bold;
 }
 
@@ -86,7 +87,7 @@
   }
 
   .active_admin_action_button{
-    @include bold($theme-color-base-ink);
+    color: $theme-color-base-ink;
     background-image: none;
     border: none;
     box-shadow: none;
@@ -100,7 +101,7 @@
     padding: 10px 20px;
     line-height: 12px;
       &:link,&:visited{
-        color: color('white');
+        color: white;
         text-decoration: none;
       }
     &:hover{
@@ -218,7 +219,7 @@
   #page_is_visible_input, #page_page_group_input, #page_has_chrome_warning_banner_input {
     // Active admin 'hint'
     .inline-hints {
-      @include u-display('inline-block');
+      display: inline-block;
     }
   }
 }
@@ -249,10 +250,10 @@
 
 .dm-retired-reason-container {
   label {
-    @include u-margin-top(5);
-    @include u-position('absolute');
-    @include u-text('bold');
-    @include u-text('uppercase');
+    margin-top: 40px;
+    position: absolute;
+    font-weight: bold;
+    text-transform: uppercase;
     left: 10px;
     color: #8494a8;
   }
@@ -302,7 +303,7 @@
   .page-component-images-header {
     height: 34px;
     background-color: #5ea3d3;
-    @include color('white');
+    color: white;
 
     span {
       padding-left: 10px;
@@ -341,17 +342,17 @@
 
 .flashes {
   .flash_warning {
-    @include u-bg($theme-color-warning, !important);
-    @include u-border-bottom(0, !important);
-    @include u-color($theme-color-base-ink, !important);
+    background-color: #ffbe2e !important;
+    border-bottom: 0 !important;
+    color: $theme-color-base-ink !important;
   }
 }
 
 .dm-page-builder-trash {
-  color: color($theme-color-error) !important;
+  color: #d54309 !important;
 
   &:hover {
-    color: color($theme-color-error-dark) !important;
+    color: #b50909 !important;
   }
 }
 

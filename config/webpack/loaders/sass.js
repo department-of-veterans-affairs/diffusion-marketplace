@@ -20,6 +20,7 @@ module.exports = {
                                 includePaths: [
                                     "./node_modules/@uswds",
                                     "./node_modules/@uswds/uswds/packages",
+                                    "./app/assets/stylesheets"
                                 ],
                             },
                         }
