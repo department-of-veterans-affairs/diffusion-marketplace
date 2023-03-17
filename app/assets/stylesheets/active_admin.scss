@@ -86,7 +86,7 @@
   }
 
   .active_admin_action_button{
-    @include bold(theme.$theme-color-base-ink);
+    @include bold($theme-color-base-ink);
     background-image: none;
     border: none;
     box-shadow: none;
@@ -155,7 +155,7 @@
       margin-top: 0;
 
       span:first-child {
-        @include bold(color($theme-color-base-ink));
+        @include bold($theme-color-base-ink);
       }
     }
 
@@ -172,7 +172,7 @@
   }
 
   .dm-text-bold {
-    @include bold(color($theme-color-base-ink));
+    @include bold($theme-color-base-ink);
   }
 
   .no-adoptions-div {
@@ -187,7 +187,7 @@
     right: 0;
 
     h3 {
-      @include bold(color($theme-color-base-ink));
+      @include bold($theme-color-base-ink);
       margin-top: 0;
       text-decoration: underline;
     }
