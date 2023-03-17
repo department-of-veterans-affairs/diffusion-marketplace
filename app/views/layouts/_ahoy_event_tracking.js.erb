@@ -36,7 +36,6 @@ function trackVisit(visit, visitor) {
 }
 
 document.addEventListener('turbolinks:load', function () {
-    debugger
   var visitProps = <%= raw @visit_properties.to_json %>;
   var visitorProps = <%= raw @visitor_properties.to_json %>;
 

@@ -675,6 +675,8 @@ GEM
     rubyzip (2.3.2)
     safely_block (0.3.0)
       errbase (>= 0.1.1)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -850,6 +852,8 @@ DEPENDENCIES
   rspec-retry
   rspec_junit_formatter
   rubyzip
+  sass-rails
+  sassc
   shakapacker (= 6.5)
   shoulda-matchers
   sidekiq

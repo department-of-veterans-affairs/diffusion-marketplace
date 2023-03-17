@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "diffusion-marketplace",
   "private": true,
   "dependencies": {
     "@babel/core": "7",
@@ -31,6 +31,7 @@
   "packageManager": "yarn@3.4.1",
   "devDependencies": {
     "css-loader": "^6.7.3",
+    "mini-css-extract-plugin": "^2.7.5",
     "style-loader": "^3.3.2"
   }
 }
