@@ -20,7 +20,7 @@ class PageController < ApplicationController
 
     if page_group.is_community? && !request.url.include?('/communities')
       is_landing_page = @page_slug == 'home'
-      host_name = ENV.fetch('HOSTNAME')
+      host_name = ENV["HOSTNAME"]
       communities_url = "#{host_name}/communities/#{page_group.slug}#{'/' + @page_slug unless is_landing_page}"
 
       redirect_to(URI.parse(communities_url).path)

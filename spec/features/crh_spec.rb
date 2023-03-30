@@ -65,7 +65,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
   describe 'Cache' do
     it 'should reset if a CRH is created, updated, or destroyed' do
       # update a CRH
-      @crh.update_attributes(official_station_name: 'Updated VISN 1 Clinical Resource Hub')
+      @crh.update(official_station_name: 'Updated VISN 1 Clinical Resource Hub')
       expect(cache_keys).to_not include('clinical_resource_hubs')
 
       visit_search_page
