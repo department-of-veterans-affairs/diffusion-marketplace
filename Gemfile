@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.7.8'
+ruby '3.0.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.5'
@@ -38,7 +38,7 @@ gem 'bcrypt', '~> 3.1.13'
 # gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '1.4.6', require: false
+gem 'bootsnap', require: false
 
 gem 'devise', '>= 4.6.0'
 gem 'devise-security'
@@ -46,7 +46,7 @@ gem 'kaminari'
 
 gem 'rolify', '~> 5.3.0'
 # pagination gem
-gem 'pagy', '~> 3.5'
+gem 'pagy', '~> 4'
 
 gem 'local_time'
 gem 'rails-timeago'
@@ -78,7 +78,7 @@ end
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '3.1.5'
+  gem 'listen'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
