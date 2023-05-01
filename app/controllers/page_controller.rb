@@ -18,11 +18,6 @@ class PageController < ApplicationController
     @news_items_ids = []
     collect_paginated_components(@page_components)
 
-    # temporary Shark Tank competition redirect
-    if request.url.match?(/dev\.marketplace\.va\.gov\/competitions\/shark-tank/)
-      redirect_to "https://marketplace.va.gov/competitions/shark-tank"
-    end
-
     if page_group.is_community? && !request.url.include?('/communities')
       is_landing_page = @page_slug == 'home'
       host_name = ENV["HOSTNAME"]
