@@ -93,7 +93,7 @@ class User < ApplicationRecord
 
   def valid_email
     return true unless email_changed?
-    return true if /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.match?(email)
+    return true if /\A[\w+'\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.match?(email)
 
     errors.add :email, 'invalid'
   end
