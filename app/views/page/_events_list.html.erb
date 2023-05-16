@@ -17,7 +17,7 @@
             <% if event&.location.present? %>
                 <p><i class="fas fa-map-marker-alt"></i><span class='sr-only'>Location: </span> <%= event&.location %></p>
             <% end %>
-            <p><%= event&.text.html_safe %></p>
+            <p><%= event&.text&.html_safe %></p>
         </div>
     </div>
 <% end %>

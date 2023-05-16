@@ -126,6 +126,7 @@ module ApplicationHelper
   end
 
   def is_internal_link?(url)
+    return nil if url.blank?
     url.include?(ENV.fetch('HOSTNAME')) ||
     url.start_with?('/') ||
     url.start_with?('.')
