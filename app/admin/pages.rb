@@ -53,6 +53,7 @@ ActiveAdmin.register Page do
                     :has_border,
                     :start_date,
                     :end_date,
+                    :location,
                     practices: []
                   ],
                   page_component_images_attributes: {}
