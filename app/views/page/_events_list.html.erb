@@ -4,15 +4,8 @@
             <%= link_to_if(event.title.present? && event.url.present?, event.title, event.url, class: set_link_classes(event.url), target: get_link_target_attribute(event.url)) %>
         </h3>
         <div id="<%= event.id %>" class="event-description usa-prose padding-bottom-5">
-            <% if event.start_date.present? %>
-                <p><i class="fas fa-calendar-alt"></i><span class='sr-only'>Date: </span>
-                <% if event.end_date.present? && event.start_date.year == event.end_date.year%>
-                    <%= event&.start_date&.strftime("%B %e")%> - <%= event&.end_date&.strftime("%e, %Y")%></p>
-                <% elsif event.end_date.present? %>
-                    <%= event&.start_date&.strftime("%B %e, %Y")%> - <%= event&.end_date&.strftime("%B %e, %Y")%></p>
-                <% else %>
-                    <%= event&.start_date&.strftime("%B %e, %Y")%></p>
-                <% end %>
+            <% if event&.start_date.present? %>
+                <p><i class="fas fa-calendar-alt"></i><span class='sr-only'>Date: </span> <%= event.rendered_date %></p>
             <% end %>
             <% if event&.location.present? %>
                 <p><i class="fas fa-map-marker-alt"></i><span class='sr-only'>Location: </span> <%= event&.location %></p>
