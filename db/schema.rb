@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_07_181813) do
+ActiveRecord::Schema.define(version: 2023_05_15_234423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -605,6 +605,7 @@ ActiveRecord::Schema.define(version: 2022_11_07_181813) do
     t.string "subtopic_description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url"
     t.index ["page_component_id"], name: "index_page_header2_components_on_page_component_id"
   end
 
