@@ -173,9 +173,16 @@
 
   .page-event-component {
     @include u-margin-bottom(2);
+    .usa-card__container {
+      border: 0;
+    }
   }
 
   .page-news-component {
     @include u-margin-bottom(2);
+
+    .usa-card__container {
+        border: 0;
+      }
   }
 
