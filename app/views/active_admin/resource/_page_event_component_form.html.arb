@@ -36,6 +36,22 @@ html = Arbre::Context.new do
           para 'URL used for event title link, e.g. https://va.gov', class: 'inline-hints'
         end
 
+        li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_start_date_input" do
+          label 'Start date', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_start_date", class: 'label'
+          input value: component&.start_date || nil, type: 'date', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_start_date",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][start_date]"
+          para '', class: 'inline-hints'
+        end
+
+        li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_end_date_input" do
+          label 'End date', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_end_date", class: 'label'
+          input value: component&.end_date || nil, type: 'date', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_end_date",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][end_date]"
+          para 'Leave blank if this is a one day event', class: 'inline-hints'
+        end
+
         li class: 'string input optional stringish', id: "page_page_components_attributes_event_#{placeholder}_component_attributes_text_input" do
           if component
             input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
