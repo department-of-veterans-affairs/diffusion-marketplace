@@ -7,10 +7,10 @@
                 </h3>
             </div>
             <div id="<%= news_item.id %>" class="news-item-description usa-prose usa-card__body">
-                <%= news_item&.text.html_safe %>
-            </div>
-            <div class="usa-card__footer">
-                <span class="news-published-date"><%= news_item&.published_date&.strftime("%B %e, %Y") %></span>
+                <% if news_item.published_date.present? %>
+                    Published on <p class="news-published-date"><%= news_item&.published_date&.strftime("%B %e, %Y") %></p>
+                    <%= news_item&.text.html_safe %>
+                <% end %>
             </div>
         </div>
     </li>
