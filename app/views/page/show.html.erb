@@ -41,7 +41,7 @@
         <% when 'PageHeader3Component' %>
           <div class="<%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
             <h3 class="font-sans-lg text-<%= component.alignment.downcase %>">
-              <%= component.title %>
+              <%= link_to_unless component.url.blank?, component.title, component.url %>
             </h3>
             <% if component.description.present? %>
               <div class="grid-col-12 <%= 'desktop:grid-col-8' unless @page.narrow? %> margin-top-2 line-height-26">
