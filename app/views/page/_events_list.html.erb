@@ -1,10 +1,14 @@
 <% events.each do |event|%>
-    <div class="page-event-component">
-        <h3 class="event-title margin-bottom-3">
-            <%= link_to_if(event.title.present? && event.url.present?, event.title, event.url, class: set_link_classes(event.url), target: get_link_target_attribute(event.url)) %>
-        </h3>
-        <div id="<%= event.id %>" class="event-description usa-prose padding-bottom-5">
-            <%= event&.text.html_safe %>
+    <li class="page-event-component usa-card tablet:grid-col-6">
+        <div class="usa-card__container">
+            <div class="usa-card__header">
+                <h3 class="margin-bottom-2 event-title">
+                    <%= link_to_if(event.title.present? && event.url.present?, event.title, event.url, class: set_link_classes(event.url), target: get_link_target_attribute(event.url)) %>
+                </h3>
+            </div>
+            <div id="<%= event.id %>" class="event-item-description usa-prose usa-card__body">
+                <%= event&.text.html_safe %>
+            </div>
         </div>
-    </div>
+    </li>
 <% end %>
