@@ -608,6 +608,7 @@ ActiveRecord::Schema.define(version: 2023_05_16_203145) do
     t.string "subtopic_description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url"
     t.index ["page_component_id"], name: "index_page_header2_components_on_page_component_id"
   end
 
@@ -618,6 +619,7 @@ ActiveRecord::Schema.define(version: 2023_05_16_203145) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url"
     t.index ["page_component_id"], name: "index_page_header3_components_on_page_component_id"
   end
 
