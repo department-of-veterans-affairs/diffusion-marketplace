@@ -11,9 +11,11 @@ class PageEventComponent < ApplicationRecord
   def rendered_date
     return if self.start_date.blank?
 
-    if self.end_date.present? && self.start_date.year != self.end_date.year
+    if self.end_date.present? && (self.start_date.year != self.end_date.year)
       return self.start_date.strftime("%B %e, %Y") + " - " + self.end_date.strftime("%B%e, %Y")
-    elsif self.end_date.present?
+    elsif self.end_date.present? && (self.start_date.month != self.end_date.month)
+      return self.start_date.strftime("%B %e") + " - " + self.end_date.strftime("%B%e, %Y")
+    elsif self.end_date.present? && (self.start_date.month == self.end_date.month)
       return self.start_date.strftime("%B %e") + " - " + self.end_date.strftime("%e, %Y")
     else
       return self.start_date.strftime("%B %e, %Y")

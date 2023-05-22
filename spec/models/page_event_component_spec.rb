@@ -14,6 +14,12 @@ RSpec.describe PageEventComponent, type: :model do
       expect(event.rendered_date).to eq "May 16, 2023"
     end
 
+    it 'renders dates in different months in the same year' do
+      event.start_date = Date.new(2023,05,16)
+      event.end_date = Date.new(2023,06,01)
+      expect(event.rendered_date).to eq "May 16 - June 1, 2023"
+    end
+
     it 'renders events with a date range in the same year' do
       event.start_date = Date.new(2023,05,16)
       event.end_date = Date.new(2023,05,20)
