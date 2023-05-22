@@ -96,9 +96,9 @@
               elc = @event_list_components[component_index]
               @event_list_component_index = component_index + 1
             %>
-            <div class="event-component-list dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+            <ul class="event-component-list usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
               <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
-            </div>
+            </ul>
             <% if elc[:pagy].count > 3  %>
               <div class="text-center dm-load-more-events-<%= component_index %>-btn-container">
                 <% link = pagy_link_proc(elc[:pagy]) %>

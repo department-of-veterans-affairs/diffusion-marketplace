@@ -172,10 +172,17 @@
 }
 
   .page-event-component {
-    border-top: 1px solid black;
+    @include u-margin-bottom(2);
+    .usa-card__container {
+      border: 0;
+    }
   }
 
   .page-news-component {
     @include u-margin-bottom(2);
+
+    .usa-card__container {
+        border: 0;
+      }
   }
 
