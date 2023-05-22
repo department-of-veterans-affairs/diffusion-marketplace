@@ -51,6 +51,9 @@ ActiveAdmin.register Page do
                     :padding_top,
                     :published_date,
                     :has_border,
+                    :start_date,
+                    :end_date,
+                    :location,
                     practices: []
                   ],
                   page_component_images_attributes: {}
