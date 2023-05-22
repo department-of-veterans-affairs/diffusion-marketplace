@@ -24,6 +24,14 @@ html = Arbre::Context.new do
                   id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_description",
                   name: "page[page_components_attributes][#{placeholder}][component_attributes][subtopic_description]"
           end
+
+          li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
+          label 'URL', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.url || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
+          para 'Optional. Enter a URL suffix to any internal page of the marketplace (Ex: "/innovations/vione" or a complete external URL (Ex.  https://www.va.gov/) that you would like the heading to link to', class: 'inline-hints'
+          end
         end
       end
     end

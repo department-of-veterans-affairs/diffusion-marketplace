@@ -7,7 +7,8 @@ class PageGroup < ApplicationRecord
   validates :description, presence: true
 
   COMMUNITY_SLUGS = [
-    'xr-network'
+    'xr-network',
+    'va-immersive'
   ]
 
   def is_community?
