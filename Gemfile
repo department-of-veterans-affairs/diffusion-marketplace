@@ -1,6 +1,4 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.8'
 
@@ -124,9 +122,11 @@ gem 'friendly_id', '~> 5.2.4'
 
 gem 'jquery-cropper'
 
-gem 'rails-assets-jquery', source: 'https://rails-assets.org'
-gem 'rails-assets-sticky', source: 'https://rails-assets.org'
-gem 'rails-assets-jquery.scrollTo', source: 'https://rails-assets.org'
+source 'https://rails-assets.org' do
+  gem 'rails-assets-jquery'
+  gem 'rails-assets-sticky'
+  gem 'rails-assets-jquery.scrollTo'
+end
 gem "nested_form"
 gem 'colorize'
 gem 'humanize'
