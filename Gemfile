@@ -109,7 +109,7 @@ gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'aws-sdk-rds'
 gem 'wt_s3_signer'
-gem 'paperclip', github: 'agilesix/paperclip', ref: 'ruby-2.7.x-deprecation-fix'
+gem 'paperclip', github: 'agilesix/paperclip', branch: 'ruby-2.7.x-deprecation-fix'
 gem 'font-awesome-sass', '~> 5.13.0'
 gem 'sidekiq'
 
@@ -149,12 +149,12 @@ gem 'groupdate'
 
 gem 'ahoy_matey'
 
-gem 'ntlm-sso', github: 'agilesix/ntlm-sso', ref: 'master'
+gem 'ntlm-sso', github: 'agilesix/ntlm-sso', branch: 'master'
 gem 'net-ldap'
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
-gem 'gmaps4rails', github: 'agilesix/Google-Maps-for-Rails', ref: 'master'
+gem 'gmaps4rails', github: 'agilesix/Google-Maps-for-Rails', branch: 'master'
 gem 'lodash-rails'
 
 gem 'route_downcaser'

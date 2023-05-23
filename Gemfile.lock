@@ -1,14 +1,14 @@
 GIT
   remote: https://github.com/agilesix/Google-Maps-for-Rails.git
   revision: b75a989aa3fb187cfd945a40b139d22d6ac672bf
-  ref: master
+  branch: master
   specs:
     gmaps4rails (2.1.2)
 
 GIT
   remote: https://github.com/agilesix/ntlm-sso.git
   revision: 32807d619a8cd930b0f1ae549f2eeb32e6154f87
-  ref: master
+  branch: master
   specs:
     ntlm-sso (0.0.1)
       ruby-ntlm
@@ -16,7 +16,7 @@ GIT
 GIT
   remote: https://github.com/agilesix/paperclip.git
   revision: e1df9f4d9ebb0f59220e726df5453b75c5b77641
-  ref: ruby-2.7.x-deprecation-fix
+  branch: ruby-2.7.x-deprecation-fix
   specs:
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
