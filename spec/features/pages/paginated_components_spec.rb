@@ -18,9 +18,9 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     before do
       # event components page with 2 lists
       @events_page = Page.create(page_group: @page_group, title: 'events only', description: '2 instances of event list components', slug: 'events-only', created_at: Time.now, published: Time.now)
-      create_event_components(5,@events_page)
+      create_event_components((@event_pagination_size * 2) + 1, @events_page)
       PageComponent.create(page: @events_page, component: @paragraph_component, created_at: Time.now)
-      create_event_components(5,@events_page)
+      create_event_components((@event_pagination_size * 2) + 1, @events_page)
       visit 'programming/events-only'
     end
 
@@ -29,25 +29,25 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     end
 
     it 'paginates both lists', js: true do
-      expect(page).to have_css('.page-event-component', count: 4)
+      expect(page).to have_css('.page-event-component', count: @event_pagination_size * 2)
 
       # load all events in the first list
       click_load_more("events", 0)
 
-      expect(page).to have_css('.page-event-component', count: 6)
+      expect(page).to have_css('.page-event-component', count: @event_pagination_size * 3)
       click_load_more("events", 0)
       expect(page).to have_content('Load more')
 
-      expect(page).to have_css('.page-event-component', count: 7)
+      expect(page).to have_css('.page-event-component', count: (@event_pagination_size * 3) + 1)
       expect(page).not_to have_css(".dm-load-more-events-0-btn-container > a", text: 'Load more')
 
       # load all events in the second list
       click_load_more("events", 1)
 
-      expect(page).to have_css('.page-event-component', count: 9)
+      expect(page).to have_css('.page-event-component', count: (@event_pagination_size * 4) + 1)
       click_load_more("events", 1)
 
-      expect(page).to have_css('.page-event-component', count: 10)
+      expect(page).to have_css('.page-event-component', count: (@event_pagination_size * 4) + 2)
       expect(page).not_to have_css(".dm-load-more-events-1-btn-container > a", text: 'Load more')
     end
   end
@@ -56,9 +56,9 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     before do
       # news components page with 2 lists
       @news_page = Page.create(page_group: @page_group, title: 'news only', description: '2 instances of news list components', slug: 'news-only', created_at: Time.now, published: Time.now)
-      create_news_components(9,@news_page)
+      create_news_components((@news_pagination_size * 2) + 1, @news_page)
       PageComponent.create(page: @news_page, component: @paragraph_component, created_at: Time.now)
-      create_news_components(9,@news_page)
+      create_news_components((@news_pagination_size * 2) + 1, @news_page)
       visit 'programming/news-only'
     end
 
@@ -67,25 +67,25 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     end
 
     it 'paginates both lists', js: true do
-      expect(page).to have_css('.page-news-component', count: 8)
+      expect(page).to have_css('.page-news-component', count: @news_pagination_size * 2)
 
       # load all news in the first list
       click_load_more("news", 0)
 
-      expect(page).to have_css('.page-news-component', count: 12)
+      expect(page).to have_css('.page-news-component', count: @news_pagination_size * 3)
       click_load_more("news", 0)
       expect(page).to have_content('Load more')
 
-      expect(page).to have_css('.page-news-component', count: 13)
+      expect(page).to have_css('.page-news-component', count: (@news_pagination_size * 3) + 1)
       expect(page).not_to have_css(".dm-load-more-news-0-btn-container > a", text: 'Load more')
 
       # load all news in the second list
       click_load_more("news", 1)
 
-      expect(page).to have_css('.page-news-component', count: 17)
+      expect(page).to have_css('.page-news-component', count: (@news_pagination_size * 4) + 1)
       click_load_more("news", 1)
 
-      expect(page).to have_css('.page-news-component', count: 18)
+      expect(page).to have_css('.page-news-component', count: (@news_pagination_size * 4) + 2)
       expect(page).not_to have_css(".dm-load-more-news-1-btn-container > a", text: 'Load more')
     end
   end
@@ -96,34 +96,34 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
       @mixed_components_page = Page.create(page_group: @page_group, title: 'ruby', description: 'what a gem', slug: 'mixed-components', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
       Page.create(page_group: @page_group, title: 'javascript', description: 'cool stuff', slug: 'javascript', created_at: Time.now, published: Time.now)
 
-      create_event_components(5,@mixed_components_page)
+      create_event_components((@event_pagination_size * 2) + 1, @mixed_components_page)
       PageComponent.create(page: @events_page, component: @paragraph_component, created_at: Time.now)
-      create_news_components(9,@mixed_components_page)
+      create_news_components((@news_pagination_size * 2) + 1, @mixed_components_page)
       PageComponent.create(page: @events_page, component: @paragraph_component, created_at: Time.now)
       create_practice_list_components(2,@user,@mixed_components_page)
       visit '/programming/mixed-components'
     end
 
     it 'paginates event components', js:true do
-      expect(page).to have_css('.page-event-component', count: 2)
+      expect(page).to have_css('.page-event-component', count: @event_pagination_size)
       click_load_more("events", 0)
 
-      expect(page).to have_css('.page-event-component', count: 4)
+      expect(page).to have_css('.page-event-component', count: @event_pagination_size * 2)
       click_load_more("events", 0)
 
-      expect(page).to have_css('.page-event-component', count: 5)
+      expect(page).to have_css('.page-event-component', count: (@event_pagination_size * 2) + 1)
       expect(page).not_to have_css(".dm-load-more-events-0-btn-container > a", text: 'Load more')
     end
 
     it 'paginates news components', js: true do
-      expect(page).to have_css('.page-news-component', count: 4)
+      expect(page).to have_css('.page-news-component', count: @news_pagination_size)
       click_load_more("news", 0)
 
-      expect(page).to have_css('.page-news-component', count: 8)
+      expect(page).to have_css('.page-news-component', count: @news_pagination_size * 2)
       click_load_more("news", 0)
       expect(page).to have_content('Load more')
 
-      expect(page).to have_css('.page-news-component', count: 9)
+      expect(page).to have_css('.page-news-component', count: (@news_pagination_size * 2) + 1)
       expect(page).not_to have_css(".dm-load-more-news-0-btn-container > a", text: 'Load more')
     end
 
