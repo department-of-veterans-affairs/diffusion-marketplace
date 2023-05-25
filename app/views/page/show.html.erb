@@ -232,6 +232,26 @@
             </div>
           <% end %>
 
+        <%# Publication %>
+        <% when 'PagePublicationComponent' %>
+          <div class="grid-container">
+            <div class="publication-component-list dm-paginated-<%= component_index %>-publications margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <div class="page-publication-component">
+                <h3 class="event-title margin-bottom-3">
+                    <%= link_to_if(component.title.present? && component.url.present?, component.title, component.url, class: set_link_classes(component.url), target: get_link_target_attribute(component.url)) %>
+                </h3>
+                <p>
+                  <%= "Published in #{component.published_in}" if component.published_in.present? %> <%= "on #{component.published_date.strftime("%B %e, %Y")}" if component.published_date.present? %>
+                </p>
+                <p>
+                  <%= "By #{component.authors}" if component.authors.present? %>
+                </p>
+                <div id="" class="publication-description usa-prose padding-bottom-5">
+                </div>
+              </div>
+            </div>
+          </div>
+
         <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-container">

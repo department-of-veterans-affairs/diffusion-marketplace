@@ -60,6 +60,7 @@ ActiveAdmin.register Page do
                     :padding_bottom,
                     :padding_top,
                     :published_date,
+                    :published_in,
                     :has_border,
                     :start_date,
                     :end_date,
@@ -138,6 +139,7 @@ ActiveAdmin.register Page do
                 pc.component_type == 'PageSubpageHyperlinkComponent' ||
                 pc.component_type == 'PageAccordionComponent' ||
                 pc.component_type == 'PageMapComponent' ||
+                pc.component_type == 'PagePublicationComponent' ||
                 pc.component_type == 'PageCompoundBodyComponent') && component&.title.present?
               para "Title: #{component.title}"
             end
@@ -184,6 +186,7 @@ ActiveAdmin.register Page do
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             # URL
             if (pc.component_type == 'PageSubpageHyperlinkComponent' ||
+                pc.component_type == 'PagePublicationComponent' ||
                 pc.component_type == 'PageYouTubePlayerComponent' ||
                 pc.component_type == 'PageCompoundBodyComponent') && component&.url.present?
               para "URL: #{component.url}"
