@@ -7,10 +7,14 @@
                 </h3>
             </div>
             <div id="<%= news_item.id %>" class="news-item-description usa-prose usa-card__body">
-                <% if news_item.published_date.present? %>
-                    Published on <p class="news-published-date"><%= news_item&.published_date&.strftime("%B %e, %Y") %></p>
-                    <%= news_item&.text.html_safe %>
+                <% if news_item.published_date.present? && news_item.authors.present? %>
+                    <p>Published on <%= news_item&.published_date&.strftime("%B %e, %Y") %> by <%= news_item&.authors %></p>
+                <% elsif news_item.published_date.present? %>
+                    <p>Published on <%= news_item&.published_date&.strftime("%B %e, %Y") %></p>
+                <% elsif news_item.authors.present? %>
+                    <p>Published by <%= news_item&.authors %></p>
                 <% end %>
+                <p><%= news_item&.text&.html_safe %></p>
             </div>
         </div>
     </li>

@@ -44,6 +44,14 @@ html = Arbre::Context.new do
           para 'Original publication date', class: 'inline-hints'
         end
 
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_authors_input" do
+          label 'Author(s)', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.authors || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_authors",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][authors]"
+          para 'Enter with appropriate punctuation. e.g. "John, Joan, and Jill', class: 'inline-hints'
+        end
+
         li class: 'string input optional stringish', id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text_input" do
           if component
             input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"

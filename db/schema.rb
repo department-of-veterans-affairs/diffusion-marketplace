@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_16_203145) do
+ActiveRecord::Schema.define(version: 2023_05_25_214628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -674,6 +674,7 @@ ActiveRecord::Schema.define(version: 2023_05_16_203145) do
     t.string "url"
     t.string "text"
     t.date "published_date"
+    t.string "authors"
     t.index ["page_component_id"], name: "index_page_news_components_on_page_component_id"
   end
 

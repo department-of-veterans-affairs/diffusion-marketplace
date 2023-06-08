@@ -21,6 +21,7 @@ ActiveAdmin.register Page do
                   :position,
                   :_destroy,
                   component_attributes: [
+                    :authors,
                     :url,
                     :description,
                     :title,
