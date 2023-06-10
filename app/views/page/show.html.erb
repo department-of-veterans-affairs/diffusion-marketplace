@@ -230,12 +230,12 @@
             text_alignment = component.description_text_alignment
           %>
           <% if title.present? %>
-            <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9">
+            <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9 <%= page_narrow_classes %>">
               <%= content_tag(:span, title, class: 'margin-right-1') %>
             </div>
           <% end %>
 
-          <div class="grid-row">
+          <div class="grid-row <%= page_narrow_classes %>">
             <% map_cols = if description&.blank?
                             'grid-col-12'
                           elsif text_alignment == 'Left'
@@ -262,11 +262,11 @@
                                     'grid-col-12'
                                   end
             %>
-              <div class="margin-top-2 <%= description_cols %> <%= page_narrow_classes %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
+              <div class="margin-top-2 <%= description_cols %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
                 <%= content_tag(:span, description, class: 'margin-right-1') %>
               </div>
             <% end %>
-          <div>
+          </div>
 
         <%# Text and Images %>
         <% when 'PageCompoundBodyComponent' %>
