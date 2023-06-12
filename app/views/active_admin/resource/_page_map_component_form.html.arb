@@ -43,11 +43,13 @@ html = Arbre::Context.new do
                class: 'inline-hints'
         end
 
+        # Map description
         li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
           label 'Description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
-          input value: component&.description || nil, type: 'text', required: 'required',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_description",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][description]"
+
+          textarea component&.description, id: "page_page_components_attributes_#{placeholder}_component_attributes_description", name: "page[page_components_attributes][#{placeholder}][component_attributes][description]", class: 'tinymce', rows:'18' do
+            component&.send(:description).try :html_safe
+          end
           para 'Enter a brief description of the map.', class: 'inline-hints'
         end
 
