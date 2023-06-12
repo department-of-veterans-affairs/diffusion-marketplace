@@ -18,7 +18,7 @@ COPY va-dc.crt /etc/pki/ca-trust/source/anchors/va-dc.crt
 COPY VA-Internal-S2-RCA2.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA2.cer
 RUN update-ca-trust extract
 
-RUN gem install bundler --force
+RUN gem install bundler -v '2.4.13' --force
 RUN bundle config build.pg --with-pg-config=/usr/pgsql-12/bin/pg_config
 
 ENV RAILS_ROOT /home/nginx/app
