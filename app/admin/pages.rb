@@ -43,6 +43,7 @@ ActiveAdmin.register Page do
                     :display_in_progress_adoptions,
                     :display_unsuccessful_adoptions,
                     :map_info_window_text,
+                    :description_text_alignment,
                     :body,
                     :title_header,
                     :text_alignment,

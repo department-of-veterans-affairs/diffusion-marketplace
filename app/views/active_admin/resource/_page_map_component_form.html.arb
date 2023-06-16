@@ -28,11 +28,28 @@ html = Arbre::Context.new do
           para 'Enter text or acronym to display in the maps info window.', class: 'inline-hints'
         end
 
+        # Description text alignment
+        li class: 'select input description-text-alignment-container',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_description_text_alignment_input" do
+          label 'Text alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_description_text_alignment", class: 'label'
+          select value: component&.description_text_alignment || nil,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_description_text_alignment",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][description_text_alignment]" do
+            option 'Bottom', selected: component&.description_text_alignment === 'Bottom' || component&.description_text_alignment.blank?
+            option 'Left', selected: component&.description_text_alignment === 'Left'
+            option 'Right', selected: component&.description_text_alignment === 'Right'
+          end
+          para "Text alignment for map description (bottom, left or right). Defaults to below the map.",
+               class: 'inline-hints'
+        end
+
+        # Map description
         li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
           label 'Description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
-          input value: component&.description || nil, type: 'text', required: 'required',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_description",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][description]"
+
+          textarea component&.description, id: "page_page_components_attributes_#{placeholder}_component_attributes_description", name: "page[page_components_attributes][#{placeholder}][component_attributes][description]", class: 'tinymce', rows:'18' do
+            component&.send(:description).try :html_safe
+          end
           para 'Enter a brief description of the map.', class: 'inline-hints'
         end
 

@@ -3,7 +3,8 @@ const COMPONENT_CLASSES = [
     '.page-accordion-component',
     '.page-compound-body-component',
     '.page-event-component p',
-    '.page-news-component p'
+    '.page-news-component p',
+    '.page-map-component p'
 ].join(', ');
 
 (($) => {
