@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.8'
 
@@ -109,7 +111,7 @@ gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'aws-sdk-rds'
 gem 'wt_s3_signer'
-gem 'paperclip', github: 'agilesix/paperclip', branch: 'ruby-2.7.x-deprecation-fix'
+gem 'paperclip', github: 'agilesix/paperclip', ref: 'ruby-2.7.x-deprecation-fix'
 gem 'font-awesome-sass', '~> 5.13.0'
 gem 'sidekiq'
 
@@ -122,11 +124,9 @@ gem 'friendly_id', '~> 5.2.4'
 
 gem 'jquery-cropper'
 
-source 'https://rails-assets.org' do
-  gem 'rails-assets-jquery'
-  gem 'rails-assets-sticky'
-  gem 'rails-assets-jquery.scrollTo'
-end
+gem 'rails-assets-jquery', source: 'https://rails-assets.org'
+gem 'rails-assets-sticky', source: 'https://rails-assets.org'
+gem 'rails-assets-jquery.scrollTo', source: 'https://rails-assets.org'
 gem "nested_form"
 gem 'colorize'
 gem 'humanize'
@@ -149,12 +149,12 @@ gem 'groupdate'
 
 gem 'ahoy_matey'
 
-gem 'ntlm-sso', github: 'agilesix/ntlm-sso', branch: 'master'
+gem 'ntlm-sso', github: 'agilesix/ntlm-sso', ref: 'master'
 gem 'net-ldap'
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
-gem 'gmaps4rails', github: 'agilesix/Google-Maps-for-Rails', branch: 'master'
+gem 'gmaps4rails', github: 'agilesix/Google-Maps-for-Rails', ref: 'master'
 gem 'lodash-rails'
 
 gem 'route_downcaser'
