@@ -126,6 +126,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery'
   gem 'rails-assets-sticky'
   gem 'rails-assets-jquery.scrollTo'
+  gem 'rails-assets-normalize-css' # force dependency for uswds-rails to load from rails-assets
 end
 gem "nested_form"
 gem 'colorize'
