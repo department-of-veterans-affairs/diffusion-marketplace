@@ -186,3 +186,27 @@
       }
   }
 
+  .page-cta-component {
+    width: 100%;
+    background-color: black;
+  }
+
+  .page-cta-component .content-container {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .page-cta-component .cta-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-cta-component .cta-content .font-sans-lg span {
+    color: white;
+  }
+
