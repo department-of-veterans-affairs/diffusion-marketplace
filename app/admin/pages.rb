@@ -37,6 +37,7 @@ ActiveAdmin.register Page do
                     :display_name,
                     :attachment,
                     :cta_text,
+                    :has_background_color,
                     :button_text,
                     :card,
                     :display_successful_adoptions,
