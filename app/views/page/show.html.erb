@@ -77,17 +77,33 @@
 
         <%# CTA %>
         <% when 'PageCtaComponent' %>
-          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-            <div class="font-sans-lg grid-col-12 margin-bottom-2">
-              <span><%= component.cta_text %></span>
+          <% if component.has_background_color %>
+            <div class="page-cta-component">
+              <div class="content-container">
+                <div class="cta-content" <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                  <div class="font-sans-lg">
+                    <span><%= component.cta_text %></span>
+                  </div>
+                  <a href="<%= component.url %>"
+                    target="<%= get_link_target_attribute(component.url) %>"
+                    class="dm-button--inverse-secondary margin-top-4 margin-bottom-4 margin-left-4">
+                    <%= component.button_text %>
+                  </a>
+                </div>  
+              </div>
             </div>
-            <a href="<%= component.url %>"
-               target="<%= get_link_target_attribute(component.url) %>"
-               class="usa-button">
-              <%= component.button_text %>
-            </a>
-          </div>
-
+          <% else %>
+            <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <div class="font-sans-lg grid-col-12 margin-bottom-2">
+                <span><%= component.cta_text %></span>
+              </div>
+              <a href="<%= component.url %>"
+                target="<%= get_link_target_attribute(component.url) %>"
+                class="usa-button">
+                <%= component.button_text %>
+              </a>
+            </div>
+          <% end %>
         <%# Event %>
         <% when 'PageEventComponent' %>
           <% if @event_ids.include?(component.id) %>
