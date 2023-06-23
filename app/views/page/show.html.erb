@@ -9,7 +9,7 @@
 <% accordion_ctr = 0 %>
 <% page_narrow_classes = 'desktop:grid-col-8 margin-x-auto' if @page.narrow? %>
 <div id="page-builder-page" class="margin-top-5">
-  <section class="grid-container">
+  <section>
     <div class="dm-page-content">
       <% @page_components.each_with_index do |pc, index| %>
         <%
@@ -18,75 +18,103 @@
         %>
 
         <%# Page Header and Paragraph %>
-        <% if (pc.component_type == 'PageHeaderComponent' || pc.component_type == 'PageParagraphComponent') && component.text.present? %>
-          <div class="page-paragraph-component margin-bottom-4-important <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-            <%= component.text.html_safe %>
-          </div>
-        <% end %>
+          <% if (pc.component_type == 'PageHeaderComponent' || pc.component_type == 'PageParagraphComponent') && component.text.present? %>
+            <div class="grid-container">
+              <div class="page-paragraph-component margin-bottom-4-important <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                <%= component.text.html_safe %>
+              </div>
+            </div>
+          <% end %>
 
         <%# Page Header 2 %>
         <% case pc.component_type when 'PageHeader2Component' %>
-          <div class="grid-row margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
-            <h2 class="grid-col-12 desktop:grid-col-8 font-sans-xl <%= 'margin-x-auto' if @page.narrow? %>">
-              <%= link_to_unless component.url.blank?, component.subtopic_title, component.url, target: get_link_target_attribute(component.url), class: set_link_classes(component.url) %>
-            </h2>
-            <% if component.subtopic_description.present? %>
-              <div class="grid-col-12 desktop:grid-col-8 line-height-26 <%= 'margin-x-auto' if @page.narrow? %> margin-top-2">
-                <%= component.subtopic_description %>
-              </div>
-            <% end %>
+          <div class="grid-container">
+            <div class="grid-row margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
+              <h2 class="grid-col-12 desktop:grid-col-8 font-sans-xl <%= 'margin-x-auto' if @page.narrow? %>">
+                <%= link_to_unless component.url.blank?, component.subtopic_title, component.url, target: get_link_target_attribute(component.url), class: set_link_classes(component.url) %>
+              </h2>
+              <% if component.subtopic_description.present? %>
+                <div class="grid-col-12 desktop:grid-col-8 line-height-26 <%= 'margin-x-auto' if @page.narrow? %> margin-top-2">
+                  <%= component.subtopic_description %>
+                </div>
+              <% end %>
+            </div>
           </div>
 
         <%# Page Header 3 %>
         <% when 'PageHeader3Component' %>
-          <div class="<%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
-            <h3 class="font-sans-lg text-<%= component.alignment.downcase %>">
-              <%= link_to_unless component.url.blank?, component.title, component.url, target: get_link_target_attribute(component.url), class: set_link_classes(component.url) %>
-            </h3>
-            <% if component.description.present? %>
-              <div class="grid-col-12 <%= 'desktop:grid-col-8' unless @page.narrow? %> margin-top-2 line-height-26">
-                <%= component.description %>
-              </div>
-            <% end %>
+          <div class="grid-container">
+            <div class="<%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
+              <h3 class="font-sans-lg text-<%= component.alignment.downcase %>">
+                <%= link_to_unless component.url.blank?, component.title, component.url, target: get_link_target_attribute(component.url), class: set_link_classes(component.url) %>
+              </h3>
+              <% if component.description.present? %>
+                <div class="grid-col-12 <%= 'desktop:grid-col-8' unless @page.narrow? %> margin-top-2 line-height-26">
+                  <%= component.description %>
+                </div>
+              <% end %>
+            </div>
           </div>
 
         <%# Page Horizontal Line %>
         <% when 'PageHrComponent' %>
-          <hr class="flex-fill border border-base-lighter bg-base-lightest dm-section-line margin-top-0 margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+          <div class="grid-container">
+            <hr class="flex-fill border border-base-lighter bg-base-lightest dm-section-line margin-top-0 margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+          </div>
 
         <%# Accordion %>
         <% when 'PageAccordionComponent' %>
           <% accordion_ctr += 1 %>
-
-          <div id="accordion_anchor_<%= accordion_ctr %>"
-               class="page-accordion-component margin-bottom-3<%= ' margin-bottom-0' if last_component == index %> <%= page_narrow_classes %>"
-          >
-            <div class="usa-accordion<%= ' usa-accordion--bordered' if component.has_border %>">
-              <h2 class="usa-accordion__heading">
-                <button class="usa-accordion__button font-sans-sm"
-                        aria-expanded="false"
-                        aria-controls="a<%= component.id %>">
-                  <%= component.title %>
-                </button>
-              </h2>
-              <div id="a<%= component.id %>" class="usa-accordion__content usa-prose">
-                <%= component.text.html_safe if component.text.present? %>
+          <div class="grid-container">
+            <div id="accordion_anchor_<%= accordion_ctr %>"
+                class="page-accordion-component margin-bottom-3<%= ' margin-bottom-0' if last_component == index %> <%= page_narrow_classes %>"
+            >
+              <div class="usa-accordion<%= ' usa-accordion--bordered' if component.has_border %>">
+                <h2 class="usa-accordion__heading">
+                  <button class="usa-accordion__button font-sans-sm"
+                          aria-expanded="false"
+                          aria-controls="a<%= component.id %>">
+                    <%= component.title %>
+                  </button>
+                </h2>
+                <div id="a<%= component.id %>" class="usa-accordion__content usa-prose">
+                  <%= component.text.html_safe if component.text.present? %>
+                </div>
               </div>
             </div>
           </div>
 
         <%# CTA %>
         <% when 'PageCtaComponent' %>
-          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-            <div class="font-sans-lg grid-col-12 margin-bottom-2">
-              <span><%= component.cta_text %></span>
+          <% if component.has_background_color %>
+            <div class="bg-gray-90">
+              <div class="grid-container">
+                <div class="display-flex flex-align-center flex-justify-center" <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                  <div class="font-sans-lg text-white">
+                    <span><%= component.cta_text %></span>
+                  </div>
+                  <a href="<%= component.url %>"
+                    target="<%= get_link_target_attribute(component.url) %>"
+                    class="dm-button--inverse-secondary margin-top-4 margin-bottom-4 margin-left-4">
+                    <%= component.button_text %>
+                  </a>
+                </div>  
+              </div>
             </div>
-            <a href="<%= component.url %>"
-               target="<%= get_link_target_attribute(component.url) %>"
-               class="usa-button">
-              <%= component.button_text %>
-            </a>
-          </div>
+          <% else %>
+            <div class="grid-container">
+              <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                <div class="font-sans-lg grid-col-12 margin-bottom-2">
+                  <span><%= component.cta_text %></span>
+                </div>
+                <a href="<%= component.url %>"
+                  target="<%= get_link_target_attribute(component.url) %>"
+                  class="usa-button">
+                  <%= component.button_text %>
+                </a>
+              </div>
+            </div>
+          <% end %>
 
         <%# Event %>
         <% when 'PageEventComponent' %>
@@ -96,27 +124,31 @@
               elc = @event_list_components[component_index]
               @event_list_component_index = component_index + 1
             %>
-            <ul class="event-component-list usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-              <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
-            </ul>
-            <% if elc[:pagy].count > 2  %>
-              <div class="text-center dm-load-more-events-<%= component_index %>-btn-container">
-                <% link = pagy_link_proc(elc[:pagy]) %>
-                <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
-              </div>
-            <% end %>
+            <div class="grid-container">
+              <ul class="event-component-list usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
+              </ul>
+              <% if elc[:pagy].count > 2  %>
+                <div class="text-center dm-load-more-events-<%= component_index %>-btn-container">
+                  <% link = pagy_link_proc(elc[:pagy]) %>
+                  <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+                </div>
+              <% end %>
+            </div>
           <% end %>
 
         <%# Image %>
         <% when 'PageImageComponent' %>
-          <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-            <% if component.url.present? %>
-              <a href="<%= component.url %>" target="<%= get_link_target_attribute(component.url) %>" title="Go to <%= component.url %>">
+          <div class="grid-container">
+            <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <% if component.url.present? %>
+                <a href="<%= component.url %>" target="<%= get_link_target_attribute(component.url) %>" title="Go to <%= component.url %>">
+                  <%= render partial: "page/page_image", locals: { component: component } %>
+                </a>
+              <% else %>
                 <%= render partial: "page/page_image", locals: { component: component } %>
-              </a>
-            <% else %>
-              <%= render partial: "page/page_image", locals: { component: component } %>
-            <% end %>
+              <% end %>
+            </div>
           </div>
 
         <%# News %>
@@ -127,15 +159,17 @@
               nic = @news_items_components[component_index]
               @news_list_component_index = component_index + 1
             %>
-            <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-              <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
-            </ul>
-            <% if nic[:pagy].count > 2  %>
-              <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
-                <% link = pagy_link_proc(nic[:pagy]) %>
-                <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
-              </div>
-            <% end %>
+            <div class="grid-container">
+              <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
+              </ul>
+              <% if nic[:pagy].count > 2  %>
+                <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
+                  <% link = pagy_link_proc(nic[:pagy]) %>
+                  <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+                </div>
+              <% end %>
+            </div>
           <% end %>
 
         <%# Practice List %>
@@ -147,21 +181,24 @@
             @practice_list_component_index = component_index + 1
           %>
           <% if pplc[:practices].any? %>
-            <div class="margin-bottom-2<%= ' margin-bottom-0' if last_component === index %>">
-              <div class="dm-practice-card-list dm-paginated-<%= component_index %>-practices">
-                <%= render partial: 'shared/practice_cards_row', locals: { practices: pplc[:practices] } %>
-              </div>
-              <% if pplc[:pagy].count > 6 %>
-                <div class="text-center dm-load-more-practices-<%= component_index %>-btn-container" >
-                  <% link = pagy_link_proc(pplc[:pagy]) %>
-                  <%=  link.call(pplc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+            <div class="grid-container">
+              <div class="margin-bottom-2<%= ' margin-bottom-0' if last_component === index %>">
+                <div class="dm-practice-card-list dm-paginated-<%= component_index %>-practices">
+                  <%= render partial: 'shared/practice_cards_row', locals: { practices: pplc[:practices] } %>
                 </div>
-              <% end %>
+                <% if pplc[:pagy].count > 6 %>
+                  <div class="text-center dm-load-more-practices-<%= component_index %>-btn-container" >
+                    <% link = pagy_link_proc(pplc[:pagy]) %>
+                    <%=  link.call(pplc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+                  </div>
+                <% end %>
+              </div>
             </div>
           <% end %>
 
         <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
+          <div class="grid-container">
             <% if component.card? %>
               <div class="grid-col-12 tablet:grid-col-6 pb-link-card margin-bottom-3">
                 <a class="pb-link text-no-underline" href="<%= component.url %>">
@@ -190,16 +227,19 @@
                 <% end %>
               </div>
             <% end %>
+          </div>
 
         <%# YouTube Player %>
         <% when 'PageYouTubePlayerComponent' %>
-          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-            <%= youtube_embed(component.url) %>
-            <% if component.caption.present? %>
-              <div class="font-sans-2xs line-height-135 margin-top-1 width-full line-height-15px">
-                <span class="text-bold">ABOVE:</span> <%= component.caption %>
-              </div>
-            <% end %>
+          <div class="grid-container">
+            <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <%= youtube_embed(component.url) %>
+              <% if component.caption.present? %>
+                <div class="font-sans-2xs line-height-135 margin-top-1 width-full line-height-15px">
+                  <span class="text-bold">ABOVE:</span> <%= component.caption %>
+                </div>
+              <% end %>
+            </div>
           </div>
 
         <%# Downloadable File %>
@@ -209,16 +249,18 @@
             display_name = component.display_name
             next_component = @page.page_components.find_by(position: pc.position + 1)
           %>
-          <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'margin-bottom-3 ' %> font-sans-sm line-height-162<%= ' margin-bottom-0' if last_component === index %>">
-            <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
-            <%= link_to component.attachment_s3_presigned_url,
-                        class: 'usa-link usa-link--external page-downloadable-file-component',
-                        target: '_blank',
-                        download: display_name != '' ? display_name : component.attachment_file_name,
-                        'data-resource-id': pc.component_id,
-                        'data-resource-path': pc.component.attachment.path do %>
-              <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
-            <% end %>
+          <div class="grid-container">
+            <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'margin-bottom-3 ' %> font-sans-sm line-height-162<%= ' margin-bottom-0' if last_component === index %>">
+              <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
+              <%= link_to component.attachment_s3_presigned_url,
+                          class: 'usa-link usa-link--external page-downloadable-file-component',
+                          target: '_blank',
+                          download: display_name != '' ? display_name : component.attachment_file_name,
+                          'data-resource-id': pc.component_id,
+                          'data-resource-path': pc.component.attachment.path do %>
+                <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
+              <% end %>
+            </div>
           </div>
 
         <%# Map Component %>
@@ -229,26 +271,29 @@
             next_component = @page.page_components.find_by(position: pc.position + 1)
             map_component_markers = @map_components_with_markers.find { |key, value| value[:component] == component }&.last[:markers]
           %>
-          <% if title.present? %>
-            <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9">
-              <%= content_tag(:span, title, class: 'margin-right-1') %>
-            </div>
-          <% end %>
+          <div class="grid-container">
+            <% if title.present? %>
+              <div class="margin-bottom-2 font-sans-lg text-bold margin-top-9">
+                <%= content_tag(:span, title, class: 'margin-right-1') %>
+              </div>
+            <% end %>
 
-          <div class="margin-bottom-1 page-map-component">
-            <%= render partial: "page/page_map",
-                       locals: {
-                         facility_markers: map_component_markers,
-                         component: component,
-                         component_id: component.page_component.id }
-            %>
+            <div class="margin-bottom-1 page-map-component">
+              <%= render partial: "page/page_map",
+                        locals: {
+                          facility_markers: map_component_markers,
+                          component: component,
+                          component_id: component.page_component.id }
+              %>
+            </div>
+
+            <% if description.present? %>
+              <div class="margin-top-2 grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
+                <%= content_tag(:span, description, class: 'margin-right-1') %>
+              </div>
+            <% end %>
           </div>
 
-          <% if description.present? %>
-            <div class="margin-top-2 grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == 'margin-bottom-9 ' %> font-sans-sm line-height-162<%= ' margin-bottom-9' if last_component === index %>">
-              <%= content_tag(:span, description, class: 'margin-right-1') %>
-            </div>
-          <% end %>
         <%# Text and Images %>
         <% when 'PageCompoundBodyComponent' %>
           <div
