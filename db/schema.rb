@@ -659,13 +659,14 @@ ActiveRecord::Schema.define(version: 2023_06_22_160931) do
     t.bigint "page_component_id"
     t.string "title"
     t.string "map_info_window_text"
-    t.string "description"
+    t.text "description"
     t.string "practices", default: [], array: true
     t.boolean "display_successful_adoptions", default: false
     t.boolean "display_in_progress_adoptions", default: false
     t.boolean "display_unsuccessful_adoptions", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description_text_alignment"
     t.index ["page_component_id"], name: "index_page_map_components_on_page_component_id"
   end
 
