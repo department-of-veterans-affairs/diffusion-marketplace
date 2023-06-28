@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_16_203145) do
+ActiveRecord::Schema.define(version: 2023_06_12_222945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -658,13 +658,14 @@ ActiveRecord::Schema.define(version: 2023_05_16_203145) do
     t.bigint "page_component_id"
     t.string "title"
     t.string "map_info_window_text"
-    t.string "description"
+    t.text "description"
     t.string "practices", default: [], array: true
     t.boolean "display_successful_adoptions", default: false
     t.boolean "display_in_progress_adoptions", default: false
     t.boolean "display_unsuccessful_adoptions", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description_text_alignment"
     t.index ["page_component_id"], name: "index_page_map_components_on_page_component_id"
   end
 
@@ -674,6 +675,7 @@ ActiveRecord::Schema.define(version: 2023_05_16_203145) do
     t.string "url"
     t.string "text"
     t.date "published_date"
+    t.string "authors"
     t.index ["page_component_id"], name: "index_page_news_components_on_page_component_id"
   end
 
