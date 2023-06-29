@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_12_222945) do
+ActiveRecord::Schema.define(version: 2023_06_29_165759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -564,6 +564,7 @@ ActiveRecord::Schema.define(version: 2023_06_12_222945) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "has_background_color", default: false
     t.index ["page_component_id"], name: "index_page_cta_components_on_page_component_id"
   end
 
