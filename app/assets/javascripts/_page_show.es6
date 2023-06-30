@@ -30,31 +30,36 @@ const COMPONENT_CLASSES = [
           if (!elementOne.parent().hasClass(containerClass) || !elementTwo.parent().hasClass(containerClass)) {
                 elementOne.before(container);
                 elementOne.prev().append(elementOne, elementTwo);
+                elementOne.parent().parent().next().remove()
           }
       }
 
       $('.dm-page-content').children().each(function() {
           let $this = $(this);
-          let prevEle = $this.prev();
-          let nextEle = $this.next();
+          // refactored to use individual grid-container divs which means expected classes are
+          // now one layer deeper
+          let currEle = $this.children().first()
+          let prevEle = $this.prev().children().first();
+          let nextEle = $this.next().children().first();
           let containerDiv = "<div class='pb-two-column-card-link-container grid-row grid-gap-3'></div>";
 
-          if ($this.hasClass(cardClass) && prevEle.hasClass(cardClass)) {
-              addContainerAndAppendElements(containerDiv, cardContainerClass, prevEle, $this);
-          } else if ($this.hasClass(cardClass) && nextEle.hasClass(cardClass)) {
-              addContainerAndAppendElements(containerDiv, cardContainerClass, $this, nextEle);
-          } else if ($this.hasClass(cardClass)) {
-              $this.before(containerDiv);
-              $this.prev().append($this);
+          if (currEle.hasClass(cardClass) && prevEle.hasClass(cardClass)) {
+              addContainerAndAppendElements(containerDiv, cardContainerClass, prevEle, currEle);
+          } else if (currEle.hasClass(cardClass) && nextEle.hasClass(cardClass)) {
+              addContainerAndAppendElements(containerDiv, cardContainerClass, currEle, nextEle);
+          } else if (currEle.hasClass(cardClass)) {
+              currEle.before(containerDiv);
+              currEle.prev().append(currEle);
           }
       });
 
       // Add bottom margin styles
       $(`.${cardContainerClass}`).each(function() {
           let $this = $(this);
-
-          if ($('.dm-page-content').children().last().is($this)) {
-              $this.addClass('margin-bottom-neg-3');
+          let lastEle = $('.dm-page-content').children().last()
+    
+          if (lastEle.is($this.parent())) {
+              $this.parent().addClass('margin-bottom-neg-3');
           } else if (!$this.next().hasClass(cardContainerClass)) {
               $this.addClass('margin-bottom-2');
           }
