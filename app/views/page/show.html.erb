@@ -49,7 +49,7 @@
                 <%= link_to_unless component.url.blank?, component.title, component.url, target: get_link_target_attribute(component.url), class: set_link_classes(component.url) %>
               </h3>
               <% if component.description.present? %>
-                <div class="grid-col-12 <%= 'desktop:grid-col-8' unless @page.narrow? %> margin-top-2 line-height-26">
+                <div class="grid-col-12 margin-top-2 line-height-26 text-<%= component.alignment.downcase unless @page.narrow? %>">
                   <%= component.description.html_safe %>
                 </div>
               <% end %>
