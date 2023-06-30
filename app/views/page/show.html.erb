@@ -50,7 +50,7 @@
               </h3>
               <% if component.description.present? %>
                 <div class="grid-col-12 <%= 'desktop:grid-col-8' unless @page.narrow? %> margin-top-2 line-height-26">
-                  <%= component.description %>
+                  <%= component.description.html_safe %>
                 </div>
               <% end %>
             </div>
