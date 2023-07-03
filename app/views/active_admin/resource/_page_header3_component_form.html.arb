@@ -30,11 +30,9 @@ html = Arbre::Context.new do
                    id: "page_page_components_attributes_#{placeholder}_component_attributes_alignment",
                    name: "page[page_components_attributes][#{placeholder}][component_attributes][alignment]" do
               option 'Left'
-              %w(Center Right).each do |h|
-                option h, value: h, selected: component&.alignment == h
-              end
+              option 'Center', value: 'Center', selected: component&.alignment == 'Center'
             end
-            para 'Choose an alignment for this H3 component: Left, Center, or Right.', class: 'inline-hints'
+            para 'Choose an alignment for this H3 component: Left or Center', class: 'inline-hints'
           end
 
           li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
