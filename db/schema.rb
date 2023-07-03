@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_29_165759) do
+ActiveRecord::Schema.define(version: 2023_06_29_212614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -703,6 +703,20 @@ ActiveRecord::Schema.define(version: 2023_06_29_165759) do
     t.datetime "updated_at", null: false
     t.boolean "card", default: false
     t.index ["page_component_id"], name: "index_page_subpage_hyperlink_components_on_page_component_id"
+  end
+
+  create_table "page_triple_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.text "title1"
+    t.text "text1"
+    t.text "title2"
+    t.text "text2"
+    t.text "title3"
+    t.text "text3"
+    t.boolean "has_background_color", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_component_id"], name: "index_page_triple_paragraph_components_on_page_component_id"
   end
 
   create_table "page_you_tube_player_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
