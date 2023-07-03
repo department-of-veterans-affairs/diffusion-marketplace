@@ -24,6 +24,7 @@ const pageComponentNames = [
     'PageParagraphComponent',
     'PagePracticeListComponent',
     'PageSubpageHyperlinkComponent',
+    'PageTripleParagraphComponent',
     'PageYouTubePlayerComponent'
 ];
 
@@ -172,11 +173,11 @@ const pageComponentNames = [
             var typeText;
             if (componentType === 'PageAccordionComponent') {
                 typeText = 'accordion';
-            } else if (componentType === 'PageParagraphComponent') {
+            } else if (componentType === 'PageParagraphComponent' || componentType === 'PageTripleParagraphComponent') {
                 typeText = 'paragraph';
             }
             var componentTextareaId = '#page_page_components_attributes_' + typeText + '_' + componentId + '_component_attributes_text'
-            if (componentType === 'PageAccordionComponent' || componentType === 'PageParagraphComponent') {
+            if (componentType === 'PageAccordionComponent' || componentType === 'PageParagraphComponent' || componentType === 'PageTripleParagraphComponent') {
                 _initTinyMCE(componentTextareaId);
             }
         })
@@ -184,7 +185,7 @@ const pageComponentNames = [
 
     function _initializeTinyMCEOnDragAndDrop() {
         $(document).on('mouseup', '.handle', function(e) {
-            const wysiwygComponents = ['PageAccordionComponent', 'PageCompoundBodyComponent', 'PageParagraphComponent'];
+            const wysiwygComponents = ['PageAccordionComponent', 'PageCompoundBodyComponent', 'PageParagraphComponent', 'PageTripleParagraphComponent'];
             var componentType = $(e.target).closest('ol').find('.polyselect').val();
 
             if (wysiwygComponents.includes(componentType)) {
