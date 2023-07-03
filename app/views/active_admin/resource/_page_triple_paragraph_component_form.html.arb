@@ -1,0 +1,91 @@
+### Uncomment the "f.inputs" block to render on PageComponent page to get html
+### This will help build the Arbre::Context to concat with the main template
+# f.inputs 'Paragraph',
+#          for: [:component, f.object.component || PageParagraphComponent.new],
+#          id: 'PageHeaderComponent_poly', class: 'inputs polyform' do |phc|
+#   phc.input :text, hint: 'Make this header stand out'
+#
+# end
+
+# TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD'
+component ||= nil
+html = Arbre::Context.new do
+  li "", id: "PageTripleParagraphComponent_poly_#{placeholder}", class: "input polyform component-#{placeholder}" do
+    fieldset class: "inputs" do
+      legend do
+        span 'Triple Column Text'
+      end
+
+      if component
+        input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+      end
+
+    	ol do
+        li class: 'checkbox input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_has_background_color" do
+          if component
+            input type: 'hidden', value: '0', name: "page[page_components_attributes][#{placeholder}][component_attributes][has_background_color]"
+          end
+          label 'Add Background Color', for: "page_page_components_attributes_#{placeholder}_component_attributes_has_border", class: 'label padding-top-0'
+          input value: '1', type: 'checkbox', checked: component&.has_background_color?,
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_has_background_color",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][has_background_color]",
+                class: 'toggle-has-background-color-styling'
+        end
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title1_input" do
+          label 'Title 1', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_title1", class: 'label'
+          input value: component&.title1 || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_title1",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][title1]"
+          para 'Title for first paragraph styled as an /"H3"', class: 'inline-hints'
+        end
+				
+				li class: 'string input optional stringish', id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text1_input" do
+					label 'Body 1', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text1", class: 'label'
+
+					textarea component&.text1, id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text1", name: "page[page_components_attributes][#{placeholder}][component_attributes][text1]", class: 'tinymce', rows: 18 do
+						component&.send(:text1).try :html_safe
+					end
+					para 'Text body for first paragraph', class: 'inline-hints'
+				end
+
+				li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title2_input" do
+          label 'Title 2', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_title2", class: 'label'
+          input value: component&.title2 || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_title2",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][title2]"
+          para 'Title for second paragraph styled as an /"H3"', class: 'inline-hints'
+        end
+				
+				li class: 'string input optional stringish', id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text2_input" do
+					label 'Body 2', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text2", class: 'label'
+
+					textarea component&.text2, id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text2", name: "page[page_components_attributes][#{placeholder}][component_attributes][text2]", class: 'tinymce', rows: 18 do
+						component&.send(:text2).try :html_safe
+					end
+					para 'Text body for second paragraph', class: 'inline-hints'
+				end
+
+				li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title3_input" do
+          label 'Title 3', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_title3", class: 'label'
+          input value: component&.title3 || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_title3",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][title3]"
+          para 'Title for third paragraph styled as an /"H3"', class: 'inline-hints'
+        end
+				
+				li class: 'string input optional stringish', id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text3_input" do
+					label 'Body 3', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text3", class: 'label'
+
+					textarea component&.text3, id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text3", name: "page[page_components_attributes][#{placeholder}][component_attributes][text3]", class: 'tinymce', rows: 18 do
+						component&.send(:text3).try :html_safe
+					end
+					para 'Text body for third paragraph', class: 'inline-hints'
+				end
+			end
+    end
+  end
+end
+
+return html.to_s
