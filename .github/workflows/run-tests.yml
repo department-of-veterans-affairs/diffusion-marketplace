@@ -2,7 +2,7 @@ name: department-of-veterans-affairs/diffusion-marketplace/run-tests
 on:
   push:
     branches:
-    - master
+    - ci-migration
 jobs:
   hold:
     environment:
