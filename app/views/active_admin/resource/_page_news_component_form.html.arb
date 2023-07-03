@@ -63,6 +63,115 @@ html = Arbre::Context.new do
           end
           para '', class: 'inline-hints'
         end
+      
+        page_component_images = component&.page_component&.page_component_images
+
+        # Page component images header bar
+          div class: "page-component-images-header display-flex flex-align-center #{'display-none' if page_component_images.blank?}" do
+            span 'Image list'
+          end
+
+
+        # TODO: Figure out a way to make the PageComponentImage list html a shareable partial
+        # PageComponentImage list
+        ol id: "page_page_components_attributes_#{placeholder}_page_component_images_ol", class: 'page-component-images-ol' do
+          if component && page_component_images&.present?
+            page_component_images.each_with_index do |pci, index|
+              li id: "page_page_components_attributes_#{placeholder}_page_component_images_#{index}_li border-bottom-2",
+                 'data-id': "page_component_image_#{placeholder}_li",
+                 class: 'page-component-image-li' do
+                input type: 'hidden',
+                      value: pci.id,
+                      name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][id]"
+
+                # Image file
+                div class: 'page-component-image-attribute-container image-file-container' do
+                  label 'Image *Required*',
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
+                        class: 'label'
+                  input value: pci.image_file_name, type: 'file', accept: '.jpg, .jpeg, .png',
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_image",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][image]",
+                        class: 'margin-top-0'
+                  para 'File types allowed: jpg, jpeg, and png. Max file size: 25MB', class: 'inline-hints'
+                end
+
+                # Image preview
+                if pci.image.present?
+                  div class: 'page-component-image-preview-container' do
+                    div class: 'placeholder'
+                    div class: 'page-component-image-container' do
+                      img class: 'page-component-image', src: pci.image_s3_presigned_url(:thumb), alt: pci.alt_text
+                    end
+                  end
+                end
+
+                # Image URL
+                div class: 'page-component-image-attribute-container image-url-container' do
+                  label 'Image URL', for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_url", class: 'label'
+                  input value: pci.url || nil, type: 'text',
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_url",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][url]"
+                  para class: 'inline-hints' do
+                    span 'For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").'
+                    span 'For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").'
+                  end
+                end
+
+                # Image caption
+                div class: 'page-component-image-attribute-container image-caption-container' do
+                  label 'Caption',
+                        for: "page_page_components_attributes_compound_body_#{placeholder}_page_component_images_attributes_#{index}_caption",
+                        class: 'label'
+
+                  textarea pci.caption,
+                           id: "page_page_components_attributes_compound_body_#{placeholder}_page_component_images_attributes_#{index}_caption",
+                           name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][caption]",
+                           class: 'tinymce page-component-image-caption',
+                           rows:'18'
+                  para 'Text that accurately describes the image.', class: 'inline-hints'
+                end
+
+                # Image alt text
+                div class: 'page-component-image-attribute-container image-alt-text-container' do
+                  label 'Alternative text *required*',
+                        for: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
+                        class: 'label'
+                  textarea pci.alt_text,
+                        id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}_alt_text",
+                        name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][alt_text]",
+                        class: 'height-7'
+                  para "Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of "\
+                        "the information this image is trying to convey.", class: 'inline-hints'
+                end
+
+                # Trash container
+                div class: 'display-flex flex-justify-end' do
+                  div class: 'trash-container' do
+                    input type: 'hidden',
+                          value: '0',
+                          id: "page_page_components_attributes_#{placeholder}_page_component_images_attributes_#{index}__destroy",
+                          name: "page[page_components_attributes][#{placeholder}][page_component_images_attributes][#{index}][_destroy]"
+                    a class: 'dm-page-builder-trash dm-button--unstyled-warning',
+                           href: 'javascript:void(0)' do
+                      span 'Delete entry'
+                    end
+                  end
+                end
+
+                # Separator line
+                unless page_component_images.count === index + 1
+                  div class: 'add-another-separator border-y-1px border-gray-5 margin-top-2'
+                end
+              end
+            end
+          end
+        end
+
+        # 'Add another' link
+        a class: 'add-another add-another-page-component-image position-absolute cursor-pointer', 'data-add-another': "#{placeholder}", href: 'javascript:void(0)' do
+          span 'Add image'
+        end
       end
     end
   end
