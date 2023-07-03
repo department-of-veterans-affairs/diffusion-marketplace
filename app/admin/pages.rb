@@ -25,7 +25,13 @@ ActiveAdmin.register Page do
                     :url,
                     :description,
                     :title,
+                    :title1,
+                    :title2,
+                    :title3,
                     :text,
+                    :text1,
+                    :text2,
+                    :text3,
                     :heading_type,
                     :subtopic_title,
                     :subtopic_description,
@@ -148,6 +154,21 @@ ActiveAdmin.register Page do
                pc.component_type == 'PageParagraphComponent' ||
                pc.component_type == 'PageCompoundBodyComponent') && component&.text.present?
               para component.text.html_safe
+            end
+
+            if pc.component_type == 'PageTripleParagraphComponent' && component&.text1.present?
+              para component.title1
+              para component.text1.html_safe
+
+              if component&.text2.present?
+                para component.title2
+                para component.text2.html_safe
+              end
+
+              if component&.text3.present?
+                para component.title3
+                para component.text3.html_safe
+              end
             end
             # Text alignment
             para "Text alignment: #{component&.text_alignment}" if pc.component_type == 'PageCompoundBodyComponent'
