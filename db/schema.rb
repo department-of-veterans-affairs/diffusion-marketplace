@@ -707,11 +707,11 @@ ActiveRecord::Schema.define(version: 2023_06_29_212614) do
 
   create_table "page_triple_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
-    t.text "title1"
+    t.string "title1"
     t.text "text1"
-    t.text "title2"
+    t.string "title2"
     t.text "text2"
-    t.text "title3"
+    t.string "title3"
     t.text "text3"
     t.boolean "has_background_color", default: false
     t.datetime "created_at", precision: 6, null: false
