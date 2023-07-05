@@ -30,17 +30,17 @@
         <% if pc.component_type == 'PageTripleParagraphComponent' && component.text1.present? %>
           <div class=<%='bg-primary-lighter' if component.has_background_color %>>
             <div class="grid-container">
-              <div class="page-triple-paragraph-component margin-bottom-4-important <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-                <div class="grid-row">
-                  <div class="grid-col margin-right-6">
+              <div class="page-triple-paragraph-component padding-top-7 padding-bottom-7 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                <div class="grid-row grid-gap">
+                  <div class="grid-col-12 desktop:grid-col-4">
                     <h3><%= component.title1.html_safe %></h3>
                     <p><%= component.text1.html_safe %></p>
                   </div>
-                  <div class="grid-col">
+                  <div class="grid-col-12 desktop:grid-col-4">
                     <h3><%= component.title2.html_safe %></h3>
                     <p><%= component.text2.html_safe %></p>
                   </div>
-                  <div class="grid-col margin-left-6">
+                  <div class="grid-col-12 desktop:grid-col-4">
                     <h3><%= component.title3.html_safe %></h3>
                     <p><%= component.text3.html_safe %></p>  
                   </div>
