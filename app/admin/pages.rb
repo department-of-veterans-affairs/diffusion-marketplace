@@ -46,6 +46,7 @@ ActiveAdmin.register Page do
                     :map_info_window_text,
                     :description_text_alignment,
                     :body,
+                    :citation,
                     :title_header,
                     :text_alignment,
                     :url_link_text,
@@ -145,9 +146,14 @@ ActiveAdmin.register Page do
             end
             # Text
             if (pc.component_type == 'PageAccordionComponent' ||
-               pc.component_type == 'PageParagraphComponent' ||
-               pc.component_type == 'PageCompoundBodyComponent') && component&.text.present?
+              pc.component_type == 'PageParagraphComponent' ||
+              pc.component_type == 'PageCompoundBodyComponent' ||
+              pc.component_type == 'PageBlockQuoteComponent') && component&.text.present?
               para component.text.html_safe
+            end
+            # Citation
+            if pc.component_type == 'PageBlockQuoteComponent' && component&.citation.present?
+              para component.citation
             end
             # Text alignment
             para "Text alignment: #{component&.text_alignment}" if pc.component_type == 'PageCompoundBodyComponent'
