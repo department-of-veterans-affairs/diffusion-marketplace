@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_29_212614) do
+ActiveRecord::Schema.define(version: 2023_07_03_214035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -513,6 +513,15 @@ ActiveRecord::Schema.define(version: 2023_06_29_212614) do
     t.datetime "updated_at", null: false
     t.boolean "has_border", default: false
     t.index ["page_component_id"], name: "index_page_accordion_components_on_page_component_id"
+  end
+
+  create_table "page_block_quote_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.text "text"
+    t.text "citation"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_component_id"], name: "index_page_block_quote_components_on_page_component_id"
   end
 
   create_table "page_component_images", force: :cascade do |t|
