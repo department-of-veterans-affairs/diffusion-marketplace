@@ -33,7 +33,8 @@ class PageComponent < ApplicationRecord
       'Horizontal Separator': 'PageHrComponent',
       'Google Map': 'PageMapComponent',
       'Text and Images': 'PageCompoundBodyComponent',
-      'Triple Body Text': 'PageTripleParagraphComponent'
+      'Triple Body Text': 'PageTripleParagraphComponent',
+      'Block Quote': 'PageBlockQuoteComponent'
   }
 
   def build_component(params)

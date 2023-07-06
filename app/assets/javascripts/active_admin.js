@@ -11,6 +11,7 @@ const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
 const MAX_DESCRIPTION_LENGTH = 140;
 const pageComponentNames = [
     'PageAccordionComponent',
+    'PageBlockQuoteComponent',
     'PageCompoundBodyComponent',
     'PageCtaComponent',
     'PageDownloadableFileComponent',
@@ -177,7 +178,7 @@ const pageComponentNames = [
                 typeText = 'paragraph';
             }
             var componentTextareaId = '#page_page_components_attributes_' + typeText + '_' + componentId + '_component_attributes_text'
-            if (componentType === 'PageAccordionComponent' || componentType === 'PageParagraphComponent' || componentType === 'PageTripleParagraphComponent') {
+            if (componentType === 'PageAccordionComponent' || componentType === 'PageParagraphComponent' || componentType === 'PageTripleParagraphComponent' || componentType === 'PageBlockQuoteComponent') {
                 _initTinyMCE(componentTextareaId);
             }
         })
@@ -185,7 +186,7 @@ const pageComponentNames = [
 
     function _initializeTinyMCEOnDragAndDrop() {
         $(document).on('mouseup', '.handle', function(e) {
-            const wysiwygComponents = ['PageAccordionComponent', 'PageCompoundBodyComponent', 'PageParagraphComponent', 'PageTripleParagraphComponent'];
+            const wysiwygComponents = ['PageAccordionComponent', 'PageCompoundBodyComponent', 'PageParagraphComponent', 'PageTripleParagraphComponent', 'PageBlockQuoteComponent'];
             var componentType = $(e.target).closest('ol').find('.polyselect').val();
 
             if (wysiwygComponents.includes(componentType)) {
