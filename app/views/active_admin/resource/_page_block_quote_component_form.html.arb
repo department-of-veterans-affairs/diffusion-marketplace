@@ -1,0 +1,37 @@
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD'
+component ||= nil
+html = Arbre::Context.new do
+  li "", id: "PageBlockQuoteComponent_poly_#{placeholder}", class: "input polyform component-#{placeholder}" do
+    fieldset class: "inputs" do
+      legend do
+        span 'Block Quote'
+      end
+
+      if component
+        input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+      end
+
+    	ol do
+        li class: 'string input optional stringish', id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text_input" do
+					label 'Body Text', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
+
+					textarea component&.text, id: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", name: "page[page_components_attributes][#{placeholder}][component_attributes][text]", class: 'tinymce', rows: 18 do
+						component&.send(:text).try :html_safe
+					end
+					para 'Quote text', class: 'inline-hints'
+				end
+
+				li class: 'string input optional stringish', id: "page_page_components_attributes_news_#{placeholder}_component_attributes_citation_input" do
+					label 'Citation Text', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_citation", class: 'label'
+
+					textarea component&.citation, id: "page_page_components_attributes_news_#{placeholder}_component_attributes_citation", name: "page[page_components_attributes][#{placeholder}][component_attributes][citation]", class: 'tinymce', rows: 18 do
+						component&.send(:citation).try :html_safe
+					end
+					para 'Citation text', class: 'inline-hints'
+				end
+      end
+    end
+  end
+end
+
+return html.to_s
