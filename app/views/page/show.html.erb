@@ -82,12 +82,14 @@
 
         <% when 'PageBlockQuoteComponent' %>
           <div class="grid-container">
-            <div class="page-paragraph-component margin-bottom-4-important font-body-xl text-medium text-ls-1 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-              "<%= component.text.html_safe %>"
+            <div class="page-paragraph-component margin-bottom-4-important <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <p class="font-body-xl text-medium text-ls-1">
+                "<%= component.text.html_safe %>"
+              </p>
+              <p class="text-italic font-body-lg">
+                <%= "-#{component.citation.html_safe}" %>
+              </p>
             </div>
-            <span class="text-italic font-body-lg">
-              <%= "-#{component.citation.html_safe}" %>
-            </span>
           </div>
 
         <%# Page Horizontal Line %>
