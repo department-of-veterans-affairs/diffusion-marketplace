@@ -171,6 +171,7 @@ ActiveAdmin.register Page do
                 para component.title3
                 para component.text3.html_safe
               end
+            end
             # Citation
             if pc.component_type == 'PageBlockQuoteComponent' && component&.citation.present?
               para component.citation
