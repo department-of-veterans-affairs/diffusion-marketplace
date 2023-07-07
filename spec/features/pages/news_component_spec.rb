@@ -31,4 +31,18 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
       expect(page).to have_content "Published on May 16, 2023 by Bubbles, Blossom, and Buttercup"
     end
   end
+
+  context 'Image and alt text' do
+    it 'image and alt text present' do
+      image_path = File.join(Rails.root, '/spec/assets/charmander.png')
+      image_file = File.new(image_path)
+      news_component = PageNewsComponent.new(title: 'Image and alt text', image: image_file, image_alt_text: "Test Image")
+      news_component.save!
+      PageComponent.create(page: @page, component: news_component, created_at: Time.now)
+      visit 'programming/ruby-rocks'
+
+      expect(page).to have_css("img[src*='#{news_component.image_s3_presigned_url}']")
+      expect(page).to have_css("img[alt='Test Image']")
+    end
+  end
 end
