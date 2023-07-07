@@ -9,5 +9,7 @@ class CreatePagePublicationComponent < ActiveRecord::Migration[6.0]
       t.string :published_in
       t.timestamps
     end
+
+    add_attachment :page_publication_components, :attachment
   end
 end

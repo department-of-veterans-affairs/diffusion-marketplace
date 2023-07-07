@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema.define(version: 2023_07_07_214035) do
 
-ActiveRecord::Schema.define(version: 2023_07_03_214035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -712,6 +712,10 @@ ActiveRecord::Schema.define(version: 2023_07_03_214035) do
     t.string "published_in"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
+    t.bigint "attachment_file_size"
+    t.datetime "attachment_updated_at"
     t.index ["page_component_id"], name: "index_page_publication_components_on_page_component_id"
   end
 

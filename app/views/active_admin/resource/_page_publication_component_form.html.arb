@@ -40,6 +40,20 @@ html = Arbre::Context.new do
           para 'Link to publication hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
         end
 
+        li class: 'file input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment_input" do
+          label 'File', for: "page_page_components_attributes_#{placeholder}_component_attributes_attachment", class: 'label'
+          input value: component&.attachment || nil, type: 'file', required: 'required', accept: '.pdf,.doc,.docx',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][attachment]"
+          para 'File types allowed: .pdf, .doc, .docx.', class: 'inline-hints'
+            if component&.attachment != nil
+              para class: 'aa-downloadable-file-link' do
+                span 'Current uploaded file:'
+                a component&.attachment_file_name, href: "#{component&.attachment}", target: "_blank"
+              end
+            end
+        end
+
         li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date_input" do
           label 'Publication date', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_published_date", class: 'label'
           input value: component&.published_date || nil, 
