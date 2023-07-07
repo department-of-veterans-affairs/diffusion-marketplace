@@ -186,11 +186,7 @@
       }
   }
 
-
-  .page-publication-component {
+  .page-publication-component:not(:last-child) {
+    @include u-padding-bottom(4);
     border-bottom: 2px #e6e6e6 solid;
-
-    &:last-child {
-      border-bottom: none;
-    }
   }
