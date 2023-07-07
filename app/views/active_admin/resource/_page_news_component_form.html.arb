@@ -63,6 +63,22 @@ html = Arbre::Context.new do
           end
           para '', class: 'inline-hints'
         end
+
+        li class: 'file input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
+          label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_image", class: 'label'
+          input value: component&.image || nil, type: 'file', required: 'required', accept: '.jpg, .jpeg, .png',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
+          para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+        end
+
+        li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text_input" do
+          label 'Alternative Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text", class: 'label'
+          input value: component&.image_alt_text || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][image_alt_text]"
+          para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
+        end
       end
     end
   end
