@@ -235,21 +235,24 @@
         <%# Publication %>
         <% when 'PagePublicationComponent' %>
           <div class="grid-container">
-            <div class="publication-component-list dm-paginated-<%= component_index %>-publications margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-              <div class="page-publication-component">
-                <h3 class="event-title margin-bottom-3">
-                    <%= link_to_if(component.title.present? && component.url.present?, component.title, component.url, class: set_link_classes(component.url), target: get_link_target_attribute(component.url)) %>
-                </h3>
-                <p>
-                  <%= "Published in #{component.published_in}" if component.published_in.present? %> <%= "on #{component.published_date.strftime("%B %e, %Y")}" if component.published_date.present? %>
-                </p>
-                <p>
-                  <%= "By #{component.authors}" if component.authors.present? %>
-                </p>
-                <div id="" class="publication-description usa-prose padding-bottom-5">
+            <% if @publication_ids.include?(component.id) %>
+              <%
+                component_index = @publication_list_component_index
+                plc = @publication_list_components[component_index]
+                @publication_list_component_index = component_index + 1
+              %>
+              <div class="grid-container">
+                <div class="publication-component-list dm-paginated-<%= component_index %>-publications margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                  <%= render(partial: 'publications_list', locals: {publications: plc[:publications]}) %>
                 </div>
+                <% if plc[:pagy].count > 2  %>
+                  <div class="text-center dm-load-more-publications-<%= component_index %>-btn-container">
+                    <% link = pagy_link_proc(plc[:pagy]) %>
+                    <%=  link.call(plc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
+                  </div>
+                <% end %>
               </div>
-            </div>
+            <% end %>
           </div>
 
         <%# Subpage Hyperlink %>

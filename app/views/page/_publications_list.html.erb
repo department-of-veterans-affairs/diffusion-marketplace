@@ -1,0 +1,13 @@
+<% publications.each do |publication|%>
+    <div class="page-publication-component">
+        <h3 class="publication-title margin-bottom-3">
+            <%= link_to_if(publication.title.present? && publication.url.present?, publication.title, publication.url, class: set_link_classes(publication.url), target: get_link_target_attribute(publication.url)) %>
+        </h3>
+        <p>
+          <%= "Published in #{publication.published_in}" if publication.published_in.present? %> <%= "on #{publication.published_date.strftime("%B %e, %Y")}" if publication.published_date.present? %>
+        </p>
+        <p>
+          <%= "By #{publication.authors}" if publication.authors.present? %>
+        </p>
+    </div>
+<% end %>
