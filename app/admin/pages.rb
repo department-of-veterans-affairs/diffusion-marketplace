@@ -37,6 +37,8 @@ ActiveAdmin.register Page do
                     :subtopic_description,
                     :alignment,
                     :page_image,
+                    :image,
+                    :image_alt_text,
                     :caption,
                     :alt_text,
                     :html_tag,
