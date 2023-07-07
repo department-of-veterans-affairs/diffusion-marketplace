@@ -195,8 +195,8 @@
               nic = @news_items_components[component_index]
               @news_list_component_index = component_index + 1
             %>
-            <div class="grid-container">
-              <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+            <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
+              <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %>">
                 <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
               </ul>
               <% if nic[:pagy].count > 2  %>
