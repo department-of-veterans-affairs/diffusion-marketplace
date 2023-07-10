@@ -3,7 +3,7 @@
         <h3 class="publication-title margin-bottom-3">
             <% if publication.attachment? %>
               <%= link_to publication.attachment_s3_presigned_url,
-              class: 'usa-link usa-link--external',
+              class: 'usa-link',
               target: '_blank',
               download: publication.attachment_file_name,
               'data-resource-id': publication.id,
