@@ -199,7 +199,7 @@
               <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %>">
                 <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
               </ul>
-              <% if nic[:pagy].count > 2  %>
+              <% if nic[:pagy].count > 4 %>
                 <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
                   <% link = pagy_link_proc(nic[:pagy]) %>
                   <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
