@@ -245,7 +245,7 @@
                 <div class="publication-component-list dm-paginated-<%= component_index %>-publications margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
                   <%= render(partial: 'publications_list', locals: {publications: plc[:publications]}) %>
                 </div>
-                <% if plc[:pagy].count > 2  %>
+                <% if plc[:pagy].count > 10  %>
                   <div class="text-center dm-load-more-publications-<%= component_index %>-btn-container">
                     <% link = pagy_link_proc(plc[:pagy]) %>
                     <%=  link.call(plc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
