@@ -19,7 +19,6 @@
                 </div>
             <% end %>
             <div id="<%= news_item.id %>" class="news-item-description usa-prose usa-card__body">
-                <p><%= news_item&.text&.html_safe %></p>
                 <% if news_item.published_date.present? && news_item.authors.present? %>
                     <p>Published on <%= news_item&.published_date&.strftime("%B %e, %Y") %> by <%= news_item&.authors %></p>
                 <% elsif news_item.published_date.present? %>
@@ -27,6 +26,7 @@
                 <% elsif news_item.authors.present? %>
                     <p>Published by <%= news_item&.authors %></p>
                 <% end %>
+                <div><%= news_item&.text&.html_safe %></div>
             </div>
         </div>
     </li>
