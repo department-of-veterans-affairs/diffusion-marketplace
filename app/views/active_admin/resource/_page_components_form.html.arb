@@ -8,6 +8,7 @@ f.has_many page_components, heading: nil, sortable: :position, sortable_start: 1
   pc.template.concat(render partial: 'page_paragraph_component_form', locals: {component: component.class == PageParagraphComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_triple_paragraph_component_form', locals: {component: component.class == PageTripleParagraphComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_practice_list_component_form', locals: {component: component.class == PagePracticeListComponent ? component : nil, placeholder: placeholder})
+  pc.template.concat(render partial: 'page_simple_button_component_form', locals: {component: component.class == PageSimpleButtonComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_subpage_hyperlink_component_form', locals: {component: component.class == PageSubpageHyperlinkComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_accordion_component_form', locals: {component: component.class == PageAccordionComponent ? component : nil, placeholder: placeholder})
   pc.template.concat(render partial: 'page_you_tube_player_component_form', locals: {component: component.class == PageYouTubePlayerComponent ? component : nil, placeholder: placeholder})

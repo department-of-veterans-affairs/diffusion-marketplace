@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_07_214035) do
+ActiveRecord::Schema.define(version: 2023_07_11_205117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -717,6 +717,15 @@ ActiveRecord::Schema.define(version: 2023_07_07_214035) do
     t.bigint "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["page_component_id"], name: "index_page_publication_components_on_page_component_id"
+  end
+
+  create_table "page_simple_button_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "button_text"
+    t.string "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_component_id"], name: "index_page_simple_button_components_on_page_component_id"
   end
 
   create_table "page_subpage_hyperlink_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1532,6 +1541,7 @@ ActiveRecord::Schema.define(version: 2023_07_07_214035) do
   add_foreign_key "page_news_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_publication_components", "page_components"
+  add_foreign_key "page_simple_button_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
   add_foreign_key "page_you_tube_player_components", "page_components"
   add_foreign_key "pages", "page_groups"

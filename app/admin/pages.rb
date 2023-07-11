@@ -188,6 +188,7 @@ ActiveAdmin.register Page do
             if (pc.component_type == 'PageSubpageHyperlinkComponent' ||
                 pc.component_type == 'PagePublicationComponent' ||
                 pc.component_type == 'PageYouTubePlayerComponent' ||
+                pc.component_type == 'PageSimpleButtonComponent' ||
                 pc.component_type == 'PageCompoundBodyComponent') && component&.url.present?
               para "URL: #{component.url}"
             end
@@ -222,6 +223,12 @@ ActiveAdmin.register Page do
             end
             # Border
             para "Has border: #{component&.has_border}" if pc.component_type == 'PageAccordionComponent'
+            # Button text
+            if (pc.component_type == 'PageSimpleButtonComponent' ||
+                pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
+              para "Button text: #{component.button_text}"
+            end
+
           end
         }.join('').html_safe
       end

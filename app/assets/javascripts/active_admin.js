@@ -25,6 +25,7 @@ const pageComponentNames = [
     'PageParagraphComponent',
     'PagePublicationComponent',
     'PagePracticeListComponent',
+    'PageSimpleButtonComponent',
     'PageSubpageHyperlinkComponent',
     'PageTripleParagraphComponent',
     'PageYouTubePlayerComponent'

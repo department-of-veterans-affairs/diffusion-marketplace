@@ -259,6 +259,17 @@
             <% end %>
           </div>
 
+        <%# Simple Button %>
+        <% when 'PageSimpleButtonComponent' %>
+          <div class="grid-container">
+            <div class="grid-row flex-justify-center">
+              <%= link_to component.button_text, component.url,
+                  class: "page-simple-button-component usa-button dm-button--outline-secondary",
+                  target: get_link_target_attribute(component.url)
+              %>
+            </div>
+          </div>
+
         <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-container">
