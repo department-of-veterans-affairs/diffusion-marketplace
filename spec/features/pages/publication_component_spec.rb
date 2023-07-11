@@ -12,8 +12,11 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
   context '2 or fewer publications' do
     it 'applies card styling' do
       create_publication_components(2, @page)
+      visit '/programming/ruby-rocks'
+
       expect(page).to have_css('.page-publication-component', count: 2)
       expect(page).to have_css '.usa-card__container'
+      expect(page).not_to have_content('Load more')
     end
   end
 
