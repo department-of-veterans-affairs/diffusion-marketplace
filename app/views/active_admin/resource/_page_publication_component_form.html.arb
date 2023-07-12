@@ -20,6 +20,8 @@ html = Arbre::Context.new do
         input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
       end
       ol do
+
+        # Title
         li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
           label 'Title', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_text", class: 'label'
           input value: component&.title || nil,
@@ -30,19 +32,20 @@ html = Arbre::Context.new do
           para 'Publication title styled as an /"H3"', class: 'inline-hints'
         end
 
+        # URL
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
           label 'URL', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_url", class: 'label'
           input value: component&.url || nil,
                 type: 'text',
-                required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
-          para 'Link to publication hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
+          para 'Link to publication if hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
         end
 
+        # Attachment
         li class: 'file input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment_input" do
           label 'File', for: "page_page_components_attributes_#{placeholder}_component_attributes_attachment", class: 'label'
-          input value: component&.attachment || nil, type: 'file', required: 'required', accept: '.pdf,.doc,.docx',
+          input value: component&.attachment || nil, type: 'file', accept: '.pdf,.doc,.docx',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][attachment]"
           para 'File types allowed: .pdf, .doc, .docx.', class: 'inline-hints'
@@ -52,8 +55,10 @@ html = Arbre::Context.new do
                 a component&.attachment_file_name, href: "#{component&.attachment}", target: "_blank"
               end
             end
+          para 'Upload a publication file. Supports .pdf,.doc, or .docx', class: 'inline-hints'
         end
 
+        # Publication date
         li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date_input" do
           label 'Publication date', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_published_date", class: 'label'
           input value: component&.published_date || nil, 
@@ -63,15 +68,17 @@ html = Arbre::Context.new do
           para 'Original publication date', class: 'inline-hints'
         end
 
+        # Published in
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_in_input" do
           label 'Published in', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_published_in", class: 'label'
           input value: component&.published_in || nil,
                 type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_published_in",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][published_in]"
-          para 'Name of publication', class: 'inline-hints'
+          para 'Name of publication, italicized', class: 'inline-hints'
         end
 
+        # Authors
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_authors_input" do
           label 'Authors', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_authors", class: 'label'
           input value: component&.authors || nil,
