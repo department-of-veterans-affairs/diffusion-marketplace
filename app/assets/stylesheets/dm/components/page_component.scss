@@ -169,7 +169,6 @@
   .page_builder_map {
     height: 440px;
   }
-}
 
   .page-event-component {
     @include u-margin-bottom(2);
@@ -185,4 +184,10 @@
         border: 0;
       }
   }
-
+  .publication-component-list {
+    .page-publication-component:not(:last-child) {
+      @include u-padding-bottom(4);
+      border-bottom: 2px #e6e6e6 solid;
+    }
+  }
+}

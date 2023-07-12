@@ -1,0 +1,36 @@
+<% publications.each do |publication| %>
+  <li class="page-publication-component usa-card tablet:grid-col-6">
+    <div class="usa-card__container border-0">
+        <div class="usa-card__header">
+            <h3 class="margin-bottom-2 publication-title">
+                <% if publication.attachment? %>
+                  <%= link_to publication.attachment_s3_presigned_url,
+                  class: 'usa-link',
+                  target: '_blank',
+                  download: publication.attachment_file_name,
+                  'data-resource-id': publication.id,
+                  'data-resource-path': publication.attachment.path do %>
+                    <i class="far fa-file margin-right-1"></i><%=publication.title %><span class="sr-only">Download <%= publication.attachment_file_name %></span>
+                  <% end %>
+                <% elsif publication.url? %>
+                  <%= link_to(publication.title, publication.url, class: set_link_classes(publication.url), target: get_link_target_attribute(publication.url)) %>
+                <% else %>
+                  <%= publication.title %>
+                <% end %>
+            </h3>
+        </div>
+        <div id="<%= publication.id %>" class="publication-item-description usa-prose usa-card__body">
+          <p>
+            <% if publication.published_in? || publication.published_date? %>
+              Published
+              <%= "in <span class='text-italic'>#{publication.published_in}</span>".html_safe if publication.published_in? %>
+              <%= "on #{publication.published_date.strftime("%B %e, %Y")}" if publication.published_date? %>
+            <% end %>
+          </p>
+          <p>
+            <%= "By #{publication.authors}" if publication.authors.present? %>
+          </p>
+        </div>
+    </div>
+  </li>
+<% end %>

@@ -106,10 +106,10 @@ const COMPONENT_CLASSES = [
         }
     }
 
-    function fetchDownloadableFileResources() {
-        const downloadableFileComponents = document.querySelectorAll('.page-downloadable-file-component');
-        // Replace each 'PageDownloadableFileComponent's 'href' with a new signed URL
-        downloadableFileComponents.forEach(element => {
+    function fetchPageComponentFileResources() {
+        const pageComponents = document.querySelectorAll('.page-downloadable-file-component, .page-publication-component');
+        // Replace each 'PageDownloadableFileComponent or PagePublicationComp;onent's 'href' with a new signed URL
+        pageComponents.forEach(element => {
             const filePath = element.getAttribute('data-resource-path');
             const fileUrl = element.href;
             const fileId = element.getAttribute('data-resource-id');
@@ -123,15 +123,13 @@ const COMPONENT_CLASSES = [
         });
     }
 
-
-
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
         containerizeSubpageHyperlinkCards();
         remediateInternalLinksTarget();
         identifyExternalLinks();
         chromeWorkaroundForAnchorTags();
-        fetchDownloadableFileResources();
+        fetchPageComponentFileResources();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);

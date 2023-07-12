@@ -22,6 +22,12 @@ function paginatedPageComponent() {
       news_items: component_list[component_index.to_i][type.to_sym],
       component_index: component_index.to_i})
     %>")
+  <% elsif type == "publications" %>
+    <% component_list = @publication_list_components %>
+    $(paginatedItemsClass).append("<%= escape_javascript render(partial: 'publications_list', locals: {
+      publications: component_list[component_index.to_i][type.to_sym],
+      component_index: component_index.to_i})
+    %>")
   <% end %>
 
   <% pagy = component_list[component_index.to_i][:pagy] %>

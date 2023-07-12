@@ -16,6 +16,10 @@ class PageController < ApplicationController
     @news_list_component_index = 0
     @news_items_components = []
     @news_items_ids = []
+    @publication_list_component_index = 0
+    @publication_list_components = []
+    @publication_ids = []
+
     collect_paginated_components(@page_components)
 
     if page_group.is_community? && !request.url.include?('/communities')
@@ -95,15 +99,19 @@ class PageController < ApplicationController
     practice_lists = []
     events = []
     news_items = []
+    publications = []
     page_components.each do |pc|
       practice_lists << pc if pc.component_type === 'PagePracticeListComponent'
       events << pc if pc.component_type === 'PageEventComponent'
       news_items << pc if pc.component_type === 'PageNewsComponent'
+      publications << pc if pc.component_type === 'PagePublicationComponent'
     end
+
 
     set_pagy_practice_list_array(practice_lists) if practice_lists.present?
     paginate_components(events, "events", 2) if events.present?
     paginate_components(news_items, "news", 4) if news_items.present?
+    paginate_components(publications, "publications", 10) if publications.present?
   end
 
   # Paginate adjacent news or event components
@@ -164,6 +172,8 @@ class PageController < ApplicationController
       @event_list_components << { pagy: pagy_settings, events: paginated_items }
     when "news"
       @news_items_components << { pagy: pagy_settings, news: paginated_items }
+    when "publications"
+      @publication_list_components << { pagy: pagy_settings, publications: paginated_items }
     end
   end
 
@@ -182,6 +192,8 @@ class PageController < ApplicationController
       @event_ids = ids
     when "news"
       @news_items_ids = ids
+    when "publications"
+      @publication_ids = ids
     end
   end
 end

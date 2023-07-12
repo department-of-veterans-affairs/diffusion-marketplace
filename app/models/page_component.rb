@@ -28,6 +28,8 @@ class PageComponent < ApplicationRecord
       'Image': 'PageImageComponent',
       'News': 'PageNewsComponent',
       'Practices': 'PagePracticeListComponent',
+      'Publication': 'PagePublicationComponent',
+      'Simple Button': 'PageSimpleButtonComponent',
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
       'YouTube Player': 'PageYouTubePlayerComponent',
       'Horizontal Separator': 'PageHrComponent',
