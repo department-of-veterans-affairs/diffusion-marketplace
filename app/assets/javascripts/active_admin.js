@@ -28,6 +28,7 @@ const pageComponentNames = [
     'PageSimpleButtonComponent',
     'PageSubpageHyperlinkComponent',
     'PageTripleParagraphComponent',
+    'PageTwoToOneImageComponent',
     'PageYouTubePlayerComponent'
 ];
 
@@ -180,7 +181,13 @@ const pageComponentNames = [
                 typeText = 'paragraph';
             }
             var componentTextareaId = '#page_page_components_attributes_' + typeText + '_' + componentId + '_component_attributes_text'
-            if (componentType === 'PageAccordionComponent' || componentType === 'PageParagraphComponent' || componentType === 'PageTripleParagraphComponent' || componentType === 'PageBlockQuoteComponent') {
+            if (
+                componentType === 'PageAccordionComponent' || 
+                componentType === 'PageParagraphComponent' || 
+                componentType === 'PageTripleParagraphComponent' || 
+                componentType === 'PageBlockQuoteComponent' || 
+                componentType === 'PageTwoToOneImageComponent'
+            ) {
                 _initTinyMCE(componentTextareaId);
             }
         })
@@ -188,7 +195,12 @@ const pageComponentNames = [
 
     function _initializeTinyMCEOnDragAndDrop() {
         $(document).on('mouseup', '.handle', function(e) {
-            const wysiwygComponents = ['PageAccordionComponent', 'PageCompoundBodyComponent', 'PageParagraphComponent', 'PageTripleParagraphComponent', 'PageBlockQuoteComponent'];
+            const wysiwygComponents = ['PageAccordionComponent', 
+                                       'PageCompoundBodyComponent', 
+                                       'PageParagraphComponent', 
+                                       'PageTripleParagraphComponent', 
+                                       'PageBlockQuoteComponent',
+                                       'PageTwoToOneImageComponent'];
             var componentType = $(e.target).closest('ol').find('.polyselect').val();
 
             if (wysiwygComponents.includes(componentType)) {
