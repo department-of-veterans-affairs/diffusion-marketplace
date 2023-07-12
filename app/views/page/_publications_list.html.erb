@@ -17,7 +17,11 @@
             <% end %>
         </h3>
         <p>
-          <%= "Published in <span class='text-italic'>#{publication.published_in}</span>".html_safe if publication.published_in.present? %> <%= "on #{publication.published_date.strftime("%B %e, %Y")}" if publication.published_date.present? %>
+            <% if publication.published_in? || publication.published_date? %>
+              Published
+              <%= "in <span class='text-italic'>#{publication.published_in}</span>".html_safe if publication.published_in? %>
+              <%= "on #{publication.published_date.strftime("%B %e, %Y")}" if publication.published_date? %>
+            <% end %>
         </p>
         <p>
           <%= "By #{publication.authors}" if publication.authors.present? %>
