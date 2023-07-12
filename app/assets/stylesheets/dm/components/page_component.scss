@@ -152,6 +152,55 @@
     }
   }
 
+  .page-two-to-one-image-component {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 1fr);
+    column-gap: 1%;
+    @include u-margin-bottom(4);
+
+    .grid-item-text {
+      grid-column: 1 / 4;
+      grid-row: 1 / 1;
+
+      &.right-align {
+        grid-column: 9 / 12;
+      }
+
+      @media screen and (max-width: 767px) {
+        grid-column: 1 / -1; // For small screens, take up the full width
+        grid-row: auto; // Position this element first (on top)
+        &.right-align {
+            grid-column: 1 / -1;
+            /* Remove right-align for smaller resolutions */
+          }
+      }
+    }
+
+    .grid-item-image {
+      grid-column: 5 / 12;
+      grid-row: 1 / 1;
+      
+      &.left-align {
+        grid-column: 1 / 8;
+      }
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+      
+      @media screen and (max-width: 767px) {
+        grid-column: 1 / -1; // For small screens, take up the full width
+        grid-row: auto; // Position this element second (below the text)
+        &.left-align {
+            grid-column: 1 / -1;
+            /* Remove right-align for smaller resolutions */
+          }
+      }
+    }
+  }
+
   .page-map-component {
     .page-marker-container {
       padding: 52px 8px 0 8px;
