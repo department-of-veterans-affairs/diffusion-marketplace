@@ -31,20 +31,47 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     end
   end
 
-  context 'Publication' do
+  context 'Title' do
+    it 'links to uploaded PDFs' do
+      downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
+      publication_component = PagePublicationComponent.create(title: 'Journal article PDF', attachment: downloadable_file, published_in: 'The Journal of Science', published_date: Date.current.to_s)
+      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
+      visit '/programming/ruby-rocks'
+
+      expect(page).to have_content('Journal article PDF')
+      expect(page).to have_css('.fa-file')
+    end
+
+    it 'links to external URLs' do
+      publication_component = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_date: Date.current.to_s)
+      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
+      visit '/programming/ruby-rocks'
+
+      expect(page).to have_content('External article link')
+      expect(page).to have_css('.usa-link--external')
+    end
+
+    it 'renders the title if no URL or attachment is provided' do
+      publication_component = PagePublicationComponent.create(title: 'Placeholder title', published_in: 'Wikipedia', published_date: Date.current.to_s)
+      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
+      visit '/programming/ruby-rocks'
+
+      expect(page).to have_content('Placeholder title')
     end
   end
 
-  context 'Title' do 
-    it 'attached file' do
-    end
+  context 'Publication info' do
+    it 'renders with appropriate prepositions ' do
+      publication_and_date = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_date: Date.current.to_s)
+      publication_only = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia')
+      date_only = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_date: Date.current.to_s)
 
-    it 'url' do
-    end
-
-    it 'title only' do
+      PageComponent.create(page: @page, component: publication_and_date, created_at: Time.now)
+      PageComponent.create(page: @page, component: publication_only, created_at: Time.now)
+      PageComponent.create(page: @page, component: date_only, created_at: Time.now)
     end
   end
+end
 
 
 def create_publication_components(num = 1, page)
