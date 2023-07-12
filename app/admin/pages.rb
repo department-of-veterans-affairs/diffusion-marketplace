@@ -205,7 +205,11 @@ ActiveAdmin.register Page do
             # Caption
             para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
             # Alt text
-            para component&.alt_text if pc.component_type == 'PageImageComponent'
+            if pc.component_type == 'PageImageComponent'
+              para "Image Alt Text: #{component&.alt_text}"
+            elsif pc.component_type == 'PageTwoToOneImageComponent'
+              para "Image Alt Text: #{component&.image_alt_text}"
+            end
             # Attachment file name
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
             # Map Info Window Text
