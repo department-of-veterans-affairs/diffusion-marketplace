@@ -1,0 +1,21 @@
+<div class="grid-item-text <%= "right-align" if component.text_alignment === 'Right'%>">
+  <% if component.title.present? %>
+    <h2 class="margin-top-0 usa-prose-h5' %>">
+        <%= component.title %>
+    </h2>
+  <% end %>
+  <% if component.url.present? && component.url_link_text.present? %>
+    <a href="<%= component.url %>"
+        target="<%= get_link_target_attribute(component.url) %>"
+        title="Go to <%= component.url %>"
+        class="usa-link-bold display-inline-block margin-top-3">
+        <%= component.url_link_text %>
+    </a>
+  <% end %>
+  <% if component.text.present? %>
+    <p><%= component.text.html_safe %></p>
+  <% end %>
+</div>
+<div class="grid-item-image <%= "left-align" if component.text_alignment === 'Right'%>" >
+  <img src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
+</div>
