@@ -758,6 +758,23 @@ ActiveRecord::Schema.define(version: 2023_07_11_205117) do
     t.index ["page_component_id"], name: "index_page_triple_paragraph_components_on_page_component_id"
   end
 
+  create_table "page_two_to_one_image_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.text "text"
+    t.string "url"
+    t.string "url_link_text"
+    t.string "text_alignment"
+    t.text "image_alt_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.bigint "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["page_component_id"], name: "index_page_two_to_one_image_components_on_page_component_id"
+  end
+
   create_table "page_you_tube_player_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "url"
