@@ -19,6 +19,7 @@ html = Arbre::Context.new do
       if component
         input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
       end
+
       ol do
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
           label 'Title', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
@@ -62,6 +63,34 @@ html = Arbre::Context.new do
             component&.send(:text).try :html_safe
           end
           para '', class: 'inline-hints'
+        end
+
+        li class: 'file input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
+          label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_image", class: 'label'
+          input value: component&.image || nil, type: 'file', accept: '.jpg, .jpeg, .png',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
+          para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+        end
+
+        if component&.image.present?
+          li do
+            div class: 'page-image-preview-container no-padding' do
+              div class: 'placeholder'
+              div class: 'page-image-container' do
+                img class: 'page-image', src: component.image_s3_presigned_url, alt: component.image_alt_text
+                para "Current image name: #{component.image_file_name}"
+              end
+            end
+          end
+        end
+
+        li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text_input" do
+          label 'Alternative Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text", class: 'label'
+          input value: component&.image_alt_text || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][image_alt_text]"
+          para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
         end
       end
     end
