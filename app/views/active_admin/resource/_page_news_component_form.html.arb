@@ -65,9 +65,9 @@ html = Arbre::Context.new do
           para '', class: 'inline-hints'
         end
 
-        li class: 'file input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
+        li class: 'file input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
           label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_image", class: 'label'
-          input value: component&.image || nil, type: 'file', required: 'required', accept: '.jpg, .jpeg, .png',
+          input value: component&.image || nil, type: 'file', accept: '.jpg, .jpeg, .png',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
           para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
