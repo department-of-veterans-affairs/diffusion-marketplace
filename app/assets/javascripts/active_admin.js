@@ -23,7 +23,9 @@ const pageComponentNames = [
     'PageMapComponent',
     'PageNewsComponent',
     'PageParagraphComponent',
+    'PagePublicationComponent',
     'PagePracticeListComponent',
+    'PageSimpleButtonComponent',
     'PageSubpageHyperlinkComponent',
     'PageTripleParagraphComponent',
     'PageYouTubePlayerComponent'
@@ -242,7 +244,7 @@ const pageComponentNames = [
                     class="page-component-image-li">
                     <input type="hidden"
                            name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][id]"/>
-                           
+
                     <div class="page-component-image-attribute-container">
                         <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_image">
                             Image *Required*
@@ -254,12 +256,12 @@ const pageComponentNames = [
                                class="margin-top-0"/>
                         <p class="inline-hints">File types allowed: jpg, jpeg, and png. Max file size: 25MB</p>
                     </div>
-                    
+
                     <div class="page-component-image-attribute-container">
                         <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_url">
                             Image URL
                         </label>
-                        <input type="text" 
+                        <input type="text"
                                id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_url"
                                name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][url]"/>
                         <p class="inline-hints">
@@ -269,12 +271,12 @@ const pageComponentNames = [
                             </span>
                         </p>
                     </div>
-                    
+
                     <div class="page-component-image-attribute-container">
                         <label for="page_page_components_attributes_compound_body_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_caption" class="label">
                             Caption
                         </label>
-                        <textarea id="page_page_components_attributes_compound_body_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_caption" 
+                        <textarea id="page_page_components_attributes_compound_body_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_caption"
                                   class="tinymce compound-body-component-text"
                                   name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][caption]"
                                   rows="18">
@@ -283,7 +285,7 @@ const pageComponentNames = [
                             Text that accurately describes the image.
                         </p>
                     </div>
-                    
+
                     <div class="page-component-image-attribute-container">
                         <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text">
                             Alternative text *required*
@@ -292,15 +294,15 @@ const pageComponentNames = [
                                name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][alt_text]"
                                class="height-7"></textarea>
                         <p class="inline-hints">
-                            Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of the 
+                            Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of the
                             information this image is trying to convey.
                         </p>
                     </div>
-                    
+
                     <div class="display-flex flex-justify-end">
                        <div class="trash-container">
-                            <input type="hidden" 
-                                   value="0" 
+                            <input type="hidden"
+                                   value="0"
                                    id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2__destroy"
                                    name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][_destroy]"/>
                             <a class="dm-page-builder-trash dm-button--unstyled-warning" href="javascript:void(0)">
