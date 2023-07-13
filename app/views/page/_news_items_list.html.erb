@@ -7,14 +7,12 @@
                 </h3>
             </div>
             <% if news_item.image.present? %>
-                <div class="usa-card__media usa-card__media--inset">
-                    <div class="usa-card__media">
-                        <div class="usa-card__img">
-                            <img
-                                src="<%= news_item.image_s3_presigned_url %>" 
-                                alt="<%= news_item.image_alt_text %>"
-                            />
-                        </div>
+                <div class="usa-card__media--inset">
+                    <div class="dm-news-img-container">
+                        <img
+                            src="<%= news_item.image_s3_presigned_url %>" 
+                            alt="<%= news_item.image_alt_text %>"
+                        />
                     </div>
                 </div>
             <% end %>

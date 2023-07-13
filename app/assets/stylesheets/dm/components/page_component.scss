@@ -169,7 +169,22 @@
   .page_builder_map {
     height: 440px;
   }
-}
+
+  // replicates .dm-practice-card-img-container
+  .dm-news-img-container {
+    max-height: 165px;
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    img {
+      flex-shrink: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+  }
 
   .page-event-component {
     @include u-margin-bottom(2);
