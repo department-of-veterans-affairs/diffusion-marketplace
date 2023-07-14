@@ -1,5 +1,5 @@
 require 'rails_helper'
-  describe 'Page Builder - Show - Two To One Image Component', type: :feature do
+  describe 'Page Builder - Show - 2:1 Image to Text', type: :feature do
   before do
     page_group = PageGroup.create(
       name: 'programming', 

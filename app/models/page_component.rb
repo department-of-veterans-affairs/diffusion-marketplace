@@ -37,7 +37,7 @@ class PageComponent < ApplicationRecord
       'Text and Images': 'PageCompoundBodyComponent',
       'Triple Body Text': 'PageTripleParagraphComponent',
       'Block Quote': 'PageBlockQuoteComponent',
-      'Two To One Image': 'PageTwoToOneImageComponent'
+      '2:1 Image to Text': 'PageTwoToOneImageComponent'
   }
 
   def build_component(params)
