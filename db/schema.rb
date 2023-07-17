@@ -766,6 +766,7 @@ ActiveRecord::Schema.define(version: 2023_07_11_205117) do
     t.string "url_link_text"
     t.string "text_alignment"
     t.text "image_alt_text"
+    t.boolean "flipped_ratio", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "image_file_name"
