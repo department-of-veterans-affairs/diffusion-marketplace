@@ -106,6 +106,7 @@ html = Arbre::Context.new do
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_flipped_ratio",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][flipped_ratio]",
                 class: 'toggle-has-flipped_ratio'
+          para 'Flip the 2:1 ratio so the text column is twice the width of the image', class: 'inline-hints'
         end
       end
     end
