@@ -399,7 +399,7 @@
         <%# 2:1 Image to Text %>
         <% when 'PageTwoToOneImageComponent' %>
           <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
-            <div class="page-two-to-one-image-component <%= "right-align" if component.text_alignment.downcase == 'right' %>">
+            <div class="page-two-to-one-image-component <%= "right-align" if component.text_alignment.downcase == 'right' %> <%= "flipped-ratio" if component.flipped_ratio? %>">
               <%= render partial: 'two_to_one_image_component', locals: { component: component } %>
             </div>
           </div>
