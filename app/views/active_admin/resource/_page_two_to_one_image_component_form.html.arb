@@ -45,10 +45,10 @@ html = Arbre::Context.new do
         end
 
         li class: 'string input optional stringish text-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_input" do
-          label 'Text', for: "page_page_components_attributes_compound_body_#{placeholder}_component_attributes_text", class: 'label'
+          label 'Text', for: "page_page_components_attributes_two_to_one_image_#{placeholder}_component_attributes_text", class: 'label'
 
           textarea component&.text || nil,
-             id: "page_page_components_attributes_compound_body_#{placeholder}_component_attributes_text",
+             id: "page_page_components_attributes_two_to_one_image_#{placeholder}_component_attributes_text",
              name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
              class: 'tinymce compound-body-component-text',
              rows:'18' do
