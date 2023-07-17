@@ -67,6 +67,7 @@ ActiveAdmin.register Page do
                     :start_date,
                     :end_date,
                     :location,
+                    :flipped_ratio,
                     practices: []
                   ],
                   page_component_images_attributes: {}
