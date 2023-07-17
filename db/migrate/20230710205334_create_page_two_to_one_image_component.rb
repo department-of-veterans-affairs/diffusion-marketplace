@@ -8,6 +8,7 @@ class CreatePageTwoToOneImageComponent < ActiveRecord::Migration[6.0]
       t.string :url_link_text
       t.string :text_alignment
       t.text :image_alt_text
+      t.boolean :flipped_ratio, default: false
       t.timestamps
     end
 
