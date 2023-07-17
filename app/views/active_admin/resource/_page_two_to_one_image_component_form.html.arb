@@ -27,8 +27,8 @@ html = Arbre::Context.new do
         li class: 'string input optional stringish url-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
           label 'URL', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
           input value: component&.url || nil, type: 'text',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
+            id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
           para class: 'inline-hints' do
             span 'For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").'
             span 'For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").'
@@ -36,11 +36,11 @@ html = Arbre::Context.new do
         end
 
         li class: 'string input optional stringish url-link-text-container',
-           id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text_input" do
+          id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text_input" do
           label 'URL link text', for: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text", class: 'label'
           input value: component&.url_link_text || nil, type: 'text',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][url_link_text]"
+            id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][url_link_text]"
           para 'Enter the text that will displayed for the link to the URL above', class: 'inline-hints'
         end
 
@@ -48,32 +48,32 @@ html = Arbre::Context.new do
           label 'Text', for: "page_page_components_attributes_two_to_one_image_#{placeholder}_component_attributes_text", class: 'label'
 
           textarea component&.text || nil,
-             id: "page_page_components_attributes_two_to_one_image_#{placeholder}_component_attributes_text",
-             name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
-             class: 'tinymce compound-body-component-text',
-             rows:'18' do
+            id: "page_page_components_attributes_two_to_one_image_#{placeholder}_component_attributes_text",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
+            class: 'tinymce two-to-one-image-component-text',
+            rows:'18' do
               component&.send(:text).try :html_safe
-          end
+            end
           para 'Text Body', class: 'inline-hints'
         end
 
         li class: 'select input required text-alignment-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment_input" do
           label 'Text alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment", class: 'label'
           select value: component&.text_alignment || nil,
-                 id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment",
-                 name: "page[page_components_attributes][#{placeholder}][component_attributes][text_alignment]" do
+            id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][text_alignment]" do
             option 'Left', selected: component&.text_alignment === 'Left' || component&.text_alignment.blank?
             option 'Right', selected: component&.text_alignment === 'Right'
           end
           para "Choose the text alignment for this '2:1 Image to Text' component (left or right). Defaults to left.",
-               class: 'inline-hints'
+            class: 'inline-hints'
         end
 
         li class: 'file input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
           label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_image", class: 'label'
           input value: component&.image_file_name || nil, type: 'file', required: 'required', accept: '.jpg, .jpeg, .png',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
+            id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
           para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
         end
 
@@ -92,8 +92,8 @@ html = Arbre::Context.new do
         li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text_input" do
           label 'Alternative Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text", class: 'label'
           input value: component&.image_alt_text || nil, type: 'text', required: 'required',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][image_alt_text]"
+            id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text",
+            name: "page[page_components_attributes][#{placeholder}][component_attributes][image_alt_text]"
           para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
         end
       end
