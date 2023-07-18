@@ -152,53 +152,22 @@
     }
   }
 
-  .page-two-to-one-image-component {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    @include u-margin-bottom(4);
+  .usa-img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+  }
 
-    &.right-align {
-      flex-direction: row-reverse;
+  @media screen and (max-width: 640px) {
+    .flex-column {
+      flex-direction: column;
     }
+  }
 
-    .grid-item-text {
-      width: 100%;
-      
-      h2 {
-        margin-top: 0;
-      }
-    }
-    .grid-item-image {
-      width: 100%;
-    }
-
-    @media screen and (min-width: 768px) {
-      .grid-item-text {
-        width: 32%;
-      }
-
-      .grid-item-image {
-        width: 66%;
-      }
-
-      &.flipped-ratio {
-        .grid-item-text {
-          width: 66%;
-        }
-
-        .grid-item-image {
-          width: 32%;
-        }
-
-        align-items: flex-start;
-      }
-    }
-
-    .grid-item-image img {
-      object-fit: contain;
-      width: 100%;
-      height: 100%;
+  @media screen and (min-width: 641px) {
+    .flex-row-tablet {
+      flex-direction: row;
     }
   }
 

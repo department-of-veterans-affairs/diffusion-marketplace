@@ -1,21 +1,47 @@
-<div class="grid-item-text <%= "right-align" if component.text_alignment === 'Right'%>">
-  <% if component.title.present? %>
-    <h2 class="margin-top-0 usa-prose-h5' %>">
-        <%= component.title %>
-    </h2>
+<div class="grid-row grid-gap display-flex flex-column flex-row-tablet">
+  <% if component.text_alignment == "Left" %>
+    <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-8' : 'tablet:grid-col-4' %>">
+      <% if component.title.present? %>
+        <h2 class="margin-top-0">
+          <%= component.title %>
+        </h2>
+      <% end %>
+      <% if component.url.present? && component.url_link_text.present? %>
+        <a href="<%= component.url %>"
+            target="<%= get_link_target_attribute(component.url) %>"
+            title="Go to <%= component.url %>"
+            class="usa-link display-inline-block margin-top-3">
+          <%= component.url_link_text %>
+        </a>
+      <% end %>
+      <% if component.text.present? %>
+        <p><%= component.text.html_safe %></p>
+      <% end %>
+    </div>
+    <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-4' : 'tablet:grid-col-8' %>">
+      <img class="usa-img" src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
+    </div>
+  <% else %>
+    <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-4' : 'tablet:grid-col-8' %>">
+      <img class="usa-img" src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
+    </div>
+    <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-8' : 'tablet:grid-col-4' %>">
+      <% if component.title.present? %>
+        <h2 class="margin-top-0">
+          <%= component.title %>
+        </h2>
+      <% end %>
+      <% if component.url.present? && component.url_link_text.present? %>
+        <a href="<%= component.url %>"
+            target="<%= get_link_target_attribute(component.url) %>"
+            title="Go to <%= component.url %>"
+            class="usa-link display-inline-block margin-top-3">
+          <%= component.url_link_text %>
+        </a>
+      <% end %>
+      <% if component.text.present? %>
+        <p><%= component.text.html_safe %></p>
+      <% end %>
+    </div>
   <% end %>
-  <% if component.url.present? && component.url_link_text.present? %>
-    <a href="<%= component.url %>"
-        target="<%= get_link_target_attribute(component.url) %>"
-        title="Go to <%= component.url %>"
-        class="usa-link-bold display-inline-block margin-top-3">
-        <%= component.url_link_text %>
-    </a>
-  <% end %>
-  <% if component.text.present? %>
-    <p><%= component.text.html_safe %></p>
-  <% end %>
-</div>
-<div class="grid-item-image <%= "left-align" if component.text_alignment === 'Right'%>" >
-  <img src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
 </div>
