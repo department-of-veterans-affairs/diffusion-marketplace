@@ -1,5 +1,6 @@
 require 'rails_helper'
-  describe 'Page Builder - Show - 2:1 Image to Text', type: :feature do
+
+describe 'Page Builder - Show - 2:1 Image to Text', type: :feature do
   before do
     page_group = PageGroup.create(
       name: 'programming', 
@@ -17,9 +18,13 @@ require 'rails_helper'
     image_path = File.join(Rails.root, '/spec/assets/charmander.png')
     image_file = File.new(image_path)
     @two_to_one_image_component = PageTwoToOneImageComponent.new(
+      text: "THIS IS A CAT",
+      text_alignment: 'Left',
       title: 'Image and alt text',
       image: image_file,
-      image_alt_text: "Test Image"
+      image_alt_text: "Test Image",
+      url: "https://example.com",
+      url_link_text: "Link Text",
     )
     @two_to_one_image_component.save!
 
@@ -28,26 +33,41 @@ require 'rails_helper'
     login_as(@user, scope: :user, run_callbacks: false)
   end
 
-  context 'Text alignment' do
-    it 'aligns text to right if specified' do
-      @two_to_one_image_component.update!(
-        title: 'Text alignment test', 
-        text_alignment: 'Right',
-        text: 'This is some sample text',
-      )
-
-      visit 'programming/ruby-rocks'
-
-      expect(page).to have_css('.grid-item-text.right-align')
-    end
-  end
-
   context 'Image and alt text' do
     it 'image and alt text present' do
       visit 'programming/ruby-rocks'
 
       expect(page).to have_css("img[src*='#{@two_to_one_image_component.image_s3_presigned_url}']")
       expect(page).to have_css("img[alt='Test Image']")
+    end
+  end
+
+  context 'Text alignment' do
+    it 'aligns the text to the left of the image when text_alignment is "Left"' do
+      visit '/programming/ruby-rocks'
+      expect(page).to have_css('.grid-item-text.order-first')
+    end
+
+    it 'aligns the text to the right of the image when text_alignment is "Right"' do
+      @two_to_one_image_component.update!(text_alignment: "Right")
+      visit '/programming/ruby-rocks'
+      expect(page).to have_css('.grid-item-text.order-last')
+    end
+  end
+
+  context 'Image to text ratio' do
+    it 'reverses the image-to-text ratio when flipped_ratio is true' do
+      @two_to_one_image_component.update!(flipped_ratio: true)
+      visit '/programming/ruby-rocks'
+
+      expect(page).to have_css('.grid-item-text.order-first.tablet\\:grid-col-8')
+    end
+  end
+
+  context 'URL' do
+    it 'displays the component URL' do
+      visit '/programming/ruby-rocks'
+      expect(page).to have_link('Link Text', href: 'https://example.com')
     end
   end
 end
