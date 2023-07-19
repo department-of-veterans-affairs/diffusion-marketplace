@@ -36,7 +36,8 @@ class PageComponent < ApplicationRecord
       'Google Map': 'PageMapComponent',
       'Text and Images': 'PageCompoundBodyComponent',
       'Triple Body Text': 'PageTripleParagraphComponent',
-      'Block Quote': 'PageBlockQuoteComponent'
+      'Block Quote': 'PageBlockQuoteComponent',
+      '2:1 Image to Text': 'PageTwoToOneImageComponent'
   }
 
   def build_component(params)

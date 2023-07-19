@@ -152,6 +152,22 @@
     }
   }
 
+  .usa-img {
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 640px) {
+    .flex-column {
+      flex-direction: column;
+    }
+  }
+
+  @media screen and (min-width: 641px) {
+    .flex-row-tablet {
+      flex-direction: row;
+    }
+  }
+
   .page-map-component {
     .page-marker-container {
       padding: 52px 8px 0 8px;

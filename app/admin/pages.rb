@@ -67,6 +67,7 @@ ActiveAdmin.register Page do
                     :start_date,
                     :end_date,
                     :location,
+                    :flipped_ratio,
                     practices: []
                   ],
                   page_component_images_attributes: {}
@@ -142,7 +143,8 @@ ActiveAdmin.register Page do
                 pc.component_type == 'PageAccordionComponent' ||
                 pc.component_type == 'PageMapComponent' ||
                 pc.component_type == 'PagePublicationComponent' ||
-                pc.component_type == 'PageCompoundBodyComponent') && component&.title.present?
+                pc.component_type == 'PageCompoundBodyComponent' ||
+                pc.component_type == 'PageTwoToOneImageComponent') && component&.title.present?
               para "Title: #{component.title}"
             end
             # Large title
@@ -156,9 +158,10 @@ ActiveAdmin.register Page do
             end
             # Text
             if (pc.component_type == 'PageAccordionComponent' ||
-              pc.component_type == 'PageParagraphComponent' ||
-              pc.component_type == 'PageCompoundBodyComponent' ||
-              pc.component_type == 'PageBlockQuoteComponent') && component&.text.present?
+                pc.component_type == 'PageParagraphComponent' ||
+                pc.component_type == 'PageCompoundBodyComponent' ||
+                pc.component_type == 'PageBlockQuoteComponent' ||
+                pc.component_type == 'PageTwoToOneImageComponent') && component&.text.present?
               para component.text.html_safe
             end
 
@@ -181,7 +184,10 @@ ActiveAdmin.register Page do
               para component.citation
             end
             # Text alignment
-            para "Text alignment: #{component&.text_alignment}" if pc.component_type == 'PageCompoundBodyComponent'
+            if (pc.component_type == 'PageCompoundBodyComponent' || 
+                pc.component_type == 'PageTwoToOneImageComponent')
+              para "Text alignment: #{component&.text_alignment}"
+            end
             # Practice list count
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             # Practice list
@@ -191,7 +197,8 @@ ActiveAdmin.register Page do
                 pc.component_type == 'PagePublicationComponent' ||
                 pc.component_type == 'PageYouTubePlayerComponent' ||
                 pc.component_type == 'PageSimpleButtonComponent' ||
-                pc.component_type == 'PageCompoundBodyComponent') && component&.url.present?
+                pc.component_type == 'PageCompoundBodyComponent' ||
+                pc.component_type == 'PageTwoToOneImageComponent') && component&.url.present?
               para "URL: #{component.url}"
             end
             # URL link text
@@ -199,7 +206,11 @@ ActiveAdmin.register Page do
             # Caption
             para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
             # Alt text
-            para component&.alt_text if pc.component_type == 'PageImageComponent'
+            if pc.component_type == 'PageImageComponent'
+              para "Image Alt Text: #{component&.alt_text}"
+            elsif pc.component_type == 'PageTwoToOneImageComponent'
+              para "Image Alt Text: #{component&.image_alt_text}"
+            end
             # Attachment file name
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
             # Map Info Window Text

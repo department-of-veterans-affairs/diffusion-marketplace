@@ -26,7 +26,6 @@
             </div>
           <% end %>
 
-        <%# Page Header and Paragraph %>
         <% if pc.component_type == 'PageTripleParagraphComponent' && component.text1.present? %>
           <div class=<%='bg-primary-lighter' if component.has_background_color %>>
             <div class="grid-container">
@@ -390,12 +389,18 @@
 
         <%# Text and Images %>
         <% when 'PageCompoundBodyComponent' %>
-        <div class="grid-container">
-          <div
-            class="page-compound-body-component <%= last_component === index ? 'margin-bottom-0 padding-bottom-0' : "padding-bottom-#{component.padding_bottom}" %> <%= "padding-top-#{component.padding_top}" %><%= page_narrow_classes %>">
-            <%= render partial: 'compound_body_component', locals: { component: component } %>
+          <div class="grid-container">
+            <div
+              class="page-compound-body-component <%= last_component === index ? 'margin-bottom-0 padding-bottom-0' : "padding-bottom-#{component.padding_bottom}" %> <%= "padding-top-#{component.padding_top}" %><%= page_narrow_classes %>">
+              <%= render partial: 'compound_body_component', locals: { component: component } %>
+            </div>
           </div>
-        </div>
+
+        <%# 2:1 Image to Text %>
+        <% when 'PageTwoToOneImageComponent' %>
+          <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
+            <%= render partial: 'two_to_one_image_component', locals: { component: component } %>
+          </div>
         <% end %>
       <% end %>
     </div>
