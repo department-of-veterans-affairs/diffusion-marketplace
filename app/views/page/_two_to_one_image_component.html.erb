@@ -1,47 +1,25 @@
 <div class="grid-row grid-gap display-flex flex-column flex-row-tablet">
-  <% if component.text_alignment == "Left" %>
-    <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-8' : 'tablet:grid-col-4' %>">
-      <% if component.title.present? %>
-        <h2 class="margin-top-0">
-          <%= component.title %>
-        </h2>
-      <% end %>
-      <% if component.url.present? && component.url_link_text.present? %>
-        <a href="<%= component.url %>"
-            target="<%= get_link_target_attribute(component.url) %>"
-            title="Go to <%= component.url %>"
-            class="usa-link display-inline-block margin-top-3">
-          <%= component.url_link_text %>
-        </a>
-      <% end %>
-      <% if component.text.present? %>
-        <p><%= component.text.html_safe %></p>
-      <% end %>
-    </div>
-    <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-4' : 'tablet:grid-col-8' %>">
-      <img class="usa-img" src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
-    </div>
-  <% else %>
-    <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-4' : 'tablet:grid-col-8' %>">
-      <img class="usa-img" src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
-    </div>
-    <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-8' : 'tablet:grid-col-4' %>">
-      <% if component.title.present? %>
-        <h2 class="margin-top-0">
-          <%= component.title %>
-        </h2>
-      <% end %>
-      <% if component.url.present? && component.url_link_text.present? %>
-        <a href="<%= component.url %>"
-            target="<%= get_link_target_attribute(component.url) %>"
-            title="Go to <%= component.url %>"
-            class="usa-link display-inline-block margin-top-3">
-          <%= component.url_link_text %>
-        </a>
-      <% end %>
-      <% if component.text.present? %>
-        <p><%= component.text.html_safe %></p>
-      <% end %>
-    </div>
-  <% end %>
+  <div class="<%= component.text_alignment === "Left" ? 'order-first' : 'order-last' %> <%= component.flipped_ratio? ? 'tablet:grid-col-8' : 'tablet:grid-col-4' %>">
+    <% if component.title.present? %>
+      <h3 class="margin-top-0">
+        <%= component.title %>
+      </h3>
+    <% end %>
+    <% if component.url.present? && component.url_link_text.present? %>
+      <a href="<%= component.url %>"
+          target="<%= get_link_target_attribute(component.url) %>"
+          title="Go to <%= component.url %>"
+          class="<%= set_link_classes(component.url) %> display-inline-block margin-top-3">
+        <%= component.url_link_text %>
+      </a>
+    <% end %>
+    <% if component.text.present? %>
+      <p><%= component.text.html_safe %></p>
+    <% end %>
+  </div>
+  <div class="<%= component.flipped_ratio? ? 'tablet:grid-col-4' : 'tablet:grid-col-8' %> display-flex flex-align-center">
+    <div class="flex-grow-1"></div>
+    <img class="usa-img width-full maxh-mobile-lg maxh-100vh" src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
+    <div class="flex-grow-1"></div>
+  </div>
 </div>
