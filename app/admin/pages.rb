@@ -55,13 +55,8 @@ ActiveAdmin.register Page do
                     :description_text_alignment,
                     :body,
                     :citation,
-                    :title_header,
                     :text_alignment,
                     :url_link_text,
-                    :large_title,
-                    :padding_bottom,
-                    :padding_top,
-                    :presented_by,
                     :published_date,
                     :published_in,
                     :published_on_day,
@@ -139,21 +134,16 @@ ActiveAdmin.register Page do
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
             # Alignment
             para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
-            # Title header
-            para "Title header: #{component&.title_header}" if pc.component_type == 'PageCompoundBodyComponent' && component&.title_header.present?
             # Title
             if (pc.component_type == 'PageHeader3Component' ||
                 pc.component_type == 'PageSubpageHyperlinkComponent' ||
                 pc.component_type == 'PageAccordionComponent' ||
                 pc.component_type == 'PageMapComponent' ||
-                pc.component_type == 'PagePublicationComponent' ||
-                pc.component_type == 'PageCompoundBodyComponent' ||
+                pc.component_type == 'PagePublicationComponent' ||       
                 pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.title.present?
               para "Title: #{component.title}"
             end
-            # Large title
-            para "Large title: #{component.large_title}" if pc.component_type == 'PageCompoundBodyComponent' && component&.large_title
             # Description
             if (pc.component_type == 'PageHeader3Component' ||
                 pc.component_type == 'PageDownloadableFileComponent' ||
@@ -163,8 +153,7 @@ ActiveAdmin.register Page do
             end
             # Text
             if (pc.component_type == 'PageAccordionComponent' ||
-                pc.component_type == 'PageParagraphComponent' ||
-                pc.component_type == 'PageCompoundBodyComponent' ||
+                pc.component_type == 'PageParagraphComponent' ||         
                 pc.component_type == 'PageBlockQuoteComponent' ||
                 pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.text.present?
@@ -190,9 +179,8 @@ ActiveAdmin.register Page do
               para component.citation
             end
             # Text alignment
-            if (pc.component_type == 'PageCompoundBodyComponent' || 
-                pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent')
+            if pc.component_type == 'PageTwoToOneImageComponent' ||
+                pc.component_type == 'PageOneToOneImageComponent'
               para "Text alignment: #{component&.text_alignment}"
             end
             # Practice list count
@@ -203,8 +191,7 @@ ActiveAdmin.register Page do
             if (pc.component_type == 'PageSubpageHyperlinkComponent' ||
                 pc.component_type == 'PagePublicationComponent' ||
                 pc.component_type == 'PageYouTubePlayerComponent' ||
-                pc.component_type == 'PageSimpleButtonComponent' ||
-                pc.component_type == 'PageCompoundBodyComponent' ||
+                pc.component_type == 'PageSimpleButtonComponent' ||               
                 pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.url.present?
               para "URL: #{component.url}"
@@ -231,10 +218,6 @@ ActiveAdmin.register Page do
 
             # Display name
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
-            # Padding bottom
-            para "Padding bottom: #{component&.padding_bottom}" if pc.component_type == 'PageCompoundBodyComponent'
-            # Padding top
-            para "Padding top: #{component&.padding_top}" if pc.component_type == 'PageCompoundBodyComponent'
             # PageComponentImages
             if pc.page_component_images.present?
               para 'Images:'

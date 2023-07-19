@@ -12,7 +12,6 @@ const MAX_DESCRIPTION_LENGTH = 140;
 const pageComponentNames = [
     'PageAccordionComponent',
     'PageBlockQuoteComponent',
-    'PageCompoundBodyComponent',
     'PageCtaComponent',
     'PageDownloadableFileComponent',
     'PageEventComponent',
