@@ -34,7 +34,6 @@ class PageComponent < ApplicationRecord
       'YouTube Player': 'PageYouTubePlayerComponent',
       'Horizontal Separator': 'PageHrComponent',
       'Google Map': 'PageMapComponent',
-      'Text and Images': 'PageCompoundBodyComponent',
       'Triple Body Text': 'PageTripleParagraphComponent',
       'Block Quote': 'PageBlockQuoteComponent',
       '2:1 Image to Text': 'PageTwoToOneImageComponent'
