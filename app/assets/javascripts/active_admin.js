@@ -12,7 +12,6 @@ const MAX_DESCRIPTION_LENGTH = 140;
 const pageComponentNames = [
     'PageAccordionComponent',
     'PageBlockQuoteComponent',
-    'PageCompoundBodyComponent',
     'PageCtaComponent',
     'PageDownloadableFileComponent',
     'PageEventComponent',
@@ -197,8 +196,7 @@ const pageComponentNames = [
 
     function _initializeTinyMCEOnDragAndDrop() {
         $(document).on('mouseup', '.handle', function(e) {
-            const wysiwygComponents = ['PageAccordionComponent', 
-                                       'PageCompoundBodyComponent', 
+            const wysiwygComponents = ['PageAccordionComponent',  
                                        'PageParagraphComponent', 
                                        'PageTripleParagraphComponent', 
                                        'PageBlockQuoteComponent',
