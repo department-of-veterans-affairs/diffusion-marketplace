@@ -401,6 +401,12 @@
           <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
             <%= render partial: 'two_to_one_image_component', locals: { component: component } %>
           </div>
+
+        <%# 1:1 Image to Text %>
+        <% when 'PageOneToOneImageComponent' %>
+          <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
+            <%= render partial: 'one_to_one_image_component', locals: { component: component } %>
+          </div>
         <% end %>
       <% end %>
     </div>
