@@ -83,7 +83,8 @@ html = Arbre::Context.new do
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_day",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][published_on_day]",
                 maxlength: 2,
-                inputmode: 'numeric'
+                inputmode: 'numeric',
+                pattern: "[0-9]*"
           para 'Day of the month, e.g. 15', class: 'inline-hints'
         end
 
@@ -95,7 +96,8 @@ html = Arbre::Context.new do
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][published_on_year]",
                 minlength: 4,
                 maxlength: 4,
-                inputmode: 'numeric'
+                inputmode: 'numeric',
+                pattern: "[0-9]*"
           para 'YYYY', class: 'inline-hints'
         end
 
