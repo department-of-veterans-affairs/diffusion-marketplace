@@ -101,14 +101,14 @@ html = Arbre::Context.new do
           para 'YYYY', class: 'inline-hints'
         end
 
-        # Published in
+        # Published in / Journal
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_in_input" do
           label 'Published in', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_published_in", class: 'label'
           input value: component&.published_in || nil,
                 type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_published_in",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][published_in]"
-          para 'Name of publication, italicized', class: 'inline-hints'
+          para 'Name of publishing journal, styled with italics', class: 'inline-hints'
         end
 
         # Authors
