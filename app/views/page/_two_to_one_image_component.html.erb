@@ -9,7 +9,7 @@
       <a href="<%= component.url %>"
           target="<%= get_link_target_attribute(component.url) %>"
           title="Go to <%= component.url %>"
-          class="<%= set_link_classes(component.url) %> display-inline-block margin-top-3">
+          class="<%= set_link_classes(component.url) %> display-inline-block text-bold">
         <%= component.url_link_text %>
       </a>
     <% end %>
@@ -18,6 +18,6 @@
     <% end %>
   </div>
   <div class="grid-item-image <%= component.flipped_ratio? ? 'tablet:grid-col-4' : 'tablet:grid-col-8' %> display-flex flex-align-center">
-    <img class="usa-img width-full height-auto maxh-mobile-lg flex-align-self-start"" src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
+    <img class="usa-img width-full height-auto maxh-mobile-lg flex-align-self-start" src="<%= component.image_s3_presigned_url %>" alt="<%= component.image_alt_text %>"/>
   </div>
 </div>
