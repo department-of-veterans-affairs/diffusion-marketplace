@@ -244,6 +244,14 @@ ActiveAdmin.register Page do
                 pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
               para "Button text: #{component.button_text}"
             end
+            # Publication component
+            if pc.component_type == 'PagePublicationComponent'
+              para "Published in: #{component&.published_in}" if component&.published_in.present?
+              para "Month: #{component&.published_on_month}" if component&.published_on_month.present?
+              para "Day: #{component&.published_on_day}" if component&.published_on_day.present?
+              para "Year: #{component&.published_on_year}" if component&.published_on_year.present?
+              para "Authors: #{component&.authors}" if component&.authors.present?
+            end
 
           end
         }.join('').html_safe
