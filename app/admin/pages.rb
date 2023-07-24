@@ -197,8 +197,7 @@ ActiveAdmin.register Page do
               para "URL: #{component.url}"
             end
             # URL link text
-            if (pc.component_type == 'PageCompoundBodyComponent' ||
-                pc.component_type == 'PageTwoToOneImageComponent' ||
+            if (pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.url_link_text.present?
               para "URL link text: #{component&.url_link_text}"
             end
@@ -348,7 +347,6 @@ ActiveAdmin.register Page do
   controller do
     before_action :set_page,
                   :delete_page_image_and_alt_text,
-                  :delete_incomplete_page_component_images_params,
                   only: [:create, :update]
 
     def create
@@ -412,42 +410,6 @@ ActiveAdmin.register Page do
         # set the 'image_alt_text' in the params to nil, in order to avoid issue with backend validation
         # where it checks for an existing image first (the 'image_alt_text' key is still in the params at this point)
         params[:page][:image_alt_text] = nil
-      end
-    end
-
-    def delete_incomplete_page_component_images_params
-      ### If there are any 'PageComponentImages' that have missing required fields, delete them from the params
-      page_component_attributes_params = params[:page][:page_components_attributes]
-
-      if page_component_attributes_params.present?
-        # Select any 'PageCompoundBodyComponent' components from the params
-        page_compound_body_component_params = page_component_attributes_params.select { |key, value| value[:component_type] === 'PageCompoundBodyComponent' }
-
-        if page_compound_body_component_params.present?
-          @incomplete_image_components = 0
-
-          page_compound_body_component_params.each do |cbp_param_key, cbp_param_val|
-            page_component_images_params = cbp_param_val[:page_component_images_attributes]
-
-            if page_component_images_params.present?
-              page_component_images_params.each do |pci_key, pci_val|
-                existing_component_image = PageComponentImage.find_by(id: pci_val[:id])
-                has_no_alt_text = pci_val[:alt_text].blank?
-                has_no_image = pci_val[:image].blank? && existing_component_image&.image.blank?
-
-                if (has_no_alt_text || has_no_image) && pci_val[:_destroy] != '1'
-                  @incomplete_image_components += 1
-                  params.dig(
-                    :page,
-                    :page_components_attributes,
-                    cbp_param_key,
-                    :page_component_images_attributes
-                  ).delete(pci_key)
-                end
-              end
-            end
-          end
-        end
       end
     end
   end
