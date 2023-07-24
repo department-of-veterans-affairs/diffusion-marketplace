@@ -3,6 +3,9 @@ class PagePublicationComponent < ApplicationRecord
   has_attached_file :attachment, :default_url => ""
   do_not_validate_attachment_file_type :attachment
   validates :title, presence: true
+  validates :published_on_day, numericality: { only_integer: true, less_than_or_equal_to: 31 }, allow_nil: true
+  validates :published_on_month, numericality: { only_integer: true, less_than_or_equal_to: 12 }, allow_nil: true
+  validates :published_on_year, length: { is: 4 }, numericality: { only_integer: true }, allow_nil: true
 
   validates_with InternalUrlValidator,
                  on: [:create, :update],
