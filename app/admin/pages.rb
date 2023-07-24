@@ -69,7 +69,6 @@ ActiveAdmin.register Page do
                     :flipped_ratio,
                     practices: []
                   ],
-                  page_component_images_attributes: {}
                 ]
 
   #
@@ -217,18 +216,6 @@ ActiveAdmin.register Page do
 
             # Display name
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
-            # PageComponentImages
-            if pc.page_component_images.present?
-              para 'Images:'
-              pc.page_component_images.each do |pci|
-                para do
-                  img src: "#{pci.image_s3_presigned_url(:thumb)}", class: 'maxw-10'
-                end
-                para "URL: #{pci.url}" if pci.url.present?
-                para "Caption: #{pci.caption}" if pci.caption.present?
-                para "Alt text: #{pci.alt_text}"
-              end
-            end
             # Border
             para "Has border: #{component&.has_border}" if pc.component_type == 'PageAccordionComponent'
             # Button text
@@ -385,12 +372,7 @@ ActiveAdmin.register Page do
         end
 
         respond_to do |format|
-          if @incomplete_image_components.present? && @incomplete_image_components > 0
-            flash[:warning] = "One or more 'Compound Body' components had missing required fields for its image(s). The page was saved, but those image(s) were not."
-            format.html { redirect_to admin_page_path(@page) }
-          else
-            format.html { redirect_to admin_page_path(@page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
-          end
+          format.html { redirect_to admin_page_path(@page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
         end
       rescue => e
         respond_to do |format|
