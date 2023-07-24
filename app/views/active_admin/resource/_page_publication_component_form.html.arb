@@ -66,11 +66,11 @@ html = Arbre::Context.new do
                  id: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_month",
                  name: "page[page_components_attributes][#{placeholder}][component_attributes][published_on_month]" do
                   option '', selected: component&.published_on_month === nil
-                  12.times do |i|
+                  1.upto(12)  do |i|
                     # shorthand for generating: option '1 - January', value: 1, selected: component&.published_on_month === 1
-                    option "#{i + 1} - #{Date::MONTHNAMES[(i + 1)]}",
-                    value: i + 1,
-                    selected: component&.published_on_month === i + 1
+                    option "#{i} - #{Date::MONTHNAMES[i]}",
+                    value: i,
+                    selected: component&.published_on_month === i
                   end
                 end
           para '', class: 'inline-hints'
