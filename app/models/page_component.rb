@@ -37,6 +37,7 @@ class PageComponent < ApplicationRecord
       'Text and Images': 'PageCompoundBodyComponent',
       'Triple Body Text': 'PageTripleParagraphComponent',
       'Block Quote': 'PageBlockQuoteComponent',
+      '1:1 Image to Text': 'PageOneToOneImageComponent',
       '2:1 Image to Text': 'PageTwoToOneImageComponent'
   }
 

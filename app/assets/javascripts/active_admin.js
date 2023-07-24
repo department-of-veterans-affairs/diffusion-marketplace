@@ -22,6 +22,7 @@ const pageComponentNames = [
     'PageImageComponent',
     'PageMapComponent',
     'PageNewsComponent',
+    'PageOneToOneImageComponent',
     'PageParagraphComponent',
     'PagePublicationComponent',
     'PagePracticeListComponent',
@@ -186,7 +187,8 @@ const pageComponentNames = [
                 componentType === 'PageParagraphComponent' || 
                 componentType === 'PageTripleParagraphComponent' || 
                 componentType === 'PageBlockQuoteComponent' || 
-                componentType === 'PageTwoToOneImageComponent'
+                componentType === 'PageTwoToOneImageComponent' ||
+                componentType === 'PageOneToOneImageComponent'
             ) {
                 _initTinyMCE(componentTextareaId);
             }
@@ -200,7 +202,8 @@ const pageComponentNames = [
                                        'PageParagraphComponent', 
                                        'PageTripleParagraphComponent', 
                                        'PageBlockQuoteComponent',
-                                       'PageTwoToOneImageComponent'];
+                                       'PageTwoToOneImageComponent',
+                                       'PageOneToOneImageComponent'];
             var componentType = $(e.target).closest('ol').find('.polyselect').val();
 
             if (wysiwygComponents.includes(componentType)) {
