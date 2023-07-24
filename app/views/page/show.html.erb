@@ -164,7 +164,7 @@
                 <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
               </ul>
               <% if elc[:pagy].count > 2  %>
-                <div class="text-center dm-load-more-events-<%= component_index %>-btn-container">
+                <div class="text-center dm-load-more-events-<%= component_index %>-btn-container margin-bottom-4">
                   <% link = pagy_link_proc(elc[:pagy]) %>
                   <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
                 </div>
