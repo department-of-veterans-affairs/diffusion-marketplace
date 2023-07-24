@@ -322,24 +322,6 @@ describe 'Page Builder - Show', type: :feature do
     find("#page_page_components_attributes_#{index}_component_attributes_display_unsuccessful_adoptions").set(true)
   end
 
-  def add_page_component_image_to_component(
-    component_li_id,
-    image_path,
-    image_url,
-    image_caption,
-    image_alt_text
-  )
-    within(:css, component_li_id) do
-      click_link('Add image')
-      find('input[type="file"]').attach_file(image_path)
-      fill_in('Image URL', with: image_url)
-      within_frame(all('.tox-edit-area__iframe')[1]) do
-        find('body').set(image_caption)
-      end
-      fill_in('Alternative text *required*', with: image_alt_text)
-    end
-  end
-
   def save_page
     find_all('input[type="submit"]').first.click
   end

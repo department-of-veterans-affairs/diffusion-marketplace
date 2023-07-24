@@ -194,28 +194,6 @@ describe 'Page Builder', type: :feature do
     select(4, from: "page_page_components_attributes_#{component_index}_component_attributes_padding_top")
   end
 
-  def fill_in_optional_page_component_image_fields(
-    component_image_index,
-    url,
-    wysiwyg_editor_index,
-    wysiwyg_editor_content
-  )
-    click_link('Add image')
-    all(:field, 'Image URL')[component_image_index].set(url)
-    within_frame(all('.tox-edit-area__iframe')[wysiwyg_editor_index]) do
-      find('body').set(wysiwyg_editor_content)
-    end
-  end
-
-  def fill_in_required_page_component_image_fields(
-    file_input_index,
-    component_image_index,
-    alt_text
-  )
-    all('input[type="file"]')[file_input_index].attach_file(@image_file)
-    all(:field, 'Alternative text *required*')[component_image_index].set(alt_text)
-  end
-
   def fill_in_necessary_page_fields(url)
     fill_in 'URL', with: url
     fill_in 'Title', with: 'Hello world!'
