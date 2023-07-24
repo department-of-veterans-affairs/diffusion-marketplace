@@ -328,76 +328,6 @@ const pageComponentNames = [
                 </li>`;
     }
 
-    function appendLiHTMLToList(targetOl, liHTML) {
-        return $(targetOl).append(liHTML);
-    }
-
-    function updateListItemsOnAddLinkClick(addLinkSelector, liHTML, liClass) {
-        $(document).on('click', addLinkSelector, function() {
-            const guid = createGUID();
-            /*
-            Replace all instances of the 'PLACEHOLDER_1' text in the HTML string with the correct corresponding position and
-            all instances of the 'PLACEHOLDER_2' text with the GUID
-            */
-            const newLiHtml = liHTML.replaceAll('PLACEHOLDER_1', $(this).data('add-another')).replaceAll('PLACEHOLDER_2', guid);
-            appendLiHTMLToList(
-                $(this).prev(),
-                newLiHtml
-            );
-            // Add a horizontal separator to the end of the previous visible li
-            const separator = '<div class="add-another-separator border-y-1px border-gray-5 margin-top-2"></div>';
-            $(this).prev().children(liClass).not('.display-none').eq(-2).append(separator);
-        });
-    }
-
-    function updateListItemsOnDeleteLinkClick(
-        deleteLinkSelector,
-        closestLiSelector,
-        visibleLiSelector,
-        liClassName,
-        lastAttrLiSelector
-    ) {
-        $(document).on('click', deleteLinkSelector, function() {
-            // Update the value of the hidden '_destroy' input to '1'
-            $(this).prev().val('1');
-
-            const $closestLi = $(this).closest(closestLiSelector);
-            $closestLi.addClass('display-none');
-            // Remove the previous li's add-another-separator
-            if (!$closestLi.nextAll(visibleLiSelector).first().hasClass(liClassName)) {
-                $closestLi.prevAll(visibleLiSelector).first().find('.add-another-separator').remove();
-            }
-
-            const $lastAttrLiSelector = $(this).closest('.polyform').find(lastAttrLiSelector);
-            // If there are no list items visible, add bottom padding to the last component attribute's li container for the 'Add' link
-            if (!$(this).closest('ol').children().not('.display-none').length &&
-                $lastAttrLiSelector.css('padding-bottom') !== '36px') {
-                $lastAttrLiSelector.css('padding-bottom', '36px');
-            }
-        });
-    }
-
-    function showPageComponentImagesHeaderOnAddLinkClick() {
-        $(document).on('click', '.add-another-page-component-image', function() {
-            // If there are is at least one visible 'page-component-image-li' elements, show the header if it's not visible already
-            const $pageComponentImageHeader = $(this).siblings('.page-component-images-header');
-            if ($(this).prev().children('.page-component-image-li').not('.display-none').length
-                && $pageComponentImageHeader.not(':visible')) {
-                $pageComponentImageHeader.removeClass('display-none');
-            }
-        });
-    }
-
-    function hidePageComponentImagesHeaderOnDeleteLinkClick() {
-        $(document).on('click', '.dm-page-builder-trash', function() {
-            // If there are no visible 'page-component-image-li' elements, hide the header
-            const $pageComponentImagesOl = $(this).closest('.page-component-images-ol')
-            if (!$pageComponentImagesOl.children('.page-component-image-li').not('.display-none').length) {
-                $pageComponentImagesOl.prev().addClass('display-none');
-            }
-        });
-    }
-
     var ready = function () {
         loadComponents();
         setDashboardPanelTooltipTitle();
@@ -409,22 +339,6 @@ const pageComponentNames = [
         _loadPageBuilderFns();
         removeIdFromTrElements();
         addFocusListenerOnTextAreaArrival();
-        // <-- PageComponentImage functions START -->
-        updateListItemsOnAddLinkClick(
-            '.add-another-page-component-image',
-            pageComponentImageHTML(),
-            '.page-component-image-li'
-        );
-        updateListItemsOnDeleteLinkClick(
-            '.dm-page-builder-trash',
-            '.page-component-image-li',
-            '.page-component-image-li:visible',
-            'page-component-image-li',
-            '.text-alignment-container'
-        );
-        showPageComponentImagesHeaderOnAddLinkClick();
-        hidePageComponentImagesHeaderOnDeleteLinkClick();
-        // <-- PageComponentImage functions END -->
 
         // switches out polymorphic forms in page component
         $(document).on("change", ".polyselect", function () {
