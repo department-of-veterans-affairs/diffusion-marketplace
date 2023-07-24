@@ -550,22 +550,6 @@ ActiveRecord::Schema.define(version: 2023_07_28_213402) do
     t.index ["position"], name: "index_page_components_on_position"
   end
 
-  create_table "page_compound_body_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.bigint "page_component_id"
-    t.string "title"
-    t.boolean "large_title", default: false
-    t.text "text"
-    t.string "url"
-    t.string "url_link_text"
-    t.string "title_header"
-    t.string "text_alignment"
-    t.integer "padding_top"
-    t.integer "padding_bottom"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["page_component_id"], name: "index_page_compound_body_components_on_page_component_id"
-  end
-
   create_table "page_cta_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.text "cta_text"
@@ -1572,7 +1556,6 @@ ActiveRecord::Schema.define(version: 2023_07_28_213402) do
   add_foreign_key "page_accordion_components", "page_components"
   add_foreign_key "page_component_images", "page_components"
   add_foreign_key "page_components", "pages"
-  add_foreign_key "page_compound_body_components", "page_components"
   add_foreign_key "page_cta_components", "page_components"
   add_foreign_key "page_downloadable_file_components", "page_components"
   add_foreign_key "page_event_components", "page_components"
