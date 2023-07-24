@@ -63,6 +63,9 @@ ActiveAdmin.register Page do
                     :padding_top,
                     :published_date,
                     :published_in,
+                    :published_on_day,
+                    :published_on_month,
+                    :published_on_year,
                     :has_border,
                     :start_date,
                     :end_date,
@@ -249,6 +252,14 @@ ActiveAdmin.register Page do
             if (pc.component_type == 'PageSimpleButtonComponent' ||
                 pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
               para "Button text: #{component.button_text}"
+            end
+            # Publication component
+            if pc.component_type == 'PagePublicationComponent'
+              para "Published in: #{component&.published_in}" if component&.published_in.present?
+              para "Month: #{component&.published_on_month}" if component&.published_on_month.present?
+              para "Day: #{component&.published_on_day}" if component&.published_on_day.present?
+              para "Year: #{component&.published_on_year}" if component&.published_on_year.present?
+              para "Authors: #{component&.authors}" if component&.authors.present?
             end
 
           end
