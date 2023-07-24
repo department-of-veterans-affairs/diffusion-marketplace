@@ -206,7 +206,11 @@ ActiveAdmin.register Page do
               para "URL: #{component.url}"
             end
             # URL link text
-            para "URL link text: #{component&.url_link_text}" if pc.component_type == 'PageCompoundBodyComponent' && component&.url_link_text.present?
+            if (pc.component_type == 'PageCompoundBodyComponent' ||
+                pc.component_type == 'PageTwoToOneImageComponent' ||
+                pc.component_type == 'PageOneToOneImageComponent') && component&.url_link_text.present?
+              para "URL link text: #{component&.url_link_text}"
+            end
             # Caption
             para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
             # Alt text
