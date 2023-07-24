@@ -524,20 +524,6 @@ ActiveRecord::Schema.define(version: 2023_07_28_213402) do
     t.index ["page_component_id"], name: "index_page_block_quote_components_on_page_component_id"
   end
 
-  create_table "page_component_images", force: :cascade do |t|
-    t.bigint "page_component_id"
-    t.text "caption"
-    t.text "alt_text"
-    t.string "url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.bigint "image_file_size"
-    t.datetime "image_updated_at"
-    t.index ["page_component_id"], name: "index_page_component_images_on_page_component_id"
-  end
-
   create_table "page_components", force: :cascade do |t|
     t.bigint "page_id"
     t.integer "position"
@@ -1554,7 +1540,6 @@ ActiveRecord::Schema.define(version: 2023_07_28_213402) do
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "page_accordion_components", "page_components"
-  add_foreign_key "page_component_images", "page_components"
   add_foreign_key "page_components", "pages"
   add_foreign_key "page_cta_components", "page_components"
   add_foreign_key "page_downloadable_file_components", "page_components"
