@@ -131,7 +131,11 @@ Rails.application.routes.draw do
 
   # Accept pages with /communities prefix, e.g. /communities/xr-network/news
   get '/communities/xr-network', to: redirect('/communities/va-immersive'), via: :get
-  get '/communities/xr-network/:page_slug', to: redirect('/communities/va-immersive/%{page_slug}'), via: :get
+  get '/communities/xr-network/news', to: redirect('/communities/va-immersive/events-and-news'), via: :get
+  get '/communities/xr-network/events', to: redirect('/communities/va-immersive/events-and-news'), via: :get
+  get '/communities/xr-network/about', to: redirect('/communities/va-immersive/about'), via: :get
+  get '/communities/xr-network/innovations', to: redirect('/communities/va-immersive/innovations'), via: :get
+  get '/communities/xr-network/home', to: redirect('/communities/va-immersive/home'), via: :get
   get '/communities/:page_group_friendly_id' => "page#show"
   get '/communities/:page_group_friendly_id/:page_slug' => 'page#show'
   get '/communities', to: redirect('/communities/va-immersive') # temporary redirect until more communities are added
