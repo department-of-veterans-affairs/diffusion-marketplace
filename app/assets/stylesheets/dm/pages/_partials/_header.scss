@@ -149,7 +149,7 @@
           width: 133px !important;
         }
 
-        &[aria-controls="xr-network-dropdown"] {
+        &[aria-controls="va-immersive-dropdown"] {
           width: 84px !important;
         }
 
@@ -216,7 +216,7 @@
           background-position: right 13% top 50%;
         }
 
-        &[aria-controls="dm-user-profile-options"], &[aria-controls="xr-network-dropdown"] {
+        &[aria-controls="dm-user-profile-options"], &[aria-controls="va-immersive-dropdown"] {
           background-position: right 18% top 50%;
         }
       }
@@ -241,7 +241,7 @@
         right: 1rem;
       }
 
-      &#xr-network-dropdown {
+      &#va-immersive-dropdown {
         left: 38.45rem;
       }
 

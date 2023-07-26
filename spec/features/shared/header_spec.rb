@@ -11,12 +11,12 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     page_group = PageGroup.create(name: 'competitions', slug: 'competitions', description: 'competitions page')
     Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
-    page_group_3 = PageGroup.create(name: 'xr-network', slug: 'xr-network', description: 'xr-network page')
-    Page.create(page_group: page_group_3, title: 'XR Network', description: 'XR Network page', slug: 'home', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
-    Page.create(page_group: page_group_3, title: 'XR Network About', description: 'XR Network about page', slug: 'about', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
-    Page.create(page_group: page_group_3, title: 'XR Network Events', description: 'XR Network evetns page', slug: 'events', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
-    Page.create(page_group: page_group_3, title: 'XR Network News', description: 'XR Network News page', slug: 'news', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
-    Page.create(page_group: page_group_3, title: 'XR Network Innovations', description: 'XR Network innovations page', slug: 'innovations', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    page_group_3 = PageGroup.create(name: 'va-immersive', slug: 'va-immersive', description: 'va-immersive page')
+    Page.create(page_group: page_group_3, title: 'VA Immersive', description: 'VA Immersive page', slug: 'home', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'VA Immersive About', description: 'VA Immersive about page', slug: 'about', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'VA Immersive Events and News', description: 'VA Immersive events and news page', slug: 'events-and-news', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'VA Immersive Innovations', description: 'VA Immersive innovations page', slug: 'innovations', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group_3, title: 'VA Immersive Getting Started', description: 'VA Immersive getting started page', slug: 'getting-started', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
 
     visit practice_path(@practice)
     # ensure header desktop view
@@ -48,7 +48,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Your profile')
         expect(page).to have_content('Browse by locations')
-        expect(page).to have_content('XR Network')
+        expect(page).to have_content('VA Immersive')
       end
     end
 
@@ -67,7 +67,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_content('Shark Tank')
         expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Browse by locations')
-        expect(page).to have_content('XR Network')
+        expect(page).to have_content('VA Immersive')
         expect(page).to_not have_content('Sign in')
       end
 
@@ -104,42 +104,42 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     end
 
     context 'clicking on the Community link' do
-      it 'should redirect to XR-Network index page' do
-        click_on 'XR Network'
+      it 'should redirect to VA Immersive index page' do
+        click_on 'VA Immersive'
         click_on 'Community'
-        expect(page).to have_current_path('/communities/xr-network')
+        expect(page).to have_current_path('/communities/va-immersive')
       end
     end
 
     context 'clicking on the About  link' do
-      it 'should redirect to XR-Network about page' do
-        click_on 'XR Network'
+      it 'should redirect to VA Immersive about page' do
+        click_on 'VA Immersive'
         click_on 'About'
-        expect(page).to have_current_path('/communities/xr-network/about')
+        expect(page).to have_current_path('/communities/va-immersive/about')
       end
     end
 
-    context 'clicking on the Events link' do
-      it 'should redirect to XR-Network events page' do
-        click_on 'XR Network'
+    context 'clicking on the Events and News link' do
+      it 'should redirect to VA Immersive events page' do
+        click_on 'VA Immersive'
         click_on 'Events'
-        expect(page).to have_current_path('/communities/xr-network/events')
-      end
-    end
-
-    context 'clicking on the News link' do
-      it 'should redirect to XR-Network news page' do
-        click_on 'XR Network'
-        click_on 'News'
-        expect(page).to have_current_path('/communities/xr-network/news')
+        expect(page).to have_current_path('/communities/va-immersive/events')
       end
     end
 
     context 'clicking on the Innovations link' do
-      it 'should redirect to XR-Network innovations  page' do
-        click_on 'XR Network'
+      it 'should redirect to VA Immersive innovations  page' do
+        click_on 'VA Immersive'
         click_on 'Innovations'
-        expect(page).to have_current_path('/communities/xr-network/innovations')
+        expect(page).to have_current_path('/communities/va-immersive/innovations')
+      end
+    end
+
+    context 'clicking on the Getting Started link' do
+      it 'should redirect to VA Immersive innovations  page' do
+        click_on 'VA Immersive'
+        click_on 'Getting Started'
+        expect(page).to have_current_path('/communities/va-immersive/getting-started')
       end
     end
 
