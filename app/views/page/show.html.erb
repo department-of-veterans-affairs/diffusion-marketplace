@@ -119,13 +119,13 @@
             </div>
           </div>
 
-        <%# CTA %>
+        <%# Call to Action %>
         <% when 'PageCtaComponent' %>
           <% if component.has_background_color %>
             <div class="bg-gray-90">
               <div class="grid-container margin-bottom-5">
                 <div class="display-flex flex-align-center flex-justify-center <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-                  <div class="font-sans-lg text-white">
+                  <div class="usa-prose-h4 text-white">
                     <span><%= component.cta_text %></span>
                   </div>
                   <a href="<%= component.url %>"
