@@ -58,24 +58,58 @@ html = Arbre::Context.new do
           para 'Upload a publication file. Supports .pdf,.doc, or .docx', class: 'inline-hints'
         end
 
-        # Publication date
-        li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date_input" do
-          label 'Publication date', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_published_date", class: 'label'
-          input value: component&.published_date || nil, 
-                type: 'date',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][published_date]"
-          para 'Original publication date', class: 'inline-hints'
+        # Published on -  month
+        li class: 'select input optional',
+           id: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_month_input" do
+          label 'Month', for: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_month", class: 'label'
+          select value: component&.published_on_month,
+                 id: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_month",
+                 name: "page[page_components_attributes][#{placeholder}][component_attributes][published_on_month]" do
+                  option '', selected: component&.published_on_month === nil
+                  1.upto(12)  do |i|
+                    # shorthand for generating: option '1 - January', value: 1, selected: component&.published_on_month === 1
+                    option "#{i} - #{Date::MONTHNAMES[i]}",
+                    value: i,
+                    selected: component&.published_on_month === i
+                  end
+                end
+          para '', class: 'inline-hints'
         end
 
-        # Published in
+         # Published on - day
+        li class: 'numeric input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_day_input" do
+          label 'Day', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_published_on_day", class: 'label'
+          input value: component&.published_on_day || nil,
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_day",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][published_on_day]",
+                maxlength: 2,
+                max: 31,
+                inputmode: 'numeric',
+                pattern: "[0-9]*"
+          para 'Day of the month, e.g. 15', class: 'inline-hints'
+        end
+
+        # Published on - year
+        li class: 'numeric input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_year_input" do
+          label 'Year', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_published_on_year", class: 'label'
+          input value: component&.published_on_year || nil,
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_published_on_year",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][published_on_year]",
+                minlength: 4,
+                maxlength: 4,
+                inputmode: 'numeric',
+                pattern: "[0-9]*"
+          para 'YYYY', class: 'inline-hints'
+        end
+
+        # Published in / Journal
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_in_input" do
           label 'Published in', for: "page_page_components_attributes_publication_#{placeholder}_component_attributes_published_in", class: 'label'
           input value: component&.published_in || nil,
                 type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_published_in",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][published_in]"
-          para 'Name of publication, italicized', class: 'inline-hints'
+          para 'Name of publishing journal, styled with italics', class: 'inline-hints'
         end
 
         # Authors

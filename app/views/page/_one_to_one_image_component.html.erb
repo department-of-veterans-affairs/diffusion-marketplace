@@ -5,6 +5,9 @@
         <%= component.title %>
       </h3>
     <% end %>
+    <% if component.text.present? %>
+      <p><%= component.text.html_safe %></p>
+    <% end %>
     <% if component.url.present? && component.url_link_text.present? %>
       <a href="<%= component.url %>"
           target="<%= get_link_target_attribute(component.url) %>"
@@ -12,9 +15,6 @@
           class="<%= set_link_classes(component.url) %> display-inline-block text-bold">
         <%= component.url_link_text %>
       </a>
-    <% end %>
-    <% if component.text.present? %>
-      <p><%= component.text.html_safe %></p>
     <% end %>
   </div>
   <div class="grid-item-image tablet:grid-col-6 display-flex flex-align-center">

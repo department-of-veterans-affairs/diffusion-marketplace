@@ -701,7 +701,6 @@ ActiveRecord::Schema.define(version: 2023_07_24_181204) do
     t.string "title"
     t.string "authors"
     t.string "url"
-    t.date "published_date"
     t.string "published_in"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -709,6 +708,9 @@ ActiveRecord::Schema.define(version: 2023_07_24_181204) do
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
     t.datetime "attachment_updated_at"
+    t.integer "published_on_month"
+    t.integer "published_on_day"
+    t.integer "published_on_year"
     t.index ["page_component_id"], name: "index_page_publication_components_on_page_component_id"
   end
 

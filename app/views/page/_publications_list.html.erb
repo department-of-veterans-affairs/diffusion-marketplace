@@ -17,10 +17,10 @@
             <% end %>
         </h3>
         <p>
-            <% if publication.published_in? || publication.published_date? %>
+            <% if publication.published_in? || publication.published_on_year? %>
               Published
               <%= "in <span class='text-italic'>#{publication.published_in}</span>".html_safe if publication.published_in? %>
-              <%= "on #{publication.published_date.strftime("%B %e, %Y")}" if publication.published_date? %>
+              <%= publication.publication_date %>
             <% end %>
         </p>
         <p>

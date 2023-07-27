@@ -34,7 +34,7 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
   context 'Title' do
     it 'links to uploaded PDFs' do
       downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
-      publication_component = PagePublicationComponent.create(title: 'Journal article PDF', attachment: downloadable_file, published_in: 'The Journal of Science', published_date: Date.current.to_s)
+      publication_component = PagePublicationComponent.create(title: 'Journal article PDF', attachment: downloadable_file, published_in: 'The Journal of Science', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
       PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
       visit '/programming/ruby-rocks'
 
@@ -43,7 +43,7 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     end
 
     it 'links to external URLs' do
-      publication_component = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_date: Date.current.to_s)
+      publication_component = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
       PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
       visit '/programming/ruby-rocks'
 
@@ -52,7 +52,7 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     end
 
     it 'renders the title if no URL or attachment is provided' do
-      publication_component = PagePublicationComponent.create(title: 'Placeholder title', published_in: 'Wikipedia', published_date: Date.current.to_s)
+      publication_component = PagePublicationComponent.create(title: 'Placeholder title', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
       PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
       visit '/programming/ruby-rocks'
 
@@ -60,15 +60,44 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     end
   end
 
-  context 'Publication info' do
-    it 'renders with appropriate prepositions ' do
-      publication_and_date = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_date: Date.current.to_s)
+  context 'Published in' do
+    it 'renders with appropriate prepositions' do
+      publication_and_date = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
       publication_only = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia')
-      date_only = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_date: Date.current.to_s)
+      date_only = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
+      [publication_and_date, publication_only, date_only].each do |component|
+        PageComponent.create(page: @page, component: component, created_at: Time.now)
+      end
+      visit '/programming/ruby-rocks'
 
-      PageComponent.create(page: @page, component: publication_and_date, created_at: Time.now)
-      PageComponent.create(page: @page, component: publication_only, created_at: Time.now)
-      PageComponent.create(page: @page, component: date_only, created_at: Time.now)
+      expect(page).to have_content('Published in Wikipedia on May 5, 2022')
+      expect(page).to have_content('Published in Wikipedia')
+      expect(page).to have_content('Published on May 5, 2022')
+    end
+  end
+
+  context 'Publication date' do
+    it 'renders with appropriate prepositions and punctuation' do
+      full_date = PagePublicationComponent.create(title: 'Full date article', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
+      month_and_year = PagePublicationComponent.create(title: 'Month and year article', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_month: 5, published_on_year: 2022)
+      year_only = PagePublicationComponent.create(title: 'Year only article', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_year: 2022)
+      [full_date, month_and_year, year_only].each do |component|
+        PageComponent.create(page: @page, component: component, created_at: Time.now)
+      end
+
+      visit '/programming/ruby-rocks'
+
+      expect(page).to have_content('Published in Wikipedia on May 5, 2022')
+      expect(page).to have_content('Published in Wikipedia in May 2022')
+      expect(page).to have_content('Published in Wikipedia in May 2022')
+    end
+
+    it 'does not render incomplete dates' do
+      incomplete_date = PagePublicationComponent.create(title: 'Incomplete date article', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5)
+      PageComponent.create(page: @page, component: incomplete_date, created_at: Time.now)
+      visit '/programming/ruby-rocks'
+
+      expect(page).to have_content('Published in Wikipedia')
     end
   end
 end
@@ -76,7 +105,7 @@ end
 
 def create_publication_components(num = 1, page)
   num.times do
-    publication_component = PagePublicationComponent.create(title: 'News item', url: 'https://wikipedia.org', published_in: 'Journal Title', published_date: Date.current.to_s)
+    publication_component = PagePublicationComponent.create(title: 'News item', url: 'https://wikipedia.org', published_in: 'Journal Title', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
     PageComponent.create(page: page, component: publication_component, created_at: Time.now)
   end
 end

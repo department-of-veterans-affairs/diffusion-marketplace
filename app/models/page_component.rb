@@ -16,26 +16,26 @@ class PageComponent < ApplicationRecord
   # used for the component selection on the page builder
   # 'Friendly Name': 'ClassName'
   COMPONENT_SELECTION = {
-      'Accordion': 'PageAccordionComponent',
-      'Body text': 'PageParagraphComponent',
-      'Call to Action': 'PageCtaComponent',
-      'Downloadable File': 'PageDownloadableFileComponent',
-      'Event': 'PageEventComponent',
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
-      'Image': 'PageImageComponent',
-      'News': 'PageNewsComponent',
-      'Practices': 'PagePracticeListComponent',
-      'Publication': 'PagePublicationComponent',
-      'Simple Button': 'PageSimpleButtonComponent',
-      'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
-      'YouTube Player': 'PageYouTubePlayerComponent',
-      'Horizontal Separator': 'PageHrComponent',
-      'Google Map': 'PageMapComponent',
-      'Triple Body Text': 'PageTripleParagraphComponent',
+      'Body text': 'PageParagraphComponent',
+      'Three Text Columns': 'PageTripleParagraphComponent',
       'Block Quote': 'PageBlockQuoteComponent',
+      'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
       '1:1 Image to Text': 'PageOneToOneImageComponent',
-      '2:1 Image to Text': 'PageTwoToOneImageComponent'
+      '2:1 Image to Text': 'PageTwoToOneImageComponent',
+      'Accordion': 'PageAccordionComponent',
+      'Simple Button': 'PageSimpleButtonComponent',
+      'Image': 'PageImageComponent',
+      'Call to Action': 'PageCtaComponent',
+      'Downloadable File': 'PageDownloadableFileComponent',
+      'Horizontal Separator line ': 'PageHrComponent',
+      'Event': 'PageEventComponent',
+      'News': 'PageNewsComponent',
+      'Innovations': 'PagePracticeListComponent',
+      'Publication': 'PagePublicationComponent',
+      'YouTube Player': 'PageYouTubePlayerComponent',
+      'Google Map': 'PageMapComponent'
   }
 
   def build_component(params)
