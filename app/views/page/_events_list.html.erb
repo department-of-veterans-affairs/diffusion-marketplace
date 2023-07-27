@@ -7,13 +7,15 @@
                 </h3>
             </div>
             <div id="<%= event.id %>" class="event-item-description usa-prose usa-card__body">
-              <% if event&.start_date.present? %>
-                <p><i class="fas fa-calendar-alt"></i><span class='sr-only'>Date: </span> <%= event.rendered_date %></p>
-              <% end %>
-              <% if event&.location.present? %>
-                <p><i class="fas fa-map-marker-alt"></i><span class='sr-only'>Location: </span> <%= event&.location %></p>
-              <% end %>
-              <p><%= event&.text&.html_safe %></p>
+                <div class="event-metadata">
+                  <% if event&.start_date.present? %>
+                    <p><span><i class="fas fa-calendar-alt"></i><span class='sr-only'>Date: </span> <%= event.rendered_date %></span></p>
+                  <% end %>
+                  <% if event&.location.present? %>
+                    <p><span><i class="fas fa-map-marker-alt"></i><span class='sr-only'>Location: </span> <%= event&.location %></span></p>
+                  <% end %>
+                </div>
+                <p><%= event&.text&.html_safe %></p>
             </div>
         </div>
     </li>
