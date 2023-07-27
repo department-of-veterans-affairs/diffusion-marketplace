@@ -2,10 +2,10 @@
   p, li {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    line-height: 1.53;
+    line-height: 1.62;
 
     &.usa-prose-body {
-      line-height: 1.6;
+      line-height: 1.62;
     }
 
     &.ql-align-justify {
@@ -202,20 +202,44 @@
     }
   }
 
-  .page-event-component {
-    @include u-margin-bottom(2);
+  // disable USWDS USA card styles the affect whitespace
+  .page-event-component, .page-news-component {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+
     .usa-card__container {
       border: 0;
+      max-width: 395px; // Match card widths in Figma
+    }
+
+    .usa-card__container > div {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .usa-card__media--inset {
+      padding-top: 0;
+      padding-bottom: 1.5rem;
+    }
+
+    .usa-card__header {
+      padding-top: 0;
+    }
+
+    .usa-card__body {
+      padding-bottom: 0;
+      &:last-child {
+        padding-bottom: 0;
+      }
+
+      .event-metadata p {
+        margin-bottom: 0.5rem;
+        margin-top: 0;
+      }
     }
   }
 
-  .page-news-component {
-    @include u-margin-bottom(2);
-
-    .usa-card__container {
-        border: 0;
-      }
-  }
   .publication-component-list {
     .page-publication-component:not(:last-child) {
       @include u-padding-bottom(4);
