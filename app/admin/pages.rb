@@ -61,6 +61,7 @@ ActiveAdmin.register Page do
                     :large_title,
                     :padding_bottom,
                     :padding_top,
+                    :presented_by,
                     :published_date,
                     :published_in,
                     :published_on_day,

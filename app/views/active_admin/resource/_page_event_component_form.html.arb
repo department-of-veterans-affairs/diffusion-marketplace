@@ -36,6 +36,14 @@ html = Arbre::Context.new do
           para 'URL used for event title link, e.g. https://va.gov', class: 'inline-hints'
         end
 
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_presented_by_input" do
+          label 'Presented by', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.presented_by || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_presented_by",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][presented_by]"
+          para 'Sponsoring organization, e.g. VHA Innovation Network', class: 'inline-hints'
+        end
+
         li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_start_date_input" do
           label 'Start date', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_start_date", class: 'label'
           input value: component&.start_date || nil, type: 'date', required: 'required',
