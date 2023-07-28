@@ -203,7 +203,9 @@
   }
 
   // disable USWDS USA card styles the affect whitespace
-  .page-event-component, .page-news-component {
+  .page-event-component, 
+  .page-news-component, 
+  .publication-component-list-cards .page-publication-component { // Publication lists with <2 components
     margin-top: 0;
     margin-bottom: 0;
     padding-bottom: 0;
