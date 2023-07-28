@@ -162,7 +162,7 @@ const pageComponentNames = [
     let currentMCE;
 
     function _initTinyMCE(selector) {
-        // Remove any previous TinyMCE instance.
+        // // Remove any previous TinyMCE instance.
         if (currentMCE) {
             tinymce.remove('#' + currentMCE);
         }
@@ -180,11 +180,6 @@ const pageComponentNames = [
                     'undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | forecolor backcolor | link bullist numlist superscript subscript | outdent indent | removeformat',
                 link_title: false,
                 link_assume_external_targets: false,
-                init_instance_callback: function (editor) {
-                    editor.on('blur', function (e) {
-                    tinymce.remove('#' + selector);
-                    });
-                },
             });
 
         }
@@ -200,14 +195,29 @@ const pageComponentNames = [
     document.addEventListener('DOMContentLoaded', (event) => {
         let textareas = document.querySelectorAll('.tinymce');
         textareas.forEach((textarea) => {
-            addFocusListenerToTextarea(textarea)
+            addFocusListenerToTextarea(textarea);
         });
     });
 
-    function initTinyMCEOnTextAreaArrival() {
+
+    function addFocusListenerOnTextAreaArrival() {
         $(document).arrive('textarea.tinymce', function() {
+            let textarea = this;
             addFocusListenerToTextarea(this)
+
+            // Add mousedown event handler to manually trigger focus.
+            $(textarea).on('mousedown', function() {
+                $(this).trigger('focus');
+            });
         });
+    }
+
+    function _disengageTinyMCEOnDragAndDrop() {
+        $(document).on('mousedown', '.handle', function(e) {
+            if (currentMCE) {
+                tinymce.remove('#' + currentMCE);
+            }
+        })
     }
 
     // Remove content creator's ability to choose whether
@@ -226,6 +236,7 @@ const pageComponentNames = [
     function _loadPageBuilderFns() {
         var $body = $('body');
         if ($body.hasClass('admin_pages') && $body.hasClass('edit')) {
+            _disengageTinyMCEOnDragAndDrop();
             _modifyTinyMCELinkEditor();
             _modifySubmitBtnIDonPageBuilder();
         }
@@ -398,7 +409,7 @@ const pageComponentNames = [
         pageDescriptionCharacterCounter();
         _loadPageBuilderFns();
         removeIdFromTrElements();
-        initTinyMCEOnTextAreaArrival();
+        addFocusListenerOnTextAreaArrival();
         // <-- PageComponentImage functions START -->
         updateListItemsOnAddLinkClick(
             '.add-another-page-component-image',
