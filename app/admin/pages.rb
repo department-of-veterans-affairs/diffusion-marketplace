@@ -262,7 +262,21 @@ ActiveAdmin.register Page do
               para "Year: #{component&.published_on_year}" if component&.published_on_year.present?
               para "Authors: #{component&.authors}" if component&.authors.present?
             end
-
+            # Event
+            if pc.component_type == 'PageEventComponent'
+              fields = {
+                title: 'Title',
+                url: 'URL',
+                presented_by: 'Presented by',
+                start_date: 'Start date',
+                end_date: 'End date',
+                location: 'Location',
+                text: 'Description'
+              }
+              fields.each do | key, value|
+                para "#{value}: #{component.send(key)}" if component.send(key).present?
+              end
+            end
           end
         }.join('').html_safe
       end
