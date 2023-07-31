@@ -239,6 +239,14 @@ ActiveAdmin.register Page do
                 end
               end
             end
+            # News
+            if pc.component_type == 'PageNewsComponent'
+              ul do
+                component.class::FORM_FIELDS.each do | key, value|
+                  li "#{value}: #{component.send(key)}" if component.send(key).present?
+                end
+              end
+            end
           end
         }.join('').html_safe
       end
