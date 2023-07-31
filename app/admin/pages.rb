@@ -127,13 +127,7 @@ ActiveAdmin.register Page do
             end
             # Title
             if (
-                pc.component_type == 'PageAccordionComponent' ||
                 pc.component_type == 'PageMapComponent' ||
-<<<<<<< HEAD
-                pc.component_type == 'PagePublicationComponent' ||       
-=======
-                pc.component_type == 'PageCompoundBodyComponent' ||
->>>>>>> cb308b23 (PagePublicationComponent)
                 pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.title.present?
               para "Title: #{component.title}"
@@ -145,9 +139,7 @@ ActiveAdmin.register Page do
               para component.description
             end
             # Text
-            if (pc.component_type == 'PageAccordionComponent' ||
-                pc.component_type == 'PageParagraphComponent' ||         
-                pc.component_type == 'PageBlockQuoteComponent' ||
+            if (pc.component_type == 'PageBlockQuoteComponent' ||
                 pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.text.present?
               para component.text.html_safe
@@ -208,15 +200,13 @@ ActiveAdmin.register Page do
 
             # Display name
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
-            # Border
-            para "Has border: #{component&.has_border}" if pc.component_type == 'PageAccordionComponent'
             # Button text
             if (pc.component_type == 'PageSimpleButtonComponent' ||
                 pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
               para "Button text: #{component.button_text}"
             end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
