@@ -126,10 +126,7 @@ ActiveAdmin.register Page do
               b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)}"
             end
             # Title
-            if (
-                pc.component_type == 'PageMapComponent' ||
-                pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent') && component&.title.present?
+            if pc.component_type == 'PageMapComponent' && component&.title.present?
               para "Title: #{component.title}"
             end
             # Description
@@ -139,8 +136,7 @@ ActiveAdmin.register Page do
               para component.description
             end
             # Text
-            if (pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent') && component&.text.present?
+            if pc.component_type == 'PageParagraphComponent' && component&.text.present?
               para component.text.html_safe
             end
 
@@ -158,34 +154,19 @@ ActiveAdmin.register Page do
                 para component.text3.html_safe
               end
             end
-            # Text alignment
-            if pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent'
-              para "Text alignment: #{component&.text_alignment}"
-            end
             # Practice list count
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             # Practice list
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             # URL
-            if (pc.component_type == 'PageYouTubePlayerComponent' ||
-                pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent') && component&.url.present?
+            if pc.component_type == 'PageYouTubePlayerComponent' && component&.url.present?
               para "URL: #{component.url}"
-            end
-            # URL link text
-            if (pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent') && component&.url_link_text.present?
-              para "URL link text: #{component&.url_link_text}"
             end
             # Caption
             para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
             # Alt text
             if pc.component_type == 'PageImageComponent'
               para "Image Alt Text: #{component&.alt_text}"
-            elsif (pc.component_type == 'PageTwoToOneImageComponent' ||
-                   pc.component_type == 'PageOneToOneImageComponent')
-              para "Image Alt Text: #{component&.image_alt_text}"
             end
             # Attachment file name
             para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
@@ -199,7 +180,7 @@ ActiveAdmin.register Page do
               para "Button text: #{component.button_text}"
             end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
