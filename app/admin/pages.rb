@@ -139,8 +139,7 @@ ActiveAdmin.register Page do
               para component.description
             end
             # Text
-            if (pc.component_type == 'PageBlockQuoteComponent' ||
-                pc.component_type == 'PageTwoToOneImageComponent' ||
+            if (pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.text.present?
               para component.text.html_safe
             end
@@ -158,10 +157,6 @@ ActiveAdmin.register Page do
                 para component.title3
                 para component.text3.html_safe
               end
-            end
-            # Citation
-            if pc.component_type == 'PageBlockQuoteComponent' && component&.citation.present?
-              para component.citation
             end
             # Text alignment
             if pc.component_type == 'PageTwoToOneImageComponent' ||
@@ -206,7 +201,7 @@ ActiveAdmin.register Page do
               para "Button text: #{component.button_text}"
             end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
