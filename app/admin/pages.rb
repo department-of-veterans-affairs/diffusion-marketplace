@@ -125,16 +125,8 @@ ActiveAdmin.register Page do
             para do
               b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)} #{'(Card)' if pc.component_type == 'PageSubpageHyperlinkComponent' && component&.card?}"
             end
-            # Heading type
-            para component&.heading_type if pc.component_type == 'PageHeaderComponent'
-            # Subtopic title
-            para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
-            # Subtopic description
-            para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
-            # Alignment
-            para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
             # Title
-            if (pc.component_type == 'PageHeader3Component' ||
+            if (
                 pc.component_type == 'PageSubpageHyperlinkComponent' ||
                 pc.component_type == 'PageAccordionComponent' ||
                 pc.component_type == 'PageMapComponent' ||
@@ -144,8 +136,7 @@ ActiveAdmin.register Page do
               para "Title: #{component.title}"
             end
             # Description
-            if (pc.component_type == 'PageHeader3Component' ||
-                pc.component_type == 'PageDownloadableFileComponent' ||
+            if (pc.component_type == 'PageDownloadableFileComponent' ||
                 pc.component_type == 'PageMapComponent') &&
                 component&.description.present?
               para component.description
@@ -231,16 +222,9 @@ ActiveAdmin.register Page do
               para "Year: #{component&.published_on_year}" if component&.published_on_year.present?
               para "Authors: #{component&.authors}" if component&.authors.present?
             end
-            # Event
-            if pc.component_type == 'PageEventComponent'
-              ul do
-                component.class::FORM_FIELDS.each do | key, value|
-                  li "#{value}: #{component.send(key)}" if component.send(key).present?
-                end
-              end
-            end
-            # News
-            if pc.component_type == 'PageNewsComponent'
+
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent']
+            if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
                   li "#{value}: #{component.send(key)}" if component.send(key).present?
