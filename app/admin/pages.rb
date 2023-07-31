@@ -129,7 +129,11 @@ ActiveAdmin.register Page do
             if (
                 pc.component_type == 'PageAccordionComponent' ||
                 pc.component_type == 'PageMapComponent' ||
+<<<<<<< HEAD
                 pc.component_type == 'PagePublicationComponent' ||       
+=======
+                pc.component_type == 'PageCompoundBodyComponent' ||
+>>>>>>> cb308b23 (PagePublicationComponent)
                 pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.title.present?
               para "Title: #{component.title}"
@@ -177,9 +181,8 @@ ActiveAdmin.register Page do
             # Practice list
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             # URL
-            if (pc.component_type == 'PagePublicationComponent' ||
-                pc.component_type == 'PageYouTubePlayerComponent' ||
-                pc.component_type == 'PageSimpleButtonComponent' ||               
+            if (pc.component_type == 'PageYouTubePlayerComponent' ||
+                pc.component_type == 'PageSimpleButtonComponent' ||
                 pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.url.present?
               para "URL: #{component.url}"
@@ -212,16 +215,8 @@ ActiveAdmin.register Page do
                 pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
               para "Button text: #{component.button_text}"
             end
-            # Publication component
-            if pc.component_type == 'PagePublicationComponent'
-              para "Published in: #{component&.published_in}" if component&.published_in.present?
-              para "Month: #{component&.published_on_month}" if component&.published_on_month.present?
-              para "Day: #{component&.published_on_day}" if component&.published_on_day.present?
-              para "Year: #{component&.published_on_year}" if component&.published_on_year.present?
-              para "Authors: #{component&.authors}" if component&.authors.present?
-            end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
