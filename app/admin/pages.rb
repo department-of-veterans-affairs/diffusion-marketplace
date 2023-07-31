@@ -264,17 +264,10 @@ ActiveAdmin.register Page do
             end
             # Event
             if pc.component_type == 'PageEventComponent'
-              fields = {
-                title: 'Title',
-                url: 'URL',
-                presented_by: 'Presented by',
-                start_date: 'Start date',
-                end_date: 'End date',
-                location: 'Location',
-                text: 'Description'
-              }
-              fields.each do | key, value|
-                para "#{value}: #{component.send(key)}" if component.send(key).present?
+              ul do
+                component.class::FIELDS.each do | key, value|
+                  li "#{value}: #{component.send(key)}" if component.send(key).present?
+                end
               end
             end
           end
