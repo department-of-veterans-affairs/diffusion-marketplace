@@ -123,11 +123,10 @@ ActiveAdmin.register Page do
           component = eval("#{pc.component_type}.find('#{pc.component_id}')")
           Arbre::Context.new do
             para do
-              b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)} #{'(Card)' if pc.component_type == 'PageSubpageHyperlinkComponent' && component&.card?}"
+              b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)}"
             end
             # Title
             if (
-                pc.component_type == 'PageSubpageHyperlinkComponent' ||
                 pc.component_type == 'PageAccordionComponent' ||
                 pc.component_type == 'PageMapComponent' ||
                 pc.component_type == 'PagePublicationComponent' ||       
@@ -178,8 +177,7 @@ ActiveAdmin.register Page do
             # Practice list
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             # URL
-            if (pc.component_type == 'PageSubpageHyperlinkComponent' ||
-                pc.component_type == 'PagePublicationComponent' ||
+            if (pc.component_type == 'PagePublicationComponent' ||
                 pc.component_type == 'PageYouTubePlayerComponent' ||
                 pc.component_type == 'PageSimpleButtonComponent' ||               
                 pc.component_type == 'PageTwoToOneImageComponent' ||
@@ -223,7 +221,7 @@ ActiveAdmin.register Page do
               para "Authors: #{component&.authors}" if component&.authors.present?
             end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
