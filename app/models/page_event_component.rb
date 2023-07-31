@@ -1,7 +1,7 @@
 class PageEventComponent < ApplicationRecord
   has_one :page_component, as: :component, autosave: true
 
-  FIELDS = { # Fields and labels in .arb form
+  FORM_FIELDS = { # Fields and labels in .arb form
     title: 'Title',
     url: 'URL',
     presented_by: 'Presented by',

@@ -265,7 +265,7 @@ ActiveAdmin.register Page do
             # Event
             if pc.component_type == 'PageEventComponent'
               ul do
-                component.class::FIELDS.each do | key, value|
+                component.class::FORM_FIELDS.each do | key, value|
                   li "#{value}: #{component.send(key)}" if component.send(key).present?
                 end
               end
