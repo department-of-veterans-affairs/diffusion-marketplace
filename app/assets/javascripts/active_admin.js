@@ -159,61 +159,63 @@ const pageComponentNames = [
         })
     }
 
+    let currentMCE;
+
     function _initTinyMCE(selector) {
-        tinymce.init({
-            selector: selector,
-            menubar: false,
-            plugins: ["link", "lists"],
-            toolbar:
-                'undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | forecolor backcolor | link bullist numlist superscript subscript | outdent indent | removeformat',
-            link_title: false,
-            link_assume_external_targets: false
+        // // Remove any previous TinyMCE instance.
+        if (currentMCE) {
+            tinymce.remove('#' + currentMCE);
+        }
+        
+        // Set the currentMCE variable to the current selector.
+        currentMCE = selector;
+
+        // Check if TinyMCE is already initialized on this element.
+        if (!tinymce.get(selector)) {
+            tinymce.init({
+                selector: '#' + selector,
+                menubar: false,
+                plugins: ["link", "lists"],
+                toolbar:
+                    'undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | forecolor backcolor | link bullist numlist superscript subscript | outdent indent | removeformat',
+                link_title: false,
+                link_assume_external_targets: false,
+            });
+
+        }
+    }
+
+    function addFocusListenerToTextarea(textarea) {
+        textarea.addEventListener('focus', (event) => {
+            _initTinyMCE(event.target.id);
         });
     }
 
-    function _addTinyMCEOnSelection() {
-        $(document).change('.polyselect', function(e) {
-            var componentType = $(e.target).val();
-            var componentId = $(e.target).data('componentId');
-            var typeText;
-            if (componentType === 'PageAccordionComponent') {
-                typeText = 'accordion';
-            } else if (componentType === 'PageParagraphComponent' || componentType === 'PageTripleParagraphComponent') {
-                typeText = 'paragraph';
-            }
-            var componentTextareaId = '#page_page_components_attributes_' + typeText + '_' + componentId + '_component_attributes_text'
-            if (
-                componentType === 'PageAccordionComponent' || 
-                componentType === 'PageParagraphComponent' || 
-                componentType === 'PageTripleParagraphComponent' || 
-                componentType === 'PageBlockQuoteComponent' || 
-                componentType === 'PageTwoToOneImageComponent' ||
-                componentType === 'PageOneToOneImageComponent'
-            ) {
-                _initTinyMCE(componentTextareaId);
-            }
-        })
+    // Add event listeners for focus events on textarea elements.
+    document.addEventListener('DOMContentLoaded', (event) => {
+        let textareas = document.querySelectorAll('.tinymce');
+        textareas.forEach((textarea) => {
+            addFocusListenerToTextarea(textarea);
+        });
+    });
+
+
+    function addFocusListenerOnTextAreaArrival() {
+        $(document).arrive('textarea.tinymce', function() {
+            let textarea = this;
+            addFocusListenerToTextarea(this)
+
+            // Add mousedown event handler to manually trigger focus.
+            $(textarea).on('mousedown', function() {
+                $(this).trigger('focus');
+            });
+        });
     }
 
-    function _initializeTinyMCEOnDragAndDrop() {
-        $(document).on('mouseup', '.handle', function(e) {
-            const wysiwygComponents = ['PageAccordionComponent', 
-                                       'PageCompoundBodyComponent', 
-                                       'PageParagraphComponent', 
-                                       'PageTripleParagraphComponent', 
-                                       'PageBlockQuoteComponent',
-                                       'PageTwoToOneImageComponent',
-                                       'PageOneToOneImageComponent'];
-            var componentType = $(e.target).closest('ol').find('.polyselect').val();
-
-            if (wysiwygComponents.includes(componentType)) {
-                var textareaContainer = $(e.target).closest('ol').find(`.polyform[style*='list-item']`);
-
-                $(textareaContainer).find('textarea.tinymce').each(function() {
-                    const textAreaId = $(this).attr('id');
-                    tinymce.get(textAreaId).remove();
-                    _initTinyMCE('#' + textAreaId);
-                });
+    function _disengageTinyMCEOnDragAndDrop() {
+        $(document).on('mousedown', '.handle', function(e) {
+            if (currentMCE) {
+                tinymce.remove('#' + currentMCE);
             }
         })
     }
@@ -234,8 +236,7 @@ const pageComponentNames = [
     function _loadPageBuilderFns() {
         var $body = $('body');
         if ($body.hasClass('admin_pages') && $body.hasClass('edit')) {
-            _addTinyMCEOnSelection();
-            _initializeTinyMCEOnDragAndDrop();
+            _disengageTinyMCEOnDragAndDrop();
             _modifyTinyMCELinkEditor();
             _modifySubmitBtnIDonPageBuilder();
         }
@@ -377,15 +378,6 @@ const pageComponentNames = [
         });
     }
 
-    function initTinyMCEOnTextAreaArrival() {
-        $(document).arrive('textarea.tinymce', function() {
-            let textareaId = $(this).attr('id');
-            _initTinyMCE(`#${textareaId}`);
-        });
-    }
-
-
-
     function showPageComponentImagesHeaderOnAddLinkClick() {
         $(document).on('click', '.add-another-page-component-image', function() {
             // If there are is at least one visible 'page-component-image-li' elements, show the header if it's not visible already
@@ -415,10 +407,9 @@ const pageComponentNames = [
         addPageDescriptionCharacterCounterText();
         getPageDescriptionCharacterCountOnPageLoad();
         pageDescriptionCharacterCounter();
-        _initTinyMCE("textarea.tinymce");
         _loadPageBuilderFns();
         removeIdFromTrElements();
-        initTinyMCEOnTextAreaArrival();
+        addFocusListenerOnTextAreaArrival();
         // <-- PageComponentImage functions START -->
         updateListItemsOnAddLinkClick(
             '.add-another-page-component-image',
