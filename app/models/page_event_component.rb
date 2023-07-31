@@ -1,6 +1,18 @@
 class PageEventComponent < ApplicationRecord
   has_one :page_component, as: :component, autosave: true
 
+  FORM_FIELDS = { # Fields and labels in .arb form
+    title: 'Title',
+    url: 'URL',
+    presented_by: 'Presented by',
+    start_date: 'Start date',
+    end_date: 'End date',
+    location: 'Location',
+    text: 'Description'
+  }.freeze
+
+  validates :start_date, presence: { message: 'Must provide a start date' } if :end_date?
+
   validates_with InternalUrlValidator,
                  on: [:create, :update],
                  if: Proc.new { |component| component.url.present? && component.url.chars.first === '/' }

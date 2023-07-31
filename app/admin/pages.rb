@@ -61,6 +61,7 @@ ActiveAdmin.register Page do
                     :large_title,
                     :padding_bottom,
                     :padding_top,
+                    :presented_by,
                     :published_date,
                     :published_in,
                     :published_on_day,
@@ -261,7 +262,14 @@ ActiveAdmin.register Page do
               para "Year: #{component&.published_on_year}" if component&.published_on_year.present?
               para "Authors: #{component&.authors}" if component&.authors.present?
             end
-
+            # Event
+            if pc.component_type == 'PageEventComponent'
+              ul do
+                component.class::FORM_FIELDS.each do | key, value|
+                  li "#{value}: #{component.send(key)}" if component.send(key).present?
+                end
+              end
+            end
           end
         }.join('').html_safe
       end
