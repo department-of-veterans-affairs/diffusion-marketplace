@@ -21,7 +21,7 @@ html = Arbre::Context.new do
       end
       ol do
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
-          label 'Title', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_text", class: 'label'
+          label 'Title', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_title", class: 'label'
           input value: component&.title || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
@@ -37,7 +37,7 @@ html = Arbre::Context.new do
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_presented_by_input" do
-          label 'Presented by', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_text", class: 'label'
+          label 'Presented by', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_presented_by", class: 'label'
           input value: component&.presented_by || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_presented_by",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][presented_by]"
@@ -61,7 +61,7 @@ html = Arbre::Context.new do
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_location_input" do
-          label 'Location', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_text", class: 'label'
+          label 'Location', for: "page_page_components_attributes_event_#{placeholder}_component_attributes_location", class: 'label'
           input value: component&.location || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_location",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][location]"
