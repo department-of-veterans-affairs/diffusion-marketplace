@@ -139,21 +139,6 @@ ActiveAdmin.register Page do
             if pc.component_type == 'PageParagraphComponent' && component&.text.present?
               para component.text.html_safe
             end
-
-            if pc.component_type == 'PageTripleParagraphComponent' && component&.text1.present?
-              para component.title1
-              para component.text1.html_safe
-
-              if component&.text2.present?
-                para component.title2
-                para component.text2.html_safe
-              end
-
-              if component&.text3.present?
-                para component.title3
-                para component.text3.html_safe
-              end
-            end
             # Practice list count
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             # Practice list
@@ -180,7 +165,7 @@ ActiveAdmin.register Page do
               para "Button text: #{component.button_text}"
             end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent', 'PageTripleParagraphComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
