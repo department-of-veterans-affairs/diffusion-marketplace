@@ -169,7 +169,6 @@ ActiveAdmin.register Page do
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             # URL
             if (pc.component_type == 'PageYouTubePlayerComponent' ||
-                pc.component_type == 'PageSimpleButtonComponent' ||
                 pc.component_type == 'PageTwoToOneImageComponent' ||
                 pc.component_type == 'PageOneToOneImageComponent') && component&.url.present?
               para "URL: #{component.url}"
@@ -196,12 +195,11 @@ ActiveAdmin.register Page do
             # Display name
             para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
             # Button text
-            if (pc.component_type == 'PageSimpleButtonComponent' ||
-                pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
+            if (pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
               para "Button text: #{component.button_text}"
             end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
