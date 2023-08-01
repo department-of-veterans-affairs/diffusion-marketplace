@@ -1,0 +1,112 @@
+# This workflow uses actions that are not certified by GitHub.  They are
+# provided by a third-party and are governed by separate terms of service,
+# privacy policy, and support documentation.
+#
+# This workflow will install a prebuilt Ruby version, install dependencies, and
+# run tests and linters.
+name: "GA CLI run tests"
+on:
+  push:
+    branches: ['ci-migration-ga-cli','ci-migration-cv', 'ci-migration-en', 'ci-migration-pd', 'ci-migration-bj']
+name: run-tests
+jobs:
+  hold:
+    environment:
+      name: approval
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo 'approved'
+  test:
+    defaults:
+      run:
+        working-directory: "~/repo"
+    runs-on: ubuntu-latest
+    container:
+      image: circleci/ruby:2.7.5-node-browsers
+      env:
+        RAILS_ENV: test
+        MAX_THREADS: 2
+        WEB_CONCURRENCY: 1
+        POSTGRES_PASSWORD: mysecretlocalpassword
+        POSTGRES_USER: postgres
+        POSTGRES_DB: web_app
+        POSTGRES_HOST: 127.0.0.1
+        POSTGRES_PORT: 5432
+        REDIS_HOST: redis_test
+        REDIS_PORT: 6379
+        REDIS_DB_ID: 0
+        BUNDLE_JOBS: 3
+        BUNDLE_RETRY: 3
+        BUNDLE_PATH: vendor/bundle
+    services:
+      postgres:
+        image: cimg/postgres:12.10
+        env:
+          POSTGRES_PASSWORD: mysecretlocalpassword
+          POSTGRES_USER: postgres
+          POSTGRES_DB: web_app
+      redis:
+        image: redis
+    needs:
+    - hold
+    steps:
+    # This Docker file changes sets USER to circleci instead of using the default user, so we need to update file permissions for this image to work on GH Actions.
+    # See https://docs.github.com/actions/using-github-hosted-runners/about-github-hosted-runners#docker-container-filesystem
+    - name: Setup file system permissions
+      run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
+    - uses: actions/checkout@v3.3.0
+    - name: restore_cache
+      uses: actions/cache@v3.3.1
+      with:
+        key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+        restore-keys: |-
+          v1-dependencies-{{ checksum "Gemfile.lock" }}
+          v1-dependencies-
+        path: "./vendor/bundle"
+    - name: install dependencies
+      run: |-
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        sudo apt-get update --allow-releaseinfo-change
+        sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+        gem install bundler -v 2.1.4
+        bundle install --jobs=4 --retry=3 --path vendor/bundle
+    - run: bundle exec rails db:create
+    - run: bundle exec rails db:schema:load
+    - name: run bundler-audit
+      run: bundle exec bundle-audit check --update | tee /tmp/bundler-audit-report.txt
+    - name: run bundler-leak
+      run: bundle exec bundle leak check --update | tee /tmp/bundler-leak-report.txt
+    - name: run security scanner
+      run: |-
+        mkdir /tmp/security-report
+        bundle exec brakeman --exit-on-warn -o /tmp/security-report/report.json
+    - name: run tests
+      run: |-
+        mkdir /tmp/test-results
+        TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+        bundle exec rspec --format progress \
+                        --format RspecJunitFormatter \
+                        --out /tmp/test-results/rspec.xml \
+                        --format progress \
+                        $TEST_FILES
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: "/tmp/test-results"
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: "/tmp/security-report"
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: "/tmp/test-results"
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: "/tmp/security-report"
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: coverage
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: "/tmp/bundler-leak-report.txt"
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: "/tmp/bundler-audit-report.txt"
