@@ -4,6 +4,7 @@ require 'simplecov'
 require 'rspec/retry'
 require 'axe/rspec'
 require "rack_session_access/capybara"
+require 'selenium-webdriver'
 
 if ENV['CIRCLE_ARTIFACTS']
   dir = File.join(ENV['CIRCLE_ARTIFACTS'], 'coverage')
@@ -156,12 +157,14 @@ end
 # Capybara.default_driver = :selenium_chrome_headless
 Capybara.enable_aria_label = true
 
-options = Selenium::WebDriver::Chrome::Options.new
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-gpu')
-# options.add_argument("--user-data-dir=#{Capybara.save_path}")
-driver = Selenium::WebDriver.for :chrome, options: options
+Webdrivers::Chromedriver.required_version = '114.0.5735.90'
+
+# options = Selenium::WebDriver::Chrome::Options.new
+# options.add_argument('--headless')
+# options.add_argument('--no-sandbox')
+# options.add_argument('--disable-gpu')
+# # options.add_argument("--user-data-dir=#{Capybara.save_path}")
+# driver = Selenium::WebDriver.for :chrome, options: options
 
 # Capybara.register_driver :selenium_chrome_headless do |app|
 #   version = Capybara::Selenium::Driver.load_selenium
