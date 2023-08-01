@@ -46,6 +46,8 @@ html = Arbre::Context.new do
                 class: "toggle-card-styling"
         end
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end

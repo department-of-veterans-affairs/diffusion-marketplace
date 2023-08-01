@@ -25,6 +25,8 @@ html = Arbre::Context.new do
         component&.send(:text).try :html_safe
       end
       para 'Supplementary text to headings and descriptions.', class: 'inline-hints'
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end
