@@ -94,6 +94,8 @@ html = Arbre::Context.new do
         end
         para 'Select which adoptions statuses should display on the map.', class: 'inline-hints'
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end

@@ -44,6 +44,8 @@ html = Arbre::Context.new do
           end
         end
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end

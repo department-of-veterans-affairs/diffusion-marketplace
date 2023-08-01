@@ -24,6 +24,8 @@ html = Arbre::Context.new do
           para 'Choose practice cards containing practice name, tagline, and image. Hold down the CTRL key and click on Practice names to add to the list.', class: 'inline-hints'
         end
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end

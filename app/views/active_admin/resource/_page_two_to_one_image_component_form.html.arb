@@ -109,6 +109,8 @@ html = Arbre::Context.new do
           para 'Flip the 2:1 ratio so the text column is twice the width of the image', class: 'inline-hints'
         end
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end

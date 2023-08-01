@@ -93,6 +93,8 @@ html = Arbre::Context.new do
           para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
         end
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end

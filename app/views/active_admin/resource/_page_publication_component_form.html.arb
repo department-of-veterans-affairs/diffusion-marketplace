@@ -122,6 +122,8 @@ html = Arbre::Context.new do
           para 'Enter with appropriate punctuation. e.g. "John, Joan, and Jill', class: 'inline-hints'
         end
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end
