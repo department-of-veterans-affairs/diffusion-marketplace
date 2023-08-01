@@ -125,9 +125,7 @@ ActiveAdmin.register Page do
             para do
               b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)}"
             end
-
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent', 'PageTripleParagraphComponent', 'PageDownloadableFileComponent', 'PageParagraphComponent', 'PageMapComponent', 'PageYouTubePlayerComponent', 'PageImageComponent', 'PageCtaComponent', 'PagePracticeListComponent']
-            if MIGRATED_COMPONENTS.include? pc.component_type
+            if component.class.const_defined? :FORM_FIELDS
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
                   if key == :practices # Render list of practice IDs as a list of practice names
