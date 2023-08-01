@@ -1,6 +1,5 @@
 class PageEventComponent < ApplicationRecord
   has_one :page_component, as: :component, autosave: true
-  validates :start_date, presence: { message: 'Must provide a start date' } if :end_date?
 
   FORM_FIELDS = { # Fields and labels in .arb form
     title: 'Title',
