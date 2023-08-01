@@ -145,7 +145,7 @@ RSpec.configure do |config|
 =end
 
   config.before(:each, type: :feature) do
-    Capybara.page.driver.browser.manage.window.resize_to(1920, 1080)
+    # Capybara.page.driver.browser.manage.window.resize_to(1920, 1080)
     Capybara.page.driver.browser.download_path = "#{Rails.root}/tmp/downloads"
   end
 end
