@@ -7,7 +7,7 @@
 name: "Ruby on Rails CI"
 on:
   push:
-    branches: ['ci-migration','ci-migration-cv', 'ci-migration-en', 'ci-migration-pd', ''ci-migration-bj']
+    branches: ['ci-migration','ci-migration-cv', 'ci-migration-en', 'ci-migration-pd', 'ci-migration-bj']
 jobs:
   test:
     runs-on: ubuntu-latest
