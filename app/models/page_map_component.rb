@@ -6,7 +6,7 @@ class PageMapComponent < ApplicationRecord
       map_info_window_text: 'Map Info Window Text',
       description_text_alignment: 'Text alignment',
       description: 'Description',
-      # practices: 'Innovation List',
+      practices: 'Innovation List',
       display_successful_adoptions?: 'Successful',
       display_in_progress_adoptions?: 'In Progress',
       display_unsuccessful_adoptions?: 'Unsuccessful'

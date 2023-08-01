@@ -125,16 +125,17 @@ ActiveAdmin.register Page do
             para do
               b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)}"
             end
-            # Practice list count
-            para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
-            # Practice list
-            para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent', 'PageTripleParagraphComponent', 'PageDownloadableFileComponent', 'PageParagraphComponent', 'PageMapComponent', 'PageYouTubePlayerComponent', 'PageImageComponent', 'PageCtaComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent', 'PageTripleParagraphComponent', 'PageDownloadableFileComponent', 'PageParagraphComponent', 'PageMapComponent', 'PageYouTubePlayerComponent', 'PageImageComponent', 'PageCtaComponent', 'PagePracticeListComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
-                  li "#{value}: #{component.send(key)}" if component.send(key).present?
+                  if key == :practices # Render list of practice IDs as a list of practice names
+                    li "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'} selected: "
+                    para component&.practices.map {|pid| Practice.find(pid).name }.join("\n")
+                  else
+                    li "#{value}: #{component.send(key)}" if component.send(key).present?
+                  end
                 end
               end
             end
