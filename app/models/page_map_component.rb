@@ -1,6 +1,17 @@
 class PageMapComponent < ApplicationRecord
   has_one :page_component, as: :component, autosave: true
 
+    FORM_FIELDS = { # Fields and labels in .arb form
+      title: 'Title',
+      map_info_window_text: 'Map Info Window Text',
+      description_text_alignment: 'Text alignment',
+      description: 'Description',
+      # practices: 'Innovation List',
+      display_successful_adoptions?: 'Successful',
+      display_in_progress_adoptions?: 'In Progress',
+      display_unsuccessful_adoptions?: 'Unsuccessful'
+    }.freeze
+
   def get_practice_data_by_diffusion_histories(facility_id)
     adoptions = DiffusionHistory.where(va_facility_id: facility_id)
     info_window_practice_data = []

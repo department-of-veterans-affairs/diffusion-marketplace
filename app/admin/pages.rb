@@ -125,11 +125,6 @@ ActiveAdmin.register Page do
             para do
               b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)}"
             end
-            # Description
-            if pc.component_type == 'PageMapComponent' &&
-                component&.description.present?
-              para component.description
-            end
             # Practice list count
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             # Practice list
@@ -144,14 +139,12 @@ ActiveAdmin.register Page do
             if pc.component_type == 'PageImageComponent'
               para "Image Alt Text: #{component&.alt_text}"
             end
-            # Map Info Window Text
-            para component&.map_info_window_text if pc.component_type == 'PageMapComponent' && component&.map_info_window_text != ''
             # Button text
             if (pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
               para "Button text: #{component.button_text}"
             end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent', 'PageTripleParagraphComponent', 'PageDownloadableFileComponent', 'PageParagraphComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent', 'PageTripleParagraphComponent', 'PageDownloadableFileComponent', 'PageParagraphComponent', 'PageMapComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
