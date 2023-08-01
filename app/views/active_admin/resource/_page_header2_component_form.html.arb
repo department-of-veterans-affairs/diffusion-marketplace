@@ -10,6 +10,8 @@ html = Arbre::Context.new do
       ol do
         if component
           input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+
+					a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component.page_component.id
         end
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_title_input" do
           label 'Subtopic title', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
@@ -34,8 +36,6 @@ html = Arbre::Context.new do
           end
         end
       end
-
-      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end

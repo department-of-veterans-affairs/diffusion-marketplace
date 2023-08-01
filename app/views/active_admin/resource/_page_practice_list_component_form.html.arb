@@ -10,6 +10,8 @@ html = Arbre::Context.new do
       ol do
         if component
           input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+
+          a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component.page_component.id
         end
 
         li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_practices_attributes_input" do
@@ -24,8 +26,6 @@ html = Arbre::Context.new do
           para 'Choose practice cards containing practice name, tagline, and image. Hold down the CTRL key and click on Practice names to add to the list.', class: 'inline-hints'
         end
       end
-
-      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
     end
   end
 end
