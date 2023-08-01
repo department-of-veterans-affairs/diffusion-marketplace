@@ -9,12 +9,12 @@ class PageImageComponent < ApplicationRecord
 
   FORM_FIELDS = { # Fields and labels in .arb form
     alignment: 'Alignment',
-    page_image: 'Image',
+    image: 'Image',
     alt_text: 'Alternative Text',
     url: 'Url'
   }.freeze
 
-  def page_image_s3_presigned_url(style = nil)
+  def image_s3_presigned_url(style = nil)
     object_presigned_url(page_image, style)
   end
 end
