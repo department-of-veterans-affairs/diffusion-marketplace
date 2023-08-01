@@ -22,7 +22,7 @@ jobs:
         working-directory: "~/repo"
     runs-on: ubuntu-latest
     container:
-      image: circleci/ruby:2.7.5-node-browsers
+      image: cimg/ruby:2.7.8-browsers
       env:
         RAILS_ENV: test
         MAX_THREADS: 2
