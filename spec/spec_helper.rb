@@ -156,11 +156,12 @@ end
 # Capybara.default_driver = :selenium_chrome_headless
 Capybara.enable_aria_label = true
 
-Capybara.register_driver :selenium_chrome do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome)
-end
-
-Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
+options = Selenium::WebDriver::Chrome::Options.new
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-gpu')
+# options.add_argument("--user-data-dir=#{Capybara.save_path}")
+driver = Selenium::WebDriver.for :chrome, options: options
 
 # Capybara.register_driver :selenium_chrome_headless do |app|
 #   version = Capybara::Selenium::Driver.load_selenium
@@ -181,7 +182,7 @@ Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
 #     end
 #     Capybara::Selenium::Driver.new(app, **{ browser: :chrome, options_key => browser_options })
 # end
-# Capybara.default_driver = :selenium_chrome_headless
+Capybara.default_driver = :selenium_chrome_headless
 
 
 
