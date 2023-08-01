@@ -133,6 +133,14 @@ ActiveAdmin.register Page do
                   if key == :practices # Render list of practice IDs as a list of practice names
                     li "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'} selected: "
                     para component&.practices.map {|pid| Practice.find(pid).name }.join("\n")
+                  elsif key == :page_image
+                    li do
+                      img src: "#{component.page_image_s3_presigned_url}", class: 'maxw-10'
+                    end
+                  elsif key == :image
+                    li do
+                      img src: "#{component.image_s3_presigned_url}", class: 'maxw-10'
+                    end
                   else
                     li "#{value}: #{component.send(key)}" if component.send(key).present?
                   end

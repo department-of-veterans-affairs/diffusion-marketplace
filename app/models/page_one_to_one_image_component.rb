@@ -4,8 +4,10 @@ class PageOneToOneImageComponent < ApplicationRecord
         title: 'Title',
         url: 'URL',
         url_link_text: 'URL link text',
+        text: 'Text',
         text_alignment: 'Text',
-        image_file_name: 'Text alignment',
-        image_alt_text: 'Alternative Text',
+        image: 'Image',
+        image_file_name: 'Image file name',
+        image_alt_text: 'Alternative Text'
       }.freeze
 end
