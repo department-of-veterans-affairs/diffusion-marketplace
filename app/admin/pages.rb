@@ -151,7 +151,7 @@ ActiveAdmin.register Page do
               para "Button text: #{component.button_text}"
             end
 
-            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent', 'PageTripleParagraphComponent', 'PageDownloadableFileComponent']
+            MIGRATED_COMPONENTS = component_type = [ 'PageHeader2Component', 'PageHeader3Component', 'PageEventComponent', 'PageNewsComponent', 'PageSubpageHyperlinkComponent', 'PagePublicationComponent', 'PageAccordionComponent', 'PageBlockQuoteComponent', 'PageSimpleButtonComponent', 'PageTwoToOneImageComponent', 'PageOneToOneImageComponent', 'PageTripleParagraphComponent', 'PageDownloadableFileComponent', 'PageParagraphComponent']
             if MIGRATED_COMPONENTS.include? pc.component_type
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
