@@ -158,7 +158,7 @@ Capybara.enable_aria_label = true
 
 Capybara.register_driver :selenium_chrome_headless do |app|
   version = Capybara::Selenium::Driver.load_selenium
-  browser_options = Selenium::WebDriver::Chrome::Options.new.tap do |opts|
+  browser_options = Selenium::WebDriver::Chrome::Driver::Options.new.tap do |opts|
       opts.add_argument("--incognito")
       opts.add_argument("----disable-dev-shm-usage")
       opts.add_argument("--disable-extensions")
