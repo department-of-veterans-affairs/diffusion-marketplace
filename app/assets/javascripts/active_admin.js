@@ -295,6 +295,41 @@ const pageComponentNames = [
     $(document).ready(ready);
 
     $(document).on("turbolinks:load", ready);
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const moveToTopLinks = document.querySelectorAll('.move-to-top');
+
+        moveToTopLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                fetch(`/page_components/${this.id}/move_to_top`, {
+                    method: 'PATCH',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('There was an error moving the component.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('There was an error with the fetch operation:', error);
+                });
+            });
+        });
+    });
 }).call(this);
 
 
