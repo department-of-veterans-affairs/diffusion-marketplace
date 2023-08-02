@@ -160,6 +160,8 @@ end
 # Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
 # Capybara.default_driver = :selenium_chrome_headless
 
+Capybara.server = :puma
+
 Capybara.register_driver :selenium_chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage])
   
