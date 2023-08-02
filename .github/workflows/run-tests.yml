@@ -43,8 +43,8 @@ jobs:
       - name: Install dependencies
         run: |
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo apt-get update --allow-releaseinfo-change
-            sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+          sudo apt-get update --allow-releaseinfo-change
+          sudo apt-get install -y google-chrome-stable libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
       - name: Install Ruby # uses .ruby-version
         uses: ruby/setup-ruby@v1 # https://github.com/ruby/setup-ruby
         with:
