@@ -160,14 +160,13 @@ end
 # Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
 # Capybara.default_driver = :selenium_chrome_headless
 
-Capybara.register_driver :selenium do |app|
+Capybara.register_driver :selenium_chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu])
   
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
-Capybara.javascript_driver = :selenium
-Capybara.default_driver = :selenium
+Capybara.default_driver = :selenium_chrome_headless
 Capybara.enable_aria_label = true
 
 # Require and file in the 'spec/support' folder
