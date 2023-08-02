@@ -58,6 +58,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'rspec_junit_formatter'
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
@@ -68,7 +69,6 @@ group :development, :test do
   gem 'figaro'
   gem 'rspec-retry'
   gem 'axe-matchers'
-  gem 'webdrivers'
 
   gem 'brakeman', '5.0.2'
   gem 'bundler-audit'
