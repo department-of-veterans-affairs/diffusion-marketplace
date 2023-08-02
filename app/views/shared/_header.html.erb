@@ -1,11 +1,11 @@
 <%= render 'shared/usa_banner' %>
 <%= render 'shared/veterans_crisis_line_modal' %>
 <%
-  xr_home_url = '/communities/xr-network'
-  xr_about_url = '/communities/xr-network/about'
-  xr_events_url = '/communities/xr-network/events'
-  xr_news_url = '/communities/xr-network/news'
-  xr_innovations_url = '/communities/xr-network/innovations'
+  va_immersive_home_url = '/communities/va-immersive'
+  va_immersive_about_url = '/communities/va-immersive/about'
+  va_immersive_events_and_news_url = '/communities/va-immersive/events-and-news'
+  va_immersive_innovations_url = '/communities/va-immersive/innovations'
+  va_immersive_getting_started_url = '/communities/va-immersive/getting-started'
 %>
 <!-- source: https://designsystem.digital.gov/components/header/#extended -->
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
@@ -80,36 +80,36 @@
         </li>
         <li class="usa-nav__primary-item border-base-light desktop:border-bottom-0">
           <button
-            class="margin-y-2px dm-text-no-underline desktop:margin-y-0 usa-accordion__button usa-nav__link border-base-light <%= 'usa-current' if request.fullpath === xr_home_url || request.fullpath === xr_about_url || request.fullpath === xr_events_url || request.fullpath === xr_news_url || request.fullpath === xr_innovations_url %>"
+            class="margin-y-2px dm-text-no-underline desktop:margin-y-0 usa-accordion__button usa-nav__link border-base-light <%= 'usa-current' if request.fullpath === va_immersive_home_url || request.fullpath === va_immersive_about_url || request.fullpath === va_immersive_events_and_news_url || request.fullpath === va_immersive_innovations_url || request.fullpath === va_immersive_getting_started_url %>"
             aria-expanded="false"
-            aria-controls="xr-network-dropdown"
+            aria-controls="va-immersive-dropdown"
           >
-            <span class="text-normal desktop:text-semibold padding-right-0">XR Network</span>
+            <span class="text-normal desktop:text-semibold padding-right-0">VA Immersive</span>
           </button>
-          <ul id="xr-network-dropdown" class="display-none usa-nav__submenu">
+          <ul id="va-immersive-dropdown" class="display-none usa-nav__submenu">
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_home_url %>" href="<%= xr_home_url %>">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === va_immersive_home_url %>" href="<%= va_immersive_home_url %>">
                 Community
               </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_about_url %>" href="<%= xr_about_url %>">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === va_immersive_about_url %>" href="<%= va_immersive_about_url %>">
                 About
               </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_events_url %>" href="<%= xr_events_url %>">
-                Events
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === va_immersive_events_and_news_url %>" href="<%= va_immersive_events_and_news_url %>">
+                Events and News
               </a>
             </li>
             <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_news_url %>" href="<%= xr_news_url %>">
-                News
-              </a>
-            </li>
-            <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === xr_innovations_url %>" href="<%= xr_innovations_url %>">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === va_immersive_innovations_url %>" href="<%= va_immersive_innovations_url %>">
                 Innovations
+              </a>
+            </li>
+            <li class="usa-nav__submenu-item border-base-light">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === va_immersive_getting_started_url %>" href="<%= va_immersive_getting_started_url %>">
+                Getting Started
               </a>
             </li>
           </ul>
