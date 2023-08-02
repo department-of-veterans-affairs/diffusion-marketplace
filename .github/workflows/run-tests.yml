@@ -46,8 +46,9 @@ jobs:
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           sudo apt-get update --allow-releaseinfo-change
           sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-      - name: Setup chrome driver (for Selenium)
-        uses: nanasess/setup-chromedriver@v2
+      - name: Download chrome driver
+        uses: nanasess/setup-chromedriver@master
+      - name: Launch chrome driver
         run: |
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub &
