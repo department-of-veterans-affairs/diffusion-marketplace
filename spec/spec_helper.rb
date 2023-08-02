@@ -159,8 +159,16 @@ end
 # Capybara.default_driver = :sniffybara
 # Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
 # Capybara.default_driver = :selenium_chrome_headless
+
+Capybara.register_driver :selenium do |app|
+  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu])
+  
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.javascript_driver = :selenium
+Capybara.default_driver = :selenium
 Capybara.enable_aria_label = true
-Capybara.default_driver = :selenium_chrome_headless
 
 # Require and file in the 'spec/support' folder
 Dir["./spec/support/**/*.rb"].sort.each {|f| require f}
