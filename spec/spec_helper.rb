@@ -158,8 +158,31 @@ end
 # Capybara.javascript_driver = :webkit
 # Capybara.default_driver = :sniffybara
 # Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
-Capybara.default_driver = :selenium_chrome_headless
+# Capybara.default_driver = :selenium_chrome_headless
 Capybara.enable_aria_label = true
+
+Capybara.register_driver :selenium_chrome_headless do |app|
+  version = Capybara::Selenium::Driver.load_selenium
+  browser_options = Selenium::WebDriver::Chrome::Driver::Options.new.tap do |opts|
+      opts.add_argument("--incognito")
+      opts.add_argument("----disable-dev-shm-usage")
+      opts.add_argument("--disable-extensions")
+      opts.add_argument("--no-sandbox")
+      opts.add_argument("--disable-gpu")
+      opts.add_argument("--window-size=1920,1080")
+      opts.add_argument("--disable-gpu") if Gem.win_platform?
+    # Workaround https://bugs.chromium.org/p/chromedriver/issues/detail?id=2650&q=load&sort=-id&colspec=ID%20Status%20Pri%20Owner%20Summary
+    opts.add_argument("--disable-site-isolation-trials")
+    opts.add_preference("download.default_directory", Capybara.save_path)
+    opts.add_preference(:download, default_directory: Capybara.save_path)
+
+    end
+    Capybara::Selenium::Driver.new(app, **{ browser: :chrome, options_key => browser_options })
+end
+Capybara.default_driver = :selenium_chrome_headless
+
+
+
 
 # Require and file in the 'spec/support' folder
 Dir["./spec/support/**/*.rb"].sort.each {|f| require f}
