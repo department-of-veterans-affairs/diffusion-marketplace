@@ -30,7 +30,7 @@ RSpec.describe PageController, type: :request do
       # To circumvent this issue, we can just check to make sure that the response header 'Location' includes '/communities'
       expect(response.header['Location']).to include('/communities/va-immersive')
 
-      get '/va-immersive/events'
+      get '/va-immersive/events-and-news'
       expect(response.header['Location']).to include('/communities/va-immersive/events-and-news')
     end
   end

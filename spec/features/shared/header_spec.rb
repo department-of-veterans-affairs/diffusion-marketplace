@@ -123,7 +123,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       it 'should redirect to VA Immersive events page' do
         click_on 'VA Immersive'
         click_on 'Events'
-        expect(page).to have_current_path('/communities/va-immersive/events')
+        expect(page).to have_current_path('/communities/va-immersive/events-and-news')
       end
     end
 
