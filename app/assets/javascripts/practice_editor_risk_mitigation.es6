@@ -5,7 +5,11 @@
         var d = new Date().getTime();//Timestamp
         var d2 = (performance && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
         return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16;//random number between 0 and 16
+
+             // Generate a new cryptographically secure random value
+            var array = new Uint32Array(1);
+            window.crypto.getRandomValues(array);
+            var r = array[0] % 17; // Random number between 0 and 16
             if (d > 0) {//Use timestamp until depleted
                 r = (d + r) % 16 | 0;
                 d = Math.floor(d / 16);
