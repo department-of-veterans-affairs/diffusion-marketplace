@@ -158,9 +158,14 @@ end
 Capybara.server = :puma
 
 Capybara.register_driver :selenium_chrome_headless do |app|
-  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage window-size=1920,1080])
-  
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage window-size=1920,1080 disable-software-rasterizer])
+
+  options.add_option('goog:loggingPrefs', { browser: 'ALL' })
+
+  driver = Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+
+  # Add this line to enable browser logs in your test output
+  driver.browser.manage.logs.get(:browser)
 end
 
 Capybara.default_driver = :selenium_chrome_headless
