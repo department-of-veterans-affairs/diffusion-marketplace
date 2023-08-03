@@ -12,7 +12,11 @@ jobs:
   build:
     name: rspec
     runs-on: ubuntu-latest
-
+    env: # <-- Add this block
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      REDIS_URL: redis://localhost:6379/0
+      HOSTNAME: "http://localhost:3200"
     services:
       postgres:
         image: postgres:11-alpine
@@ -61,11 +65,6 @@ jobs:
           google-chrome-stable --version
           chromedriver --version
       - name: Build and test with rspec
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-          REDIS_URL: redis://localhost:6379/0
-          HOSTNAME: "http://localhost:3200"
         run: bundle exec rspec
 
   # lint:
