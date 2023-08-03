@@ -9,8 +9,10 @@ on:
   push:
     branches: ['ci-migration', 'ci-migration-cv', 'ci-migration-en', 'ci-migration-pd', 'ci-migration-bj']
 jobs:
-  test:
+  build:
+    name: rspec
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:11-alpine
@@ -33,22 +35,7 @@ jobs:
           REDIS_PORT: 6379
           REDIS_DB_ID: 0
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Install dependencies
-        run: |
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo apt-get update --allow-releaseinfo-change
-          sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-      - name: Set up Chrome
-        uses: browser-actions/setup-chrome@latest
-        with:
-          chrome-version: stable
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@v2.1.1
-        with:
-          # Optional: do not specify to match Chrome's version
-          chromedriver-version: '115.0.5790.170'
+      - uses: actions/checkout@v3
       - name: Install Ruby # uses .ruby-version
         uses: ruby/setup-ruby@v1 # https://github.com/ruby/setup-ruby
         with:
@@ -57,25 +44,26 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
-      # Add or replace test runners here
+      - name: Install PostgreSQL
+        run: sudo apt-get -yqq install libpq-dev
+      - name: Run bundle install
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
       - name: Setup Database
         env:
           RAILS_ENV: test
           DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
           REDIS_URL: redis://localhost:6379/0
           HOSTNAME: "http://localhost:3200"
-          DISABLE_SPRING: 1
-          SELENIUM_CHROME_HEADLESS: true
         run: bin/rails db:create db:schema:load
-      - name: Run tests
+      - name: Build and test with rspec
         env:
           RAILS_ENV: test
           DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
           REDIS_URL: redis://localhost:6379/0
           HOSTNAME: "http://localhost:3200"
-          DISABLE_SPRING: 1
-          SELENIUM_CHROME_HEADLESS: true
-        run: bin/rake
+        run: bundle exec rspec
 
   # lint:
   #   runs-on: ubuntu-latest
