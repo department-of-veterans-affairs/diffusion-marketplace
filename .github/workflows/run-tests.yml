@@ -35,11 +35,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Install PostgreSQL
-        run: sudo apt-get -yqq install libpq-dev
-      - name: Run bundle install
+      - name: Install dependencies
         run: |
-          bundle install --jobs 4 --retry 3
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo apt-get update --allow-releaseinfo-change
+          sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
       - name: Set up Chrome
         uses: browser-actions/setup-chrome@latest
         with:
