@@ -51,16 +51,15 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
       - name: Setup Database
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-          REDIS_URL: redis://localhost:6379/0
-          HOSTNAME: "http://localhost:3200"
-        run: bin/rails db:create db:schema:load
+        run: bin/rails db:schema:load
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@v2.1.1
         with:
           chromedriver-version: '115.0.5790.170'
+      - name: Check Chrome and ChromeDriver versions
+        run: |
+          google-chrome-stable --version
+          chromedriver --version
       - name: Build and test with rspec
         env:
           RAILS_ENV: test
