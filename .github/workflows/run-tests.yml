@@ -32,21 +32,15 @@ jobs:
           REDIS_HOST: redis_test
           REDIS_PORT: 6379
           REDIS_DB_ID: 0
-    env:
-      RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-      REDIS_URL: redis://localhost:6379/0
-      HOSTNAME: "http://localhost:3200"
-      DISABLE_SPRING: 1
-      SELENIUM_CHROME_HEADLESS: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Install dependencies
+      - name: Install PostgreSQL
+        run: sudo apt-get -yqq install libpq-dev
+      - name: Run bundle install
         run: |
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo apt-get update --allow-releaseinfo-change
-          sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+          gem install bundler
+          bundle install --jobs 4 --retry 3
       - name: Set up Chrome
         uses: browser-actions/setup-chrome@latest
         with:
@@ -65,6 +59,15 @@ jobs:
         with:
           node-version: 16
       # Add or replace test runners here
+      - name: Setup Database
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+          REDIS_URL: redis://localhost:6379/0
+          HOSTNAME: "http://localhost:3200"
+          DISABLE_SPRING: 1
+          SELENIUM_CHROME_HEADLESS: true
+        run: bin/rails db:create db:schema:load
       - name: Run tests
         env:
           RAILS_ENV: test
