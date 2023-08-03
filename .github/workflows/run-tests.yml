@@ -52,7 +52,7 @@ jobs:
         with:
           chrome-version: stable
       - name: Set up ChromeDriver
-        uses: actions/setup-chromedriver@latest
+        uses: nanasess/setup-chromedriver@master
         with:
           version: 'latest'
       - name: Install Ruby # uses .ruby-version
