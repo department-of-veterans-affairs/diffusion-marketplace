@@ -144,10 +144,10 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
-  config.before(:each, type: :feature) do
-    Capybara.page.driver.browser.manage.window.resize_to(1920, 1080)
-    Capybara.page.driver.browser.download_path = "#{Rails.root}/tmp/downloads"
-  end
+  # config.before(:each, type: :feature) do
+    # Capybara.page.driver.browser.manage.window.resize_to(1920, 1080)
+    # Capybara.page.driver.browser.download_path = "#{Rails.root}/tmp/downloads"
+  # end
 end
 
 # Capybara.javascript_driver = :webkit
@@ -158,7 +158,7 @@ end
 Capybara.server = :puma
 
 Capybara.register_driver :selenium_chrome_headless do |app|
-  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage])
+  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage window-size=1920,1080])
   
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
