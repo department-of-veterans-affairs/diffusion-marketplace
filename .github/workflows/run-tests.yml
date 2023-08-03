@@ -53,6 +53,9 @@ jobs:
           chrome-version: stable
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@v2.1.1
+        with:
+          # Optional: do not specify to match Chrome's version
+          chromedriver-version: '115.0.5790.170'
       - name: Install Ruby # uses .ruby-version
         uses: ruby/setup-ruby@v1 # https://github.com/ruby/setup-ruby
         with:
