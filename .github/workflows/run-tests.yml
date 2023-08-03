@@ -51,10 +51,8 @@ jobs:
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable
-      - name: Set up ChromeDriver
-        uses: nanasess/setup-chromedriver@master
-        with:
-          version: 'latest'
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@v2.1.1
       - name: Install Ruby # uses .ruby-version
         uses: ruby/setup-ruby@v1 # https://github.com/ruby/setup-ruby
         with:
