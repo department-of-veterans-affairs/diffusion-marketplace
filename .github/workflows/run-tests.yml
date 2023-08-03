@@ -56,6 +56,11 @@ jobs:
           bundle install --jobs 4 --retry 3
       - name: Setup Database
         run: bin/rails db:schema:load
+      - name: Setup Google Chrome
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo apt-get install -f
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@v2.1.1
         with:
