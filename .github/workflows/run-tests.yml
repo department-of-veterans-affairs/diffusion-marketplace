@@ -47,22 +47,12 @@ jobs:
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           sudo apt-get update --allow-releaseinfo-change
           sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-      # - name: Set up Chrome
-      #   uses: browser-actions/setup-chrome@latest
-      #   with:
-      #     chrome-version: '115.0.5790.102'
-      - name: Install chromium
-        run: |
-          CHROME_VERSION='115.0.5790.102'
-          apt-get update
-          wget --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb \
-          && apt install -y /tmp/chrome.deb \
-          && rm /tmp/chrome.deb
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@v2.1.1
-        with:
-          # Optional: do not specify to match Chrome's version
-          chromedriver-version: '115.0.5790.102'
       - name: Install Ruby # uses .ruby-version
         uses: ruby/setup-ruby@v1 # https://github.com/ruby/setup-ruby
         with:
