@@ -51,8 +51,19 @@ jobs:
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@v2.1.1
+      - name: Download and setup ChromeDriver
+        run: |
+          CHROME_MAIN_VERSION=$(google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g')
+          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION")
+          curl -O "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+      - name: Launch chrome driver
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
       - name: Install Ruby # uses .ruby-version
         uses: ruby/setup-ruby@v1 # https://github.com/ruby/setup-ruby
         with:
