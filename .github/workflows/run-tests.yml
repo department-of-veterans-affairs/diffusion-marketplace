@@ -47,7 +47,7 @@ jobs:
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           sudo apt-get update --allow-releaseinfo-change
           sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-      - name: Setup Chrome
+      - name: Setup Chrome and ChromeDriver
         run: |
           sudo apt-get update
           sudo apt-get install -y unzip xvfb libxi6 libgpgme11 libgconf-2-4
@@ -55,14 +55,11 @@ jobs:
           echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
           sudo apt-get install google-chrome-stable
-      - name: Download and setup ChromeDriver
-        run: |
-          CHROME_MAIN_VERSION=$(google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g')
-          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION")
-          curl -O "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
+          CHROME_VERSION=$(google-chrome-stable --version | cut -d ' ' -f3 | cut -d '.' -f1)
+          DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
+          wget https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip -d ~/bin
+          export PATH=$PATH:~/bin
       - name: Launch chrome driver
         run: |
           export DISPLAY=:99
