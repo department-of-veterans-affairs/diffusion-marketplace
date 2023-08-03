@@ -66,6 +66,13 @@ jobs:
           node-version: 16
       # Add or replace test runners here
       - name: Run tests
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+          REDIS_URL: redis://localhost:6379/0
+          HOSTNAME: "http://localhost:3200"
+          DISABLE_SPRING: 1
+          SELENIUM_CHROME_HEADLESS: true
         run: bin/rake
 
   # lint:
