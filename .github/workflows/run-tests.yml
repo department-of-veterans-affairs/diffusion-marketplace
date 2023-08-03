@@ -47,24 +47,15 @@ jobs:
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           sudo apt-get update --allow-releaseinfo-change
           sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-      - name: Setup Chrome and ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip xvfb libxi6 libgpgme11 libgconf-2-4
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update
-          sudo apt-get install google-chrome-stable
-          CHROME_VERSION=$(google-chrome-stable --version | cut -d ' ' -f3 | cut -d '.' -f1)
-          DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
-          wget https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip -d ~/bin
-          export PATH=$PATH:~/bin
-      - name: Launch chrome driver
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@v2.1.1
+        with:
+          # Optional: do not specify to match Chrome's version
+          chromedriver-version: '115.0.5790.170'
       - name: Install Ruby # uses .ruby-version
         uses: ruby/setup-ruby@v1 # https://github.com/ruby/setup-ruby
         with:
