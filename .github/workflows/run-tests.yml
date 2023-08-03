@@ -64,17 +64,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
-      - name: Setup test database
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: postgres://rails:password@localhost:5432/rails_test
-        run: |
-          bundle exec rails db:create
-          bundle exec rails db:schema:load
-          bundle exec rails db:seed
       # Add or replace test runners here
       - name: Run tests
-        run: bin/rake
+          run: bin/rake
 
   # lint:
   #   runs-on: ubuntu-latest
