@@ -144,10 +144,10 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
-  # config.before(:each, type: :feature) do
-    # Capybara.page.driver.browser.manage.window.resize_to(1920, 1080)
-    # Capybara.page.driver.browser.download_path = "#{Rails.root}/tmp/downloads"
-  # end
+  config.before(:each, type: :feature) do
+    Capybara.page.driver.browser.manage.window.resize_to(1920, 1080)
+    Capybara.page.driver.browser.download_path = "#{Rails.root}/tmp/downloads"
+  end
 end
 
 # Capybara.javascript_driver = :webkit
@@ -155,34 +155,27 @@ end
 # Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
 # Capybara.default_driver = :selenium_chrome_headless
 
-Capybara.server = :puma
+# Capybara.server = :puma
 
 Capybara.register_driver :selenium_chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage window-size=1920,1080 disable-software-rasterizer])
 
-  options.add_option('goog:loggingPrefs', { browser: 'ALL' })
-
   driver = Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
-
-  # Add this line to enable browser logs in your test output
-  driver.browser.manage.logs.get(:browser)
 end
 
+# Capybara.register_driver :selenium do |app|
+#   browser_options = ::Selenium::WebDriver::Firefox::Options.new()
+#   browser_options.args << '--headless'
 
-Capybara.register_driver :headless_chrome do |app|
-  Capybara::Selenium::Driver.load_selenium
-  browser_options = Selenium::WebDriver::Chrome::Options.new.tap do |opts|
-    opts.args << '--headless'
-    opts.args << '--disable-gpu'
-    # Workaround https://bugs.chromium.org/p/chromedriver/issues/detail?id=2650&q=load&sort=-id&colspec=ID%20Status%20Pri%20Owner%20Summary
-    opts.args << '--disable-site-isolation-trials'
-    opts.args << '--no-sandbox'
-    opts.args << '--window-size=1920,1080'
-  end
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
-end
-# Capybara.javascript_driver = :headless_chrome
-Capybara.default_driver = :headless_chrome
+#   Capybara::Selenium::Driver.new(
+#     app,
+#     browser: :firefox,
+#     options: browser_options
+#   )
+# end
+
+Capybara.javascript_driver = :selenium_chrome_headless
+Capybara.default_driver = :selenium_chrome_headless
 Capybara.enable_aria_label = true
 
 # Require and file in the 'spec/support' folder
