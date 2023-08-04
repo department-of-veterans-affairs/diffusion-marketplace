@@ -71,7 +71,7 @@ jobs:
           chromedriver --version
           firefox --version
       - name: Build and test with rspec
-        run: bundle exec rspec spec/features/pages/show_page_spec.rb
+        run: bundle exec rspec
 
   # lint:
   #   runs-on: ubuntu-latest
