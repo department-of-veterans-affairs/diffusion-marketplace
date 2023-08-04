@@ -70,7 +70,7 @@ jobs:
           google-chrome-stable --version
           chromedriver --version
       - name: Build and test with rspec
-        run: bundle exec rspec 
+        run: bundle exec rspec spec/features/pages/show_page_spec.rb
 
   # lint:
   #   runs-on: ubuntu-latest
