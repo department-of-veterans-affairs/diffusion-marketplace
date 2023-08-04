@@ -149,9 +149,9 @@ RSpec.configure do |config|
     Capybara.page.driver.browser.download_path = "#{Rails.root}/tmp/downloads"
   end
 
-  config.after(:each, type: :feature) do
-  Capybara.current_session.driver.quit
-end
+  # config.after(:each, type: :feature) do
+  #   Capybara.current_session.driver.quit
+  # end
 end
 
 # Capybara.javascript_driver = :webkit
