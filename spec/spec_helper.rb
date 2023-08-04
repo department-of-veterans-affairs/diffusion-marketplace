@@ -163,17 +163,6 @@ Capybara.register_driver :selenium_chrome_headless do |app|
   driver = Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
-# Capybara.register_driver :selenium do |app|
-#   browser_options = ::Selenium::WebDriver::Firefox::Options.new()
-#   browser_options.args << '--headless'
-
-#   Capybara::Selenium::Driver.new(
-#     app,
-#     browser: :firefox,
-#     options: browser_options
-#   )
-# end
-
 Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_driver = :selenium_chrome_headless
 Capybara.enable_aria_label = true
