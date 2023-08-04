@@ -13,6 +13,12 @@ RSpec.describe PageEventComponent, type: :model do
       event.end_date = Date.new(2023,07,28)
       expect(event).to be_invalid
     end
+
+    it 'allows events to have no start_date or end_date' do
+      event.start_date = nil
+      event.end_date = nil
+      expect(event).to be_valid
+    end
   end
 
   describe '#rendered_date' do

@@ -11,7 +11,7 @@ class PageEventComponent < ApplicationRecord
     text: 'Description'
   }.freeze
 
-  validates :start_date, presence: { message: 'Must provide a start date' } if :end_date?
+  validates :start_date, presence: true, if: :end_date?
 
   validates_with InternalUrlValidator,
                  on: [:create, :update],
