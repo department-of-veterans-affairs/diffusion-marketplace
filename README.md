@@ -1,5 +1,4 @@
 # Diffusion Marketplace
-[![CircleCI](https://circleci.com/gh/agilesix/diffusion-marketplace.svg?style=svg)](https://circleci.com/gh/agilesix/diffusion-marketplace)
 
 ### Environments:
 | Environment  | url  |
@@ -108,8 +107,6 @@ SESSION_TIMEOUT_IN_MINUTES # without checking the checkbox, how long the user's 
 #### How to run the test suite
 
 - `rspec`
-
-[Here are our builds on CircleCi](https://circleci.com/gh/agilesix/diffusion-marketplace/tree/master)
 
 ## Development Environment Setup Instructions
 
