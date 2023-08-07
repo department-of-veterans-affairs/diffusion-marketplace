@@ -7,7 +7,7 @@
 name: "Ruby 2.7 CI"
 on:
   push:
-    branches: ['ci-migration', 'ci-migration-cv', 'ci-migration-en', 'ci-migration-pd', 'ci-migration-bj']
+    branches: ['master', 'ci-migration', 'ci-migration-cv', 'ci-migration-en', 'ci-migration-pd', 'ci-migration-bj']
 jobs:
   build:
     name: rspec
