@@ -153,7 +153,21 @@ end
 # Capybara.javascript_driver = :webkit
 # Capybara.default_driver = :sniffybara
 # Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
+
+Capybara.register_driver :selenium_chrome_headless do |app|
+  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu window-size=1920,1080])
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.register_driver :selenium_firefox_headless do |app|
+  options = Selenium::WebDriver::Firefox::Options.new(args: ['-headless'])
+
+  Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
+end
+
 Capybara.default_driver = :selenium_chrome_headless
+Capybara.javascript_driver = :selenium_firefox_headless
 Capybara.enable_aria_label = true
 
 # Require and file in the 'spec/support' folder
