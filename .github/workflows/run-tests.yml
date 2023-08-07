@@ -8,6 +8,8 @@ name: "Ruby 2.7 CI"
 on:
   push:
     branches: ['master', 'ci-migration', 'ci-migration-cv', 'ci-migration-en', 'ci-migration-pd', 'ci-migration-bj']
+  pull_request:
+    branches: ['master']
 jobs:
   build:
     name: rspec
