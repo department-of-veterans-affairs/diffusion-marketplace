@@ -243,7 +243,7 @@ function searchPracticesPage() {
         var finalResults = '';
         tmpResults.sort(sortByRetired).forEach(function (result) {
             finalResults += buildPracticeCard(result);
-            resultsArray.push(buildPracticeCard(result));
+            resultsArray.push(result);
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
             '<!--' +
