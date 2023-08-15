@@ -126,10 +126,14 @@ module ApplicationHelper
   end
 
   def is_internal_link?(url)
-    return nil if url.blank?
-    url.include?(ENV.fetch('HOSTNAME')) ||
-    url.start_with?('/') ||
-    url.start_with?('.')
+    return false if url.blank?
+
+    uri = URI.parse(url)
+    host_name = URI.parse(ENV.fetch('HOSTNAME'))
+
+    uri.host == host_name.host && uri.port == host_name.port ||
+      url.start_with?('/') ||
+      url.start_with?('.')
   end
 
   def set_link_classes(url)
