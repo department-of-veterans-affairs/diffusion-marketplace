@@ -132,6 +132,7 @@ module ApplicationHelper
     host_name = URI.parse(ENV.fetch('HOSTNAME'))
 
     uri.host == host_name.host && uri.port == host_name.port ||
+      url.start_with?(host_name.host) ||
       url.start_with?('/') ||
       url.start_with?('.')
   end
