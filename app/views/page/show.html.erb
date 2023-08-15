@@ -26,10 +26,11 @@
             </div>
           <% end %>
 
+        <%# Three Text Columns %>
         <% if pc.component_type == 'PageTripleParagraphComponent' && component.text1.present? %>
           <div class=<%='bg-primary-lighter' if component.has_background_color %>>
             <div class="grid-container">
-              <div class="page-triple-paragraph-component padding-top-7 padding-bottom-7 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+              <div class="page-triple-paragraph-component padding-top-7 padding-bottom-7 margin-bottom-10 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
                 <div class="grid-row grid-gap">
                   <div class="grid-col-12 desktop:grid-col-4">
                     <h3><%= component.title1.html_safe %></h3>
@@ -346,9 +347,9 @@
             text_alignment = component&.description_text_alignment
           %>
           <div class="grid-container">
-            <div class="page-map-component <%= page_narrow_classes %>">
+            <div class="page-map-component margin-bottom-10 <%= page_narrow_classes %>">
               <% if title.present? %>
-                <div class="font-sans-lg text-bold margin-top-9">
+                <div class="font-sans-lg text-bold">
                   <%= content_tag(:span, title, class: 'margin-right-1') %>
                 </div>
               <% end %>
@@ -390,13 +391,13 @@
 
         <%# 2:1 Image to Text %>
         <% when 'PageTwoToOneImageComponent' %>
-          <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
+          <div class="grid-container margin-bottom-10 <%= ' margin-bottom-0' if last_component === index %>">
             <%= render partial: 'two_to_one_image_component', locals: { component: component } %>
           </div>
 
         <%# 1:1 Image to Text %>
         <% when 'PageOneToOneImageComponent' %>
-          <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
+          <div class="grid-container margin-bottom-10 <%= ' margin-bottom-0' if last_component === index %>">
             <%= render partial: 'one_to_one_image_component', locals: { component: component } %>
           </div>
         <% end %>
