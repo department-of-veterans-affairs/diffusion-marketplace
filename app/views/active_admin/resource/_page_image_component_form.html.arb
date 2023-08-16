@@ -14,9 +14,10 @@ html = Arbre::Context.new do
             img class: 'max-width-15 max-height-15', src: component.page_image_s3_presigned_url, alt: component.alt_text
             para "Current image name: #{component.page_image_file_name}"
           end
-
-          a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component.page_component.id
         end
+
+        a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
+
         li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_alignment_input" do
           label 'Alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_alignment", class: 'label'
           select value: component&.alignment || 'center',

@@ -10,9 +10,9 @@ html = Arbre::Context.new do
       ol do
         if component
           input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
-
-          a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component.page_component.id
         end
+
+        a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
 
         li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_practices_attributes_input" do
           label 'Practice List', for: "page_page_components_attributes_#{placeholder}_component_attributes_practice_list", class: 'label'

@@ -18,9 +18,9 @@ html = Arbre::Context.new do
       end
       if component
         input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
-
-        a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component.page_component.id
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
 
       ol do
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
