@@ -458,40 +458,20 @@ const pageComponentNames = [
 
     $(document).on("turbolinks:load", ready);
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const moveToTopLinks = document.querySelectorAll('.move-to-top');
+    document.addEventListener('click', function (event) {
+        if (event.target.matches('.move-to-top')) {
+            event.preventDefault();
 
-        moveToTopLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
+            var liElement = event.target.closest('.page_components.inputs.has_many_fields');
 
-                fetch(`/page_components/${this.id}/move_to_top`, {
-                    method: 'PATCH',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    credentials: 'same-origin'
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('There was an error moving the component.');
-                    }
-                })
-                .catch((error) => {
-                    console.error('There was an error with the fetch operation:', error);
-                });
+            liElement.parentElement.prepend(liElement);
+
+            Array.from(liElement.parentElement.children).forEach(function (siblingLi, index) {
+                let positionInput = siblingLi.querySelector('input[name$="[position]"]');
+                if (positionInput) {
+                    positionInput.value = index + 1;
+                }
             });
-        });
+        }
     });
 }).call(this);
-
-
