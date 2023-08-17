@@ -305,7 +305,9 @@
             var balancedHTML = this.balanceTags(slicedHTML);
 
             if ($(fullHTML).text().length > truncateAt) {
-                return balancedHTML + '<span class="coll-ellipsis">' + this.o.ellipsis + '</span>';
+                var span = $('<span class="coll-ellipsis"></span>');
+                span.text(this.o.ellipsis);
+                return balancedHTML + span.prop('outerHTML');
             } else {
                 return fullHTML;
             }
