@@ -12,7 +12,6 @@ const MAX_DESCRIPTION_LENGTH = 140;
 const pageComponentNames = [
     'PageAccordionComponent',
     'PageBlockQuoteComponent',
-    'PageCompoundBodyComponent',
     'PageCtaComponent',
     'PageDownloadableFileComponent',
     'PageEventComponent',
@@ -254,151 +253,6 @@ const pageComponentNames = [
         }
     }
 
-    function pageComponentImageHTML() {
-        return `<li id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_PLACEHOLDER_2_li"
-                    data-id="page_component_image_PLACEHOLDER_2_li"
-                    class="page-component-image-li">
-                    <input type="hidden"
-                           name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][id]"/>
-
-                    <div class="page-component-image-attribute-container">
-                        <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_image">
-                            Image *Required*
-                        </label>
-                        <input type="file"
-                               accept=".jpg, .jpeg, .png"
-                               id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_image"
-                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][image]"
-                               class="margin-top-0"/>
-                        <p class="inline-hints">File types allowed: jpg, jpeg, and png. Max file size: 25MB</p>
-                    </div>
-
-                    <div class="page-component-image-attribute-container">
-                        <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_url">
-                            Image URL
-                        </label>
-                        <input type="text"
-                               id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_url"
-                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][url]"/>
-                        <p class="inline-hints">
-                            <span>For external URLs, enter a complete URL (Ex: "https://www.va.gov", "https://google.com").</span>
-                            <span>
-                                For internal URLs, simply enter a suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth").
-                            </span>
-                        </p>
-                    </div>
-
-                    <div class="page-component-image-attribute-container">
-                        <label for="page_page_components_attributes_compound_body_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_caption" class="label">
-                            Caption
-                        </label>
-                        <textarea id="page_page_components_attributes_compound_body_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_caption"
-                                  class="tinymce compound-body-component-text"
-                                  name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][caption]"
-                                  rows="18">
-                        </textarea>
-                        <p class="inline-hints">
-                            Text that accurately describes the image.
-                        </p>
-                    </div>
-
-                    <div class="page-component-image-attribute-container">
-                        <label for="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text">
-                            Alternative text *required*
-                        </label>
-                        <textarea id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2_alt_text"
-                               name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][alt_text]"
-                               class="height-7"></textarea>
-                        <p class="inline-hints">
-                            Alternative text that gets rendered in case the image cannot be viewed. It should be a brief description of the
-                            information this image is trying to convey.
-                        </p>
-                    </div>
-
-                    <div class="display-flex flex-justify-end">
-                       <div class="trash-container">
-                            <input type="hidden"
-                                   value="0"
-                                   id="page_page_components_attributes_PLACEHOLDER_1_page_component_images_attributes_PLACEHOLDER_2__destroy"
-                                   name="page[page_components_attributes][PLACEHOLDER_1][page_component_images_attributes][PLACEHOLDER_2][_destroy]"/>
-                            <a class="dm-page-builder-trash dm-button--unstyled-warning" href="javascript:void(0)">
-                                Delete Entry
-                            </a>
-                        </div>
-                    </div>
-                </li>`;
-    }
-
-    function appendLiHTMLToList(targetOl, liHTML) {
-        return $(targetOl).append(liHTML);
-    }
-
-    function updateListItemsOnAddLinkClick(addLinkSelector, liHTML, liClass) {
-        $(document).on('click', addLinkSelector, function() {
-            const guid = createGUID();
-            /*
-            Replace all instances of the 'PLACEHOLDER_1' text in the HTML string with the correct corresponding position and
-            all instances of the 'PLACEHOLDER_2' text with the GUID
-            */
-            const newLiHtml = liHTML.replaceAll('PLACEHOLDER_1', $(this).data('add-another')).replaceAll('PLACEHOLDER_2', guid);
-            appendLiHTMLToList(
-                $(this).prev(),
-                newLiHtml
-            );
-            // Add a horizontal separator to the end of the previous visible li
-            const separator = '<div class="add-another-separator border-y-1px border-gray-5 margin-top-2"></div>';
-            $(this).prev().children(liClass).not('.display-none').eq(-2).append(separator);
-        });
-    }
-
-    function updateListItemsOnDeleteLinkClick(
-        deleteLinkSelector,
-        closestLiSelector,
-        visibleLiSelector,
-        liClassName,
-        lastAttrLiSelector
-    ) {
-        $(document).on('click', deleteLinkSelector, function() {
-            // Update the value of the hidden '_destroy' input to '1'
-            $(this).prev().val('1');
-
-            const $closestLi = $(this).closest(closestLiSelector);
-            $closestLi.addClass('display-none');
-            // Remove the previous li's add-another-separator
-            if (!$closestLi.nextAll(visibleLiSelector).first().hasClass(liClassName)) {
-                $closestLi.prevAll(visibleLiSelector).first().find('.add-another-separator').remove();
-            }
-
-            const $lastAttrLiSelector = $(this).closest('.polyform').find(lastAttrLiSelector);
-            // If there are no list items visible, add bottom padding to the last component attribute's li container for the 'Add' link
-            if (!$(this).closest('ol').children().not('.display-none').length &&
-                $lastAttrLiSelector.css('padding-bottom') !== '36px') {
-                $lastAttrLiSelector.css('padding-bottom', '36px');
-            }
-        });
-    }
-
-    function showPageComponentImagesHeaderOnAddLinkClick() {
-        $(document).on('click', '.add-another-page-component-image', function() {
-            // If there are is at least one visible 'page-component-image-li' elements, show the header if it's not visible already
-            const $pageComponentImageHeader = $(this).siblings('.page-component-images-header');
-            if ($(this).prev().children('.page-component-image-li').not('.display-none').length
-                && $pageComponentImageHeader.not(':visible')) {
-                $pageComponentImageHeader.removeClass('display-none');
-            }
-        });
-    }
-
-    function hidePageComponentImagesHeaderOnDeleteLinkClick() {
-        $(document).on('click', '.dm-page-builder-trash', function() {
-            // If there are no visible 'page-component-image-li' elements, hide the header
-            const $pageComponentImagesOl = $(this).closest('.page-component-images-ol')
-            if (!$pageComponentImagesOl.children('.page-component-image-li').not('.display-none').length) {
-                $pageComponentImagesOl.prev().addClass('display-none');
-            }
-        });
-    }
-
     var ready = function () {
         loadComponents();
         setDashboardPanelTooltipTitle();
@@ -410,22 +264,6 @@ const pageComponentNames = [
         _loadPageBuilderFns();
         removeIdFromTrElements();
         addFocusListenerOnTextAreaArrival();
-        // <-- PageComponentImage functions START -->
-        updateListItemsOnAddLinkClick(
-            '.add-another-page-component-image',
-            pageComponentImageHTML(),
-            '.page-component-image-li'
-        );
-        updateListItemsOnDeleteLinkClick(
-            '.dm-page-builder-trash',
-            '.page-component-image-li',
-            '.page-component-image-li:visible',
-            'page-component-image-li',
-            '.text-alignment-container'
-        );
-        showPageComponentImagesHeaderOnAddLinkClick();
-        hidePageComponentImagesHeaderOnDeleteLinkClick();
-        // <-- PageComponentImage functions END -->
 
         // switches out polymorphic forms in page component
         $(document).on("change", ".polyselect", function () {
