@@ -19,6 +19,9 @@ html = Arbre::Context.new do
       if component
         input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
       end
+
+      a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
+
       ol do
 
         # Title

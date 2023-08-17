@@ -253,6 +253,25 @@ const pageComponentNames = [
         }
     }
 
+    function movePageComponentToTopOnLinkClick() {
+        $(document).on('click', '.move-to-top', function (event) {
+            if (event.target.matches('.move-to-top')) {
+                event.preventDefault();
+
+                var liElement = event.target.closest('.page_components.inputs.has_many_fields');
+
+                liElement.parentElement.prepend(liElement);
+
+                Array.from(liElement.parentElement.children).forEach(function (siblingLi, index) {
+                    let positionInput = siblingLi.querySelector('input[name$="[position]"]');
+                    if (positionInput) {
+                        positionInput.value = index + 1;
+                    }
+                });
+            }
+        });
+    };
+
     var ready = function () {
         loadComponents();
         setDashboardPanelTooltipTitle();
@@ -264,6 +283,7 @@ const pageComponentNames = [
         _loadPageBuilderFns();
         removeIdFromTrElements();
         addFocusListenerOnTextAreaArrival();
+        movePageComponentToTopOnLinkClick();
 
         // switches out polymorphic forms in page component
         $(document).on("change", ".polyselect", function () {
@@ -295,6 +315,5 @@ const pageComponentNames = [
     $(document).ready(ready);
 
     $(document).on("turbolinks:load", ready);
+
 }).call(this);
-
-

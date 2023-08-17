@@ -2,6 +2,7 @@ module TextAndImageComponent
   extend ActiveSupport::Concern
 
   included do
+    has_one :page_component, as: :component, autosave: true
     has_attached_file :image
 
     validates :text_alignment, allow_blank: true, inclusion: {
