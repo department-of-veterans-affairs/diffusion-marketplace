@@ -253,7 +253,6 @@ const pageComponentNames = [
         }
     }
 
-
     function movePageComponentToTopOnLinkClick() {
         $(document).on('click', '.move-to-top', function (event) {
             if (event.target.matches('.move-to-top')) {
