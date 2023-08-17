@@ -284,6 +284,7 @@ const pageComponentNames = [
         removeIdFromTrElements();
         addFocusListenerOnTextAreaArrival();
         movePageComponentToTopOnLinkClick();
+
         // switches out polymorphic forms in page component
         $(document).on("change", ".polyselect", function () {
             $(".polyform.component-" + $(this).data("component-id")).hide();
