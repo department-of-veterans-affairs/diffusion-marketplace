@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Page Builder - Edit', type: :feature do
+describe 'Page Builder - Edit', type: :feature, js: true do
 	before do
 		page_group = PageGroup.create(			
 			name: 'programming',
@@ -47,11 +47,14 @@ describe 'Page Builder - Edit', type: :feature do
 			move_to_top_buttons = all('.move-to-top')
 			move_to_top_buttons[1].click
 
-			click_button 'Update Page'
+			# click_button 'Update Page'
+			# find_all('input[type="submit"]').first.click
+			save_page
 
 			# Verify the order on the page
 			first_component = find('#PageBlockQuoteComponent_poly_0')
 			second_component = find('#PageBlockQuoteComponent_poly_1')
+			# byebug
 			expect(first_component).to appear_before(second_component)
 
 			# Click the "Update Page" button to save changes

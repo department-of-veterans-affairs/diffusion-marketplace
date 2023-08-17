@@ -1,7 +1,7 @@
 placeholder ||= 'NEW_PAGE_COMPONENT_RECORD'
 component ||= nil
 html = Arbre::Context.new do
-  li "", id: "PageBlockQuoteComponent_poly_#{placeholder}", class: "input polyform component-#{placeholder}" do
+  li "", id: "PageBlockQuoteComponent_poly_#{placeholder}", class: "block-quote-component input polyform component-#{placeholder}" do
     fieldset class: "inputs" do
       legend do
         span 'Block Quote'
