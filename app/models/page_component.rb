@@ -22,7 +22,6 @@ class PageComponent < ApplicationRecord
       'Three Text Columns': 'PageTripleParagraphComponent',
       'Block Quote': 'PageBlockQuoteComponent',
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
-      'Text and Images': 'PageCompoundBodyComponent',
       '1:1 Image to Text': 'PageOneToOneImageComponent',
       '2:1 Image to Text': 'PageTwoToOneImageComponent',
       'Accordion': 'PageAccordionComponent',
