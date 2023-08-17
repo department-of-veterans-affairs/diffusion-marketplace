@@ -141,7 +141,7 @@ describe 'Search', type: :feature do
     select('Alabama', :from => 'editor_office_state_select')
     select('Montgomery Regional Office', :from => 'editor_office_select')
     fill_in('practice_summary', with: 'This is the most super practice ever made')
-    fill_in('Tagline (required field)', with: 'practice tagline')
+    fill_in('Tagline*', with: 'practice tagline')
     select('October', :from => 'editor_date_initiated_month')
     fill_in('Year', with: '1970')
     find("#maturity_level_replicate").sibling('label').click
