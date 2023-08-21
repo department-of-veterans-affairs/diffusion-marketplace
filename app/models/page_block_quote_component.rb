@@ -7,7 +7,7 @@ class PageBlockQuoteComponent < ApplicationRecord
   FORM_FIELDS = { # Fields and labels in .arb form
     citation: 'Body Text',
     text: 'Citation Text'
-  }
+  }.freeze
 
 
   private

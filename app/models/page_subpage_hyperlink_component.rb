@@ -6,7 +6,7 @@ class PageSubpageHyperlinkComponent < ApplicationRecord
         title: 'Subpage title',
         description: 'Subpage description',
         card: 'Add card styling'
-    }
+    }.freeze
 
     validates_with InternalUrlValidator
 end

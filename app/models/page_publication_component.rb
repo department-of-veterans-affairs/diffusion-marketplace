@@ -20,7 +20,7 @@ class PagePublicationComponent < ApplicationRecord
     published_on_day: 'Day',
     published_on_year: 'Year',
     authors: 'Authors'
-  }
+  }.freeze
 
   def attachment_s3_presigned_url(style = nil)
     object_presigned_url(attachment, style)
