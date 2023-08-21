@@ -16,20 +16,24 @@ class PageComponent < ApplicationRecord
   # used for the component selection on the page builder
   # 'Friendly Name': 'ClassName'
   COMPONENT_SELECTION = {
+      '---Text---': 'sectiondivider',
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
       'Body text': 'PageParagraphComponent',
       'Three Text Columns': 'PageTripleParagraphComponent',
       'Block Quote': 'PageBlockQuoteComponent',
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
+      '---Text and image blocks---': 'sectiondivider',
       '1:1 Image to Text': 'PageOneToOneImageComponent',
       '2:1 Image to Text': 'PageTwoToOneImageComponent',
+      '---Simple components---': 'sectiondivider',
       'Accordion': 'PageAccordionComponent',
       'Simple Button': 'PageSimpleButtonComponent',
       'Image': 'PageImageComponent',
       'Call to Action': 'PageCtaComponent',
       'Downloadable File': 'PageDownloadableFileComponent',
       'Horizontal Separator line ': 'PageHrComponent',
+      '---Complex components---': 'sectiondivider',
       'Event': 'PageEventComponent',
       'News': 'PageNewsComponent',
       'Innovations': 'PagePracticeListComponent',
@@ -49,6 +53,7 @@ class PageComponent < ApplicationRecord
         # Delete the component associated with this page component and make a new one.
         # There should only be one component associated with the page component
         COMPONENT_SELECTION.values.each do |c|
+          skip if c == 'sectiondivider'
           delete_component =  c.constantize.where({page_component: self}).first
           delete_component.destroy if delete_component
         end
