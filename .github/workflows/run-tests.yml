@@ -66,8 +66,6 @@ jobs:
           sudo apt-get install -f
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@v2.1.1
-        with:
-          chromedriver-version: '115.0.5790.170'
       - name: Check Chrome, ChromeDriver, Firefox versions
         run: |
           google-chrome-stable --version
