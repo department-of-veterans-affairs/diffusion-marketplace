@@ -123,119 +123,21 @@ ActiveAdmin.register Page do
           component = eval("#{pc.component_type}.find('#{pc.component_id}')")
           Arbre::Context.new do
             para do
-              b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)} #{'(Card)' if pc.component_type == 'PageSubpageHyperlinkComponent' && component&.card?}"
+              b "#{PageComponent::COMPONENT_SELECTION.key(pc.component_type)}"
             end
-            # Heading type
-            para component&.heading_type if pc.component_type == 'PageHeaderComponent'
-            # Subtopic title
-            para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
-            # Subtopic description
-            para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
-            # Alignment
-            para "Alignment: #{component&.alignment}" if pc.component_type == 'PageHeader3Component'
-            # Title
-            if (pc.component_type == 'PageHeader3Component' ||
-                pc.component_type == 'PageSubpageHyperlinkComponent' ||
-                pc.component_type == 'PageAccordionComponent' ||
-                pc.component_type == 'PageMapComponent' ||
-                pc.component_type == 'PagePublicationComponent' ||       
-                pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent') && component&.title.present?
-              para "Title: #{component.title}"
-            end
-            # Description
-            if (pc.component_type == 'PageHeader3Component' ||
-                pc.component_type == 'PageDownloadableFileComponent' ||
-                pc.component_type == 'PageMapComponent') &&
-                component&.description.present?
-              para component.description
-            end
-            # Text
-            if (pc.component_type == 'PageAccordionComponent' ||
-                pc.component_type == 'PageParagraphComponent' ||         
-                pc.component_type == 'PageBlockQuoteComponent' ||
-                pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent') && component&.text.present?
-              para component.text.html_safe
-            end
-
-            if pc.component_type == 'PageTripleParagraphComponent' && component&.text1.present?
-              para component.title1
-              para component.text1.html_safe
-
-              if component&.text2.present?
-                para component.title2
-                para component.text2.html_safe
-              end
-
-              if component&.text3.present?
-                para component.title3
-                para component.text3.html_safe
-              end
-            end
-            # Citation
-            if pc.component_type == 'PageBlockQuoteComponent' && component&.citation.present?
-              para component.citation
-            end
-            # Text alignment
-            if pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent'
-              para "Text alignment: #{component&.text_alignment}"
-            end
-            # Practice list count
-            para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
-            # Practice list
-            para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
-            # URL
-            if (pc.component_type == 'PageSubpageHyperlinkComponent' ||
-                pc.component_type == 'PagePublicationComponent' ||
-                pc.component_type == 'PageYouTubePlayerComponent' ||
-                pc.component_type == 'PageSimpleButtonComponent' ||               
-                pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent') && component&.url.present?
-              para "URL: #{component.url}"
-            end
-            # URL link text
-            if (pc.component_type == 'PageTwoToOneImageComponent' ||
-                pc.component_type == 'PageOneToOneImageComponent') && component&.url_link_text.present?
-              para "URL link text: #{component&.url_link_text}"
-            end
-            # Caption
-            para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
-            # Alt text
-            if pc.component_type == 'PageImageComponent'
-              para "Image Alt Text: #{component&.alt_text}"
-            elsif (pc.component_type == 'PageTwoToOneImageComponent' ||
-                   pc.component_type == 'PageOneToOneImageComponent')
-              para "Image Alt Text: #{component&.image_alt_text}"
-            end
-            # Attachment file name
-            para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
-            # Map Info Window Text
-            para component&.map_info_window_text if pc.component_type == 'PageMapComponent' && component&.map_info_window_text != ''
-
-            # Display name
-            para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name.present?
-            # Border
-            para "Has border: #{component&.has_border}" if pc.component_type == 'PageAccordionComponent'
-            # Button text
-            if (pc.component_type == 'PageSimpleButtonComponent' ||
-                pc.component_type == 'PageCtaComponent' ) && component&.button_text.present?
-              para "Button text: #{component.button_text}"
-            end
-            # Publication component
-            if pc.component_type == 'PagePublicationComponent'
-              para "Published in: #{component&.published_in}" if component&.published_in.present?
-              para "Month: #{component&.published_on_month}" if component&.published_on_month.present?
-              para "Day: #{component&.published_on_day}" if component&.published_on_day.present?
-              para "Year: #{component&.published_on_year}" if component&.published_on_year.present?
-              para "Authors: #{component&.authors}" if component&.authors.present?
-            end
-            # Event
-            if pc.component_type == 'PageEventComponent'
+            if component.class.const_defined? :FORM_FIELDS
               ul do
                 component.class::FORM_FIELDS.each do | key, value|
-                  li "#{value}: #{component.send(key)}" if component.send(key).present?
+                  if key == :practices # Render list of practice IDs as a list of practice names
+                    li "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'} selected: "
+                    para component&.practices.map {|pid| Practice.find(pid).name }.join("\n")
+                  elsif key == :image # render image thumbnail
+                    li do
+                      img src: "#{component.image_s3_presigned_url}", class: 'maxw-10'
+                    end
+                  else
+                    li "#{value}: #{component.send(key)}" if component.send(key).present?
+                  end
                 end
               end
             end

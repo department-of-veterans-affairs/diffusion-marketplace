@@ -2,6 +2,16 @@ class PageNewsComponent < ApplicationRecord
   has_one :page_component, as: :component, autosave: true
   has_attached_file :image
 
+  FORM_FIELDS = {
+    title: 'Title',
+    url: 'URL',
+    published_date: 'Publication date',
+    authors: 'Author(s)',
+    text: 'Description',
+    image: 'Image',
+    image_alt_text: 'Alternative Text'
+  }.freeze
+
   validates_with InternalUrlValidator,
                  on: [:create, :update],
                  if: Proc.new { |component| component.url.present? && component.url.chars.first === '/' }

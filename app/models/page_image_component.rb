@@ -7,7 +7,14 @@ class PageImageComponent < ApplicationRecord
   validates_with InternalUrlValidator, on: [:create, :update], if: Proc.new { |page_component| page_component.url.present? && page_component.url.chars.first === '/' }
   validates_with ExternalUrlValidator, on: [:create, :update], if: Proc.new { |page_component| page_component.url.present? && page_component.url.chars.first != '/' }
 
-  def page_image_s3_presigned_url(style = nil)
+  FORM_FIELDS = { # Fields and labels in .arb form
+    alignment: 'Alignment',
+    image: 'Image',
+    alt_text: 'Alternative Text',
+    url: 'Url'
+  }.freeze
+
+  def image_s3_presigned_url(style = nil)
     object_presigned_url(page_image, style)
   end
 end

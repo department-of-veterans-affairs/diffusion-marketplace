@@ -4,6 +4,12 @@ class PageBlockQuoteComponent < ApplicationRecord
 
   before_save :strip_p_tags_from_text
 
+  FORM_FIELDS = { # Fields and labels in .arb form
+    citation: 'Body Text',
+    text: 'Citation Text'
+  }.freeze
+
+
   private
 
   def strip_p_tags_from_text

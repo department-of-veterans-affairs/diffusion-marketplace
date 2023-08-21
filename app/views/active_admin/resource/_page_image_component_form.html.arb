@@ -11,7 +11,7 @@ html = Arbre::Context.new do
         if component
           input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
           li do
-            img class: 'max-width-15 max-height-15', src: component.page_image_s3_presigned_url, alt: component.alt_text
+            img class: 'max-width-15 max-height-15', src: component.image_s3_presigned_url, alt: component.alt_text
             para "Current image name: #{component.page_image_file_name}"
           end
         end

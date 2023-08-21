@@ -14,6 +14,14 @@ class PagePublicationComponent < ApplicationRecord
                  on: [:create, :update],
                  if: Proc.new { |component| component.url.present? && component.url.chars.first != '/' }
 
+  FORM_FIELDS = { # Fields and labels in .arb form
+    published_in: 'Published in',
+    published_on_month: 'Month',
+    published_on_day: 'Day',
+    published_on_year: 'Year',
+    authors: 'Authors'
+  }.freeze
+
   def attachment_s3_presigned_url(style = nil)
     object_presigned_url(attachment, style)
   end
