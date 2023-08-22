@@ -128,15 +128,19 @@ module ApplicationHelper
   def is_internal_link?(url)
     return false if url.blank?
 
-    encoded_url = URI.encode(url)
-    uri = URI.parse(encoded_url)
-    host_name = URI.parse(ENV.fetch('HOSTNAME'))
+    begin
+      uri = URI.parse(url)
+      host_name = URI.parse(ENV.fetch('HOSTNAME'))
 
-    uri.host == host_name.host && uri.port == host_name.port ||
-      url.start_with?(host_name.host) ||
-      url.start_with?('/') ||
-      url.start_with?('.')
+      uri.host == host_name.host && uri.port == host_name.port ||
+        url.start_with?(host_name.host) ||
+        url.start_with?('/') ||
+        url.start_with?('.')
+    rescue URI::InvalidURIError
+      false
+    end
   end
+
 
   def set_link_classes(url)
     "usa-link#{' usa-link--external' if !is_internal_link?(url)}"
