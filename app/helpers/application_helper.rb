@@ -128,7 +128,8 @@ module ApplicationHelper
   def is_internal_link?(url)
     return false if url.blank?
 
-    uri = URI.parse(url)
+    encoded_url = URI.encode(url)
+    uri = URI.parse(encoded_url)
     host_name = URI.parse(ENV.fetch('HOSTNAME'))
 
     uri.host == host_name.host && uri.port == host_name.port ||
