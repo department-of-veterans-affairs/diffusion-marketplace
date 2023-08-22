@@ -34,6 +34,7 @@ class PracticesController < ApplicationController
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
     diffusion_histories = @practice.diffusion_histories
+    @include_google_maps = diffusion_histories.present?
     @diffusion_history_markers = Gmaps4rails.build_markers(diffusion_histories.where(clinical_resource_hub_id: nil)) do |dhg, marker|
       facility = @va_facilities.find(dhg.va_facility_id)
       marker.lat facility.latitude
@@ -70,7 +71,6 @@ class PracticesController < ApplicationController
                   })
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
-    @include_google_maps = @diffusion_history_markers.present?
 
     # get the VaFacilities and ClinicalResourceHubs associated with the practice's origin facilities and then order them alphabetically
     va_facility_origin_facilities = VaFacility.where(id: PracticeOriginFacility.get_va_facility_ids_by_practice(@practice.id)).get_relevant_attributes
