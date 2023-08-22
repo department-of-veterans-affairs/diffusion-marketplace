@@ -2,6 +2,7 @@ class VisnsController < ApplicationController
   include PracticeUtils
   before_action :set_visn, only: [:show, :load_facilities_show_rows]
   before_action :set_visns_and_visns_origin_and_adoption_counts, only: :index
+  before_action :set_include_google_maps, only: [:index, :show]
 
   def index
     @visn_markers = Gmaps4rails.build_markers(@visns) do |visn, marker|
@@ -110,5 +111,9 @@ class VisnsController < ApplicationController
   def set_visns_and_visns_origin_and_adoption_counts
     set_visns
     set_visns_origin_and_adoption_counts(@visns)
+  end
+
+  def set_include_google_maps
+    @include_google_maps = true
   end
 end
