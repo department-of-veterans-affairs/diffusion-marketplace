@@ -70,6 +70,7 @@ class PracticesController < ApplicationController
                   })
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
+    @include_google_maps = @diffusion_history_markers.present?
 
     # get the VaFacilities and ClinicalResourceHubs associated with the practice's origin facilities and then order them alphabetically
     va_facility_origin_facilities = VaFacility.where(id: PracticeOriginFacility.get_va_facility_ids_by_practice(@practice.id)).get_relevant_attributes
