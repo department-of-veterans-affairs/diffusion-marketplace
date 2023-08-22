@@ -252,6 +252,10 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(is_internal_link?('.visns')).to eq(true)
       expect(is_internal_link?('https://dev.marketplace.va.gov/partners')).to eq(true)
       expect(is_internal_link?('dev.marketplace.va.gov/partners')).to eq(true)
+      expect(is_internal_link?('this is clearly not a link')).to eq(false)
+      expect(is_internal_link?(
+        'https://editions.mydigitalpublication.com/publication/?i=645297&p=&pn=#{"issue_id":645297,"publication_id":"60085","page":26}'
+      )).to eq(false)
     end
   end
 end
