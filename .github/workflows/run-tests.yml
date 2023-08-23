@@ -14,7 +14,7 @@ jobs:
   build:
     name: rspec
     runs-on: ubuntu-latest
-    env: # <-- Add this block
+    env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
       REDIS_URL: redis://localhost:6379/0
@@ -41,12 +41,15 @@ jobs:
           REDIS_HOST: redis_test
           REDIS_PORT: 6379
           REDIS_DB_ID: 0
+      selenium: 
+        image: selenium/standalone-chrome:latest
+        ports: ["4444:4444"]
     steps:
       - uses: actions/checkout@v3
-      - name: Install Ruby # uses .ruby-version
-        uses: ruby/setup-ruby@v1 # https://github.com/ruby/setup-ruby
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
@@ -59,19 +62,8 @@ jobs:
           bundle install --jobs 4 --retry 3
       - name: Setup Database
         run: bin/rails db:schema:load
-      - name: Setup Google Chrome
+      - name: Check ChromeDriver status
         run: |
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb
-          sudo apt-get install -f
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@v2.1.1
-        with:
-          chromedriver-version: '116.0.5845.96'
-      - name: Check Chrome, ChromeDriver, Firefox versions
-        run: |
-          google-chrome-stable --version
-          chromedriver --version
-          firefox --version
+          curl http://localhost:4444/wd/hub/status # <-- Check ChromeDriver status
       - name: Build and test with rspec
         run: bundle exec rspec
