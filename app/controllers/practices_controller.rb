@@ -189,22 +189,22 @@ class PracticesController < ApplicationController
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = Practice.cached_json_practices(helpers.is_user_a_guest?)
 
-    @diffusion_histories = []
-    pr.each do |p|
-      p.diffusion_histories.includes([:va_facility, :clinical_resource_hub]).each do |dh|
-        va_facility = dh.va_facility
-        crh = dh.clinical_resource_hub
+    # @diffusion_histories = []
+    # pr.each do |p|
+    #   p.diffusion_histories.includes([:va_facility, :clinical_resource_hub]).each do |dh|
+    #     va_facility = dh.va_facility
+    #     crh = dh.clinical_resource_hub
 
-        @diffusion_histories << {
-          practice_id: dh.practice_id,
-          va_facility_number: va_facility.present? ? va_facility.station_number : nil,
-          clinical_resource_hub_name: crh.present? ? crh.official_station_name : nil
-        }
-      end
-    end
-    @parent_categories = Category.get_cached_categories_grouped_by_parent
-    @categories = Category.cached_categories.get_category_names
-    @practice_partners = PracticePartner.cached_practice_partners.major_partners
+    #     @diffusion_histories << {
+    #       practice_id: dh.practice_id,
+    #       va_facility_number: va_facility.present? ? va_facility.station_number : nil,
+    #       clinical_resource_hub_name: crh.present? ? crh.official_station_name : nil
+    #     }
+    #   end
+    # end
+    # @parent_categories = Category.get_cached_categories_grouped_by_parent
+    # @categories = Category.cached_categories.get_category_names
+    # @practice_partners = PracticePartner.cached_practice_partners.major_partners
   end
 
   # POST /practices/1/favorite.js
