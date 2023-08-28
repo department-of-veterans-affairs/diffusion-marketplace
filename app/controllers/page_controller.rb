@@ -5,6 +5,7 @@ class PageController < ApplicationController
   def show
     page_group = @page.page_group
     @map_components_with_markers = build_map_component_markers
+    @include_google_maps = @map_components_with_markers.present?
     @path_parts = request.path.split('/')
     @facilities_data = VaFacility.cached_va_facilities.order_by_station_name
     @practice_list_components = []
