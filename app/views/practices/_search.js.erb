@@ -889,7 +889,6 @@ function searchPracticesPage() {
         }
 
         function searchWIthOnlyCategories() {
-            debugger
             results = fuse.search({$or: categoryFilters});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
         }
