@@ -23,6 +23,7 @@ RSpec.describe PracticeUtils do
       expect(
         PracticeUtils.practices_json(Practice.all)
       ).to include(
+             @practice.id.to_s,
              @practice.name,
              @practice.slug,
              @practice.main_display_image.path, # custom 'image' key
