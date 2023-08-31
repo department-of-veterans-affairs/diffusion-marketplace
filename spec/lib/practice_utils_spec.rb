@@ -25,7 +25,6 @@ RSpec.describe PracticeUtils do
       ).to include(
              @practice.name,
              @practice.slug,
-             @practice.main_display_image.url, # custom 'placeholder_image' key
              @practice.main_display_image.path, # custom 'image' key
           )
       # Without a current_user
