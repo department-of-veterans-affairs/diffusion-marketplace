@@ -51,9 +51,7 @@ class ApplicationController < ActionController::Base
       parser = URI::Parser.new
       parsed_path = parser.escape(path).gsub(/[\(\)\*]/) {|m| "%#{m.ord.to_s(16).upcase}" }
 
-      signed_url = Rails.cache.fetch("signed_url_#{parsed_path}", expires_in: 45.minutes) do
-        signer.presigned_get_url(object_key: parsed_path)
-      end
+      signed_url = signer.presigned_get_url(object_key: parsed_path)
 
       render plain: parsed_path.blank? ? parsed_path : signed_url
     end
