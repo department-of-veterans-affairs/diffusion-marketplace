@@ -793,6 +793,29 @@ function searchPracticesPage() {
             });
         }
 
+        function searchWithNoQueryAndNoFilters() {
+            var maturityLevels = ['emerging', 'replicate', 'scale'];
+            var filterTerm = decodeURI(searchLocation[1]);
+            if (searchLocation[0] === '?filter_by') {
+                if (maturityLevels.includes(searchLocation[1])) {
+                    searchByFilterTerm('maturity_level', filterTerm);
+                } else if (all_categories.includes(filterTerm)) {
+                    searchByFilterTerm('category_names', filterTerm);
+                } else {
+                    results = [];
+                }
+            } else {
+                // on an empty search, return all of the practices, but in the fuse format
+                results = fuse._docs.map(item => {
+                    return {
+                        item,
+                        matches: [],
+                        score: null
+                    };
+                });
+            }
+        }
+
         function searchWithAllFilters() {
             results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray, practicePartnerFilters)});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
@@ -892,7 +915,9 @@ function searchPracticesPage() {
         }
 
         // Run the search query and include filters(if any)
-        if (query && categories && originatingFacility && adoptingFacility && practicePartners) {
+        if (!query && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
+            searchWithNoQueryAndNoFilters();
+        } else if (query && categories && originatingFacility && adoptingFacility && practicePartners) {
             searchWithQueryAndAllFilters();
         } else if (query && categories && originatingFacility && !adoptingFacility && practicePartners) {
             searchWithQueryAndCategoriesAndOriginFacilityAndPracticePartners();
@@ -954,27 +979,6 @@ function searchPracticesPage() {
             searchWithOnlyPracticePartners();
         } else if (query && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
             results = fuse.search(query);
-        } else if (!query && !categories && !originatingFacility && !adoptingFacility && !practicePartners) {
-            var maturityLevels = ['emerging', 'replicate', 'scale'];
-            var filterTerm = decodeURI(searchLocation[1]);
-            if (searchLocation[0] === '?filter_by') {
-                if (maturityLevels.includes(searchLocation[1])) {
-                    searchByFilterTerm('maturity_level', filterTerm);
-                } else if (all_categories.includes(filterTerm)) {
-                    searchByFilterTerm('category_names', filterTerm);
-                } else {
-                    results = [];
-                }
-            } else {
-                // on an empty search, return all of the practices, but in the fuse format
-                results = fuse._docs.map(item => {
-                    return {
-                        item,
-                        matches: [],
-                        score: null
-                    };
-                });
-            }
         }
 
         // Get the results and then filter them
