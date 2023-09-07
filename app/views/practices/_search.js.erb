@@ -136,7 +136,9 @@ function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
                 '" src="' +
                 loadedImageSrc +
                 '" alt="' + practiceName + ' Marketplace Card Image" ' +
+                'width="247.5" height="165" ' +
                 'class="grid-row marketplace-card-img radius-top-sm">' +
+                
             '<div>';
         $('.dm-bg-gray-80[data-practice-id="' + practiceId + '"]').html(imgTag);
     });
