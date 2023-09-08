@@ -11,7 +11,7 @@
     <%= csp_meta_tag %>
     <meta name="viewport" content= "width=device-width, initial-scale=1, minimum-scale=1">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'false' %>
-    <%= javascript_include_tag 'shared/_utilityFunctions', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'shared/_utilityFunctions', 'data-turbolinks-track': 'reload', defer: true %>
     <% if @include_google_maps %>
       <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&callback=Function.prototype", 'data-turbolinks-track': 'false' %>
       <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/mahnunchik/markerclustererplus@master/dist/markerclusterer.min.js", 'data-turbolinks-track': 'false' %>
@@ -27,15 +27,14 @@
       <%= javascript_tag 'data-turbolinks-track': 'false' do %>
         var forceModal = <%= @force_terms_and_conditions_modal %>;
       <% end %>
-      <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'false' %>
+      <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'false', defer: true %>
     <% end %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       var forceModal = <%= @force_terms_and_conditions_modal %>;
     <% end %>
-    <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'reload', defer: true %>
 
-    <%= javascript_include_tag '_header_utilities', 'data-turbolinks-track': 'false' %>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="preload" as="style">
+    <%= javascript_include_tag '_header_utilities', 'data-turbolinks-track': 'false', defer: true %>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <meta name="turbolinks-cache-control" content="no-preview">
     <% if @reload_turbolinks %>
