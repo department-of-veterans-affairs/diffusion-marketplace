@@ -113,12 +113,13 @@ const COMPONENT_CLASSES = [
             const fileUrl = element.href;
             const fileId = element.getAttribute('data-resource-id');
 
-            fetchSignedResource(
-                filePath,
-                fileUrl,
-                `a[data-resource-id="${fileId}"]`,
-                'file'
-            );
+            fetchSignedResource(filePath, fileUrl)
+                .then(signedUrl => {
+                        const fileElement = document.querySelector(`a[data-resource-id="${fileId}"]`);
+                        if (fileElement) {
+                            fileElement.href = signedUrl;
+                        }
+                    });
         });
     }
 

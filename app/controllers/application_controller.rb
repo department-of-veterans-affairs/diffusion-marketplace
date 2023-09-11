@@ -41,8 +41,11 @@ class ApplicationController < ActionController::Base
     if Rails.env.test?
       render plain: params[:url]
     else
-      s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
-      signer = WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 2700)
+      signer = Rails.cache.fetch('s3_signer', expires_in: 45.minutes) do
+        s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
+        WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 45.minutes)
+      end
+
       path = params[:path].sub('/', '')
       # any special characters not escaped by paperclip also need to be escaped
       parser = URI::Parser.new
