@@ -97,7 +97,7 @@ function buildPracticeCard(result) {
 
     // Default card image
     var cardImagePlaceholder = 
-        '<div class="dm-bg-gray-80" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '"></div>'
+        '<div class="practice-card-img-placeholder" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '"></div>'
 
     var cardRetiredBanner = '';
     if (result.item.retired) {
@@ -136,11 +136,10 @@ function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
                 '" src="' +
                 loadedImageSrc +
                 '" alt="' + practiceName + ' Marketplace Card Image" ' +
-                'width="247.5" height="165" ' +
                 'class="grid-row marketplace-card-img radius-top-sm">' +
                 
             '<div>';
-        $('.dm-bg-gray-80[data-practice-id="' + practiceId + '"]').html(imgTag);
+        $('.practice-card-img-placeholder[data-practice-id="' + practiceId + '"]').html(imgTag);
     });
 }
 
@@ -282,7 +281,7 @@ function searchPracticesPage() {
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
             $('#search-results .dm-practice-card').each(function() {
                 // If either the 'src' or the hidden input are undefined, return an empty string
-                var imageSelector = $(this).find('.dm-bg-gray-80');
+                var imageSelector = $(this).find('.practice-card-img-placeholder');
                 var imagePracticeId = imageSelector ? imageSelector.attr('data-practice-id') : null;
                 var practiceImagePath = imageSelector ? imageSelector.attr('data-practice-image') : null;
                 var practiceName = $(this).find('.dm-practice-title').text();
