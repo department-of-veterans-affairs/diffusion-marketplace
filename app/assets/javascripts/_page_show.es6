@@ -115,7 +115,6 @@ const COMPONENT_CLASSES = [
 
             fetchSignedResource(filePath, fileUrl)
                 .then(signedUrl => {
-                        debugger
                         const fileElement = document.querySelector(`a[data-resource-id="${fileId}"]`);
                         if (fileElement) {
                             fileElement.href = signedUrl;
