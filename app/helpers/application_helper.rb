@@ -51,7 +51,7 @@ module ApplicationHelper
     if practice.initiating_facility_type?
       if practice.facility? && practice.practice_origin_facilities.present?
         fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
-        locs = practice.practice_origin_facilities.includes([:va_facility, :clinical_resource_hub]).where(facility_type: fac_type)
+        locs = practice.practice_origin_facilities.includes([:va_facility]).where(facility_type: fac_type)
         facility_names = String.new
         locs.each_with_index do |loc, index|
           has_va_facility = loc.va_facility.present?
