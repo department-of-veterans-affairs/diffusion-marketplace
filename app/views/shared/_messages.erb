@@ -1,5 +1,5 @@
 <% provide :head_tags do %>
-  <%= javascript_include_tag '_alert_message_utilities', 'data-turbolinks-track': 'false' %>
+  <%= javascript_include_tag '_alert_message_utilities', 'data-turbolinks-track': 'false', defer: true %>
 <% end %>
 
 <% if flash.keys.present? %>
