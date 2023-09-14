@@ -50,6 +50,7 @@ gem 'pagy', '~> 4'
 
 gem 'local_time'
 gem 'rails-timeago'
+gem 'psych', '<4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -73,6 +74,10 @@ group :development, :test do
   gem 'brakeman', '5.0.2'
   gem 'bundler-audit'
   gem 'bundler-leak'
+
+  gem 'net-smtp', require: false
+  gem 'net-imap', require: false
+  gem 'net-pop', require: false
 end
 
 group :development do
@@ -152,6 +157,7 @@ gem 'ahoy_matey'
 
 gem 'ntlm-sso', github: 'agilesix/ntlm-sso', branch: 'master'
 gem 'net-ldap'
+
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
