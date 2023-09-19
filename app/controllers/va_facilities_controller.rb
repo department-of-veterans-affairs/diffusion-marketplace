@@ -40,6 +40,7 @@ class VaFacilitiesController < ApplicationController
   def show
     station_number = @va_facility.station_number
     # google maps implementation
+    @include_google_maps = true
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
       marker.lat facility.latitude
       marker.lng facility.longitude

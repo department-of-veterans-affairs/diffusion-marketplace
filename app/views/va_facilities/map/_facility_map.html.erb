@@ -1,4 +1,4 @@
-<% if ENV['GOOGLE_API_KEY'].present? %>
+<% if ENV['GOOGLE_API_KEY'].present? || ENV['GOOGLE_TEST_API_KEY'].present? %>
   <% provide :head_tags do %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       var mapData = <%= raw @va_facility_marker.to_json %>;
