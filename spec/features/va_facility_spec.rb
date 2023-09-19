@@ -233,7 +233,7 @@ describe 'VA facility pages', type: :feature do
       visit '/facilities/a-first-facility-test-common-name'
       sleep 0.5
 
-      expect(page).to have_selector('#va_facility_map', visible: true)
+      expect(page).to have_selector('.gm-style', visible: true)
     end
 
     context 'when searching for adopted innovations' do
