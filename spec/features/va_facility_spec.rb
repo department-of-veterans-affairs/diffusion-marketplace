@@ -227,6 +227,15 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_current_path(va_facility_path(@facility_1))
     end
 
+    it 'should render a gmap' do
+      login_and_visit_facility_page
+      find(:css, '.va_facilities')
+      visit '/facilities/a-first-facility-test-common-name'
+      sleep 0.5
+
+      expect(page).to have_selector('#va_facility_map', visible: true)
+    end
+
     context 'when searching for adopted innovations' do
       it 'should only display search results for practices that are public-facing if the user is a guest' do
         check_search_results_as_guest_user('#dm-facility-adopted-practice-search')
