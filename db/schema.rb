@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_28_213402) do
+ActiveRecord::Schema.define(version: 2023_09_07_210242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1139,6 +1139,7 @@ ActiveRecord::Schema.define(version: 2023_07_28_213402) do
     t.datetime "highlight_attachment_updated_at"
     t.boolean "is_public", default: false
     t.text "main_display_image_alt_text"
+    t.integer "diffusion_histories_count", default: 0
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end

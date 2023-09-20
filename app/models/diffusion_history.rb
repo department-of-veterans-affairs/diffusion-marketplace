@@ -2,6 +2,7 @@ class DiffusionHistory < ApplicationRecord
   belongs_to :practice
   belongs_to :va_facility, optional: true
   belongs_to :clinical_resource_hub, optional: true
+  belongs_to :practice, counter_cache: true
 
 
   validates_with DiffusionHistoryValidator, on: [:create, :update] # check CRH exists or facility exists
