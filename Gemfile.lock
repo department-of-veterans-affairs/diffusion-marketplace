@@ -94,17 +94,15 @@ GEM
     active_admin_theme (1.1.4)
     active_material (1.5.2)
     active_skin (0.0.13)
-    activeadmin (2.8.1)
+    activeadmin (2.12.0)
       arbre (~> 1.2, >= 1.2.1)
       formtastic (>= 3.1, < 5.0)
       formtastic_i18n (~> 0.4)
       inherited_resources (~> 1.7)
       jquery-rails (~> 4.2)
       kaminari (~> 1.0, >= 1.2.1)
-      railties (>= 5.2, < 6.1)
-      ransack (~> 2.1, >= 2.1.1)
-      sassc-rails (~> 2.1)
-      sprockets (>= 3.0, < 4.1)
+      railties (>= 6.0, < 7.1)
+      ransack (>= 2.1.1, < 4)
     activeadmin_addons (1.9.0)
       active_material
       railties
@@ -142,7 +140,7 @@ GEM
       activesupport (>= 5.2)
       device_detector
       safely_block (>= 0.2.1)
-    arbre (1.5.0)
+    arbre (1.6.0)
       activesupport (>= 3.0.0, < 7.1)
       ruby2_keywords (>= 0.0.2, < 1.0)
     autoprefixer-rails (10.4.7.0)
@@ -279,7 +277,7 @@ GEM
       google-protobuf (~> 3.14)
     groupdate (6.1.0)
       activesupport (>= 5.2)
-    has_scope (0.8.0)
+    has_scope (0.8.1)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
     hiredis (0.6.3)
@@ -615,7 +613,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.20.3, < 2.0)
     rake (13.0.6)
-    ransack (2.6.0)
+    ransack (3.1.0)
       activerecord (>= 6.0.4)
       activesupport (>= 6.0.4)
       i18n
@@ -772,7 +770,7 @@ PLATFORMS
 DEPENDENCIES
   active_admin_theme
   active_skin
-  activeadmin (~> 2.8.0)
+  activeadmin (~> 2.12.0)
   activeadmin_addons
   activerecord-nulldb-adapter
   acts_as_list
