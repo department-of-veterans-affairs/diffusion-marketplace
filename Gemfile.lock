@@ -34,7 +34,7 @@ GIT
 
 GIT
   remote: https://github.com/camillevilla/uswds-rails.git
-  revision: 584ed53c81aa077c592aae37a5b28e96bd55f177
+  revision: 8cc7ed1aae26aa07b601fe9704908818713e6a59
   branch: dm-rails-6-1
   specs:
     uswds-rails (2.11.1)
