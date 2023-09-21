@@ -1,0 +1,12 @@
+inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-rspec
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-capybara
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
+Layout:
+  Enabled: false
