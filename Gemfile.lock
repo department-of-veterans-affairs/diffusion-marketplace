@@ -33,9 +33,9 @@ GIT
       httparty (~> 0.15)
 
 GIT
-  remote: https://github.com/camillevilla/uswds-rails.git
-  revision: 8cc7ed1aae26aa07b601fe9704908818713e6a59
-  branch: dm-rails-6-1
+  remote: https://github.com/agilesix/uswds-rails.git
+  revision: 52da189fd4f9b84f93387e611745ed327597ab59
+  ref: 52da189
   specs:
     uswds-rails (2.11.1)
       bourbon
