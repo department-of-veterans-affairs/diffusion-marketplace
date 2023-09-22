@@ -102,7 +102,7 @@ gem 'ffi'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: 'f8a3658'
+gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: '52da189'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'

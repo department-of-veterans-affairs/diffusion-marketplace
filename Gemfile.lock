@@ -34,12 +34,12 @@ GIT
 
 GIT
   remote: https://github.com/agilesix/uswds-rails.git
-  revision: f8a3658be91cf1e835df39575eb4a3fe09db16e3
-  ref: f8a3658
+  revision: 52da189fd4f9b84f93387e611745ed327597ab59
+  ref: 52da189
   specs:
     uswds-rails (2.11.1)
-      bourbon (= 4.2.7)
-      neat (= 1.8)
+      bourbon
+      neat
       rails-assets-normalize-css (= 3.0.3)
 
 GEM
@@ -179,8 +179,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
-    bourbon (4.2.7)
-      sass (~> 3.4)
+    bourbon (6.0.0)
       thor (~> 0.19)
     brakeman (5.0.2)
     builder (3.2.4)
@@ -362,8 +361,7 @@ GEM
     msgpack (1.5.3)
     multi_xml (0.6.0)
     naturalsorter (3.0.22)
-    neat (1.8.0)
-      sass (>= 3.3)
+    neat (4.0.0)
       thor (~> 0.19)
     nested_form (0.3.2)
     net-http-digest_auth (1.4.1)
@@ -669,11 +667,6 @@ GEM
     rubyzip (2.3.2)
     safely_block (0.3.0)
       errbase (>= 0.1.1)
-    sass (3.7.4)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
