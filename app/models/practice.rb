@@ -34,12 +34,12 @@ class Practice < ApplicationRecord
   def self.cached_json_practices(is_guest_user)
     if is_guest_user
       Rails.cache.fetch('searchable_public_practices_json', expires_in: 30.minutes) do
-        practices = Practice.published_enabled_approved.includes(:practice_origin_facilities).public_facing.sort_by_retired.get_with_categories_and_adoptions_ct
+        practices = Practice.published_enabled_approved.includes(:practice_origin_facilities).public_facing.sort_by_retired
         practices_json(practices)
       end
     else
       Rails.cache.fetch('searchable_practices_json', expires_in: 30.minutes) do
-        practices = Practice.published_enabled_approved.includes(:practice_origin_facilities).sort_by_retired.get_with_categories_and_adoptions_ct
+        practices = Practice.published_enabled_approved.includes(:practice_origin_facilities).sort_by_retired
         practices_json(practices)
       end
     end
@@ -182,10 +182,17 @@ class Practice < ApplicationRecord
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
-  scope :get_with_category_names, -> { left_outer_joins(:categories).select("practices.*, categories.id as category_ids, categories.name as category_names") }
-  scope :get_with_adoptions_ct, -> { left_outer_joins(:diffusion_histories).select("practices.*, COUNT(diffusion_histories.*) as adoption_count") }
-  scope :with_categories_and_adoptions_ct, -> { published_enabled_approved.get_with_adoptions_ct.get_with_category_names }
-  scope :get_with_categories_and_adoptions_ct, -> { with_categories_and_adoptions_ct.group("practices.id, categories.id").uniq }
+  scope :with_categories, -> {
+    joins(:category_practices)
+    .joins(:categories)
+    .group("practices.id")
+    .select("practices.id, ARRAY_AGG(DISTINCT categories.name) category_names")
+  }
+  scope :with_categories_and_adoptions_ct, -> {
+    published_enabled_approved
+    .with_categories
+    .select('practices.*, practices.diffusion_histories_count as adoption_count')
+  }
   scope :sort_a_to_z, -> { order(Arel.sql("lower(practices.name) ASC")) }
   scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
