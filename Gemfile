@@ -74,6 +74,7 @@ group :development, :test do
   gem 'bundler-audit'
   gem 'bundler-leak'
   gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
@@ -97,10 +98,6 @@ group :development do
   gem 'sprockets'
 
   ###
-end
-
-group :test do
-  gem 'faker'
 end
 
 gem 'ffi'
