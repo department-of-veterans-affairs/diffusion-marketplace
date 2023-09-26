@@ -235,7 +235,7 @@ ActiveAdmin.register Practice do
 
 
   form do |f|
-    f.semantic_errors *f.object.errors.keys# shows errors on :base
+    f.semantic_errors *f.object.errors.attribute_names# shows errors on :base
     f.inputs  do
       f.input :name, label: 'Innovation name *Required*'
       f.input :user, label: 'User email *Required*', as: :string, input_html: {name: 'user_email'}
