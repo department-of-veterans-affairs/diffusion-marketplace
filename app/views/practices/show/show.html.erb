@@ -1,7 +1,7 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <%= render partial: 'practices/show/ahoy_event_tracking.js', formats: [:js] if current_user.present? %>
+    <%= render partial: 'practices/show/ahoy_event_tracking', formats: [:js] if current_user.present? %>
   <% end %>
 <% end %>
 <% provide :footer_classes, 'practice-show' %>
