@@ -93,4 +93,45 @@ RSpec.describe Practice, type: :model do
       }.to change { @practice.reload.diffusion_histories_count }.by(-1)
     end
   end
+
+  describe 'scopes' do
+    describe '.get_by_created_crh' do
+      let!(:clinical_resource_hub_1) { create(:clinical_resource_hub) }
+      let!(:clinical_resource_hub_2) { create(:clinical_resource_hub) }
+      
+      let!(:practice1) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
+      let!(:practice2) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
+      let!(:practice3) { create(:practice, published: false, enabled: false, approved: false, hidden: true) }
+
+      let!(:facility_with_hub_1) { create(:practice_origin_facility, practice: practice1, clinical_resource_hub: clinical_resource_hub_1) }
+      let!(:facility_with_hub_2) { create(:practice_origin_facility, practice: practice2, clinical_resource_hub: clinical_resource_hub_2) }
+
+      it 'returns practices that are published, enabled, approved, associated with provided clinical_resource_hub_id, and have loaded associations' do
+        result = Practice.published_enabled_approved.load_associations.get_by_created_crh(clinical_resource_hub_1.id)
+
+        expect(result).to include(practice1)
+        expect(result).not_to include(practice2, practice3)
+      end
+    end
+
+    describe '.get_by_adopted_crh' do
+      let!(:clinical_resource_hub_1) { create(:clinical_resource_hub) }
+      let!(:clinical_resource_hub_2) { create(:clinical_resource_hub) }
+      
+      let!(:practice1) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
+      let!(:practice2) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
+      let!(:practice3) { create(:practice, published: false, enabled: false, approved: false, hidden: true) } # Will be filtered out by `published_enabled_approved` scope
+
+      let!(:diffusion_history_1) { create(:diffusion_history, practice: practice1, clinical_resource_hub: clinical_resource_hub_1) }
+      let!(:diffusion_history_2) { create(:diffusion_history, practice: practice2, clinical_resource_hub: clinical_resource_hub_2) }
+      
+
+      it 'returns practices that are published, enabled, approved, adopted by the given clinical_resource_hub_id, and have loaded associations' do
+        result = Practice.published_enabled_approved.load_associations.get_by_adopted_crh(clinical_resource_hub_1.id)
+
+        expect(result).to include(practice1)
+        expect(result).not_to include(practice2, practice3)
+      end
+    end
+  end
 end
