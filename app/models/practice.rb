@@ -193,7 +193,6 @@ class Practice < ApplicationRecord
       "practices.diffusion_histories_count as adoption_count"
     )
   }
-
   scope :sort_a_to_z, -> { order(Arel.sql("lower(practices.name) ASC")) }
   # scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_adoptions_ct, -> { order(Arel.sql("diffusion_histories_count DESC, lower(practices.name) ASC")) }
