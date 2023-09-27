@@ -53,42 +53,44 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:practice_editors) }
   end
 
-  before do
-    user = User.create!(
-      email: 'mugurama.kensei@va.gov',
-      password: 'Password123',
-      password_confirmation: 'Password123',
-    )
-    @practice = Practice.create!(
-      name: 'A public practice',
-      slug: 'a-public-practice',
-      main_display_image: File.new(File.join(Rails.root, '/spec/assets/charmander.png')),
-      user: user
-    )
-    visn_1 = Visn.create!(name: 'VISN 1', number: 1)
-    @fac_1 = VaFacility.create!(
-      visn: visn_1,
-      station_number: "402GA",
-      official_station_name: "Caribou VA Clinic",
-      common_name: "Caribou",
-      latitude: "44.2802701",
-      longitude: "-69.70413586",
-      street_address_state: "ME",
-      station_phone_number: "207-623-2123 x",
-      fy17_parent_station_complexity_level: "1c-High Complexity"
-    )
-  end
+  describe 'counter_cache' do
+    before do
+      user = User.create!(
+        email: 'mugurama.kensei@va.gov',
+        password: 'Password123',
+        password_confirmation: 'Password123',
+      )
+      @practice = Practice.create!(
+        name: 'A public practice',
+        slug: 'a-public-practice',
+        main_display_image: File.new(File.join(Rails.root, '/spec/assets/charmander.png')),
+        user: user
+      )
+      visn_1 = create(:visn)
+      @fac_1 = VaFacility.create!(
+        visn: visn_1,
+        station_number: "402GA",
+        official_station_name: "Caribou VA Clinic",
+        common_name: "Caribou",
+        latitude: "44.2802701",
+        longitude: "-69.70413586",
+        street_address_state: "ME",
+        station_phone_number: "207-623-2123 x",
+        fy17_parent_station_complexity_level: "1c-High Complexity"
+      )
+    end
 
-  it "increments counter cache on create" do
-    expect {
-      @practice.diffusion_histories.create!(practice: @practice, va_facility: @fac_1)
-    }.to change { @practice.reload.diffusion_histories_count }.by(1)
-  end
+    it "increments counter cache on create" do
+      expect {
+        @practice.diffusion_histories.create!(practice: @practice, va_facility: @fac_1)
+      }.to change { @practice.reload.diffusion_histories_count }.by(1)
+    end
 
-  it "decrements counter cache on destroy" do
-    diffusion_history = @practice.diffusion_histories.create!(practice: @practice, va_facility: @fac_1)
-    expect {
-      diffusion_history.destroy
-    }.to change { @practice.reload.diffusion_histories_count }.by(-1)
+    it "decrements counter cache on destroy" do
+      diffusion_history = @practice.diffusion_histories.create!(practice: @practice, va_facility: @fac_1)
+      expect {
+        diffusion_history.destroy
+      }.to change { @practice.reload.diffusion_histories_count }.by(-1)
+    end
   end
 end

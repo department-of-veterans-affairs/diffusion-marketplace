@@ -73,6 +73,8 @@ group :development, :test do
   gem 'brakeman', '5.0.2'
   gem 'bundler-audit'
   gem 'bundler-leak'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
@@ -97,6 +99,7 @@ group :development do
 
   ###
 end
+
 gem 'ffi'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
