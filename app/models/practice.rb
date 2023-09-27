@@ -184,7 +184,6 @@ class Practice < ApplicationRecord
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
   scope :with_categories_and_adoptions_ct, -> {
     published_enabled_approved
-      .joins(:category_practices)
       .joins(:categories)
       .group("practices.id")
       .select(
@@ -194,7 +193,6 @@ class Practice < ApplicationRecord
     )
   }
   scope :sort_a_to_z, -> { order(Arel.sql("lower(practices.name) ASC")) }
-  # scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_adoptions_ct, -> { order(Arel.sql("diffusion_histories_count DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
