@@ -151,7 +151,7 @@ RSpec.describe Practice, type: :model do
       end
     end
 
-    describe 'sort_adoptions_ct' do
+    describe '.sort_adoptions_ct' do
       it 'orders practices by the count of their adoptions and then by name' do
         # mimicks the chaining of scopes applied in #search_practices()
         sorted_practices = Practice.with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities).sort_adoptions_ct.group("practices.id, categories.id, practice_origin_facilities.id").uniq
