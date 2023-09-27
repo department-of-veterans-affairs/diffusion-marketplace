@@ -182,16 +182,16 @@ class Practice < ApplicationRecord
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
-  scope :with_categories, -> {
-    joins(:category_practices)
-    .joins(:categories)
-    .group("practices.id")
-    .select("practices.id, ARRAY_AGG(DISTINCT categories.name) category_names")
-  }
   scope :with_categories_and_adoptions_ct, -> {
     published_enabled_approved
-    .with_categories
-    .select('practices.*, practices.diffusion_histories_count as adoption_count')
+      .joins(:category_practices)
+      .joins(:categories)
+      .group("practices.id")
+      .select(
+      "practices.*, " +
+      "ARRAY_AGG(DISTINCT categories.name) category_names, " +
+      "practices.diffusion_histories_count as adoption_count"
+    )
   }
 
   scope :sort_a_to_z, -> { order(Arel.sql("lower(practices.name) ASC")) }
