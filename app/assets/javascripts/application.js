@@ -36,7 +36,6 @@
 //= require timeago
 //= require replies
 //= require gmaps/google
-//= require return-to-top
 //= require comment
 //= require richmarker
 //= require infowindow
