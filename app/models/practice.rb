@@ -184,7 +184,7 @@ class Practice < ApplicationRecord
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
   scope :with_categories_and_adoptions_ct, -> {
     published_enabled_approved
-      .joins(:categories)
+      .left_outer_joins(:categories)
       .group("practices.id")
       .select(
       "practices.*, " +
