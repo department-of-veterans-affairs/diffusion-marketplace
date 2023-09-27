@@ -51,7 +51,6 @@ RSpec.describe DiffusionHistory, type: :model do
         unsuccessful_dh = DiffusionHistory.get_by_unsuccessful_status.sort_by(&:id)
         expect(unsuccessful_dh.count).to eq(9)
         expect(unsuccessful_dh).to eq((unsuccessful + with_private_practices + with_public_practices).sort_by(&:id))
-        expect(unsuccessful_dh).to eq((@unsuccessful + @with_private_practices + @with_public_practices).sort_by(&:id))
       end
       it 'returns diffusion histories belonging to a public practice' do
         public_dhs = DiffusionHistory.get_with_practices(true).sort_by(&:id)
