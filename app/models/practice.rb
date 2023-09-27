@@ -193,8 +193,10 @@ class Practice < ApplicationRecord
     .with_categories
     .select('practices.*, practices.diffusion_histories_count as adoption_count')
   }
+
   scope :sort_a_to_z, -> { order(Arel.sql("lower(practices.name) ASC")) }
-  scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
+  # scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
+  scope :sort_adoptions_ct, -> { order(Arel.sql("diffusion_histories_count DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
   scope :published_enabled_approved, -> { where(published: true, enabled: true, approved: true, hidden: false) }
