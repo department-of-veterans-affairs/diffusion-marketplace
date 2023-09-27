@@ -166,7 +166,7 @@ RSpec.describe Practice, type: :model do
       end
     end
 
-    describe 'sort_adoptions_ct scope' do
+    describe 'sort_adoptions_ct' do
       let!(:category1) { create(:category, name: "Category 1") }
       let!(:category2) { create(:category, name: "Category 2") }
       let!(:category3) { create(:category, name: "Category 3") }
