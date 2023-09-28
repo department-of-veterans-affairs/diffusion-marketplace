@@ -41,7 +41,7 @@ describe 'About us page', type: :feature do
     end
   end
 
-  describe 'Contact us section' do
+  describe 'Send us feedback section' do
     it 'should allow the user to send an email to the marketplace team' do
       fill_in('Your email', with: 'test@test.com')
       # all fields should be required
