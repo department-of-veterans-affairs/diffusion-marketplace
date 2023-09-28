@@ -10,6 +10,10 @@ FactoryBot.define do
       association :clinical_resource_hub
     end
 
+    # there are places in the application that expect a diffusion_history to have an associated
+    # diffusion_history_status, if you create a diffusion_history in rails console without one
+    # of the :with_status traits it will cause a breakage, ie /diffusion-map
+
     trait :with_status_complete do
       after(:create) do |dh|
         create(:diffusion_history_status, :complete, diffusion_history: dh)
