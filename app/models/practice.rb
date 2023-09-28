@@ -185,6 +185,7 @@ class Practice < ApplicationRecord
   scope :with_categories_and_adoptions_ct, -> {
     published_enabled_approved
       .left_outer_joins(:categories)
+      .left_outer_joins(:diffusion_histories)
       .group("practices.id")
       .select(
       "practices.*, " +
