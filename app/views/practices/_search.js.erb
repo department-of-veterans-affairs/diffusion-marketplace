@@ -127,6 +127,22 @@ function buildPracticeCard(result) {
     return cardHtml;
 }
 
+function replaceImagePlaceholders(parentSelector) {
+    $(parentSelector).each(function() {
+        // If either the 'src' or the hidden input are undefined, return an empty string
+        var imageSelector = $(this).find('.practice-card-img-placeholder');
+        var imagePracticeId = imageSelector ? imageSelector.attr('data-practice-id') : null;
+        var practiceImagePath = imageSelector ? imageSelector.attr('data-practice-image') : null;
+        var practiceName = $(this).find('.dm-practice-title').text();
+
+        if (imagePracticeId && practiceImagePath) {
+            fetchSignedResource(practiceImagePath).then(signedImgUrl => {
+                replacePlaceholderWithImage(signedImgUrl, imagePracticeId, practiceName);
+            });
+        }
+    });
+}
+
 function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
     loadImage(imageUrl, function(loadedImageSrc) {
         var imgTag =
@@ -279,20 +295,7 @@ function searchPracticesPage() {
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
-            $('#search-results .dm-practice-card').each(function() {
-                // If either the 'src' or the hidden input are undefined, return an empty string
-                var imageSelector = $(this).find('.practice-card-img-placeholder');
-                var imagePracticeId = imageSelector ? imageSelector.attr('data-practice-id') : null;
-                var practiceImagePath = imageSelector ? imageSelector.attr('data-practice-image') : null;
-                var practiceName = $(this).find('.dm-practice-title').text();
-                if (imagePracticeId && practiceImagePath) {
-                    fetchSignedResource(
-                        practiceImagePath,
-                    ).then(signedImgUrl => {
-                        replacePlaceholderWithImage(signedImgUrl, imagePracticeId, practiceName)
-                    });
-                }
-            });
+            replaceImagePlaceholders('#search-results .dm-practice-card');
 
             $(SEARCH_RESULTS).showMoreItems({
                 startNum: 12,
