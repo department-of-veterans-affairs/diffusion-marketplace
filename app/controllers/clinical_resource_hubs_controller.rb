@@ -1,7 +1,7 @@
 class ClinicalResourceHubsController < ApplicationController
   include PracticesHelper
   include PracticeUtils
-  before_action :set_crh, only: [:show, :created_crh_practices]
+  before_action :set_crh, only: :show
   def show
     @visn_va_facilities = VaFacility.get_by_visn(@visn).get_relevant_attributes
     @visn_crh = ClinicalResourceHub.cached_clinical_resource_hubs.find_by(visn: @visn)
@@ -22,6 +22,7 @@ class ClinicalResourceHubsController < ApplicationController
 
   private
   def set_crh
+    binding.pry
     @visn = params[:id].present? ? Visn.find_by!(number: params[:id]) : Visn.find_by!(number: params[:number])
     @crh = ClinicalResourceHub.find_by!(visn: @visn) if @visn.present?
   end
