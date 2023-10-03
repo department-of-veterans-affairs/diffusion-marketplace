@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :diffusion_history_status do
     association :diffusion_history
+    status { 'Complete' }
 
     trait :in_progress do
       status { 'In progress' }

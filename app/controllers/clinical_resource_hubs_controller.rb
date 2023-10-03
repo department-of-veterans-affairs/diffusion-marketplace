@@ -1,7 +1,7 @@
 class ClinicalResourceHubsController < ApplicationController
   include PracticesHelper
   include PracticeUtils
-  before_action :set_crh, only: [:show, :created_crh_practices]
+  before_action :set_crh, only: :show
   def show
     @visn_va_facilities = VaFacility.get_by_visn(@visn).get_relevant_attributes
     @visn_crh = ClinicalResourceHub.cached_clinical_resource_hubs.find_by(visn: @visn)
@@ -18,31 +18,6 @@ class ClinicalResourceHubsController < ApplicationController
 
     @crh_practices_adopted_categories = []
     get_categories_by_practices(@practices_adopted_by_crh, @crh_practices_adopted_categories)
-  end
-
-  # GET /crh/:id/created_crh_practices
-  def created_crh_practices
-    page = 1
-    page = params[:page].to_i if params[:page].present?
-    sort_option = params[:sort_option] || 'a_to_z'
-    search_term = params[:search_term] ? params[:search_term].downcase : nil
-    categories = params[:categories] || nil
-    created_practices = @crh.get_crh_created_innovations(@crh.id, search_term, sort_option, categories, helpers.is_user_a_guest?)
-    @pagy_created_practices = pagy_array(
-        created_practices,
-        items: 3,
-        page: page
-    )
-    @pagy_created_info = @pagy_created_practices[0]
-    practices = @pagy_created_practices[1]
-    practice_cards_html = ''
-    practices.each do |pr|
-      pr_html = render_to_string('shared/_practice_card', layout: false, locals: { practice: pr })
-      practice_cards_html += pr_html
-    end
-    respond_to do |format|
-      format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.size, next: @pagy_created_info.next } }
-    end
   end
 
   private

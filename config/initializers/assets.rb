@@ -52,7 +52,6 @@ Rails.application.config.assets.precompile += %w(
                                                   _alert_message_utilities.js
                                                   _page_show.js
                                                   facility_status_definitions_modal.js
-                                                  clinical_resource_hubs/crh_show.js
                                                   practices/publication_validation.js
                                                   page/page_map.js
                                                   shared/_signed_resource.js
