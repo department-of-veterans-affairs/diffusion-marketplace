@@ -22,7 +22,6 @@ class ClinicalResourceHubsController < ApplicationController
 
   private
   def set_crh
-    binding.pry
     @visn = params[:id].present? ? Visn.find_by!(number: params[:id]) : Visn.find_by!(number: params[:number])
     @crh = ClinicalResourceHub.find_by!(visn: @visn) if @visn.present?
   end
