@@ -43,7 +43,6 @@
 //= require reportAbuse
 //= require turbolinksScrollTop
 //= require save-editor-progress
-//= require html5sortable
 //= require search
 //= require modernizr-custom
 //= require object_fit_polyfill
