@@ -4,7 +4,6 @@
     function removeBulletPointFromNewLi() {
         $document.arrive('.practice-editor-timeline-li', (newElem) => {
             $(newElem).appendTo('#sortable_timelines');
-            initSortable('#sortable_timelines');
             $(newElem).css('list-style', 'none')
             $document.unbindArrive('.practice-editor-timeline-li', newElem);
         });

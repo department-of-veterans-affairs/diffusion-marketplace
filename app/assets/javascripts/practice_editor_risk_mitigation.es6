@@ -14,7 +14,6 @@
             $document.arrive('.fields', (newElement) => {
                 // add separator to previous element if another risk mitigation exists
                 $(newElement).appendTo('#sortable_risk_mitigations');
-                initSortable('#sortable_risk_mitigations');
                 let multipleRiskMitigationExists = $('.practice-editor-risk-mitigation-li').length >= 1
                 if (multipleRiskMitigationExists) {
                     let separator = '<div class="grid-col-11 border-y-1px border-gray-5 add-another-separator margin-y-2"></div>'
@@ -48,28 +47,6 @@
         });
     }
 
-    function dragAndDropRiskMitigationListItems() {
-        initSortable('#sortable_risk_mitigations');
-
-        if (typeof sortable('#sortable_risk_mitigations')[0] != 'undefined') {
-            sortable('#sortable_risk_mitigations')[0].addEventListener('sortstart', function (e) {
-                console.log('starting sort', e)
-            });
-
-            sortable('#sortable_risk_mitigations')[0].addEventListener('sortupdate', function (e) {
-                $(this).children('li').map(function (index) {
-                    $(this).find('.risk-mitigation-position').val(index + 1)
-                    return "risk_mitigations[]=" + $(this).data("id");
-                }).get().join("&");
-                // Rails.ajax({
-                //     url: $(this).data("url"),
-                //     type: "PATCH",
-                //     data: dataIDList,
-                // });
-            });
-        }
-    }
-
     function attachDeleteEntryHandler(elem) {
         $(elem).on('click', (e) => {
             let $previousLi = $(e.target).closest('.practice-editor-risk-mitigation-li').filter(":visible").prev('.practice-editor-risk-mitigation-li').filter(":visible");
@@ -94,7 +71,6 @@
     function loadPracticeEditorRiskMitiFunctions() {
         hideAddLinksAndShowRiskMitiFields();
         attachDeleteEntryHandler('.risk-mitigation-trash');
-        // dragAndDropRiskMitigationListItems();
     }
 
     $document.on('turbolinks:load', loadPracticeEditorRiskMitiFunctions);
