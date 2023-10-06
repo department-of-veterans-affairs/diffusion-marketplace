@@ -70,7 +70,16 @@ class VaFacilitiesController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    created_practices = helpers.is_user_a_guest? ? Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, true) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, false)
+    
+    if helpers.is_user_a_guest?
+      created_practices = Practice.get_facility_created_practices(
+        @va_facility.id, search_term, sort_option, categories, true
+      )
+    else
+      created_practices = Practice.includes([:practice_origin_facilities]).get_facility_created_practices(
+        @va_facility.id, search_term, sort_option, categories, false
+      )
+    end
 
     @pagy_created_practices = pagy_array(
       created_practices,
