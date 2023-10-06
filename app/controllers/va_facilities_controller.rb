@@ -16,8 +16,8 @@ class VaFacilitiesController < ApplicationController
     elsif params[:crh].present?
       @facilities = [ClinicalResourceHub.find_by_id(params[:crh].to_i)]
     else
-      @facilities = VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).get_relevant_attributes
-      @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs.includes([:visn])
+      @facilities = VaFacility.cached_va_facilities.order_by_station_name.get_relevant_attributes
+      @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
 
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })
