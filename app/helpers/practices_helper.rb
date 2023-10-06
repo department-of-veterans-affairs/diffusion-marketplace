@@ -112,7 +112,6 @@ module PracticesHelper
         [fac.street_address_state, fac.official_station_name.downcase]
       end
 
-    # Sort by VISN number
     sorted_by_visn = adoptions
       .exclude_va_facilities
       .sort_by { |a| a.clinical_resource_hub.visn.number }
