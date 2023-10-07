@@ -50,35 +50,47 @@ module ApplicationHelper
   def origin_display_name(practice)
     if practice.initiating_facility_type?
       if practice.facility? && practice.practice_origin_facilities.present?
-        fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
-        locs = practice.practice_origin_facilities.includes([:va_facility]).where(facility_type: fac_type)
-        facility_names = String.new
-        locs.each_with_index do |loc, index|
-          has_va_facility = loc.va_facility.present?
-          official_station_name = has_va_facility ? loc.va_facility.official_station_name : loc.clinical_resource_hub.official_station_name
-          common_name = loc.va_facility.common_name if has_va_facility
-
-          facility_names += "#{has_va_facility ? facility_name_with_common_name(official_station_name, common_name) : official_station_name}#{', ' if locs.size != index + 1 && locs.size > 1}"
-        end
-        facility_names
-      elsif practice.initiating_facility?
-      # TODO: Modify once visn, dept, other is moved from Practice to a separate table
-        case practice.initiating_facility_type
-        when 'visn'
-          visn = Visn.get_by_initiating_facility(practice.initiating_facility.to_i)
-          return "VISN-#{visn.number.to_s}"
-        when 'department'
-          dept_id = practice.initiating_department_office_id
-          office = origin_data_json['departments'][dept_id - 1]['offices'].find { |o| o['id'] == practice.initiating_facility.to_i }
-          office['name']
-        when 'other'
-          practice.initiating_facility
-        else
-          ''
-        end
+        generate_facility_names(practice)
       else
-        ''
+        handle_initiating_facility(practice)
       end
+    else
+      ''
+    end
+  end
+
+  def generate_facility_names(practice)
+    fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
+    locs = practice.practice_origin_facilities.includes(determine_associations(practice)).where(facility_type: fac_type)
+    locs.map { |loc| construct_facility_name(loc) }.join(', ')
+  end
+
+  def determine_associations(practice)
+    associations = [:va_facility]
+    if practice.practice_origin_facilities.where(va_facility: nil).exists?
+      associations << :clinical_resource_hub
+    end
+    associations
+  end
+
+  def construct_facility_name(loc)
+    has_va_facility = loc.va_facility.present?
+    official_station_name = has_va_facility ? loc.va_facility.official_station_name : loc.clinical_resource_hub.official_station_name
+    common_name = loc.va_facility.common_name if has_va_facility
+    has_va_facility ? facility_name_with_common_name(official_station_name, common_name) : official_station_name
+  end
+
+  def handle_initiating_facility(practice)
+    case practice.initiating_facility_type
+    when 'visn'
+      visn = Visn.get_by_initiating_facility(practice.initiating_facility.to_i)
+      "VISN-#{visn.number.to_s}"
+    when 'department'
+      dept_id = practice.initiating_department_office_id
+      office = origin_data_json['departments'][dept_id - 1]['offices'].find { |o| o['id'] == practice.initiating_facility.to_i }
+      office['name']
+    when 'other'
+      practice.initiating_facility
     else
       ''
     end
