@@ -41,12 +41,12 @@ class ClinicalResourceHub < ApplicationRecord
   end
 
   def get_crh_adopted_practices( crh_id, options = { is_user_guest: true })
-    options[:is_user_guest] ? Practice.public_facing.load_associations.get_by_adopted_crh(crh_id) :
-        Practice.published_enabled_approved.load_associations.get_by_adopted_crh(crh_id)
+    options[:is_user_guest] ? Practice.public_facing.get_by_adopted_crh(crh_id) :
+        Practice.published_enabled_approved.get_by_adopted_crh(crh_id)
   end
 
   def get_crh_created_practices(crh_id, options = { is_user_guest: true })
-    options[:is_user_guest] ? Practice.public_facing.load_associations.get_by_created_crh(crh_id) :
-        Practice.published_enabled_approved.load_associations.get_by_created_crh(crh_id)
+    options[:is_user_guest] ? Practice.public_facing.get_by_created_crh(crh_id) :
+        Practice.published_enabled_approved.get_by_created_crh(crh_id)
   end
 end
