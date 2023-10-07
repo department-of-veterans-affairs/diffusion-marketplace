@@ -109,7 +109,7 @@ RSpec.describe Practice, type: :model do
 
       it 'returns practices that are published, enabled, approved, associated with provided clinical_resource_hub_id, and have loaded associations' do
 
-        result = Practice.published_enabled_approved.load_associations.get_by_created_crh(clinical_resource_hub_1.id)
+        result = Practice.published_enabled_approved.get_by_created_crh(clinical_resource_hub_1.id)
 
         expect(result).to include(practice1)
         expect(result).not_to include(practice2, practice3, practice4)
@@ -124,7 +124,7 @@ RSpec.describe Practice, type: :model do
       end
 
       it 'returns practices that are published, enabled, approved, adopted by the given clinical_resource_hub_id, and have loaded associations' do
-        result = Practice.published_enabled_approved.load_associations.get_by_adopted_crh(clinical_resource_hub_1.id)
+        result = Practice.published_enabled_approved.get_by_adopted_crh(clinical_resource_hub_1.id)
 
         expect(result).to include(practice1)
         expect(result).not_to include(practice2, practice3, practice4)
@@ -178,7 +178,7 @@ RSpec.describe Practice, type: :model do
       let!(:facility_with_hub_2) { create(:practice_origin_facility, practice: practice2, clinical_resource_hub: clinical_resource_hub_2) }
 
       it 'returns practices that are published, enabled, approved, associated with provided clinical_resource_hub_id, and have loaded associations' do
-        result = Practice.published_enabled_approved.load_associations.get_by_created_crh(clinical_resource_hub_1.id)
+        result = Practice.published_enabled_approved.get_by_created_crh(clinical_resource_hub_1.id)
 
         expect(result).to include(practice1)
         expect(result).not_to include(practice2, practice3)
@@ -198,7 +198,7 @@ RSpec.describe Practice, type: :model do
       
 
       it 'returns practices that are published, enabled, approved, adopted by the given clinical_resource_hub_id, and have loaded associations' do
-        result = Practice.published_enabled_approved.load_associations.get_by_adopted_crh(clinical_resource_hub_1.id)
+        result = Practice.published_enabled_approved.get_by_adopted_crh(clinical_resource_hub_1.id)
 
         expect(result).to include(practice1)
         expect(result).not_to include(practice2, practice3)
