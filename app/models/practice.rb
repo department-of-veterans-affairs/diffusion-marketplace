@@ -205,8 +205,9 @@ class Practice < ApplicationRecord
 
   scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }).uniq }
   scope :get_by_created_facility_and_crh, -> (facility_id, crh_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }).or(where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { clinical_resource_hub_id: crh_id })).uniq }
-  scope :get_by_created_crh, -> (crh_id) { where(practice_origin_facilities: { clinical_resource_hub_id: crh_id }).uniq }
-
+  scope :get_by_created_crh, -> (crh_id) {
+    joins(:practice_origin_facilities).where(practice_origin_facilities: { clinical_resource_hub_id: crh_id }).distinct
+  }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
   scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
   scope :get_with_va_facility_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).where(diffusion_histories: { clinical_resource_hub_id: nil }).uniq }
