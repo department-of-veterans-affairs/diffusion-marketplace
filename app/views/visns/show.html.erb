@@ -2,6 +2,7 @@
 <% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
   <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'shared/_signed_resource', 'data-turbolinks-track': 'false', defer: true %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'show', formats: [:js] %>
     <%# set visnNumber before loading the visns/show file %>
