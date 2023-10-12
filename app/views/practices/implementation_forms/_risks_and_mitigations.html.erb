@@ -9,7 +9,7 @@
     </p>
       <fieldset class="usa-fieldset">
       <legend class="usa-sr-only">Risks and Mitigations</legend>
-        <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations" role="listbox" aria-label="Practice editor risk and mitigation pair list">
+        <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations" role="list" aria-label="Practice editor risk and mitigation pair list">
           <%= f.fields_for :risk_mitigations, wrapper: false do |rm| %>
             <%
               rm_id = rm.object.id
@@ -34,7 +34,7 @@
                 <% end %>
               <% end %>
             <% end %>
-            <li class="practice-editor-risk-mitigation-li fields" role="option"  data-id="<%= rm_id %>">
+            <li class="practice-editor-risk-mitigation-li fields"  data-id="<%= rm_id %>">
               <%= rm.hidden_field :id %>
               <%= rm.hidden_field :position, class: 'risk-mitigation-position' %>
               <div class="risk-container grid-row">

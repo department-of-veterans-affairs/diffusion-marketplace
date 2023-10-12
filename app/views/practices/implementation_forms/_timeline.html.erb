@@ -11,7 +11,7 @@
     <fieldset class="usa-fieldset">
       <legend class="usa-sr-only">Timeline</legend>
       <div id="practice-timeline-container" class="margin-top-2">
-        <ul class="practice-editor-timeline-ul" id="sortable_timelines" role="listbox" aria-label="Practice editor timeline list">
+        <ul class="practice-editor-timeline-ul" id="sortable_timelines" aria-label="Practice editor timeline list">
           <%= f.fields_for :timelines, wrapper: false do |tl| %>
             <%
               tl_id = tl.object.id
