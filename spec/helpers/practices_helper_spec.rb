@@ -1,7 +1,5 @@
 require 'rails_helper'
 
-require 'rails_helper'
-
 RSpec.describe PracticesHelper, type: :helper do
     describe '#sort_adoptions_by_state_and_station_name' do
         let!(:va_facility_1) { create(:va_facility, street_address_state: 'CA', official_station_name: 'Facility A') }
