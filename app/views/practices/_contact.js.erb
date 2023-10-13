@@ -72,7 +72,6 @@ function showFieldsOnPageLoad() {
     <% if @practice.va_employees.empty? %>
         $('.add-va-employee-link').click();
         $('.practice-editor-contact-li').appendTo('#sortable_contacts');
-        initSortable('#sortable_contacts');
     <% end %>
 }
 

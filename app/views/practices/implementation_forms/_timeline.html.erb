@@ -1,6 +1,5 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <div id="timeline" class="desktop:grid-col-10 grid-col-12 padding-0">
@@ -12,7 +11,7 @@
     <fieldset class="usa-fieldset">
       <legend class="usa-sr-only">Timeline</legend>
       <div id="practice-timeline-container" class="margin-top-2">
-        <ul class="practice-editor-timeline-ul" id="sortable_timelines" role="listbox" aria-label="Practice editor timeline list">
+        <ul class="practice-editor-timeline-ul" id="sortable_timelines" aria-label="Practice editor timeline list">
           <%= f.fields_for :timelines, wrapper: false do |tl| %>
             <%
               tl_id = tl.object.id
