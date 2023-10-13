@@ -116,6 +116,6 @@ module PracticesHelper
       .exclude_va_facilities
       .sort_by { |a| a.clinical_resource_hub.visn.number }
 
-    result = sorted_by_facility + sorted_by_visn
+    sorted_by_facility + sorted_by_visn
   end
 end
