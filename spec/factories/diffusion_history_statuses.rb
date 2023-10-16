@@ -2,6 +2,8 @@ FactoryBot.define do
   factory :diffusion_history_status do
     association :diffusion_history
     status { 'Complete' }
+    start_time { DateTime.now }
+    end_time{ DateTime.now + 1.day }
 
     trait :in_progress do
       status { 'In progress' }

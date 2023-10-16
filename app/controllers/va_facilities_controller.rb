@@ -2,22 +2,22 @@ class VaFacilitiesController < ApplicationController
   include PracticeUtils, VaFacilitiesHelper
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
   def index
-    va_facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name.includes([:visn])
+    va_facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :visn_id, :official_station_name).order_by_station_name
     clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
-    @facilities = (va_facilities.includes(:visn).sort_by(&:official_station_name.downcase) + clinical_resource_hubs.includes([:visn]).sort_by(&:id))
+    @facilities = (va_facilities.sort_by(&:official_station_name.downcase) + clinical_resource_hubs.sort_by(&:id))
     @visns = Visn.cached_visns.select(:name, :number)
     @types = VaFacility.cached_va_facilities.order_by_station_name.get_complexity
   end
 
   def load_facilities_index_rows
     if params[:facility].present?
-      @facilities = [VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).find(params[:facility])]
+      @facilities = [VaFacility.cached_va_facilities.order_by_station_name.find(params[:facility])]
 
     elsif params[:crh].present?
       @facilities = [ClinicalResourceHub.find_by_id(params[:crh].to_i)]
     else
       @facilities = VaFacility.cached_va_facilities.order_by_station_name.includes([:visn]).get_relevant_attributes
-      @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs
+      @clinical_resource_hubs = ClinicalResourceHub.cached_clinical_resource_hubs.includes([:visn])
 
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })
