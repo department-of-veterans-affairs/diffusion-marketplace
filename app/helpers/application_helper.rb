@@ -51,8 +51,10 @@ module ApplicationHelper
     if practice.initiating_facility_type?
       if practice.facility? && practice.practice_origin_facilities.present?
         generate_facility_names(practice)
-      else
+      elsif practice.initiating_facility?
         handle_initiating_facility(practice)
+      else
+        ''
       end
     else
       ''
@@ -91,8 +93,6 @@ module ApplicationHelper
       office['name']
     when 'other'
       practice.initiating_facility
-    else
-      ''
     end
   end
 
