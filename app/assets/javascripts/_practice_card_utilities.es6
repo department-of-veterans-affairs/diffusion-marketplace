@@ -39,7 +39,7 @@ function toggleFocusStylingForPracticeTitle() {
     });
 }
 
-function replaceImagePlaceholders() {
+export function replaceImagePlaceholders() {
     $('.dm-practice-card').each(function() {
         const placeholder = $(this).find('.practice-card-img-placeholder');
         
