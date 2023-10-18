@@ -57,17 +57,17 @@ function replaceImagePlaceholders() {
 
 function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
     loadImage(imageUrl, function(loadedImageSrc) {
-        var imgTag =
-            '<div class="dm-practice-card-img-container">' +
-                '<img data-resource-id="' +
-                practiceId +
-                '" src="' +
-                loadedImageSrc +
-                '" alt="' + practiceName + ' Marketplace Card Image" ' +
-                'class="grid-row marketplace-card-img radius-top-sm">' +
-                
-            '<div>';
-        $('.practice-card-img-placeholder[data-practice-id="' + practiceId + '"]').html(imgTag);
+        const imgElement = $('<img>')
+            .attr('data-resource-id', practiceId)
+            .attr('src', loadedImageSrc)
+            .attr('alt', practiceName + ' Marketplace Card Image')
+            .addClass('grid-row marketplace-card-img radius-top-sm');
+
+        const containerDiv = $('<div>')
+            .addClass('dm-practice-card-img-container')
+            .append(imgElement);
+
+        $('.practice-card-img-placeholder[data-practice-id="' + practiceId + '"]').empty().append(containerDiv);
     });
 }
 
