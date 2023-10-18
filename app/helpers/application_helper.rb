@@ -76,10 +76,14 @@ module ApplicationHelper
   end
 
   def construct_facility_name(loc)
-    has_va_facility = loc.va_facility.present?
-    official_station_name = has_va_facility ? loc.va_facility.official_station_name : loc.clinical_resource_hub.official_station_name
-    common_name = loc.va_facility.common_name if has_va_facility
-    has_va_facility ? facility_name_with_common_name(official_station_name, common_name) : official_station_name
+    if loc.va_facility.present?
+      facility_name_with_common_name(
+        loc.va_facility.official_station_name, 
+        loc.va_facility.common_name
+      )
+    else
+      loc.clinical_resource_hub.official_station_name
+    end
   end
 
   def handle_initiating_facility(practice)
