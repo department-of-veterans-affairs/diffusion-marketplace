@@ -39,25 +39,37 @@ class ApplicationController < ActionController::Base
     # In order to circumvent making a request to AWS for tests, we can return the Paperclip attachment's 'url'.
     # If there isn't one, the default value is set to an empty string.
     if Rails.env.test?
-      render plain: params[:url]
-    else
-      signer = Rails.cache.fetch('s3_signer', expires_in: 45.minutes) do
-        s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
-        WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 45.minutes)
-      end
-
-      path = params[:path].sub('/', '')
-      # any special characters not escaped by paperclip also need to be escaped
-      parser = URI::Parser.new
-      parsed_path = parser.escape(path).gsub(/[\(\)\*]/) {|m| "%#{m.ord.to_s(16).upcase}" }
-
-      render plain: parsed_path.blank? ? parsed_path : signer.presigned_get_url(object_key: parsed_path)
+      render plain: params[:url] || ''
+      return
     end
+
+    unless params[:path]
+      render plain: "Missing path parameter", status: :bad_request
+      return
+    end
+
+    parsed_path = sanitize_path(params[:path])
+    render plain: parsed_path.blank? ? "Invalid path" : s3_signer.presigned_get_url(object_key: parsed_path)
+  rescue => e
+    Rails.logger.error "Error in signed_resource: #{e.message}. Backtrace: #{e.backtrace.join("\n")}"
+    render plain: "An error occurred: #{e.message}", status: :internal_server_error
   end
 
   protected
 
   private
+
+  def sanitize_path(path)
+    parser = URI::Parser.new
+    parser.escape(path.sub('/', '')).gsub(/[\(\)\*]/) {|m| "%#{m.ord.to_s(16).upcase}" }
+  end
+
+  def s3_signer
+    Rails.cache.fetch('s3_signer', expires_in: 40.minutes) do
+      s3_bucket = Aws::S3::Bucket.new(ENV['S3_BUCKET_NAME'])
+      WT::S3Signer.for_s3_bucket(s3_bucket, expires_in: 45.minutes)
+    end
+  end
 
   def origin_data_json
     JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
