@@ -165,6 +165,7 @@ function sendAjaxRequest(data) {
       } else {
         $(cp.loadMoreContainer).empty();
       }
+      replaceImagePlaceholders();
     },
     error: function(result) {
       $(cp.practiceCardList).addClass("display-none");

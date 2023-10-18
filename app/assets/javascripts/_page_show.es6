@@ -130,6 +130,7 @@ const COMPONENT_CLASSES = [
         identifyExternalLinks();
         chromeWorkaroundForAnchorTags();
         fetchPageComponentFileResources();
+        replaceImagePlaceholders();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);

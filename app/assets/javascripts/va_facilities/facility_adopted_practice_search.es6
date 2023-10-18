@@ -56,6 +56,7 @@ function ajaxUpdateSearchResults(updateCat = true) {
         $(ap.tableRows).append(result.adopted_facility_results_html);
       }
       _displaySpinner({ display: false })
+      replaceImagePlaceholders();
     }
   });
 }
