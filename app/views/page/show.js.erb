@@ -46,6 +46,8 @@ function paginatedPageComponent() {
     // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
     $(currentPageClass).remove();
   <% end %>
+
+  replaceImagePlaceholders();
 }
 
 $(paginatedPageComponent)
