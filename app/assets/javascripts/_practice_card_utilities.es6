@@ -67,7 +67,11 @@ function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
             .addClass('dm-practice-card-img-container')
             .append(imgElement);
 
-        $('.practice-card-img-placeholder[data-practice-id="' + practiceId + '"]').empty().append(containerDiv);
+        const placeholder = $('.practice-card-img-placeholder[data-practice-id="' + practiceId + '"]');
+        placeholder.empty()
+                   .append(containerDiv)
+                   .removeClass('practice-card-img-placeholder')
+                   .addClass('practice-card-img');
     });
 }
 
