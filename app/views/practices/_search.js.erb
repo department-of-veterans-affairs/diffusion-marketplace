@@ -97,7 +97,7 @@ function buildPracticeCard(result) {
 
     // Default card image
     var cardImagePlaceholder = 
-        '<div class="practice-card-img-placeholder" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '"></div>'
+        '<div class="practice-card-img-placeholder" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '" data-practice-name="' + practiceName + '"  ></div>'
 
     var cardRetiredBanner = '';
     if (result.item.retired) {
@@ -125,49 +125,6 @@ function buildPracticeCard(result) {
         '</div>';
 
     return cardHtml;
-}
-
-function replaceImagePlaceholders(parentSelector) {
-    $(parentSelector).each(function() {
-        // If either the 'src' or the hidden input are undefined, return an empty string
-        var imageSelector = $(this).find('.practice-card-img-placeholder');
-        var imagePracticeId = imageSelector ? imageSelector.attr('data-practice-id') : null;
-        var practiceImagePath = imageSelector ? imageSelector.attr('data-practice-image') : null;
-        var practiceName = $(this).find('.dm-practice-title').text();
-
-        if (imagePracticeId && practiceImagePath) {
-            fetchSignedResource(practiceImagePath).then(signedImgUrl => {
-                replacePlaceholderWithImage(signedImgUrl, imagePracticeId, practiceName);
-            });
-        }
-    });
-}
-
-function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
-    loadImage(imageUrl, function(loadedImageSrc) {
-        var imgTag =
-            '<div class="dm-practice-card-img-container">' +
-                '<img data-resource-id="' +
-                practiceId +
-                '" src="' +
-                loadedImageSrc +
-                '" alt="' + practiceName + ' Marketplace Card Image" ' +
-                'class="grid-row marketplace-card-img radius-top-sm">' +
-                
-            '<div>';
-        $('.practice-card-img-placeholder[data-practice-id="' + practiceId + '"]').html(imgTag);
-    });
-}
-
-function loadImage(imageSrc, callback) {
-    var img = new Image();
-    img.onload = function() {
-        callback(imageSrc);
-    };
-    img.onerror = function() {
-        console.error("Error loading image: " + imageSrc);
-    };
-    img.src = imageSrc;
 }
 
 function showSpinner() {
@@ -295,8 +252,7 @@ function searchPracticesPage() {
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
-            replaceImagePlaceholders('#search-results .dm-practice-card');
-
+            replaceImagePlaceholders();
             $(SEARCH_RESULTS).showMoreItems({
                 startNum: 12,
                 afterNum: 12,
