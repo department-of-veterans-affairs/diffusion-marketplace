@@ -4,7 +4,8 @@ module PracticeUtils
 
     practices.each do |practice|
       modified_practice = practice.as_json
-      modified_practice[:image] = practice.main_display_image&.path || ''
+      # binding.pry
+      modified_practice[:image] = practice.main_display_image? ? practice.main_display_image_s3_presigned_url : ''
       if current_user.present?
         modified_practice[:user_favorited] = current_user.favorite_practice_ids.include?(practice[:id])
       end

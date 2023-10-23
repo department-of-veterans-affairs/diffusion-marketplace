@@ -82,6 +82,78 @@ function getVaFacilitiesByVisn(facilitiesArray, facility) {
 }
 
 // Build out practice cards once results come back from Fuse
+// function buildPracticeCard(result) {
+//     var cardHtml = '';
+//     var practiceImage = result.item.image;
+//     var practiceName = result.item.name;
+//     var practiceId = result.item.id;
+
+//     var cardHeaderHtml =
+//         '<h3 class="text-normal font-sans-lg multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
+//             '<span class="dm-practice-title">' +
+//                 practiceName +
+//             '</span>' +
+//         '</h3>';
+
+//     // Default card image
+//     var cardImagePlaceholder = 
+//         '<div class="practice-card-img-placeholder" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '" data-practice-name="' + practiceName + '"  ></div>'
+
+//     var cardRetiredBanner = '';
+//     if (result.item.retired) {
+//         cardRetiredBanner = '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+//     }
+    
+
+//     cardHtml +=
+//         '<div class="dm-practice-card padding-bottom-3 tablet:grid-col-6 desktop:grid-col-4 position-relative">' +
+//             '<a href="/innovations/' + result.item.slug + 
+//                 '" tabindex="-1" aria-hidden="true" class="dm-practice-link-aria-hidden position-absolute top-0 bottom-3 left-105 right-105 z-100"></a>' +
+//             '<div class="dm-practice-card-container">' +
+//                 cardImagePlaceholder +
+//                 cardRetiredBanner +
+//                 '<div class="padding-105 height-card-mobile">' +
+//                     cardHeaderHtml +
+//                     '<p class="multiline-ellipses-1 font-sans-sm practice-card-tagline">' + result.item.tagline + '</p>' +
+//                     '<div class="dm-practice-card-origin margin-bottom-2">' +
+//                         '<span class="font-sans-2xs text-italic line-height-sans-3 dm-practice-card-origin-info">' +
+//                             'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility_name +
+//                         '</span>' +
+//                     '</div>' +
+//                 '</div>' +
+//             '</div>' +
+//         '</div>';
+
+//     return cardHtml;
+// }
+
+let loadedImagesCache = {};
+
+const observerCallback = (entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            let placeholder = entry.target;
+            const practiceImage = placeholder.dataset.practiceImage;
+
+            if (loadedImagesCache[practiceImage]) {
+                // Use the cached image if available.
+                placeholder.replaceWith(loadedImagesCache[practiceImage].cloneNode());
+                observer.unobserve(placeholder);
+            } else {
+                const imgElement = new Image();
+                imgElement.onload = function() {
+                    placeholder.replaceWith(imgElement);
+                    loadedImagesCache[practiceImage] = imgElement;
+                };
+                imgElement.src = practiceImage;  // As you already have presigned S3 URL
+                observer.unobserve(placeholder);
+            }
+        }
+    });
+};
+
+const observer = new IntersectionObserver(observerCallback);
+
 function buildPracticeCard(result) {
     var cardHtml = '';
     var practiceImage = result.item.image;
@@ -95,15 +167,15 @@ function buildPracticeCard(result) {
             '</span>' +
         '</h3>';
 
-    // Default card image
+    // Default card image with placeholder
     var cardImagePlaceholder = 
-        '<div class="practice-card-img-placeholder" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '" data-practice-name="' + practiceName + '"  ></div>'
+        '<div class="practice-card-img-placeholder" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '"></div>'
 
     var cardRetiredBanner = '';
     if (result.item.retired) {
         cardRetiredBanner = '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
     }
-    
+
 
     cardHtml +=
         '<div class="dm-practice-card padding-bottom-3 tablet:grid-col-6 desktop:grid-col-4 position-relative">' +
@@ -219,22 +291,12 @@ function searchPracticesPage() {
         $(SPINNER).addClass('display-none');
         var tmpResults = results.sort(sortOption);
 
-        var resultsArray = [];
         var finalResults = '';
         tmpResults.sort(sortByRetired).forEach(function (result) {
-            const practiceCard = buildPracticeCard(result)
-            finalResults += practiceCard;
-            resultsArray.push(practiceCard);
-
-            '<!-- Uncomment to show Fuse.js diagnostics -->' +
-            '<!--' +
-            '<h3>Fuse.js highlighted character matching</h3>' +
-            '<p class="">' + result.highlight + '</p>' +
-            '<p><b>Score: ' + result.score + '</b></p>' +
-            '-->'
+            finalResults += buildPracticeCard(result);
         });
-        if (results.length > 0) {
 
+        if (results.length > 0) {
             // Hide sorting options if there's only 1 result
             if (results.length === 1) {
                 sortSelect.addClass('display-none');
@@ -251,27 +313,37 @@ function searchPracticesPage() {
 
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
-            // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
-            replaceImagePlaceholders();
+
+            // Handle images: if it's loaded before, use the cached version, else start observing for lazy loading
+            document.querySelectorAll('.practice-card-img-placeholder').forEach(function(placeholder) {
+                const practiceImage = placeholder.dataset.practiceImage;
+                if (loadedImagesCache[practiceImage]) {
+                    placeholder.replaceWith(loadedImagesCache[practiceImage].cloneNode());
+                } else {
+                    observer.observe(placeholder);
+                }
+            });
+
+            // Handle the "show more items" functionality
             $(SEARCH_RESULTS).showMoreItems({
                 startNum: 12,
                 afterNum: 12,
                 moreText: 'Load more',
                 noMoreText: 'No more results'
-            })
+            });
 
         } else {
             if (!$(RESULTS_SECTION).hasClass('display-none')) {
                 $(RESULTS_SECTION).addClass('display-none');
             }
+
             // Show the no results text
             if ($(NO_QUERY_CONTENT).hasClass('display-none')) {
                 $(NO_QUERY_CONTENT).removeClass('display-none');
             }
             if (isBlankSearch && searchLocation[0] !== '?filter_by') {
                 $(NO_SEARCH_RESULTS_TEXT).addClass('display-none');
-            }
-            else {
+            } else {
                 $(NO_SEARCH_RESULTS_TEXT).removeClass('display-none');
             }
         }
