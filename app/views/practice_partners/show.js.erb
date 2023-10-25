@@ -5,7 +5,7 @@ function paginatedPartnerPractices() {
   <% pagy = @pagy_partner_practices %>
   <% current_page = pagy.page %>
   <% next_page = pagy.next %>
-
+  
   // Append the next set of practice cards to the current set
   $(practicesClass).append("<%= escape_javascript render(partial: 'shared/practice_cards_row', locals: {
     practices: @paginated_partner_practices
@@ -17,9 +17,11 @@ function paginatedPartnerPractices() {
     <% link = pagy_link_proc(pagy) %>
     $(loadMoreClass).append(`<%= link.call(next_page, 'Load more').html_safe %>`);
   <% else %>
-  // If there isn't another set, remove the current 'Load more' link
+    // If there isn't another set, remove the current 'Load more' link
     $(loadMoreClass).remove();
   <% end %>
+
+  replaceImagePlaceholders();
 }
 
 $(paginatedPartnerPractices);
