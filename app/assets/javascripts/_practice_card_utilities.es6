@@ -1,4 +1,3 @@
-
 function truncateOnArrive(arrivingEle, shaveHeight) {
     $(document).arrive(arrivingEle, function(newElem) {
         $(newElem).shave(shaveHeight);
