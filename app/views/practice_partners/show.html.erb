@@ -1,7 +1,6 @@
 <% provide :head_tags do %>
-  <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'load' %>
   <%= javascript_include_tag 'shared/_signed_resource' %>
-  <%= javascript_include_tag '_practice_partner_practices_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_replaceImagePlaceholdersOnLoad', 'data-turbolinks-track': 'reload' %>
 <% end %>
 <div>
   <section class="grid-container">
