@@ -6,7 +6,10 @@
         <img
           class="display-block"
           src="<%= image_source %>"
-          alt="<%= image_alt_text %>"/>
+          alt="<%= image_alt_text %>"
+          onerror="this.classList.add('display-none');
+          this.parentNode.parentNode.classList.add('bg-base-lightest');"
+        />
       </a>
     </div>
     <div class="display-none desktop:display-block desktop:grid-col-1"></div>
