@@ -55,6 +55,7 @@ Rails.application.config.assets.precompile += %w(
                                                   practices/publication_validation.js
                                                   page/page_map.js
                                                   shared/_signed_resource.js
+                                                  _featured_section_utilities.js
                                               )
 
 # Precompile additional assets.

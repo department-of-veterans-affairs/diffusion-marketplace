@@ -1,5 +1,8 @@
 <div class="dm-homepage">
   <%= render partial: "shared/messages", locals: {small_text: false} %>
+  <%= javascript_include_tag '_featured_section_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'shared/_signed_resource', 'data-turbolinks-track': 'reload' %>
+
   <div class="font-sans-2xs shark-tank-banner display-flex flex-align-center">
     <div class="padding-x-2 desktop:padding-x-7">
       <a href="/competitions/shark-tank" class="text-bold dm-alt-link-dark">Click here</a> <span>to learn more about the 2023 VHA Shark Tank competition.</span>
