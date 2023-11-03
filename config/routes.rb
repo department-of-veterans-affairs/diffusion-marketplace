@@ -105,7 +105,7 @@ Rails.application.routes.draw do
 
   namespace :system do
     get 'status' => 'status#index', as: 'status'
-    post 'clear_signer_cache', to: 'operational_tasks#clear_signer_cache'
+    post 'clear-signer-cache', to: 'operational_tasks#clear_signer_cache'
   end
 
   # set the param to the visn number instead of the visn id
