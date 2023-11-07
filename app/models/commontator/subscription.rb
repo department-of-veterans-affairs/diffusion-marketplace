@@ -8,23 +8,16 @@ module Commontator
 
     def self.comment_created(comment)
       practice = Practice.find(comment.thread.commontable_id)
-      support_network_email = practice.support_network_email || nil
-      support_network_email_user = support_network_email.present? ? User.find_by(email: support_network_email.downcase) : nil
-      subscribers = comment.thread.subscribers
-
-      if support_network_email.present? && support_network_email_user.nil?
-        subscribers.push(practice.user, support_network_email.downcase)
-      elsif support_network_email.present? && support_network_email_user.present?
-        subscribers.push(practice.user, support_network_email_user)
-      else
-        subscribers.push(practice.user)
+      email_addresses = comment.thread.subscribers.each_with_object([]) do |subscriber, emails|
+        emails << subscriber.email unless subscriber.email == comment.creator.email
       end
-      # filter out the comment creator and/or any duplicate subscribers
-      recipients = subscribers.reject { |s| s == comment.creator }.compact.uniq
+      email_addresses += practice.practice_emails.map(&:address)
+      email_addresses << practice.user.email
+      email_addresses << practice.support_network_email&.downcase if practice.support_network_email
 
-      return if recipients.empty?
+      return if email_addresses.empty?
 
-      mail = SubscriptionsMailer.comment_created(comment, recipients)
+      mail = SubscriptionsMailer.comment_created(comment, email_addresses.uniq)
       mail.deliver_now
     end
 
