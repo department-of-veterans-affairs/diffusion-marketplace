@@ -1,8 +1,8 @@
 # Note: Uncomment this to run docker locally
 # FROM agilesix/ruby:2.7.8
 # Note: Comment out the next line to run docker locally
-FROM 124858472090.dkr.ecr.us-gov-west-1.amazonaws.com/diffusion-marketplace:ruby-2.7.8
-
+FROM 124858472090.dkr.ecr.us-gov-west-1.amazonaws.com/diffusion-marketplace:ruby-3.2.2
+RUN groupadd wheel
 RUN useradd -rm -d /home/nginx -s /bin/bash -g root -G wheel -u 1443 nginx
 RUN groupadd -g 1443 nginx
 RUN usermod -a -G nginx nginx
@@ -14,12 +14,19 @@ ARG AWS_REGION
 
 RUN git config --global http.sslVerify false
 
-COPY va-dc.crt /etc/pki/ca-trust/source/anchors/va-dc.crt
-COPY VA-Internal-S2-RCA2.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA2.cer
-RUN update-ca-trust extract
+COPY install-certs.sh .
+RUN apt-get update && \
+    apt-get install  -y ca-certificates
+RUN bash install-certs.sh
+#COPY va-dc.crt /etc/pki/ca-trust/source/anchors/va-dc.crt
+#COPY VA-Internal-S2-RCA2.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA2.cer
+#RUN update-ca-trust extract
 
+RUN apt-get update -qq \ 
+   && apt-get install -y libpq-dev
+RUN bundle config build.pg --with-pg-config=/usr/bin/pg_config   
 RUN gem install bundler --force
-RUN bundle config build.pg --with-pg-config=/usr/pgsql-12/bin/pg_config
+#RUN bundle config build.pg --with-pg-config=/usr/pgsql-12/bin/pg_config
 
 ENV RAILS_ROOT /home/nginx/app
 ENV PROXY_ROOT /home/nginx/www
