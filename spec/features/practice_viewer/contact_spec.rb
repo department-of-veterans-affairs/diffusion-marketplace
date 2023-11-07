@@ -158,7 +158,7 @@ describe 'Contact section', type: :feature, js: true do
         expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(practice.support_network_email)
       end
 
-      context `if the comment creator's email matches the practice's support network email` do
+      context "if the comment creator's email matches the practice's support network email" do
         it 'it should not send an email to the support network email address' do
           logout
           login_as(user3, :scope => :user, :run_callbacks => false)
@@ -169,6 +169,31 @@ describe 'Contact section', type: :feature, js: true do
           expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(2)
           expect(ActionMailer::Base.deliveries.last.bcc).to_not include(user3.email)
           expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice_email.address)
+          expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
+        end
+      end
+
+      context 'if there are more than one `practice_emails` belonging to the practice' do
+        it 'includes each in comment notification email' do
+          practice_email2 = create(:practice_email, practice: practice)
+          expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      
+          expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(4)
+          expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice_email.address)
+          expect(ActionMailer::Base.deliveries.last.bcc.second).to eq(practice_email2.address)
+          expect(ActionMailer::Base.deliveries.last.bcc.third).to eq(practice.support_network_email)
+          expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
+        end
+      end
+
+      context "if the comment creator's email is one of the practice's `practice_emails`" do
+        it 'it is not included in the comment notification email' do
+          practice_email.update!(address: user2.email)
+          expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+          expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(2)
+          expect(ActionMailer::Base.deliveries.last.bcc).to_not include(practice_email.address)
+          expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice.support_network_email)
           expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
         end
       end
