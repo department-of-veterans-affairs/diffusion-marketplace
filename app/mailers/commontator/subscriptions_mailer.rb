@@ -47,7 +47,8 @@ class Commontator::SubscriptionsMailer < ActionMailer::Base
 
   def build_comment_header
     comment_user = User.find(@comment.creator_id).full_name
-    action = @comment.parent_id.nil? ? 'commented on' : 'replied to a comment on'
+    comment_parent = User.find_by_id(@comment.parent&.creator_id)
+    action = comment_parent.nil? ? 'commented on' : "replied to #{comment_parent.full_name}'s comment on"
     "#{comment_user} has #{action} #{@commontable_name}"
   end
 
