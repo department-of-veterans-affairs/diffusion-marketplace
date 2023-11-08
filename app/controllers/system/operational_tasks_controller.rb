@@ -1,6 +1,6 @@
 module System
   class OperationalTasksController < ApplicationController
-    before_action :check_ip_whitelist, only: [:clear_signer_cache]
+    before_action :check_token_authentication, only: [:clear_signer_cache]
 
     def clear_signer_cache
       begin
@@ -13,11 +13,13 @@ module System
 
     private
 
-    def check_ip_whitelist
+    def check_token_authentication
       return unless Rails.env.production?
 
-      allowed_ips = ENV['WHITELISTED_IPS'].split(',')
-      unless allowed_ips.include?(request.remote_ip)
+      secure_token = ENV['CLEAR_SIGNER_CACHE_TOKEN']
+      authorization_header = request.headers['Authorization']
+
+      unless authorization_header && ActiveSupport::SecurityUtils.secure_compare(authorization_header, "Bearer #{secure_token}")
         render json: { error: 'Access Denied' }, status: :forbidden
       end
     end
