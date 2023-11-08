@@ -8,11 +8,11 @@ module Commontator
 
     def self.comment_created(comment)
       practice = Practice.find(comment.thread.commontable_id)
-      email_addresses = comment.thread.subscribers.map(&:email)
-
+      email_addresses = []
       email_addresses += practice.practice_emails.map(&:address)
       email_addresses << practice.support_network_email&.downcase if practice.support_network_email
       email_addresses << practice.user.email
+      email_addresses << comment.parent.creator.email if comment.parent
       email_addresses.reject! {|email| email == comment.creator.email}
 
       return if email_addresses.empty?
