@@ -2,12 +2,12 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe 'Contact section', type: :feature, js: true do
-  let!(:user1) { create(:user, email: 'hisagi.shuhei@va.gov', first_name: 'Shuhei', last_name: 'Hisagi', confirmed_at: Time.now, accepted_terms: true) }
-  let!(:user2) { create(:user, email: 'momo.hinamori@va.gov', first_name: 'Momo', last_name: 'Hinamori', confirmed_at: Time.now, accepted_terms: true) }
-  let!(:user3) { create(:user, email: 'testp13423041@va.gov', first_name: 'Test', last_name: 'Account', confirmed_at: Time.now, accepted_terms: true) }
+  let!(:user1) { create(:user, email: 'user1@va.gov', first_name: 'Shuhei', last_name: 'Hisagi', confirmed_at: Time.now, accepted_terms: true) }
+  let!(:user2) { create(:user, email: 'user2@va.gov', first_name: 'Momo', last_name: 'Hinamori', confirmed_at: Time.now, accepted_terms: true) }
+  let!(:user3) { create(:user, email: 'user3@va.gov', first_name: 'Test', last_name: 'Account', confirmed_at: Time.now, accepted_terms: true) }
   let!(:practice) { create(:practice, name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: user3.email, user: user1) }
   let!(:practice_partner) { create(:practice_partner, name: 'Diffusion of Excellence') }
-  let!(:practice_email) { create(:practice_email, practice: practice, address: '2ndpracticeemail@va.gov') }
+  let!(:practice_email) { create(:practice_email, practice: practice, address: 'practiceCCemail@va.gov') }
 
   describe 'Authorization' do
     it 'Should allow authenticated users to view comments' do
@@ -58,8 +58,7 @@ describe 'Contact section', type: :feature, js: true do
     end
 
     it 'Should allow a user to edit their existing comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      create_comment
       find("#commontator-comment-1-edit").click
       fill_in('commontator-comment-1-edit-body', with: 'This is a test.')
       within(:css, '.comment') do
@@ -69,8 +68,7 @@ describe 'Contact section', type: :feature, js: true do
     end
 
     it 'Should allow a user to delete their existing comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      create_comment
       find("#commontator-comment-1-delete").click
       page.accept_alert
       expect(page).to have_selector('.comments-section', visible: true)
@@ -78,12 +76,9 @@ describe 'Contact section', type: :feature, js: true do
     end
 
     it 'Should allow a user to reply to an existing comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      create_comment
       visit practice_path(practice)
-      click_link('Reply')
-      fill_in('commontator-comment-1-reply', with: 'Hey, how are you?')
-      click_button('reply')
+      reply_to_comment
       expect(page).to have_content('Hide 1 reply')
       expect(page).to have_content('2 COMMENTS:')
     end
@@ -108,8 +103,7 @@ describe 'Contact section', type: :feature, js: true do
 
 
     it 'Should show the amount of likes each comment or reply has' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      create_comment
       expect(page).to have_selector('.comments-section', visible: true)
       logout
       visit practice_path(practice)
@@ -197,6 +191,35 @@ describe 'Contact section', type: :feature, js: true do
           expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
         end
       end
+
+      context "if the comment is a reply to another comment" do
+        it "the parent comment's creator is included in the email notification" do
+          user4 = create(:user, email: "user4email@va.gov")
+          create_comment
+          logout
+          login_as(user4, :scope => :user, :run_callbacks => false)
+          visit practice_path(practice)
+          reply_to_comment
+          expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(4)
+          expect(ActionMailer::Base.deliveries.last.bcc).to include('practiceCCemail@va.gov')
+          expect(ActionMailer::Base.deliveries.last.bcc).to include('user3@va.gov')
+          expect(ActionMailer::Base.deliveries.last.bcc).to include('user1@va.gov')
+          expect(ActionMailer::Base.deliveries.last.bcc).to include('user2@va.gov')
+        end
+      end
+
+      context "if the comment is a reply to another comment" do
+        context "and the commentor is the creator of the parent comment" do
+          it "the comment creator is not included in the email notification" do
+            create_comment
+            reply_to_comment
+            expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(3)
+            expect(ActionMailer::Base.deliveries.last.bcc).to include('practiceCCemail@va.gov')
+            expect(ActionMailer::Base.deliveries.last.bcc).to include('user3@va.gov')
+            expect(ActionMailer::Base.deliveries.last.bcc).to include('user1@va.gov')
+          end
+        end
+      end
     end
   end
 
@@ -205,8 +228,7 @@ describe 'Contact section', type: :feature, js: true do
       login_as(user2, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
       visit practice_path(practice)
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      create_comment
     end
 
     it 'should display the report abuse modal if the user clicks on the flag icon' do
@@ -250,12 +272,19 @@ describe 'Contact section', type: :feature, js: true do
     it 'should send an email to the main email address and include any cc email addresses' do
       login_as(user1, :scope => :user, :run_callbacks => false)
       visit practice_path(practice)
-      expect(page).to have_link(href: 'mailto:testp13423041@va.gov?cc=2ndpracticeemail%40va.gov')
+      expect(page).to have_link(href: 'mailto:user3@va.gov?cc=practiceCCemail%40va.gov')
     end
   end
 
   def create_comment
     fill_in('comment[body]', with: 'This is a test comment')
     click_button('commit')
+  end
+
+  def reply_to_comment
+    visit practice_path(practice)
+    click_link('Reply')
+    fill_in('commontator-comment-1-reply', with: 'Hey, how are you?')
+    click_button('reply')
   end
 end
