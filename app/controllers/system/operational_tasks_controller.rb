@@ -1,7 +1,6 @@
 module System
   class OperationalTasksController < ApplicationController
-    skip_before_action  :verify_authenticity_token,
-                        :setup_breadcrumb_navigation, 
+    skip_before_action  :setup_breadcrumb_navigation, 
                         :reload_turbolinks, 
                         :store_user_location!, 
                         :set_paper_trail_whodunnit, 
@@ -10,7 +9,6 @@ module System
                         :set_visit_props, 
                         :set_visitor_props, 
                         only: [:clear_signer_cache]
-    before_action :custom_verify_authenticity_token, only: [:clear_signer_cache]
 
     def clear_signer_cache
       begin
@@ -23,10 +21,7 @@ module System
 
     private
 
-    def custom_verify_authenticity_token
- 
-      return unless Rails.env.production? || Rails.env.development?
-
+    def verify_authenticity_token
       secure_token = ENV['CLEAR_SIGNER_CACHE_TOKEN']
       authorization_header = request.headers['Authorization']
 
