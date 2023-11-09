@@ -139,4 +139,5 @@ Rails.application.routes.draw do
   get '/communities/:page_group_friendly_id' => "page#show"
   get '/communities/:page_group_friendly_id/:page_slug' => 'page#show'
   get '/communities', to: redirect('/communities/va-immersive') # temporary redirect until more communities are added
+  get 'practice_resources/:id/download', to: 'practice_resources#download', as: :download_practice_resource
 end
