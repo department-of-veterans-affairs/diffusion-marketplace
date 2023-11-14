@@ -3,9 +3,7 @@ class Commontator::SubscriptionsMailer < ActionMailer::Base
 
   def comment_created(comment, recipients)
     setup_variables(comment, recipients)
-    mail(@mail_params).tap do |message|
-      message.mailgun_recipient_variables = @mailgun_recipient_variables if @using_mailgun
-    end
+    mail(@mail_params)
   end
 
   protected
@@ -27,15 +25,9 @@ class Commontator::SubscriptionsMailer < ActionMailer::Base
   def setup_mail_params(recipients)
     @mail_params = {
       from: @thread.config.email_from_proc.call(@thread),
-      to: @using_mailgun ? recipients : nil,
-      bcc: @using_mailgun ? nil : recipients,
+      bcc: recipients,
       subject: build_subject
     }
-    setup_mailgun_variables(recipients) if @using_mailgun
-  end
-
-  def setup_mailgun_variables(recipients)
-    @mailgun_recipient_variables = recipients.each_with_object({}) { |recipient, vars| vars[recipient] = {} }
   end
 
   def build_comment_url
