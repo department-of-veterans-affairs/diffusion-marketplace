@@ -6,13 +6,18 @@ RSpec.describe PracticeResourcesController, type: :controller do
 
     context 'when accessing the download action' do
       it 'redirects to a URL that includes the attachment path' do
-        get :download, params: { id: practice_resource.id }
+        get :download, params: { practice_id: practice_resource.practice.id, id: practice_resource.id }
 
         expect(response).to redirect_to(/\/system\/practice_resources\/attachments\/.*\/original\/dummy.pdf\?.*/)
       end
 
+      it 'returns a 404 status if the practice is not found' do
+        get :download, params: { practice_id: 'nonexistent', id: practice_resource.id }
+        expect(response).to have_http_status(:not_found)
+      end
+
       it 'returns a 404 status if the resource is not found' do
-        get :download, params: { id: 'nonexistent' }
+        get :download, params: { practice_id: practice_resource.practice.id, id: 'nonexistent' }
         expect(response).to have_http_status(:not_found)
       end
     end
