@@ -52,6 +52,11 @@ Rails.application.routes.draw do
           get 'report', to: 'commontator/comments#report_comment', as: 'report'
       end
     end
+    resources :practice_resources do
+      member do
+        get 'download', to: 'practice_resources#download', as: :download
+      end
+    end
   end
 
   # old practice routes redirects
@@ -139,5 +144,4 @@ Rails.application.routes.draw do
   get '/communities/:page_group_friendly_id' => "page#show"
   get '/communities/:page_group_friendly_id/:page_slug' => 'page#show'
   get '/communities', to: redirect('/communities/va-immersive') # temporary redirect until more communities are added
-  get 'practice_resources/:id/download', to: 'practice_resources#download', as: :download_practice_resource
 end
