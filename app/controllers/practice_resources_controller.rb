@@ -9,6 +9,7 @@ class PracticeResourcesController < ApplicationController
   private
 
   def set_practice_resource
-    @practice_resource = PracticeResource.find(params[:id])
+    @practice_resource = PracticeResource.find_by(id: params[:id])
+    render plain: "Resource not found", status: :not_found unless @practice_resource
   end
 end
