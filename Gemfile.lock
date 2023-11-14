@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/PhilipDeFraties/wt_s3_signer.git
+  revision: 8de8d9c7b8f1f848819b9ee27f5d62e8264995a8
+  specs:
+    wt_s3_signer (1.0.2)
+      aws-sdk-s3 (~> 1)
+
+GIT
   remote: https://github.com/agilesix/Google-Maps-for-Rails.git
   revision: b75a989aa3fb187cfd945a40b139d22d6ac672bf
   branch: master
@@ -753,8 +760,6 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     will_paginate (3.3.1)
-    wt_s3_signer (1.0.2)
-      aws-sdk-s3 (~> 1)
     xdan-datetimepicker-rails (2.5.4)
       jquery-rails
       rails (>= 3.2.16)
@@ -864,10 +869,10 @@ DEPENDENCIES
   uswds-rails!
   web-console (>= 3.3.0)
   webdrivers
-  wt_s3_signer
+  wt_s3_signer!
 
 RUBY VERSION
    ruby 2.7.8p225
 
 BUNDLED WITH
-   2.4.20
+   2.4.13
