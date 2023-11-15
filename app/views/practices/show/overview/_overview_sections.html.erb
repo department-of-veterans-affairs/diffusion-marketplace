@@ -67,7 +67,14 @@
     <div class="margin-bottom-1">
       <% if pr.name.present? %>
         <div class="margin-top-1 width-full line-height-26">
-          <li class="small-disc"><%= pr.description %> <%= link_to(pr.name || pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank', class: 'usa-link usa-link--external') %>
+          <li class="small-disc"><%= pr.description %> <%= link_to pr.name || pr.attachment&.original_filename,
+            download_practice_practice_resource_path(
+              practice_id: pr.practice_id, 
+              id: pr.id,
+              resource_type: pr.class.to_s
+            ),
+            target: '_blank',
+            class: 'usa-link usa-link--external' %>
         </div>
       <% end %>
     </div>
