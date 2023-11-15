@@ -19,7 +19,7 @@
 #   #   permitted
 #   # end
 #   form :html => {:multipart => true} do |f|
-#     f.semantic_errors *f.object.errors.keys # shows errors on :base
+#     f.semantic_errors *f.object.errors.attribute_names # shows errors on :base
 #
 #     f.inputs "Component" do
 #

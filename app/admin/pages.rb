@@ -172,7 +172,7 @@ ActiveAdmin.register Page do
 
   form :html => {:multipart => true} do |f|
     f.actions # adds the 'Submit' and 'Cancel' buttons
-    f.semantic_errors *f.object.errors.keys # shows errors on :base
+    f.semantic_errors *f.object.errors.attribute_names # shows errors on :base
     f.inputs "Page Information" do
       if resource.ever_published
         f.input :slug, input_html: { disabled: true } , label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home". If this page was ever published, the URL Suffix cannot be edited.'

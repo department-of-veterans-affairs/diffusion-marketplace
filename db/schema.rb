@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_07_210242) do
+ActiveRecord::Schema.define(version: 2023_09_27_000911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1132,12 +1132,12 @@ ActiveRecord::Schema.define(version: 2023_09_07_210242) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
     t.string "highlight_attachment_file_name"
     t.string "highlight_attachment_content_type"
     t.bigint "highlight_attachment_file_size"
     t.datetime "highlight_attachment_updated_at"
-    t.boolean "is_public", default: false
     t.text "main_display_image_alt_text"
     t.integer "diffusion_histories_count", default: 0
     t.index ["slug"], name: "index_practices_on_slug", unique: true
@@ -1541,6 +1541,7 @@ ActiveRecord::Schema.define(version: 2023_09_07_210242) do
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "page_accordion_components", "page_components"
+  add_foreign_key "page_block_quote_components", "page_components"
   add_foreign_key "page_components", "pages"
   add_foreign_key "page_cta_components", "page_components"
   add_foreign_key "page_downloadable_file_components", "page_components"
@@ -1552,10 +1553,13 @@ ActiveRecord::Schema.define(version: 2023_09_07_210242) do
   add_foreign_key "page_image_components", "page_components"
   add_foreign_key "page_map_components", "page_components"
   add_foreign_key "page_news_components", "page_components"
+  add_foreign_key "page_one_to_one_image_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_publication_components", "page_components"
   add_foreign_key "page_simple_button_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
+  add_foreign_key "page_triple_paragraph_components", "page_components"
+  add_foreign_key "page_two_to_one_image_components", "page_components"
   add_foreign_key "page_you_tube_player_components", "page_components"
   add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
