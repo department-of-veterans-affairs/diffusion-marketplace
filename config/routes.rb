@@ -77,7 +77,6 @@ Rails.application.routes.draw do
 
   root 'home#index'
   resources :clinical_resource_hubs, path: :crh, param: :number
-  get '/crh/:number/created-crh-practices', controller: 'clinical_resource_hubs', action: 'created_crh_practices'
   get '/practices' => 'practices#index'
   get '/partners' => 'practice_partners#index'
   # Adding this for the View Toolkit button on practice page. Though we don't have any uploaded yet so I'm not using it.
@@ -106,6 +105,7 @@ Rails.application.routes.draw do
 
   namespace :system do
     get 'status' => 'status#index', as: 'status'
+    post 'clear-signer-cache' => 'operational_tasks#clear_signer_cache'
   end
 
   # set the param to the visn number instead of the visn id

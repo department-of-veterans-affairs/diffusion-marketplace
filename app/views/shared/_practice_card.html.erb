@@ -22,31 +22,20 @@
   %>
 
   <div class="dm-practice-card-container bg-white">
-    <% if main_display_image.present? %>
-      <div class="dm-practice-card-img-container">
-        <img alt="<%= practice.name %> Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="<%= practice.main_display_image_s3_presigned_url(:thumb) %>">
-        <% if practice.retired %>
-          <div class="dm-practice-retired-banner">
-            <h5>Retired</h5>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="dm-bg-gray-80">
-        <h3 class="text-normal font-sans-lg multiline-ellipses-2 margin-x-2 margin-y-4">
-          <a href="<%= practice_path(practice) %>" aria-label="Go to <%= practice.name %>" class="<%= practice_link_classes %>">
-            <span class="dm-practice-title">
-              <%= practice.name %>
-            </span>
-          </a>
-        </h3>
-        <% if practice.retired %>
-          <div class="dm-practice-retired-banner">
-            <h5>Retired</h5>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
+    <div class="practice-card-img-placeholder" data-practice-id=<%= practice.id %> data-practice-image=<%= practice.main_display_image&.path %> data-practice-name=<%= practice.name %>>
+      <h3 class="text-normal font-sans-lg multiline-ellipses-2 margin-x-2 margin-y-4">
+        <a href="<%= practice_path(practice) %>" aria-label="Go to <%= practice.name %>" class="<%= practice_link_classes %>">
+          <span class="dm-practice-title">
+            <%= practice.name %>
+          </span>
+        </a>
+      </h3>
+      <% if practice.retired %>
+        <div class="dm-practice-retired-banner">
+          <h5>Retired</h5>
+        </div>
+      <% end %>
+    </div>
 
     <div class="padding-105 height-card-mobile">
       <% if main_display_image.present? %>

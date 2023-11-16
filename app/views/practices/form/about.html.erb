@@ -39,7 +39,7 @@
               </div>
               <div class="grid-col-7">
                 <div id="about_container" class="position-relative">
-                  <ul class="practice-editor-about-ul" id="sortable_va_employees" role="listbox" title="Practice about" aria-label="Practice editor VA employee list">
+                  <ul class="practice-editor-about-ul" id="sortable_va_employees" title="Practice about" aria-label="Practice editor VA employee list">
                     <%= f.fields_for :va_employees, wrapper: false do |vae| %>
                       <%
                         vae_id = vae.object.id || "new_va_employees"
@@ -60,7 +60,7 @@
                           <% end %>
                         <% end %>
                       <% end %>
-                      <li class="practice-editor-about-li fields" <%= "id=practice_va_employees_attributes_#{vae.index}_li" if vae_id %> role="option" data-id="<%= vae_id %>">
+                      <li class="practice-editor-about-li fields" <%= "id=practice_va_employees_attributes_#{vae.index}_li" if vae_id %> data-id="<%= vae_id %>">
                         <div class="grid-row">
                           <div class="grid-col-12">
 
@@ -122,7 +122,7 @@
               <!-- PracticeEmail form -->
               <div class="grid-col-7">
                 <div id="contact_container" class="position-relative">
-                  <ul class="practice-editor-contact-ul" role="listbox" title="Practice contact" aria-label="Practice editor contact list">
+                  <ul class="practice-editor-contact-ul"  title="Practice contact" aria-label="Practice editor contact list">
                     <%= f.fields_for :practice_emails, wrapper: false do |pe| %>
                       <%
                         pe_id = pe.object.id || "new_practice_emails"
@@ -143,7 +143,7 @@
                           <% end %>
                         <% end %>
                       <% end %>
-                      <li class="practice-editor-contact-li fields" <%= "id=practice_practice_emails_attributes_#{pe.index}_li" if pe_id %> role="option" data-id="<%= pe_id %>">
+                      <li class="practice-editor-contact-li fields" <%= "id=practice_practice_emails_attributes_#{pe.index}_li" if pe_id %> data-id="<%= pe_id %>">
                         <div class="grid-row">
                           <div class="grid-col-12">
                             <%= pe.label :address, 'Copied (cc’ed) email address', class: 'usa-label pe-address-label margin-top-0' %>

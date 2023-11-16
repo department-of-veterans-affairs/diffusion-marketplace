@@ -109,7 +109,11 @@
             $('.practice-editor-impact-photo').each(function () {
                 $(this).parent().show();
                 if ($(window).width() > 1023) {
-                    $(this).next().width(`${$(this).width()}`);
+                    if ($(this).width() > 450){ // avoid narrow columns when image requests break
+                        $(this).next().width(`${$(this).width()}`);
+                    } else {
+                        $(this).next().width(450); // minimum 450px captions for narrow images
+                    }
                 }
             })
         })

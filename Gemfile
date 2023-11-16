@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '3.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.5'
+gem 'rails', '~> 6.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '1.4.1'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
@@ -77,6 +77,9 @@ group :development, :test do
   gem 'net-smtp', require: false
   gem 'net-imap', require: false
   gem 'net-pop', require: false
+
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
@@ -101,12 +104,13 @@ group :development do
 
   ###
 end
+
 gem 'ffi'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: 'f8a3658'
+gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: '52da189'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
@@ -115,7 +119,6 @@ gem 'aws-sdk-rds'
 gem 'wt_s3_signer'
 gem 'paperclip', github: 'agilesix/paperclip', branch: 'ruby-2.7.x-deprecation-fix'
 gem 'font-awesome-sass', '~> 5.13.0'
-gem 'sidekiq'
 
 gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
 gem 'mechanize', '2.8.5'
@@ -141,7 +144,7 @@ gem 'acts_as_votable'
 gem 'json', '~> 2.3.0'
 
 # Active Admin
-gem 'activeadmin', '~> 2.8.0'
+gem 'activeadmin', '~> 2.12.0'
 gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'

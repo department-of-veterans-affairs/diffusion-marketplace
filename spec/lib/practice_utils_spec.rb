@@ -23,9 +23,9 @@ RSpec.describe PracticeUtils do
       expect(
         PracticeUtils.practices_json(Practice.all)
       ).to include(
+             @practice.id.to_s,
              @practice.name,
              @practice.slug,
-             @practice.main_display_image.url, # custom 'placeholder_image' key
              @practice.main_display_image.path, # custom 'image' key
           )
       # Without a current_user

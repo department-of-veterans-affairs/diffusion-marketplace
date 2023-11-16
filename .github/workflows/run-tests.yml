@@ -61,7 +61,7 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
       - name: Setup Database
-        run: bin/rails db:schema:load
+        run: bin/rails db:drop db:create db:schema:load
       - name: Check ChromeDriver status
         run: |
           curl http://localhost:4444/wd/hub/status # <-- Check ChromeDriver status

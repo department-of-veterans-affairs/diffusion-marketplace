@@ -1,6 +1,5 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_risk_mitigation', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 <div id="risk-mitigation" class="desktop:grid-col-11 grid-col-12 padding-0">
   <section class="usa-section padding-bottom-0 padding-top-0 risk-mitigation">
@@ -10,7 +9,7 @@
     </p>
       <fieldset class="usa-fieldset">
       <legend class="usa-sr-only">Risks and Mitigations</legend>
-        <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations" role="listbox" aria-label="Practice editor risk and mitigation pair list">
+        <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations" role="list" aria-label="Practice editor risk and mitigation pair list">
           <%= f.fields_for :risk_mitigations, wrapper: false do |rm| %>
             <%
               rm_id = rm.object.id
@@ -35,7 +34,7 @@
                 <% end %>
               <% end %>
             <% end %>
-            <li class="practice-editor-risk-mitigation-li fields" role="option"  data-id="<%= rm_id %>">
+            <li class="practice-editor-risk-mitigation-li fields"  data-id="<%= rm_id %>">
               <%= rm.hidden_field :id %>
               <%= rm.hidden_field :position, class: 'risk-mitigation-position' %>
               <div class="risk-container grid-row">

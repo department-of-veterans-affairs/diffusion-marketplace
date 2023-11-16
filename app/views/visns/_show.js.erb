@@ -64,13 +64,14 @@ function searchPracticesByVisn() {
         $(SEARCH_RESULTS).removeClass('display-none');
         // Print results to the page
         document.querySelector('#search-results').innerHTML = finalResults;
-
+        
         $(SEARCH_RESULTS).showMoreItems({
             startNum: 6,
             afterNum: 6,
             moreText: 'Load more',
             noMoreText: 'No more results'
         });
+        replaceImagePlaceholders();
     }
     // Search practices and populate the page
     function search(query, category, radioVal) {
