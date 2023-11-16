@@ -12,7 +12,7 @@
             <%= s_description %> 
             <%= 
               link_to s_name || fa.attachment&.original_filename,
-              download_practice_practice_resource_path(
+              download_practice_practice_resource_url(
                 practice_id: fa.practice_id, 
                 id: fa.id,
                 resource_type: fa.class.to_s,

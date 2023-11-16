@@ -71,7 +71,7 @@
             <%= pr.description %> 
             <%= 
               link_to pr.name || pr.attachment&.original_filename,
-              download_practice_practice_resource_path(
+              download_practice_practice_resource_url(
                 practice_id: pr.practice_id, 
                 id: pr.id,
                 resource_type: pr.class.to_s
