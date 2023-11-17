@@ -1,13 +1,20 @@
 class PracticeResourcesController < ApplicationController
-  before_action :authenticate_user!, except: [:download]
+  before_action :authenticate_user!, except: [:download, :authenticate_and_download]
   before_action :set_practice_resource, only: [:download]
 
   def download
-    if @practice_resource
+    if @practice_resource.practice.is_public || user_signed_in?
       redirect_to @practice_resource.attachment_s3_presigned_url
     else
-      render plain: "Resource not found", status: :not_found
+      session[:download_url] = @practice_resource.attachment_s3_presigned_url
+
+      authenticate_user!
     end
+  end
+
+  def download_and_redirect
+    render layout: false # Use a minimal layout or no layout as this view is transitional
+    @download_url = session.delete(:download_url)
   end
 
   private

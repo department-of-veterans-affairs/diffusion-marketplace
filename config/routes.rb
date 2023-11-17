@@ -59,6 +59,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :practice_resources, only: [] do
+    get 'download_and_redirect', on: :collection
+  end
+
   # old practice routes redirects
   get '/practices/:id', to: redirect('/innovations/%{id}', status: 302)
   get '/practices/:id/edit/metrics', to: redirect('/innovations/%{id}/edit/metrics', status: 302)

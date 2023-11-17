@@ -35,6 +35,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def after_sign_in_path_for(resource)
+    session[:download_url] ? download_and_redirect_practice_resources_path : super
+  end
+
   def signed_resource
     # In order to circumvent making a request to AWS for tests, we can return the Paperclip attachment's 'url'.
     # If there isn't one, the default value is set to an empty string.
