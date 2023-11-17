@@ -1,50 +1,51 @@
 class Commontator::SubscriptionsMailer < ActionMailer::Base
   helper Commontator::SharedHelper
+
   def comment_created(comment, recipients)
     setup_variables(comment, recipients)
-
-    mail(@mail_params).tap do |message|
-      message.mailgun_recipient_variables = @mailgun_recipient_variables if @using_mailgun
-    end
+    mail(@mail_params)
   end
 
   protected
 
   def setup_variables(comment, recipients)
     @comment = comment
-    comment_user = User.find(comment.creator_id).full_name
-    @comment_header = "#{comment_user} has commented on #{@comment.thread.commontable.name}"
-    @comment_header = "#{comment_user} has replied to a comment on #{@comment.thread.commontable.name}" unless @comment.parent_id.nil?
-    @thread = @comment.thread
-    @creator = @comment.creator
-    @mail_params = { from: @thread.config.email_from_proc.call(@thread) }
-    practice = Practice.find(@comment.thread.commontable_id)
-    support_network_email = practice.support_network_email || nil
-    @recipient_emails = recipients.map do |recipient|
-      support_network_email.present? && recipient === support_network_email.downcase ? recipient : Commontator.commontator_email(recipient, self)
-    end
-    @using_mailgun = Rails.application.config.action_mailer.delivery_method == :mailgun
-    if @using_mailgun
-      @recipients_header = :to
-      @mailgun_recipient_variables = {}.tap do |mailgun_recipient_variables|
-        @recipient_emails.each { |email| mailgun_recipient_variables[email] = {} }
-      end
-    else
-      @recipients_header = :bcc
-    end
-    @mail_params[@recipients_header] = @recipient_emails
+    @thread = comment.thread
+    @creator = comment.creator
     @creator_name = Commontator.commontator_name(@creator)
-    @commontable_name = Commontator.commontable_name(@thread)
-    @comment_url = Commontator.comment_url(@comment, main_app)
-    @comment_url = @comment_url.split('#')[0] + "#commontator-comment-"
-    if @comment.parent_id.nil?
-      @comment_url += @comment.id.to_s
-    else
-      @comment_url += @comment.parent.id.to_s
-    end
-    @practice_name = @comment.thread.commontable.name
-    subject = "Someone has commented on #{@comment.thread.commontable.name} in Diffusion Marketplace"
-    subject = "Someone has replied to a comment on #{@comment.thread.commontable.name} in Diffusion Marketplace" unless @comment.parent_id.nil?
-    @mail_params[:subject] = subject
+    @commontable_name = @comment.thread.commontable.name
+    @practice_name = @thread.commontable.name
+    @comment_url = build_comment_url
+    @comment_header = build_comment_header
+    setup_mail_params(recipients)
+  end
+
+  private
+
+  def setup_mail_params(recipients)
+    @mail_params = {
+      from: @thread.config.email_from_proc.call(@thread),
+      bcc: recipients,
+      subject: build_subject
+    }
+  end
+
+  def build_comment_url
+    base_url, anchor = Commontator.comment_url(@comment, main_app).split('#')
+    anchor_prefix = "commontator-comment-"
+    anchor_suffix = @comment.parent_id.nil? ? @comment.id.to_s : @comment.parent_id.to_s
+    "#{base_url}##{anchor_prefix}#{anchor_suffix}"
+  end
+
+  def build_comment_header
+    comment_user = User.find(@comment.creator_id).full_name
+    comment_parent = User.find_by_id(@comment.parent&.creator_id)
+    action = comment_parent.nil? ? 'commented on' : "replied to #{comment_parent.full_name}'s comment on"
+    "#{comment_user} has #{action} #{@commontable_name}"
+  end
+
+  def build_subject
+    action = @comment.parent_id.nil? ? 'commented on' : 'replied to a comment on'
+    "Someone has #{action} #{@commontable_name} in Diffusion Marketplace"
   end
 end

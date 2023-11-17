@@ -2,37 +2,31 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe 'Contact section', type: :feature, js: true do
-  def set_data
-    @user1 = User.create!(email: 'hisagi.shuhei@va.gov', first_name: 'Shuhei', last_name: 'Hisagi', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @user2 = User.create!(email: 'momo.hinamori@va.gov', first_name: 'Momo', last_name: 'H', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @user3 = User.create!(email: 'testp13423041@va.gov', first_name: 'Test', last_name: 'Account', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'testp13423041@va.gov', user: @user1)
-    @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
-    @practice_email = PracticeEmail.create!(practice: @practice, address: 'testp13423041@va.gov')
-  end
+  let!(:user1) { create(:user, email: 'user1@va.gov', first_name: 'Shuhei', last_name: 'Hisagi', confirmed_at: Time.now, accepted_terms: true) }
+  let!(:user2) { create(:user, email: 'user2@va.gov', first_name: 'Momo', last_name: 'Hinamori', confirmed_at: Time.now, accepted_terms: true) }
+  let!(:user3) { create(:user, email: 'user3@va.gov', first_name: 'Test', last_name: 'Account', confirmed_at: Time.now, accepted_terms: true) }
+  let!(:practice) { create(:practice, name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: user3.email, user: user1) }
+  let!(:practice_partner) { create(:practice_partner, name: 'Diffusion of Excellence') }
+  let!(:practice_email) { create(:practice_email, practice: practice, address: 'practiceCCemail@va.gov') }
 
   describe 'Authorization' do
-    before do
-      set_data
-    end
-
     it 'Should allow authenticated users to view comments' do
       # Login as an authenticated user and visit the practice page
-      login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit practice_path(@practice)
+      login_as(user1, :scope => :user, :run_callbacks => false)
+      visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_current_path(practice_path(@practice))
+      expect(page).to have_content(practice.name)
+      expect(page).to have_current_path(practice_path(practice))
       expect(page).to have_css('.commontator')
     end
 
     it 'Should allow users to add role for post comments' do
       # Login as an authenticated user, visit the practice page
-      login_as(@user2, :scope => :user, :run_callbacks => false)
+      login_as(user2, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
-      visit practice_path(@practice)
+      visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(practice.name)
       expect(page).to have_content("Other")
       expect(page).to have_content('I am currently adopting this innovation')
       expect(page).to have_content('I am a member of this innovation team')
@@ -40,11 +34,11 @@ describe 'Contact section', type: :feature, js: true do
 
     it 'Should not allow unauthenticated users to post comments' do
       # make the practice public, so the user is not redirected
-      @practice.update(is_public: true)
-      visit practice_path(@practice)
+      practice.update(is_public: true)
+      visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_current_path(practice_path(@practice))
+      expect(page).to have_content(practice.name)
+      expect(page).to have_current_path(practice_path(practice))
       expect(page).to have_content('Comments and replies are disabled for retired innovations and non-VA users.')
       expect(page).to_not have_selector('.new-comment')
     end
@@ -52,18 +46,19 @@ describe 'Contact section', type: :feature, js: true do
 
   describe 'Commenting flow' do
     before do
-      set_data
-      login_as(@user2, :scope => :user, :run_callbacks => false)
+      login_as(user2, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
-      visit practice_path(@practice)
+      visit practice_path(practice)
+    end
+    
+    it 'should be on the correct page' do
       expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to have_content('A public practice')
       expect(page).to have_css('.commontator')
     end
 
     it 'Should allow a user to edit their existing comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      create_comment
       find("#commontator-comment-1-edit").click
       fill_in('commontator-comment-1-edit-body', with: 'This is a test.')
       within(:css, '.comment') do
@@ -73,8 +68,7 @@ describe 'Contact section', type: :feature, js: true do
     end
 
     it 'Should allow a user to delete their existing comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      create_comment
       find("#commontator-comment-1-delete").click
       page.accept_alert
       expect(page).to have_selector('.comments-section', visible: true)
@@ -82,12 +76,9 @@ describe 'Contact section', type: :feature, js: true do
     end
 
     it 'Should allow a user to reply to an existing comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
-      visit practice_path(@practice)
-      click_link('Reply')
-      fill_in('commontator-comment-1-reply', with: 'Hey, how are you?')
-      click_button('reply')
+      create_comment
+      visit practice_path(practice)
+      reply_to_comment
       expect(page).to have_content('Hide 1 reply')
       expect(page).to have_content('2 COMMENTS:')
     end
@@ -96,7 +87,7 @@ describe 'Contact section', type: :feature, js: true do
       fill_in('comment[body]', with: 'Hello world')
       find('label', text: 'I am currently adopting this innovation').click
       click_button('commit')
-      visit practice_path(@practice)
+      visit practice_path(practice)
       expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to have_content('INNOVATION ADOPTER')
     end
@@ -105,91 +96,154 @@ describe 'Contact section', type: :feature, js: true do
       fill_in('comment[body]', with: 'Hello world')
       find('label', text: 'Other').click
       click_button('commit')
-      visit practice_path(@practice)
+      visit practice_path(practice)
       expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to_not have_content('INNOVATION ADOPTER')
     end
 
 
     it 'Should show the amount of likes each comment or reply has' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      create_comment
       expect(page).to have_selector('.comments-section', visible: true)
       logout
-      visit practice_path(@practice)
-      login_as(@user1, :scope => :user, :run_callbacks => false)
+      visit practice_path(practice)
+      login_as(user1, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
-      visit practice_path(@practice)
+      visit practice_path(practice)
       expect(page).to have_selector('.comments-section', visible: true)
       find(".like").click
       expect(page).to have_css('.comment-1-1-vote')
     end
 
     describe 'comment mailer' do
-      it 'if the practice user is not the comment creator and the practice user\'s email is the same as the practice\'s support network email, it should send an email to the practice user' do
-        @practice.update(support_network_email: @user1.email)
-        expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      context 'when the practice user differs from the comment creator' do
+        context 'and the user email matches the support network email' do
+          it 'sends an email to the practice user and secondary email' do
+            practice.update(support_network_email: user1.email)
+            expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      
+            expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(2)
+            expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice_email.address)
+            expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
+          end
+        end
 
-        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(1)
-        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(@user1.email)
-      end
-
-      it 'if the practice user\'s email is not the same as the practice\'s support network email and neither is the comment creator, it should send an email to both the practice user and the support network email' do
-        expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
-
-        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(2)
-        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(@user1.email)
-        expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(@practice.support_network_email)
+        context 'and the practice user email does not match the support network email' do
+          context 'and neither is the comment creator' do
+            it 'it should send an email to the practice user, the support network email, and secondary email' do
+              expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      
+              expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(3)
+              expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice_email.address)
+              expect(ActionMailer::Base.deliveries.last.bcc.second).to eq(practice.support_network_email)
+              expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
+            end
+          end
+        end
       end
 
       it 'if the practice user is the creator of a comment, it should not send an email to the practice user' do
-        @practice.update(user: @user2)
+        practice.update(user: user2)
         expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
 
-        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(1)
-        expect(ActionMailer::Base.deliveries.last.bcc.first).to_not eq(@user2.email)
-        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(@practice.support_network_email)
+        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(2)
+        expect(ActionMailer::Base.deliveries.last.bcc).to_not include(user2.email)
+        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice_email.address)
+        expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(practice.support_network_email)
       end
 
-      it 'if a user exists with the an email address that matches the practice\'s support network email and that user is the comment creator, it should not send an email to the support network email address' do
-        logout
-        login_as(@user3, :scope => :user, :run_callbacks => false)
-        page.set_rack_session(:user_type => 'ntlm')
-        visit practice_path(@practice)
-        expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      context "if the comment creator's email matches the practice's support network email" do
+        it 'it should not send an email to the support network email address' do
+          logout
+          login_as(user3, :scope => :user, :run_callbacks => false)
+          page.set_rack_session(:user_type => 'ntlm')
+          visit practice_path(practice)
+          expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
 
-        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(1)
-        expect(ActionMailer::Base.deliveries.last.bcc.first).to_not eq(@user3.email)
-        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(@user1.email)
+          expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(2)
+          expect(ActionMailer::Base.deliveries.last.bcc).to_not include(user3.email)
+          expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice_email.address)
+          expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
+        end
+      end
+
+      context 'if there are more than one `practice_emails` belonging to the practice' do
+        it 'includes each in comment notification email' do
+          practice_email2 = create(:practice_email, practice: practice)
+          expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      
+          expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(4)
+          expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice_email.address)
+          expect(ActionMailer::Base.deliveries.last.bcc.second).to eq(practice_email2.address)
+          expect(ActionMailer::Base.deliveries.last.bcc.third).to eq(practice.support_network_email)
+          expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
+        end
+      end
+
+      context "if the comment creator's email is one of the practice's `practice_emails`" do
+        it 'it is not included in the comment notification email' do
+          practice_email.update!(address: user2.email)
+          expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+          expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(2)
+          expect(ActionMailer::Base.deliveries.last.bcc).to_not include(practice_email.address)
+          expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(practice.support_network_email)
+          expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(user1.email)
+        end
+      end
+
+      context "if the comment is a reply to another comment" do
+        it "the parent comment's creator is included in the email notification" do
+          user4 = create(:user, email: "user4email@va.gov")
+          create_comment
+          logout
+          login_as(user4, :scope => :user, :run_callbacks => false)
+          visit practice_path(practice)
+          reply_to_comment
+          expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(4)
+          expect(ActionMailer::Base.deliveries.last.bcc).to include('practiceCCemail@va.gov')
+          expect(ActionMailer::Base.deliveries.last.bcc).to include('user3@va.gov')
+          expect(ActionMailer::Base.deliveries.last.bcc).to include('user1@va.gov')
+          expect(ActionMailer::Base.deliveries.last.bcc).to include('user2@va.gov')
+        end
+      end
+
+      context "if the comment is a reply to another comment" do
+        context "and the commentor is the creator of the parent comment" do
+          it "the comment creator is not included in the email notification" do
+            create_comment
+            reply_to_comment
+            expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(3)
+            expect(ActionMailer::Base.deliveries.last.bcc).to include('practiceCCemail@va.gov')
+            expect(ActionMailer::Base.deliveries.last.bcc).to include('user3@va.gov')
+            expect(ActionMailer::Base.deliveries.last.bcc).to include('user1@va.gov')
+          end
+        end
       end
     end
   end
 
   describe 'Reporting a comment' do
     before do
-      set_data
-      login_as(@user2, :scope => :user, :run_callbacks => false)
+      login_as(user2, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
-      visit practice_path(@practice)
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_css('.commontator')
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
+      visit practice_path(practice)
+      create_comment
     end
 
     it 'should display the report abuse modal if the user clicks on the flag icon' do
-      login_as(@user1, :scope => :user, :run_callbacks => false)
+      login_as(user1, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
-      visit practice_path(@practice)
+      visit practice_path(practice)
       find(".report-abuse-container").click
       expect(page).to have_content('Report a comment')
       expect(page).to have_css('.report-abuse-submit')
     end
 
     it 'should hide the report abuse modal if the user clicks the cancel button' do
-      login_as(@user1, :scope => :user, :run_callbacks => false)
+      login_as(user1, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
-      visit practice_path(@practice)
+      visit practice_path(practice)
       find(".report-abuse-container").click
       expect(page).to have_content('Report a comment')
       expect(page).to have_css('.report-abuse-cancel')
@@ -200,9 +254,9 @@ describe 'Contact section', type: :feature, js: true do
     end
 
     it 'should show a success banner after the user successfully reports a comment' do
-      login_as(@user1, :scope => :user, :run_callbacks => false)
+      login_as(user1, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
-      visit practice_path(@practice)
+      visit practice_path(practice)
       find(".report-abuse-container").click
       expect(page).to have_content('Report a comment')
       expect(page).to have_css('.report-abuse-cancel')
@@ -215,19 +269,22 @@ describe 'Contact section', type: :feature, js: true do
   end
 
   describe 'Email' do
-    before do
-      set_data
-    end
-
     it 'should send an email to the main email address and include any cc email addresses' do
-      login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit practice_path(@practice)
-      expect(page).to have_link(href: 'mailto:testp13423041@va.gov?cc=testp13423041%40va.gov')
+      login_as(user1, :scope => :user, :run_callbacks => false)
+      visit practice_path(practice)
+      expect(page).to have_link(href: 'mailto:user3@va.gov?cc=practiceCCemail%40va.gov')
     end
   end
 
   def create_comment
     fill_in('comment[body]', with: 'This is a test comment')
     click_button('commit')
+  end
+
+  def reply_to_comment
+    visit practice_path(practice)
+    click_link('Reply')
+    fill_in('commontator-comment-1-reply', with: 'Hey, how are you?')
+    click_button('reply')
   end
 end
