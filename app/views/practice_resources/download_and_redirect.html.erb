@@ -1,15 +1,23 @@
-<% if session[:download_url].present? %>
-  <p>Your download is starting, you will be redirected to the home page in 5 seconds...</p>
-  <script type="text/javascript">
-      window.onload = function() {
-        const fullUrl = `<%= session[:download_url].html_safe %>`;
-        window.location.href = fullUrl;
+<div class="grid-container">
+  <div class="grid-row">
+    <div class="grid-col-8 grid-offset-2">
+      <div class="usa-prose text-center usa-my-6">
+        <% if session[:download_info].present? %>
+          <p>Your download should begin shortly. It will either open in a new tab or appear in your browser's downloads folder.</p> 
+          <p>If the download does not start or open in a new tab, please ensure your popup blocker is disabled for this site and
+          <a href="<%= session[:download_info]['download_url'] %>" target="_blank">click here</a> to try downloading again.</p>
+          <p><a href="<%= session[:download_info]['practice_path'] %>">Click here</a> to visit <%= session[:download_info]['practice_name'] %> the page where the original download link can be found.</p>
 
-        window.setTimeout(function() {
-          window.location.href = '<%= root_path %>';
-        }, 5000);
-    };
-  </script>
-<% else %>
-  <p>Download not available.</p>
-<% end %>
+          <script type="text/javascript">
+            window.onload = function() {
+              const fullUrl = `<%= session[:download_info]['download_url'].html_safe %>`;
+              window.open(fullUrl, '_blank');
+            };
+          </script>
+        <% else %>
+          <p>Download not available.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
