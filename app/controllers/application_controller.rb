@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    session[:download_url] ? download_and_redirect_practice_resources_path : super
+    session[:download_info] ? download_and_redirect_practice_resources_path : super
   end
 
   def signed_resource
