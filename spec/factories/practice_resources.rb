@@ -6,13 +6,34 @@ FactoryBot.define do
     name { "Sample Resource Name" }
     description { "Description of the sample resource." }
 
-    attachment_file_name { "dummy.pdf" }
-    attachment_content_type { "application/pdf" }
-    attachment_file_size { File.size(Rails.root.join('spec', 'assets', 'dummy.pdf')) }
+    transient do
+      file_type { "pdf" } # Set the default file type to "pdf"
+    end
+
+    attachment_file_name do
+      if file_type == "docx"
+        "dummy.docx"
+      else
+        "dummy.pdf"
+      end
+    end
+
+    attachment_content_type do
+      if file_type == "pdf"
+        "application/pdf"
+      elsif file_type == "docx"
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      else
+        "application/pdf"
+      end
+    end
+
+    attachment_file_size { File.size(Rails.root.join('spec', 'assets', attachment_file_name)) }
     attachment_updated_at { Time.current }
 
     after(:build) do |practice_resource|
-      practice_resource.attachment = File.new(Rails.root.join('spec', 'assets', 'dummy.pdf'))
+      file_name = practice_resource.attachment_file_name
+      practice_resource.attachment = File.new(Rails.root.join('spec', 'assets', file_name))
     end
   end
 end
