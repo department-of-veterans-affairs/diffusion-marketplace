@@ -1,11 +1,11 @@
 <div class="grid-container">
   <div class="grid-row">
     <div class="grid-col-8 grid-offset-2">
-      <div class="usa-prose text-center usa-my-6">
+      <div class="usa-prose text-center usa-section">
         <% if session[:download_info].present? %>
           <p>Your download should begin shortly. It will either open in a new tab or appear in your browser's downloads folder.</p> 
           <p>If the download does not start or open in a new tab, please ensure your popup blocker is disabled for this site and
-          <a href="<%= session[:download_info]['download_url'] %>" target="_blank">click here</a> to try downloading again.</p>
+          <a href="<%= session[:download_info]['download_url'] %>" target="_blank" rel="noopener noreferrer">click here</a> to try downloading again.</p>
           <p><a href="<%= session[:download_info]['practice_path'] %>">Click here</a> to visit <%= session[:download_info]['practice_name'] %> the page where the original download link can be found.</p>
 
           <script type="text/javascript">
