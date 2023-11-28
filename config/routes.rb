@@ -52,6 +52,15 @@ Rails.application.routes.draw do
           get 'report', to: 'commontator/comments#report_comment', as: 'report'
       end
     end
+    resources :practice_resources do
+      member do
+        get 'download', to: 'practice_resources#download', as: :download
+      end
+    end
+  end
+
+  resources :practice_resources, only: [] do
+    get 'download_and_redirect', on: :collection
   end
 
   # old practice routes redirects
