@@ -1,9 +1,48 @@
 class PageController < ApplicationController
   before_action :set_page, only: :show
+  before_action :check_authorization, only: :show
   before_action :set_page_components, only: :show
+  before_action :redirect_unpublished_pages, only: :show
 
   def show
-    page_group = @page.page_group
+    set_page_variables
+    handle_community_pages_redirect
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  private
+
+  def set_page
+    @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
+    @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
+  end
+
+  def check_authorization
+    return unless helpers.is_user_a_guest? && !@page.is_public
+
+    respond_to do |format|
+      warning = 'You are not authorized to view this content.'
+      flash[:warning] = warning
+      format.html { redirect_to '/', warning: warning }
+      format.json { render warning: warning }
+    end
+  end
+
+  def redirect_unpublished_pages
+    return if @page.published || current_user&.has_role?(:admin)
+
+    redirect_to root_path
+  end
+
+  def set_page_components
+    @page_components = @page.page_components
+  end
+
+  def set_page_variables
     @map_components_with_markers = build_map_component_markers
     @include_google_maps = @map_components_with_markers.present?
     @path_parts = request.path.split('/')
@@ -22,6 +61,10 @@ class PageController < ApplicationController
     @publication_ids = []
 
     collect_paginated_components(@page_components)
+  end
+
+  def handle_community_pages_redirect
+    page_group = @page.page_group
 
     if page_group.is_community? && !request.url.include?('/communities')
       is_landing_page = @page_slug == 'home'
@@ -32,22 +75,6 @@ class PageController < ApplicationController
     elsif !@page.published
       redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
-  private
-
-  def set_page
-    @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
-    @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
-  end
-
-  def set_page_components
-    @page_components = @page.page_components
   end
 
   def build_map_component_markers
