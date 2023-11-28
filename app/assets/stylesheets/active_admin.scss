@@ -216,7 +216,7 @@
     }
   }
 
-  #page_is_visible_input, #page_page_group_input, #page_has_chrome_warning_banner_input {
+  #page_is_visible_input, #page_page_group_input, #page_has_chrome_warning_banner_input, #page_is_public_input {
     // Active admin 'hint'
     .inline-hints {
       @include u-display('inline-block');
