@@ -1,12 +1,13 @@
 require 'rails_helper'
 describe 'Page Builder - Show - Paginated Components', type: :feature do
+  let(:user) { create(:user) }
   before do
-    page_group = PageGroup.create(
+    page_group = create(:page_group,
       name: 'programming', 
       slug: 'programming', 
       description: 'Pages about programming go in this group.',
     )
-    page = Page.create(
+    page = create(:page,
       page_group: page_group, 
       title: 'ruby', description: 'what a gem', 
       slug: 'ruby-rocks', 
@@ -24,8 +25,7 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     )
     PageComponent.create(page: page, component: @component)
 
-    # must be logged in to view pages
-    login_as(@user, scope: :user, run_callbacks: false)
+    login_as(user, scope: :user, run_callbacks: false)
   end
 
   context 'Titles and paragraphs' do

@@ -236,13 +236,21 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_content('Some links or actions on this page are not supported or optimal on this browser.')
   end
 
-  it 'should allow any user to be able to visit published page-builder pages' do
+  it 'should allow any user to be able to visit published and public page-builder pages' do
+    @page.update!(is_public: true)
     logout
     visit '/programming/ruby-rocks'
 
     expect(page).to_not have_current_path(root_path)
     expect(page).to have_content('ruby')
     expect(page).to have_content('what a gem')
+  end
+
+  it 'should disallow a non-logged in user from visiting a non-public page' do
+    logout
+    visit '/programming/ruby-rocks'
+
+    expect(page).to have_current_path(root_path)
   end
 
   it 'should allow admins to toggle card styling for link components' do
