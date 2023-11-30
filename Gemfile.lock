@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/agilesix/paperclip.git
-  revision: e1df9f4d9ebb0f59220e726df5453b75c5b77641
+  revision: 3aa328d6131b8338591e2a44e4ac35fe9de6dfe3
   branch: ruby-2.7.x-deprecation-fix
   specs:
     paperclip (6.1.0)
