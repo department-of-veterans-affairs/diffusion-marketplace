@@ -8,7 +8,6 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     login_as(user, scope: :user, run_callbacks: false)
   end
 
-
   context '2 or fewer publications' do
     it 'applies card styling' do
       create_publication_components(2, @page)
