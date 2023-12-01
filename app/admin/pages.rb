@@ -10,6 +10,7 @@ ActiveAdmin.register Page do
                 :published,
                 :ever_published,
                 :is_visible,
+                :is_public,
                 :template_type,
                 :has_chrome_warning_banner,
                 :image,
@@ -112,6 +113,7 @@ ActiveAdmin.register Page do
       row :description
       row :has_chrome_warning_banner
       row :published
+      row :is_public
       if resource.image.present?
         row(:image) { |page| img src: "#{page.image_s3_presigned_url(:thumb)}", class: 'maxw-10' }
         row(:image_alt_text)
@@ -224,6 +226,9 @@ ActiveAdmin.register Page do
               input_html: { disabled: true },
               as: :datepicker, label: 'Published',
               hint: 'Date when page was published. This field is readonly. Do not touch.'
+      f.input :is_public,
+              label: 'Public Page?',
+              hint: 'Set access to public or Va-users only.'
     end
 
     f.inputs "Page Components" do

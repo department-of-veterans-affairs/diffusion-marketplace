@@ -20,6 +20,7 @@ RSpec.feature 'User download flow', type: :feature do
     click_button 'Log in'
 
     downloaded_file_path = "#{Rails.root}/tmp/downloads/dummy.docx"
+
     downloaded = false
     timeout = 5
     start_time = Time.now
@@ -29,7 +30,7 @@ RSpec.feature 'User download flow', type: :feature do
       downloaded = File.exist?(downloaded_file_path)
     end
     expect(downloaded).to be true
-    
+
     File.delete(downloaded_file_path)
 
     expect(current_path).to eq("/practice_resources/download_and_redirect")
