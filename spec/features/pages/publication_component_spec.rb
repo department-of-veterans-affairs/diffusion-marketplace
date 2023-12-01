@@ -1,13 +1,12 @@
 require 'rails_helper'
 describe 'Page Builder - Show - Paginated Components', type: :feature do
   before do
-    page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
-    @page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    page_group = create(:page_group, name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
+    @page = create(:page, page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
 
-    # must be logged in to view pages
-    login_as(@user, scope: :user, run_callbacks: false)
+    user = create(:user)
+    login_as(user, scope: :user, run_callbacks: false)
   end
-
 
   context '2 or fewer publications' do
     it 'applies card styling' do
