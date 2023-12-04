@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
 
-ruby '2.7.8'
+ruby '3.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1'
 # Use postgresql as the database for Active Record
-gem 'pg'
+gem 'pg', '1.4.1'
+# gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
 gem 'puma', '>= 4.3.5'
 # Use SCSS for stylesheets
@@ -37,7 +38,7 @@ gem 'bcrypt', '~> 3.1.13'
 # gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '1.4.6', require: false
+gem 'bootsnap', require: false
 
 gem 'devise', '>= 4.6.0'
 gem 'devise-security'
@@ -45,7 +46,7 @@ gem 'kaminari'
 
 gem 'rolify', '~> 5.3.0'
 # pagination gem
-gem 'pagy', '~> 3.5'
+gem 'pagy', '~> 4'
 
 gem 'local_time'
 gem 'rails-timeago'
@@ -60,7 +61,7 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
-  gem 'pry', '~> 0.12.2'
+  gem 'pry'
   gem 'rack_session_access'
 
   # gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
@@ -79,7 +80,7 @@ end
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '3.1.5'
+  gem 'listen'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
