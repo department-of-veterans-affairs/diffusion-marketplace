@@ -105,31 +105,12 @@ const COMPONENT_CLASSES = [
         }
     }
 
-    function fetchPageComponentFileResources() {
-        const pageComponents = document.querySelectorAll('.page-downloadable-file-component, .page-publication-component');
-        // Replace each 'PageDownloadableFileComponent or PagePublicationComp;onent's 'href' with a new signed URL
-        pageComponents.forEach(element => {
-            const filePath = element.getAttribute('data-resource-path');
-            const fileUrl = element.href;
-            const fileId = element.getAttribute('data-resource-id');
-
-            fetchSignedResource(filePath, fileUrl)
-                .then(signedUrl => {
-                        const fileElement = document.querySelector(`a[data-resource-id="${fileId}"]`);
-                        if (fileElement) {
-                            fileElement.href = signedUrl;
-                        }
-                    });
-        });
-    }
-
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
         containerizeSubpageHyperlinkCards();
         remediateInternalLinksTarget();
         identifyExternalLinks();
         chromeWorkaroundForAnchorTags();
-        fetchPageComponentFileResources();
         replaceImagePlaceholders();
     }
 
