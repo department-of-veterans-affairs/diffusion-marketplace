@@ -6,10 +6,10 @@ FactoryBot.define do
     sequence(:description) { |n| "Page Description #{n}" }
     sequence(:slug) { |n| "page-slug-#{n}" }
     
-    created_at { Time.now }
-    updated_at { Time.now }
-    published { Time.now }
-    ever_published { false }
+    created_at { Date.today }
+    updated_at { Date.today }
+    published { Date.today }
+    ever_published { true }
     is_visible { true }
     template_type { 0 }
     is_public { false }
