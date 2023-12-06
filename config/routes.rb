@@ -2,7 +2,8 @@
 Rails.application.routes.draw do
   require "./lib/constraints/route_constraints"
   get ':page_group_friendly_id' => 'page#show', constraints: PageGroupHomeConstraint
-  get ':page_group_friendly_id/:page_slug' => 'page#show', constraints: PageGroupConstraint
+  get ':page_group_friendly_id/:page_slug' => 'page#show', as: 'page_show', constraints: PageGroupConstraint
+  get 'page_resources/:id/download' => 'page_resources#download', as: 'page_resource_download'
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
   devise_scope :user do
@@ -57,10 +58,6 @@ Rails.application.routes.draw do
         get 'download', to: 'practice_resources#download', as: :download
       end
     end
-  end
-
-  resources :practice_resources, only: [] do
-    get 'download_and_redirect', on: :collection
   end
 
   # old practice routes redirects
