@@ -35,7 +35,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def signed_resource
     # In order to circumvent making a request to AWS for tests, we can return the Paperclip attachment's 'url'.
     # If there isn't one, the default value is set to an empty string.
@@ -54,6 +53,15 @@ class ApplicationController < ActionController::Base
   rescue => e
     Rails.logger.error "Error in signed_resource: #{e.message}. Backtrace: #{e.backtrace.join("\n")}"
     render plain: "An error occurred: #{e.message}", status: :internal_server_error
+  end
+
+  def unauthorized_response
+    respond_to do |format|
+      warning = 'You are not authorized to view this content.'
+      flash[:warning] = warning
+      format.html { redirect_to '/', warning: warning }
+      format.json { render warning: warning }
+    end
   end
 
   protected
