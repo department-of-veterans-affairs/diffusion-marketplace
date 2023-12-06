@@ -4,13 +4,11 @@
         <div class="usa-card__header">
             <h3 class="publication-title">
                 <% if publication.attachment? %>
-                  <%= link_to publication.attachment_s3_presigned_url,
+                  <% page_component = publication.page_component %>
+                  <%= link_to page_resource_download_path(id: page_component.component_id, page_id: page_component.page.id.to_s),
                   class: 'usa-link',
-                  target: '_blank',
-                  download: publication.attachment_file_name,
-                  'data-resource-id': publication.id,
-                  'data-resource-path': publication.attachment.path do %>
-                    <i class="far fa-file margin-right-1"></i><%=publication.title %><span class="sr-only">Download <%= publication.attachment_file_name %></span>
+                  target: '_blank' do %>
+                    <i class="far fa-file margin-right-1"></i><%=publication.title %><span class="usa-sr-only">Download <%= publication.attachment_file_name %></span>
                   <% end %>
                 <% elsif publication.url? %>
                   <%= link_to(publication.title, publication.url, class: set_link_classes(publication.url), target: get_link_target_attribute(publication.url)) %>
