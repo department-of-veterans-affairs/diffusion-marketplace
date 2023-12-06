@@ -1,15 +1,14 @@
 FactoryBot.define do
   factory :page_component do
     association :page
+    position { [1, 2, 3, 4, 5].sample }
+    component_type { 'PageDownloadableFileComponent' }
+    component_id { SecureRandom.uuid }
 
-    transient do
-      component_type { nil }
-      component_attributes { {} }
-    end
-
-    component do
-      if component_type
-        association(component_type.underscore.to_sym, **component_attributes)
+    trait :with_downloadable_file_component do
+      after(:build) do |page_component|
+        downloadable_file_component = build(:page_downloadable_file_component)
+        page_component.component = downloadable_file_component
       end
     end
   end

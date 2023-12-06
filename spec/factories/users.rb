@@ -9,4 +9,10 @@ FactoryBot.define do
     confirmed_at { Time.now }
     accepted_terms { true }
   end
+
+  trait :admin do
+    after(:create) do |user|
+      user.add_role :admin
+    end
+  end
 end
