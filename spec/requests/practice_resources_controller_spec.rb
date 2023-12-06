@@ -32,14 +32,15 @@ RSpec.describe PracticeResourcesController, type: :controller do
     context 'when the practice is private' do
       let(:practice_resource) { create(:practice_resource, practice: create(:practice, :private_practice)) }
 
-      it 'redirects to sign in page without authentication' do
+      it 'responds with unauthorized' do
         get :download, params: { 
           practice_id: practice_resource.practice.id, 
           id: practice_resource.id, 
           resource_type: practice_resource.class.to_s 
         }
 
-        expect(response).to redirect_to(new_user_session_path)
+        expect(flash[:warning]).to eq('You are not authorized to view this content.')
+        expect(response).to redirect_to(root_path)
       end
 
       it 'redirects to the attachment URL with authentication' do
