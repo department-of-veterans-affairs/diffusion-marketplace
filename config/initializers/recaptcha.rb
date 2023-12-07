@@ -1,5 +1,5 @@
 Recaptcha.configure do |config|
-    if Rails.env.test?
+    if Rails.env.test? || Rails.env.development?
         config.skip_verify_env << 'test'
     else
         config.site_key  = ENV['RECAPTCHA_SITE_KEY_V3']
