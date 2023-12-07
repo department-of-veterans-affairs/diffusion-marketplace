@@ -18,4 +18,6 @@
   <div class="text-right">
     <input type="submit" value="Send message" class="usa-button margin-right-0">
   </div>
+
+  <%= recaptcha_v3(action: 'email', site_key: ENV['RECAPTCHA_SITE_KEY_V3']) %>
 <% end %>
