@@ -113,7 +113,7 @@ gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'aws-sdk-rds'
 gem 'wt_s3_signer'
-gem 'paperclip', github: 'agilesix/paperclip', branch: 'ruby-2.7.x-deprecation-fix'
+gem 'paperclip', github: 'agilesix/paperclip', branch: 'ruby-3-2-patched'
 gem 'font-awesome-sass', '~> 5.13.0'
 
 gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
