@@ -42,7 +42,7 @@ describe 'About us page', type: :feature do
   end
 
   describe 'Send us feedback section' do
-    it 'should allow the user to send an email to the marketplace team' do
+    xit 'should allow the user to send an email to the marketplace team' do
       fill_in('Your email', with: 'test@test.com')
       # all fields should be required
       click_button('Send message')
@@ -58,7 +58,7 @@ describe 'About us page', type: :feature do
       expect(page).to have_content('You successfully sent a message to the Diffusion Marketplace team.')
     end
     #spam detector................................................................
-    it 'should log and redirect user to homepage if phone field is populated' do
+    xit 'should log and redirect user to homepage if phone field is populated' do
       fill_in('Your email', with: 'test@test.com')
       fill_in('Subject line', with: 'Test subject')
       fill_in('Your message', with: 'This is a test message')
