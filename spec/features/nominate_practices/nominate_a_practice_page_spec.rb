@@ -42,12 +42,17 @@ describe 'Nominate a practice page', type: :feature do
       expect(page).to have_current_path(root_path)
     end
 
-
-
-
     it 'should redirect the user to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL' do
       visit '/nominate-a-practice'
       expect(page).to have_current_path(nominate_an_innovation_path)
+    end
+
+    it 'adds debug URL if sent from a non-PROD environment' do
+      fill_in('Your email', with: 'test@different.com')
+      fill_in('Subject line', with: 'Test stuff')
+      fill_in('Your message', with: 'This is a different test message')
+      click_button('Send message')
+      expect(ActionMailer::Base.deliveries.last.body.raw_source).to have_content('Sent from')
     end
   end
 end
