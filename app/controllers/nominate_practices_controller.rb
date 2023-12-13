@@ -20,7 +20,7 @@ class NominatePracticesController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { redirect_to '/' }
+        format.html { redirect_to root_path }
       end
     end
   end
