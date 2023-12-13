@@ -155,7 +155,7 @@ end
 # Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
 
 Capybara.register_driver :selenium_chrome_headless do |app|
-  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu window-size=1920,1080])
+  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless=new disable-gpu window-size=1920,1080])
 
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
