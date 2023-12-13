@@ -11,7 +11,7 @@ class NominatePracticesController < ApplicationController
         log_spam_attempt "Nominate"
         redirect_to root_path
       else
-        NominateAPracticeMailer.send_contact_email(options = { email: params[:email], subject: params[:subject], message: params[:message] }, 'Nominate', 'nominate_a_practice_mailer/nominate_a_practice_email').deliver_now
+        NominateAPracticeMailer.send_contact_email(options = { email: params[:email], subject: params[:subject], message: params[:message], message_url: request.url }, 'Nominate', 'nominate_a_practice_mailer/nominate_a_practice_email').deliver_now
         success = 'Message sent. The Diffusion Marketplace team will review your nomination.'
         flash[:success] = success
         respond_to do |format|

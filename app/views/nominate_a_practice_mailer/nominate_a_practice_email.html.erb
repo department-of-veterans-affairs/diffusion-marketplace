@@ -1,1 +1,4 @@
 <p><%= message %></p>
+<% if ENV['PROD_SERVERNAME'] !='PROD' %>
+	<p>Sent from <%= message_url %></p>
+<% end %>
