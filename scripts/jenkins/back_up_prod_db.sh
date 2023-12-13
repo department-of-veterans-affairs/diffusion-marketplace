@@ -1,9 +1,3 @@
-echo "Install postgresql 12 server in container to match postgres instance"
-ssh ec2-user@$PROD_SERVER "sudo docker exec -u 0:0 diffusion-marketplace_app_1 apt-get update && sudo docker exec -u 0:0 diffusion-marketplace_app_1 apt-get install -y gnupg"
-ssh ec2-user@$PROD_SERVER "sudo docker exec -u 0:0 diffusion-marketplace_app_1 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -"
-ssh ec2-user@$PROD_SERVER "sudo docker exec -u 0:0 diffusion-marketplace_app_1 echo 'deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list"
-ssh ec2-user@$PROD_SERVER "sudo docker exec -u 0:0 diffusion-marketplace_app_1 apt-get update && apt-get install -y postgresql-12 postgresql-client-12 postgresql-contrib-12"
-
 # Set the file name
 DB_FILENAME="vadm_"$(date +"%Y-%m-%d")
 DB_BACKUP_S3_BUCKET_NAME="vadm-db-backups"
