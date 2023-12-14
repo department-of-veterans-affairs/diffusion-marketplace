@@ -46,8 +46,6 @@ public/system
 # Ignore application configuration
 /config/application.yml
 
-.rubocop.yml
-
 .DS_Store
 .env
 
