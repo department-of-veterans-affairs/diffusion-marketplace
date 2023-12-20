@@ -1,0 +1,16 @@
+<!-- app/views/admin/practices/send_email_to_all_editors_form.html.erb -->
+<h3>Send Email to All Practice Editors</h3>
+
+<%= form_for :email, url: send_email_to_all_editors_admin_practices_path, method: :post do |f| %>
+  <div>
+    <%= f.label :subject, "Email Subject" %><br>
+    <%= f.text_field :subject %>
+  </div>
+  <div>
+    <%= f.label :message, "Message" %><br>
+    <%= f.text_area :message %>
+  </div>
+  <div>
+    <%= f.submit "Send Email" %>
+  </div>
+<% end %>
