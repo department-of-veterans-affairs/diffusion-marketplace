@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hello<%= ' ' + @user_name %>, </h1>
+    <p>
+      <%= @message %>
+    </p>
+    <p>Visit your page(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the practice at a time.</p>
+    <ul>
+      <% @practices.each do |practice| %>
+        <li>
+          <%= link_to "#{practice[:practice_name]}", practice[:show_url] %>
+        </li>
+      <% end %>
+    </ul>   
+  </body>
+  <footer>
+    <%= image_tag(asset_url('dm-footer-logo.png'), class: "width-6 height-6 dm-header--va-seal display-inline-block text-middle", alt: "Seal of the Department of Veterans Affairs") %>
+  </footer>
+</html>
