@@ -10,4 +10,17 @@ class AdminMailer < ApplicationMailer
 
     mail(to: @user.email, subject: subject)
   end
+
+  def send_email_to_editor(mailer_args)
+    @subject = mailer_args[:subject]
+    @message = mailer_args[:message]
+
+    user_info = mailer_args[:user_info]
+    @user_name = user_info[:user_name] || "Innovation Editor"
+    @user_email = user_info[:email]
+
+    @practices = mailer_args[:practices]
+
+    mail(to: user_info[:email], subject: @subject)
+  end
 end
