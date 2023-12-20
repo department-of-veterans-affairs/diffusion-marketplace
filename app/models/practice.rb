@@ -490,10 +490,10 @@ class Practice < ApplicationRecord
     end
   end
 
-  def collect_users_and_their_practices_info
+  def self.collect_users_and_their_practices_info
     user_practices = {}
 
-    Practice.includes(:user).each do |practice|
+    includes(:user).each do |practice|
       if practice.user.present?
         user_practices[practice.user] ||= Set.new
         user_practices[practice.user] << practice
