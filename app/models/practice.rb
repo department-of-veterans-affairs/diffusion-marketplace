@@ -471,4 +471,55 @@ class Practice < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["name", "support_network_email", "user_email"]
   end
+
+  def self.send_email_to_all_editors(subject, message)
+    user_practices_data = collect_users_and_their_practices_info
+
+    mailer_args = {
+      subject: subject,
+      message: message,
+    }
+
+    user_practices_data.each do |user_data|
+      mailer_args[:user_info] = user_data[:user_info]
+      mailer_args[:practices] = user_data[:practices]
+
+      AdminMailer.send_email_to_editor(
+        mailer_args 
+      ).deliver_now
+    end
+  end
+
+  def collect_users_and_their_practices_info
+    user_practices = {}
+
+    Practice.includes(:user).each do |practice|
+      if practice.user.present?
+        user_practices[practice.user] ||= Set.new
+        user_practices[practice.user] << practice
+      end
+    end
+
+    PracticeEditor.includes(:user, :practice).each do |editor|
+      user_practices[editor.user] ||= Set.new
+      user_practices[editor.user] << editor.practice
+    end
+
+    host_options = Rails.application.config.action_mailer.default_url_options
+
+    user_practices.map do |user, practices|
+      {
+        user_info: {
+          user_name: user.first_name,
+          email: user.email
+        },
+        practices: practices.map do |practice|
+          {
+            practice_name: practice.name,
+            show_url: Rails.application.routes.url_helpers.practice_url(practice, host_options),
+          }
+        end
+      }
+    end
+  end
 end
