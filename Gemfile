@@ -75,6 +75,11 @@ group :development, :test do
   gem 'bundler-leak'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'rubocop-performance', require: false
+
 end
 
 group :development do
