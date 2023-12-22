@@ -472,8 +472,8 @@ class Practice < ApplicationRecord
     ["name", "support_network_email", "user_email"]
   end
 
-  def self.send_email_to_all_editors(subject, message)
-    user_practices_data = collect_users_and_their_practices_info
+  def self.send_email_to_all_editors(subject, message, current_user)
+    user_practices_data = collect_users_and_their_practices_info(current_user)
 
     mailer_args = {
       subject: subject,
@@ -490,7 +490,7 @@ class Practice < ApplicationRecord
     end
   end
 
-  def self.collect_users_and_their_practices_info
+  def self.collect_users_and_their_practices_info(current_user)
     user_practices = {}
 
     includes(:user).each do |practice|
@@ -506,6 +506,12 @@ class Practice < ApplicationRecord
     end
 
     host_options = Rails.application.config.action_mailer.default_url_options
+
+    unless Rails.env.test? || Rails.env.development? || ENV['PROD_SERVERNAME'] == 'PROD'
+      user_practices = user_practices.select do |k|
+        k == current_user
+      end
+    end
 
     user_practices.map do |user, practices|
       {

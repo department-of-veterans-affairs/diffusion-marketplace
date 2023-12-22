@@ -44,7 +44,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
     subject = params[:email][:subject]
     message = params[:email][:message]
 
-    Practice.send_email_to_all_editors(subject, message)
+    Practice.send_email_to_all_editors(subject, message, current_user)
 
     redirect_to admin_practices_path, notice: "Emails are being sent."
   end
