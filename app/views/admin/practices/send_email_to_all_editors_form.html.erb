@@ -14,3 +14,17 @@
     <%= f.submit "Send Email" %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    tinymce.init({
+      selector: 'textarea#email_message',
+      plugins: 'link code', 
+      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code',
+      paste_data_images: false,
+      images_upload_url: '', // Disables the ability to upload images
+      automatic_uploads: false,
+      file_picker_types: '',
+    });
+  });
+</script>
