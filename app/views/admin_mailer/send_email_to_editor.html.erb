@@ -6,7 +6,7 @@
   <body>
     <h1>Hello<%= ' ' + @user_name %>, </h1>
     <p>
-      <%= @message %>
+      <%= @message.html_safe %>
     </p>
     <p>Visit your page(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the practice at a time.</p>
     <ul>
