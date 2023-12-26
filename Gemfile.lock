@@ -147,8 +147,8 @@ GEM
     acts_as_list (1.0.4)
       activerecord (>= 4.2)
     acts_as_votable (0.13.2)
-    addressable (2.8.6)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     ahoy_matey (4.1.0)
       activesupport (>= 5.2)
       device_detector
@@ -178,9 +178,18 @@ GEM
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.8.0)
       aws-eventstream (~> 1, >= 1.0.2)
-    axe-matchers (2.6.1)
-      dumb_delegator (~> 0.8)
-      virtus (~> 1.0)
+    axe-core-api (4.10.2)
+      dumb_delegator
+      ostruct
+      virtus
+    axe-core-capybara (4.10.2)
+      axe-core-api (= 4.10.2)
+      dumb_delegator
+    axe-core-rspec (4.10.2)
+      axe-core-api (= 4.10.2)
+      dumb_delegator
+      ostruct
+      virtus
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -266,8 +275,7 @@ GEM
     docile (1.4.0)
     domain_name (0.6.20240107)
     drb (2.2.1)
-    dumb_delegator (0.8.1)
-    equalizer (0.0.11)
+    dumb_delegator (1.0.0)
     erd (0.8.1)
       nokogiri
       ruby-graphviz
@@ -593,6 +601,7 @@ GEM
     opentelemetry-semantic_conventions (1.8.0)
       opentelemetry-api (~> 1.0)
     orm_adapter (0.5.0)
+    ostruct (0.6.1)
     pagy (4.11.0)
     paper_trail (12.3.0)
       activerecord (>= 5.2)
@@ -605,7 +614,7 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (5.0.4)
+    public_suffix (6.0.1)
     puma (6.4.3)
       nio4r (~> 2.0)
     racc (1.8.1)
@@ -662,7 +671,7 @@ GEM
       ffi (~> 1.0)
     recaptcha (5.16.0)
     redis (4.7.1)
-    regexp_parser (2.9.0)
+    regexp_parser (2.9.3)
     request_store (1.5.1)
       rack (>= 1.4)
     require_all (3.0.0)
@@ -802,11 +811,10 @@ GEM
       tzinfo (>= 1.0.0)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
-    virtus (1.0.5)
+    virtus (2.0.0)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
-      equalizer (~> 0.0, >= 0.0.9)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -847,7 +855,8 @@ DEPENDENCIES
   autoprefixer-rails
   aws-sdk-rds
   aws-sdk-s3
-  axe-matchers
+  axe-core-capybara
+  axe-core-rspec
   babel-transpiler
   base64
   bcrypt (~> 3.1.13)

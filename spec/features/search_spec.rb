@@ -221,12 +221,12 @@ describe 'Search', type: :feature do
 
     it 'should only show approved and published practices' do
       visit_search_page
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
 
       fill_in('dm-practice-search-field', with: 'Test')
       search
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
 
       # do not show a practice that is not approved/published
       fill_in('dm-practice-search-field', with: 'practice')
@@ -241,7 +241,7 @@ describe 'Search', type: :feature do
       fill_in('dm-practice-search-field', with: 'practice')
       search
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content('14 Results')
       expect(page).to have_content(@practice2.name)
     end

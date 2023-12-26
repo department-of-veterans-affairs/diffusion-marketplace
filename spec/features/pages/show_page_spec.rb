@@ -317,7 +317,7 @@ describe 'Page Builder - Show', type: :feature do
       visit '/programming/javascript'
       # Make sure the map components are 508 compliant
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_css('.page-map-component', count: 2)
       within(all('.page-map-component').first) do
         expect_marker_ct(1)

@@ -45,7 +45,7 @@ describe 'Practice editor - introduction', type: :feature do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit_practice_edit
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
     end
 
     it 'should display the content correctly' do

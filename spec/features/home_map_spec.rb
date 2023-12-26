@@ -112,13 +112,13 @@ describe 'Map of Diffusion', type: :feature do
     expect_marker_ct(3)
 
     # filters button
-    expect(page).to be_accessible.within '.map-filters-accordion'
+    expect(page).to be_axe_clean.within '.map-filters-accordion'
     expect(page).to have_css('.map-filters-accordion')
 
     # filters on load
     open_filters
     expect(page).to have_selector('.modal-content', count: 3, visible: false)
-    expect(page).to be_accessible.within '#filterResults'
+    expect(page).to be_axe_clean.within '#filterResults'
     expect(page).to have_no_css('#filterResultsTrigger')
     expect(page).to have_selector('#mapFilters', visible: true)
     expect(page).to have_content('3 healthcare facility matches (of 3)')

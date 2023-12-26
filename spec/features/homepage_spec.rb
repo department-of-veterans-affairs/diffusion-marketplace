@@ -60,7 +60,7 @@ describe 'Homepage', type: :feature do
 
   describe 'search section' do
     it 'should allow the user to search for practices in a number of ways' do
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
 
       # search for a practice using the search field
       fill_in('dm-homepage-search-field', with: 'James A. Haley')

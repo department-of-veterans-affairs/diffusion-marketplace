@@ -47,7 +47,7 @@ describe 'Practice partners pages', type: :feature, js: true do
     it 'should show the initiating facility\'s name' do
       @pr_1.update(initiating_facility: 'Foobar Facility')
       visit '/partners/diffusion-of-excellence'
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(@pr_1.name)
       expect(page).to have_content('Foobar Facility')
     end

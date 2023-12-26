@@ -24,7 +24,7 @@ describe 'Practice editor', type: :feature, js: true do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
     end
 
     it 'should display the step indicator on each page' do

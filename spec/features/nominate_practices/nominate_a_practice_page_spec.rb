@@ -4,7 +4,7 @@ describe 'Nominate a practice page', type: :feature do
   context 'Render' do
     it 'renders form' do
       visit '/nominate-an-innovation'
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_css('#recaptcha-placeholder', visible: false)
       expect(page).to have_content('Nominate an innovation')
       expect(page).to have_content('VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace using the form below.')

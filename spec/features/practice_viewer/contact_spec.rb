@@ -16,7 +16,7 @@ describe 'Contact section', type: :feature, js: true do
       # Login as an authenticated user and visit the practice page
       login_as(user1, :scope => :user, :run_callbacks => false)
       visit practice_path(practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
       expect(page).to have_current_path(practice_path(practice))
       expect(page).to have_css('.commontator')
@@ -27,7 +27,7 @@ describe 'Contact section', type: :feature, js: true do
       login_as(user2, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
       visit practice_path(practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
       expect(page).to have_content("Other")
       expect(page).to have_content('I am currently adopting this innovation')
@@ -38,7 +38,7 @@ describe 'Contact section', type: :feature, js: true do
       # make the practice public, so the user is not redirected
       practice.update(is_public: true)
       visit practice_path(practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
       expect(page).to have_current_path(practice_path(practice))
       expect(page).to have_content('Comments and replies are disabled for retired innovations and non-VA users.')

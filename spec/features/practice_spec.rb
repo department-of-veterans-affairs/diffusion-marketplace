@@ -37,13 +37,13 @@ describe 'Practices', type: :feature do
     it 'should let unauthenticated users interact with public-facing practices' do
       # Visit an unpublished, unapproved, internal-facing practice
       visit '/innovations/the-best-practice-ever'
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content('You are not authorized to view this content.')
 
       @user_practice.update(approved: true, published: true, is_public: true)
       # Visit a published, approved, public-facing practice
       visit '/innovations/the-best-practice-ever'
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content('The Best Practice Ever!')
       expect(page).to have_content('Test Facility')
     end
@@ -62,13 +62,13 @@ describe 'Practices', type: :feature do
 
       # Visit an individual practice that is approved and published
       visit practice_path(@practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_current_path(practice_path(@practice))
 
       # Visit the Marketplace
       visit '/'
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_link(href: '/about')
       expect(page).to have_link('Nominate', href: nominate_an_innovation_path )
@@ -79,7 +79,7 @@ describe 'Practices', type: :feature do
 
       # Visit user's own practice that is not approved or published
       visit practice_path(@user_practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_current_path(practice_path(@user_practice))
       expect(page).to have_content(@user_practice.name)
     end
@@ -88,7 +88,7 @@ describe 'Practices', type: :feature do
       login_as(@user2, :scope => :user, :run_callbacks => false)
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_current_path('/')
     end
@@ -98,7 +98,7 @@ describe 'Practices', type: :feature do
 
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_current_path(practice_path(@user_practice))
     end
@@ -108,7 +108,7 @@ describe 'Practices', type: :feature do
 
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_current_path(practice_path(@user_practice))
     end
@@ -132,7 +132,7 @@ describe 'Practices', type: :feature do
       practice = Practice.create!(name: 'Another public practice', date_initiated: Time.now(), approved: true, published: true, initiating_facility_type: 'facility', tagline: 'Test tagline', user: @user2)
       PracticeOriginFacility.create!(practice: practice, facility_type: 0, va_facility: @facility_1)
       visit practice_path(practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
       expect(page).to have_content('Yakima VA Clinic')
       expect(page).to have_current_path(practice_path(practice))
@@ -144,7 +144,7 @@ describe 'Practices', type: :feature do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       # Visit an individual Practice that is enabled
       visit practice_path(@enabled_practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(@enabled_practice.name)
       expect(page).to have_content(@enabled_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@enabled_practice))
@@ -166,7 +166,7 @@ describe 'Practices', type: :feature do
       @user_practice.update(published: true, approved: true, initiating_facility: 'Page VA Clinic')
       # Visit an individual Practice that is approved and published
       visit practice_path(@user_practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@user_practice))
@@ -177,7 +177,7 @@ describe 'Practices', type: :feature do
       @user_practice.update(published: true, approved: true, number_departments: 3, process: 'New approach')
       visit practice_path(@user_practice)
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@user_practice))

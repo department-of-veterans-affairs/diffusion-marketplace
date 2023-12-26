@@ -47,7 +47,7 @@ describe 'Metrics section', type: :feature, js: true do
 
   describe 'Authorization' do
     before do
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
     end
 
     it 'Should allow authenticated users to view metrics' do

@@ -105,7 +105,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature do
       expect(page).to have_selector(marker_div, visible: true)
 
       # filters button
-      expect(page).to be_accessible.within '#mapFilters'
+      expect(page).to be_axe_clean.within '#mapFilters'
       # all markers
       marker_count = all(marker_div).count
       expect(marker_count).to eq(6)

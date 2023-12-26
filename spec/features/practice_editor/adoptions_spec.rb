@@ -40,7 +40,7 @@ describe 'Practice editor', type: :feature, js: true do
     )
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit practice_adoptions_path(@practice)
-    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to be_axe_clean.according_to :wcag2a, :section508
   end
 
   after do
@@ -128,7 +128,7 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('Success!')
         expect(page).to have_content('In-progress adoption: 1')
       end
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
 
       # it should create another one
       find('#add_adoption_button').click
