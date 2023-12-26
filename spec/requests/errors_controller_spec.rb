@@ -19,4 +19,11 @@ RSpec.describe ErrorsController, type: :request do
     expect(response.body).to include('Page not found')
     expect(response.body).to include("We're sorry, we can't find the page you're looking for")
   end
+
+  it '500 error' do
+    get '/500'
+    expect(response).to have_http_status(:error)
+    expect(response.body).to include('Internal server error')
+    expect(response.body).to include("We're sorry, something went wrong.  We're working to fix it as soon as we can.")
+  end
 end
