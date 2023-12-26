@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ErrorsController, type: :request do
-  before do # temporarily disable Puma server errors in test
+  before(:all) do # temporarily disable Puma server errors in test
     Rails.application.config.consider_all_requests_local = false
     Rails.application.config.action_dispatch.show_exceptions = true
     Rails.application.config.action_dispatch.show_detailed_exceptions = false
