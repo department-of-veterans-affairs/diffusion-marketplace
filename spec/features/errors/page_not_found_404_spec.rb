@@ -7,11 +7,13 @@ describe 'custom 404 error page', type: :feature do
   before do
     Rails.application.config.consider_all_requests_local = false
     Rails.application.config.action_dispatch.show_exceptions = true
+    Rails.application.config.action_dispatch.show_detailed_exceptions = false
   end
 
   after do
     Rails.application.config.consider_all_requests_local = true
     Rails.application.config.action_dispatch.show_exceptions = false
+    Rails.application.config.action_dispatch.show_detailed_exceptions = true
   end
 
   it 'should respond with the custom 404 page if the user visits a non-existent page' do
