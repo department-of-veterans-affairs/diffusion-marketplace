@@ -58,7 +58,7 @@ describe 'The admin dashboard', type: :feature do
     it 'if not logged in, should be redirected to sign_in page' do
       visit '/admin'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_current_path(new_user_session_path)
     end
 
@@ -66,7 +66,7 @@ describe 'The admin dashboard', type: :feature do
       login_as(@user, scope: :user, run_callbacks: false)
       visit '/admin'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_current_path(root_path)
       expect(page).to have_content('Unauthorized access!')
     end
@@ -75,7 +75,7 @@ describe 'The admin dashboard', type: :feature do
       login_as(@admin, scope: :user, run_callbacks: false)
       visit '/admin'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_current_path(admin_root_path)
 
       expect(page).to have_link('General', href: '#general')
@@ -101,7 +101,7 @@ describe 'The admin dashboard', type: :feature do
       login_as(@admin, scope: :user, run_callbacks: false)
       visit '/admin'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_current_path(admin_root_path)
 
       within(:css, '#header') do

@@ -10,7 +10,7 @@ describe 'Register', type: :feature, js: true do
 
     click_on('Sign in')
     click_on('Register')
-    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to be_axe_clean.according_to :wcag2a, :section508
     expect(current_path).to eq('/users/sign_up')
     expect(page).to have_content('Register')
 
@@ -20,7 +20,7 @@ describe 'Register', type: :feature, js: true do
     fill_in('Password confirmation', with: 'Passwrrd')
     click_button('Register')
 
-    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to be_axe_clean.according_to :wcag2a, :section508
     expect(page).to have_content('Email must use @va.gov email address')
     expect(page).to have_content('Email invalid')
     expect(page).to have_content('Password must include 6 unique characters')

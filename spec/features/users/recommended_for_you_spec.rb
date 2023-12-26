@@ -50,7 +50,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should redirect the user to the login page if they are not logged in' do
       visit '/recommended-for-you'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content('Diffusion Marketplace')
       expect(page).to have_content('Login')
       expect(page.current_path).to eq new_user_session_path
@@ -59,7 +59,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should allow the user to visit the recommended for you page if they are logged in' do
       login_and_visit_recommended_path(@user1)
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content('Recommended for you')
       expect(page).to have_content('Based on your location')
       expect(page.current_path).to eq recommended_for_you_path

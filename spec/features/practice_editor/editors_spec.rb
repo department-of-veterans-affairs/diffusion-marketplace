@@ -29,7 +29,7 @@ describe 'Practice editor', type: :feature, js: true do
 
     it 'should be there' do
       login_and_visit_editors(@admin)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_content('Editors')
       expect(page).to have_content('E-mail the people who can help you edit this innovation page. Only @va.gov emails are allowed.')
     end

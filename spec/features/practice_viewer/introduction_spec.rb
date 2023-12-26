@@ -96,7 +96,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
   describe 'action buttons' do
     before do
       visit practice_path(@pr_min)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
     end
 
     it 'should exist' do
@@ -118,7 +118,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
   describe 'see more buttons' do
     before do
       visit practice_path(@pr_max)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
     end
 
     it 'should exist' do

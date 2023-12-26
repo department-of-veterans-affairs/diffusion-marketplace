@@ -15,7 +15,7 @@ describe 'Practice editor', type: :feature, js: true do
       add_another_btns.each do |btn|
         btn.click
       end
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
     end
   end
 end
