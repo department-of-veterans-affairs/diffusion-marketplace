@@ -126,7 +126,7 @@ gem 'mechanize', '2.8.5'
 
 gem 'roo', '~> 2.8.0'
 
-gem 'friendly_id', '~> 5.2.4'
+gem 'friendly_id'
 
 gem 'jquery-cropper'
 
