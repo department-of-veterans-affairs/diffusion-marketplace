@@ -191,6 +191,19 @@ class User < ApplicationRecord
     user
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "accepted_terms", "avatar_content_type", "avatar_file_name", "avatar_file_size", 
+      "avatar_updated_at", "bio", "confirmation_sent_at", "confirmation_token", "confirmed_at", 
+      "created_at", "current_sign_in_at", "current_sign_in_ip", "disabled", "email", 
+      "encrypted_password", "facility", "failed_attempts", "first_name", "id", "job_title", 
+      "last_name", "last_sign_in_at", "last_sign_in_ip", "location", "locked_at", 
+      "password_changed_at", "phone_number", "remember_created_at", "reset_password_sent_at", 
+      "reset_password_token", "sign_in_count", "skip_va_validation", "unconfirmed_email", 
+      "unlock_token", "updated_at", "visn"
+    ]
+  end
+
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
 
   protected
