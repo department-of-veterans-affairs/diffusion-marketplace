@@ -104,15 +104,15 @@ GEM
     active_admin_theme (1.1.4)
     active_material (1.5.2)
     active_skin (0.0.13)
-    activeadmin (2.14.0)
+    activeadmin (3.2.0)
       arbre (~> 1.2, >= 1.2.1)
-      formtastic (>= 3.1, < 5.0)
-      formtastic_i18n (~> 0.4)
+      formtastic (>= 3.1)
+      formtastic_i18n (>= 0.4)
       inherited_resources (~> 1.7)
-      jquery-rails (~> 4.2)
-      kaminari (~> 1.0, >= 1.2.1)
-      railties (>= 6.1, < 7.1)
-      ransack (>= 2.1.1, < 4)
+      jquery-rails (>= 4.2)
+      kaminari (>= 1.2.1)
+      railties (>= 6.1)
+      ransack (>= 4.0)
     activeadmin_addons (1.9.0)
       active_material
       railties
@@ -282,8 +282,8 @@ GEM
       thor (>= 0.14.0, < 2)
     font-awesome-sass (5.13.1)
       sassc (>= 1.11)
-    formtastic (4.0.0)
-      actionpack (>= 5.2.0)
+    formtastic (5.0.0)
+      actionpack (>= 6.0.0)
     formtastic_i18n (0.7.0)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
@@ -644,7 +644,7 @@ GEM
       thor (~> 1.0)
     rainbow (3.1.1)
     rake (13.1.0)
-    ransack (3.2.1)
+    ransack (4.1.1)
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
@@ -657,9 +657,9 @@ GEM
     request_store (1.5.1)
       rack (>= 1.4)
     require_all (3.0.0)
-    responders (3.0.1)
-      actionpack (>= 5.0)
-      railties (>= 5.0)
+    responders (3.1.1)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     rexml (3.2.6)
     rolify (5.3.0)
     roo (2.8.3)
@@ -833,7 +833,7 @@ PLATFORMS
 DEPENDENCIES
   active_admin_theme
   active_skin
-  activeadmin (~> 2.14.0)
+  activeadmin (~> 3.2.0)
   activeadmin_addons
   activerecord-nulldb-adapter
   acts_as_list
