@@ -42,9 +42,6 @@ class PracticePartner < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    [
-      "color", "created_at", "description", "icon", "id", "is_major", "name", "position", 
-      "short_name", "slug", "updated_at"
-    ]
+    ["description","name"]
   end
 end

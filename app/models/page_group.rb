@@ -15,11 +15,7 @@ class PageGroup < ApplicationRecord
     COMMUNITY_SLUGS.include?(self.slug)
   end
 
-  def self.ransackable_associations(auth_object = nil)
-    ["pages"]
-  end
-
   def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "description", "id", "name", "slug", "updated_at"]
+    ["created_at", "description", "id", "name", "slug", "updated_at", "pages_id"]
   end
 end

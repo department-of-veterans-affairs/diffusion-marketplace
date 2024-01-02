@@ -467,4 +467,8 @@ class Practice < ApplicationRecord
   ransacker :user_email do
     Arel.sql("users.email")
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["name", "support_network_email"]
+  end
 end
