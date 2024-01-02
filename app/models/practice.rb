@@ -469,6 +469,6 @@ class Practice < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["name", "support_network_email"]
+    ["name", "support_network_email", "user_email"]
   end
 end
