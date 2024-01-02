@@ -463,4 +463,8 @@ class Practice < ApplicationRecord
       adoption_count: diffusion_histories.size
     )
   end
+
+  ransacker :user_email do
+    Arel.sql("users.email")
+  end
 end
