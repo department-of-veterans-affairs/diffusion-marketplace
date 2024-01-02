@@ -237,7 +237,7 @@ GEM
     commontator (6.3.2)
       rails (>= 5.2)
       will_paginate
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.2)
     connection_pool (2.2.5)
     crass (1.0.6)
     database_cleaner (2.0.1)
@@ -268,7 +268,7 @@ GEM
       nokogiri
       ruby-graphviz
     errbase (0.2.2)
-    erubi (1.10.0)
+    erubi (1.12.0)
     execjs (2.8.1)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -307,7 +307,7 @@ GEM
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     humanize (2.5.1)
-    i18n (1.12.0)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     inherited_resources (1.14.0)
@@ -348,9 +348,9 @@ GEM
     local_time (2.1.0)
     lodash-rails (4.17.21)
       railties (>= 3.1)
-    loofah (2.19.1)
+    loofah (2.22.0)
       crass (~> 1.0.2)
-      nokogiri (>= 1.5.9)
+      nokogiri (>= 1.12.0)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -378,7 +378,7 @@ GEM
       rake
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
-    minitest (5.17.0)
+    minitest (5.20.0)
     msgpack (1.7.2)
     multi_xml (0.6.0)
     naturalsorter (3.0.22)
@@ -621,16 +621,18 @@ GEM
       bundler (>= 1.15.0)
       railties (= 6.1.7.6)
       sprockets-rails (>= 2.0.0)
-    rails-dom-testing (2.0.3)
-      activesupport (>= 4.2.0)
+    rails-dom-testing (2.2.0)
+      activesupport (>= 5.0.0)
+      minitest
       nokogiri (>= 1.6)
     rails-erd (1.7.1)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
       choice (~> 0.2.0)
       ruby-graphviz (~> 1.2)
-    rails-html-sanitizer (1.4.4)
-      loofah (~> 2.19, >= 2.19.1)
+    rails-html-sanitizer (1.6.0)
+      loofah (~> 2.21)
+      nokogiri (~> 1.14)
     rails-timeago (2.20.0)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
@@ -641,7 +643,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0)
     rainbow (3.1.1)
-    rake (13.0.6)
+    rake (13.1.0)
     ransack (3.2.1)
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
@@ -770,11 +772,11 @@ GEM
       sprockets (>= 3.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
-    thor (1.2.2)
+    thor (1.3.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
     timeout (0.4.0)
-    tinymce-rails (6.1.0)
+    tinymce-rails (6.4.2)
       railties (>= 3.1.1)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
@@ -821,7 +823,7 @@ GEM
       rails (>= 3.2.16)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.6)
+    zeitwerk (2.6.12)
 
 PLATFORMS
   ruby
@@ -923,7 +925,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   sprockets
   survey_monkey_api!
-  tinymce-rails
+  tinymce-rails (< 6.5)
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)

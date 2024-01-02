@@ -150,7 +150,7 @@ gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'
 gem 'caxlsx'
-gem 'tinymce-rails'
+gem 'tinymce-rails', '< 6.5'
 gem 'sassc'
 
 gem "chartkick"
