@@ -16,8 +16,8 @@ module ActiveAdminHelpers
   end
 
   def get_adoption_values(p, complete_map)
-    facility_data = VaFacility.cached_va_facilities.get_relevant_attributes
-    practice_diffusion_histories = p.diffusion_histories.exclude_clinical_resource_hubs.map { |dh|
+    facility_data = VaFacility.cached_va_facilities.get_relevant_attributes.includes(:visn)
+    practice_diffusion_histories = p.diffusion_histories.includes(:va_facility).exclude_clinical_resource_hubs.map { |dh|
       selected_facility = facility_data.select { |fd| fd.station_number === dh.va_facility.station_number }
       origin_facilities = origin_display_name(Practice.find_by(id: dh.practice_id))
       dh_status = dh.diffusion_history_statuses.first
