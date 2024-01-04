@@ -4,7 +4,7 @@ include PracticeEditorUtils
 include UserUtils
 include ActiveAdminUtils
 
-ActiveAdmin.register Practice do
+ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
   actions :all, except: [:destroy]
   permit_params :name, :user_email, :retired, :retired_reason
   config.create_another = true
@@ -310,7 +310,7 @@ ActiveAdmin.register Practice do
 
   filter :name
   filter :support_network_email
-  filter :owner_email
+  filter :user_email, label: "Owner Email"
 
   controller do
     helper_method :adoption_facility_name
@@ -468,6 +468,15 @@ ActiveAdmin.register Practice do
         practice.update(highlight_body: params[:practice][:highlight_body])
         practice.update(highlight_attachment: params[:practice][:highlight_attachment]) if practice_highlight_attachment_params.present?
       end
+    end
+  end
+
+  controller do
+    def scoped_collection
+      relation = super
+      relation = relation.joins(:user)
+      relation = relation.includes(:user)
+      relation
     end
   end
 end
