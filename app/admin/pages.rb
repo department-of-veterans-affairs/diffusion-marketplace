@@ -81,6 +81,7 @@ ActiveAdmin.register Page do
   #   permitted
   # end
   #
+  filter :title
   index do
     selectable_column
     column(:title) { |page| link_to(page.title, admin_page_path(page)) }
