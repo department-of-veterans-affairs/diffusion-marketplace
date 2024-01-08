@@ -192,7 +192,7 @@ class User < ApplicationRecord
   end
   
   def self.ransackable_attributes(auth_object = nil)
-    ['first_name', 'email_contains', 'email_equals', 'email_starts_with', 'email_ends_with']
+    ['first_name', 'email']
   end
   
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
