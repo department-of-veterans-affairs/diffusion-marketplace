@@ -8,7 +8,7 @@ gem 'rails', '~> 6.1'
 gem 'pg'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
-gem 'puma'
+gem 'puma', '~> 6.4.2'
 # Use SCSS for stylesheets
 gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
