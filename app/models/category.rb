@@ -58,4 +58,8 @@ class Category < ApplicationRecord
   def self.get_cached_categories_grouped_by_parent
     cached_categories.includes([:parent_category]).group_by(&:parent_category)
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["description", "name", "related_terms"]
+  end
 end

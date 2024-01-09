@@ -8,4 +8,8 @@ class Topic < ApplicationRecord
   def attachment_s3_presigned_url(style = nil)
     object_presigned_url(attachment, style)
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["title", "description", "url"]
+  end
 end

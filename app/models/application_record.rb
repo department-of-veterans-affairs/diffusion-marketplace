@@ -47,4 +47,8 @@ class ApplicationRecord < ActiveRecord::Base
       self.attachment.reprocess!
     end
   end
+
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
 end

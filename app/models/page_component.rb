@@ -66,4 +66,7 @@ class PageComponent < ApplicationRecord
     self.component = _component
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["component_id", "component_type", "created_at", "id", "page_id", "position", "updated_at"]
+  end
 end

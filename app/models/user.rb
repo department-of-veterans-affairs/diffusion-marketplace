@@ -190,16 +190,20 @@ class User < ApplicationRecord
     get_ldap_response(ldap)
     user
   end
-
+  
+  def self.ransackable_attributes(auth_object = nil)
+    ['first_name', 'email']
+  end
+  
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
-
+  
   protected
-
+  
   def password_required?
     return false if skip_password_validation
     super
   end
-
+  
   private
 
   def self.get_ldap_response(ldap)

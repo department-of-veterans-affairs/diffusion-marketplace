@@ -40,4 +40,8 @@ class PracticePartner < ApplicationRecord
       PracticePartner.all.order(Arel.sql("lower(name) ASC")).load
     end
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["description","name"]
+  end
 end

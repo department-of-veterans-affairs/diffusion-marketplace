@@ -33,6 +33,18 @@ class Page < ApplicationRecord
     object_presigned_url(image, style)
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["page_components", "page_group", "versions"]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "description", "title", "slug", "ever_published", "is_visible", "template_type", 
+      "has_chrome_warning_banner", "image_alt_text", "image_file_name", "image_content_type", 
+      "image_file_size", "is_public"
+    ]
+  end
+
   private
 
   def downcase_slug

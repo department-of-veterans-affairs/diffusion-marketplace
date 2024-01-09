@@ -14,4 +14,8 @@ class PageGroup < ApplicationRecord
   def is_community?
     COMMUNITY_SLUGS.include?(self.slug)
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "description", "id", "name", "slug", "updated_at", "pages_id"]
+  end
 end
