@@ -1,30 +1,72 @@
 <!-- app/views/admin/practices/send_email_to_all_editors_form.html.erb -->
 <h3>Send Email to All Practice Editors</h3>
 
-<%= form_for :email, url: send_email_to_all_editors_admin_practices_path, method: :post do |f| %>
+<%= form_for :email, url: send_email_to_all_editors_admin_practices_path, method: :post, html: { id: 'emailForm' } do |f| %>
   <div>
     <%= f.label :subject, "Email Subject" %><br>
-    <%= f.text_field :subject %>
+    <%= f.text_field :subject, id: 'emailSubject' %>
   </div>
   <div>
     <%= f.label :message, "Message" %><br>
-    <%= f.text_area :message %>
+    <%= f.text_area :message, id: 'emailMessage' %>
   </div>
-  <div class="margin-top-4"> <!-- USWDS margin utility class -->
-    <%= f.submit "Send Email" %>
+  <div class="margin-top-4">
+    <%= f.submit "Preview Email", id: 'previewEmailButton', class: 'usa-button' %>
   </div>
 <% end %>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function(){
+  document.addEventListener('DOMContentLoaded', function() {
     tinymce.init({
-      selector: 'textarea#email_message',
-      plugins: 'link code', 
+      selector: 'textarea#emailMessage',
+      plugins: 'link code',
       toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code',
       paste_data_images: false,
-      images_upload_url: '', // Disables the ability to upload images
+      images_upload_url: '',
       automatic_uploads: false,
       file_picker_types: '',
     });
+
+    // Add event listener to your preview button
+    document.getElementById('previewEmailButton').addEventListener('click', function(event) {
+      event.preventDefault();
+      openPreviewModal();
+    });
+
+    // Function to open the preview modal
+    function openPreviewModal() {
+      var subject = document.getElementById('emailSubject').value;
+      var message = tinymce.get('emailMessage').getContent();
+      
+      var previewContent = `
+        <html>
+        <head><title>Email Preview</title></head>
+        <body>
+          <h1>Hello [User Name],</h1>
+          <p>${message}</p>
+          <p>Visit your innovation(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the innovation at a time.</p>
+          <ul>
+            <li><a href="#">Sample Innovation Link</a></li>
+          </ul>
+        </body>
+        <footer>
+          <%= image_tag('dm-footer-logo.png', alt: "Footer Logo") %>
+        </footer>
+        <button onclick="window.opener.confirmSendEmail(window)">Send Email</button>
+        <button onclick="window.close()">Cancel</button>
+        </html>
+      `;
+      var previewWindow = window.open('', 'EmailPreview', 'width=1200,height=800');
+      previewWindow.document.write(previewContent);
+      previewWindow.document.close();
+    }
+
+    // Function to submit the form and close the popup
+    window.confirmSendEmail = function(popupWindow) {
+      document.getElementById('emailForm').submit();
+      if (popupWindow) {
+        popupWindow.close(); // Close the popup
+      }
+    };
   });
 </script>
