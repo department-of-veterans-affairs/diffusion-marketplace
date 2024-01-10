@@ -11,9 +11,30 @@
     <%= f.text_area :message, id: 'emailMessage' %>
   </div>
   <div class="margin-top-4">
-    <%= f.submit "Preview Email", id: 'previewEmailButton', class: 'usa-button' %>
+    <button type="button" class="usa-button" id="previewEmailButton">Preview Email</button>
   </div>
 <% end %>
+
+<div class="usa-modal-wrapper" id="previewModal" hidden>
+  <div class="usa-modal-overlay"></div>
+  <div class="usa-modal">
+    <div class="usa-modal-header">
+      <h2 class="usa-modal-heading">Email Preview</h2>
+      <button class="usa-button" data-close-modal>Close</button>
+    </div>
+    <div class="usa-modal-body">
+      <h1>Hello [User Name],</h1>
+      <p id="previewMessage"></p>
+      <p>Visit your innovation(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the innovation at a time.</p>
+      <ul>
+        <li><a href="#">Sample Innovation Link</a></li>
+      </ul>
+    </div>
+    <div class="usa-modal-footer">
+      <button onclick="confirmSendEmail()" class="usa-button">Send Email</button>
+    </div>
+  </div>
+</div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -27,46 +48,21 @@
       file_picker_types: '',
     });
 
-    // Add event listener to your preview button
+    // Add event listener to the Preview Email button
     document.getElementById('previewEmailButton').addEventListener('click', function(event) {
       event.preventDefault();
-      openPreviewModal();
-    });
-
-    // Function to open the preview modal
-    function openPreviewModal() {
       var subject = document.getElementById('emailSubject').value;
       var message = tinymce.get('emailMessage').getContent();
-      
-      var previewContent = `
-        <html>
-        <head><title>Email Preview</title></head>
-        <body>
-          <h1>Hello [User Name],</h1>
-          <p>${message}</p>
-          <p>Visit your innovation(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the innovation at a time.</p>
-          <ul>
-            <li><a href="#">Sample Innovation Link</a></li>
-          </ul>
-        </body>
-        <footer>
-          <%= image_tag('dm-footer-logo.png', alt: "Footer Logo") %>
-        </footer>
-        <button onclick="window.opener.confirmSendEmail(window)">Send Email</button>
-        <button onclick="window.close()">Cancel</button>
-        </html>
-      `;
-      var previewWindow = window.open('', 'EmailPreview', 'width=1200,height=800');
-      previewWindow.document.write(previewContent);
-      previewWindow.document.close();
-    }
+      document.getElementById('previewMessage').innerHTML = message;
+      // Open the modal
+      document.getElementById('previewModal').style.display = 'block';
+    });
 
-    // Function to submit the form and close the popup
-    window.confirmSendEmail = function(popupWindow) {
+    // Function to submit the form and close the modal
+    window.confirmSendEmail = function() {
       document.getElementById('emailForm').submit();
-      if (popupWindow) {
-        popupWindow.close(); // Close the popup
-      }
+      // Close the modal
+      document.getElementById('previewModal').style.display = 'none';
     };
   });
 </script>
