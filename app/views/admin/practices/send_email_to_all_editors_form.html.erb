@@ -1,5 +1,4 @@
-<!-- app/views/admin/practices/send_email_to_all_editors_form.html.erb -->
-<h3>Send Email to All Practice Editors</h3>
+<%= javascript_include_tag 'batch_email' %>
 
 <%= form_for :email, url: send_email_to_all_editors_admin_practices_path, method: :post, html: { id: 'emailForm' } do |f| %>
   <div>
@@ -15,54 +14,4 @@
   </div>
 <% end %>
 
-<div class="usa-modal-wrapper" id="previewModal" hidden>
-  <div class="usa-modal-overlay"></div>
-  <div class="usa-modal">
-    <div class="usa-modal-header">
-      <h2 class="usa-modal-heading">Email Preview</h2>
-      <button class="usa-button" data-close-modal>Close</button>
-    </div>
-    <div class="usa-modal-body">
-      <h1>Hello [User Name],</h1>
-      <p id="previewMessage"></p>
-      <p>Visit your innovation(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the innovation at a time.</p>
-      <ul>
-        <li><a href="#">Sample Innovation Link</a></li>
-      </ul>
-    </div>
-    <div class="usa-modal-footer">
-      <button onclick="confirmSendEmail()" class="usa-button">Send Email</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    tinymce.init({
-      selector: 'textarea#emailMessage',
-      plugins: 'link code',
-      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code',
-      paste_data_images: false,
-      images_upload_url: '',
-      automatic_uploads: false,
-      file_picker_types: '',
-    });
-
-    // Add event listener to the Preview Email button
-    document.getElementById('previewEmailButton').addEventListener('click', function(event) {
-      event.preventDefault();
-      var subject = document.getElementById('emailSubject').value;
-      var message = tinymce.get('emailMessage').getContent();
-      document.getElementById('previewMessage').innerHTML = message;
-      // Open the modal
-      document.getElementById('previewModal').style.display = 'block';
-    });
-
-    // Function to submit the form and close the modal
-    window.confirmSendEmail = function() {
-      document.getElementById('emailForm').submit();
-      // Close the modal
-      document.getElementById('previewModal').style.display = 'none';
-    };
-  });
-</script>
+<%= render 'admin/practices/email_preview_modal' %>

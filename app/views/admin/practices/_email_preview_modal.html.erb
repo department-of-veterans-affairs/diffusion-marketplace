@@ -1,0 +1,25 @@
+<!-- The contents of the preview modal matches the email template: send_email_to_editor.html.erb -->
+<div class="usa-modal-wrapper" id="previewModal" hidden>
+  <div class="usa-modal-overlay"></div>
+  <div class="usa-modal">
+    <div class="usa-modal__main">
+      <div class="usa-modal-header">
+        <h3 class="usa-modal-heading" id="previewSubject">Email Preview</h3>
+      </div>
+      <p>Hello [User Name],</p>
+      <p id="previewMessage"></p>
+      <p>Visit your Innovation(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the innovation at a time.</p>
+      <ul>
+        <li><a href="#">Sample Innovation Link</a></li>
+      </ul>
+      <p>
+        If you have any questions, issues, or feedback to share with us please send an email to <%= mail_to 'Marketplace@VA.gov ', 'Marketplace@VA.gov ' %>
+      </p>
+      <div class="usa-modal-footer">
+        <%= image_tag('dm-footer-logo.png', alt: "Footer Logo") %>
+        <button class="usa-button" data-close-modal>Cancel</button>
+        <button onclick="confirmSendEmail()" class="usa-button">Send Email</button>
+      </div>
+    </div>
+  </div>
+</div>
