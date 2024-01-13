@@ -4,11 +4,11 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Hello<%= ' ' + @user_name %>, </h1>
+    <p>Hello<%= ' ' + @user_name %>, </p>
     <p>
       <%= @message.html_safe %>
     </p>
-    <p>Visit your innovation(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the innovation at a time.</p>
+    <p>Visit your Innovation(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the innovation at a time.</p>
     <ul>
       <% @practices.each do |practice| %>
         <li>
@@ -16,6 +16,9 @@
         </li>
       <% end %>
     </ul>
+    <p>
+      If you have any questions, issues, or feedback to share with us please send an email to <%= mail_to 'Marketplace@VA.gov ', 'Marketplace@VA.gov ' %>
+    </p>
   </body>
   <footer>
     <%= image_tag('dm-footer-logo.png', alt: "Footer Logo") %>
