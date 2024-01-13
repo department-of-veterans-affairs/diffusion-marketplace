@@ -46,7 +46,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
 
     Practice.send_email_to_all_editors(subject, message, current_user)
 
-    redirect_to admin_practices_path, notice: "Emails are being sent."
+    redirect_to admin_practices_path, notice: "Your batch email to Innovation editors has been sent."
   end
 
   collection_action :export_published_practices_with_queri_format, method: :get do
@@ -101,7 +101,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
       link_to 'Published Practices QUERI Download', export_published_practices_with_queri_format_admin_practices_path, class: 'admin-download-published-practices float-right display-block text-bold border-0 radius-md margin-bottom-105'
     end
     div do
-      link_to "Send Email to All Editors", send_email_to_all_editors_form_admin_practices_path, class: "button", class: 'admin-email-all-practice-editors float-right display-block text-bold border-0 radius-md margin-bottom-105'
+      link_to "Send Email to All Editors", send_email_to_all_editors_form_admin_practices_path, class: 'admin-email-all-practice-editors float-right display-block text-bold border-0 radius-md margin-bottom-105'
     end
     selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
