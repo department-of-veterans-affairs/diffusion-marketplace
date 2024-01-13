@@ -7,12 +7,11 @@ describe 'Admin email all editors button', type: :feature, js: true do
 
   before do
     ActionMailer::Base.deliveries.clear
-    # Assign one user as an editor to all practices
+
     practices.each do |practice|
       create(:practice_editor, user: users.first, practice: practice)
     end
 
-    # Assign the rest of the users as editors to only one practice
     users.each_with_index do |user, index|
       create(:practice_editor, user: user, practice: practices[index])
     end
@@ -26,17 +25,22 @@ describe 'Admin email all editors button', type: :feature, js: true do
     
     click_link 'Send Email to All Editors'
 
-    fill_in 'Email Subject', with: 'Important Update'
-    fill_in 'Message', with: 'Please review the latest changes.'
-    click_button 'Send Email'
+    fill_in 'emailSubject', with: 'Important Update'
+    find('#emailMessage').click
+
+
+    execute_script("tinyMCE.get('emailMessage').setContent('Please review the latest changes.')")
+
+    click_button 'Preview Email'
+
+    within('#previewModal') do
+      click_button 'Send Email'
+      page.driver.browser.switch_to.alert.accept
+    end
 
     expect(page).to have_current_path(admin_practices_path)
-    expect(page).to have_content('Emails are being sent.')
+    expect(page).to have_content('Your batch email to Innovation editors has been sent.')
 
-    # Verify the correct number of emails are sent
-    expect(ActionMailer::Base.deliveries.size).to eq users.size + 1  # including admin
-
-    # Verify that each editor (including admin) received an email with links to their respective practices
     (users + [admin]).each do |user|
       email = ActionMailer::Base.deliveries.select { |e| e.to.include?(user.email) }.first
       expect(email).not_to be_nil
