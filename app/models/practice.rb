@@ -494,15 +494,17 @@ class Practice < ApplicationRecord
     user_practices = {}
 
     includes(:user).each do |practice|
-      if practice.user.present?
+      if practice.user.present? && practice.published?
         user_practices[practice.user] ||= Set.new
         user_practices[practice.user] << practice
       end
     end
 
     PracticeEditor.includes(:user, :practice).each do |editor|
-      user_practices[editor.user] ||= Set.new
-      user_practices[editor.user] << editor.practice
+      if editor.practice.published?
+        user_practices[editor.user] ||= Set.new
+        user_practices[editor.user] << editor.practice
+      end
     end
 
     host_options = Rails.application.config.action_mailer.default_url_options
