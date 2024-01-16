@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Admin email all editors button', type: :feature, js: true do
   let(:admin) { create(:user, :admin) }
   let!(:users) { create_list(:user, 3) }
-  let!(:practices) { create_list(:practice, 3, user: admin) }
+  let!(:practices) { create_list(:practice, 3, user: admin, published: true) }
 
   before do
     ActionMailer::Base.deliveries.clear
