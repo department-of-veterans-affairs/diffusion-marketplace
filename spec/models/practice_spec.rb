@@ -238,7 +238,7 @@ RSpec.describe Practice, type: :model do
     let(:user) { create(:user) }
     let(:other_user) { create(:user) }
     let(:admin) { create(:user) }
-    let!(:practices) { create_list(:practice, 3, user: user) }
+    let!(:practices) { create_list(:practice, 3, user: user, published: true) }
 
     before do
       create(:practice_editor, user: other_user, practice: practices.first)
