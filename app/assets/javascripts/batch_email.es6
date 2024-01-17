@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
             editorInitialized = false;
         }
 
-        document.getElementById('previewSubject').innerHTML = "Subject: " + document.getElementById('emailSubject').value
-        document.getElementById('previewMessage').innerHTML = textArea.value;
+        document.getElementById('previewSubject').textContent = "Subject: " + document.getElementById('emailSubject').value
+        document.getElementById('previewMessage').textContent = textArea.value;
         
         document.getElementById('previewModal').style.display = 'block';
     });
