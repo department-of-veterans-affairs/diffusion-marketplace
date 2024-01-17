@@ -4,27 +4,10 @@
 
 .dm-homepage {
   .homepage-welcome-banner {
-    .homepage-welcome-banner-body-text-container {
-      margin-bottom: 119px;
-
-      @media screen and (min-width: 1024px) {
-        @include u-margin-bottom(0);
-      }
-    }
+    background: #162E51;
   }
 
-  .homepage-welcome-banner-image-container {
-    @include u-position('absolute');
-    bottom: -87px;
-
-    @media screen and (min-width: 1024px) {
-      height: 223px;
-      @include u-right(0);
-      bottom: unset;
-    }
-  }
-
-  .homepage-welcome-banner-image-container, .homepage-featured-topic-image-container, .homepage-featured-innovation-image-container {
+  .homepage-featured-topic-image-container, .homepage-featured-innovation-image-container {
     max-width: 308px;
 
     img {
