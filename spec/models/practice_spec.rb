@@ -209,7 +209,7 @@ RSpec.describe Practice, type: :model do
   describe '.send_email_to_all_editors' do
     it 'sends an email to the editor with exact email and practice info' do
       admin = create(:user, :admin)
-      practice = create(:practice, user: admin)
+      practice = create(:practice, user: admin, published: true)
       subject_text = 'Important Update'
       message_text = 'Please review the latest changes.'
 
