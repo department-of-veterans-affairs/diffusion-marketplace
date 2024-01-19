@@ -485,7 +485,7 @@ class Practice < ApplicationRecord
       mailer_args[:practices] = user_data[:practices]
 
       AdminMailer.send_email_to_editor(
-        mailer_args 
+        mailer_args
       ).deliver_now
     end
   end
@@ -509,9 +509,11 @@ class Practice < ApplicationRecord
 
     host_options = Rails.application.config.action_mailer.default_url_options
 
+    # disallow bulk emails from being sent from deployed STG and DEV apps, should only send the
+    # email to the current_user if listed as `user` or `practice_editor` of a practice
     unless Rails.env.test? || Rails.env.development? || ENV['PROD_SERVERNAME'] == 'PROD'
-      user_practices = user_practices.select do |k|
-        k == current_user
+      user_practices = user_practices.select do |user_practice|
+        user_practice == current_user
       end
     end
 
