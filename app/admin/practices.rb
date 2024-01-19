@@ -44,7 +44,6 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
     subject = ActionController::Base.helpers.sanitize(params[:email][:subject])
     message = ActionController::Base.helpers.sanitize(params[:email][:message])
 
-
     Practice.send_email_to_all_editors(subject, message, current_user)
 
     redirect_to admin_practices_path, notice: "Your batch email to Innovation editors has been sent."
