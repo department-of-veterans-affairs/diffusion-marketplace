@@ -127,6 +127,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = mail_settings
 
   config.action_mailer.default_url_options = { host: ENV.fetch('HOSTNAME') }
+  config.action_mailer.asset_host = ENV.fetch('HOSTNAME')
 
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
