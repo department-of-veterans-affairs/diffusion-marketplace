@@ -246,6 +246,15 @@ ActiveAdmin.register Page do
     before_action :set_page,
                   :delete_page_image_and_alt_text,
                   only: [:create, :update]
+    before_action :set_page_groups, only: [:index]
+
+    def scoped_collection # https://activeadmin.info/2-resource-customization.html#scoping-the-queries
+      unless current_user.has_role?(:admin)
+        end_of_association_chain.where(page_group_id: @page_groups)
+      else
+        super
+      end
+    end
 
     def create
       create_or_update_page
@@ -256,6 +265,10 @@ ActiveAdmin.register Page do
     end
 
     private
+
+    def set_page_groups
+      @page_groups = PageGroup.with_roles(:editor, current_user).pluck(:resource_id)
+    end
 
     def set_page
       page_id = params[:id]
