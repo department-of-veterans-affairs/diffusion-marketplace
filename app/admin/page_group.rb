@@ -12,6 +12,8 @@ ActiveAdmin.register PageGroup do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
+
+  remove_filter :roles
   form do |f|
     f.inputs do
       f.input :name
