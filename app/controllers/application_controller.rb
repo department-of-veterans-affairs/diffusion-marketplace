@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   def authenticate_active_admin_user!
     authenticate_user!
     if current_user.present?
-      is_admin = current_user.has_role?(:admin)
+      is_admin = current_user.has_role?(:admin) || current_user.has_role?(:editor, :any) # TODO: move to relevant admin actions
       terms_accepted = current_user.accepted_terms
       flash[:alert] = "Unauthorized Access!" if !is_admin
       flash[:alert] = "Accept terms and conditions" if !terms_accepted
