@@ -259,6 +259,10 @@ ActiveAdmin.register Page do
 
     private
 
+    def set_page_groups
+      @page_groups = PageGroup.with_roles(:editor, current_user).pluck(:resource_id)
+    end
+
     def set_page
       @page = Page.find_by(id: params[:id])
     end
