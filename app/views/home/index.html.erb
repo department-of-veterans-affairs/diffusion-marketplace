@@ -21,13 +21,7 @@
     </div>
   </section>
 
-  <section
-    class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10"
-    role="region"
-    aria-label="Homepage search section"
-    data-categories="<%= ERB::Util.html_escape(@categories.to_json) %>"
-    data-popular-categories="<%= ERB::Util.html_escape(@popular_categories.to_json) %>"
-  >
+  <section class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10" role="region" aria-label="Homepage search section">
     <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
       <label class="usa-sr-only" for="dm-homepage-search-form">Homepage search</label>
       <div class="dm-homepage-search-container width-full">
