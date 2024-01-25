@@ -21,4 +21,8 @@ class PageGroup < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "name", "slug", "updated_at", "pages_id"]
   end
+
+  def editors
+    User.with_role(:editor, self)
+  end
 end
