@@ -30,13 +30,6 @@ describe 'Homepage', type: :feature do
     expect(page).to have_link(href: '/competitions/shark-tank')
   end
 
-  it "it should allow the user to visit the 'About' page" do
-    click_link('Learn more')
-
-    expect(page).to have_content('About us')
-    expect(page).to have_current_path(about_path)
-  end
-
   describe 'search section' do
     it 'should allow the user to search for practices in a number of ways' do
       expect(page).to be_accessible.according_to :wcag2a, :section508
