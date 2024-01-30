@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Homepage', type: :feature do
+describe 'Homepage', type: :feature, js: true do
   before do
     visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
     visn_9 = Visn.create!(id: 8, name: "VA MidSouth Healthcare Network", number: 9)
@@ -122,5 +122,29 @@ describe 'Homepage', type: :feature do
     expect(page).to have_selector('#search-page', visible: true)
     expect(page).to have_content('1 result')
     expect(page).to have_content(@practice_2.name)
+  end
+
+  describe 'search dropdown functionality' do
+    before do
+      find('#dm-homepage-search-field').click
+    end
+
+    it 'should display the dropdown when the search input is focused' do
+      expect(page).to have_selector('#search-dropdown', visible: :visible)
+    end
+
+    it 'should list popular categories in the dropdown initially' do
+      within '#search-dropdown' do
+        expect(page).to have_content('COVID')
+        expect(page).to have_content('Telehealth')
+      end
+    end
+
+    it 'should navigate to search page with category filter when a category is clicked' do
+      within '#search-dropdown' do
+        first('.category-item').click
+      end
+      expect(page).to have_current_path('/search?category=COVID')
+    end
   end
 end
