@@ -1,13 +1,17 @@
 module CategoriesHelper
   def get_most_popular_categories
-    pop_cat_names = []
-    categories_count = Ahoy::Event.where(name: "Category selected").where("time > ?", Time.now-90.days).pluck(:properties).map { |d| d["category_id"].to_i }.tally
-    if categories_count.present?
-      pop_cats = categories_count.sort_by { |rec, number| number  }.last(20).reverse
-      pop_cat_ids = pop_cats.map {|row| row[0]}
-      pop_cat_names = Category.where(id: pop_cat_ids).pluck(:name)
+    time_limit = Time.now - 90.days
+    Rails.cache.fetch('categories_with_popularity', expires_in: 24.hours) do
+      # returns only categories that can be found in the filters on the /search page
+      categories_by_popularity = Category.where(is_other: false)
+                                      .joins('LEFT JOIN ahoy_events ON categories.id = CAST(ahoy_events.properties ->> \'category_id\' AS INTEGER) AND ahoy_events.name = \'Category selected\' AND ahoy_events.time > \'' + time_limit.to_s(:db) + '\'')
+                                      .joins(:parent_category)
+                                      .where.not(parent_category: nil)
+                                      .group('categories.id')
+                                      .order('COUNT(ahoy_events.id) DESC, categories.name')
+                                      .pluck('categories.name')
+      categories_by_popularity
     end
-    pop_cat_names
   end
 
   def update_category_usages
