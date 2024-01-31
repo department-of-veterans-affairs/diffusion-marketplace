@@ -9,7 +9,7 @@ on:
   push:
     branches: ['master', 'ci-migration', 'ci-migration-cv', 'ci-migration-en', 'ci-migration-pd', 'ci-migration-bj']
   pull_request:
-    branches: ['master']
+    branches: ['master', 'feature/homepage-refresh']
 jobs:
   build:
     name: rspec
@@ -41,7 +41,7 @@ jobs:
           REDIS_HOST: redis_test
           REDIS_PORT: 6379
           REDIS_DB_ID: 0
-      selenium: 
+      selenium:
         image: selenium/standalone-chrome:latest
         ports: ["4444:4444"]
     steps:
