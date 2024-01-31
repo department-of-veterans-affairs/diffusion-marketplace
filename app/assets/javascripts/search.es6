@@ -16,20 +16,18 @@ function setupSearchDropdown(formId) {
     const dropdown = $('#search-dropdown');
 
     const allCategoriesString = $('.homepage-search').attr('data-categories');
-    const popularCategoriesString = $('.homepage-search').attr('data-popular-categories');
 
     const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
-    const popularCategories = popularCategoriesString ? popularCategoriesString.match(/[^",\[\]]+/g) : [];
+    const mostPopularCategories = allCategories.slice(0, 3);
 
     searchInput.focus(function() {
-        updateDropdown(popularCategories);
         dropdown.show();
     });
 
     searchInput.on('input', function() {
         let searchTerm = $(this).val().toLowerCase();
         let filteredCategories = searchTerm ? allCategories.filter(category =>
-            category.toLowerCase().includes(searchTerm)) : popularCategories;
+            category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
         updateDropdown(filteredCategories);
     });
 
@@ -45,7 +43,7 @@ function updateDropdown(categories) {
     categoryList.empty();
 
     categories.forEach(function(category) {
-        let listItem = $(`<li class="category-item">${category}</li>`);
+        let listItem = $(`<li class="category-item padding-bottom-1">${category}</li>`);
         categoryList.append(listItem);
     });
 }
