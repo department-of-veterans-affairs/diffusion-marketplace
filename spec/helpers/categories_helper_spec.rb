@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'CategoriesHelper', type: :helper do
-  describe '#get_most_popular_categories' do
+  describe '#get_category_names_by_popularity' do
     before do
       parent_category1 = create(:category, name: 'Parent Category 1')
       parent_category2 = create(:category, name: 'Parent Category 2')
@@ -22,7 +22,7 @@ RSpec.describe 'CategoriesHelper', type: :helper do
     end
 
     it 'returns the most popular categories based on Ahoy::Event records within the last 90 days' do
-      popular_categories = helper.get_most_popular_categories
+      popular_categories = helper.get_category_names_by_popularity
       expect(popular_categories).to eq(['Category 1', 'Category 4', 'Category 3', 'Category 2', 'Category 5'])
     end
   end
