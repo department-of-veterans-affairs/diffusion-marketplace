@@ -21,7 +21,12 @@
     </div>
   </section>
 
-  <section class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10" role="region" aria-label="Homepage search section">
+  <section
+    class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10"
+    role="region"
+    aria-label="Homepage search section"
+    data-categories="<%= ERB::Util.html_escape(@category_names_by_popularity.to_json) %>"
+  >
     <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
       <label class="usa-sr-only" for="dm-homepage-search-form">Homepage search</label>
       <div class="dm-homepage-search-container width-full">
@@ -34,18 +39,22 @@
           autocomplete="off"
           placeholder="Innovations, categories, partners..."
         >
-        <div id="search-dropdown" class="search-dropdown radius-md bg-white shadow-5 left-0 right-0" style="display: none;">
-          <div class="dropdown-content margin-y-4 margin-x-4">
-            <span class="usa-prose-h3">Categories</span>
-            <ul id="category-list" class="usa-list usa-list--unstyled">
-              <% @popular_categories.each do |category| %>
-                <li class="category-item">
-                  <span class="public-sans margin-y-1"><%= category %></span>
+        <div
+          id="search-dropdown"
+          class="search-dropdown radius-md bg-white shadow-5 left-0 right-0"
+          style="display: none;"
+        >
+          <div class="dropdown-content margin-4">
+            <span class="category-header usa-prose-h3 text-bold">Categories</span>
+            <ul id="category-list" class="usa-list usa-list--unstyled padding-top-2">
+              <% @category_names_by_popularity[0..2].each do |category_name| %>
+                <li class="category-item padding-bottom-1">
+                  <span class="public-sans"><%= category_name %></span>
                 </li>
               <% end %>
             </ul>
-            <span class="public-sans extra-bold margin-y-1">
-              <a href="<%= search_path %>">Browse all categories</a>
+            <span class="public-sans extra-bold padding-top-1">
+              <a href="<%= search_path %>">View all categories</a>
             </span>
           </div>
         </div>
