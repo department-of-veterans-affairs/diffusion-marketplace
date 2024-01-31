@@ -138,5 +138,12 @@ describe 'Homepage', type: :feature, js: true do
         expect(page).to have_current_path('/search')
       end
     end
+
+    it 'should have a link to the search page' do
+      within '#search-dropdown' do
+        click_link('View all categories')
+      end
+      expect(page).to have_current_path('/search')
+    end
   end
 end
