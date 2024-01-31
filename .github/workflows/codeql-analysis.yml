@@ -6,6 +6,7 @@ name: CodeQL
   pull_request:
     branches:
       - master
+      - feature/homepage-refresh
   schedule:
     - cron: 1 12 * * 1
   workflow_dispatch: null
