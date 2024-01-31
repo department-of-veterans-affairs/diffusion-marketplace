@@ -6,6 +6,7 @@
   va_immersive_events_and_news_url = '/communities/va-immersive/events-and-news'
   va_immersive_innovations_url = '/communities/va-immersive/innovations'
   va_immersive_getting_started_url = '/communities/va-immersive/getting-started'
+  va_immersive_publications_url = '/communities/va-immersive/publications'
 %>
 <!-- source: https://designsystem.digital.gov/components/header/#extended -->
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
@@ -110,6 +111,11 @@
             <li class="usa-nav__submenu-item border-base-light">
               <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === va_immersive_getting_started_url %>" href="<%= va_immersive_getting_started_url %>">
                 Getting Started
+              </a>
+            </li>
+            <li class="usa-nav__submenu-item border-base-light">
+              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0 <%= 'usa-current' if request.fullpath === va_immersive_publications_url %>" href="<%= va_immersive_publications_url %>">
+                Publications
               </a>
             </li>
           </ul>
