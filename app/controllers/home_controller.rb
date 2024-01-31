@@ -5,8 +5,7 @@ class HomeController < ApplicationController
 
   def index
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
-    @categories = get_most_popular_categories
-    @popular_categories = @categories[0..2]
+    @category_names_by_popularity = get_category_names_by_popularity
     @featured_topic = Topic.find_by(featured: true)
   end
 
