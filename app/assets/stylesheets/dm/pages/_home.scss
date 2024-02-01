@@ -36,6 +36,17 @@
         color: color($theme-color-base-ink) !important;
       }
     }
+
+    #dm-homepage-search-button {
+      @include u-bg('primary-darker');
+
+      &:hover {
+        @include u-bg('primary-dark');
+      }
+      &:active {
+        @include u-bg('primary-vivid');
+      }
+    }
   }
 
   .featured-innovation-content-container {
