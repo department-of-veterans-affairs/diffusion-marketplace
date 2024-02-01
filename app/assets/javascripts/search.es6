@@ -18,7 +18,7 @@ function setupSearchDropdown(formId) {
     const allCategoriesString = $('.homepage-search').attr('data-categories');
 
     const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
-    const mostPopularCategories = allCategories.slice(0, 3);
+    const mostPopularCategories = allCategories ? allCategories.slice(0, 3) : [];
 
     searchInput.focus(function() {
         dropdown.show();
@@ -55,7 +55,9 @@ $(document).on('click', '.category-item', function() {
 });
 
 addEventListener('turbolinks:load', function () {
-    setupSearchDropdown('#dm-homepage-search-form');
+    if ($('#dm-homepage-search-button').length > 0) {
+        setupSearchDropdown('#dm-homepage-search-form');
+    }
     executePracticeSearch('#dm-navbar-search-desktop-form');
     executePracticeSearch('#dm-navbar-search-mobile-form');
     executePracticeSearch('#dm-homepage-search-form');
