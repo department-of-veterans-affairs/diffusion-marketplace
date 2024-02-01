@@ -43,7 +43,8 @@ function updateDropdown(categories) {
     categoryList.empty();
 
     categories.forEach(function(category) {
-        let listItem = $(`<li class="category-item padding-bottom-1">${category}</li>`);
+        let listItem = $('<li class="category-item padding-bottom-1"></li>');
+        listItem.text(category);
         categoryList.append(listItem);
     });
 }
