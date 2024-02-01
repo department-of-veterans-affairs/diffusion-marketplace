@@ -67,7 +67,7 @@
   &-dark {
     color: color($theme-color-base-ink);
     text-decoration: none;
-    @include u-text('semibold', !important);
+    @include u-text('semibold');
 
     &:hover {
       color: color($theme-color-primary-vivid);
