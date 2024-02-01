@@ -11,7 +11,7 @@
   }
 
   .dm-navbar-search-button {
-    @include u-bg('primary-vivid');
+    @include u-bg('primary-darker');
     @include u-radius-right('md');
     height: 2rem;
     width: 3.0625rem;
@@ -20,6 +20,9 @@
 
     &:hover {
       @include u-bg('primary-dark');
+    }
+    &:active {
+      @include u-bg('primary-vivid');
     }
   }
 
