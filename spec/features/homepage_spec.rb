@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Homepage', type: :feature, js: true do
+describe 'Homepage', type: :feature do
   before do
     visn_8 = create(:visn, id: 7, name: "VA Sunshine Healthcare Network", number: 8)
     visn_9 = create(:visn, id: 8, name: "VA MidSouth Healthcare Network", number: 9)
@@ -106,7 +106,9 @@ describe 'Homepage', type: :feature, js: true do
       expect(current_url).to eq('https://public.govdelivery.com/accounts/USVHA/subscribers/qualify')
     end
   end
+end
 
+describe 'Homepage search', type: :feature, js: true do
   describe 'search dropdown functionality' do
     before do
       find('#dm-homepage-search-field').click
