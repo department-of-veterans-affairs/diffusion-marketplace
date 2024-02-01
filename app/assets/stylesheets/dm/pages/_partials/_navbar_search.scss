@@ -11,19 +11,12 @@
   }
 
   .dm-navbar-search-button {
-    @include u-bg('primary-darker');
+    @include transition-btn-colors;
     @include u-radius-right('md');
     height: 2rem;
     width: 3.0625rem;
     font-size: 1rem;
     padding-top: 0.75rem;
-
-    &:hover {
-      @include u-bg('primary-dark');
-    }
-    &:active {
-      @include u-bg('primary-vivid');
-    }
   }
 
   // desktop

@@ -38,14 +38,7 @@
     }
 
     #dm-homepage-search-button {
-      @include u-bg('primary-darker');
-
-      &:hover {
-        @include u-bg('primary-dark');
-      }
-      &:active {
-        @include u-bg('primary-vivid');
-      }
+      @include transition-btn-colors;
     }
   }
 
