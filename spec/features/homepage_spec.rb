@@ -106,7 +106,6 @@ describe 'Homepage', type: :feature do
       expect(current_url).to eq('https://public.govdelivery.com/accounts/USVHA/subscribers/qualify')
     end
   end
-end
 
   context 'with chrome headless driver', js: true do
     describe 'search dropdown functionality' do
@@ -127,24 +126,17 @@ end
 
       it 'should navigate to search page with category filter when a category is clicked' do
         within '#search-dropdown' do
-          first('.category-item').find('a').click
+          first('.category-item').click
         end
         expect(page).to have_current_path('/search?category=COVID')
       end
 
       it 'should have a link to the search page' do
         within '#search-dropdown' do
-          click_link('Browse all categories')
+          click_link('View all categories')
         end
         expect(page).to have_current_path('/search')
       end
-    end
-
-    it 'should have a link to the search page' do
-      within '#search-dropdown' do
-        click_link('View all categories')
-      end
-      expect(page).to have_current_path('/search')
     end
   end
 end
