@@ -106,37 +106,37 @@ describe 'Homepage', type: :feature do
       expect(current_url).to eq('https://public.govdelivery.com/accounts/USVHA/subscribers/qualify')
     end
   end
-end
 
-describe 'Homepage search', type: :feature, js: true do
-  describe 'search dropdown functionality' do
-    before do
-      find('#dm-homepage-search-field').click
-    end
-
-    it 'should display the dropdown when the search input is focused' do
-      expect(page).to have_selector('#search-dropdown', visible: :visible)
-    end
-
-    it 'should list popular categories in the dropdown initially' do
-      within '#search-dropdown' do
-        expect(page).to have_content('COVID')
-        expect(page).to have_content('Telehealth')
+  context 'with chrome headless driver', js: true do
+    describe 'search dropdown functionality' do
+      before do
+        find('#dm-homepage-search-field').click
       end
-    end
 
-    it 'should navigate to search page with category filter when a category is clicked' do
-      within '#search-dropdown' do
-        first('.category-item').click
+      it 'should display the dropdown when the search input is focused' do
+        expect(page).to have_selector('#search-dropdown', visible: :visible)
       end
-      expect(page).to have_current_path('/search?category=COVID')
-    end
 
-    it 'should have a link to the search page' do
-      within '#search-dropdown' do
-        click_link('View all categories')
+      it 'should list popular categories in the dropdown initially' do
+        within '#search-dropdown' do
+          expect(page).to have_content('COVID')
+          expect(page).to have_content('Telehealth')
+        end
       end
-      expect(page).to have_current_path('/search')
+
+      it 'should navigate to search page with category filter when a category is clicked' do
+        within '#search-dropdown' do
+          first('.category-item').click
+        end
+        expect(page).to have_current_path('/search?category=COVID')
+      end
+
+      it 'should have a link to the search page' do
+        within '#search-dropdown' do
+          click_link('View all categories')
+        end
+        expect(page).to have_current_path('/search')
+      end
     end
   end
 end
