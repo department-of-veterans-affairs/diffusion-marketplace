@@ -43,16 +43,12 @@ function updateDropdown(categories) {
     categoryList.empty();
 
     categories.forEach(function(category) {
-        let listItem = $('<li class="category-item padding-bottom-1"></li>');
-        listItem.text(category);
+        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
+        let listItem = $('<li></li>').addClass('category-item padding-bottom-1').append(link);
+
         categoryList.append(listItem);
     });
 }
-
-$(document).on('click', '.category-item', function() {
-    let category = $(this).text().trim();
-    window.location.href = `/search?category=${encodeURIComponent(category)}`;
-});
 
 addEventListener('turbolinks:load', function () {
     if ($('#dm-homepage-search-button').length > 0) {

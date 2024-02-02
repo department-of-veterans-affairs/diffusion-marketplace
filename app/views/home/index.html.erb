@@ -49,7 +49,7 @@
             <ul id="category-list" class="usa-list usa-list--unstyled padding-top-2">
               <% @category_names_by_popularity[0..2].each do |category_name| %>
                 <li class="category-item padding-bottom-1">
-                  <span class="public-sans"><%= category_name %></span>
+                  <a class="public-sans" href=<%= "/search?category=#{category_name}" %>><%= category_name %></a>
                 </li>
               <% end %>
             </ul>
