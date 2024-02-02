@@ -488,7 +488,7 @@ class PracticesController < ApplicationController
         params[:created] = true
       end
       params[:reload] = true
-      format.js { render 'practices/form/adoptions_forms/create_or_update_diffusion_history.js.erb' }
+      format.js { render 'practices/form/adoptions_forms/create_or_update_diffusion_history' }
     end
   end
 
