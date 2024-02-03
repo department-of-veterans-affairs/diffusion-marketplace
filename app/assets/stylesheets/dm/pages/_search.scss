@@ -128,10 +128,19 @@
       @include u-margin-bottom(0);
     }
   }
+
+  #update-search-results-button {
+    @include transition-btn-colors;
+  }
 }
 
 #update-search-results-form {
+  #mobile_filters_button {
+    @include transition-btn-colors;
+  }
+
   #dm-practice-search-button {
+    @include transition-btn-colors;
     background-image: none !important;
     width: 85px !important;
     padding: 8px 16px 8px 16px !important;
