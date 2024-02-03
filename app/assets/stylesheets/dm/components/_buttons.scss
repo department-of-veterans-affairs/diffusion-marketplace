@@ -187,3 +187,14 @@
   @include u-bg($theme-color-dm-white, !important);
   @include u-text('base-darkest', !important);
 }
+
+@mixin transition-btn-colors { // homepage refresh 2024 colors - delete and update primary palette later
+  @include u-bg('primary-darker');
+
+  &:hover {
+    @include u-bg('primary-dark');
+  }
+  &:active {
+    @include u-bg('primary-vivid');
+  }
+}
