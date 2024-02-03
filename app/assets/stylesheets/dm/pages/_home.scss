@@ -36,6 +36,10 @@
         color: color($theme-color-base-ink) !important;
       }
     }
+
+    #dm-homepage-search-button {
+      @include transition-btn-colors;
+    }
   }
 
   .featured-innovation-content-container {
@@ -86,16 +90,12 @@
   }
 
   .shark-tank-banner {
-    @include u-line-height('sans', 3, !important);
-    @include u-height(8);
-    background-color: color($theme-color-accent-warm);
+    @include u-line-height('sans', 3);
+    background-color: color($theme-color-warning-lighter);
 
     a {
-      @include u-text-decoration('underline', !important);
-    }
-
-    @media screen and (min-width: 640px) {
-      @include u-height(7);
+      @include u-text-decoration('underline');
+      font-weight: 600;
     }
   }
 }
