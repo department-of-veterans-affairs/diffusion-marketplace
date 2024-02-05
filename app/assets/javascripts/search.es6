@@ -16,7 +16,6 @@ function setupSearchDropdown(formId) {
     const dropdown = $('#search-dropdown');
 
     const allCategoriesString = $('.homepage-search').attr('data-categories');
-
     const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
     const mostPopularCategories = allCategories ? allCategories.slice(0, 3) : [];
 
@@ -31,11 +30,14 @@ function setupSearchDropdown(formId) {
         updateDropdown(filteredCategories);
     });
 
-    $(document).click(function(event) {
+    function hideDropdownOutsideClickOrFocus(event) {
         if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
             dropdown.hide();
         }
-    });
+    }
+
+    $(document).on('click', hideDropdownOutsideClickOrFocus);
+    $(document).on('focusin', hideDropdownOutsideClickOrFocus);
 }
 
 function updateDropdown(categories) {
