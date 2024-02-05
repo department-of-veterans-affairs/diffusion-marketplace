@@ -40,6 +40,21 @@
     #dm-homepage-search-button {
       @include transition-btn-colors;
     }
+
+    .search-dropdown {
+      top: 100%; /* Position below the input */
+      @include u-border('gray-30');
+      @include u-position('absolute');
+      z-index: 2000;
+    }
+
+    #category-list .category-item {
+      cursor: pointer;
+    }
+
+    #category-list .category-item:hover {
+      @include u-text-decoration('underline');
+    }
   }
 
   .featured-innovation-content-container {
