@@ -2,26 +2,30 @@ require 'rails_helper'
 
 describe 'Homepage', type: :feature do
   before do
-    visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
-    visn_9 = Visn.create!(id: 8, name: "VA MidSouth Healthcare Network", number: 9)
+    visn_8 = create(:visn, id: 7, name: "VA Sunshine Healthcare Network", number: 8)
+    visn_9 = create(:visn, id: 8, name: "VA MidSouth Healthcare Network", number: 9)
 
-    VaFacility.create!(visn: visn_8, station_number: "673", official_station_name: "James A. Haley Veterans' Hospital", common_name: "Tampa-Florida", street_address_state: "FL")
-    VaFacility.create!(visn: visn_9, station_number: "614", official_station_name: "Memphis VA Medical Center", common_name: "Memphis", street_address_state: "TN")
+    create(:va_facility, visn: visn_8, station_number: "673", official_station_name: "James A. Haley Veterans' Hospital", common_name: "Tampa-Florida", street_address_state: "FL")
+    create(:va_facility, visn: visn_9, station_number: "614", official_station_name: "Memphis VA Medical Center", common_name: "Memphis", street_address_state: "TN")
 
-    @user = User.create!(email: 'naofumi.iwatani@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @user.add_role(User::USER_ROLES[1].to_sym)
-    Practice.create!(name: 'Project HAPPEN', slug: 'project-happen', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'contact-happen@happen.com', user: @user)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
-    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
-    @practice_3 = Practice.create!(name: 'The Third Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
-    PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility_id: 1)
+    @user = create(:user, :admin, email: 'naofumi.iwatani@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+
+    create(:practice, name: 'Project HAPPEN', slug: 'project-happen', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'contact-happen@happen.com', user: @user)
+    @practice = create(:practice, name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
+    @practice_2 = create(:practice, name: 'The Second Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
+    @practice_3 = create(:practice, name: 'The Third Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
+
+    create(:practice_origin_facility, practice: @practice, facility_type: 0, va_facility_id: 1)
+
     @featured_image = "#{Rails.root}/spec/assets/charmander.png"
-    @parent_cat = Category.create!(name: 'First Parent Category', is_other: false)
-    @cat_1 = Category.create!(name: 'COVID', parent_category: @parent_cat)
-    @cat_2 = Category.create!(name: 'Telehealth', parent_category: @parent_cat)
-    CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
-    CategoryPractice.create!(practice: @practice_2, category: @cat_2, created_at: Time.now)
-    CategoryPractice.create!(practice: @practice_3, category: @cat_1, created_at: Time.now)
+    @parent_cat = create(:category, name: 'First Parent Category', is_other: false)
+    @cat_1 = create(:category, name: 'COVID', parent_category: @parent_cat)
+    @cat_2 = create(:category, name: 'Telehealth', parent_category: @parent_cat)
+
+    create(:category_practice, practice: @practice, category: @cat_1)
+    create(:category_practice, practice: @practice_2, category: @cat_2)
+    create(:category_practice, practice: @practice_3, category: @cat_1)
+
     login_as(@user, :scope => :user, :run_callbacks => false)
     visit '/'
   end
@@ -39,12 +43,6 @@ describe 'Homepage', type: :feature do
       find('#dm-homepage-search-button').click
 
       expect(page).to have_content('1 result:')
-      expect(page).to have_content(@practice.name)
-
-      visit '/'
-      # should show all published/enabled/approved practices
-      click_link('Browse all innovations')
-      expect(page).to have_current_path(search_path)
       expect(page).to have_content(@practice.name)
     end
   end
@@ -91,36 +89,54 @@ describe 'Homepage', type: :feature do
 
   it 'should allow the user to subscribe to the DM newsletter by taking them to the GovDelivery site' do
     fill_in('Your email address', with: 'vladilena.milize@test.com')
-    new_window_1 = window_opened_by { click_button('Subscribe today') }
-    within_window new_window_1 do
+
+    new_window = window_opened_by { click_button('Subscribe today') }
+
+    within_window new_window do
+      wait_time = Capybara.default_max_wait_time
+      start_time = Time.now
+
+      loop do
+        current_url_matches = (current_url == 'https://public.govdelivery.com/accounts/USVHA/subscribers/qualify')
+        break if current_url_matches || (Time.now - start_time) > wait_time
+
+        sleep 0.1
+      end
+
       expect(current_url).to eq('https://public.govdelivery.com/accounts/USVHA/subscribers/qualify')
     end
   end
 
-  it 'should take the user to the search page with results that match the popular category chosen' do
-    # Add categories to the popular category list
-    fill_in('dm-homepage-search-field', with: 'COVID')
-    find('#dm-homepage-search-button').click
+  context 'with chrome headless driver', js: true do
+    describe 'search dropdown functionality' do
+      before do
+        find('#dm-homepage-search-field').click
+      end
 
-    visit root_path
-    fill_in('dm-homepage-search-field', with: 'Telehealth')
-    find('#dm-homepage-search-button').click
+      it 'should display the dropdown when the search input is focused' do
+        expect(page).to have_selector('#search-dropdown', visible: :visible)
+      end
 
-    # Make sure the filtering is working as intended with the Telehealth popular category
-    visit root_path
-    all('.popular-category-tag').first.click
-    expect(page).to have_current_path('/search?filter_by=COVID')
-    expect(page).to have_selector('#search-page', visible: true)
-    expect(page).to have_content('2 results')
-    expect(page).to have_content(@practice.name)
-    expect(page).to have_content(@practice_3.name)
+      it 'should list popular categories in the dropdown initially' do
+        within '#search-dropdown' do
+          expect(page).to have_content('COVID')
+          expect(page).to have_content('Telehealth')
+        end
+      end
 
-    # Try the COVID popular category
-    visit root_path
-    all('.popular-category-tag').last.click
-    expect(page).to have_current_path('/search?filter_by=Telehealth')
-    expect(page).to have_selector('#search-page', visible: true)
-    expect(page).to have_content('1 result')
-    expect(page).to have_content(@practice_2.name)
+      it 'should navigate to search page with category filter when a category is clicked' do
+        within '#search-dropdown' do
+          first('.category-item').find('a').click
+        end
+        expect(page).to have_current_path('/search?category=COVID')
+      end
+
+      it 'should have a link to the search page' do
+        within '#search-dropdown' do
+          click_link('View all categories')
+        end
+        expect(page).to have_current_path('/search')
+      end
+    end
   end
 end

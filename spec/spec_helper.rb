@@ -148,6 +148,10 @@ RSpec.configure do |config|
     Capybara.page.driver.browser.manage.window.resize_to(1920, 1080)
     Capybara.page.driver.browser.download_path = "#{Rails.root}/tmp/downloads"
   end
+
+  config.after do
+    Rails.cache.clear
+  end
 end
 
 # Capybara.javascript_driver = :webkit

@@ -19,23 +19,49 @@
     </div>
   </section>
 
-  <section class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10" role="region" aria-label="Homepage search section">
+  <section
+    class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10"
+    role="region"
+    aria-label="Homepage search section"
+    data-categories="<%= ERB::Util.html_escape(@category_names_by_popularity.to_json) %>"
+  >
     <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
-      <label class="usa-sr-only" for="dm-homepage-search-form">
-        Homepage search
-      </label>
+      <label class="usa-sr-only" for="dm-homepage-search-form">Homepage search</label>
       <div class="dm-homepage-search-container width-full">
-        <input class="usa-input height-5" id="dm-homepage-search-field" type="search" name="search" title="Search for innovations" placeholder="&quot;Search terms&quot;">
+        <input
+          class="usa-input height-5"
+          id="dm-homepage-search-field"
+          type="search"
+          name="search"
+          title="Search for innovations"
+          autocomplete="off"
+          placeholder="Innovations, categories, partners..."
+        >
+        <div
+          id="search-dropdown"
+          class="search-dropdown radius-md bg-white shadow-5 left-0 right-0"
+          style="display: none;"
+        >
+          <div class="dropdown-content margin-4">
+            <span class="category-header usa-prose-h3 text-bold" aria-label="Categories">Categories</span>
+            <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
+              <% @category_names_by_popularity[0..2].each do |category_name| %>
+                <li class="category-item padding-bottom-1">
+                  <a class="public-sans" href=<%= "/search?category=#{category_name}" %>><%= category_name %></a>
+                </li>
+              <% end %>
+            </ul>
+            <span class="public-sans extra-bold padding-top-1">
+              <a class="public-sans text-bold" href="<%= search_path %>">View all categories</a>
+            </span>
+          </div>
+        </div>
         <button id="dm-homepage-search-button" class="usa-button height-5 margin-right-0" type="submit">
           <span class="usa-search__submit-text">Search</span>
         </button>
       </div>
     </form>
-    <p class="usa-prose-body">
-      <%= link_to 'Browse all innovations', search_path, class: 'dm-button--unstyled-primary' %>
-    </p>
   </section>
-  <%= render partial: 'home/popular_categories_section', locals: { section_name: 'popular categories' } if @popular_categories.any? %>
 
   <% if @featured_topic.present? && @featured_topic.title.present? && @featured_topic.description.present? && @featured_topic.url.present? && @featured_topic.cta_text.present? && @featured_topic.attachment.exists?%>
     <%= render partial: 'home/featured_section', locals: {

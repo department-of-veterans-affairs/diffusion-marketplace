@@ -78,11 +78,6 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to_not have_css('#breadcrumbs')
     end
 
-    it 'should not display breadcrumbs for the search page when clicking "Browse all innovations"' do
-      expect(page).to have_link('Browse all innovations', href: search_path)
-      expect(page).to_not have_css('#breadcrumbs')
-    end
-
     it 'should not display breadcrumbs for the search page when clicking the homepage search' do
       find('#dm-navbar-search-desktop-button').click
       expect(page).to_not have_css('#breadcrumbs')
