@@ -48,13 +48,22 @@
       z-index: 2000;
     }
 
-    #category-list .category-item {
-      cursor: pointer;
-    }
+    #category-list {
+      a {
+        text-decoration: none;
+        color: color($theme-color-base-ink);
 
-    #category-list .category-item:hover {
-      @include u-text-decoration('underline');
-    }
+
+        &:hover, &:active, &:focus {
+          @include u-text-decoration('underline');
+        }
+
+
+        &:visited {
+          color: color($theme-color-base-ink);
+        }
+      }
+    };
   }
 
   .featured-innovation-content-container {
