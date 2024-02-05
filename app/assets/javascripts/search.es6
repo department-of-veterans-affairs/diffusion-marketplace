@@ -11,12 +11,50 @@ function executePracticeSearch(formId) {
     });
 }
 
+function setupSearchDropdown(formId) {
+    const searchInput = $(`${formId} .usa-input`);
+    const dropdown = $('#search-dropdown');
+
+    const allCategoriesString = $('.homepage-search').attr('data-categories');
+
+    const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
+    const mostPopularCategories = allCategories ? allCategories.slice(0, 3) : [];
+
+    searchInput.focus(function() {
+        dropdown.show();
+    });
+
+    searchInput.on('input', function() {
+        let searchTerm = $(this).val().toLowerCase();
+        let filteredCategories = searchTerm ? allCategories.filter(category =>
+            category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
+        updateDropdown(filteredCategories);
+    });
+
+    $(document).click(function(event) {
+        if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
+            dropdown.hide();
+        }
+    });
+}
+
+function updateDropdown(categories) {
+    let categoryList = $('#category-list');
+    categoryList.empty();
+
+    categories.forEach(function(category) {
+        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
+        let listItem = $('<li></li>').addClass('category-item padding-bottom-1').append(link);
+
+        categoryList.append(listItem);
+    });
+}
+
 addEventListener('turbolinks:load', function () {
-    // search in navbar
+    if ($('#dm-homepage-search-button').length > 0) {
+        setupSearchDropdown('#dm-homepage-search-form');
+    }
     executePracticeSearch('#dm-navbar-search-desktop-form');
-    // search in mobile navbar
     executePracticeSearch('#dm-navbar-search-mobile-form');
-    // search on homepage
     executePracticeSearch('#dm-homepage-search-form');
 });
-
