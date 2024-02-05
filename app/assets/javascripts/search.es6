@@ -11,6 +11,21 @@ function executePracticeSearch(formId) {
     });
 }
 
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
 function setupSearchDropdown(formId) {
     const searchInput = $(`${formId} .usa-input`);
     const dropdown = $('#search-dropdown');
@@ -21,36 +36,59 @@ function setupSearchDropdown(formId) {
 
     searchInput.focus(function() {
         dropdown.show();
+        searchInput.attr('aria-expanded', 'true');
     });
 
-    searchInput.on('input', function() {
-        let searchTerm = $(this).val().toLowerCase();
-        let filteredCategories = searchTerm ? allCategories.filter(category =>
-            category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
+    searchInput.on('input', debounce(function() {
+        let searchTerm = searchInput.val().toLowerCase();
+        let filteredCategories = searchTerm ? allCategories.filter(category => category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
         updateDropdown(filteredCategories);
-    });
+    }, 300));
 
-    function hideDropdownOutsideClickOrFocus(event) {
+    $(document).on('click', function(event) {
         if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
             dropdown.hide();
+            searchInput.attr('aria-expanded', 'false');
         }
-    }
+    });
 
-    $(document).on('click', hideDropdownOutsideClickOrFocus);
-    $(document).on('focusin', hideDropdownOutsideClickOrFocus);
+    $(document).on('focusin', function(event) {
+        if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
+            dropdown.hide();
+            searchInput.attr('aria-expanded', 'false');
+        }
+    });
+    $(document).keydown(function(e) {
+        // Check if the dropdown is expanded
+        if (searchInput.attr('aria-expanded') === 'true') {
+            // Define selectors for all focusable elements inside the dropdown
+            const items = $('#search-dropdown .category-item a, #search-dropdown .public-sans.text-bold');
+            const focusedElement = document.activeElement;
+            const focusedIndex = items.index(focusedElement);
+
+            // Handle arrow key navigation
+            if (e.keyCode === 40 || e.keyCode === 38) {
+                e.preventDefault(); // Prevent scrolling the page with arrow keys
+                if (e.keyCode === 40 && focusedIndex < items.length - 1) { // Down arrow
+                    items.eq(focusedIndex + 1).focus();
+                } else if (e.keyCode === 38 && focusedIndex > 0) { // Up arrow
+                    items.eq(focusedIndex - 1).focus();
+                }
+            }
+        }
+    });
 }
 
 function updateDropdown(categories) {
     let categoryList = $('#category-list');
     categoryList.empty();
-
     categories.forEach(function(category) {
         let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
         let listItem = $('<li></li>').addClass('category-item padding-bottom-1').append(link);
-
         categoryList.append(listItem);
     });
 }
+
 
 addEventListener('turbolinks:load', function () {
     if ($('#dm-homepage-search-button').length > 0) {
