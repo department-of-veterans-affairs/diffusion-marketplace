@@ -37,6 +37,10 @@
       }
     }
 
+    #dm-homepage-search-button {
+      @include transition-btn-colors;
+    }
+
     .search-dropdown {
       top: 100%; /* Position below the input */
       @include u-border('gray-30');
@@ -50,9 +54,6 @@
 
     #category-list .category-item:hover {
       @include u-text-decoration('underline');
-
-    #dm-homepage-search-button {
-      @include transition-btn-colors;
     }
   }
 
