@@ -96,18 +96,18 @@ function buildPracticeCard(result) {
         '</h3>';
 
     // Default card image
-    var cardImagePlaceholder = 
+    var cardImagePlaceholder =
         '<div class="practice-card-img-placeholder" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '" data-practice-name="' + practiceName + '"  ></div>'
 
     var cardRetiredBanner = '';
     if (result.item.retired) {
         cardRetiredBanner = '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
     }
-    
+
 
     cardHtml +=
         '<div class="dm-practice-card padding-bottom-3 tablet:grid-col-6 desktop:grid-col-4 position-relative">' +
-            '<a href="/innovations/' + result.item.slug + 
+            '<a href="/innovations/' + result.item.slug +
                 '" tabindex="-1" aria-hidden="true" class="dm-practice-link-aria-hidden position-absolute top-0 bottom-3 left-105 right-105 z-100"></a>' +
             '<div class="dm-practice-card-container">' +
                 cardImagePlaceholder +
@@ -1065,12 +1065,16 @@ function searchPracticesPage() {
         $(containerEl).addClass('display-none');
     }
 
+    var accordionButton = $('.search-filters-accordion-button')
+    function accordionText(checkboxCount, inputCount) {
+        return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')');
+    }
+
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
         hideResultsSectionElAndShowSpinner();
 
         // Close search filter accordion if it's open
-        var accordionButton = $('.search-filters-accordion-button')
         if (accordionButton.attr('aria-expanded') == 'true') {
             accordionButton.attr('aria-expanded', 'false');
             $('#search_filters_dropdown').attr('hidden', 'true');
@@ -1137,9 +1141,6 @@ function searchPracticesPage() {
         var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
         var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== '';
 
-        function accordionText(checkboxCount, inputCount) {
-            return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')');
-        }
 
         if (checkboxCount > 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
             accordionText(checkboxCount, 1);
@@ -1204,13 +1205,23 @@ function searchPracticesPage() {
 
     if (window.location.pathname === '/search' && window.location.search !== '' && searchLocation[0] !== '?filter_by') {
         hideResultsSectionElAndShowSpinner();
-        var query = window.location.search.split('=')[1];
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('query');
+        const category = params.get('category');
 
-        search(decodeURI(query));
-        if (query !== undefined) {
-            searchField.value = decodeURI(query.split('&')[0]);
+        if (category) {
+            const checkboxSelector = `input[type="checkbox"][name="${category}"]`;
+            const checkbox = $(checkboxSelector);
+            checkbox.prop('checked', true);
+            accordionText(1, 0)
+            search('', [category]);
+        } else if (query) {
+            search(decodeURI(query));
+            searchField.value = decodeURI(query);
         } else {
+            // No query or category filter
             searchField.value = '';
+            search('');
         }
     } else if ((searchLocation[0] === '?filter_by') || (window.location.pathname === '/search' && window.location.search === '')) {
         hideResultsSectionElAndShowSpinner();
