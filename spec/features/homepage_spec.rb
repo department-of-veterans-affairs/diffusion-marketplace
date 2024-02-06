@@ -133,7 +133,7 @@ describe 'Homepage', type: :feature do
 
       it 'should have a link to the search page' do
         within '#search-dropdown' do
-          click_link('View all categories')
+          click_link('Browse all categories')
         end
         expect(page).to have_current_path('/search')
       end
