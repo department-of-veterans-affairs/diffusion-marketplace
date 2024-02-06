@@ -21,18 +21,37 @@ function setupSearchDropdown(formId) {
 
     searchInput.focus(function() {
         dropdown.show();
+        searchInput.attr('aria-expanded', 'true');
     });
 
     searchInput.on('input', function() {
-        let searchTerm = $(this).val().toLowerCase();
+        let searchTerm = searchInput.val().toLowerCase();
         let filteredCategories = searchTerm ? allCategories.filter(category =>
             category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
         updateDropdown(filteredCategories);
     });
 
+    $(document).keydown(function(e) {
+        if (searchInput.attr('aria-expanded') === 'true') {
+            const items = $('#search-dropdown .category-item a, #search-dropdown .public-sans.text-bold');
+            const focusedElement = document.activeElement;
+            const focusedIndex = items.index(focusedElement);
+
+            if (e.keyCode === 40 || e.keyCode === 38) {
+                e.preventDefault();
+                if (e.keyCode === 40 && focusedIndex < items.length - 1) {
+                    items.eq(focusedIndex + 1).focus();
+                } else if (e.keyCode === 38 && focusedIndex > 0) {
+                    items.eq(focusedIndex - 1).focus();
+                }
+            }
+        }
+    });
+
     function hideDropdownOutsideClickOrFocus(event) {
         if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
             dropdown.hide();
+            searchInput.attr('aria-expanded', 'false');
         }
     }
 
