@@ -23,7 +23,7 @@ RSpec.describe 'CategoriesHelper', type: :helper do
 
     it 'returns the most popular categories based on Ahoy::Event records within the last 90 days' do
       popular_categories = helper.get_category_names_by_popularity
-      expect(popular_categories).to eq(['Category 1', 'Category 4', 'Category 3', 'Category 2', 'Category 5'])
+      expect(popular_categories).to eq([['Category 1', 5], ['Category 4', 4], ['Category 3', 3], ['Category 2', 2], ['Category 5', 0]])
     end
   end
 end
