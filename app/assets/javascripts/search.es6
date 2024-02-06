@@ -11,6 +11,21 @@ function executePracticeSearch(formId) {
     });
 }
 
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
 function setupSearchDropdown(formId) {
     const searchInput = $(`${formId} .usa-input`);
     const dropdown = $('#search-dropdown');
@@ -24,11 +39,11 @@ function setupSearchDropdown(formId) {
         searchInput.attr('aria-expanded', 'true');
     });
 
-    searchInput.on('input', function() {
+    searchInput.on('input', debounce(function() {
         let searchTerm = searchInput.val().toLowerCase();
         let filteredCategories = searchTerm ? allCategories.filter(category => category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
         updateDropdown(filteredCategories);
-    });
+    }, 300));
 
     $(document).on('click', function(event) {
         if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
