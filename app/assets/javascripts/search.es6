@@ -33,7 +33,7 @@ function setupSearchDropdown(formId) {
 
     $(document).keydown(function(e) {
         if (searchInput.attr('aria-expanded') === 'true') {
-            const items = $('#search-dropdown .category-item a, #search-dropdown .public-sans.text-bold');
+            const items = $('#search-dropdown .category-item a, #search-dropdown .browse-all-link');
             const focusedElement = document.activeElement;
             const focusedIndex = items.index(focusedElement);
 
