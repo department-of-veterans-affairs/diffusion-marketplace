@@ -58,6 +58,7 @@ function setupSearchDropdown(formId) {
             searchInput.attr('aria-expanded', 'false');
         }
     });
+
     $(document).keydown(function(e) {
         if (searchInput.attr('aria-expanded') === 'true') {
             const items = $('#search-dropdown .category-item a, #search-dropdown .public-sans.text-bold');
