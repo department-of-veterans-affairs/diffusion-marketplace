@@ -46,15 +46,37 @@
       @include u-border('gray-30');
       @include u-position('absolute');
       z-index: 2000;
+
+      .browse-all-link {
+        color: color($theme-color-base-ink);
+        @include u-text-decoration('underline');
+
+        &:hover, &:focus {
+          color: color('primary-dark');
+        }
+
+        &:active {
+          color: color('primary-vivid');
+        }
+      }
     }
 
-    #category-list .category-item {
-      cursor: pointer;
-    }
+    #category-list {
+      a {
+        text-decoration: none;
+        color: color($theme-color-base-ink);
 
-    #category-list .category-item:hover {
-      @include u-text-decoration('underline');
-    }
+
+        &:hover, &:active, &:focus {
+          @include u-text-decoration('underline');
+        }
+
+
+        &:visited {
+          color: color($theme-color-base-ink);
+        }
+      }
+    };
   }
 
   .featured-innovation-content-container {
