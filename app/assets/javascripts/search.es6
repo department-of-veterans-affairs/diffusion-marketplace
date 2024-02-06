@@ -16,9 +16,8 @@ function setupSearchDropdown(formId) {
     const dropdown = $('#search-dropdown');
 
     const allCategoriesString = $('.homepage-search').attr('data-categories');
-
-    const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
-    const mostPopularCategories = allCategories ? allCategories.slice(0, 3) : [];
+    const allCategories = JSON.parse(allCategoriesString) || [];
+    const mostPopularCategories = allCategories.slice(0, 3);
 
     searchInput.focus(function() {
         dropdown.show();
@@ -26,8 +25,16 @@ function setupSearchDropdown(formId) {
 
     searchInput.on('input', function() {
         let searchTerm = $(this).val().toLowerCase();
-        let filteredCategories = searchTerm ? allCategories.filter(category =>
-            category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
+        let filteredCategories;
+        if (searchTerm) {
+            // return top 3 categories by popularity that contain search term as substring
+            filteredCategories = allCategories
+                .filter(([categoryName, _]) => categoryName.toLowerCase().includes(searchTerm))
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+        } else {
+            filteredCategories = mostPopularCategories;
+        }
         updateDropdown(filteredCategories);
     });
 
@@ -42,8 +49,9 @@ function updateDropdown(categories) {
     let categoryList = $('#category-list');
     categoryList.empty();
 
-    categories.forEach(function(category) {
-        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
+    categories.forEach(function([category, _]) {
+        let linkText = `${category}`;
+        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(linkText).addClass('public-sans');
         let listItem = $('<li></li>').addClass('category-item padding-bottom-1').append(link);
 
         categoryList.append(listItem);
