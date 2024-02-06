@@ -11,31 +11,67 @@ function executePracticeSearch(formId) {
     });
 }
 
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
 function setupSearchDropdown(formId) {
     const searchInput = $(`${formId} .usa-input`);
     const dropdown = $('#search-dropdown');
 
     const allCategoriesString = $('.homepage-search').attr('data-categories');
-
     const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
     const mostPopularCategories = allCategories ? allCategories.slice(0, 3) : [];
 
     searchInput.focus(function() {
         dropdown.show();
+        searchInput.attr('aria-expanded', 'true');
     });
 
-    searchInput.on('input', function() {
-        let searchTerm = $(this).val().toLowerCase();
+    searchInput.on('input', debounce(function() {
+        let searchTerm = searchInput.val().toLowerCase();
         let filteredCategories = searchTerm ? allCategories.filter(category =>
             category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
         updateDropdown(filteredCategories);
-    });
+    }, 300));
 
-    $(document).click(function(event) {
-        if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
-            dropdown.hide();
+    $(document).keydown(function(e) {
+        if (searchInput.attr('aria-expanded') === 'true') {
+            const items = $('#search-dropdown .category-item a, #search-dropdown .public-sans.text-bold');
+            const focusedElement = document.activeElement;
+            const focusedIndex = items.index(focusedElement);
+
+            if (e.keyCode === 40 || e.keyCode === 38) {
+                e.preventDefault();
+                if (e.keyCode === 40 && focusedIndex < items.length - 1) {
+                    items.eq(focusedIndex + 1).focus();
+                } else if (e.keyCode === 38 && focusedIndex > 0) {
+                    items.eq(focusedIndex - 1).focus();
+                }
+            }
         }
     });
+
+    function hideDropdownOutsideClickOrFocus(event) {
+        if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
+            dropdown.hide();
+            searchInput.attr('aria-expanded', 'false');
+        }
+    }
+
+    $(document).on('click', hideDropdownOutsideClickOrFocus);
+    $(document).on('focusin', hideDropdownOutsideClickOrFocus);
 }
 
 function updateDropdown(categories) {
@@ -44,6 +80,7 @@ function updateDropdown(categories) {
 
     categories.forEach(function(category) {
         let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
+        link.attr('role', 'option')
         let listItem = $('<li></li>').addClass('category-item padding-bottom-1').append(link);
 
         categoryList.append(listItem);
