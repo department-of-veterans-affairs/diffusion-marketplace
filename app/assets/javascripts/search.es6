@@ -65,6 +65,7 @@ function updateDropdown(categories) {
 
     categories.forEach(function(category) {
         let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
+        link.attr('role', 'option')
         let listItem = $('<li></li>').addClass('category-item padding-bottom-1').append(link);
 
         categoryList.append(listItem);
