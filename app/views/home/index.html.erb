@@ -36,6 +36,10 @@
           title="Search for innovations"
           autocomplete="off"
           placeholder="Innovations, categories, partners..."
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-controls="category-list"
         >
         <div
           id="search-dropdown"
@@ -44,10 +48,10 @@
         >
           <div class="dropdown-content margin-4">
             <span class="category-header usa-prose-h3 text-bold" aria-label="Categories">Categories</span>
-            <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1" role="listbox" aria-live="polite">
+            <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1" role="listbox" aria-label="Categories">
               <% @category_names_by_popularity[0..2].each do |category_name| %>
                 <li class="category-item padding-bottom-1">
-                  <a class="public-sans" href=<%= "/search?category=#{category_name}" %>><%= category_name %></a>
+                  <a class="public-sans" role="option" href=<%= "/search?category=#{category_name}" %>><%= category_name %></a>
                 </li>
               <% end %>
             </ul>
