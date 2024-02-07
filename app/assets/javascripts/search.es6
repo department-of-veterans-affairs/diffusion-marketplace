@@ -16,8 +16,8 @@ function setupSearchDropdown(formId) {
     const dropdown = $('#search-dropdown');
 
     const allCategoriesString = $('.homepage-search').attr('data-categories');
-    const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
-    const mostPopularCategories = allCategories ? allCategories.slice(0, 3) : [];
+    const allCategories = JSON.parse(allCategoriesString) || [];
+    const mostPopularCategories = allCategories.slice(0, 3);
 
     searchInput.focus(function() {
         dropdown.show();
@@ -26,27 +26,35 @@ function setupSearchDropdown(formId) {
 
     searchInput.on('input', function() {
         let searchTerm = searchInput.val().toLowerCase();
-        let filteredCategories = searchTerm ? allCategories.filter(category =>
-            category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
+        let filteredCategories;
+        if (searchTerm) {
+            // return top 3 categories by popularity that contain search term as substring
+            filteredCategories = allCategories
+                .filter(([categoryName, _]) => categoryName.toLowerCase().includes(searchTerm))
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+        } else {
+            filteredCategories = mostPopularCategories;
+        }
         updateDropdown(filteredCategories);
     });
 
-    $(document).keydown(function(e) {
-        if (searchInput.attr('aria-expanded') === 'true') {
-            const items = $('#search-dropdown .category-item a, #search-dropdown .browse-all-link');
-            const focusedElement = document.activeElement;
-            const focusedIndex = items.index(focusedElement);
+    // $(document).keydown(function(e) {
+    //     if (searchInput.attr('aria-expanded') === 'true') {
+    //         const items = $('#search-dropdown .category-item a, #search-dropdown .browse-all-link');
+    //         const focusedElement = document.activeElement;
+    //         const focusedIndex = items.index(focusedElement);
 
-            if (e.keyCode === 40 || e.keyCode === 38) {
-                e.preventDefault();
-                if (e.keyCode === 40 && focusedIndex < items.length - 1) {
-                    items.eq(focusedIndex + 1).focus();
-                } else if (e.keyCode === 38 && focusedIndex > 0) {
-                    items.eq(focusedIndex - 1).focus();
-                }
-            }
-        }
-    });
+    //         if (e.keyCode === 40 || e.keyCode === 38) {
+    //             e.preventDefault();
+    //             if (e.keyCode === 40 && focusedIndex < items.length - 1) {
+    //                 items.eq(focusedIndex + 1).focus();
+    //             } else if (e.keyCode === 38 && focusedIndex > 0) {
+    //                 items.eq(focusedIndex - 1).focus();
+    //             }
+    //         }
+    //     }
+    // });
 
     function hideDropdownOutsideClickOrFocus(event) {
         if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
@@ -63,8 +71,9 @@ function updateDropdown(categories) {
     let categoryList = $('#category-list');
     categoryList.empty();
 
-    categories.forEach(function(category) {
-        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
+    categories.forEach(function([category, _]) {
+        let linkText = `${category}`;
+        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(linkText).addClass('public-sans');
         let listItem = $('<li></li>').addClass('category-item padding-bottom-1').append(link);
 
         categoryList.append(listItem);

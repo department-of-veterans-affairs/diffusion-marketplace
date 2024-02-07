@@ -110,17 +110,31 @@ describe 'Homepage', type: :feature do
   context 'with chrome headless driver', js: true do
     describe 'search dropdown functionality' do
       before do
-        find('#dm-homepage-search-field').click
+        @cat_3 = create(:category, name: 'Optometry', parent_category: @parent_cat)
+        @cat_4 = create(:category, name: 'Surgery', parent_category: @parent_cat)
+        @cat_5 = create(:category, name: 'Pediatrics', parent_category: @parent_cat)
+        @cat_6 = create(:category, name: 'Logistics', parent_category: @parent_cat)
+        ahoy_visit = create(:ahoy_visit, user: User.last)
+        30.times { create(:ahoy_event, visit: ahoy_visit, properties: { category_id: @cat_1.id.to_s }, time: 45.days.ago) }
+        25.times { create(:ahoy_event, visit: ahoy_visit, properties: { category_id: @cat_2.id.to_s }, time: 45.days.ago) }
+        20.times { create(:ahoy_event, visit: ahoy_visit, properties: { category_id: @cat_3.id.to_s }, time: 45.days.ago) }
+        15.times { create(:ahoy_event, visit: ahoy_visit, properties: { category_id: @cat_4.id.to_s }, time: 45.days.ago) }
+        10.times { create(:ahoy_event, visit: ahoy_visit, properties: { category_id: @cat_5.id.to_s }, time: 45.days.ago) }
+        5.times { create(:ahoy_event, visit: ahoy_visit, properties: { category_id: @cat_6.id.to_s }, time: 45.days.ago) }
+        @search_input = find('#dm-homepage-search-field')
+        @search_input.click
       end
 
       it 'should display the dropdown when the search input is focused' do
         expect(page).to have_selector('#search-dropdown', visible: :visible)
       end
 
-      it 'should list popular categories in the dropdown initially' do
+      it 'should list top 3 categories by popularity in the dropdown initially' do
         within '#search-dropdown' do
+          # expect categories to be listed in order of "popularity"
           expect(page).to have_content('COVID')
           expect(page).to have_content('Telehealth')
+          expect(page).to have_content('Optometry')
         end
       end
 
@@ -129,6 +143,13 @@ describe 'Homepage', type: :feature do
           first('.category-item').find('a').click
         end
         expect(page).to have_current_path('/search?category=COVID')
+      end
+
+      it 'should update dropdown contents with 3 most popular categories containing substring' do
+        @search_input.send_keys('as')
+        expect(page).to have_content('Surgery')
+        expect(page).to have_content('Pediatrics')
+        expect(page).to have_content('Logistics')
       end
 
       it 'should have a link to the search page' do

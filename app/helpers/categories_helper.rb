@@ -16,7 +16,8 @@ module CategoriesHelper
               .where.not(parent_category: nil)
               .group('categories.id')
               .order('COUNT(ahoy_events.id) DESC, categories.name')
-              .pluck('categories.name')
+              .select('categories.name, COUNT(ahoy_events.id) AS events_count')
+              .map { |category| [category.name, category.events_count] }
     end
   end
 
