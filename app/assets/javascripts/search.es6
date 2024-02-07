@@ -21,6 +21,7 @@ function setupSearchDropdown(formId) {
 
     searchInput.focus(function() {
         dropdown.show();
+        searchInput.attr('aria-expanded', 'true');
     });
 
     searchInput.on('input', function() {
@@ -38,11 +39,32 @@ function setupSearchDropdown(formId) {
         updateDropdown(filteredCategories);
     });
 
-    $(document).click(function(event) {
-        if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
-            dropdown.hide();
+    $(document).keydown(function(e) {
+        if (searchInput.attr('aria-expanded') === 'true') {
+            const items = $('#search-dropdown .category-item a, #search-dropdown .browse-all-link');
+            const focusedElement = document.activeElement;
+            const focusedIndex = items.index(focusedElement);
+
+            if (e.keyCode === 40 || e.keyCode === 38) {
+                e.preventDefault();
+                if (e.keyCode === 40 && focusedIndex < items.length - 1) {
+                    items.eq(focusedIndex + 1).focus();
+                } else if (e.keyCode === 38 && focusedIndex > 0) {
+                    items.eq(focusedIndex - 1).focus();
+                }
+            }
         }
     });
+
+    function hideDropdownOutsideClickOrFocus(event) {
+        if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
+            dropdown.hide();
+            searchInput.attr('aria-expanded', 'false');
+        }
+    }
+
+    $(document).on('click', hideDropdownOutsideClickOrFocus);
+    $(document).on('focusin', hideDropdownOutsideClickOrFocus);
 }
 
 function updateDropdown(categories) {
