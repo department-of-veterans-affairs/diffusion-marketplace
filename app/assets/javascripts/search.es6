@@ -25,7 +25,7 @@ function setupSearchDropdown(formId) {
     });
 
     searchInput.on('input', function() {
-        let searchTerm = $(this).val().toLowerCase();
+        let searchTerm = searchInput.val().toLowerCase();
         let filteredCategories;
         if (searchTerm) {
             // return top 3 categories by popularity that contain search term as substring
@@ -39,22 +39,22 @@ function setupSearchDropdown(formId) {
         updateDropdown(filteredCategories);
     });
 
-    $(document).keydown(function(e) {
-        if (searchInput.attr('aria-expanded') === 'true') {
-            const items = $('#search-dropdown .category-item a, #search-dropdown .browse-all-link');
-            const focusedElement = document.activeElement;
-            const focusedIndex = items.index(focusedElement);
+    // $(document).keydown(function(e) {
+    //     if (searchInput.attr('aria-expanded') === 'true') {
+    //         const items = $('#search-dropdown .category-item a, #search-dropdown .browse-all-link');
+    //         const focusedElement = document.activeElement;
+    //         const focusedIndex = items.index(focusedElement);
 
-            if (e.keyCode === 40 || e.keyCode === 38) {
-                e.preventDefault();
-                if (e.keyCode === 40 && focusedIndex < items.length - 1) {
-                    items.eq(focusedIndex + 1).focus();
-                } else if (e.keyCode === 38 && focusedIndex > 0) {
-                    items.eq(focusedIndex - 1).focus();
-                }
-            }
-        }
-    });
+    //         if (e.keyCode === 40 || e.keyCode === 38) {
+    //             e.preventDefault();
+    //             if (e.keyCode === 40 && focusedIndex < items.length - 1) {
+    //                 items.eq(focusedIndex + 1).focus();
+    //             } else if (e.keyCode === 38 && focusedIndex > 0) {
+    //                 items.eq(focusedIndex - 1).focus();
+    //             }
+    //         }
+    //     }
+    // });
 
     function hideDropdownOutsideClickOrFocus(event) {
         if (!$(event.target).closest(`${formId}, #search-dropdown`).length) {
