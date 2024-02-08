@@ -27,7 +27,7 @@ function setupSearchDropdown(formId) {
     searchInput.on('input', function() {
         let searchTerm = searchInput.val().toLowerCase();
         let filteredCategories = searchTerm ? allCategories.filter(category =>
-            category.toLowerCase().includes(searchTerm)) : mostPopularCategories;
+            category.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCategories;
         updateDropdown(filteredCategories);
     });
 
