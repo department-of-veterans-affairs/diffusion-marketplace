@@ -23,7 +23,7 @@
     class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10"
     role="region"
     aria-label="Homepage search section"
-    data-categories="<%= ERB::Util.html_escape(@category_names_by_popularity.to_json) %>"
+    data-categories="<%= @category_names_by_popularity %>"
   >
     <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
       <label class="usa-sr-only" for="dm-homepage-search-form">Homepage search</label>
