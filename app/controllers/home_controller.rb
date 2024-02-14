@@ -85,11 +85,11 @@ class HomeController < ApplicationController
   end
 
   def all_current_practices
-    Practice.where(published: true, retired: false).pluck("name")
+    Practice.where(published: true, retired: false).order("created_at DESC").pluck("name")
   end
 
   def all_public_practices
-    Practice.where(published: true, is_public: true, retired: false).pluck("name")
+    Practice.where(published: true, is_public: true, retired: false).order("created_at DESC").pluck("name")
   end
 
   def get_diffusion_histories(is_public_practice)
