@@ -25,6 +25,7 @@
     aria-label="Homepage search section"
     data-categories="<%= @category_names_by_popularity %>"
     data-innovations="<%= @practice_names %>"
+    data-innovation-links="<%= @practice_names_and_slugs.to_json %>"
   >
     <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
       <label class="usa-sr-only" for="dm-homepage-search-form">Homepage search</label>

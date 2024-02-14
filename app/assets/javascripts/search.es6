@@ -66,6 +66,7 @@ function setupSearchDropdown(formId) {
 }
 
 function updateDropdown(categories, innovations) {
+    const innovationLinks = JSON.parse($('.homepage-search').attr('data-innovation-links'));
     let categoryList = $('#category-list');
     let innovationList = $('#practice-list');
     $('li').remove('.search-result');
@@ -78,7 +79,7 @@ function updateDropdown(categories, innovations) {
     });
 
     innovations.forEach(function(innovation) {
-        let link = $('<a></a>').attr('href', `/innovations/`).text(innovation);
+        let link = $('<a></a>').attr('href', `/innovations/${innovationLinks[innovation]}` ).text(innovation);
         let listItem = $('<li></li>').addClass('search-result padding-bottom-1').append(link);
 
         innovationList.append(listItem);
