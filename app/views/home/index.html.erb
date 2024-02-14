@@ -48,7 +48,7 @@
             <ul id="practice-list" class="usa-list usa-list--unstyled padding-top-1">
               <% @practice_names[0..2].each do |practice_name| %>
                 <li class="practice-item padding-bottom-1">
-                  <a class="public-sans" href="#"><%= practice_name %></a>
+                  <a class="public-sans" href="/innovations/<%= @practice_names_and_slugs[practice_name] %>"><%= practice_name %></a>
                 </li>
               <% end %>
               <li><a class="browse-all-link public-sans text-bold" href="<%= search_path %>">Browse all innovations</a></li>
