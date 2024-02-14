@@ -44,15 +44,6 @@
           style="display: none;"
         >
           <div class="dropdown-content margin-4">
-            <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Categories">Categories</h3>
-            <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
-              <% @category_names_by_popularity[0..2].each do |category_name| %>
-                <li class="category-item padding-bottom-1">
-                  <a class="public-sans" href=<%= "/search?category=#{category_name}" %>><%= category_name %></a>
-                </li>
-              <% end %>
-              <li><a class="browse-all-link public-sans text-bold" href="<%= search_path %>">Browse all categories</a></li>
-            </ul>
             <h3 class="search-header usa-prose-h3 margin-bottom-0">Innovations</h3>
             <ul id="practice-list" class="usa-list usa-list--unstyled padding-top-1">
               <% @practice_names[0..2].each do |practice_name| %>
@@ -61,6 +52,15 @@
                 </li>
               <% end %>
               <li><a class="browse-all-link public-sans text-bold" href="<%= search_path %>">Browse all innovations</a></li>
+            </ul>
+            <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Categories">Categories</h3>
+            <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
+              <% @category_names_by_popularity[0..2].each do |category_name| %>
+                <li class="category-item padding-bottom-1">
+                  <a class="public-sans" href=<%= "/search?category=#{category_name}" %>><%= category_name %></a>
+                </li>
+              <% end %>
+              <li><a class="browse-all-link public-sans text-bold" href="<%= search_path %>">Browse all categories</a></li>
             </ul>
           </div>
         </div>
