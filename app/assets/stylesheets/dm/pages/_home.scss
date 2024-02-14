@@ -65,6 +65,11 @@
       a {
         text-decoration: none;
         color: color($theme-color-base-ink);
+        // truncation
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
 
 
         &:hover, &:active, &:focus {
