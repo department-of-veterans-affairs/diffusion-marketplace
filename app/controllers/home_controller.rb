@@ -7,6 +7,7 @@ class HomeController < ApplicationController
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
     @category_names_by_popularity = get_category_names_by_popularity
     @featured_topic = Topic.find_by(featured: true)
+    @practice_names = get_practice_names
   end
 
   def diffusion_map
@@ -74,6 +75,22 @@ class HomeController < ApplicationController
   end
 
   private
+
+  def get_practice_names
+    if current_user
+      all_current_practices
+    else
+      all_public_practices
+    end
+  end
+
+  def all_current_practices
+    Practice.where(published: true, retired: false).pluck("name")
+  end
+
+  def all_public_practices
+    Practice.where(published: true, is_public: true, retired: false).pluck("name")
+  end
 
   def get_diffusion_histories(is_public_practice)
     DiffusionHistory.get_with_practices(is_public_practice).order(Arel.sql("lower(practices.name)"))
