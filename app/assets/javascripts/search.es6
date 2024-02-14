@@ -71,14 +71,14 @@ function updateDropdown(categories, innovations) {
     $('li').remove('.search-result');
 
     categories.forEach(function(category) {
-        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
+        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category);
         let listItem = $('<li></li>').addClass('search-result padding-bottom-1').append(link);
 
         categoryList.append(listItem);
     });
 
     innovations.forEach(function(innovation) {
-        let link = $('<a></a>').attr('href', `/innovations/`).text(innovation).addClass('public-sans');
+        let link = $('<a></a>').attr('href', `/innovations/`).text(innovation);
         let listItem = $('<li></li>').addClass('search-result padding-bottom-1').append(link);
 
         innovationList.append(listItem);
