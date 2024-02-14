@@ -452,3 +452,8 @@ function displayAttachmentForm(sArea, sType) {
     $(`#display_${sArea}_form div[id*="_form"]`).hide();
     $(`#display_${sArea}_form div[id="${sArea}_${sType}_form"]`).show();
 }
+
+$(document).on('change', '.pe-address-input', function() {
+    var isEmpty = !$(this).val();
+    $(this).closest('li.fields').find('input[name*="[_destroy]"]').val(isEmpty ? '1' : '0');
+});
