@@ -48,7 +48,20 @@
       z-index: 2000;
     }
 
-    ul:not(:last-child) {
+    .browse-all-link {
+        color: color($theme-color-base-ink);
+        @include u-text-decoration('underline');
+
+        &:hover, &:focus {
+          color: color('primary-dark');
+        }
+
+        &:active {
+          color: color('primary-vivid');
+        }
+    }
+
+    .result-section:not(:last-child) {
       padding-bottom: 1rem;
       border-bottom: 1px solid black;
     }
@@ -71,19 +84,6 @@
 
         &:visited {
           color: color($theme-color-base-ink);
-        }
-      }
-
-      .browse-all-link {
-        color: color($theme-color-base-ink);
-        @include u-text-decoration('underline');
-
-        &:hover, &:focus {
-          color: color('primary-dark');
-        }
-
-        &:active {
-          color: color('primary-vivid');
         }
       }
     }

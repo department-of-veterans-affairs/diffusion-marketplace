@@ -125,8 +125,8 @@ describe 'Homepage', type: :feature do
       end
 
       it 'should navigate to search page with category filter when a category is clicked' do
-        within '#search-dropdown' do
-          first('.category-item').find('a').click
+        within '#category-list' do
+          first('.search-result').find('a').click
         end
         expect(page).to have_current_path('/search?category=COVID')
       end
