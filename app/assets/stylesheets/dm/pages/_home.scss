@@ -46,19 +46,11 @@
       @include u-border('gray-30');
       @include u-position('absolute');
       z-index: 2000;
+    }
 
-      .browse-all-link {
-        color: color($theme-color-base-ink);
-        @include u-text-decoration('underline');
-
-        &:hover, &:focus {
-          color: color('primary-dark');
-        }
-
-        &:active {
-          color: color('primary-vivid');
-        }
-      }
+    ul:not(:last-child) {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid black;
     }
 
     #category-list, #practice-list {
@@ -79,6 +71,19 @@
 
         &:visited {
           color: color($theme-color-base-ink);
+        }
+      }
+
+      .browse-all-link {
+        color: color($theme-color-base-ink);
+        @include u-text-decoration('underline');
+
+        &:hover, &:focus {
+          color: color('primary-dark');
+        }
+
+        &:active {
+          color: color('primary-vivid');
         }
       }
     }
