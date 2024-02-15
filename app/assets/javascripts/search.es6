@@ -79,7 +79,7 @@ function updateDropdown(categories, innovations) {
     });
 
     innovations.forEach(function(innovation) {
-        let link = $('<a></a>').attr('href', `/innovations/${innovationLinks[innovation]}` ).text(innovation);
+        let link = $('<a></a>').attr('href', `/innovations/${encodeURIComponent(innovationLinks[innovation])}` ).text(innovation);
         let listItem = $('<li></li>').addClass('search-result padding-bottom-1').append(link);
 
         innovationList.append(listItem);
