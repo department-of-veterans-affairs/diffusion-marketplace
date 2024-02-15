@@ -27,17 +27,16 @@
     data-innovations="<%= @practice_names %>"
     data-innovation-links="<%= @practice_names_and_slugs.to_json %>"
   >
-    <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
-      <label class="usa-sr-only" for="dm-homepage-search-form">Homepage search</label>
+    <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search" aria-label="Search innovations and categories">
       <div class="dm-homepage-search-container width-full">
         <input
           class="usa-input height-5"
           id="dm-homepage-search-field"
           type="search"
           name="search"
-          title="Search for innovations"
           autocomplete="off"
-          placeholder="Innovations, categories, partners..."
+          placeholder="Innovations, categories..."
+          aria-labelledby="dm-homepage-search-form"
         >
         <div
           id="search-dropdown"
