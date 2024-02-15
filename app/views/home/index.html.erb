@@ -48,7 +48,7 @@
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Innovations</h3>
               <ul id="practice-list" class="usa-list usa-list--unstyled padding-top-1">
                 <% @practice_names[0..2].each do |practice_name| %>
-                  <li class="search-result padding-bottom-1">
+                  <li class="search-result">
                     <a href="/innovations/<%= @practice_names_and_slugs[practice_name] %>"><%= practice_name %></a>
                   </li>
                 <% end %>
@@ -59,7 +59,7 @@
               <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Categories">Categories</h3>
               <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
                 <% @category_names_by_popularity[0..2].each do |category_name| %>
-                  <li class="search-result padding-bottom-1">
+                  <li class="search-result">
                     <a href=<%= "/search?category=#{category_name}" %>><%= category_name %></a>
                   </li>
                 <% end %>

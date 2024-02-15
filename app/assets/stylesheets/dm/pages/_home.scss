@@ -70,6 +70,7 @@
       a {
         text-decoration: none;
         color: color($theme-color-base-ink);
+        padding-bottom: 0.5rem; // == padding-bottom-1
         // truncation
         display: block;
         text-overflow: ellipsis;
