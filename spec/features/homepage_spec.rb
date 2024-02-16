@@ -10,10 +10,10 @@ describe 'Homepage', type: :feature do
 
     @user = create(:user, :admin, email: 'naofumi.iwatani@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
 
-    create(:practice, name: 'Project HAPPEN', slug: 'project-happen', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'contact-happen@happen.com', user: @user)
-    @practice = create(:practice, name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
-    @practice_2 = create(:practice, name: 'The Second Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
-    @practice_3 = create(:practice, name: 'The Third Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
+    create(:practice, name: 'Project HAPPEN', slug: 'project-happen', approved: true, published: true, tagline: "HAPPEN tagline", date_initiated: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', support_network_email: 'contact-happen@happen.com', user: @user)
+    @practice = create(:practice, name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: true, published: true, approved: true, user: @user)
+    @practice_2 = create(:practice, name: 'The Second Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 06 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 06 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: true, published: true, approved: true, user: @user)
+    @practice_3 = create(:practice, name: 'The Third Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 07 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 07 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: true, published: true, approved: true, user: @user)
 
     create(:practice_origin_facility, practice: @practice, facility_type: 0, va_facility_id: 1)
 
@@ -113,14 +113,31 @@ describe 'Homepage', type: :feature do
         find('#dm-homepage-search-field').click
       end
 
-      it 'should display the dropdown when the search input is focused' do
+      it 'displays the dropdown when the search input is focused' do
         expect(page).to have_selector('#search-dropdown', visible: :visible)
       end
 
+      it 'lists most recently created innovations' do
+        within '#practice-list' do
+          expect(page).to have_content('The Best Practice Ever!')
+          expect(page).to have_content('The Second Best Practice Ever!')
+          expect(page).to have_content('The Third Best Practice Ever!')
+
+          expect(page).not_to have_content('Project HAPPEN') # oldest practice
+        end
+      end
+
       it 'should list popular categories in the dropdown initially' do
-        within '#search-dropdown' do
+        within '#category-list' do
           expect(page).to have_content('COVID')
           expect(page).to have_content('Telehealth')
+        end
+      end
+
+      it 'lets a user search for innovations' do
+        fill_in('dm-homepage-search-field', with: 'HAPPEN')
+        within '#search-dropdown' do
+          expect(page).to have_link('Project HAPPEN', href: '/innovations/project-happen')
         end
       end
 
@@ -131,11 +148,11 @@ describe 'Homepage', type: :feature do
         expect(page).to have_current_path('/search?category=COVID')
       end
 
-      it 'should have a link to the search page' do
+      it 'links to the search page' do
         within '#search-dropdown' do
-          click_link('Browse all categories')
+          expect(page).to have_link('Browse all innovations', href: '/search')
+          expect(page).to have_link('Browse all categories', href: '/search')
         end
-        expect(page).to have_current_path('/search')
       end
     end
   end
