@@ -7,8 +7,8 @@ class HomeController < ApplicationController
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
     @category_names_by_popularity = get_category_names_by_popularity
     @featured_topic = Topic.find_by(featured: true)
-    @practice_names = get_practice_names
     @practice_names_and_slugs = practice_names_and_slugs_hash
+    @practice_names = @practice_names_and_slugs.keys
   end
 
   def diffusion_map
@@ -77,22 +77,14 @@ class HomeController < ApplicationController
 
   private
 
-  def get_practice_names
-    if current_user
-      all_current_practices.pluck("name")
-    else
-      all_public_practices.pluck("name")
-    end
-  end
-
   def practice_names_and_slugs_hash
-    practices_hash = {}
+    practices_and_slugs = {}
     if current_user
-      all_current_practices.pluck("name", "slug").map { |name, slug| practices_hash[name] = slug }
+      all_current_practices.pluck("name", "slug").map { |name, slug| practices_and_slugs[name] = slug }
     else
-      all_public_practices.pluck("name", "slug").map { |name, slug| practices_hash[name] = slug }
+      all_public_practices.pluck("name", "slug").map { |name, slug| practices_and_slugs[name] = slug }
     end
-    return practices_hash
+    return practices_and_slugs
   end
 
   def all_current_practices
