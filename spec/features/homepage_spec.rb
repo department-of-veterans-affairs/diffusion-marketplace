@@ -154,6 +154,12 @@ describe 'Homepage', type: :feature do
           expect(page).to have_link('Browse all categories', href: '/search')
         end
       end
+
+      it 'lets a user navigate results with arrow keys' do
+        page.send_keys :down, :down, :down, :down, :down # navigate to first category
+        page.send_keys :enter # select category
+        expect(page).to have_current_path('/search?category=COVID')
+      end
     end
   end
 end
