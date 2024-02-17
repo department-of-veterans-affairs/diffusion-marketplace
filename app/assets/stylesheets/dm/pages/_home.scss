@@ -41,7 +41,7 @@
       @include transition-btn-colors;
     }
 
-    .search-dropdown {
+    #search-dropdown {
       top: 100%; /* Position below the input */
       @include u-border('gray-30');
       @include u-position('absolute');
