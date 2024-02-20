@@ -27,6 +27,10 @@ describe 'Homepage', type: :feature do
     create(:category_practice, practice: @practice_2, category: @cat_2)
     create(:category_practice, practice: @practice_3, category: @cat_1)
 
+    ampersand_practice = create(:practice, name: 'Coaching & More', slug: 'coaching-and-more', is_public: true, approved: true, published: true, tagline: "HAPPEN tagline", date_initiated: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', support_network_email: 'contact-happen@happen.com', user: @user)
+    ampersand_category = create(:category, name: 'Nutrition & Food', parent_category: @parent_cat)
+    create(:category_practice, practice: ampersand_practice, category: ampersand_category)
+
     visit '/'
   end
 
@@ -164,6 +168,12 @@ describe 'Homepage', type: :feature do
       page.send_keys :down, :down, :down, :down, :down # navigate to first category
       page.send_keys :enter # select category
       expect(page).to have_current_path('/search?category=COVID')
+    end
+
+    it 'encodes categories & innovations with ampersands' do
+      fill_in('dm-homepage-search-field', with: '&')
+      expect(page).to have_link('Nutrition & Food', href: '/search?category=Nutrition%20%26%20Food')
+      expect(page).to have_link('Coaching & More', href: '/innovations/coaching-and-more')
     end
   end
 end
