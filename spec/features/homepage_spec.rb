@@ -10,10 +10,11 @@ describe 'Homepage', type: :feature do
 
     @user = create(:user, :admin, email: 'naofumi.iwatani@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
 
-    create(:practice, name: 'Project HAPPEN', slug: 'project-happen', approved: true, published: true, tagline: "HAPPEN tagline", date_initiated: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', support_network_email: 'contact-happen@happen.com', user: @user)
+    create(:practice, name: 'Project HAPPEN', slug: 'project-happen', is_public: true, approved: true, published: true, tagline: "HAPPEN tagline", date_initiated: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', support_network_email: 'contact-happen@happen.com', user: @user)
     @practice = create(:practice, name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: true, published: true, approved: true, user: @user)
     @practice_2 = create(:practice, name: 'The Second Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 06 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 06 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: true, published: true, approved: true, user: @user)
     @practice_3 = create(:practice, name: 'The Third Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 07 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 07 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: true, published: true, approved: true, user: @user)
+    @va_only_practice = create(:practice, name: 'Recent VA-only practice!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 08 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 07 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: false, published: true, approved: true, user: @user)
 
     create(:practice_origin_facility, practice: @practice, facility_type: 0, va_facility_id: 1)
 
@@ -26,11 +27,10 @@ describe 'Homepage', type: :feature do
     create(:category_practice, practice: @practice_2, category: @cat_2)
     create(:category_practice, practice: @practice_3, category: @cat_1)
 
-    login_as(@user, :scope => :user, :run_callbacks => false)
     visit '/'
   end
 
-  it 'should have a link to the Shark Tank page' do
+  it 'links to the Shark Tank page' do
     expect(page).to have_link(href: '/competitions/shark-tank')
   end
 
@@ -48,7 +48,7 @@ describe 'Homepage', type: :feature do
   end
 
   describe 'featured section' do
-    it 'should display the featured practice, if there is one' do
+    it 'displays the featured practice, if there is one' do
       # make sure the featured section is not present without a featured practice and completed featured fields
       expect(page).to_not have_content('The Best Practice Ever!')
       expect(page).to_not have_content('Highlighted body text')
@@ -80,14 +80,14 @@ describe 'Homepage', type: :feature do
     end
   end
 
-  it "it should allow the user to visit the 'Nominate an innovation' page" do
+  it "allows the user to visit the 'Nominate an innovation' page" do
     click_link('Start nomination')
 
     expect(page).to have_content('Nominate an innovation')
     expect(page).to have_content('VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace using the form below.')
   end
 
-  it 'should allow the user to subscribe to the DM newsletter by taking them to the GovDelivery site' do
+  it 'allows the user to subscribe to the DM newsletter by taking them to the GovDelivery site' do
     fill_in('Your email address', with: 'vladilena.milize@test.com')
 
     new_window = window_opened_by { click_button('Subscribe today') }
@@ -107,59 +107,63 @@ describe 'Homepage', type: :feature do
     end
   end
 
-  context 'with chrome headless driver', js: true do
-    describe 'search dropdown functionality' do
-      before do
+  describe 'search dropdown functionality', js: true do
+    before do
+      find('#dm-homepage-search-field').click
+    end
+
+    it 'lists most recently created innovations' do
+      within '#practice-list' do
+        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('The Second Best Practice Ever!')
+        expect(page).to have_content('The Third Best Practice Ever!')
+
+        expect(page).not_to have_content('Project HAPPEN') # oldest practice
+        expect(page).not_to have_content('Recent VA-only practice!') # private practice
+      end
+    end
+
+    it 'shows VA-only innovations to logged in users' do
+      login_as(@user, scope: :user, run_callbacks: false)
+        visit '/'
         find('#dm-homepage-search-field').click
-      end
 
-      it 'displays the dropdown when the search input is focused' do
-        expect(page).to have_selector('#search-dropdown', visible: :visible)
-      end
+        expect(page).to have_content('Recent VA-only practice!')
+        expect(page).to have_content('The Second Best Practice Ever!')
+        expect(page).to have_content('The Third Best Practice Ever!')
+    end
 
-      it 'lists most recently created innovations' do
-        within '#practice-list' do
-          expect(page).to have_content('The Best Practice Ever!')
-          expect(page).to have_content('The Second Best Practice Ever!')
-          expect(page).to have_content('The Third Best Practice Ever!')
-
-          expect(page).not_to have_content('Project HAPPEN') # oldest practice
-        end
+    it 'lists popular categories' do
+      within '#category-list' do
+        expect(page).to have_content('COVID')
+        expect(page).to have_content('Telehealth')
       end
+    end
 
-      it 'should list popular categories in the dropdown initially' do
-        within '#category-list' do
-          expect(page).to have_content('COVID')
-          expect(page).to have_content('Telehealth')
-        end
+    it 'lets a user search for innovations' do
+      fill_in('dm-homepage-search-field', with: 'HAPPEN')
+      within '#search-dropdown' do
+        expect(page).to have_link('Project HAPPEN', href: '/innovations/project-happen')
       end
+    end
 
-      it 'lets a user search for innovations' do
-        fill_in('dm-homepage-search-field', with: 'HAPPEN')
-        within '#search-dropdown' do
-          expect(page).to have_link('Project HAPPEN', href: '/innovations/project-happen')
-        end
+    it 'should navigate to search page with category filter when a category is clicked' do
+      within '#category-list' do
+        expect(page).to have_link('COVID', href: '/search?category=COVID')
       end
+    end
 
-      it 'should navigate to search page with category filter when a category is clicked' do
-        within '#category-list' do
-          first('.search-result').find('a').click
-        end
-        expect(page).to have_current_path('/search?category=COVID')
+    it 'links to the search page' do
+      within '#search-dropdown' do
+        expect(page).to have_link('Browse all innovations', href: '/search')
+        expect(page).to have_link('Browse all categories', href: '/search')
       end
+    end
 
-      it 'links to the search page' do
-        within '#search-dropdown' do
-          expect(page).to have_link('Browse all innovations', href: '/search')
-          expect(page).to have_link('Browse all categories', href: '/search')
-        end
-      end
-
-      it 'lets a user navigate results with arrow keys' do
-        page.send_keys :down, :down, :down, :down, :down # navigate to first category
-        page.send_keys :enter # select category
-        expect(page).to have_current_path('/search?category=COVID')
-      end
+    it 'lets a user navigate results with arrow keys' do
+      page.send_keys :down, :down, :down, :down, :down # navigate to first category
+      page.send_keys :enter # select category
+      expect(page).to have_current_path('/search?category=COVID')
     end
   end
 end
