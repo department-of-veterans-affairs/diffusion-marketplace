@@ -211,6 +211,12 @@ class Practice < ApplicationRecord
   scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
   scope :get_with_va_facility_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).where(diffusion_histories: { clinical_resource_hub_id: nil }).uniq }
 
+  scope :not_updated_since, ->(date) { where('practices.updated_at < ?', date.to_date.end_of_day) }
+  scope :not_emailed_since, ->(date) {
+    where('practices.last_email_date < ?', date.to_date.end_of_day)
+    .or(where(last_email_date: nil))
+  }
+
   belongs_to :user, optional: true
 
   has_many :additional_documents, -> { order(position: :asc) }, dependent: :destroy
@@ -472,13 +478,19 @@ class Practice < ApplicationRecord
     ["name", "support_network_email", "user_email"]
   end
 
-  def self.send_email_to_all_editors(subject, message, current_user)
-    user_practices_data = collect_users_and_their_practices_info(current_user)
+  def self.ransackable_scopes(auth_object = nil)
+    ["not_updated_since", "not_emailed_since"]
+  end
+
+  def self.email_selected_practices_editors(subject, message, current_user, filters)
+    user_practices_data = collect_users_and_their_practices_info(current_user, filters)
 
     mailer_args = {
       subject: subject,
       message: message,
     }
+
+    practice_ids_to_update = Set.new
 
     user_practices_data.each do |user_data|
       mailer_args[:user_info] = user_data[:user_info]
@@ -487,21 +499,26 @@ class Practice < ApplicationRecord
       AdminMailer.send_email_to_editor(
         mailer_args
       ).deliver_now
+
+      user_data[:practices].each { |practice_info| practice_ids_to_update.add(practice_info[:practice_id]) }
     end
+
+    Practice.where(id: practice_ids_to_update.to_a).update_all(last_email_date: Time.current)
   end
 
-  def self.collect_users_and_their_practices_info(current_user)
-    user_practices = {}
+  def self.collect_users_and_their_practices_info(current_user, filters)
+    filtered_practices = Practice.ransack(filters).result(distinct: true)
 
-    includes(:user).each do |practice|
+    user_practices = {}
+    filtered_practices.includes(:user).find_each do |practice|
       if practice.user.present? && practice.published?
         user_practices[practice.user] ||= Set.new
         user_practices[practice.user] << practice
       end
     end
 
-    PracticeEditor.includes(:user, :practice).each do |editor|
-      if editor.practice.published?
+    PracticeEditor.includes(:user, :practice).where(practice: filtered_practices).find_each do |editor|
+      if editor.user.present? && editor.practice.published?
         user_practices[editor.user] ||= Set.new
         user_practices[editor.user] << editor.practice
       end
@@ -527,6 +544,7 @@ class Practice < ApplicationRecord
           {
             practice_name: practice.name,
             show_url: Rails.application.routes.url_helpers.practice_url(practice, host_options),
+            practice_id: practice.id
           }
         end
       }
