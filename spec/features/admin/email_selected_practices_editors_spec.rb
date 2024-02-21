@@ -183,7 +183,12 @@ describe 'Admin email all editors button', type: :feature, js: true do
     click_link 'Send Email to Innovation Editors'
     fill_in 'email[subject]', with: 'Important Update'
     find('#emailMessage').click
+
+    until page.evaluate_script('typeof tinyMCE !== "undefined" && tinyMCE.get("emailMessage") != null') || (Time.current - start_time) > timeout
+      sleep 0.1
+    end
     execute_script("tinyMCE.get('emailMessage').setContent('Please review the latest changes.')")
+
     click_button 'Preview and Send'
 
     within('#previewModal') do
