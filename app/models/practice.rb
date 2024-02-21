@@ -217,6 +217,18 @@ class Practice < ApplicationRecord
     .or(where(last_email_date: nil))
   }
 
+  ransacker :user_email do
+    Arel.sql("users.email")
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["name", "support_network_email", "user_email"]
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    ["not_updated_since", "not_emailed_since"]
+  end
+
   belongs_to :user, optional: true
 
   has_many :additional_documents, -> { order(position: :asc) }, dependent: :destroy
@@ -468,86 +480,5 @@ class Practice < ApplicationRecord
       adoption_facilities: diffusion_histories.get_va_facilities + diffusion_histories.get_clinical_resource_hubs,
       adoption_count: diffusion_histories.size
     )
-  end
-
-  ransacker :user_email do
-    Arel.sql("users.email")
-  end
-
-  def self.ransackable_attributes(auth_object = nil)
-    ["name", "support_network_email", "user_email"]
-  end
-
-  def self.ransackable_scopes(auth_object = nil)
-    ["not_updated_since", "not_emailed_since"]
-  end
-
-  def self.email_selected_practices_editors(subject, message, current_user, filters)
-    user_practices_data = collect_users_and_their_practices_info(current_user, filters)
-
-    mailer_args = {
-      subject: subject,
-      message: message,
-    }
-
-    practice_ids_to_update = Set.new
-
-    user_practices_data.each do |user_data|
-      mailer_args[:user_info] = user_data[:user_info]
-      mailer_args[:practices] = user_data[:practices]
-
-      AdminMailer.send_email_to_editor(
-        mailer_args
-      ).deliver_now
-
-      user_data[:practices].each { |practice_info| practice_ids_to_update.add(practice_info[:practice_id]) }
-    end
-
-    Practice.where(id: practice_ids_to_update.to_a).update_all(last_email_date: Time.current)
-  end
-
-  def self.collect_users_and_their_practices_info(current_user, filters)
-    filtered_practices = Practice.ransack(filters).result(distinct: true)
-
-    user_practices = {}
-    filtered_practices.includes(:user).find_each do |practice|
-      if practice.user.present? && practice.published?
-        user_practices[practice.user] ||= Set.new
-        user_practices[practice.user] << practice
-      end
-    end
-
-    PracticeEditor.includes(:user, :practice).where(practice: filtered_practices).find_each do |editor|
-      if editor.user.present? && editor.practice.published?
-        user_practices[editor.user] ||= Set.new
-        user_practices[editor.user] << editor.practice
-      end
-    end
-
-    host_options = Rails.application.config.action_mailer.default_url_options
-
-    # disallow bulk emails from being sent from deployed STG and DEV apps, should only send the
-    # email to the current_user if listed as `user` or `practice_editor` of a practice
-    unless Rails.env.test? || Rails.env.development? || ENV['PROD_SERVERNAME'] == 'PROD'
-      user_practices = user_practices.select do |user_practice|
-        user_practice == current_user
-      end
-    end
-
-    user_practices.map do |user, practices|
-      {
-        user_info: {
-          user_name: user.first_name,
-          email: user.email
-        },
-        practices: practices.map do |practice|
-          {
-            practice_name: practice.name,
-            show_url: Rails.application.routes.url_helpers.practice_url(practice, host_options),
-            practice_id: practice.id
-          }
-        end
-      }
-    end
   end
 end
