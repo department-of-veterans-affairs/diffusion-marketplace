@@ -19,6 +19,10 @@ function setupSearchDropdown(formId) {
     const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
     const mostPopularCategories = allCategories ? allCategories.slice(0, 3) : [];
 
+    const allInnovationsString = $('.homepage-search').attr('data-innovations');
+    const allInnovations = allInnovationsString ? allInnovationsString.match(/[^",\[\]]+/g) : [];
+    const mostRecentInnovations = allInnovations ? allInnovations.slice(0, 3) : [];
+
     searchInput.focus(function() {
         dropdown.show();
         searchInput.attr('aria-expanded', 'true');
@@ -28,12 +32,14 @@ function setupSearchDropdown(formId) {
         let searchTerm = searchInput.val().toLowerCase();
         let filteredCategories = searchTerm ? allCategories.filter(category =>
             category.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCategories;
-        updateDropdown(filteredCategories);
+        let filteredInnovations = searchTerm ? allInnovations.filter(innovation =>
+            innovation.toLowerCase().includes(searchTerm)).slice(0,3) : mostRecentInnovations;
+        updateDropdown(filteredCategories, filteredInnovations);
     });
 
     $(document).keydown(function(e) {
         if (searchInput.attr('aria-expanded') === 'true') {
-            const items = $('#search-dropdown .category-item a, #search-dropdown .browse-all-link');
+            const items = $('#search-dropdown .search-result a, #search-dropdown .browse-all-link');
             const focusedElement = document.activeElement;
             const focusedIndex = items.index(focusedElement);
 
@@ -59,16 +65,26 @@ function setupSearchDropdown(formId) {
     $(document).on('focusin', hideDropdownOutsideClickOrFocus);
 }
 
-function updateDropdown(categories) {
+function updateDropdown(categories, innovations) {
+    const innovationLinks = JSON.parse($('.homepage-search').attr('data-innovation-links'));
     let categoryList = $('#category-list');
-    categoryList.empty();
+    let innovationList = $('#practice-list');
+    $('li').remove('.search-result');
 
     categories.forEach(function(category) {
-        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category).addClass('public-sans');
-        let listItem = $('<li></li>').addClass('category-item padding-bottom-1').append(link);
+        let link = $('<a></a>').attr('href', `/search?category=${encodeURIComponent(category)}`).text(category);
+        let listItem = $('<li></li>').addClass('search-result').append(link);
 
         categoryList.append(listItem);
     });
+
+    innovations.forEach(function(innovation) {
+        let link = $('<a></a>').attr('href', `/innovations/${encodeURIComponent(innovationLinks[innovation])}` ).text(innovation);
+        let listItem = $('<li></li>').addClass('search-result').append(link);
+
+        innovationList.append(listItem);
+    });
+
 }
 
 addEventListener('turbolinks:load', function () {
