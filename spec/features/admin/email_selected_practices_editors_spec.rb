@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Admin email all editors button', type: :feature, js: true do
+describe 'Admin email all editors button', type: :feature do
   let(:admin) { create(:user, :admin) }
   let!(:users) { create_list(:user, 3) }
   let!(:recently_updated_practice) do
@@ -95,7 +95,7 @@ describe 'Admin email all editors button', type: :feature, js: true do
   end
 
   it 'sends an email to all editors of practices filtered by "Not Updated Since"' do
-    filter_practices_and_send_email('q_not_updated_since', 7.days.ago.to_date.to_s)
+    filter_practices_and_send_email('q_not_updated_since', 7.days.ago)
     emails = ActionMailer::Base.deliveries
     expect(emails.count).to eq 2
 
@@ -115,7 +115,7 @@ describe 'Admin email all editors button', type: :feature, js: true do
   end
 
   it 'sends an email to all editors of practices filtered by "Not Emailed Since"' do
-    filter_practices_and_send_email('q_not_emailed_since', 12.days.ago.to_date.to_s)
+    filter_practices_and_send_email('q_not_emailed_since', 12.days.ago)
 
     emails = ActionMailer::Base.deliveries
     expect(emails.count).to eq 2
