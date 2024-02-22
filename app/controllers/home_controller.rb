@@ -7,6 +7,8 @@ class HomeController < ApplicationController
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
     @category_names_by_popularity = get_category_names_by_popularity
     @featured_topic = Topic.find_by(featured: true)
+    @practice_names_and_slugs = practice_names_and_slugs_hash
+    @practice_names = @practice_names_and_slugs.keys
   end
 
   def diffusion_map
@@ -74,6 +76,17 @@ class HomeController < ApplicationController
   end
 
   private
+
+  def practice_names_and_slugs_hash
+    dropdown_practices.pluck("name", "slug").to_h
+  end
+
+  def dropdown_practices
+    scope = Practice.where(published: true, retired: false)
+    scope = scope.where(is_public: true) if !current_user
+    scope = scope.order("created_at DESC")
+    scope
+  end
 
   def get_diffusion_histories(is_public_practice)
     DiffusionHistory.get_with_practices(is_public_practice).order(Arel.sql("lower(practices.name)"))
