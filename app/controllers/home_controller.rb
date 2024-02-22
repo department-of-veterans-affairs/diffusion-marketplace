@@ -78,21 +78,14 @@ class HomeController < ApplicationController
   private
 
   def practice_names_and_slugs_hash
-    practices_and_slugs = {}
-    if current_user
-      all_current_practices.pluck("name", "slug").map { |name, slug| practices_and_slugs[name] = slug }
-    else
-      all_public_practices.pluck("name", "slug").map { |name, slug| practices_and_slugs[name] = slug }
-    end
-    return practices_and_slugs
+    dropdown_practices.pluck("name", "slug").to_h
   end
 
-  def all_current_practices
-    Practice.where(published: true, retired: false).order("created_at DESC")
-  end
-
-  def all_public_practices
-    Practice.where(published: true, is_public: true, retired: false).order("created_at DESC")
+  def dropdown_practices
+    scope = Practice.where(published: true, retired: false)
+    scope = scope.where(is_public: true) if !current_user
+    scope = scope.order("created_at DESC")
+    scope
   end
 
   def get_diffusion_histories(is_public_practice)
