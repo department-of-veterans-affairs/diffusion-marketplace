@@ -41,13 +41,14 @@
       @include transition-btn-colors;
     }
 
-    .search-dropdown {
+    #search-dropdown {
       top: 100%; /* Position below the input */
       @include u-border('gray-30');
       @include u-position('absolute');
       z-index: 2000;
+    }
 
-      .browse-all-link {
+    .browse-all-link {
         color: color($theme-color-base-ink);
         @include u-text-decoration('underline');
 
@@ -58,13 +59,23 @@
         &:active {
           color: color('primary-vivid');
         }
-      }
     }
 
-    #category-list {
+    .result-section:not(:last-child) {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid black;
+    }
+
+    #category-list, #practice-list {
       a {
         text-decoration: none;
         color: color($theme-color-base-ink);
+        padding-bottom: 0.5rem; // == padding-bottom-1
+        // truncation
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
 
 
         &:hover, &:active, &:focus {
@@ -76,7 +87,7 @@
           color: color($theme-color-base-ink);
         }
       }
-    };
+    }
   }
 
   .featured-innovation-content-container {
