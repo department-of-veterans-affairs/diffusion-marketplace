@@ -25,7 +25,7 @@ html = Arbre::Context.new do
       ol do
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
           label 'Title', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.title || nil, type: 'text', required: 'required',
+          input value: component&.title || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
           para 'News item title styled as an /"H3"', class: 'inline-hints'
@@ -33,7 +33,7 @@ html = Arbre::Context.new do
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
           label 'URL', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.url || nil, type: 'text', required: 'required',
+          input value: component&.url || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
           para 'Link to news item hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
@@ -41,7 +41,7 @@ html = Arbre::Context.new do
 
         li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date_input" do
           label 'Publication date', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_published_date", class: 'label'
-          input value: component&.published_date || nil, type: 'date', required: 'required',
+          input value: component&.published_date || nil, type: 'date',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][published_date]"
           para 'Original publication date', class: 'inline-hints'
@@ -49,7 +49,7 @@ html = Arbre::Context.new do
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_authors_input" do
           label 'Author(s)', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.authors || nil, type: 'text', required: 'required',
+          input value: component&.authors || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_authors",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][authors]"
           para 'Enter with appropriate punctuation. e.g. "John, Joan, and Jill', class: 'inline-hints'
