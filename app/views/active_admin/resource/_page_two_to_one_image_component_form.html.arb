@@ -62,6 +62,7 @@ html = Arbre::Context.new do
         li class: 'select input required text-alignment-container', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment_input" do
           label 'Text alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment", class: 'label'
           select value: component&.text_alignment || nil,
+            required: 'required',
             id: "page_page_components_attributes_#{placeholder}_component_attributes_text_alignment",
             name: "page[page_components_attributes][#{placeholder}][component_attributes][text_alignment]" do
             option 'Left', selected: component&.text_alignment === 'Left' || component&.text_alignment.blank?
