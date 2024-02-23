@@ -90,12 +90,11 @@ describe 'Admin email all editors button', type: :feature do
     expect(admin_email.body.encoded).to include recently_updated_practice.name
     expect(admin_email.body.encoded).not_to include unpublished_practice.name
 
-    # a practice should show up no more than once for an editor
     expect(admin_email.body.encoded.scan(recently_updated_practice.name).length).to eq(1)
   end
 
   it 'sends an email to all editors of practices filtered by "Not Updated Since"' do
-    filter_practices_and_send_email('q_not_updated_since', 7.days.ago)
+    filter_practices_and_send_email('practice_batch_email[not_updated_since]', 7.days.ago)
     emails = ActionMailer::Base.deliveries
     expect(emails.count).to eq 2
 
@@ -115,7 +114,7 @@ describe 'Admin email all editors button', type: :feature do
   end
 
   it 'sends an email to all editors of practices filtered by "Not Emailed Since"' do
-    filter_practices_and_send_email('q_not_emailed_since', 12.days.ago)
+    filter_practices_and_send_email('practice_batch_email[not_emailed_since]', 12.days.ago)
 
     emails = ActionMailer::Base.deliveries
     expect(emails.count).to eq 2
@@ -135,59 +134,20 @@ describe 'Admin email all editors button', type: :feature do
     expect(admin_email.body.encoded).not_to include unpublished_practice.name
   end
 
-  it 'sends an email to all editors of practices filtered by "Name"' do
-    filter_practices_and_send_email('q_name', recently_updated_practice.name)
-
-    emails = ActionMailer::Base.deliveries
-    expect(emails.count).to eq 2
-
-    email = emails.find { |e| e.to.include?(users.first.email) }
-    expect(email.subject).to eq 'Important Update'
-
-    expect(email.body.encoded).to include recently_updated_practice.name
-    expect(email.body.encoded).not_to include unemailed_practice.name
-    expect(email.body.encoded).not_to include older_practice.name
-    expect(email.body.encoded).not_to include unpublished_practice.name
-
-    admin_email = emails.find { |e| e.to.include?(admin.email) }
-    expect(admin_email.body.encoded).to include recently_updated_practice.name
-    expect(admin_email.body.encoded).not_to include unemailed_practice.name
-    expect(admin_email.body.encoded).not_to include older_practice.name
-    expect(admin_email.body.encoded).not_to include unpublished_practice.name
-  end
-
-  it 'sends an email to all editors of practices filtered by "Owner Email"' do
-    filter_practices_and_send_email('q_user_email', admin.email)
-
-    emails = ActionMailer::Base.deliveries
-    expect(emails.count).to eq 2
-
-    email = emails.find { |e| e.to.include?(users.first.email) }
-    expect(email.subject).to eq 'Important Update'
-
-    expect(email.body.encoded).to include recently_updated_practice.name
-    expect(email.body.encoded).to include unemailed_practice.name
-    expect(email.body.encoded).to include older_practice.name
-    expect(email.body.encoded).not_to include unpublished_practice.name
-
-    admin_email = emails.find { |e| e.to.include?(admin.email) }
-    expect(admin_email.body.encoded).to include recently_updated_practice.name
-    expect(admin_email.body.encoded).to include unemailed_practice.name
-    expect(admin_email.body.encoded).to include older_practice.name
-    expect(admin_email.body.encoded).not_to include unpublished_practice.name
-  end
-
   def filter_practices_and_send_email(filter=nil, value=nil)
-    filter ? (fill_in filter, with: value) : nil
-    click_button 'Filter'
     click_link 'Send Email to Innovation Editors'
-    fill_in 'email[subject]', with: 'Important Update'
+
+    fill_in 'practice_batch_email[subject]', with: 'Important Update'
+
     find('#emailMessage').click
 
-    until page.evaluate_script('typeof tinyMCE !== "undefined" && tinyMCE.get("emailMessage") != null') || (Time.current - start_time) > timeout
+    start_time = Time.current
+    until (Time.current - start_time) > 3 || (page.evaluate_script('typeof tinyMCE !== "undefined" && tinyMCE.get("emailMessage") != null'))
       sleep 0.1
     end
     execute_script("tinyMCE.get('emailMessage').setContent('Please review the latest changes.')")
+
+    filter ? (fill_in filter, with: value) : nil
 
     click_button 'Preview and Send'
 

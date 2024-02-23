@@ -21,10 +21,10 @@ RSpec.describe PracticeMailerService do
       ActionMailer::Base.deliveries.clear
     end
 
-    it 'sends an email to the editor with exact email and practice info' do
+    it 'sends an email to all owners and editors of published practices' do
       filters = {}
 
-      PracticeMailerService.call(
+      described_class.call(
         subject: subject_text,
         message: message_text,
         current_user: admin,
@@ -60,45 +60,11 @@ RSpec.describe PracticeMailerService do
       expect(admin_email.body.encoded).to include(Rails.application.routes.url_helpers.practice_url(practice, Rails.application.config.action_mailer.default_url_options))
     end
 
-    context 'when applying specific filters' do
-      let(:filters) { { "name_cont" => "Innovation A" } }
-
-      it 'sends emails based on attribute filters correctly' do
-        PracticeMailerService.call(
-          subject: subject_text,
-          message: message_text,
-          current_user: admin,
-          filters: filters
-        )
-
-        emails = ActionMailer::Base.deliveries
-        expect(emails.count).to eq(2)
-
-        user_email = emails.find { |e| e.to.include?(user.email) }
-        expect(user_email.subject).to eq(subject_text)
-        expect(user_email.to).to include(user.email)
-        expect(user_email.body.encoded).to include(practice_a.name)
-        expect(user_email.body.encoded).not_to include(practice_b.name)
-        expect(user_email.body.encoded).not_to include(practice.name)
-        expect(user_email.body.encoded).to include(Rails.application.routes.url_helpers.practice_url(practice_a, Rails.application.config.action_mailer.default_url_options))
-        expect(user_email.body.encoded).not_to include(Rails.application.routes.url_helpers.practice_url(practice_b, Rails.application.config.action_mailer.default_url_options))
-
-        other_user_email = emails.find { |e| e.to.include?(other_user.email) }
-        expect(other_user_email.subject).to eq(subject_text)
-        expect(other_user_email.to).to include(other_user.email)
-        expect(other_user_email.body.encoded).to include(practice_a.name)
-        expect(other_user_email.body.encoded).not_to include(practice_b.name)
-        expect(other_user_email.body.encoded).not_to include(practice.name)
-        expect(other_user_email.body.encoded).to include(Rails.application.routes.url_helpers.practice_url(practice_a, Rails.application.config.action_mailer.default_url_options))
-        expect(other_user_email.body.encoded).not_to include(Rails.application.routes.url_helpers.practice_url(practice_b, Rails.application.config.action_mailer.default_url_options))
-      end
-    end
-
     context 'when applying specific scope filters' do
       let(:filters) { { "not_updated_since" => 3.days.ago.to_date.to_s, "not_emailed_since" => 2.days.ago.to_date.to_s } }
 
       it 'sends emails based on scope filters correctly' do
-        PracticeMailerService.call(
+        described_class.call(
           subject: subject_text,
           message: message_text,
           current_user: admin,
@@ -129,8 +95,7 @@ RSpec.describe PracticeMailerService do
     end
 
     context 'when applying filters that match no practices' do
-      let(:filters) { { "name_cont" => "Nonexistent Innovation" } }
-
+      let(:filters) { { "not_updated_since" => 5.days.ago.to_date.to_s } }
       it 'does not send any emails when no practices match the filters' do
         PracticeMailerService.call(
           subject: subject_text,
@@ -138,7 +103,6 @@ RSpec.describe PracticeMailerService do
           current_user: admin,
           filters: filters
         )
-
         expect(ActionMailer::Base.deliveries.count).to eq(0)
       end
     end
