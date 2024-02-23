@@ -16,14 +16,14 @@ html = Arbre::Context.new do
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
           label 'Title', for: "page_page_components_attributes_#{placeholder}_component_attributes_title", class: 'label'
-          input value: component&.title || nil, type: 'text', required: 'required',
+          input value: component&.title || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
           para 'Section header styled as secondary heading/"H3"', class: 'inline-hints'
 
           li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
             label 'Description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
-            input value: component&.description || nil, type: 'text', required: 'required',
+            input value: component&.description || nil, type: 'text',
                   id: "page_page_components_attributes_#{placeholder}_component_attributes_description",
                   name: "page[page_components_attributes][#{placeholder}][component_attributes][description]"
           end
@@ -40,7 +40,7 @@ html = Arbre::Context.new do
 
           li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
           label 'URL', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.url || nil, type: 'text', required: 'required',
+          input value: component&.url || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
           para 'Optional. Enter a URL suffix to any internal page of the marketplace (Ex: "/innovations/vione" or a complete external URL (Ex.  https://www.va.gov/) that you would like the heading to link to', class: 'inline-hints'
