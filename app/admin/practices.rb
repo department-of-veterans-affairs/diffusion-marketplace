@@ -37,17 +37,16 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
   end
 
   collection_action :send_email_to_practice_editors_form, method: :get do
-    @filter_params = params[:filter_params]
     render 'send_email_to_practice_editors_form'
   end
 
   collection_action :send_email_to_all_editors, method: :post do
-    email_params = params.require(:email).permit(:subject, :message)
+    email_params = params.require(:practice_batch_email).permit(:subject, :message, :not_updated_since, :not_emailed_since)
     subject = ActionController::Base.helpers.sanitize(email_params[:subject])
     message = ActionController::Base.helpers.sanitize(email_params[:message])
+    filters = {:not_emailed_since => email_params[:not_emailed_since], :not_updated_since => email_params[:not_updated_since]}
 
-    practice_filters = params.fetch(:filter_params, {}).permit(:not_emailed_since, :not_updated_since, :name_cont, :name_eq, :name_start, :name_end, :support_network_email_cont, :support_network_email_eq, :support_network_email_start, :support_network_email_end, :user_email_cont, :user_email_eq, :user_email_start, :user_email_end).to_h
-    PracticeMailerService.new(subject: subject, message: message, current_user: current_user, filters: practice_filters).call
+    PracticeMailerService.new(subject: subject, message: message, current_user: current_user, filters: filters).call
 
     redirect_to admin_practices_path, notice: "Your batch email to Innovation editors has been sent."
   end
@@ -109,7 +108,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
 
     div do
       link_to "Send Email to Innovation Editors",
-              send_email_to_practice_editors_form_admin_practices_path(filter_params: params[:q]),
+              send_email_to_practice_editors_form_admin_practices_path,
               class: 'admin-email-all-practice-editors float-right display-block'\
                     ' text-bold border-0 radius-md margin-bottom-105'
     end
