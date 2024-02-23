@@ -36,6 +36,10 @@ class PracticeMailerService
       hash[editor.user] << editor.practice
     end
 
+    if Rails.env.production? && ENV['PROD_SERVERNAME'] != 'PROD'
+      user_practices = user_practices.select { |user, _| user == current_user }
+    end
+
     format_user_practices(user_practices)
   end
 
@@ -44,7 +48,7 @@ class PracticeMailerService
     user_practices_data.each do |user_data|
       mailer_args[:user_info] = user_data[:user_info]
       mailer_args[:practices] = user_data[:practices]
-      AdminMailer.send_email_to_editor(mailer_args).deliver_now
+      PracticeEditorMailer.send_batch_email_to_editor(mailer_args).deliver_now
       user_data[:practices].each { |practice_info| practice_ids_to_update.add(practice_info[:practice_id]) }
     end
   end
