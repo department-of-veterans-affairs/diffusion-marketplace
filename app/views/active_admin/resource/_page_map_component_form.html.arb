@@ -14,17 +14,17 @@ html = Arbre::Context.new do
 
         a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
 
-        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
+        li class: 'url input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
           label 'Title', for: "page_page_components_attributes_#{placeholder}_component_attributes_title", class: 'label'
-          input value: component&.title || nil, type: 'text', required: 'required',
+          input value: component&.title || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
           para 'Enter a title for the map.', class: 'inline-hints'
         end
 
-        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text_input" do
+        li class: 'url input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text_input" do
           label 'Map Info Window Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text", class: 'label'
-          input value: component&.map_info_window_text || nil, type: 'text', required: 'required',
+          input value: component&.map_info_window_text || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][map_info_window_text]"
           para 'Enter text or acronym to display in the maps info window.', class: 'inline-hints'
@@ -57,7 +57,7 @@ html = Arbre::Context.new do
 
         li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_practices_attributes_input" do
           label 'Innovation List', for: "page_page_components_attributes_#{placeholder}_component_attributes_map", class: 'label'
-          select required: 'required', multiple: 'multiple', size: '20',
+          select multiple: 'multiple', size: '20',
                  id: "page_page_components_attributes_#{placeholder}_component_attributes_map",
                  name: "page[page_components_attributes][#{placeholder}][component_attributes][practices][]" do
             Practice.order(name: :asc).each do |p|
