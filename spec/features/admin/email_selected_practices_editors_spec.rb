@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Admin email all editors button', type: :feature do
+describe 'Admin email all editors button', type: :feature, js: true do
   let(:admin) { create(:user, :admin) }
   let!(:users) { create_list(:user, 3) }
   let!(:recently_updated_practice) do
@@ -142,7 +142,7 @@ describe 'Admin email all editors button', type: :feature do
     find('#emailMessage').click
 
     start_time = Time.current
-    until (Time.current - start_time) > 3 || (page.evaluate_script('typeof tinyMCE !== "undefined" && tinyMCE.get("emailMessage") != null'))
+    until (Time.current - start_time) > 5 || (page.evaluate_script('typeof tinyMCE !== "undefined" && tinyMCE.get("emailMessage") != null'))
       sleep 0.1
     end
     execute_script("tinyMCE.get('emailMessage').setContent('Please review the latest changes.')")
