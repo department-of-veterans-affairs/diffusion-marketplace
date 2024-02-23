@@ -114,6 +114,14 @@
     padding-top: 0;
   }
 
+  fieldset label {
+    font-size: 1rem;
+  }
+
+  .page_components .required > label::after {
+      content: ' *';
+  }
+
   .max-width-15 {
     max-width: 15rem;
   }
