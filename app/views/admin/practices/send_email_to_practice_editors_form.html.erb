@@ -3,14 +3,17 @@
 <div class="grid-container">
   <div class="grid-row">
     <div class="desktop:grid-col-12 margin-auto">
-      <%= form_for :practice_batch_email, url: send_email_to_all_editors_admin_practices_path, method: :post, html: { id: 'emailForm' } do |f| %>
+      <%= form_for :practice_batch_email,
+            url: send_email_to_all_editors_admin_practices_path,
+            method: :post,
+            html: { id: 'emailForm' } do |f| %>
         <div class="margin-bottom-2">
           <%= f.label :subject, "Email Subject", class: 'usa-label' %>
-          <%= f.text_area :subject, id: 'emailSubject', class: 'usa-input font-body-md', required: true%>
+          <%= f.text_area :subject, id: 'emailSubject', class: 'usa-input font-body-md'%>
         </div>
         <div class="margin-bottom-2">
           <%= f.label :message, "Message", class: 'usa-label' %>
-          <%= f.text_area :message, id: 'emailMessage', class: 'usa-input font-body-md', required: true %>
+          <%= f.text_area :message, id: 'emailMessage', class: 'usa-input font-body-md'%>
         </div>
         <h3><%= "Restrict recipients to specified Innovations (optional): "%></h3>
         <div class="margin-bottom-2">
