@@ -36,15 +36,17 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  collection_action :send_email_to_all_editors_form, method: :get do
-    render 'send_email_to_all_editors_form'
+  collection_action :send_email_to_practice_editors_form, method: :get do
+    render 'send_email_to_practice_editors_form'
   end
 
   collection_action :send_email_to_all_editors, method: :post do
-    subject = ActionController::Base.helpers.sanitize(params[:email][:subject])
-    message = ActionController::Base.helpers.sanitize(params[:email][:message])
+    email_params = params.require(:practice_batch_email).permit(:subject, :message, :not_updated_since, :not_emailed_since)
+    subject = ActionController::Base.helpers.sanitize(email_params[:subject])
+    message = ActionController::Base.helpers.sanitize(email_params[:message])
+    filters = {:not_emailed_since => email_params[:not_emailed_since], :not_updated_since => email_params[:not_updated_since]}
 
-    Practice.send_email_to_all_editors(subject, message, current_user)
+    PracticeMailerService.new(subject: subject, message: message, current_user: current_user, filters: filters).call
 
     redirect_to admin_practices_path, notice: "Your batch email to Innovation editors has been sent."
   end
@@ -98,12 +100,18 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
   index do
     # link to published practices .xlsx download
     div do
-      link_to 'Published Practices QUERI Download', export_published_practices_with_queri_format_admin_practices_path, class: 'admin-download-published-practices float-right display-block text-bold border-0 radius-md margin-bottom-105'
+      link_to 'Published Practices QUERI Download',
+              export_published_practices_with_queri_format_admin_practices_path,
+              class: 'admin-download-published-practices float-right display-block'\
+                    ' text-bold border-0 radius-md margin-bottom-105'
     end
+
     div do
-      link_to "Send Email to All Editors", send_email_to_all_editors_form_admin_practices_path, class: 'admin-email-all-practice-editors float-right display-block text-bold border-0 radius-md margin-bottom-105'
+      link_to "Send Email to Innovation Editors",
+              send_email_to_practice_editors_form_admin_practices_path,
+              class: 'admin-email-all-practice-editors float-right display-block'\
+                    ' text-bold border-0 radius-md margin-bottom-105'
     end
-    selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
     column 'Practice Name', :name
     column :support_network_email unless params[:scope] == "get_practice_owner_emails"
@@ -117,6 +125,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
     column 'Featured', :highlight unless params[:scope] == "get_practice_owner_emails"
     column :retired unless params[:scope] == "get_practice_owner_emails"
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
+    column 'Last Emailed', :last_email_date unless params[:scope] == "get_practice_owner_emails"
     actions do |practice|
       practice_enabled_action_str = practice.enabled ? "Disable" : "Enable"
       item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
@@ -327,6 +336,8 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
   filter :name
   filter :support_network_email
   filter :user_email, label: "Owner Email"
+  filter :not_updated_since, as: :date_picker, label: 'Not Updated Since'
+  filter :not_emailed_since, as: :date_picker, label: 'Not Emailed Since'
 
   controller do
     helper_method :adoption_facility_name

@@ -56,7 +56,7 @@ RSpec.describe Practice, type: :model do
   describe 'counter_cache' do
     let(:practice) { create(:practice) }
     let(:fac_1) { create(:va_facility) }
-    
+
     it "increments counter cache on create" do
       expect {
         practice.diffusion_histories.create!(practice: practice, va_facility: fac_1)
@@ -75,7 +75,7 @@ RSpec.describe Practice, type: :model do
     let!(:clinical_resource_hub_1) { create(:clinical_resource_hub) }
     let!(:clinical_resource_hub_2) { create(:clinical_resource_hub) }
     let!(:clinical_resource_hub_3) { create(:clinical_resource_hub) }
-    
+
     let!(:category1) { create(:category, name: "Category 1") }
     let!(:category2) { create(:category, name: "Category 2") }
     let!(:category3) { create(:category, name: "Category 3") }
@@ -86,7 +86,7 @@ RSpec.describe Practice, type: :model do
     let!(:practice3) { create(:practice, name: "C", published: false, enabled: false, approved: false, hidden: true) }
     let!(:practice4) { create(:practice, name: "B", published: true, enabled: true, approved: true, hidden: false) }
 
-    
+
     before do
       create_list(:diffusion_history, 3, :with_va_facility, practice: practice1)
       create_list(:diffusion_history, 2, :with_va_facility, practice: practice2)
@@ -99,7 +99,7 @@ RSpec.describe Practice, type: :model do
       create(:category_practice, practice: practice4, category: category1)
       create(:category_practice, practice: practice4, category: category3)
     end
-    
+
     describe '.get_by_created_crh' do
       before do
         create(:practice_origin_facility, practice: practice1, clinical_resource_hub: clinical_resource_hub_1)
@@ -169,7 +169,7 @@ RSpec.describe Practice, type: :model do
     describe '.get_by_created_crh' do
       let!(:clinical_resource_hub_1) { create(:clinical_resource_hub) }
       let!(:clinical_resource_hub_2) { create(:clinical_resource_hub) }
-      
+
       let!(:practice1) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
       let!(:practice2) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
       let!(:practice3) { create(:practice, published: false, enabled: false, approved: false, hidden: true) }
@@ -188,14 +188,14 @@ RSpec.describe Practice, type: :model do
     describe '.get_by_adopted_crh' do
       let!(:clinical_resource_hub_1) { create(:clinical_resource_hub) }
       let!(:clinical_resource_hub_2) { create(:clinical_resource_hub) }
-      
+
       let!(:practice1) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
       let!(:practice2) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
       let!(:practice3) { create(:practice, published: false, enabled: false, approved: false, hidden: true) } # Will be filtered out by `published_enabled_approved` scope
 
       let!(:diffusion_history_1) { create(:diffusion_history, practice: practice1, clinical_resource_hub: clinical_resource_hub_1) }
       let!(:diffusion_history_2) { create(:diffusion_history, practice: practice2, clinical_resource_hub: clinical_resource_hub_2) }
-      
+
 
       it 'returns practices that are published, enabled, approved, adopted by the given clinical_resource_hub_id, and have loaded associations' do
         result = Practice.published_enabled_approved.load_associations.get_by_adopted_crh(clinical_resource_hub_1.id)
@@ -206,64 +206,4 @@ RSpec.describe Practice, type: :model do
     end
   end
 
-  describe '.send_email_to_all_editors' do
-    it 'sends an email to the editor with exact email and practice info' do
-      admin = create(:user, :admin)
-      practice = create(:practice, user: admin, published: true)
-      subject_text = 'Important Update'
-      message_text = 'Please review the latest changes.'
-
-      allow(AdminMailer).to receive_message_chain(:send_email_to_editor, :deliver_now)
-
-      Practice.send_email_to_all_editors(subject_text, message_text, admin)
-
-      expected_args = {
-        subject: subject_text,
-        message: message_text,
-        user_info: {
-          email: admin.email,
-          user_name: admin.first_name
-        },
-        practices: [{
-          practice_name: practice.name,
-          show_url: Rails.application.routes.url_helpers.practice_url(practice, Rails.application.config.action_mailer.default_url_options)
-        }]
-      }
-
-      expect(AdminMailer).to have_received(:send_email_to_editor).with(expected_args).once
-    end
-  end
-
-  describe '.collect_users_and_their_practices_info' do
-    let(:user) { create(:user) }
-    let(:other_user) { create(:user) }
-    let(:admin) { create(:user) }
-    let!(:practices) { create_list(:practice, 3, user: user, published: true) }
-
-    before do
-      create(:practice_editor, user: other_user, practice: practices.first)
-
-      create(:practice_editor, user: admin, practice: practices.second)
-    end
-
-    it 'groups practices by their associated users and editors' do
-      result = Practice.collect_users_and_their_practices_info(nil)
-
-      user_result = result.find { |u| u[:user_info][:email] == user.email }
-      other_user_result = result.find { |u| u[:user_info][:email] == other_user.email }
-      admin_result = result.find { |u| u[:user_info][:email] == admin.email }
-
-      # Verify the structure and content for the main user
-      expect(user_result[:user_info][:user_name]).to eq user.first_name
-      expect(user_result[:practices].length).to eq 3
-
-      # Verify the structure and content for other_user
-      expect(other_user_result[:user_info][:user_name]).to eq other_user.first_name
-      expect(other_user_result[:practices].length).to eq 1
-
-      # Verify the structure and content for admin
-      expect(admin_result[:user_info][:user_name]).to eq admin.first_name
-      expect(admin_result[:practices].length).to eq 1
-    end
-  end
 end

@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :practice do
     association :user
 
-    name { Faker::Company.unique.name }
+    name { Faker::Company.unique.name.gsub(/[^a-zA-Z\s]/, '') }
     tagline { Faker::Lorem.sentence }
 
     trait :approved do
