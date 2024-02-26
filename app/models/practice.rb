@@ -211,9 +211,9 @@ class Practice < ApplicationRecord
   scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
   scope :get_with_va_facility_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).where(diffusion_histories: { clinical_resource_hub_id: nil }).uniq }
 
-  scope :not_updated_since, ->(date) { where('practices.updated_at < ?', date.to_date.end_of_day) }
+  scope :not_updated_since, ->(date) { where('practices.updated_at < ?', date.to_date.beginning_of_day) }
   scope :not_emailed_since, ->(date) {
-    where('practices.last_email_date < ?', date.to_date.end_of_day)
+    where('practices.last_email_date < ?', date.to_date.beginning_of_day)
     .or(where(last_email_date: nil))
   }
 
