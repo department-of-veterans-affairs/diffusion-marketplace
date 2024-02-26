@@ -9,20 +9,20 @@
             html: { id: 'emailForm' } do |f| %>
         <div class="margin-bottom-2">
           <%= f.label :subject, "Email Subject", class: 'usa-label' %>
-          <%= f.text_area :subject, id: 'emailSubject', class: 'usa-input font-body-md'%>
+          <%= f.text_area :subject, id: 'emailSubject', class: 'usa-input font-body-md' %>
         </div>
         <div class="margin-bottom-2">
           <%= f.label :message, "Message", class: 'usa-label' %>
-          <%= f.text_area :message, id: 'emailMessage', class: 'usa-input font-body-md'%>
+          <%= f.text_area :message, id: 'emailMessage', class: 'usa-input font-body-md' %>
         </div>
         <h3><%= "Restrict recipients to specified Innovations (optional): "%></h3>
         <div class="margin-bottom-2">
           <%= f.label :not_updated_since, "Not updated since:", class: 'usa-label' %>
-          <%= f.date_field :not_updated_since, id: 'notUpdatedSince', class: 'usa-input' %>
+          <%= f.date_field :not_updated_since, id: 'notUpdatedSince', class: 'usa-input font-body-md' %>
         </div>
         <div class="margin-bottom-2">
           <%= f.label :not_emailed_since, "Not emailed since:", class: 'usa-label' %>
-          <%= f.date_field :not_emailed_since, id: 'notEmailedSince', class: 'usa-input' %>
+          <%= f.date_field :not_emailed_since, id: 'notEmailedSince', class: 'usa-input font-body-md' %>
         </div>
         <div class="margin-top-4">
           <button type="button" class="usa-button" id="previewEmailButton">Preview and Send</button>
