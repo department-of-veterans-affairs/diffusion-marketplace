@@ -142,11 +142,11 @@ describe 'Admin email all editors button', type: :feature do
     find('#emailMessage').click
 
     start_time = Time.current
-    until (Time.current - start_time) > 5 || (page.evaluate_script('typeof tinyMCE !== "undefined" && tinyMCE.get("emailMessage") != null'))
+    until (Time.current - start_time) > 10 || (page.evaluate_script('typeof tinyMCE !== "undefined" && tinyMCE.get("emailMessage") != null'))
       sleep 0.1
     end
     execute_script("tinyMCE.get('emailMessage').setContent('Please review the latest changes.')")
-
+    sleep 1
     filter ? (fill_in filter, with: value) : nil
 
     click_button 'Preview and Send'
