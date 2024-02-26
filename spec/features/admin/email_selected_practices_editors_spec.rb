@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Admin email all editors button', type: :feature, js: true do
+describe 'Admin email all editors button', type: :feature do
   let(:admin) { create(:user, :admin) }
   let!(:users) { create_list(:user, 3) }
   let!(:recently_updated_practice) do
