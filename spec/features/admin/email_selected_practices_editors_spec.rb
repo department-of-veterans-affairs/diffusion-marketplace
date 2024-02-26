@@ -136,17 +136,24 @@ describe 'Admin email all editors button', type: :feature do
 
   def filter_practices_and_send_email(filter=nil, value=nil)
     click_link 'Send Email to Innovation Editors'
-
     fill_in 'practice_batch_email[subject]', with: 'Important Update'
 
     find('#emailMessage').click
 
-    start_time = Time.current
-    until (Time.current - start_time) > 10 || (page.evaluate_script('typeof tinyMCE !== "undefined" && tinyMCE.get("emailMessage") != null'))
-      sleep 0.1
+    ready = false
+    timeout = 10 # seconds
+    start_time = Time.now
+
+    while !ready && Time.now - start_time < timeout
+      ready = page.evaluate_script("typeof tinymce !== 'undefined' && tinymce.get('emailMessage') !== null && tinymce.get('emailMessage').initialized")
+      sleep 0.1 unless ready
     end
-    execute_script("tinyMCE.get('emailMessage').setContent('Please review the latest changes.')")
-    sleep 1
+
+    raise "TinyMCE was not ready within #{timeout} seconds" unless ready
+
+    # Proceed with actions now that TinyMCE is ready
+    execute_script("tinymce.get('emailMessage').setContent('Please review the latest changes.')")
+
     filter ? (fill_in filter, with: value) : nil
 
     click_button 'Preview and Send'
