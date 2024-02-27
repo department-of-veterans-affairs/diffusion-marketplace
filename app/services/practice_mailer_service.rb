@@ -9,17 +9,19 @@ class PracticeMailerService
     @current_user = current_user
     @filters = filters
     @practice_ids_to_update = Set.new
+    @practice_names = Set.new
   end
 
   def call
     user_practices_data = collect_users_and_their_practices_info
     send_emails(user_practices_data)
     update_last_email_date_for_practices
+    send_confirmation_email
   end
 
   private
 
-  attr_reader :subject, :message, :current_user, :filters, :practice_ids_to_update
+  attr_reader :subject, :message, :current_user, :filters, :practice_ids_to_update, :practice_names
 
   def collect_users_and_their_practices_info
     practices = Practice.joins(:user).ransack(filters).result(distinct: true)
@@ -49,12 +51,27 @@ class PracticeMailerService
       mailer_args[:user_info] = user_data[:user_info]
       mailer_args[:practices] = user_data[:practices]
       PracticeEditorMailer.send_batch_email_to_editor(mailer_args).deliver_now
-      user_data[:practices].each { |practice_info| practice_ids_to_update.add(practice_info[:practice_id]) }
+      user_data[:practices].each do |practice_info|
+        practice_ids_to_update.add(practice_info[:practice_id])
+        @practice_names.add(practice_info[:practice_name])
+      end
     end
   end
 
   def update_last_email_date_for_practices
     Practice.where(id: practice_ids_to_update.to_a).update_all(last_email_date: Time.current)
+  end
+
+  def send_confirmation_email
+    confirm_email_args = {
+      sender_email_address: current_user.email,
+      subject: subject,
+      message: message,
+      filters: (filters.values.all?("") ? [] : filters),
+      practice_names: practice_names,
+    }
+
+    PracticeEditorMailer.send_batch_email_confirmation(confirm_email_args).deliver_now
   end
 
   def format_user_practices(user_practices)
