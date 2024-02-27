@@ -25,4 +25,13 @@ class PracticeEditorMailer < ApplicationMailer
 
     mail(to: user_info[:email], subject: @subject)
   end
+
+  def send_batch_email_confirmation(mailer_args)
+    @message_subject = mailer_args[:subject]
+    @message = mailer_args[:message]
+    @filters = mailer_args[:filters]
+    @practice_names = mailer_args[:practice_names]
+    subject = (@practice_names.empty? ? "Failure: Diffusion Marketplace Innovation Batch Emails Not Sent" : "Confirmation: Diffusion Marketplace Innovation Batch Emails Sent")
+    mail(to: mailer_args[:sender_email_address], subject: subject)
+  end
 end
