@@ -18,9 +18,10 @@ html = Arbre::Context.new do
 
         a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
 
-        li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_alignment_input" do
+        li class: 'select input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_alignment_input" do
           label 'Alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_alignment", class: 'label'
           select value: component&.alignment || 'center',
+                required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_alignment",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][alignment]" do
             option ''
@@ -43,7 +44,7 @@ html = Arbre::Context.new do
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][alt_text]"
           para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
         end
-        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
+        li class: 'url input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
           label 'Url', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
           input value: component&.url || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",

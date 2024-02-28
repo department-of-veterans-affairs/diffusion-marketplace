@@ -114,6 +114,21 @@
     padding-top: 0;
   }
 
+  fieldset label {
+    font-size: 1rem;
+  }
+
+  .page_components .required > label::after {
+      content: ' *';
+  }
+
+  .page_components .form-header {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #8494a8;
+    text-transform: uppercase;
+  }
+
   .max-width-15 {
     max-width: 15rem;
   }

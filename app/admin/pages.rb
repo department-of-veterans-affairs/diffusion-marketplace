@@ -236,6 +236,7 @@ ActiveAdmin.register Page do
     f.inputs "Page Components" do
       render partial: 'page_components_form', locals: {f: f, page_components: :page_components}
     end
+    para 'All fields marked with an * are required'
     f.actions # adds the 'Submit' and 'Cancel' buttons
   end
 

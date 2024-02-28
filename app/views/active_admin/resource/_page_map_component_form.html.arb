@@ -14,27 +14,28 @@ html = Arbre::Context.new do
 
         a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
 
-        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
+        li class: 'url input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
           label 'Title', for: "page_page_components_attributes_#{placeholder}_component_attributes_title", class: 'label'
-          input value: component&.title || nil, type: 'text', required: 'required',
+          input value: component&.title || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
           para 'Enter a title for the map.', class: 'inline-hints'
         end
 
-        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text_input" do
+        li class: 'url input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text_input" do
           label 'Map Info Window Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text", class: 'label'
-          input value: component&.map_info_window_text || nil, type: 'text', required: 'required',
+          input value: component&.map_info_window_text || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_map_info_window_text",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][map_info_window_text]"
           para 'Enter text or acronym to display in the maps info window.', class: 'inline-hints'
         end
 
         # Description text alignment
-        li class: 'select input description-text-alignment-container',
+        li class: 'select input required description-text-alignment-container',
            id: "page_page_components_attributes_#{placeholder}_component_attributes_description_text_alignment_input" do
           label 'Text alignment', for: "page_page_components_attributes_#{placeholder}_component_attributes_description_text_alignment", class: 'label'
           select value: component&.description_text_alignment || nil,
+                 required: 'required',
                  id: "page_page_components_attributes_#{placeholder}_component_attributes_description_text_alignment",
                  name: "page[page_components_attributes][#{placeholder}][component_attributes][description_text_alignment]" do
             option 'Bottom', selected: component&.description_text_alignment === 'Bottom' || component&.description_text_alignment.blank?
@@ -46,7 +47,7 @@ html = Arbre::Context.new do
         end
 
         # Map description
-        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
+        li class: 'url input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
           label 'Description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
 
           textarea component&.description, id: "page_page_components_attributes_#{placeholder}_component_attributes_description", name: "page[page_components_attributes][#{placeholder}][component_attributes][description]", class: 'tinymce', rows:'18' do
@@ -57,7 +58,7 @@ html = Arbre::Context.new do
 
         li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_practices_attributes_input" do
           label 'Innovation List', for: "page_page_components_attributes_#{placeholder}_component_attributes_map", class: 'label'
-          select required: 'required', multiple: 'multiple', size: '20',
+          select multiple: 'multiple', size: '20',
                  id: "page_page_components_attributes_#{placeholder}_component_attributes_map",
                  name: "page[page_components_attributes][#{placeholder}][component_attributes][practices][]" do
             Practice.order(name: :asc).each do |p|
@@ -66,6 +67,8 @@ html = Arbre::Context.new do
           end
           para 'Select which Innovations adoptions are displayed on the map.  Hold down the CTRL key and click on Innovation names to add to the list.', class: 'inline-hints'
         end
+
+        span 'Map Markers:', class: 'form-header'
 
         li class: 'checkbox input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_display_successful_adoptions_input" do
           if component
