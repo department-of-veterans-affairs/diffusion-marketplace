@@ -20,7 +20,7 @@ function setupSearchDropdown(formId) {
     const mostPopularCategories = allCategories ? allCategories.slice(0, 5).filter( str => str.startsWith(" ") == false ) : [];
 
     const allInnovationsString = $('.homepage-search').attr('data-innovations');
-    const allInnovations = allInnovationsString ? allInnovationsString.match(/[^",\[\]]+/g) : [];
+    const allInnovations = (allInnovationsString !== "[]") ? allInnovationsString.match(/[^",\[\]]+/g) : [];
     const mostRecentInnovations = allInnovations ? allInnovations.slice(0, 5).filter( str => str.startsWith(" ") == false ) : [];
 
 
