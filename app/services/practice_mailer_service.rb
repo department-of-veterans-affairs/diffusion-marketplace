@@ -16,7 +16,7 @@ class PracticeMailerService
     user_practices_data = collect_users_and_their_practices_info
     send_emails(user_practices_data)
     update_last_email_date_for_practices
-    send_confirmation_email
+    send_confirmation_emails
   end
 
   private
@@ -62,7 +62,7 @@ class PracticeMailerService
     Practice.where(id: practice_ids_to_update.to_a).update_all(last_email_date: Time.current)
   end
 
-  def send_confirmation_email
+  def send_confirmation_emails
     confirm_email_args = {
       sender_email_address: current_user.email,
       subject: subject,

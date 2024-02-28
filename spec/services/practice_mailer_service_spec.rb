@@ -66,6 +66,13 @@ RSpec.describe PracticeMailerService do
       expect(admin_email.body.encoded).not_to include(practice_a.name)
       expect(admin_email.body.encoded).not_to include(practice_b.name)
       expect(admin_email.body.encoded).to include("The above message has been sent to the editors and owners of all published Innovations")
+
+      super_admin_email = emails.find { |e| e.to.include?("marketplace@va.gov") }
+      expect(super_admin_email.subject).to eq('Confirmation: Diffusion Marketplace Innovation Batch Emails Sent')
+      expect(super_admin_email.body.encoded).not_to include(practice.name)
+      expect(super_admin_email.body.encoded).not_to include(practice_a.name)
+      expect(super_admin_email.body.encoded).not_to include(practice_b.name)
+      expect(super_admin_email.body.encoded).to include("The above message has been sent to the editors and owners of all published Innovations")
     end
 
     context 'when applying specific scope filters' do
