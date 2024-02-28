@@ -16,7 +16,7 @@ html = Arbre::Context.new do
 
         li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_practices_attributes_input" do
           label 'Practice List', for: "page_page_components_attributes_#{placeholder}_component_attributes_practice_list", class: 'label'
-          select required: 'required', multiple: 'multiple', size: '20',
+          select multiple: 'multiple', size: '20',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_practice_list",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][practices][]" do
             Practice.order(name: :asc).each do |p|

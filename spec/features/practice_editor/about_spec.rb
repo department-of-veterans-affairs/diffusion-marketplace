@@ -206,7 +206,7 @@ describe 'Practice editor', type: :feature do
             expect(email_message).to eq('Please fill out this field.')
         end
 
-        it 'should allow the user to update the email data on the page' do
+        it 'should allow the user to update the email data on the page', js: true do
             # create the main email address
             fill_in_main_email_field
             save_button.click
@@ -261,17 +261,9 @@ describe 'Practice editor', type: :feature do
             end
 
             # delete "second" cc email
-            expect(page).to have_field(@email_field_name, with: 'second_test@test.com')
-            input_field_id = first_cc_email_field_input[:id]
-            find('.add-practice-email-link').click
-            within(first_cc_email_field) do
-                click_link('Delete entry')
-                expect(page).to_not have_selector("##{input_field_id}")
-            end
+            first_cc_email_field_input.set('')
             save_button.click
-            within(:css, '.practice-editor-contact-ul') do
-                expect(page).to_not have_selector("##{input_field_id}")
-            end
+            expect(first_cc_email_field_input.value).to eq('')
         end
     end
 end

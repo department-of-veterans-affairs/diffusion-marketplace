@@ -25,7 +25,7 @@ html = Arbre::Context.new do
         # Title
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
           label 'Title', for: "page_page_components_attributes_accordion_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.title || nil, type: 'text', required: 'required',
+          input value: component&.title || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
           para 'Section header styled as secondary heading/"H2"', class: 'inline-hints'

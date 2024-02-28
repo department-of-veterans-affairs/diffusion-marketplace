@@ -1,0 +1,35 @@
+<%= javascript_include_tag 'batch_email' %>
+
+<div class="grid-container">
+  <div class="grid-row">
+    <div class="desktop:grid-col-12 margin-auto">
+      <%= form_for :practice_batch_email,
+            url: send_email_to_all_editors_admin_practices_path,
+            method: :post,
+            html: { id: 'emailForm' } do |f| %>
+        <div class="margin-bottom-2">
+          <%= f.label :subject, "Email Subject", class: 'usa-label' %>
+          <%= f.text_area :subject, id: 'emailSubject', class: 'usa-input font-body-md' %>
+        </div>
+        <div class="margin-bottom-2">
+          <%= f.label :message, "Message", class: 'usa-label' %>
+          <%= f.text_area :message, id: 'emailMessage', class: 'usa-input font-body-md' %>
+        </div>
+        <h3><%= "Restrict recipients to specified Innovations (optional): "%></h3>
+        <div class="margin-bottom-2">
+          <%= f.label :not_updated_since, "Not updated since:", class: 'usa-label' %>
+          <%= f.date_field :not_updated_since, id: 'notUpdatedSince', class: 'usa-input font-body-md' %>
+        </div>
+        <div class="margin-bottom-2">
+          <%= f.label :not_emailed_since, "Not emailed since:", class: 'usa-label' %>
+          <%= f.date_field :not_emailed_since, id: 'notEmailedSince', class: 'usa-input font-body-md' %>
+        </div>
+        <div class="margin-top-4">
+          <button type="button" class="usa-button" id="previewEmailButton">Preview and Send</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= render 'admin/practices/email_preview_modal' %>
