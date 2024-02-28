@@ -16,7 +16,7 @@ function setupSearchDropdown(formId) {
     const dropdown = $('#search-dropdown');
 
     const allCategoriesString = $('.homepage-search').attr('data-categories');
-    const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
+    const allCategories = (allCategoriesString !== "[]") ? allCategoriesString.match(/[^",\[\]]+/g) : [];
     const mostPopularCategories = allCategories ? allCategories.slice(0, 5).filter( str => str.startsWith(" ") == false ) : [];
 
     const allInnovationsString = $('.homepage-search').attr('data-innovations');
