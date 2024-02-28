@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h3>The following message has been sent to the editors and owners of <%= @filters.empty? ? "all" : "selected" %> Innovations via the Diffusion Marketplace's batch emailer admin tool:</h3>
+    <p>Hello Innovation Editor, </p>
+    <p>
+      <%= @message.html_safe %>
+    </p>
+    <p>Visit your Innovation(s) at the following link(s) and click "Edit" to begin editing. Please note that only one person can edit the innovation at a time.</p>
+    <ul>
+          <li><a href="#">Sample Innovation Link</a></li>
+        </ul>
+    <p>
+      If you have any questions, issues, or feedback to share with us please send an email to <%= mail_to 'Marketplace@VA.gov ', 'Marketplace@VA.gov ' %>
+    </p>
+
+    <% if @practice_names.empty? %>
+      <h3>You attempted to send the above message to filtered Innovation owners and editors but the applied filters returned no Innovation results.</h3>
+    <% else %>
+      <h3>The above message has been sent to the editors and owners of <%= @filters.empty? ? "all published Innovations." : "the following Innovations:" %> </h3>
+    <% end %>
+    <% unless @filters.empty? %>
+      <ul>
+        <% @practice_names.each do |practice| %>
+          <li>
+            <%= practice %>
+          </li>
+        <% end %>
+      </ul>
+
+      <h3>The following @filters were applied to scope the message recipients:</h3>
+      <ul>
+        <% @filters.each do |k, v| %>
+          <li>
+            <% unless v.empty? %>
+              <%= k.to_s + ": " + v %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </body>
+  <footer>
+    <%= image_tag('dm-footer-logo.png', alt: "Diffusion Marketplace Logo", host: "https://marketplace.va.gov") %>
+  </footer>
+</html>
