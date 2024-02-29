@@ -16,12 +16,13 @@ function setupSearchDropdown(formId) {
     const dropdown = $('#search-dropdown');
 
     const allCategoriesString = $('.homepage-search').attr('data-categories');
-    const allCategories = allCategoriesString ? allCategoriesString.match(/[^",\[\]]+/g) : [];
-    const mostPopularCategories = allCategories ? allCategories.slice(0, 3) : [];
+    const allCategories = (allCategoriesString !== "[]") ? allCategoriesString.match(/[^",\[\]]+/g) : [];
+    const mostPopularCategories = allCategories ? allCategories.slice(0, 5).filter( str => str.startsWith(" ") == false ) : [];
 
     const allInnovationsString = $('.homepage-search').attr('data-innovations');
-    const allInnovations = allInnovationsString ? allInnovationsString.match(/[^",\[\]]+/g) : [];
-    const mostRecentInnovations = allInnovations ? allInnovations.slice(0, 3) : [];
+    const allInnovations = (allInnovationsString !== "[]") ? allInnovationsString.match(/[^",\[\]]+/g) : [];
+    const mostRecentInnovations = allInnovations ? allInnovations.slice(0, 5).filter( str => str.startsWith(" ") == false ) : [];
+
 
     searchInput.focus(function() {
         dropdown.show();
