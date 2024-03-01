@@ -95,10 +95,10 @@ ActiveAdmin.register Topic do
     end
 
     def update(_options={}, &block)
-    update! do |success, failure|
-      yield(success, failure) if block
+      update! do |success, failure|
+        yield(success, failure) if block
 
-      resource.errors.messages.each do |k,v|
+        resource.errors.messages.each do |k,v|
           if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
             resource.errors.messages[k] = "There was an issue with uploading your image file."
           end
