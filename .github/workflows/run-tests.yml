@@ -20,6 +20,7 @@ jobs:
       REDIS_URL: redis://localhost:6379/0
       HOSTNAME: "http://localhost:3200"
       GOOGLE_TEST_API_KEY: ${{ secrets.GOOGLE_TEST_API_KEY }}
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_TEST_API_KEY }}
     services:
       postgres:
         image: postgres:11-alpine
