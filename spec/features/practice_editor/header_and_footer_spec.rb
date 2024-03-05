@@ -32,15 +32,16 @@ describe 'Practice editor', type: :feature, js: true do
         editor_footer = "footer"
 
         # metrics
+        click_link('Metrics')
         expect(page).to have_current_path(practice_metrics_path(@published_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_no_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -58,11 +59,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -81,11 +82,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -105,11 +106,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -129,11 +130,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -153,11 +154,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -177,11 +178,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@published_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -209,15 +210,16 @@ describe 'Practice editor', type: :feature, js: true do
         editor_footer = "footer"
 
         # metrics
+        click_on('Metrics')
         expect(page).to have_current_path(practice_metrics_path(@unpublished_pr))
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_no_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -235,11 +237,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -258,11 +260,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Save as draft')
           expect(page).to have_content('Save and publish')
@@ -283,11 +285,11 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_content('Metrics')
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
@@ -307,11 +309,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Save as draft')
           expect(page).to have_content('Save and publish')
@@ -331,11 +333,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Save as draft')
           expect(page).to have_content('Save and publish')
@@ -355,11 +357,11 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, editor_header) do
           expect(page).to have_no_link(href: root_path)
           expect(page).to have_link(href: practice_metrics_path(@unpublished_pr))
-          metrics_nav_link = find_all('.usa-nav__primary-item').first
+          metrics_nav_link = find_all('.usa-nav__primary-item').last
           expect(metrics_nav_link).to have_no_css('.usa-current')
           expect(page).to have_content('Editing guide')
           expect(page).to have_content('Edit your innovation')
-          edit_nav_link = find_all('.usa-nav__primary-item').last
+          edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Save as draft')
           expect(page).to have_content('Save and publish')
