@@ -8,6 +8,7 @@ describe 'Admin Topics Tab', type: :feature do
     @img_path_1 = "#{Rails.root}/spec/assets/acceptable_img.jpg"
     @img_path_2 = "#{Rails.root}/spec/assets/charmander.png"
     @img_path_3 = "#{Rails.root}/spec/assets/SpongeBob.png"
+    @img_path_4 = "#{Rails.root}/spec/assets/invalid.jpeg.svg"
     Topic.create(title: "Mock topic one", description: "Description for mock topic 1", url: '/diffusion-map', cta_text: "Click here for diffusion map", attachment: File.new(@img_path_1))
     Topic.create(title: "Mock topic two", description: "Description for mock topic 2", url: 'https://www.va.gov', cta_text: "Click here for Veterans Affairs website", attachment: File.new(@img_path_2), featured: true)
     login_as(@admin, scope: :user, run_callbacks: false)
@@ -83,5 +84,15 @@ describe 'Admin Topics Tab', type: :feature do
     expect(page).to have_content('Topic was successfully destroyed.')
     visit '/'
     expect(page).to have_no_content('FEATURED TOPIC')
+  end
+
+  it 'disallows an invalid attachment type and displays error message' do
+    visit '/admin'
+    click_link 'Topics'
+    find_all('.edit_link').first.click
+    fill_in('Title', with: 'Mock updated topic two')
+    find('#topic_attachment').attach_file(@img_path_4)
+    click_button('Update Topic')
+    expect(page).to have_content("must be one of the following types: jpg, jpeg, or png")
   end
 end

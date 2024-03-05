@@ -73,4 +73,39 @@ ActiveAdmin.register Topic do
       end
     f.actions
   end
+
+  # The following controller overrides is a brute force way of catching
+  # Paperclip::Errors::NotIdentifiedByImageMagickError's, which were being displayed to the
+  # user when submitting a corrupted image file, that our recent WASA report took issue with.
+  # The intention is to obscure the error while preserving active_admin's built-in error handling
+  # for anything other than a paperclip error.
+  controller do
+    def create(_options={}, &block)
+      create! do |success, failure|
+        yield(success, failure) if block
+
+        resource.errors.messages.each do |k,v|
+          if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
+            resource.errors.messages[k] = "There was an issue with uploading your image file."
+          end
+        end
+
+        failure.html { render :new }
+      end
+    end
+
+    def update(_options={}, &block)
+      update! do |success, failure|
+        yield(success, failure) if block
+
+        resource.errors.messages.each do |k,v|
+          if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
+            resource.errors.messages[k] = "There was an issue with uploading your image file."
+          end
+        end
+
+        failure.html { render :edit }
+      end
+    end
+  end
 end
