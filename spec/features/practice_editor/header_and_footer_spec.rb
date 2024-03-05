@@ -27,7 +27,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       it 'should display the correct header and footer on each page' do
         click_on('Edit innovation')
-        expect(page).to have_current_path(practice_metrics_path(@published_pr))
+        expect(page).to have_current_path(practice_editors_path(@published_pr))
         editor_header = "#dm-practice-editor-header"
         editor_footer = "footer"
 
@@ -204,7 +204,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       it 'should display the correct header and footer on each page' do
         click_on('Edit innovation')
-        expect(page).to have_current_path(practice_metrics_path(@unpublished_pr))
+        expect(page).to have_current_path(practice_editors_path(@unpublished_pr))
         editor_header = "#dm-practice-editor-header"
         editor_footer = "footer"
 
