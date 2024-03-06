@@ -8,7 +8,9 @@ class PageGroup < ApplicationRecord
 
   COMMUNITY_SLUGS = [
     'xr-network',
-    'va-immersive'
+    'va-immersive',
+    'suicide-prevention',
+    'age-friendly'
   ]
 
   def is_community?
