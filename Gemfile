@@ -9,10 +9,8 @@ gem 'pg'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
 gem 'puma', '~> 6.4.2'
-# Use Uglifier as compressor for JavaScript assets
-
-# See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'terser'
+# See https://github.com/rails/execjs#readme for more supported runtimes
 
 gem 'babel-transpiler'
 
