@@ -53,6 +53,10 @@
 
 // index page
 #dm-va-facilities-index {
+  a[href="#facility-complexity-modal"] {
+    word-break: break-word; // prevent overlap with sort icon
+  }
+
   .usa-table--borderless {
     tr:first-of-type {
       th:first-of-type {

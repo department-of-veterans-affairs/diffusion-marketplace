@@ -16,34 +16,35 @@
     <p>
       If you have any questions, issues, or feedback to share with us please send an email to <%= mail_to 'Marketplace@VA.gov ', 'Marketplace@VA.gov ' %>
     </p>
-
-    <% if @practice_names.empty? %>
-      <h3>You attempted to send the above message to filtered Innovation owners and editors but the applied filters returned no Innovation results.</h3>
-    <% else %>
-      <h3>The above message has been sent to the editors and owners of <%= @filters.empty? ? "all published Innovations." : "the following Innovations:" %> </h3>
-    <% end %>
-    <% unless @filters.empty? %>
-      <ul>
-        <% @practice_names.each do |practice| %>
-          <li>
-            <%= practice %>
-          </li>
-        <% end %>
-      </ul>
-
-      <h3>The following @filters were applied to scope the message recipients:</h3>
-      <ul>
-        <% @filters.each do |k, v| %>
-          <li>
-            <% unless v.empty? %>
-              <%= k.to_s + ": " + v %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
+    <p>Thank you for being a valued member of our Diffusion of Excellence community.</p>
   </body>
   <footer>
     <%= image_tag('dm-footer-logo.png', alt: "Diffusion Marketplace Logo", host: "https://marketplace.va.gov") %>
   </footer>
+
+  <% if @practice_names.empty? %>
+    <h3>You attempted to send the above message to filtered Innovation owners and editors but the applied filters returned no Innovation results.</h3>
+  <% else %>
+    <h3>The above message has been sent to the editors and owners of <%= @filters.empty? ? "all published Innovations." : "the following Innovations:" %> </h3>
+  <% end %>
+  <% unless @filters.empty? %>
+    <ul>
+      <% @practice_names.each do |practice| %>
+        <li>
+          <%= practice %>
+        </li>
+      <% end %>
+    </ul>
+
+    <h3>The following filters were applied to scope the message recipients:</h3>
+    <ul>
+      <% @filters.each do |k, v| %>
+        <% unless v.empty? %>
+          <li>
+              <%= k.to_s + ": " + v %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
 </html>

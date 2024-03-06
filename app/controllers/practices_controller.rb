@@ -1,4 +1,4 @@
-class PracticesController < ApplicationController
+class PracticesController < ApplicationController # rubocop:disable Metrics/ClassLength
   include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper, UsersHelper
   prepend_before_action :skip_timeout, only: [:session_time_remaining]
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
@@ -169,7 +169,11 @@ class PracticesController < ApplicationController
           flash[:error] = "Your editing session for #{@practice.name} has ended. Your edits have not been saved and you have been returned to the Metrics page."
           format.html { redirect_to practice_metrics_path(@practice) }
         else
-          flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
+          if @practice.errors.messages.values.flatten.any? {|v| v.include?('Paperclip::Errors'||'ImageMagick')}
+            flash[:error] = "Image processing failed. Please ensure the file is a valid image."
+          else
+            flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
+          end
           # if the request was sent via the publication modal, redirect the user to the practice's show page
           if is_request_from_publish_modal
             format.html { redirect_to practice_path(@practice) }
