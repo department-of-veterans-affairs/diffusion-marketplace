@@ -55,6 +55,7 @@ describe 'Metrics section', type: :feature, js: true do
       login_as(@user1, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
       click_link('Edit innovation')
+      click_link('Metrics')
       expect(page).to have_content(@practice.name)
     end
 
@@ -125,6 +126,7 @@ describe 'Metrics section', type: :feature, js: true do
       visit practice_path(@practice)
       click_link 'Bookmark'
       click_link 'Edit innovation'
+      click_link('Metrics')
 
       within(:css, '.dm-metrics-overall-stats') do
         bookmark_ct = find_all('td[style="font-size: 32px"]')[2].text
