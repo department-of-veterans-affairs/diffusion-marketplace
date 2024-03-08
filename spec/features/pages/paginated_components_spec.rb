@@ -163,7 +163,7 @@ end
 
 def create_event_components(num = 1, page)
   num.times do
-    event_component =  PageEventComponent.create(title: 'Event', url: 'https://wikipedia.org', text: 'event description')
+    event_component = create(:page_event_component)
     PageComponent.create(page: page, component: event_component, created_at: Time.now)
   end
 end
