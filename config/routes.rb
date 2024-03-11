@@ -81,6 +81,11 @@ Rails.application.routes.draw do
     end
   end
 
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.has_role?(:admin) } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   root 'home#index'
   resources :clinical_resource_hubs, path: :crh, param: :number
   get '/practices' => 'practices#index'
