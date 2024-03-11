@@ -88,7 +88,8 @@ class PracticeMailerService
     {
       practice_name: practice.name,
       show_url: Rails.application.routes.url_helpers.practice_url(practice, host_options),
-      practice_id: practice.id
+      practice_id: practice.id,
+      last_updated_on: practice.updated_at.strftime('%m/%d/%Y')
     }
   end
 end
