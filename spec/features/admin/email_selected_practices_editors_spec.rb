@@ -69,7 +69,9 @@ describe 'Admin email all editors button', type: :feature do
     expect(email.subject).to eq 'Important Update'
 
     expect(email.body.encoded).to include older_practice.name
+    expect(email.body.encoded).to include older_practice.updated_at.strftime('%m/%d/%Y')
     expect(email.body.encoded).to include unemailed_practice.name
+    expect(email.body.encoded).to include unemailed_practice.updated_at.strftime('%m/%d/%Y')
     expect(email.body.encoded).to include recently_updated_practice.name
     expect(email.body.encoded).not_to include unpublished_practice.name
 
