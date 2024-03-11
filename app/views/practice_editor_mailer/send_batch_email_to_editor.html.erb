@@ -12,7 +12,8 @@
     <ul>
       <% @practices.each do |practice| %>
         <li>
-          <%= link_to "#{practice[:practice_name]}", practice[:show_url] %>
+          <%= link_to "#{practice[:practice_name]}", practice[:show_url] %> -
+          <strong>Updated <%= "#{practice[:last_updated_on]}" %></strong>
         </li>
       <% end %>
     </ul>
