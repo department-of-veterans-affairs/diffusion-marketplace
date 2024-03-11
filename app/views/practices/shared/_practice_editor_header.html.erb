@@ -2,7 +2,7 @@
   is_editors_or_adoptions =  params[:action] === 'editors' || params[:action] === 'adoptions'
   save_btn_pgs = ['introduction', 'overview', 'contact', 'implementation','about']
   has_save_btn = save_btn_pgs.include?(params[:action])
-  save_btn_text = @practice.published ? 'Save and update' : 'Save as draft'
+  save_btn_text = @practice.published ? 'Save and publish' : 'Save as draft'
   save_btn_classes = @practice.published ? 'dm-button--success margin-right-0' : 'dm-button--inverse-secondary margin-right-2'
 %>
 <%= render partial: 'practices/shared/close_modal' unless is_editors_or_adoptions %>
