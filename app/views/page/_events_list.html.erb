@@ -9,7 +9,7 @@
             <div id="<%= event.id %>" class="event-item-description usa-prose usa-card__body">
                 <div class="event-metadata">
                   <% if event.presented_by? %>
-                    <p>Presented by: <%= event.presented_by%></p>
+                    <p>Presented by <%= event.presented_by%></p>
                   <% end %>
                   <% if event&.start_date.present? %>
                     <p><i class="fas fa-calendar-alt"></i><span class='sr-only'>Date: </span> <%= event.rendered_date %></span></p>
