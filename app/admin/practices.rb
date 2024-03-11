@@ -40,7 +40,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
     render 'send_email_to_practice_editors_form'
   end
 
-  collection_action :send_email_to_all_editors, method: :post do
+  collection_action :send_batch_email_to_editors, method: :post do
     email_params = params.require(:practice_batch_email).permit(:subject, :message, :not_updated_since, :not_emailed_since)
     subject = ActionController::Base.helpers.sanitize(email_params[:subject])
     message = ActionController::Base.helpers.sanitize(email_params[:message])
