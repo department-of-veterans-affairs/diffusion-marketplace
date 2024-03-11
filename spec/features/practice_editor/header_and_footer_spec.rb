@@ -45,7 +45,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_no_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_no_content('Back')
@@ -67,7 +66,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_no_content('Back')
@@ -89,8 +87,7 @@ describe 'Practice editor', type: :feature, js: true do
           edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
-          expect(page).to have_no_content('Save and publish')
-          expect(page).to have_content('Save and update')
+          expect(page).to have_content('Save and publish')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -114,7 +111,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -137,8 +133,7 @@ describe 'Practice editor', type: :feature, js: true do
           edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
-          expect(page).to have_no_content('Save and publish')
-          expect(page).to have_content('Save and update')
+          expect(page).to have_content('Save and publish')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -161,8 +156,7 @@ describe 'Practice editor', type: :feature, js: true do
           edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
-          expect(page).to have_no_content('Save and publish')
-          expect(page).to have_content('Save and update')
+          expect(page).to have_content('Save and publish')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -185,8 +179,7 @@ describe 'Practice editor', type: :feature, js: true do
           edit_nav_link = find_all('.usa-nav__primary-item').first
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
-          expect(page).to have_no_content('Save and publish')
-          expect(page).to have_content('Save and update')
+          expect(page).to have_content('Save and publish')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -223,7 +216,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_no_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_no_content('Back')
@@ -245,7 +237,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_no_content('Back')
@@ -268,7 +259,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Save as draft')
           expect(page).to have_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -293,7 +283,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_no_content('Save as draft')
           expect(page).to have_no_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -317,7 +306,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Save as draft')
           expect(page).to have_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -341,7 +329,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Save as draft')
           expect(page).to have_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
@@ -365,7 +352,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(edit_nav_link).to have_css('.usa-current')
           expect(page).to have_content('Save as draft')
           expect(page).to have_content('Save and publish')
-          expect(page).to have_no_content('Save and update')
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
