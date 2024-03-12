@@ -40,33 +40,4 @@ describe 'About us page', type: :feature do
       expect(page).to have_content('Best Practice Ever')
     end
   end
-
-  describe 'Send us feedback section' do
-    xit 'should allow the user to send an email to the marketplace team' do
-      fill_in('Your email', with: 'test@test.com')
-      # all fields should be required
-      click_button('Send message')
-      message = find('#subject').native.attribute('validationMessage')
-      expect(message).to eq('Please fill out this field.')
-      fill_in('Subject line', with: 'Test subject')
-      fill_in('Your message', with: 'This is a test message')
-      # make sure the mailer count increases by 1
-      expect { click_button('Send message') }.to change { ActionMailer::Base.deliveries.count }.by(1)
-      # make sure the mailer content matches what the users sent
-      expect(ActionMailer::Base.deliveries.last.from.first).to eq('test@test.com')
-      expect(ActionMailer::Base.deliveries.last.subject).to eq('(About) Test subject')
-      expect(page).to have_content('You successfully sent a message to the Diffusion Marketplace team.')
-    end
-    #spam detector................................................................
-    xit 'should log and redirect user to homepage if phone field is populated' do
-      fill_in('Your email', with: 'test@test.com')
-      fill_in('Subject line', with: 'Test subject')
-      fill_in('Your message', with: 'This is a test message')
-      fill_in('phone', visible: false, with: 'this is spam')
-      # make sure the FormSpam records increase by 1
-      expect { click_button('Send message') }.to change(FormSpam, :count).by(1)
-      # make sure user is redirected to home page.
-      expect(page).to have_current_path(root_path)
-    end
-  end
 end
