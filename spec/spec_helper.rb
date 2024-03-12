@@ -4,6 +4,7 @@ require 'simplecov'
 require 'rspec/retry'
 require 'axe/rspec'
 require "rack_session_access/capybara"
+require 'selenium-webdriver'
 
 if ENV['CIRCLE_ARTIFACTS']
   dir = File.join(ENV['CIRCLE_ARTIFACTS'], 'coverage')

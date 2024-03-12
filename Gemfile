@@ -65,7 +65,7 @@ group :development, :test do
   gem 'figaro'
   gem 'rspec-retry'
   gem 'axe-matchers'
-  gem 'webdrivers'
+  gem 'selenium-webdriver'
 
   gem 'brakeman', '5.0.2'
   gem 'bundler-audit'
