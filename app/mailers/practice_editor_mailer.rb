@@ -14,26 +14,29 @@ class PracticeEditorMailer < ApplicationMailer
     end
   end
 
-  def send_batch_email_to_editor(mailer_args)
-    @subject = mailer_args[:subject]
-    @message = mailer_args[:message]
+  def send_batch_email_to_editor(args)
+    @subject = args["subject"]
+    @message = args["message"]
+    user_info = args["practices_data"]["user_info"]
+    @user_name = user_info["user_name"] || "Innovation Editor"
+    @practices = args["practices_data"]["practices"]
 
-    user_info = mailer_args[:user_info]
-    @user_name = user_info[:user_name] || "Innovation Editor"
-    @user_email = user_info[:email]
-
-    @practices = mailer_args[:practices]
-
-    mail(to: user_info[:email], subject: @subject)
+    mail(to: user_info["email"], subject: @subject)
   end
 
-  def send_batch_email_confirmation(mailer_args)
-    @message_subject = mailer_args[:subject]
-    @message = mailer_args[:message]
-    @filters = mailer_args[:filters]
-    @practice_names = mailer_args[:practice_names]
-    subject = (@practice_names.empty? ? "Failure: Diffusion Marketplace Innovation Batch Emails Not Sent" : "Confirmation: Diffusion Marketplace Innovation Batch Emails Sent")
-    recipients = [mailer_args[:sender_email_address], MAILER_RETURN]
+  def send_batch_email_confirmation(args)
+    @message_subject = args["subject"]
+    @message = args["message"]
+    @practice_names = args["practices_data"]
+    @filters = args["filters"]
+
+    subject = if @practice_names.empty?
+                    "Failure: Diffusion Marketplace Innovation Batch Emails Not Sent"
+                  else
+                    "Confirmation: Diffusion Marketplace Innovation Batch Emails Sent"
+                  end
+
+    recipients = [args["sender_email_address"], MAILER_RETURN]
     mail(to: recipients, subject: subject)
   end
 end
