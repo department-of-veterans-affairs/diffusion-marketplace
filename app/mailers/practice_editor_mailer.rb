@@ -36,7 +36,14 @@ class PracticeEditorMailer < ApplicationMailer
                     "Confirmation: Diffusion Marketplace Innovation Batch Emails Sent"
                   end
 
-    recipients = [args["sender_email_address"], MAILER_RETURN]
+    # Send confirmation to DM email only on PROD, local and test
+    # In DEV send confirmation only to current_user that triggered the batch emails
+    if Rails.env.production? && ENV['PROD_SERVERNAME'] != 'PROD'
+      recipients = args["sender_email_address"]
+    else
+      recipients = [args["sender_email_address"], MAILER_RETURN]
+    end
+
     mail(to: recipients, subject: subject)
   end
 end
