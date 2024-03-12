@@ -64,8 +64,9 @@ group :development, :test do
   # gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
   gem 'figaro'
   gem 'rspec-retry'
-  gem 'axe-matchers'
-  gem 'webdrivers'
+  gem 'axe-core-capybara'
+  gem 'axe-core-rspec'
+  gem 'selenium-webdriver'
 
   gem 'brakeman', '5.0.2'
   gem 'bundler-audit'

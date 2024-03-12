@@ -11,7 +11,7 @@ describe 'About us page', type: :feature do
 
   describe 'Intro section' do
     it '\'Diffusion of Excellence\' link should take the user to the Diffusion of Excellence page at va.gov' do
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
 
       new_window = window_opened_by { click_link('Diffusion of Excellence') }
       within_window new_window do

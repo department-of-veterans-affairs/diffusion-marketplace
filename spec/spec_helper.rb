@@ -2,8 +2,10 @@ require 'devise'
 require 'capybara'
 require 'simplecov'
 require 'rspec/retry'
-require 'axe/rspec'
+require 'axe-capybara'
+require 'axe-rspec'
 require "rack_session_access/capybara"
+require 'selenium-webdriver'
 
 if ENV['CIRCLE_ARTIFACTS']
   dir = File.join(ENV['CIRCLE_ARTIFACTS'], 'coverage')
@@ -152,7 +154,7 @@ end
 
 # Capybara.javascript_driver = :webkit
 # Capybara.default_driver = :sniffybara
-# Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
+Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
 
 Capybara.register_driver :selenium_chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless=new disable-gpu window-size=1920,1080])
@@ -166,7 +168,7 @@ Capybara.register_driver :selenium_firefox_headless do |app|
   Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
 end
 
-Capybara.default_driver = :selenium_chrome_headless
+# Capybara.default_driver = :selenium_chrome_headless
 Capybara.javascript_driver = :selenium_firefox_headless
 Capybara.enable_aria_label = true
 
