@@ -64,8 +64,8 @@ class PracticeMailerService
 
   def send_confirmation_email(mailer_args)
     mailer_args["practices_data"] = @practice_names.to_a
-    mailer_args["filters"] = (@filters.values.all?("") ? [] : @filters.transform_keys(&:to_s))
-    mailer_args["sender_email_address"] = @current_user.email
+    mailer_args["filters"] = (filters.values.all?("") ? [] : filters.transform_keys(&:to_s))
+    mailer_args["sender_email_address"] = current_user.email
 
     PracticeMailerWorker.perform_async("send_batch_email_confirmation", mailer_args)
   end
