@@ -18,7 +18,7 @@ ActiveAdmin.register PageGroup do
     f.inputs do
       f.input :name
       f.input :description
-      f.input :editors, # or roles? 
+      f.input :editors,
               label: 'Commmunity editors',
               as: :text,
               input_html: { class: 'height-7' },
@@ -41,14 +41,25 @@ ActiveAdmin.register PageGroup do
 
     def create
       # add a new role
-      # should we require an editor for this field? 
-
       super
     end
 
     def update
+      current_editors = resource.editors.split(',')
+      submitted_emails = params["page_group"]["editors"].split(',')
+      # TODO: process whitespace
+      editors_to_delete = current_editors - submitted_emails
+      editors_to_create = submitted_emails - current_editors
 
-      # delete users' roles if editors is empty
+      editors_to_delete.each {| email| User.where(email: email).first.remove_role(:community_editor, resource) }
+      editors_to_create.each {|email| User.where(email: email).first.add_role(:community_editor, resource) }
+
+      params["page_group"]["editors"] = nil # unset param
+
+      # other stuff
+      # validate that it's a VA email
+      # reject if user does not exist
+
 
       super
     end

@@ -23,6 +23,6 @@ class PageGroup < ApplicationRecord
   end
 
   def editors
-    User.with_role(:editor, self)
+    User.with_role(:community_editor, self).pluck("email").join(",")
   end
 end
