@@ -216,7 +216,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     before do
       # ensure header mobile view
       page.driver.browser.manage.window.resize_to(480, 800)
-      find('.usa-menu-btn').click
+      find("#customMenuButton").click
     end
 
     it 'should show the search bar and links' do
@@ -240,7 +240,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
       # should show all published/enabled/approved practices on empty header search
       visit '/'
-      find('.usa-menu-btn').click
+      find("#customMenuButton").click
       find('#dm-navbar-search-mobile-button').click
       expect(page).to have_content('A public practice')
       expect(page).to have_content('Project HAPPEN')
