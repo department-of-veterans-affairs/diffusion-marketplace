@@ -27,6 +27,10 @@
   }
 
   .usa-menu-btn {
+    display: none; /* Hide the original button */
+  }
+
+  #customMenuButton {
     &:hover {
       cursor: pointer;
     }
@@ -92,6 +96,15 @@
       @include u-text('primary-vivid', !important);
     }
   }
+
+  // @media (max-width: 1024px) {
+  //   #customMenuButton {
+  //       display: inline-block; /* Adjust display as needed */
+  //   }
+  //   &:hover {
+  //     cursor: pointer;
+  //   }
+  // }
 
   @media screen and (min-width: 64rem) {
     .dm-navbar__secondary {
@@ -289,9 +302,9 @@
     background-size: 27px 17.5px;
     background-position: 16px center;
     padding: 8px 16px 8px 56px;
-        
+
     &:active, &:focus, &:hover {
-      background-color: #801C11; 
+      background-color: #801C11;
     }
 
     @media all and (min-width: 64rem) {
