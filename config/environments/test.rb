@@ -55,6 +55,8 @@ Rails.application.configure do
    # Tell Active Support which deprecation messages to disallow.
   config.active_support.disallowed_deprecation_warnings = []
 
+  config.active_job.queue_adapter = :inline
+
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
 

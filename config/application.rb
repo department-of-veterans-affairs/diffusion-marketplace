@@ -49,7 +49,5 @@ module DiffusionMarketplace
     config.exceptions_app = self.routes
     config.tinymce.install = :compile
     config.tinymce.install = :copy
-
-    config.active_job.queue_adapter = :sidekiq
   end
 end
