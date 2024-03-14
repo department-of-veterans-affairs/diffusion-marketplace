@@ -186,6 +186,10 @@
     height: 440px;
   }
 
+  .page-triple-paragraph-component-bg {
+    background-color: #f5f5f5;
+  }
+
   // replicates .dm-practice-card-img-container
   .dm-news-img-container {
     max-height: 165px;
@@ -203,8 +207,8 @@
   }
 
   // disable USWDS USA card styles the affect whitespace
-  .page-event-component, 
-  .page-news-component, 
+  .page-event-component,
+  .page-news-component,
   .publication-component-list-cards .page-publication-component { // Publication lists with <2 components
     margin-top: 0;
     margin-bottom: 0;
