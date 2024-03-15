@@ -27,14 +27,9 @@
       <%= render partial: 'shared/navbar_search', locals: { search_form_id: 'dm-navbar-search-desktop-form', search_field_id: 'dm-navbar-search-desktop-field', search_button_id: 'dm-navbar-search-desktop-button' } %>
       <%= render partial: 'shared/header_user_login_nav', locals: { accordion_id: 'dm-user-profile-options' } %>
     </div>
-    <button class="usa-menu-btn" id="originalMenuButton"></button>
-    <i
-      class="fa fa-bars padding-x-3 desktop:display-none"
-      aria-label="Menu"
-      id="customMenuButton"
-      tabindex="0"
-      role="button"
-    ></i>
+    <button class="usa-menu-btn" id="originalMenuButton">
+    	<i class="fa fa-bars" aria-label="menu"></i>
+    </button>
   </div>
   <nav aria-label="Primary navigation" class="usa-nav desktop:border-bottom desktop:border-base-lighter">
     <div class="usa-nav__inner">
