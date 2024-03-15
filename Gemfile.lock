@@ -281,7 +281,7 @@ GEM
     ffi (1.16.3)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
-    font-awesome-sass (5.13.1)
+    font-awesome-sass (5.15.1)
       sassc (>= 1.11)
     formtastic (5.0.0)
       actionpack (>= 6.0.0)
@@ -861,7 +861,7 @@ DEPENDENCIES
   faker
   ffi
   figaro
-  font-awesome-sass (~> 5.13.0)
+  font-awesome-sass (< 6)
   friendly_id (~> 5.2.4)
   gmaps4rails!
   groupdate
