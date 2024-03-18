@@ -20,6 +20,11 @@ RSpec.describe PracticeMailerService do
       create(:practice_editor, user: user3, practice: unpublished_practice)
 
       ActionMailer::Base.deliveries.clear
+      Sidekiq::Testing.inline!
+    end
+
+    after do
+      Sidekiq::Testing.fake!
     end
 
     it 'sends an email to all owners and editors of published practices' do

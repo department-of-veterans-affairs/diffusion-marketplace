@@ -4,7 +4,7 @@
   <div class="grid-row">
     <div class="desktop:grid-col-12 margin-auto">
       <%= form_for :practice_batch_email,
-            url: send_email_to_all_editors_admin_practices_path,
+            url: send_batch_email_to_editors_admin_practices_path,
             method: :post,
             html: { id: 'emailForm' } do |f| %>
         <div class="margin-bottom-2">
