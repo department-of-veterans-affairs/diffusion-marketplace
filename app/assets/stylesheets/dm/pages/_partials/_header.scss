@@ -27,8 +27,13 @@
   }
 
   .usa-menu-btn {
+    background-color: white;
+    color: #162E51;
+
     &:hover {
       cursor: pointer;
+      background-color: #162E51;
+      color: white;
     }
   }
 
