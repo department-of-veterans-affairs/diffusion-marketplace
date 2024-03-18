@@ -27,12 +27,13 @@
   }
 
   .usa-menu-btn {
-    display: none; /* Hide the original button */
-  }
+    background-color: white;
+    color: #162E51;
 
-  #customMenuButton {
     &:hover {
       cursor: pointer;
+      background-color: #162E51;
+      color: white;
     }
   }
 
