@@ -1,3 +1,21 @@
+#community-subnav {
+  ul {
+    list-style: none;
+    justify-content: space-evenly;
+  }
+
+  a, a:visited {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+}
+
 #page-builder-page {
   .usa-accordion__content {
     p {

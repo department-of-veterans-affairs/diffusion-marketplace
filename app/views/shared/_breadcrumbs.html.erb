@@ -17,13 +17,26 @@
   end
 
   is_page_builder_page = controller === 'page'
+  is_commmunity_page = is_page_builder_page && PageGroup.where(slug: params["page_group_friendly_id"]).first.is_community? 
+  community_name = params["page_group_friendly_id"]
   page_image = session[:page_image]
   alt_text = session[:page_image_alt_text]
 %>
 
 <section class="<%= 'dm-gradient-banner' if heading.present? %><%= ' gradient-banner-with-image' if page_image.present? %> <%= classes if classes.present? %>">
-  <div class="grid-container<%= ' padding-y-4 desktop:padding-y-8' if heading.present? %>">
-    <% if breadcrumbs.present? %>
+  <div class="grid-container <%= 'padding-top-2 padding-bottom-8' if is_commmunity_page %> <%= 'padding-y-4 desktop:padding-y-8' if heading.present? && !is_commmunity_page %>">
+    <% if is_commmunity_page %>
+    <nav id="community-subnav" class="font-sans-lg" aria-label="Community subnavigation">
+      <ul class="padding-x-0 padding-bottom-8 flex-row display-none tablet:display-flex">
+        <li class=""><a href="/communities/<%= community_name %>/">Community</a></li>
+        <li class=""><a href="/communities/<%= community_name %>/about">About</a></li>
+        <li class=""><a href="/communities/<%= community_name %>/innovations">Innovations</a></li>
+        <li class=""><a href="/communities/<%= community_name %>/events-and-news">Events and News</a></li>
+        <li class=""><a href="/communities/<%= community_name %>/getting-started">Getting Started</a></li>
+        <li class=""><a href="/communities/<%= community_name %>/publications">Publications</a></li>
+      </ul>
+    </nav>
+    <% elsif breadcrumbs.present? %>
       <div id="breadcrumbs"
            class="grid-col-auto usa-breadcrumb breadcrumbs-container <%= heading.present? ? "dm-breadcrumb--gradient-bg padding-top-0 padding-bottom-105" : 'padding-y-4' %>"
            aria-label="Breadcrumbs">
