@@ -45,7 +45,7 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
 
       visit 'programming/ruby-rocks'
 
-      within('div.bg-primary-lighter') do
+      within('div.page-triple-paragraph-component-bg') do
         expect(page).to have_content "This is first title"
         expect(page).to have_content "This is first body"
         expect(page).to have_content "This is second title"

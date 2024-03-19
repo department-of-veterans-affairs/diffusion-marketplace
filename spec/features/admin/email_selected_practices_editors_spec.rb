@@ -45,6 +45,7 @@ describe 'Admin email all editors button', type: :feature do
   end
 
   before do
+    Sidekiq::Worker.clear_all
     ActionMailer::Base.deliveries.clear
     login_as(admin, scope: :user, run_callbacks: false)
     visit admin_practices_path
@@ -56,11 +57,18 @@ describe 'Admin email all editors button', type: :feature do
     page.driver.browser.manage.window.resize_to(1920, 1080)
   end
 
+  after do
+    Sidekiq::Testing.fake!
+  end
+
   it 'sends an email to all editors of unfiltered and published practices' do
     create(:practice_editor, user: editors.second, practice: recently_updated_practice)
     create(:practice_editor, user: user, practice: recently_updated_practice)
 
     filter_practices_and_send_email
+
+    Sidekiq::Worker.drain_all
+    expect(Sidekiq::Worker.jobs.size).to eq(0)
 
     emails = ActionMailer::Base.deliveries
     expect(emails.count).to eq 4
@@ -100,10 +108,23 @@ describe 'Admin email all editors button', type: :feature do
     expect(admin_email.body.encoded).not_to include recently_updated_practice.name
     expect(admin_email.body.encoded).not_to include unpublished_practice.name
     expect(admin_email.body.encoded).to include("The above message has been sent to the editors and owners of all published Innovations")
+
+    older_practice.reload
+    unemailed_practice.reload
+    recently_updated_practice.reload
+    unpublished_practice.reload
+    expect(older_practice.last_email_date.to_date).to eq(Date.current)
+    expect(unemailed_practice.last_email_date.to_date).to eq(Date.current)
+    expect(recently_updated_practice.last_email_date.to_date).to eq(Date.current)
+    expect(unpublished_practice.last_email_date.to_date).not_to eq(Date.current)
   end
 
   it 'sends an email to all editors of practices filtered by "Not Updated Since"' do
     filter_practices_and_send_email('practice_batch_email[not_updated_since]', 7.days.ago)
+
+    Sidekiq::Worker.drain_all
+    expect(Sidekiq::Worker.jobs.size).to eq(0)
+
     emails = ActionMailer::Base.deliveries
     expect(emails.count).to eq 3
 
@@ -133,6 +154,9 @@ describe 'Admin email all editors button', type: :feature do
 
   it 'sends an email to all editors of practices filtered by "Not Emailed Since"' do
     filter_practices_and_send_email('practice_batch_email[not_emailed_since]', 12.days.ago)
+
+    Sidekiq::Worker.drain_all
+    expect(Sidekiq::Worker.jobs.size).to eq(0)
 
     emails = ActionMailer::Base.deliveries
     expect(emails.count).to eq 3

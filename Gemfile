@@ -48,6 +48,8 @@ gem 'pagy', '~> 4'
 gem 'local_time'
 gem 'rails-timeago'
 
+gem 'sidekiq'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -116,7 +118,7 @@ gem 'aws-sdk-s3'
 gem 'aws-sdk-rds'
 gem 'wt_s3_signer'
 gem 'paperclip', github: 'agilesix/paperclip', branch: 'ruby-3-2-patched'
-gem 'font-awesome-sass', '~> 5.13.0'
+gem 'font-awesome-sass', '< 6'
 
 gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
 gem 'mechanize', '2.8.5'
