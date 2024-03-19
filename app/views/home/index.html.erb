@@ -23,9 +23,8 @@
     class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10"
     role="region"
     aria-label="Homepage search section"
-    data-categories="<%= @category_names_by_popularity %>"
-    data-innovations="<%= @practice_names %>"
-    data-innovation-links="<%= @practice_names_and_slugs.to_json %>"
+    data-categories="<%= @dropdown_categories.to_json %>"
+    data-innovations="<%= @dropdown_practices.to_json %>"
   >
     <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search" aria-label="Search innovations and categories">
       <div class="dm-homepage-search-container width-full">
@@ -47,9 +46,9 @@
             <div class="result-section">
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Innovations</h3>
               <ul id="practice-list" class="usa-list usa-list--unstyled padding-top-1">
-                <% @practice_names[0..2].each do |practice_name| %>
-                  <li class="search-result">
-                    <a href="/innovations/<%= @practice_names_and_slugs[practice_name] %>"><%= practice_name %></a>
+                <% @dropdown_practices[0..2].each do |practice| %>
+                  <li class="search-result" data-practice-id=<%= practice[:id] %>>
+                    <a href="/innovations/<%= practice[:slug] %>"><%= practice[:name] %></a>
                   </li>
                 <% end %>
               </ul>
@@ -58,9 +57,9 @@
             <div class="result-section">
               <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Categories">Categories</h3>
               <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
-                <% @category_names_by_popularity[0..2].each do |category_name| %>
-                  <li class="search-result">
-                    <a href=<%= "/search?category=#{category_name}" %>><%= category_name %></a>
+                <% @dropdown_categories[0..2].each do |category| %>
+                  <li class="search-result" data-category-id=<%= category[:id] %>>
+                    <a href=<%= "/search?category=#{category[:name]}" %>><%= category[:name] %></a>
                   </li>
                 <% end %>
               </ul>
