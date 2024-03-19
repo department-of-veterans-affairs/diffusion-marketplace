@@ -175,5 +175,61 @@ describe 'Homepage', type: :feature do
       expect(page).to have_link('Nutrition & Food', href: '/search?category=Nutrition%20%26%20Food')
       expect(page).to have_link('Coaching & More', href: '/innovations/coaching-and-more')
     end
+
+    it 'tracks clicks on practice links' do
+      expect {
+        find('a', text: 'The Best Practice Ever!').click
+        wait_for_ajax
+      }.to change(Ahoy::Event, :count).by(1)
+
+      event = Ahoy::Event.last
+      expect(event.name).to eq("Dropdown Practice Link Clicked")
+      expect(event.properties["practice_name"]).to eq("The Best Practice Ever!")
+      expect(event.properties["from_homepage"]).to be_truthy
+    end
+
+    it 'tracks clicks on category links' do
+      expect {
+        find('a', text: 'COVID').click
+        wait_for_ajax
+      }.to change(Ahoy::Event, :count).by(1)
+
+      event = Ahoy::Event.last
+      expect(event.name).to eq("Category selected")
+      expect(event.properties["category_name"]).to eq("COVID")
+      expect(event.properties["from_homepage"]).to be_truthy
+    end
+
+    it 'tracks clicks on "Browse all innovations" link' do
+      expect {
+        find('a', text: 'Browse all innovations').click
+        wait_for_ajax
+      }.to change(Ahoy::Event, :count).by(1)
+
+      event = Ahoy::Event.last
+      expect(event.name).to eq("Dropdown Browse-all Link Clicked")
+      expect(event.properties["type"]).to eq("innovation")
+    end
+
+    it 'tracks clicks on "Browse all categories" link' do
+      expect {
+        find('a', text: 'Browse all categories').click
+        wait_for_ajax
+      }.to change(Ahoy::Event, :count).by(1)
+
+      event = Ahoy::Event.last
+      expect(event.name).to eq("Dropdown Browse-all Link Clicked")
+      expect(event.properties["type"]).to eq("category")
+    end
+  end
+
+  def wait_for_ajax
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      loop until finished_all_ajax_requests?
+    end
+  end
+
+  def finished_all_ajax_requests?
+    page.evaluate_script('jQuery.active').zero?
   end
 end
