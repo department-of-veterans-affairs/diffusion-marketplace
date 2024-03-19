@@ -1,5 +1,5 @@
 module CategoriesHelper
-  def get_category_names_by_popularity
+  def get_categories_by_popularity
     time_limit = Time.now - 90.days
     Rails.cache.fetch('categories_with_popularity', expires_in: 24.hours) do
       # returns only category names that can be found in the filters on the /search page,
@@ -16,7 +16,8 @@ module CategoriesHelper
               .where.not(parent_category: nil)
               .group('categories.id')
               .order('COUNT(ahoy_events.id) DESC, categories.name')
-              .pluck('categories.name')
+              .pluck('categories.id', 'categories.name')
+              .map { |id, name| { id: id, name: name } }
     end
   end
 

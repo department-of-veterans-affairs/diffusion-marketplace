@@ -5,10 +5,9 @@ class HomeController < ApplicationController
 
   def index
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
-    @category_names_by_popularity = get_category_names_by_popularity
+    @dropdown_categories = get_categories_by_popularity
     @featured_topic = Topic.find_by(featured: true)
-    @practice_names_and_slugs = practice_names_and_slugs_hash
-    @practice_names = @practice_names_and_slugs.keys
+    @dropdown_practices, @practice_names = get_dropdown_practices
   end
 
   def diffusion_map
@@ -77,8 +76,14 @@ class HomeController < ApplicationController
 
   private
 
-  def practice_names_and_slugs_hash
-    dropdown_practices.pluck("name", "slug").to_h
+  def get_dropdown_practices
+    practice_names = []
+    practices_hash = dropdown_practices.pluck(:id, :name, :slug).map do |id, name, slug|
+      practice_names << name
+      {name: name, id: id, slug: slug }
+    end
+
+    return practices_hash, practice_names
   end
 
   def dropdown_practices
