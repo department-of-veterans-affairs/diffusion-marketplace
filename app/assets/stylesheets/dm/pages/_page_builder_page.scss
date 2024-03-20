@@ -1,3 +1,16 @@
+#communitySubnavBtn {
+  border: none;
+  font-weight: 700;
+  width: 100%;
+  background-color: #D9D9D985;
+  color: #1B1B1B;
+  text-align: left;
+
+  // push text and icon to opposite ends
+  display: flex;
+  justify-content: space-between;
+}
+
 #community-subnav {
   ul {
     list-style: none;
@@ -14,6 +27,11 @@
     }
   }
 
+  @media screen and (max-width: 640px) {
+    li {
+      margin-top: 1rem;
+    }
+  }
 }
 
 #page-builder-page {

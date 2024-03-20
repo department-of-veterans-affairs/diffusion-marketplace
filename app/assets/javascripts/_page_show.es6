@@ -105,6 +105,15 @@ const COMPONENT_CLASSES = [
         }
     }
 
+    function showCommunitySubNav(){
+        $('#communitySubnavBtn').on('click', function(){
+            $('#community-subnav ul').toggleClass('display-none');
+            $('#communitySubnavBtn i').toggleClass(['fa-minus', 'fa-plus']);
+            $('#communitySubnavBtn').attr('aria-expanded', function (i, attr) {
+            return attr == 'true' ? 'false' : 'true'})
+        })
+    }
+
     function execPageBuilderFunctions() {
         browsePageBuilderPageHappy();
         containerizeSubpageHyperlinkCards();
@@ -112,6 +121,7 @@ const COMPONENT_CLASSES = [
         identifyExternalLinks();
         chromeWorkaroundForAnchorTags();
         replaceImagePlaceholders();
+        showCommunitySubNav();
     }
 
     $document.on('turbolinks:load', execPageBuilderFunctions);
