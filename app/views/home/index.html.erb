@@ -59,7 +59,7 @@
               <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
                 <% @dropdown_categories[0..2].each do |category| %>
                   <li class="search-result" data-category-id=<%= category[:id] %>>
-                    <a href=<%= "/search?category=#{category[:name]}" %>><%= category[:name] %></a>
+                    <a href=<%= "/search?category=#{URI.encode_www_form_component(category[:name])}" %>><%= category[:name] %></a>
                   </li>
                 <% end %>
               </ul>
