@@ -115,6 +115,10 @@
               </p>
 
               <div class="grid-col-7 main-practice-email-container">
+                <div class=" margin-bottom-3">
+                  <%= f.check_box :private_contact_info, { class: ''}, 'true', 'false' %>
+                  <%= f.label :private_contact_info, 'Hide contact info from public users', class:'margin-left-1'%>
+                </div>
                 <%= f.label :support_network_email, 'Main email address', class: 'usa-label line-height-26 margin-top-0 main-practice-email-label' %>
                 <%= f.text_field :support_network_email, class: 'usa-input practice-input width-tablet main-practice-email-input margin-bottom-2 dm-required-field', required: @practice.published %>
               </div>
