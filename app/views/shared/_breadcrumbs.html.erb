@@ -33,13 +33,22 @@
   <div class="grid-container <%= 'padding-top-2 padding-bottom-8' if is_commmunity_page %> <%= 'padding-y-4 desktop:padding-y-8' if heading.present? && !is_commmunity_page %>">
     <% if is_commmunity_page %>
       <nav id="community-subnav" class="font-sans-lg" aria-label="Community subnavigation">
-        <ul class="padding-x-0 padding-bottom-8 display-none flex-row tablet:display-flex">
+        <ul class="padding-x-0 padding-bottom-2 display-none tablet:padding-bottom-8 desktop:tablet:padding-bottom-8 flex-row tablet:display-flex">
           <li class=""><a href="/communities/<%= community_name %>/">Community</a></li>
-          <li class=""><a href="/communities/<%= community_name %>/about">About</a></li>
-          <li class=""><a href="/communities/<%= community_name %>/innovations">Innovations</a></li>
-          <li class=""><a href="/communities/<%= community_name %>/events-and-news">Events and News</a></li>
-          <li class=""><a href="/communities/<%= community_name %>/getting-started">Getting Started</a></li>
-          <li class=""><a href="/communities/<%= community_name %>/publications">Publications</a></li>
+          <% subpages = {
+            "About": "about",
+            "Innovations": "innovations",
+            "Events and News": "events-and-news",
+            "Getting Started": "getting-started",
+            "Publications": "publications"
+          } %>
+          <% subpages.each do |title,slug| %>
+            <li>
+              <a href="/communities/<%= community_name%>/<%= slug %>" class="<%= "current-page" if params["page_slug"] == slug %>">
+                <%= title %>
+              </a>
+            </li>
+          <% end %>
         </ul>
       </nav>
     <% elsif breadcrumbs.present? # use breadcrumbs on non-community pages %>

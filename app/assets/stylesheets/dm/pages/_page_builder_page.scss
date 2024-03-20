@@ -27,6 +27,10 @@
     }
   }
 
+  a.current-page {
+      text-decoration: underline;
+  }
+
   @media screen and (max-width: 640px) {
     li {
       margin-top: 1rem;
