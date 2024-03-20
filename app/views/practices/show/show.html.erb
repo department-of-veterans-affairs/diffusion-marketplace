@@ -45,7 +45,7 @@
       practice_emails = @practice.practice_emails
       cc_emails = practice_emails.map(&:address).join(', ')
     %>
-    <% if (@practice.private_contact_info == true && current_user.present?) || @practice.private_contact_info == false %>
+    <% unless @practice.private_contact_info? && is_user_a_guest? %>
       <div class="text-center margin-bottom-1">
         <%= mail_to main_email, 'Email innovation', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button  width-full display-flex flex-align-center flex-justify-center
         dm-email-practice', 'aria-label': "side nav email #{main_email}", data: {practice_id: @practice.id} %>

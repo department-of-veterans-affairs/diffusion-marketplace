@@ -23,7 +23,7 @@
       </div>
 
       <!--Email-->
-      <% if (@practice.private_contact_info == true && current_user.present?) || @practice.private_contact_info == false %>
+      <% unless @practice.private_contact_info? && is_user_a_guest? %>
         <%
           main_email = @practice.support_network_email
           practice_emails = @practice.practice_emails
