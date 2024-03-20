@@ -23,15 +23,17 @@
       </div>
 
       <!--Email-->
-      <%
-        main_email = @practice.support_network_email
-        practice_emails = @practice.practice_emails
-      %>
-      <% if main_email.present? %>
-        <h2 id="email" class="font-sans-lg text-bold margin-top-5 margin-bottom-1 line-height-25px">Email</h2>
-        <p class="line-height-26 margin-bottom-0 main-email-address-container">
-          Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'usa-link usa-link--external dm-email-practice', 'aria-label': "Email #{main_email}", data: {practice_id: @practice.id} %> with questions about this innovation.
-        </p>
+      <% unless @practice.private_contact_info? && is_user_a_guest? %>
+        <%
+          main_email = @practice.support_network_email
+          practice_emails = @practice.practice_emails
+        %>
+        <% if main_email.present? %>
+          <h2 id="email" class="font-sans-lg text-bold margin-top-5 margin-bottom-1 line-height-25px">Email</h2>
+          <p class="line-height-26 margin-bottom-0 main-email-address-container">
+            Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'usa-link usa-link--external dm-email-practice', 'aria-label': "Email #{main_email}", data: {practice_id: @practice.id} %> with questions about this innovation.
+          </p>
+        <% end %>
       <% end %>
     </div>
   </div>

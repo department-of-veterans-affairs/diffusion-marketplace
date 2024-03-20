@@ -578,7 +578,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
   def practice_params
     params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
-                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
+                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :private_contact_info, :support_network_email,
                                      :initiating_facility_type, :initiating_department_office_id,
                                      :main_display_image, :main_display_image_alt_text, :crop_x, :crop_y, :crop_h, :crop_w,
                                      :tagline, :delete_main_display_image,
