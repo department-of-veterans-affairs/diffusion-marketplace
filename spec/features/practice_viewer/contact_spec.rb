@@ -5,7 +5,9 @@ describe 'Contact section', type: :feature, js: true do
   let!(:user1) { create(:user, email: 'user1@va.gov', first_name: 'Shuhei', last_name: 'Hisagi', confirmed_at: Time.now, accepted_terms: true) }
   let!(:user2) { create(:user, email: 'user2@va.gov', first_name: 'Momo', last_name: 'Hinamori', confirmed_at: Time.now, accepted_terms: true) }
   let!(:user3) { create(:user, email: 'user3@va.gov', first_name: 'Test', last_name: 'Account', confirmed_at: Time.now, accepted_terms: true) }
-  let!(:practice) { create(:practice, name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: user3.email, user: user1) }
+  let!(:practice) { create(:practice, name: 'A published practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: user3.email, user: user1) }
+  let!(:public_practice) { create(:practice, name: 'A public practice', approved: true, published: true, is_public: true, tagline: 'Test tagline', support_network_email: user3.email, user: user1, private_contact_info: false) }
+  let!(:practice_with_private_contact) {create(:practice, name: 'Other practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: user3.email, user: user1, private_contact_info: true) }
   let!(:practice_partner) { create(:practice_partner, name: 'Diffusion of Excellence') }
   let!(:practice_email) { create(:practice_email, practice: practice, address: 'practiceCCemail@va.gov') }
 
@@ -53,7 +55,7 @@ describe 'Contact section', type: :feature, js: true do
     
     it 'should be on the correct page' do
       expect(page).to have_selector('.comments-section', visible: true)
-      expect(page).to have_content('A public practice')
+      expect(page).to have_content('A published practice')
       expect(page).to have_css('.commontator')
     end
 
@@ -273,6 +275,21 @@ describe 'Contact section', type: :feature, js: true do
       login_as(user1, :scope => :user, :run_callbacks => false)
       visit practice_path(practice)
       expect(page).to have_link(href: 'mailto:user3@va.gov?cc=practiceCCemail%40va.gov')
+    end
+
+    it 'shows contact emails by default' do
+      visit practice_path(public_practice)
+      expect(page).to have_content('Email user3@va.gov with questions about this innovation.')
+    end
+
+    it 'hides contact info from public users' do
+      visit practice_path(practice_with_private_contact)
+      expect(page).not_to have_content('Email user1@va.gov with questions about this innovation.')
+      expect(page).not_to have_content('Email innovation')
+      login_as(user1, :scope => :user, :run_callbacks => false)
+      visit practice_path(practice)
+      expect(page).to have_content('Email user3@va.gov with questions about this innovation.')
+      expect(page).to have_content('Email innovation')
     end
   end
 
