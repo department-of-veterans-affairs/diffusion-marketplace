@@ -58,3 +58,4 @@
 //= require category_usage.js
 //= require tinymce
 //= require page/page_infowindow
+//= require homepage

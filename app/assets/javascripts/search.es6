@@ -89,9 +89,6 @@ function updateDropdown(categories, innovations) {
 }
 
 addEventListener('turbolinks:load', function () {
-    if ($('#dm-homepage-search-button').length > 0) {
-        setupSearchDropdown('#dm-homepage-search-form');
-    }
     executePracticeSearch('#dm-navbar-search-desktop-form');
     executePracticeSearch('#dm-navbar-search-mobile-form');
     executePracticeSearch('#dm-homepage-search-form');
