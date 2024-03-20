@@ -5,8 +5,9 @@ class HomeController < ApplicationController
 
   def index
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
-    @popular_categories = get_most_popular_categories
+    @dropdown_categories = get_categories_by_popularity
     @featured_topic = Topic.find_by(featured: true)
+    @dropdown_practices, @practice_names = get_dropdown_practices
   end
 
   def diffusion_map
@@ -74,6 +75,23 @@ class HomeController < ApplicationController
   end
 
   private
+
+  def get_dropdown_practices
+    practice_names = []
+    practices_hash = dropdown_practices.pluck(:id, :name, :slug).map do |id, name, slug|
+      practice_names << name
+      {name: name, id: id, slug: slug }
+    end
+
+    return practices_hash, practice_names
+  end
+
+  def dropdown_practices
+    scope = Practice.where(published: true, retired: false)
+    scope = scope.where(is_public: true) if !current_user
+    scope = scope.order("created_at DESC")
+    scope
+  end
 
   def get_diffusion_histories(is_public_practice)
     DiffusionHistory.get_with_practices(is_public_practice).order(Arel.sql("lower(practices.name)"))

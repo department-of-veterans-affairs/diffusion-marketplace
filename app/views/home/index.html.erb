@@ -1,56 +1,78 @@
 <div class="dm-homepage">
   <%= render partial: "shared/messages", locals: {small_text: false} %>
-  <div class="font-sans-2xs shark-tank-banner display-flex flex-align-center">
-    <div class="padding-x-2 desktop:padding-x-7">
-      <span>Learn more about the <a href="/competitions/shark-tank" class="text-bold dm-alt-link-dark">2024 VHA Shark Tank competition</a></span>
-    </div>
+  <div class="font-sans-2xs shark-tank-banner padding-x-2 desktop:padding-x-7 padding-y-105">
+    <p>Learn more about the <a href="/competitions/shark-tank" class="dm-alt-link-dark">2024 VHA Shark Tank competition</a></p>
   </div>
   <!-- "Welcome" section -->
-  <section class="homepage-welcome-banner dm-gradient-banner-318" role="region" aria-label="Homepage welcome banner">
-    <div class="grid-container height-full">
-      <div class="grid-row height-full flex-align-center">
-        <div class="grid-col-12">
-          <h1 class="usa-prose-h1 text-white margin-top-4 margin-bottom-4 desktop:margin-top-0">
+  <section class="usa-section padding-top-3 padding-bottom-7 bg-primary-darker" role="region" aria-label="Homepage welcome banner">
+    <div class="grid-container">
+      <div class="grid-row flex-justify-center text-white">
+          <h1 class="usa-prose-h1 text-left desktop:text-center">
             Discover VA innovations to adopt at your facility
           </h1>
-          <div class="grid-row position-relative">
-            <div class="homepage-welcome-banner-body-text-container grid-col-12 desktop:grid-col-7 padding-right-105">
-              <p class="usa-prose-body text-white margin-bottom-2">
-                We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.
-              </p>
-              <%= link_to 'Learn more', about_path, class: 'dm-button--unstyled-gold' %>
-            </div>
-            <div class="homepage-welcome-banner-image-container text-white grid-col-12 tablet:grid-col-6 desktop:grid-col-5 desktop:padding-left-105">
-              <%= image_tag(
-                    'homepage-image.png',
-                    class: 'display-block padding-left-0',
-                    alt: 'VA Secretary McDonough speaks with a clinician during his visit to the D.C. VA Medical Center in February 2021.'
-                  )
-              %>
-            </div>
+        <div class="grid-col-12 desktop:grid-col-9">
+            <p class="usa-prose-body margin-top-1 text-center">
+              We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.
+            </p>
           </div>
-        </div>
       </div>
     </div>
   </section>
 
-  <section class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 desktop:margin-top-10" role="region" aria-label="Homepage search section">
-    <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
-      <label class="usa-sr-only" for="dm-homepage-search-form">
-        Homepage search
-      </label>
+  <section
+    class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 margin-top-10"
+    role="region"
+    aria-label="Homepage search section"
+    data-categories="<%= @dropdown_categories.to_json %>"
+    data-innovations="<%= @dropdown_practices.to_json %>"
+  >
+    <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search" aria-label="Search innovations and categories">
       <div class="dm-homepage-search-container width-full">
-        <input class="usa-input height-5" id="dm-homepage-search-field" type="search" name="search" title="Search for innovations" placeholder="&quot;Search terms&quot;">
+        <input
+          class="usa-input height-5"
+          id="dm-homepage-search-field"
+          type="search"
+          name="search"
+          autocomplete="off"
+          placeholder="Innovations, categories..."
+          aria-labelledby="dm-homepage-search-form"
+        >
+        <div
+          id="search-dropdown"
+          class="radius-md bg-white shadow-5 left-0 right-0"
+          style="display: none;"
+        >
+          <div class="dropdown-content margin-4">
+            <div class="result-section">
+              <h3 class="search-header usa-prose-h3 margin-bottom-0">Innovations</h3>
+              <ul id="practice-list" class="usa-list usa-list--unstyled padding-top-1">
+                <% @dropdown_practices[0..2].each do |practice| %>
+                  <li class="search-result" data-practice-id=<%= practice[:id] %>>
+                    <a href="/innovations/<%= practice[:slug] %>"><%= practice[:name] %></a>
+                  </li>
+                <% end %>
+              </ul>
+              <a class="browse-all-link text-bold" href="<%= search_path %>">Browse all innovations</a>
+            </div>
+            <div class="result-section">
+              <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Categories">Categories</h3>
+              <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
+                <% @dropdown_categories[0..2].each do |category| %>
+                  <li class="search-result" data-category-id=<%= category[:id] %>>
+                    <a href=<%= "/search?category=#{URI.encode_www_form_component(category[:name])}" %>><%= category[:name] %></a>
+                  </li>
+                <% end %>
+              </ul>
+              <a class="browse-all-link text-bold" href="<%= search_path %>">Browse all categories</a>
+            </div>
+          </div>
+        </div>
         <button id="dm-homepage-search-button" class="usa-button height-5 margin-right-0" type="submit">
           <span class="usa-search__submit-text">Search</span>
         </button>
       </div>
     </form>
-    <p class="usa-prose-body">
-      <%= link_to 'Browse all innovations', search_path, class: 'dm-button--unstyled-primary' %>
-    </p>
   </section>
-  <%= render partial: 'home/popular_categories_section', locals: { section_name: 'popular categories' } if @popular_categories.any? %>
 
   <% if @featured_topic.present? && @featured_topic.title.present? && @featured_topic.description.present? && @featured_topic.url.present? && @featured_topic.cta_text.present? && @featured_topic.attachment.exists?%>
     <%= render partial: 'home/featured_section', locals: {

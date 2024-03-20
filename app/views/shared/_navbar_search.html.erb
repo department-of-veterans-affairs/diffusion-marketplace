@@ -3,12 +3,9 @@
   search_field_id ||= 'dm-navbar-search-field'
   search_button_id ||= 'dm-navbar-search-button'
 %>
-<form id="<%= search_form_id %>" class="dm-navbar-search-form usa-search usa-search--small<%= ' margin-right-0' if ENV['VAEC_ENV'] === 'true' && session[:user_type] === 'guest' %>" role="search">
-  <label class="usa-sr-only" for="<%= search_form_id %>">
-    practice search
-  </label>
+<form id="<%= search_form_id %>" class="dm-navbar-search-form usa-search usa-search--small<%= ' margin-right-0' if ENV['VAEC_ENV'] === 'true' && session[:user_type] === 'guest' %>" role="search" aria-label="search innovations">
   <div class="dm-navbar-search-container">
-    <input class="usa-input dm-navbar-search-field" id="<%= search_field_id %>" type="search" name="search" title="Search practices">
+    <input class="usa-input dm-navbar-search-field" id="<%= search_field_id %>" type="search" name="search" aria-labelledby="<%= search_form_id %>">
     <button id="<%= search_button_id %>" class="usa-button dm-navbar-search-button" type="submit">
       <span class="usa-sr-only">Search</span>
     </button>
