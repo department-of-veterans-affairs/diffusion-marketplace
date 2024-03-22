@@ -38,8 +38,6 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       within('header.usa-header') do
         expect(page).to have_content('About us')
         expect(page).to have_link(href: '/about')
-        expect(page).to have_content('Partners')
-        expect(page).to have_link(href: '/partners')
         expect(page).to have_content('Shark Tank')
         expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Your profile')
@@ -58,8 +56,6 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       within('header.usa-header') do
         expect(page).to have_content('About us')
         expect(page).to have_link(href: '/about')
-        expect(page).to have_content('Partners')
-        expect(page).to have_link(href: '/partners')
         expect(page).to have_content('Shark Tank')
         expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Browse by locations')
@@ -81,13 +77,6 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       it 'should redirect to the Shark Tank page' do
         click_on 'Shark Tank'
         expect(page).to have_current_path('/competitions/shark-tank')
-      end
-    end
-
-    context 'clicking on the Partners link' do
-      it 'should redirect to partners page' do
-        click_on 'Partners'
-        expect(page).to have_current_path('/partners')
       end
     end
 
@@ -186,8 +175,6 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       expect(page).to have_css('.dm-navbar-search-field')
       expect(page).to have_content('About us')
       expect(page).to have_link(href: '/about')
-      expect(page).to have_content('Partners')
-      expect(page).to have_link(href: '/partners')
       expect(page).to have_content('Shark Tank')
       expect(page).to have_link(href: '/competitions/shark-tank')
       expect(page).to have_content('Your profile')
