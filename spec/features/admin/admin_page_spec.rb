@@ -198,6 +198,6 @@ describe 'Page Builder', type: :feature do
     fill_in 'URL', with: url
     fill_in 'Title', with: 'Hello world!'
     fill_in 'Description', with: 'This is the first page built.'
-    select('programming', from: 'Group*')
+    select('programming', from: 'Page Group / Community*')
   end
 end

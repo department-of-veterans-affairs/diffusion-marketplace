@@ -180,7 +180,7 @@ ActiveAdmin.register Page do
     f.semantic_errors *f.object.errors.attribute_names # shows errors on :base
     f.inputs "Page Information" do
       f.input :page_group,
-              label: 'Community',
+              label: 'Page Group / Community',
               hint: 'The community name will be included in the URL. (e.g.: "/communities/va-immersive/about-us" where "va-immersive" is the Community and "about-us" is the URL suffix chosen below.'
       if resource.ever_published
         f.input :slug, input_html: { disabled: true } , label: 'URL suffix', hint: 'A hyphenated page name used in the URL. (e.g. "about"). Note: A page with the URL suffix "home" will be the communnity landing page. If this page was ever published, the URL Suffix cannot be edited.'
