@@ -142,8 +142,11 @@
     background-color: color($theme-color-warning-lighter);
 
     a {
-      @include u-text-decoration('underline');
       font-weight: 600;
+      &:hover, &:focus {
+        @include u-text-decoration('underline');
+        color: color($theme-color-base-ink);
+      }
     }
   }
 }
