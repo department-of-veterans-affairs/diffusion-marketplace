@@ -89,7 +89,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should not display breadcrumbs for the partners index' do
-      find_all("a[href='/partners']").first.click
+      visit(partners_path)
       expect(page).to_not have_css('#breadcrumbs')
     end
 
@@ -156,7 +156,7 @@ describe 'Breadcrumbs', type: :feature do
   describe 'Innovations partners' do
     it 'should show display breadcrumbs only for the show pages' do
       @user_practice.update(published: true, approved: true)
-      find("a[href='/partners']").click
+      visit(partners_path)
       click_on('Diffusion of Excellence')
       expect(page).to have_css("#breadcrumbs", visible: true)
       expect(page).to have_css('.dm-gradient-banner')
