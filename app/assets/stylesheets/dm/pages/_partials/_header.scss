@@ -76,10 +76,10 @@
 
   .usa-nav__link {
     &:hover {
-      @include u-text('primary-vivid', !important);
+      @include u-text('primary-darker');
 
       &::after {
-        @include u-bg('primary-vivid', !important);
+        @include u-bg('primary-darker');
       }
     }
   }
@@ -90,11 +90,11 @@
 
   .usa-nav__submenu-item a {
     &.usa-current {
-      @include u-text('primary-vivid', !important);
+      @include u-text('primary-darker', !important);
     }
 
     &:hover {
-      @include u-text('primary-vivid', !important);
+      @include u-text('primary-darker', !important);
     }
   }
 
