@@ -179,10 +179,13 @@ ActiveAdmin.register Page do
     f.actions # adds the 'Submit' and 'Cancel' buttons
     f.semantic_errors *f.object.errors.attribute_names # shows errors on :base
     f.inputs "Page Information" do
+      f.input :page_group,
+              label: 'Page Group / Community',
+              hint: 'The community name will be included in the URL. (e.g.: "/communities/va-immersive/about-us" where "va-immersive" is the Community and "about-us" is the URL suffix chosen below.'
       if resource.ever_published
-        f.input :slug, input_html: { disabled: true } , label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home". If this page was ever published, the URL Suffix cannot be edited.'
+        f.input :slug, input_html: { disabled: true } , label: 'URL suffix', hint: 'A hyphenated page name used in the URL. (e.g. "about"). Note: A page with the URL suffix "home" will be the communnity landing page. If this page was ever published, the URL Suffix cannot be edited.'
       else
-        f.input :slug, label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
+        f.input :slug, label: 'URL suffix', hint: 'Enter a hyphenated page name used in the URL. (e.g. "about-us"). Note: to create a community homepage, use the suffix "home".'
       end
       f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
@@ -218,10 +221,6 @@ ActiveAdmin.register Page do
       f.input :is_visible,
               label: 'Title and Description are visible?',
               hint: 'This field allows you to show or hide the page title and description.'
-      f.input :page_group,
-              label: 'Group',
-              hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" '\
-                    'is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
       f.input :has_chrome_warning_banner,
               label: 'Switch to Chrome warning banner',
               hint: 'Check this if the page has any call to action or link that only works or is optimal in the Chrome Browser.'
