@@ -98,20 +98,9 @@
     }
   }
 
-  .featured-topic, .featured-innovation {
-    @media screen and (min-width: 1024px) {
-      margin-bottom: 128px !important;
-    }
-  }
-
   .nominate-practice-section {
-    @media screen and (min-width: 1024px) {
-      height: 417px;
-    }
-
     .grid-row {
       @media screen and (min-width: 1024px) {
-        @include u-height('full');
         @include u-flex('align-center');
       }
     }
