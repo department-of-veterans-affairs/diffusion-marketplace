@@ -80,8 +80,14 @@
           <% communities = {"va-immersive" => "VA Immersive", "suicide-prevention" => "Suicide Prevention", "age-friendly" => "Age-Friendly"} %>
           <ul id="va-immersive-dropdown" class="display-none usa-nav__submenu"> 
             <% communities.each do |slug, name| %>
-              <% community_id = PageGroup.where(slug: slug).first&.id %>
-              <% if Page.where(page_group_id: community_id, slug: 'home').present? &&  %>
+              <%
+                community_id = PageGroup.where(slug: slug).first&.id
+                community_home_page = Page.where(page_group_id: community_id, slug: 'home').first
+                next unless community_id.present? && community_home_page.present?
+                published_va_only = (community_home_page.is_public? == false) && community_home_page.published? && current_user.present?
+                public_page = community_home_page.published? && community_home_page.is_public?
+              %>
+              <% if published_va_only || public_page %>
                 <li class="usa-nav__submenu-item border-base-light">
                   <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0" href="/communities/<%= slug %>">
                     <%=  name %>
