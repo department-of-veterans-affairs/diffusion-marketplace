@@ -154,7 +154,7 @@
           width: 133px !important;
         }
 
-        &[aria-controls="va-immersive-dropdown"] {
+        &[aria-controls="communities-dropdown"] {
           width: 84px !important;
         }
 
@@ -221,7 +221,7 @@
           background-position: right 13% top 50%;
         }
 
-        &[aria-controls="dm-user-profile-options"], &[aria-controls="va-immersive-dropdown"] {
+        &[aria-controls="dm-user-profile-options"], &[aria-controls="communities-dropdown"] {
           background-position: right 18% top 50%;
         }
       }
@@ -250,7 +250,7 @@
         left: 18.5rem;
       }
 
-      &#va-immersive-dropdown {
+      &#communities-dropdown {
         left: 30.8rem;
       }
 

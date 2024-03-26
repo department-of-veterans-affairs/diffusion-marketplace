@@ -73,12 +73,12 @@
           <button
             class="margin-y-2px dm-text-no-underline desktop:margin-y-0 usa-accordion__button usa-nav__link border-base-light <%= 'usa-current' if request.fullpath.include?('communities') %>"
             aria-expanded="false"
-            aria-controls="va-immersive-dropdown"
+            aria-controls="communities-dropdown"
           >
             <span class="text-normal desktop:text-semibold padding-right-0">Communities</span>
           </button>
           <% communities = {"va-immersive" => "VA Immersive", "suicide-prevention" => "Suicide Prevention", "age-friendly" => "Age-Friendly"} %>
-          <ul id="va-immersive-dropdown" class="display-none usa-nav__submenu"> 
+          <ul id="communities-dropdown" class="display-none usa-nav__submenu">
             <% communities.each do |slug, name| %>
               <%
                 community_id = PageGroup.where(slug: slug).first&.id
