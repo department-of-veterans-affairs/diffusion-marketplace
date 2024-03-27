@@ -7,7 +7,7 @@ class PageEventComponent < ApplicationRecord
     presented_by: 'Presented by',
     start_date: 'Start date',
     end_date: 'End date',
-    hide_after_date: 'Auto-hide once passed',
+    hide_after_date: 'Hide after event date',
     location: 'Location',
     text: 'Description'
   }.freeze
