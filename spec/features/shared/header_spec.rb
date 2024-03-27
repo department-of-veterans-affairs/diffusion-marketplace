@@ -36,8 +36,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   describe 'header links' do
     it "displays 'Your profile' link for a logged in user" do
       within('header.usa-header') do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        visit('/')
+        log_in_as_admin_and_visit_homepage
         expect(page).to have_content('About us')
         expect(page).to have_link(href: '/about')
         expect(page).to have_content('Shark Tank')
@@ -115,8 +114,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
     context 'clicking on the profile link' do
       it 'should redirect to user profile page' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        visit('/')
+        log_in_as_admin_and_visit_homepage
         click_on 'Your profile'
         click_on 'Profile'
         expect(page).to have_selector('.profile-h1 ', visible: true)
@@ -126,8 +124,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
     context 'clicking on the sign out link' do
       it 'should sign the user out' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        visit('/')
+        log_in_as_admin_and_visit_homepage
         click_on 'Your profile'
         click_on 'Sign out'
         expect(page).to have_current_path('/')
@@ -170,13 +167,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   end
 
   describe 'header mobile' do
-    before do
-      # ensure header mobile view
-      page.driver.browser.manage.window.resize_to(480, 800)
-      find('.usa-menu-btn').click
-    end
-
     it 'should show the search bar and links' do
+      open_mobile_menu
       expect(page).to have_css('.dm-navbar-search-field')
       expect(page).to have_content('About us')
       expect(page).to have_link(href: '/about')
@@ -188,13 +180,12 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     it 'shows profile link for logged in users' do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit('/')
-      # ensure header mobile view
-      page.driver.browser.manage.window.resize_to(480, 800)
-      find('.usa-menu-btn').click
+      open_mobile_menu
       expect(page).to have_content('Your profile')
     end
 
     it 'should redirect to the search results page' do
+      open_mobile_menu
       fill_in('dm-navbar-search-mobile-field', with: 'test')
       find('#dm-navbar-search-mobile-button').click
       expect(page).to have_content('1 result')
@@ -230,5 +221,15 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       expect(page).to_not have_content('If you are a Veteran in crisis or concerned about one, connect with our caring, qualified responders for confidential help. Many of them are Veterans themselves.')
       expect(page).to_not have_link('Call 988 and select 1')
     end
+  end
+
+  def open_mobile_menu
+      page.driver.browser.manage.window.resize_to(480, 800)
+      find('.usa-menu-btn').click
+  end
+
+  def log_in_as_admin_and_visit_homepage
+    login_as(@admin, :scope => :user, :run_callbacks => false)
+    visit('/')
   end
 end
