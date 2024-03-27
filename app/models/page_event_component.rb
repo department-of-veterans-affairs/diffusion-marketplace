@@ -7,7 +7,7 @@ class PageEventComponent < ApplicationRecord
     presented_by: 'Presented by',
     start_date: 'Start date',
     end_date: 'End date',
-    hide_once_passed: 'Auto-hide once passed',
+    hide_after_date: 'Auto-hide once passed',
     location: 'Location',
     text: 'Description'
   }.freeze
@@ -23,7 +23,7 @@ class PageEventComponent < ApplicationRecord
 
   def passed_and_hidden
     (end_date.present? && end_date < Date.current ||
-      start_date.present? && start_date < Date.current) && hide_once_passed?
+      start_date.present? && start_date < Date.current) && hide_after_date?
   end
 
   def rendered_date

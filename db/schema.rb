@@ -571,7 +571,7 @@ ActiveRecord::Schema.define(version: 2024_03_26_180328) do
     t.date "end_date"
     t.string "location"
     t.string "presented_by"
-    t.boolean "hide_once_passed", default: false
+    t.boolean "hide_after_date", default: false
     t.index ["page_component_id"], name: "index_page_event_components_on_page_component_id"
   end
 

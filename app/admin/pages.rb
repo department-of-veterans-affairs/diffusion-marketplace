@@ -69,7 +69,7 @@ ActiveAdmin.register Page do
                     :location,
                     :presented_by,
                     :flipped_ratio,
-                    :hide_once_passed,
+                    :hide_after_date,
                     practices: []
                   ],
                 ]

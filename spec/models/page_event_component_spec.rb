@@ -49,22 +49,22 @@ RSpec.describe PageEventComponent, type: :model do
 
   describe '.passed_and_hidden' do
     it 'returns true if end_date has passed and flagged to hide' do
-      event = create(:page_event_component, start_date: today - 5.days, end_date: today - 2.days, hide_once_passed: true)
+      event = create(:page_event_component, start_date: today - 5.days, end_date: today - 2.days, hide_after_date: true)
       expect(event.passed_and_hidden).to eq(true)
     end
 
     it 'returns true if there is no end_date and start_date has passed and flagged to hide' do
-      event = create(:page_event_component, start_date: today - 5.days, end_date: nil, hide_once_passed: true)
+      event = create(:page_event_component, start_date: today - 5.days, end_date: nil, hide_after_date: true)
       expect(event.passed_and_hidden).to eq(true)
     end
 
     it 'returns false if end_date has passed but not flagged to hide' do
-      event = create(:page_event_component, start_date: today - 5.days, end_date: nil, hide_once_passed: false)
+      event = create(:page_event_component, start_date: today - 5.days, end_date: nil, hide_after_date: false)
       expect(event.passed_and_hidden).to eq(false)
     end
 
     it 'returns false if no end_date or start_date and flagged to hide' do
-      event = create(:page_event_component, start_date: today - 5.days, end_date: today - 2.days, hide_once_passed: true)
+      event = create(:page_event_component, start_date: today - 5.days, end_date: today - 2.days, hide_after_date: true)
       expect(event.passed_and_hidden).to eq(true)
     end
   end
