@@ -7,6 +7,7 @@ class PageEventComponent < ApplicationRecord
     presented_by: 'Presented by',
     start_date: 'Start date',
     end_date: 'End date',
+    hide_once_passed: 'Auto-hide once passed',
     location: 'Location',
     text: 'Description'
   }.freeze
@@ -19,6 +20,11 @@ class PageEventComponent < ApplicationRecord
   validates_with ExternalUrlValidator,
                  on: [:create, :update],
                  if: Proc.new { |component| component.url.present? && component.url.chars.first != '/' }
+
+  def passed_and_hidden
+    (end_date.present? && end_date < Date.current ||
+      start_date.present? && start_date < Date.current) && hide_once_passed?
+  end
 
   def rendered_date
     return if self.start_date.blank?
