@@ -69,6 +69,7 @@ ActiveAdmin.register Page do
                     :location,
                     :presented_by,
                     :flipped_ratio,
+                    :hide_once_passed,
                     practices: []
                   ],
                 ]
@@ -141,7 +142,7 @@ ActiveAdmin.register Page do
                       img src: "#{component.image_s3_presigned_url}", class: 'maxw-10'
                     end
                   else
-                    li "#{value}: #{component.send(key)}" if component.send(key).present?
+                    li "#{value}: #{component.send(key)}" if (component.send(key) == false || component.send(key).present?)
                   end
                 end
               end
