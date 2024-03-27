@@ -72,6 +72,7 @@ html = Arbre::Context.new do
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_hide_once_passed",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][hide_once_passed]",
                 class: 'toggle-has-background-color-styling'
+          para 'When marked this event will not display once the end date OR start date has passed', class: 'inline-hints'
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_location_input" do
