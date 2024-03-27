@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_20_195215) do
+ActiveRecord::Schema.define(version: 2024_03_26_180328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -571,6 +571,7 @@ ActiveRecord::Schema.define(version: 2024_03_20_195215) do
     t.date "end_date"
     t.string "location"
     t.string "presented_by"
+    t.boolean "hide_after_date", default: false
     t.index ["page_component_id"], name: "index_page_event_components_on_page_component_id"
   end
 
