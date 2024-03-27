@@ -207,7 +207,7 @@ class PageController < ApplicationController
 
   def get_pagy_array(items, page_item_list_index, params_index, pagination, item_class)
     if item_class == "events"
-      items = items.select {|item| !item.try(:passed_and_hidden)}
+      items = items.reject {|item| item.try(:passed_and_hidden)}
     end
 
     pagy_array(
