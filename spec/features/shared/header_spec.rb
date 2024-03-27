@@ -5,16 +5,20 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   before do
     @admin = User.create!(email: 'admin-dmva@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
-    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
-    login_as(@admin, :scope => :user, :run_callbacks => false)
+    @non_admin = User.create!(email: 'regular@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, is_public: true, tagline: 'Test tagline', user: @admin)
+    # login_as(@admin, :scope => :user, :run_callbacks => false)
     Practice.create!(name: 'Project HAPPEN', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'test-1232392101@va.gov', user: @admin, maturity_level: 0)
     page_group = PageGroup.create(name: 'competitions', slug: 'competitions', description: 'competitions page')
-    Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, is_public: true, published: Time.now)
     page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
-    page_group_3 = PageGroup.create(name: 'va-immersive', slug: 'va-immersive', description: 'va-immersive page')
-    Page.create(page_group: page_group_3, title: 'VA Immersive', description: 'VA Immersive page', slug: 'home', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
-
-    visit practice_path(@practice)
+    public_community = PageGroup.create(name: 'va-immersive', slug: 'va-immersive', description: 'va-immersive page')
+    va_only_community = PageGroup.create(name: 'Suicide Prevention', slug: 'suicide-prevention', description: 'Suicide prevention page')
+    unpublished_community = PageGroup.create(name: 'Age-Friendly', slug: 'Age-Friendly', description: 'va-immersive page')
+    Page.create(page_group: public_community, title: 'VA Immersive', description: 'VA Immersive', slug: 'home', has_chrome_warning_banner: false, is_public: true, created_at: Time.now, published: Time.now)
+    Page.create(page_group: va_only_community, title: 'Suicide Prevention homepage', description: 'VA-only home page', slug: 'home', has_chrome_warning_banner: false, created_at: Time.now, is_public: false)
+    Page.create(page_group: unpublished_community, title: 'Age-Friendly homepage', description: 'Unpublished home page', slug: 'home', has_chrome_warning_banner: false, created_at: Time.now, is_public: false, published: Time.now)
+    visit('/')
     # ensure header desktop view
     page.driver.browser.manage.window.resize_to(1300, 1000)
   end
@@ -34,21 +38,21 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   end
 
   describe 'header links' do
-    it "should display 'Your profile' link for a logged in user" do
+    it "displays 'Your profile' link for a logged in user" do
       within('header.usa-header') do
+        log_in_as_admin_and_visit_homepage
         expect(page).to have_content('About us')
         expect(page).to have_link(href: '/about')
         expect(page).to have_content('Shark Tank')
         expect(page).to have_link(href: '/competitions/shark-tank')
-        expect(page).to have_content('Your profile')
         expect(page).to have_content('Browse by locations')
         expect(page).to have_content('Communities')
+        expect(page).to have_content('Your profile')
       end
     end
 
     it "should not display 'Sign in' link for a guest user on a production env" do
       # logout and set the session[:user_type] to 'guest' and add the 'VAEC_ENV' env var to replicate a public guest user on dev/stg/prod
-      logout
       page.set_rack_session(:user_type => 'guest')
       ENV['VAEC_ENV'] = 'true'
       visit '/'
@@ -88,8 +92,9 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
-    context 'clicking on the Community link' do
+    context 'clicking on the Communities link' do
       it 'should redirect to VA Immersive index page' do
+        log_in_as_admin_and_visit_homepage
         click_on 'Communities'
         click_on 'VA Immersive'
         expect(page).to have_current_path('/communities/va-immersive')
@@ -114,6 +119,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
     context 'clicking on the profile link' do
       it 'should redirect to user profile page' do
+        log_in_as_admin_and_visit_homepage
         click_on 'Your profile'
         click_on 'Profile'
         expect(page).to have_selector('.profile-h1 ', visible: true)
@@ -123,6 +129,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
     context 'clicking on the sign out link' do
       it 'should sign the user out' do
+        log_in_as_admin_and_visit_homepage
         click_on 'Your profile'
         click_on 'Sign out'
         expect(page).to have_current_path('/')
@@ -133,6 +140,28 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/users/sign_in')
         end
       end
+    end
+  end
+
+  describe 'Communities dropdown' do
+    it 'only shows in-progress communities to admins' do
+      log_in_as_admin_and_visit_homepage
+      click_on 'Communities'
+      expect(page).to have_content('VA Immersive')
+      expect(page).to have_content('Suicide Prevention - Admin Preview')
+      expect(page).to have_current_path('/communities/va-immersive')
+      expect(page).to have_current_path('/communities/suicide-prevention')
+    end
+
+    it 'shows soft-launched communities to VA users' do
+      login_as(@non_admin, :scope => :user, :run_callbacks => false)
+      visit('/')
+      click_on 'Communities'
+      expect(page).to have_content('VA Immersive')
+      expect(page).to have_content('Age-Friendly')
+      expect(page).not_to have_content('Admin Preview')
+      expect(page).to have_current_path('/communities/va-immersive')
+      expect(page).to have_current_path('/communities/age-friendly')
     end
   end
 
@@ -160,28 +189,30 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
 
       expect(page).to have_content('A public practice')
-      expect(page).to have_content('Project HAPPEN')
+      expect(page).not_to have_content('Project HAPPEN')
     end
   end
 
   describe 'header mobile' do
-    before do
-      # ensure header mobile view
-      page.driver.browser.manage.window.resize_to(480, 800)
-      find('.usa-menu-btn').click
-    end
-
     it 'should show the search bar and links' do
+      open_mobile_menu
       expect(page).to have_css('.dm-navbar-search-field')
       expect(page).to have_content('About us')
       expect(page).to have_link(href: '/about')
       expect(page).to have_content('Shark Tank')
       expect(page).to have_link(href: '/competitions/shark-tank')
-      expect(page).to have_content('Your profile')
       expect(page).to have_content('Browse by locations')
     end
 
+    it 'shows profile link for logged in users' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      visit('/')
+      open_mobile_menu
+      expect(page).to have_content('Your profile')
+    end
+
     it 'should redirect to the search results page' do
+      open_mobile_menu
       fill_in('dm-navbar-search-mobile-field', with: 'test')
       find('#dm-navbar-search-mobile-button').click
       expect(page).to have_content('1 result')
@@ -193,7 +224,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       find('.usa-menu-btn').click
       find('#dm-navbar-search-mobile-button').click
       expect(page).to have_content('A public practice')
-      expect(page).to have_content('Project HAPPEN')
+      expect(page).not_to have_content('Project HAPPEN')
     end
   end
 
@@ -217,5 +248,15 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       expect(page).to_not have_content('If you are a Veteran in crisis or concerned about one, connect with our caring, qualified responders for confidential help. Many of them are Veterans themselves.')
       expect(page).to_not have_link('Call 988 and select 1')
     end
+  end
+
+  def open_mobile_menu
+      page.driver.browser.manage.window.resize_to(480, 800)
+      find('.usa-menu-btn').click
+  end
+
+  def log_in_as_admin_and_visit_homepage
+    login_as(@admin, :scope => :user, :run_callbacks => false)
+    visit('/')
   end
 end
