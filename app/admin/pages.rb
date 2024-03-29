@@ -279,7 +279,7 @@ ActiveAdmin.register Page do
         if @page.nil?
           @page = Page.create!(permitted_params[:page])
         else
-          @page.update(permitted_params[:page])
+          @page.update!(permitted_params[:page])
         end
 
         respond_to do |format|
