@@ -1,6 +1,7 @@
 module ApplicationHelper
   include Pagy::Frontend
   include PracticeEditorUtils
+  include CommunityHelper
 
   def date_format(date)
     date.in_time_zone.strftime "%B %Y"
