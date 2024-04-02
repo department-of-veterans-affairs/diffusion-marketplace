@@ -246,6 +246,8 @@ ActiveAdmin.register Page do
     before_action :set_page,
                   :delete_page_image_and_alt_text,
                   only: [:create, :update]
+    rescue_from StandardError, with: :handle_standard_error
+    rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
 
     def create
       create_or_update_page
@@ -258,52 +260,78 @@ ActiveAdmin.register Page do
     private
 
     def set_page
-      page_id = params[:id]
-      @page = page_id.present? ? Page.find(page_id) : nil
+      @page = Page.find_by(id: params[:id])
     end
 
     def create_or_update_page
-      begin
-        page_params = params[:page]
-        page_description = page_params[:description]
-        # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21).
-        # This adds a custom message to match other page-builder validation errors.
-        raise StandardError.new 'Validation failed. Page description cannot be longer than 140 characters.' if page_description.length > 140
+      page_params = permitted_params[:page]
+      validate_page_description_length(page_params[:description])
+      validate_image_alt_text_presence(page_params)
+
+      ActiveRecord::Base.transaction do
+        @page ||= Page.new
+        @page.update!(page_params)
+      end
+
+      redirect_to admin_page_path(@page), notice: "Page was successfully #{action_name == 'create' ? 'created' : 'updated'}."
+    end
+
+    def validate_page_description_length(description)
+      # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21).
+      # This adds a custom message to match other page-builder validation errors.
+      raise StandardError, 'Validation failed. Page description cannot be longer than 140 characters.' if description.length > 140
+    end
+
+    def validate_image_alt_text_presence(params)
+      if !params[:delete_image].present? && (@page&.image.present? || params[:image].present?) && params[:image_alt_text].blank?
         # raise a standard error if the user tries to send a Page image without filling out the 'image_alt_text' field
-        unless page_params[:delete_image].present?
-          if (@page&.image.present? || page_params[:image].present?) && page_params[:image_alt_text].blank?
-            raise StandardError.new 'Validation failed. Page cannot have an optional image without alternative text.'
-          end
-        end
-
-        if @page.nil?
-          @page = Page.create!(permitted_params[:page])
-        else
-          @page.update!(permitted_params[:page])
-        end
-
-        respond_to do |format|
-          format.html { redirect_to admin_page_path(@page), notice: "Page was successfully #{params[:action] === 'create' ? 'created' : 'updated'}." }
-        end
-      rescue => e
-        respond_to do |format|
-          if params[:action] === 'update'
-            format.html { redirect_to edit_admin_page_path(@page), flash: { error:  "#{e.message}"} }
-          else
-            format.html { redirect_to new_admin_page_path, flash: { error:  "#{e.message}"} }
-          end
-        end
+        raise StandardError, 'Validation failed. Page cannot have an optional image without alternative text.'
       end
     end
 
     def delete_page_image_and_alt_text
-      if @page.present? && params[:page][:delete_image_and_alt_text] === '1'
-        # set the 'image' attribute to nil
-        @page.image = nil
-        # set the 'image_alt_text' in the params to nil, in order to avoid issue with backend validation
+      return unless @page.present? && params[:page][:delete_image_and_alt_text] == '1'
+      # set the 'image' attribute to nil
+      @page.image = nil
+      # set the 'image_alt_text' in the params to nil, in order to avoid issue with backend validation
         # where it checks for an existing image first (the 'image_alt_text' key is still in the params at this point)
-        params[:page][:image_alt_text] = nil
-      end
+      params[:page][:image_alt_text] = nil
+    end
+
+    def handle_standard_error(exception)
+      redirect_to_correct_path(flash: { error: exception.message })
+    end
+
+    def handle_record_invalid(exception)
+      error_message = rewrite_error_message(exception.message)
+      redirect_to_correct_path(flash: { error: error_message })
+    end
+
+    def rewrite_error_message(error_message)
+      return "" unless error_message.is_a?(String)
+
+      error_message = error_message.gsub(/Validation failed: |Page components component /, '')
+        error_message = error_message.split(/(?<=])/).map do |str|
+          if str.include?("PageComponent")
+            index_of_component_error = str.index("PageComponent")
+            str = str.slice(index_of_component_error, str.length)
+            str.sub('PageComponent ', '') + "\n"
+          else
+            str = str.sub(",", "")
+            str.prepend("Page error: [") + "]\n"
+          end
+        end.join(", ").strip
+      error_message
+    rescue => e
+      Rails.logger.error "Error formatting message: #{e.message}"
+      error_message # Return original message if anything goes wrong
+    end
+
+    def redirect_to_correct_path(options = {})
+      flash = options[:flash] || {}
+      path = action_name == 'update' ? edit_admin_page_path(@page) : new_admin_page_path
+
+      redirect_to path, flash: flash
     end
   end
 end
