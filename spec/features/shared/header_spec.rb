@@ -92,15 +92,6 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
-    context 'clicking on the Communities link' do
-      it 'should redirect to VA Immersive index page' do
-        log_in_as_admin_and_visit_homepage
-        click_on 'Communities'
-        click_on 'VA Immersive'
-        expect(page).to have_current_path('/communities/va-immersive')
-      end
-    end
-
     context 'clicking on the Facility index link' do
       it 'should redirect to Facility index page' do
         click_on 'Browse by locations'
@@ -144,24 +135,33 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   end
 
   describe 'Communities dropdown' do
+    it 'shows published communities to all users' do
+      click_on 'Communities'
+      within ('#communities-dropdown') do
+        expect(page).to have_content('VA Immersive')
+      end
+    end
+
     it 'only shows in-progress communities to admins' do
       log_in_as_admin_and_visit_homepage
       click_on 'Communities'
-      expect(page).to have_content('VA Immersive')
-      expect(page).to have_content('Suicide Prevention - Admin Preview')
-      expect(page).to have_current_path('/communities/va-immersive')
-      expect(page).to have_current_path('/communities/suicide-prevention')
+      within ('#communities-dropdown') do
+        expect(page).to have_content('Suicide Prevention - Admin Preview')
+        expect(page).to have_current_path('/communities/va-immersive')
+        expect(page).to have_current_path('/communities/suicide-prevention')
+      end
     end
 
     it 'shows soft-launched communities to VA users' do
       login_as(@non_admin, :scope => :user, :run_callbacks => false)
       visit('/')
       click_on 'Communities'
-      expect(page).to have_content('VA Immersive')
-      expect(page).to have_content('Age-Friendly')
-      expect(page).not_to have_content('Admin Preview')
-      expect(page).to have_current_path('/communities/va-immersive')
-      expect(page).to have_current_path('/communities/age-friendly')
+      within ('#communities-dropdown') do
+        expect(page).to have_content('Age-Friendly')
+        expect(page).not_to have_content('Admin Preview')
+        expect(page).to have_current_path('/communities/va-immersive')
+        expect(page).to have_current_path('/communities/age-friendly')
+      end
     end
   end
 
