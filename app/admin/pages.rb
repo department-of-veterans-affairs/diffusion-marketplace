@@ -244,7 +244,6 @@ ActiveAdmin.register Page do
 
   controller do
     before_action :set_page,
-                  :delete_page_image_and_alt_text,
                   only: [:create, :update]
     rescue_from StandardError, with: :handle_standard_error
     rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
@@ -265,8 +264,6 @@ ActiveAdmin.register Page do
 
     def create_or_update_page
       page_params = permitted_params[:page]
-      validate_page_description_length(page_params[:description])
-      validate_image_alt_text_presence(page_params)
 
       ActiveRecord::Base.transaction do
         @page ||= Page.new
@@ -280,22 +277,6 @@ ActiveAdmin.register Page do
       # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21).
       # This adds a custom message to match other page-builder validation errors.
       raise StandardError, 'Validation failed. Page description cannot be longer than 140 characters.' if description.length > 140
-    end
-
-    def validate_image_alt_text_presence(params)
-      if !params[:delete_image].present? && (@page&.image.present? || params[:image].present?) && params[:image_alt_text].blank?
-        # raise a standard error if the user tries to send a Page image without filling out the 'image_alt_text' field
-        raise StandardError, 'Validation failed. Page cannot have an optional image without alternative text.'
-      end
-    end
-
-    def delete_page_image_and_alt_text
-      return unless @page.present? && params[:page][:delete_image_and_alt_text] == '1'
-      # set the 'image' attribute to nil
-      @page.image = nil
-      # set the 'image_alt_text' in the params to nil, in order to avoid issue with backend validation
-        # where it checks for an existing image first (the 'image_alt_text' key is still in the params at this point)
-      params[:page][:image_alt_text] = nil
     end
 
     def handle_standard_error(exception)
@@ -318,7 +299,7 @@ ActiveAdmin.register Page do
             str.sub('PageComponent ', '') + "\n"
           else
             str = str.sub(",", "")
-            str.prepend("Page error: [") + "]\n"
+            str.prepend("Page errors: [") + "]\n"
           end
         end.join(", ").strip
       error_message
