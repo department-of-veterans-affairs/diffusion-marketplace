@@ -74,7 +74,7 @@ class PageComponent < ApplicationRecord
   private
 
   def custom_component_validation_message
-    return if component.valid?
+    return if component.nil? || component.valid?
 
     class_name = user_facing_component_name(component.class.to_s)
     error_messages = component.errors.full_messages
