@@ -55,11 +55,11 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       click_on 'Browse by locations'
         within('#browse-by-locations-dropdown') do
         expect(page).to have_content('VISN index')
-        expect(page).to have_link('/visns')
+        expect(page).to have_link(href: '/visns')
         expect(page).to have_content('Facility index')
-        expect(page).to have_link('/facilities')
+        expect(page).to have_link(href: '/facilities')
         expect(page).to have_content('Diffusion map')
-        expect(page).to have_link('/diffusion-map')
+        expect(page).to have_link(href: '/diffusion-map')
       end
     end
 
@@ -121,8 +121,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       click_on 'Communities'
       within ('#communities-dropdown') do
         expect(page).to have_content('Suicide Prevention - Admin Preview')
-        expect(page).to have_link('/communities/va-immersive')
-        expect(page).to have_link('/communities/suicide-prevention')
+        expect(page).to have_link(href: '/communities/va-immersive')
+        expect(page).to have_link(href: '/communities/suicide-prevention')
       end
     end
 
@@ -133,8 +133,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       within ('#communities-dropdown') do
         expect(page).to have_content('Age-Friendly')
         expect(page).not_to have_content('Admin Preview')
-        expect(page).to have_link('/communities/va-immersive')
-        expect(page).to have_link('/communities/age-friendly')
+        expect(page).to have_link(href: '/communities/va-immersive')
+        expect(page).to have_link(href: '/communities/age-friendly')
       end
     end
   end
