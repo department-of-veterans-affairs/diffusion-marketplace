@@ -1,0 +1,19 @@
+<nav id="community-subnav" class="font-sans-lg" aria-label="Community subnavigation">
+  <ul class="padding-x-0 padding-bottom-2 display-none tablet:padding-bottom-8 desktop:tablet:padding-bottom-8 flex-row tablet:display-flex">
+    <li class=""><a href="/communities/<%= community_slug %>/">Community</a></li>
+    <% subpages = {
+      "About": "about",
+      "Innovations": "innovations",
+      "Events and News": "events-and-news",
+      "Getting Started": "getting-started",
+      "Publications": "publications"
+    } %>
+    <% subpages.each do |title, page_slug| %>
+      <li>
+        <a href="/communities/<%= community_slug%>/<%= page_slug %>" class="<%= "current-page" if params["page_slug"] == page_slug %>">
+          <%= title %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</nav>
