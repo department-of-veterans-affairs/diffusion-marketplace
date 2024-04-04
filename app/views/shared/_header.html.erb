@@ -72,6 +72,7 @@
         <li class="usa-nav__primary-item border-base-light desktop:border-bottom-0">
           <button
             class="margin-y-2px dm-text-no-underline desktop:margin-y-0 usa-accordion__button usa-nav__link border-base-light <%= 'usa-current' if request.fullpath.include?('communities') %>"
+            id="communities-dropdown-button"
             aria-expanded="false"
             aria-controls="communities-dropdown"
           >
@@ -79,24 +80,14 @@
           </button>
 
           <ul id="communities-dropdown" class="display-none usa-nav__submenu">
-            <% CommunityHelper::COMMUNITIES.each do |slug, name| %>
-              <%
-                homepage = community_homepage(slug)
-                next unless homepage.present?
-              %>
-              <% if page_published_public?(homepage) || (page_published_va_only?(homepage) && current_user.present?) %>
-                <li class="usa-nav__submenu-item border-base-light">
-                  <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0" href="/communities/<%= slug %>">
-                    <%=  name %>
-                  </a>
-                </li>
-              <% elsif current_user&.has_role?(:admin) # || TODO: community editor %>
-                <li class="usa-nav__submenu-item border-base-light">
-                  <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0" href="/communities/<%= slug %>">
-                    <%=  name %> - Admin Preview
-                  </a>
-                </li>
-              <% end%>
+            <% if @communities %>
+              <% @communities.each do |name, slug| %>
+                  <li class="usa-nav__submenu-item border-base-light">
+                    <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0" href="/communities/<%= slug %>">
+                      <%=  name %>
+                    </a>
+                  </li>
+              <% end %>
             <% end %>
           </ul>
         </li>
