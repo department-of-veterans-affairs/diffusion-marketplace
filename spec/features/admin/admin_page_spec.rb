@@ -38,7 +38,7 @@ describe 'Page Builder', type: :feature do
       select 'programming', from: 'page_page_group_id'
       save_page
 
-      expect(page).to have_content('Validation failed. Page description cannot be longer than 140 characters.')
+      expect(page).to have_content('Description is too long (maximum is 140 characters')
       expect(Page.last.slug).to_not eq('test-page-1')
       expect(Page.last.slug).to eq('test-page')
     end
@@ -51,7 +51,7 @@ describe 'Page Builder', type: :feature do
       end
       save_page
 
-      expect(page).to have_content('Validation failed. Page cannot have an optional image without alternative text.')
+      expect(page).to have_content("Image alt text can't be blank if Page image is present")
       expect(@page.image.present?).to eq(false)
     end
   end
@@ -164,6 +164,17 @@ describe 'Page Builder', type: :feature do
 
         expect(page).to have_content('Page was successfully updated.')
         expect(page).to have_text('Has border: true')
+      end
+    end
+
+    context 'Validations' do
+      it 'should indicate validation errors for page components' do
+        visit edit_admin_page_path(@page)
+        # Add a 'PageAccordionComponent' and select the border option
+        click_link('Add New Page component')
+        select('Block Quote', from: 'page_page_components_attributes_0_component_type')
+        save_page
+        expect(page).to have_content("Block Quote errors: [Text can't be blank, Citation can't be blank]")
       end
     end
   end

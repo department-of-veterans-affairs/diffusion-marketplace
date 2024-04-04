@@ -4,6 +4,7 @@ class PageComponent < ApplicationRecord
   belongs_to :component, polymorphic: true, autosave: true
 
   accepts_nested_attributes_for :component
+  validate :custom_component_validation_message
 
   after_destroy :destroy_component
 
@@ -68,5 +69,24 @@ class PageComponent < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     ["component_id", "component_type", "created_at", "id", "page_id", "position", "updated_at"]
+  end
+
+  private
+
+  def custom_component_validation_message
+    return if component.nil? || component.valid?
+
+    class_name = user_facing_component_name(component.class.to_s)
+    error_messages = component.errors.full_messages
+    error_message = "PageComponent #{class_name} errors: #{error_messages}".delete('"')
+
+    errors.add(:component, error_message)
+  end
+
+  def user_facing_component_name(class_name)
+    h = COMPONENT_SELECTION
+    if h.values.include?(class_name.to_s)
+      h.key(class_name).to_s
+    end
   end
 end
