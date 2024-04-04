@@ -244,6 +244,7 @@ ActiveAdmin.register Page do
 
   controller do
     before_action :set_page,
+                  :delete_page_image_and_alt_text,
                   only: [:create, :update]
     rescue_from StandardError, with: :handle_standard_error
     rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
@@ -313,6 +314,14 @@ ActiveAdmin.register Page do
       path = action_name == 'update' ? edit_admin_page_path(@page) : new_admin_page_path
 
       redirect_to path, flash: flash
+    end
+
+    def delete_page_image_and_alt_text
+      if @page.present? && params[:page][:delete_image_and_alt_text] === '1'
+
+        params[:page][:image] = nil
+        params[:page][:image_alt_text] = nil
+      end
     end
   end
 end
