@@ -1,4 +1,6 @@
 class AdminController < ApplicationController
+  skip_before_action :set_communities_for_header
+
   def create_user
     # Check if user already exists
     if User.find_by_email(user_params['email'])

@@ -78,7 +78,7 @@ module ApplicationHelper
   def construct_facility_name(loc)
     if loc.va_facility.present?
       facility_name_with_common_name(
-        loc.va_facility.official_station_name, 
+        loc.va_facility.official_station_name,
         loc.va_facility.common_name
       )
     else

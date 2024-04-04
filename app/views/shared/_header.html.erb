@@ -72,17 +72,23 @@
         <li class="usa-nav__primary-item border-base-light desktop:border-bottom-0">
           <button
             class="margin-y-2px dm-text-no-underline desktop:margin-y-0 usa-accordion__button usa-nav__link border-base-light <%= 'usa-current' if request.fullpath.include?('communities') %>"
+            id="communities-dropdown-button"
             aria-expanded="false"
-            aria-controls="va-immersive-dropdown"
+            aria-controls="communities-dropdown"
           >
             <span class="text-normal desktop:text-semibold padding-right-0">Communities</span>
           </button>
-          <ul id="va-immersive-dropdown" class="display-none usa-nav__submenu">
-            <li class="usa-nav__submenu-item border-base-light">
-              <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0" href="/communities/va-immersive">
-                VA Immersive
-              </a>
-            </li>
+
+          <ul id="communities-dropdown" class="display-none usa-nav__submenu">
+            <% if @communities %>
+              <% @communities.each do |name, slug| %>
+                  <li class="usa-nav__submenu-item border-base-light">
+                    <a class="font-sans-sm desktop:font-sans-2xs margin-y-2px desktop:margin-y-0" href="/communities/<%= slug %>">
+                      <%=  name %>
+                    </a>
+                  </li>
+              <% end %>
+            <% end %>
           </ul>
         </li>
       </ul>

@@ -17,7 +17,7 @@
   function loadHeaderUtilitiesFn() {
     _preventCrisisLineModalFlickerOnPageLoad();
     _preventHeaderElementFlickerOnPageLoad('#browse-by-locations-dropdown')
-    _preventHeaderElementFlickerOnPageLoad('#va-immersive-dropdown')
+    _preventHeaderElementFlickerOnPageLoad('#communities-dropdown')
   }
 
   $document.on('turbolinks:load', loadHeaderUtilitiesFn);

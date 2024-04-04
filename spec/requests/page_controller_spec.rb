@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe PageController, type: :request do
   describe 'show' do
-    let(:page_group) { create(:page_group, name: 'va-immersive', description: 'Pages about programming go in this group.') }
-    
+    let(:page_group) { create(:page_group, name: 'VA Immersive', description: 'Pages about programming go in this group.') }
+
     context 'public pages' do
       it "should redirect the user with a prepended '/communities' to the URL if the Page is a community page and the URL doesn't include '/communities'" do
-        create(:page, slug: 'home', page_group: page_group, is_public: true) 
-        create(:page, slug: 'events-and-news', page_group: page_group, is_public: true) 
+        create(:page, slug: 'home', page_group: page_group, is_public: true)
+        create(:page, slug: 'events-and-news', page_group: page_group, is_public: true)
         get '/va-immersive'
         expect(response.header['Location']).to include('/communities/va-immersive')
 

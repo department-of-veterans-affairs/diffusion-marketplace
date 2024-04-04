@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   before_action :user_accepted_terms?
   before_action :set_visit_props
   before_action :set_visitor_props
+  before_action :set_communities_for_header
 
   protect_from_forgery with: :exception, prepend: true
 
@@ -129,6 +130,19 @@ class ApplicationController < ActionController::Base
   def set_visitor_props
     if current_user.present?
       @visitor_properties = {user: current_user.email, role: current_user.user_role}
+    end
+  end
+
+  def set_communities_for_header
+    user_role = if current_user.nil?
+                  'public'
+                else
+                  current_user.has_role?(:admin) ? 'admin' : 'user'
+                end
+    cache_key = "communities_#{user_role}"
+
+    @communities = Rails.cache.fetch(cache_key, expires_in: 24.hours) do
+      PageGroup.community_with_home_hash(current_user.nil?, current_user&.has_role?(:admin))
     end
   end
 end
