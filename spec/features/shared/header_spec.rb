@@ -3,23 +3,20 @@ require 'spec_helper'
 
 describe 'Diffusion Marketplace header', type: :feature, js: true do
   before do
-    @admin = User.create!(email: 'admin-dmva@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @admin.add_role(User::USER_ROLES[0].to_sym)
-    @non_admin = User.create!(email: 'regular@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, is_public: true, tagline: 'Test tagline', user: @admin)
-    # login_as(@admin, :scope => :user, :run_callbacks => false)
-    Practice.create!(name: 'Project HAPPEN', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'test-1232392101@va.gov', user: @admin, maturity_level: 0)
-    page_group = PageGroup.create(name: 'competitions', slug: 'competitions', description: 'competitions page')
-    Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, is_public: true, published: Time.now)
-    page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
-    public_community = PageGroup.create(name: 'va-immersive', slug: 'va-immersive', description: 'va-immersive page')
-    va_only_community = PageGroup.create(name: 'Suicide Prevention', slug: 'suicide-prevention', description: 'Suicide prevention page')
-    unpublished_community = PageGroup.create(name: 'Age-Friendly', slug: 'Age-Friendly', description: 'va-immersive page')
-    Page.create(page_group: public_community, title: 'VA Immersive', description: 'VA Immersive', slug: 'home', has_chrome_warning_banner: false, is_public: true, created_at: Time.now, published: Time.now)
-    Page.create(page_group: va_only_community, title: 'Suicide Prevention homepage', description: 'VA-only home page', slug: 'home', has_chrome_warning_banner: false, created_at: Time.now, is_public: false)
-    Page.create(page_group: unpublished_community, title: 'Age-Friendly homepage', description: 'Unpublished home page', slug: 'home', has_chrome_warning_banner: false, created_at: Time.now, is_public: false, published: Time.now)
+    @admin = create(:user, :admin, email: 'naofumi.iwatani@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @non_admin = create(:user, email: 'regular@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @practice = create(:practice, name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, is_public: true, tagline: 'Test tagline', user: @admin)
+    create(:practice, name: 'Project HAPPEN', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'test-1232392101@va.gov', user: @admin, maturity_level: 0)
+    page_group = create(:page_group, name: 'competitions', slug: 'competitions', description: 'competitions page')
+    create(:page, page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Date.yesterday, is_public: true, published: Date.yesterday)
+    page_group_2 = create(:page_group, name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
+    public_community = create(:page_group, name: 'VA Immersive', slug: 'va-immersive', description: 'va-immersive page')
+    va_only_community = create(:page_group, name: 'Suicide Prevention', slug: 'suicide-prevention', description: 'Suicide prevention page')
+    unpublished_community = create(:page_group, name: 'Age-Friendly', slug: 'age-friendly', description: 'va-immersive page')
+    create(:page, page_group: public_community, title: 'VA Immersive', description: 'VA Immersive', slug: 'home', has_chrome_warning_banner: false, is_public: true, created_at: Date.yesterday, published: Date.yesterday)
+    create(:page, page_group: va_only_community, title: 'Suicide Prevention homepage', description: 'VA-only home page', slug: 'home', has_chrome_warning_banner: false, created_at: Date.yesterday, is_public: false, published: Date.yesterday)
+    create(:page, page_group: unpublished_community, title: 'Age-Friendly homepage', description: 'Unpublished home page', slug: 'home', has_chrome_warning_banner: false, created_at: Date.yesterday, is_public: false, published: nil)
     visit('/')
-    # ensure header desktop view
     page.driver.browser.manage.window.resize_to(1300, 1000)
   end
 
@@ -111,30 +108,41 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   describe 'Communities dropdown' do
     it 'shows published communities to all users' do
       click_on 'Communities'
-      within ('#communities-dropdown') do
+      within('#communities-dropdown') do
         expect(page).to have_content('VA Immersive')
+        expect(page).not_to have_content('Suicide Prevention')
+        expect(page).not_to have_content('Age-Friendly - Admin Preview')
+        expect(page).not_to have_link(href: '/communities/suicide-prevention')
+        expect(page).not_to have_link(href: '/communities/age-friendly')
       end
     end
 
     it 'only shows in-progress communities to admins' do
       log_in_as_admin_and_visit_homepage
+
       click_on 'Communities'
-      within ('#communities-dropdown') do
-        expect(page).to have_content('Suicide Prevention - Admin Preview')
+      within('#communities-dropdown') do
+      expect(page).to have_content('VA Immersive')
+        expect(page).to have_content('Suicide Prevention')
+        expect(page).to have_content('Age-Friendly - Admin Preview')
         expect(page).to have_link(href: '/communities/va-immersive')
         expect(page).to have_link(href: '/communities/suicide-prevention')
+        expect(page).to have_link(href: '/communities/age-friendly')
       end
     end
 
     it 'shows soft-launched communities to VA users' do
       login_as(@non_admin, :scope => :user, :run_callbacks => false)
       visit('/')
+
       click_on 'Communities'
-      within ('#communities-dropdown') do
-        expect(page).to have_content('Age-Friendly')
+      within('#communities-dropdown') do
+        expect(page).to have_content('VA Immersive')
+        expect(page).to have_content('Suicide Prevention')
         expect(page).not_to have_content('Admin Preview')
         expect(page).to have_link(href: '/communities/va-immersive')
-        expect(page).to have_link(href: '/communities/age-friendly')
+        expect(page).to have_link(href: '/communities/suicide-prevention')
+        expect(page).not_to have_link(href: '/communities/age-friendly')
       end
     end
   end
