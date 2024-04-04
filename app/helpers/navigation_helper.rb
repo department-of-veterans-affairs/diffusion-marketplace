@@ -225,12 +225,14 @@ module NavigationHelper
     if controller == 'page'
       if action == 'show'
         @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
-        @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase}) || nil
-        @builder_landing_page = Page.where(slug: 'home', page_group_id: @page.page_group_id) || nil
-        @builder_page_path = "/#{params[:page_group_friendly_id]}/#{@page_slug}"
+        @page_group_slug = params[:page_group_friendly_id]
+        @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: @page_group_slug.downcase}) || nil
+        @page_group = @page.page_group
+        @builder_landing_page = @page_group.landing_page || nil
+        @builder_page_path = "/#{@page_group_slug}/#{@page_slug}"
 
         def add_landing_page_breadcrumb(path)
-          session[:breadcrumbs] << { 'display': "#{@page.page_group.name}", 'path': path }
+          session[:breadcrumbs] << { 'display': "#{@page_group.name}", 'path': path }
         end
 
         def add_sub_page_breadcrumb
@@ -239,11 +241,11 @@ module NavigationHelper
 
         if @page_slug == 'home'
           empty_breadcrumbs
-        elsif @page.page_group.is_community?
+        elsif @page_group.is_community?
           empty_breadcrumbs
         elsif @builder_landing_page.exists?
           empty_breadcrumbs
-          add_landing_page_breadcrumb("/#{params[:page_group_friendly_id]}")
+          add_landing_page_breadcrumb("/#{@page_group_slug}")
           add_sub_page_breadcrumb
         else
           empty_breadcrumbs

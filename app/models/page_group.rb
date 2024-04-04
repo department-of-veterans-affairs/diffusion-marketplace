@@ -36,6 +36,10 @@ class PageGroup < ApplicationRecord
     COMMUNITIES.include?(self.name)
   end
 
+  def landing_page
+    Page.find_by(page_group_id: self.id, slug: 'home')
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "name", "slug", "updated_at", "pages_id"]
   end

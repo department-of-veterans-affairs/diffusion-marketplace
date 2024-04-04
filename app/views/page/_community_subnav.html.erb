@@ -2,7 +2,6 @@
   <ul class="padding-x-0 padding-bottom-2 display-none tablet:padding-bottom-8 desktop:tablet:padding-bottom-8 flex-row tablet:display-flex">
     <li class=""><a href="/communities/<%= community_slug %>/">Community</a></li>
     <%
-      community = PageGroup.find_by(slug: community_slug)
       # TODO: replace hardcoded list with PageBuilder UI
       subpages = { # Use hardcoded titles for nav because of mismatch with actual page names
       "About": "about",
