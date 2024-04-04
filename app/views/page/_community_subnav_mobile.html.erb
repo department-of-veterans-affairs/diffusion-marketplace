@@ -1,4 +1,4 @@
 <button type="button" id="communitySubnavBtn" class="nav-container tablet:display-none desktop:display-none padding-y-2 padding-x-2" aria-controls="community-subnav" aria-expanded="false">
-        <span>VA Immersive</span>
+        <span><%= PageGroup.find_by(slug: community_slug).name %></span>
         <i class="text-align-right fa fa-plus"></i>
 </button>
