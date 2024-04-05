@@ -243,7 +243,7 @@ module NavigationHelper
           empty_breadcrumbs
         elsif @page_group.is_community?
           empty_breadcrumbs
-        elsif @builder_landing_page.exists?
+        elsif @builder_landing_page
           empty_breadcrumbs
           add_landing_page_breadcrumb("/#{@page_group_slug}")
           add_sub_page_breadcrumb

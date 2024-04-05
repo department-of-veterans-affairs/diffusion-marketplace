@@ -1,19 +1,9 @@
 <nav id="community-subnav" class="font-sans-lg" aria-label="Community subnavigation">
   <ul class="padding-x-0 padding-bottom-2 display-none tablet:padding-bottom-8 desktop:tablet:padding-bottom-8 flex-row tablet:display-flex">
-    <li class=""><a href="/communities/<%= community_slug %>/">Community</a></li>
-    <%
-      # TODO: replace hardcoded list with PageBuilder UI
-      subpages = { # Use hardcoded titles for nav because of mismatch with actual page names
-      "About": "about",
-      "Innovations": "innovations",
-      "Events and News": "events-and-news",
-      "Getting Started": "getting-started",
-      "Publications": "publications"
-    } %>
-    <% subpages.each do |title, page_slug| %>
-      <% next unless Page.find_by(page_group_id: community.id, slug: page_slug) %>
+    <% subnav_hash.each do |title, page_slug| %>
+      <% break if @page_group.subnav_hash.length == 1 %>
       <li>
-        <a href="/communities/<%= community_slug%>/<%= page_slug %>" class="<%= "current-page" if params["page_slug"] == page_slug %>">
+        <a href="/communities/<%= @page_group_slug %>/<%= page_slug %>" class="<%= "current-page" if params["page_slug"] == page_slug %>">
           <%= title %>
         </a>
       </li>

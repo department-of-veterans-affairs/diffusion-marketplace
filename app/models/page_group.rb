@@ -40,6 +40,20 @@ class PageGroup < ApplicationRecord
     Page.find_by(page_group_id: self.id, slug: 'home')
   end
 
+  def subnav_hash
+    published_pages = self.pages.filter { |page| page.published? }.pluck("slug")
+    # TODO: replace hash with PageBuilder UI supplied info
+    approved_subpages =  { # Use hardcoded titles for nav because of mismatch with actual page names
+      "Community": "home",
+      "About": "about",
+      "Innovations": "innovations",
+      "Events and News": "events-and-news",
+      "Getting Started": "getting-started",
+      "Publications": "publications"
+    }
+    existing_pages = approved_subpages.filter {|k,v| published_pages.include?(v)}
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "name", "slug", "updated_at", "pages_id"]
   end
