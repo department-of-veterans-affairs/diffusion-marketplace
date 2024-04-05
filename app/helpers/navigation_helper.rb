@@ -225,11 +225,10 @@ module NavigationHelper
     if controller == 'page'
       if action == 'show'
         @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
-        @page_group_slug = params[:page_group_friendly_id]
-        @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: @page_group_slug.downcase}) || nil
-        @page_group = @page.page_group
-        @builder_landing_page = @page_group.landing_page || nil
-        @builder_page_path = "/#{@page_group_slug}/#{@page_slug}"
+        @page_group = PageGroup.find_by(slug: params[:page_group_friendly_id])
+        @page = Page.find_by(slug: @page_slug, page_group: @page_group.id)
+        @builder_landing_page = @page_group.landing_page
+        @builder_page_path = "/#{@page_group.slug}/#{@page_slug}"
 
         def add_landing_page_breadcrumb(path)
           session[:breadcrumbs] << { 'display': "#{@page_group.name}", 'path': path }
