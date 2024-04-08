@@ -124,7 +124,7 @@
                 <% needs_comma = @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
 
                 <% if partner.is_major %>
-                  <a href="<%= practice_partner_path(partner) %>" class="usa-link"><%= partner.name %></a><%= ', ' if needs_comma %>
+                  <%= partner.name %><%= ', ' if needs_comma %>
                 <% else %>
                   <span><%= partner.name %></span><%= ', ' if needs_comma %>
                 <% end %>
