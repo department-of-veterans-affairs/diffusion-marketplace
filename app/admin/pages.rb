@@ -293,7 +293,7 @@ ActiveAdmin.register Page do
       return "" unless error_message.is_a?(String)
 
       error_message = error_message.gsub(/Validation failed: |Page components component /, '')
-        error_message = error_message.split(/(?<=])/).map do |str|
+        error_message = error_message.split(/(?<=\])/).map do |str|
           if str.include?("PageComponent")
             index_of_component_error = str.index("PageComponent")
             str = str.slice(index_of_component_error, str.length)
