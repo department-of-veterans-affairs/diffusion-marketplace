@@ -173,11 +173,9 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       visit practice_path(@pr_max)
     end
 
-    it 'should only have links for major practice partners' do
+    it 'renders major and minor partners' do
       expect(page).to have_content(@pr_partner_1.name)
       expect(page).to have_content(@pr_partner_2.name)
-      expect(page).to have_link(href: practice_partner_path(@pr_partner_1))
-      expect(page).to_not have_link(href: practice_partner_path(@pr_partner_2))
     end
   end
 

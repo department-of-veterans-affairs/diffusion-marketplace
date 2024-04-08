@@ -367,8 +367,8 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
     context 'partners' do
       it 'should allow changing partners' do
-        expect(find(:css, '#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq('Diffusion of Excellence')
-        expect(find(:css, '#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq('Office of Rural Health')
+        expect(find(:css, '#practice_practice_partner_practices_attributes_0_practice_partner_id').value).to eq(@pr_partner_1.name)
+        expect(find(:css, '#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq(@pr_partner_2.name)
         # add another partner
         click_add_another('#link_to_add_link_practice_partner_practices')
         within(all('.dm-practice-editor-practice-partner-li').last) do
@@ -381,9 +381,11 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         click_save
         expect(find(:css, '#practice_practice_partner_practices_attributes_1_practice_partner_id').value).to eq(@pr_partner_3.name)
         visit_practice_show
-        expect(page).to_not have_link('Diffusion of Excellence')
-        expect(page).to_not have_link(@pr_partner_3.name)
-        expect(page).to have_link('Office of Rural Health')
+        within('.practice-partners-section') do
+          expect(page).to_not have_content(@pr_partner_1.name)
+          expect(page).to have_content(@pr_partner_3.name)
+          expect(page).to have_content(@pr_partner_2.name)
+        end
       end
 
       context 'edge cases' do

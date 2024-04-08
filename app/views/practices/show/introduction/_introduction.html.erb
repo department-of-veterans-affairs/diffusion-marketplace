@@ -115,8 +115,8 @@
         <% end %>
 
         <%# practice partners %>
-        <% if @practice_partner_names %>
-          <div>
+        <% if @practice_partner_names.present? %>
+          <div class="practice-partners-section">
             <h5 class="text-uppercase display-inline margin-y-0">Partners:</h5>
             <p class="display-inline line-height-26">
               <%= @practice_partner_names %>
