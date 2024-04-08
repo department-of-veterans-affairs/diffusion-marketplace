@@ -80,6 +80,8 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
     @in_progress_adoptions = helpers.sort_adoptions_by_state_and_station_name(diffusion_histories.get_by_in_progress_status)
     @unsuccessful_adoptions = helpers.sort_adoptions_by_state_and_station_name(diffusion_histories.get_by_unsuccessful_status)
 
+    @practice_partner_names = @practice.practice_partners.where.not(name: 'None of the above, or Unsure').order(:name).pluck('name').join(', ')
+
     if helpers.is_user_a_guest? && !@practice.is_public
       respond_to do |format|
         s_error = 'This innovation is not available for non-VA users.'
