@@ -4,8 +4,6 @@
 | Environment  | url  |
 |---|---|
 | development  | http://localhost:3200  |
-| ftl staging  | http://va-diffusion-marketplace-staging.efgnfj8pjn.us-west-2.elasticbeanstalk.com/  |
-| ftl production | https://marketplace.vaftl.us |
 | vaec development | https://dev.marketplace.va.gov |
 | vaec staging | https://staging.marketplace.va.gov |
 | vaec production | https://marketplace.va.gov |
