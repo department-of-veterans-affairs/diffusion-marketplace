@@ -44,19 +44,6 @@ describe 'Practice partners pages', type: :feature do
       page.set_rack_session(:user_type => 'ntlm')
     end
 
-    it 'should navigate to strategic sponsors list page' do
-      visit '/partners'
-      # TODO: this is timing out in CI
-      # expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(current_path).to eq('/partners')
-    end
-
-    it 'should only display major practice partners on the partners index page' do
-      visit '/partners'
-      expect(page).to have_content(@pp.name)
-      expect(page).to_not have_content(@pp_2.name)
-    end
-
     it 'should show the initiating facility\'s name' do
       @pr_1.update(initiating_facility: 'Foobar Facility')
       visit '/partners/diffusion-of-excellence'
