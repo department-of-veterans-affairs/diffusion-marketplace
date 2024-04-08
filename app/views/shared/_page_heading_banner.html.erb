@@ -1,0 +1,22 @@
+<% # aka "the big blue banner" %>
+<% if heading.present? %>
+	<div class="dm-breadcrumb-heading grid-row grid-gap-3">
+	  <div class="grid-col-12<%= ' desktop:grid-col-7' if page_image.present? %>">
+	    <h1 class="usa-prose-h1 margin-top-0 margin-bottom-4 text-white grid-col-12">
+	      <%= heading %>
+	    </h1>
+	    <% if description.present? %>
+	      <p class="dm-heading-description font-sans-lg <%= page_image.present? ? ' grid-col-12' : ' grid-col-10' %> text-white dm-word-break-break-word hyphens-auto">
+	        <%= description %>
+	      </p>
+	    <% end %>
+	  </div>
+	  <% if page_image.present? %>
+	    <div class="page-image-column desktop:grid-col-5">
+	      <div class="page-image-container">
+	        <img src="<%= page_image %>" alt="<%= alt_text %>" class="height-full width-full"/>
+	      </div>
+	    </div>
+	  <% end %>
+	</div>
+<% end %>
