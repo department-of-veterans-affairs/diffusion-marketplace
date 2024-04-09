@@ -13,7 +13,7 @@ describe 'The admin dashboard', type: :feature do
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123',
                              password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @admin.add_role(User::USER_ROLES[1].to_sym)
+    @admin.add_role(User::USER_ROLES[0].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
 
     visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)

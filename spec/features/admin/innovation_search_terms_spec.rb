@@ -14,7 +14,7 @@ describe 'Admin innovation search terms', type: :feature do
       confirmed_at: Time.now,
       accepted_terms: true
     )
-    @admin.add_role(User::USER_ROLES[1].to_sym)
+    @admin.add_role(User::USER_ROLES[0].to_sym)
     @ahoy_visit = Ahoy::Visit.create!(user_id: @admin.id, started_at: Time.now)
     Ahoy::Event.create!(visit_id: @ahoy_visit.id, name: 'Practice search', properties: { search_term: 'hello world' }, time: Time.now)
     Ahoy::Event.create!(visit_id: @ahoy_visit.id, name: 'Practice search', properties: { search_term: 'hello world' }, time: Time.now)

@@ -6,7 +6,7 @@ RSpec.describe PracticeEditorSessionsHelper, type: :helper do
       it "returns the full name and (Site Admin)" do
         user = User.create!(email: 'test@va.gov', first_name: 'Ash', last_name: 'Ketchum', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
         practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: user)
-        user.add_role(User::USER_ROLES[1].to_sym)
+        user.add_role(User::USER_ROLES[0].to_sym)
         session = PracticeEditorSession.create(session_start_time: DateTime.now, practice: practice, user: user)
         expect(helper.session_username(session)).to eq('Ash Ketchum (Site Admin)')
       end
@@ -16,7 +16,7 @@ RSpec.describe PracticeEditorSessionsHelper, type: :helper do
       it "returns the first name and (Site Admin)" do
         user = User.create!(email: 'test@va.gov', first_name: 'Ash', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
         practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: user)
-        user.add_role(User::USER_ROLES[1].to_sym)
+        user.add_role(User::USER_ROLES[0].to_sym)
         session = PracticeEditorSession.create(session_start_time: DateTime.now, practice: practice, user: user)
         expect(helper.session_username(session)).to eq('Ash (Site Admin)')
       end
@@ -26,7 +26,7 @@ RSpec.describe PracticeEditorSessionsHelper, type: :helper do
       it "returns the last name and (Site Admin)" do
         user = User.create!(email: 'test@va.gov', last_name: 'Ketchum', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
         practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: user)
-        user.add_role(User::USER_ROLES[1].to_sym)
+        user.add_role(User::USER_ROLES[0].to_sym)
         session = PracticeEditorSession.create(session_start_time: DateTime.now, practice: practice, user: user)
         expect(helper.session_username(session)).to eq('Ketchum (Site Admin)')
       end
@@ -36,7 +36,7 @@ RSpec.describe PracticeEditorSessionsHelper, type: :helper do
       it "returns the email and (Site Admin)" do
         user = User.create!(email: 'test@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
         practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: user)
-        user.add_role(User::USER_ROLES[1].to_sym)
+        user.add_role(User::USER_ROLES[0].to_sym)
         session = PracticeEditorSession.create(session_start_time: DateTime.now, practice: practice, user: user)
         expect(helper.session_username(session)).to eq('test@va.gov (Site Admin)')
       end
