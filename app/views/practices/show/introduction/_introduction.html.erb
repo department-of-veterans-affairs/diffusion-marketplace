@@ -6,7 +6,6 @@
   completed_adoptions = @practice.number_of_completed_adoptions
   in_progress_adoptions = @practice.number_of_in_progress_adoptions
   unsuccessful_adoptions = @practice.number_of_unsuccessful_adoptions
-  has_practice_partners = @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
   has_practice_awards = @practice.practice_awards.any? && (@practice.practice_awards.size === 1 ? @practice.practice_awards.find_by(name: 'Other').nil? : true )
 %>
 
@@ -116,19 +115,11 @@
         <% end %>
 
         <%# practice partners %>
-        <% if has_practice_partners %>
-          <div>
+        <% if @practice_partner_names.present? %>
+          <div class="practice-partners-section">
             <h5 class="text-uppercase display-inline margin-y-0">Partners:</h5>
             <p class="display-inline line-height-26">
-              <% Naturalsorter::Sorter.sort_by_method(@practice.practice_partners, 'name', true, true).each_with_index do |partner, index| %>
-                <% needs_comma = @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
-
-                <% if partner.is_major %>
-                  <a href="<%= practice_partner_path(partner) %>" class="usa-link"><%= partner.name %></a><%= ', ' if needs_comma %>
-                <% else %>
-                  <span><%= partner.name %></span><%= ', ' if needs_comma %>
-                <% end %>
-              <% end %>
+              <%= @practice_partner_names %>
             </p>
           </div>
         <% end %>
