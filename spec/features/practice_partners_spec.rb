@@ -7,7 +7,7 @@ describe 'Practice partners pages', type: :feature do
     @user2 = create(:user, email: 'patrick.star@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin = create(:user, email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = create(:user, email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @admin.add_role(User::USER_ROLES[1].to_sym)
+    @admin.add_role(User::USER_ROLES[0].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @pr_1 = create(:practice, name: 'A public practice', approved: true, published: true, enabled: true, is_public: true, initiating_facility_type: 'other', user: @user2)
     @pr_2 = create(:practice, name: 'practice two', approved: true, published: true, enabled: true, initiating_facility_type: 'other', user: @user2)

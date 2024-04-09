@@ -50,7 +50,7 @@ describe 'VA facility pages', type: :feature do
     )
 
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @admin.add_role(User::USER_ROLES[1].to_sym)
+    @admin.add_role(User::USER_ROLES[0].to_sym)
   end
 
   describe 'index page' do

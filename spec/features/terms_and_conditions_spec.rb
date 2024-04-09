@@ -4,7 +4,7 @@ describe 'Terms and conditions', type: :feature do
     before do
         @user = User.create!(email: 'shunsui.kyoraku+test1232131@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
         @admin = User.create!(email: 'yoruichi.shihouin+test1232131@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
-        @admin.add_role(User::USER_ROLES[1].to_sym)
+        @admin.add_role(User::USER_ROLES[0].to_sym)
     end
 
     def expect_forced_terms_modal

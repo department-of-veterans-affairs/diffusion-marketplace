@@ -39,7 +39,7 @@ class User < ApplicationRecord
     object_presigned_url(avatar, style)
   end
 
-  USER_ROLES = %w[approver_editor admin].freeze
+  USER_ROLES = %w[admin].freeze
 
   validate :valid_email
   validate :password_complexity
@@ -190,20 +190,20 @@ class User < ApplicationRecord
     get_ldap_response(ldap)
     user
   end
-  
+
   def self.ransackable_attributes(auth_object = nil)
     ['first_name', 'email']
   end
-  
+
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
-  
+
   protected
-  
+
   def password_required?
     return false if skip_password_validation
     super
   end
-  
+
   private
 
   def self.get_ldap_response(ldap)

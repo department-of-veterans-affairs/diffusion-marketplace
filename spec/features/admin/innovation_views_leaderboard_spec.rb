@@ -14,7 +14,7 @@ describe 'Admin innovation views leaderboard', type: :feature do
       confirmed_at: Time.now,
       accepted_terms: true
     )
-    @admin.add_role(User::USER_ROLES[1].to_sym)
+    @admin.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(
       name: 'Some Awesome Practice',
       user: @admin,

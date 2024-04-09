@@ -100,7 +100,7 @@ describe 'VISN pages', type: :feature do
 
     @user = User.create!(email: 'nobara.kugisaki@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: false, confirmed_at: Time.now, accepted_terms: true)
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @admin.add_role(User::USER_ROLES[1].to_sym)
+    @admin.add_role(User::USER_ROLES[0].to_sym)
 
     @practice = Practice.create!(name: 'The Best Innovation Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best innovation ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
