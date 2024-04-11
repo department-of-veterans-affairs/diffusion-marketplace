@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'PageGroup Management', type: :feature, js: true do
+RSpec.describe 'PageGroup Management', type: :feature do
   describe 'Creating a PageGroup' do
     let!(:admin) { create(:user, :admin) }
     let!(:valid_editor) { create(:user) }
@@ -23,7 +23,7 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
     it 'successfully creates a PageGroup with valid editor emails' do
       fill_in 'Name', with: 'New Page Group'
       fill_in 'Description', with: 'A description for the new page group.'
-      fill_in 'Commmunity editors', with: valid_editor.email
+      fill_in 'Community editors', with: valid_editor.email
 
       expect {
         click_button 'Create Page group'
@@ -39,7 +39,7 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
 
       fill_in 'Name', with: 'Failed Page Group'
       fill_in 'Description', with: 'This should not be created.'
-      fill_in 'Commmunity editors', with: nonexistent_email
+      fill_in 'Community editors', with: nonexistent_email
 
       expect {
         click_button 'Create Page group'
@@ -66,7 +66,7 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
 
         fill_in 'Name', with: 'Updated Page Group Name'
         fill_in 'Description', with: 'Updated description here.'
-        fill_in 'Commmunity editors', with: editor.email
+        fill_in 'Community editors', with: editor.email
 
         click_button 'Update Page group'
 
@@ -81,7 +81,7 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
 
         fill_in 'Name', with: 'Updated Page Group Name'
         fill_in 'Description', with: 'Updated description here.'
-        fill_in 'Commmunity editors', with: "#{existing_editor.email}, #{editor.email}"
+        fill_in 'Community editors', with: "#{existing_editor.email}, #{editor.email}"
 
         click_button 'Update Page group'
 
@@ -98,7 +98,7 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
 
         fill_in 'Name', with: 'Updated Page Group Name'
         fill_in 'Description', with: 'Updated description here.'
-        fill_in 'Commmunity editors', with: "#{existing_editor.email}"
+        fill_in 'Community editors', with: "#{existing_editor.email}"
 
         click_button 'Update Page group'
 
@@ -117,7 +117,7 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
 
         fill_in 'Name', with: 'Updated Page Group Name'
         fill_in 'Description', with: 'Updated description here.'
-        fill_in 'Commmunity editors', with: ""
+        fill_in 'Community editors', with: ""
 
         click_button 'Update Page group'
 
@@ -134,7 +134,7 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
 
         fill_in 'Name', with: 'Updated Page Group Name'
         fill_in 'Description', with: 'Updated description for sad path.'
-        fill_in 'Commmunity editors', with: nonexistent_email
+        fill_in 'Community editors', with: nonexistent_email
 
         click_button 'Update Page group'
 
