@@ -75,18 +75,14 @@ ActiveAdmin.register PageGroup do
     end
 
     def update_editors(editors_string)
-      return if editors_string.blank?
-
-      users = User.where(email: editors_string.split(',').map(&:strip))
+      submitted_emails = editors_string.to_s.split(',').map(&:strip).uniq
+      current_editors = @page_group.editors
+      users_to_add = User.where(email: submitted_emails) - current_editors
+      users_to_remove = current_editors.where.not(email: submitted_emails)
 
       ActiveRecord::Base.transaction do
-        @page_group.editors.each do |editor|
-          editor.remove_role :page_group_editor, @page_group
-        end
-
-        users.each do |user|
-          user.add_role :page_group_editor, @page_group
-        end
+        users_to_remove.each { |user| user.remove_role(:page_group_editor, @page_group) }
+        users_to_add.each { |user| user.add_role(:page_group_editor, @page_group) }
       end
     end
   end

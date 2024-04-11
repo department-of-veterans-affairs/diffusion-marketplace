@@ -87,11 +87,11 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
 
         expect(page).to have_content('Page group was successfully updated.')
         visit edit_admin_page_group_path(page_group)
-        expect(page).to have_content("editor_email1@va.gov, editor_email2@va.gov")
-        expect(page_group.reload.editors).to include(editor, existing_editor)
+        expect(page).to have_content("editor_email2@va.gov, editor_email1@va.gov")
+        expect(page_group.editors).to include(editor, existing_editor)
       end
 
-      it "successfully removes an editor to a PageGroup's existing editors" do
+      it "successfully removes an editor from a PageGroup's existing editors" do
         editor.add_role(:page_group_editor, page_group)
         existing_editor.add_role(:page_group_editor, page_group)
         visit edit_admin_page_group_path(page_group)
@@ -107,6 +107,25 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
         expect(page).to have_content(existing_editor.email)
         expect(page).not_to have_content(editor.email)
         expect(page_group.reload.editors).to include(existing_editor)
+        expect(page_group.reload.editors).not_to include(editor)
+      end
+
+      it "successfully removes all editors from a PageGroup's existing editors" do
+        editor.add_role(:page_group_editor, page_group)
+        existing_editor.add_role(:page_group_editor, page_group)
+        visit edit_admin_page_group_path(page_group)
+
+        fill_in 'Name', with: 'Updated Page Group Name'
+        fill_in 'Description', with: 'Updated description here.'
+        fill_in 'Commmunity editors', with: ""
+
+        click_button 'Update Page group'
+
+        expect(page).to have_content('Page group was successfully updated.')
+        visit edit_admin_page_group_path(page_group)
+        expect(page).not_to have_content(existing_editor.email)
+        expect(page).not_to have_content(editor.email)
+        expect(page_group.reload.editors).not_to include(existing_editor)
         expect(page_group.reload.editors).not_to include(editor)
       end
 
