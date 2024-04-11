@@ -63,8 +63,8 @@ ActiveAdmin.register PageGroup do
     def validate_editor_emails
       non_existent_emails = find_invalid_emails(params[:page_group][:editors])
       if non_existent_emails.present?
-        flash[:alert] = "User not found with email(s): #{non_existent_emails.join(', ')}"
-        redirect_back(fallback_location: admin_page_groups_path, alert: "User not found with email(s): #{non_existent_emails.join(', ')}") and return
+        error_message = "User not found with email(s): #{non_existent_emails.join(', ')}"
+        redirect_to_correct_path(flash: { error: error_message }) and return
       end
     end
 
@@ -84,6 +84,13 @@ ActiveAdmin.register PageGroup do
         users_to_remove.each { |user| user.remove_role(:page_group_editor, @page_group) }
         users_to_add.each { |user| user.add_role(:page_group_editor, @page_group) }
       end
+    end
+
+    def redirect_to_correct_path(options = {})
+      flash = options[:flash] || {}
+      path = action_name == 'update' ? edit_admin_page_group_path(@page_group) : new_admin_page_group_path
+
+      redirect_to path, flash: flash
     end
   end
 end
