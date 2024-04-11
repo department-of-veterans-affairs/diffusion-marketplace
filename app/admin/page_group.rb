@@ -13,7 +13,8 @@ ActiveAdmin.register PageGroup do
   #   permitted
   # end
 
-  remove_filter :roles
+  remove_filter :editor_roles, :roles
+
   form do |f|
     f.inputs do
       f.input :name
@@ -21,7 +22,7 @@ ActiveAdmin.register PageGroup do
       f.input :editors,
               label: 'Commmunity editors',
               as: :text,
-              input_html: { class: 'height-7' },
+              input_html: { class: 'height-7', value: f.object.editors_emails_string },
               hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov,test@va.gov"
       # if image.present?
       #     f.input :delete_image_and_alt_text,
@@ -35,33 +36,73 @@ ActiveAdmin.register PageGroup do
   end
 
   controller do
+    before_action :set_page_group, only: [:create, :update]
+    before_action :validate_editor_emails, only: [:create, :update]
+
+    def page_group_params
+      params.require(:page_group).permit(:name, :description, :slug, :has_landing_page, editors: [])
+    end
+
+    def set_page_group
+      page_group_slug = params[:id]
+      @page_group = page_group_slug.present? ? PageGroup.find_by(slug: page_group_slug) : nil
+    end
+
     def find_resource
       scoped_collection.friendly.find(params[:id])
     end
 
     def create
-      # add a new role
-      super
+      @page_group = PageGroup.new(page_group_params.except(:editors))
+      super do |success, failure|
+        success.html do
+          update_editors(params[:page_group][:editors]) if @page_group.persisted?
+          redirect_to admin_page_group_path(@page_group), notice: 'Page group was successfully created.'
+        end
+        failure.html { render :new }
+      end
     end
 
     def update
-      current_editors = resource.editors.split(',')
-      submitted_emails = params["page_group"]["editors"].split(',')
-      # TODO: process whitespace
-      editors_to_delete = current_editors - submitted_emails
-      editors_to_create = submitted_emails - current_editors
+      super do |success, failure|
+        success.html do
+          update_editors(params[:page_group][:editors])
+          redirect_to admin_page_group_path(resource), notice: 'Page group was successfully updated.'
+        end
+        failure.html { render :edit }
+      end
+    end
 
-      editors_to_delete.each {| email| User.where(email: email).first.remove_role(:community_editor, resource) }
-      editors_to_create.each {|email| User.where(email: email).first.add_role(:community_editor, resource) }
+    private
 
-      params["page_group"]["editors"] = nil # unset param
+    def validate_editor_emails
+      non_existent_emails = find_invalid_emails(params[:page_group][:editors])
+      if non_existent_emails.present?
+        flash[:alert] = "User not found with email(s): #{non_existent_emails.join(', ')}"
+        redirect_back(fallback_location: admin_page_groups_path, alert: "User not found with email(s): #{non_existent_emails.join(', ')}") and return
+      end
+    end
 
-      # other stuff
-      # validate that it's a VA email
-      # reject if user does not exist
+    def find_invalid_emails(editors_string)
+      submitted_emails = editors_string.to_s.split(',').map(&:strip).uniq
+      existing_emails = User.where(email: submitted_emails).pluck(:email)
+      submitted_emails - existing_emails
+    end
 
+    def update_editors(editors_string)
+      return if editors_string.blank?
 
-      super
+      users = User.where(email: editors_string.split(',').map(&:strip))
+
+      ActiveRecord::Base.transaction do
+        @page_group.editors.each do |editor|
+          editor.remove_role :page_group_editor, @page_group
+        end
+
+        users.each do |user|
+          user.add_role :page_group_editor, @page_group
+        end
+      end
     end
   end
 end
