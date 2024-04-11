@@ -94,8 +94,8 @@ RSpec.describe PageGroup, type: :model do
   describe '#editors_emails_string' do
     context 'when there are users associated through :page_group_editor roles' do
       let(:page_group) { create(:page_group) }
-      let(:editor_a) { create(:user) }
-      let(:editor_b) { create(:user) }
+      let(:editor_a) { create(:user, email: "editor_a@email.com") }
+      let(:editor_b) { create(:user, email: "editor_b@email.com") }
 
       it 'returns a comma-separated string of editor emails' do
         editor_a.add_role :page_group_editor, page_group

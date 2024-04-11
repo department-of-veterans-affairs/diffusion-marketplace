@@ -52,7 +52,7 @@ class PageGroup < ApplicationRecord
   end
 
   def editors_emails_string
-    editors.map(&:email).join(', ')
+    editors.order(:email).pluck(:email).join(', ')
   end
 
   private

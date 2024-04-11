@@ -87,7 +87,7 @@ RSpec.describe 'PageGroup Management', type: :feature do
 
         expect(page).to have_content('Page group was successfully updated.')
         visit edit_admin_page_group_path(page_group)
-        expect(page).to have_content("editor_email2@va.gov, editor_email1@va.gov")
+        expect(page).to have_content("editor_email1@va.gov, editor_email2@va.gov")
         expect(page_group.editors).to include(editor, existing_editor)
       end
 
