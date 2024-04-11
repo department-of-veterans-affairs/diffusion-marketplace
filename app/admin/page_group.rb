@@ -11,7 +11,7 @@ ActiveAdmin.register PageGroup do
       f.input :name
       f.input :description
       f.input :editors,
-              label: 'Commmunity editors',
+              label: 'Community editors',
               as: :text,
               input_html: { class: 'height-7', value: f.object.editors_emails_string },
               hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov,test@va.gov"
