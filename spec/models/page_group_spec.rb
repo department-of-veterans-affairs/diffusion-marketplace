@@ -3,12 +3,28 @@ require 'rails_helper'
 RSpec.describe PageGroup, type: :model do
   describe 'associations' do
     it { is_expected.to have_many(:pages).dependent(:destroy) }
+    it { is_expected.to have_many(:editors) }
   end
 
   describe 'validations' do
     it { is_expected.to validate_uniqueness_of(:name) }
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:description) }
+  end
+
+  describe 'callbacks' do
+    describe 'before_destroy :remove_editor_roles' do
+      let!(:page_group) { create(:page_group) }
+      let!(:editor) { create(:user) }
+      let!(:editor_role) { editor.add_role :page_group_editor, page_group }
+
+      it 'removes associated editor roles upon page_group destruction' do
+        expect(page_group.editor_roles.exists?(id: editor_role.id)).to be true
+
+        expect { page_group.destroy }.to change(Role, :count).by(-1)
+        expect(Role.exists?(id: editor_role.id)).to be false
+      end
+    end
   end
 
   describe 'friendly_id' do
@@ -71,6 +87,28 @@ RSpec.describe PageGroup, type: :model do
         expect(result.values).to include(non_public_page_group.slug)
         expect(result.keys).to include("#{admin_only_page_group.name} - Admin Preview")
         expect(result.values).to include(admin_only_page_group.slug)
+      end
+    end
+  end
+
+  describe '#editors_emails_string' do
+    context 'when there are users associated through :page_group_editor roles' do
+      let(:page_group) { create(:page_group) }
+      let(:editor_a) { create(:user) }
+      let(:editor_b) { create(:user) }
+
+      it 'returns a comma-separated string of editor emails' do
+        editor_a.add_role :page_group_editor, page_group
+        editor_b.add_role :page_group_editor, page_group
+        expect(page_group.editors_emails_string).to eq("#{editor_a.email}, #{editor_b.email}")
+        end
+    end
+
+    context 'when there are no editors' do
+      let(:empty_page_group) { create(:page_group) }
+
+      it 'returns an empty string' do
+        expect(empty_page_group.editors_emails_string).to eq('')
       end
     end
   end
