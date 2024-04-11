@@ -2,17 +2,8 @@ ActiveAdmin.register PageGroup do
 
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  permit_params :name, :description, :slug, :has_landing_page
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:permitted, :attributes]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
 
+  permit_params :name, :description, :slug, :has_landing_page
   remove_filter :editor_roles, :roles
 
   form do |f|
@@ -24,12 +15,6 @@ ActiveAdmin.register PageGroup do
               as: :text,
               input_html: { class: 'height-7', value: f.object.editors_emails_string },
               hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov,test@va.gov"
-      # if image.present?
-      #     f.input :delete_image_and_alt_text,
-      #             as: :boolean,
-      #             label: 'Delete image and alternative text',
-      #             input_html: { class: 'margin-left-2px' }
-      # end
     end
 
     f.actions
