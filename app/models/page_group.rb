@@ -41,7 +41,12 @@ class PageGroup < ApplicationRecord
   end
 
   def subnav_hash
-    published_pages = self.pages.filter { |page| page.published? }.pluck("slug")
+    return nil if self.pages.empty?
+    if self.landing_page&.published? # Use all pages when community homepage has not been published
+      subpages = self.pages.filter { |page| page.published? }.pluck("slug")
+    else # Only show published subnav pages when homepage has been published
+      subpages = self.pages.pluck("slug")
+    end
     # TODO: replace hash with PageBuilder UI supplied info
     approved_subpages =  { # Use hardcoded titles for nav because of mismatch with actual page names
       "Community": "home",
@@ -51,7 +56,8 @@ class PageGroup < ApplicationRecord
       "Getting Started": "getting-started",
       "Publications": "publications"
     }
-    existing_pages = approved_subpages.filter {|k,v| published_pages.include?(v)}
+
+    approved_subpages.filter {|k,v| subpages.include?(v)}
   end
 
   def self.ransackable_attributes(auth_object = nil)
