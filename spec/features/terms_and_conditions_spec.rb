@@ -25,11 +25,11 @@ describe 'Terms and conditions', type: :feature do
             visit '/'
             expect_forced_terms_modal
             click_button('I acknowledge the terms')
-            visit '/partners'
+            visit '/about'
             expect(page).not_to have_content('VA systems are intended to be used by authorized VA network users')
-            expect(page).to have_content('Partners')
-            expect(page).to have_content('Best innovations are always being developed, vetted, and promoted by offices within the VA.')
-            expect(page).to have_current_path('/partners')
+            expect(page).to have_content('About us')
+            expect(page).to have_content('The Diffusion Marketplace is a discovery and collaboration tool')
+            expect(page).to have_current_path('/about')
             click_link 'Terms and conditions'
             expect(current_path).to eq('/terms-and-conditions')
             expect(page).to have_content('VA systems are intended to be used by authorized VA network users')
@@ -41,9 +41,9 @@ describe 'Terms and conditions', type: :feature do
             login_as(@user, :scope => :user, :run_callbacks => false)
             visit '/'
             expect_forced_terms_modal
-            visit '/partners'
+            visit '/about'
             expect_forced_terms_modal
-            expect(page).to have_current_path('/partners')
+            expect(page).to have_current_path('/about')
         end
 
         it 'Should redirect admin to the home page if they did not accept the terms' do
@@ -58,16 +58,16 @@ describe 'Terms and conditions', type: :feature do
         end
     end
 
-    context 'not logged in user' do
+    context 'public user' do
         it 'Should not direct the user to the terms and conditions page' do
-            visit '/partners'
-            expect(page).to have_content('Partners')
-            expect(page).to have_content('Best innovations are always being developed, vetted, and promoted by offices within the VA.')
+            visit '/about'
+            expect(page).to have_content('About')
+            expect(page).to have_content('The Diffusion Marketplace is a discovery and collaboration tool')
             expect(page).not_to have_content('VA systems are intended to be used by authorized VA network users')
         end
 
         it 'Should display the terms and conditions page' do
-            visit '/partners'
+            visit '/about'
             click_link 'Terms and conditions'
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Terms and conditions')

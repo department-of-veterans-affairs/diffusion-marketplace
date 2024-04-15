@@ -80,11 +80,6 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to_not have_css('#breadcrumbs')
     end
 
-    it 'should not display breadcrumbs for the partners index' do
-      visit(partners_path)
-      expect(page).to_not have_css('#breadcrumbs')
-    end
-
     it 'should not display breadcrumbs for the diffusion map' do
       click_button('Browse by locations')
       find("a[href='/diffusion-map']").click
