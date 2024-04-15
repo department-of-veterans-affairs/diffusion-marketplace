@@ -54,8 +54,10 @@ ActiveAdmin.setup do |config|
   #
   # This setting changes the method which Active Admin calls
   # within the application controller.
-  config.authentication_method = :authenticate_active_admin_user!
-
+  config.namespace :admin do |ns|
+    ns.authentication_method = :authenticate_active_admin_user!
+    ns.root_to = 'site_metrics#index'
+  end
   # == User Authorization
   #
   # Active Admin will automatically call an authorization
@@ -117,7 +119,6 @@ ActiveAdmin.setup do |config|
   # roots for each namespace.
   #
   # Default:
-  config.root_to = 'site_metrics#index'
 
   # == Admin Comments
   #
@@ -309,4 +310,14 @@ ActiveAdmin.setup do |config|
   # You can inherit it with own class and inject it for all resources
   #
   # config.order_clause = MyOrderClause
+  # config.load_paths = [File.expand_path('app/admin', Rails.root), File.expand_path('app/editor', Rails.root)]
+
+  config.namespace :editor do |editor|
+    editor.site_title = "Editor Portal"
+    editor.authentication_method = :authenticate_editor_user!
+    editor.current_user_method = :current_user
+    editor.logout_link_path = :destroy_user_session_path
+    editor.root_to = 'pages#index'
+    editor.comments_menu = false
+  end
 end

@@ -20,6 +20,14 @@ class PageGroup < ApplicationRecord
 
   scope :community, -> { where(name: COMMUNITIES) }
 
+  scope :accessible_by, -> (user) do
+    if user.has_role?(:admin)
+      all
+    else
+      where(id: user.editable_page_group_ids)  # Non-admins get access to their editable page groups
+    end
+  end
+
   def self.community_with_home_hash(public = true, admin = false)
     query = PageGroup.community.joins(:pages).where(pages: { slug: 'home' })
     query = query.where(pages: { is_public: true }) if public

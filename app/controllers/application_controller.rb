@@ -24,8 +24,9 @@ class ApplicationController < ActionController::Base
 
   def authenticate_active_admin_user!
     authenticate_user!
+    # binding.pry
     if current_user.present?
-      is_admin = current_user.has_role?(:admin) || current_user.has_role?(:editor, :any) # TODO: move to relevant admin actions
+      is_admin = current_user.has_role?(:admin)
       terms_accepted = current_user.accepted_terms
       flash[:alert] = "Unauthorized Access!" if !is_admin
       flash[:alert] = "Accept terms and conditions" if !terms_accepted
@@ -33,6 +34,28 @@ class ApplicationController < ActionController::Base
       if !is_admin || !terms_accepted
         redirect_to root_path
       end
+    end
+  end
+
+  def authenticate_editor_user!
+    authenticate_user!
+
+    if current_user.present?
+      is_admin = current_user.has_role?(:admin) || current_user.has_role?(:page_group_editor, :any)
+      terms_accepted = current_user.accepted_terms
+      flash[:alert] = "Unauthorized Access!" if !is_admin
+      flash[:alert] = "Accept terms and conditions" if !terms_accepted
+
+      if !is_admin || !terms_accepted
+        redirect_to root_path
+      end
+    end
+  end
+
+  def authenticate_editor_user!
+    authenticate_user!
+    unless current_user
+      redirect_to new_user_session_path, alert: "You must be logged in to access this section."
     end
   end
 

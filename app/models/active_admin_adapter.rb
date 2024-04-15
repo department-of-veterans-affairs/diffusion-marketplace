@@ -1,5 +1,12 @@
 class ActiveAdminAdapter < ActiveAdmin::AuthorizationAdapter
   def authorized?(action, subject = nil)
-    user.has_role?(:admin) || user.has_role?(:editor, :any) # TODO: move to relevant admin actions
+    return true if user.has_role?(:admin)
+
+    case subject
+    when normalized(Page)
+      user.has_role?(:page_group_editor, :any)
+    else
+      false
+    end
   end
 end
