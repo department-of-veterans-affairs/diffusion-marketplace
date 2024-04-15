@@ -10,19 +10,56 @@ ActiveAdmin.register PageGroup do
     f.inputs do
       f.input :name
       f.input :description
-      f.input :editors,
-              label: 'Community editors',
+    end
+
+    f.inputs "Editors", class: 'inputs' do
+      if f.object.persisted?
+        li do
+          label "Current Editors", for: "current_editors", class: "label"
+          if f.object.editors.any?
+            ul id: 'current_editors', style: 'margin-left: 340px;' do
+              f.object.editors.each do |editor|
+                li class: 'margin-bottom-1' do
+                  span editor.email
+                  span class: 'margin-left-1' do
+                    f.check_box(:remove_editors, { multiple: true, name: "page_group[remove_editors][]"}, editor.id, nil)
+                    span " Delete", class: 'margin-left-1'
+                  end
+                end
+              end
+            end
+          else
+            span "No editors assigned", class: 'placeholder'
+          end
+        end
+      end
+      f.input :new_editors,
+              label: 'Add Community Editor(s)',
               as: :text,
-              input_html: { class: 'height-7', value: f.object.editors_emails_string },
-              hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov,test@va.gov"
+              input_html: { class: 'height-7'},
+              hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov, test@va.gov"
     end
 
     f.actions
   end
 
+  show do
+    attributes_table do
+      row :name
+      row :slug
+      row :description
+      row "Editors" do |pg|
+        ul do
+          pg.editors.each do |editor|
+            li editor.email
+          end
+        end
+      end
+    end
+  end
+
   controller do
     before_action :set_page_group, only: [:create, :update]
-    before_action :validate_editor_emails, only: [:create, :update]
 
     def page_group_params
       params.require(:page_group).permit(:name, :description, :slug, :has_landing_page, editors: [])
@@ -38,59 +75,57 @@ ActiveAdmin.register PageGroup do
     end
 
     def create
-      @page_group = PageGroup.new(page_group_params.except(:editors))
-      super do |success, failure|
-        success.html do
-          update_editors(params[:page_group][:editors]) if @page_group.persisted?
-          redirect_to admin_page_group_path(@page_group), notice: 'Page group was successfully created.'
+      @page_group = PageGroup.new(page_group_params.except(:new_editors, :remove_editors))
+      ActiveRecord::Base.transaction do
+        non_existent_emails, success = @page_group.add_editor_roles_by_emails(params[:page_group][:new_editors]) if params[:page_group][:new_editors].present?
+
+        unless success
+          flash.now[:error] = "Page group could not be created. User not found with email(s): #{non_existent_emails.join(', ')}"
+          render :new and return
         end
-        failure.html { render :new }
+
+        if @page_group.save
+          redirect_to admin_page_group_path(@page_group), notice: 'Page group was successfully created.'
+        else
+          render :new
+        end
       end
     end
 
     def update
-      super do |success, failure|
-        success.html do
-          update_editors(params[:page_group][:editors])
-          redirect_to admin_page_group_path(resource), notice: 'Page group was successfully updated.'
+      ActiveRecord::Base.transaction do
+        @page_group.assign_attributes(page_group_params.except(:remove_editors, :new_editors))
+        if @page_group.save
+          if update_editors
+            redirect_to admin_page_group_path(@page_group), notice: 'Page group was successfully updated.'
+          else
+            raise ActiveRecord::Rollback
+          end
+        else
+          render :edit
         end
-        failure.html { render :edit }
+      rescue ActiveRecord::Rollback
+        flash.now[:error] = @error_message if @error_message
+        render :edit
       end
     end
 
     private
 
-    def validate_editor_emails
-      non_existent_emails = find_invalid_emails(params[:page_group][:editors])
-      if non_existent_emails.present?
-        error_message = "User not found with email(s): #{non_existent_emails.join(', ')}"
-        redirect_to_correct_path(flash: { error: error_message }) and return
+    def update_editors
+      if params[:page_group][:remove_editors].present?
+        @page_group.remove_editor_roles(params[:page_group][:remove_editors])
       end
-    end
 
-    def find_invalid_emails(editors_string)
-      submitted_emails = editors_string.to_s.split(',').map(&:strip).uniq
-      existing_emails = User.where(email: submitted_emails).pluck(:email)
-      submitted_emails - existing_emails
-    end
-
-    def update_editors(editors_string)
-      submitted_emails = editors_string.to_s.split(',').map(&:strip).uniq
-      current_editors = @page_group.editors
-      users_to_add = User.where(email: submitted_emails) - current_editors
-      users_to_remove = current_editors.where.not(email: submitted_emails)
-
-      ActiveRecord::Base.transaction do
-        users_to_remove.each { |user| user.remove_role(:page_group_editor, @page_group) }
-        users_to_add.each { |user| user.add_role(:page_group_editor, @page_group) }
+      if params[:page_group][:new_editors].present?
+        non_existent_emails, success = @page_group.add_editor_roles_by_emails(params[:page_group][:new_editors])
+        unless success
+          @error_message = "User not found with email(s): #{non_existent_emails.join(', ')}"
+          return false
+        end
       end
-    end
 
-    def redirect_to_correct_path(options = {})
-      flash = options[:flash] || {}
-      path = action_name == 'update' ? edit_admin_page_group_path(@page_group) : new_admin_page_group_path
-
-      redirect_to path, flash: flash
+      true
     end
   end
 end
