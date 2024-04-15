@@ -195,6 +195,10 @@ class User < ApplicationRecord
     ['first_name', 'email']
   end
 
+  def editable_page_group_ids
+    roles.where(name: 'page_group_editor', resource_type: 'PageGroup').pluck(:resource_id)
+  end
+
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
 
   protected
