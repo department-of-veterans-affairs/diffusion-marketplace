@@ -57,14 +57,6 @@ describe 'Breadcrumbs', type: :feature do
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
     login_as(@user, :scope => :user, :run_callbacks => false)
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
-    @page_group = PageGroup.create!(name: 'programming', description: 'Pages about programming go in this group.')
-    @page_group2 = PageGroup.create!(name: 'test', description: 'Pages about tests go in this group.')
-    @community_page_group = PageGroup.create!(name: 'xr-network', description: 'Pages related to a community')
-    @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group, published: Time.now)
-    @page2 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group2, published: Time.now)
-    @page3 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group, published: Time.now)
-    @community_home_page = Page.create!(title: 'Community home page', description: 'This is a community home page', slug: 'home', page_group: @community_page_group, published: Time.now)
-    @community_sub_page = Page.create!(title: 'Community subpage', description: 'This is a community subpage', slug: 'test-page', page_group: @community_page_group, published: Time.now)
     visit '/'
   end
 
@@ -273,21 +265,55 @@ describe 'Breadcrumbs', type: :feature do
     end
   end
 
-  describe 'Page builder flow' do
-    it 'Should only show a single breadcrumb for the landing page of a page group, if the user is on a subpage' do
+  describe 'PageBuilder community' do
+    before do
+      @community_page_group = create(:community)
+      @community_home_page = Page.create(title: 'Community homepage', description: 'This is a community home page', slug: 'home', page_group: @community_page_group, published: Time.now)
+    end
+
+    it 'does not show breadcrumbs on homepage' do
+      visit '/va-immersive/home'
+      expect(page).to_not have_css('#breadcrumbs')
+    end
+
+    it 'does not render breadcrumbs for allowlisted subpages' do
+      @community_approved_sub_page = Page.create(title: 'Subnav approved community subpage', description: 'Subnav approved community subpage', slug: 'About', page_group: @community_page_group, published: Time.now)
+      visit '/communities/va-immersive/about'
+      expect(page).not_to have_css('#breadcrumbs')
+    end
+
+    it 'does not render breadcrumbs for unapproved subpages' do
+      @community_unapproved_sub_page = Page.create(title: 'Community subpage', description: 'This is a community subpage', slug: 'test-page', page_group: @community_page_group, published: Time.now)
+      visit '/communities/va-immersive/test-page'
+      expect(page).not_to have_css('#breadcrumbs')
+    end
+  end
+
+  describe 'PageBuilder non-community' do
+    before do
+      @page_group = PageGroup.create!(name: 'programming', description: 'Pages about programming go in this group.')
+      @page_group2 = PageGroup.create!(name: 'test', description: 'Pages about tests go in this group.')
+      @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group, published: Time.now)
+      @page2 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group2, published: Time.now)
+      @page3 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group, published: Time.now)
+    end
+
+    it 'does not show breadcrumbs on a page group homepage' do
+      visit '/programming/home'
+      expect(page).to_not have_css('#breadcrumbs')
+    end
+
+    it 'shows a single breadcrumb when on the subpage of a page group with a homepage' do
       visit '/programming/test-page'
       expect(page).to have_css('#breadcrumbs', visible: true)
-      expect(page).to have_css('.usa-breadcrumb__link', text: @page_group.name)
+      expect(page).to have_css('.usa-breadcrumb__link', text: 'programming')
       expect(page).to have_link(href: '/programming')
     end
 
-    it 'Should not show any breadcrumbs for a subpage that has a page group without a landing page or the landing page of a page group' do
+    it 'does not show breadcrumbs for a subpage of page group without a homepage' do
       visit '/test/test-page'
       expect(page).to_not have_css('#breadcrumbs')
       expect(page).to_not have_css('.usa-breadcrumb__link')
-
-      visit '/programming/home'
-      expect(page).to_not have_css('#breadcrumbs')
     end
   end
 end

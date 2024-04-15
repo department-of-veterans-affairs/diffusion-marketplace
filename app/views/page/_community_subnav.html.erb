@@ -1,0 +1,12 @@
+<nav id="community-subnav" class="font-sans-lg" aria-label="Community subnavigation">
+  <ul class="padding-x-0 padding-bottom-2 display-none tablet:padding-bottom-8 desktop:tablet:padding-bottom-8 flex-row tablet:display-flex">
+    <% subnav_hash.each do |title, page_slug| %>
+      <% break if @page_group.subnav_hash.length == 1 %>
+      <li>
+        <a href="/communities/<%= @page_group_slug %>/<%= page_slug %>" class="<%= "current-page" if params["page_slug"] == page_slug %>">
+          <%= title %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</nav>
