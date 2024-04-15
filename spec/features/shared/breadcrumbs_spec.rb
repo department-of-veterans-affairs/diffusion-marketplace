@@ -59,12 +59,13 @@ describe 'Breadcrumbs', type: :feature do
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
     @page_group = PageGroup.create!(name: 'programming', description: 'Pages about programming go in this group.')
     @page_group2 = PageGroup.create!(name: 'test', description: 'Pages about tests go in this group.')
-    @community_page_group = PageGroup.create!(name: 'va-immersive', description: 'Whitelisted community')
     @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group, published: Time.now)
     @page2 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group2, published: Time.now)
     @page3 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group, published: Time.now)
-    @community_home_page = Page.create!(title: 'Community homepage', description: 'This is a community home page', slug: 'home', page_group: @community_page_group, published: Time.now)
-    @community_sub_page = Page.create!(title: 'Community subpage', description: 'This is a community subpage', slug: 'test-page', page_group: @community_page_group, published: Time.now)
+    @community_page_group = PageGroup.create(name: 'VA Immersive', description: 'Whitelisted community', slug: 'va-immersive')
+    @community_home_page = Page.create(title: 'Community homepage', description: 'This is a community home page', slug: 'home', page_group: @community_page_group, published: Time.now)
+    @community_approved_sub_page = Page.create(title: 'Subnav approved community subpage', description: 'Subnav approved community subpage', slug: 'About', page_group: @community_page_group, published: Time.now)
+    @community_unapproved_sub_page = Page.create(title: 'Community subpage', description: 'This is a community subpage', slug: 'test-page', page_group: @community_page_group, published: Time.now)
     visit '/'
   end
 
@@ -273,7 +274,24 @@ describe 'Breadcrumbs', type: :feature do
     end
   end
 
-  describe 'PageBuilder' do
+  describe 'PageBuilder community' do
+    it 'does not show breadcrumbs on homepage' do
+      visit '/va-immersive/home'
+      expect(page).to_not have_css('#breadcrumbs')
+    end
+
+    it 'does not render breadcrumbs for allowlisted subpages' do
+      visit '/communities/va-immersive/about'
+      expect(page).not_to have_css('#breadcrumbs')
+    end
+
+    it 'does not render breadcrumbs for unapproved subpages' do
+      visit '/communities/va-immersive/test-page'
+      expect(page).not_to have_css('#breadcrumbs')
+    end
+  end
+
+  describe 'PageBuilder non-community' do
     it 'does not show breadcrumbs on a page group homepage' do
       visit '/programming/home'
       expect(page).to_not have_css('#breadcrumbs')
@@ -290,11 +308,6 @@ describe 'Breadcrumbs', type: :feature do
       visit '/test/test-page'
       expect(page).to_not have_css('#breadcrumbs')
       expect(page).to_not have_css('.usa-breadcrumb__link')
-    end
-
-    it 'does not render breadcrumbs for communities' do
-      visit '/communities/va-immersive/test-page'
-      expect(page).not_to have_css('#breadcrumbs')
     end
   end
 end
