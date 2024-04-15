@@ -91,24 +91,34 @@ RSpec.describe PageGroup, type: :model do
     end
   end
 
-  describe '#editors_emails_string' do
-    context 'when there are users associated through :page_group_editor roles' do
-      let(:page_group) { create(:page_group) }
-      let(:editor_a) { create(:user, email: "editor_a@email.com") }
-      let(:editor_b) { create(:user, email: "editor_b@email.com") }
+  describe "#add_editor_roles_by_emails" do
+    let!(:page_group) { create(:page_group) }
+    let!(:existing_user) { create(:user, email: "existing@example.com") }
+    let!(:existing_user2) { create(:user, email: "existing2@example.com") }
 
-      it 'returns a comma-separated string of editor emails' do
-        editor_a.add_role :page_group_editor, page_group
-        editor_b.add_role :page_group_editor, page_group
-        expect(page_group.editors_emails_string).to eq("#{editor_a.email}, #{editor_b.email}")
-        end
+    context "when all emails are valid" do
+      it "assigns roles to users and returns true" do
+        emails = "#{existing_user.email},#{existing_user2.email}"
+
+        non_existent_emails, success = page_group.add_editor_roles_by_emails(emails)
+
+        expect(non_existent_emails).to be_nil
+        expect(success).to be true
+        expect(existing_user.has_role?(:page_group_editor, page_group)).to be true
+        expect(existing_user2.has_role?(:page_group_editor, page_group)).to be true
+      end
     end
 
-    context 'when there are no editors' do
-      let(:empty_page_group) { create(:page_group) }
+    context "when some emails are invalid" do
+      it "does not assign roles and returns false with non-existent emails" do
+        invalid_email = "invalid@example.com"
+        emails = "#{existing_user.email},#{invalid_email}"
 
-      it 'returns an empty string' do
-        expect(empty_page_group.editors_emails_string).to eq('')
+        non_existent_emails, success = page_group.add_editor_roles_by_emails(emails)
+
+        expect(non_existent_emails).to match_array([invalid_email])
+        expect(success).to be false
+        expect(existing_user.has_role?(:page_group_editor, page_group)).to be false # Ensure no roles are assigned even if one fails
       end
     end
   end
