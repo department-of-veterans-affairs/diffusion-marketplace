@@ -235,10 +235,6 @@ module NavigationHelper
           session[:breadcrumbs] << { 'display': "#{@page_group.name}", 'path': path }
         end
 
-        def add_sub_page_breadcrumb
-          session[:breadcrumbs] << { 'display': "#{@page.title}", 'path': @builder_page_path }
-        end
-
         if @page_slug == 'home'
           empty_breadcrumbs
         elsif @page_group.is_community?
