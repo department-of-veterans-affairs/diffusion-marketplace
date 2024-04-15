@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Communities', type: :feature, js:true do
 	before do
-		@approved_community = PageGroup.create(name: 'VA Immersive', slug: 'va-immersive', description: "approved community")
+		@approved_community = create(:community)
 		@non_community_pagegroup = PageGroup.create(name: "Competitions", slug: 'competitions', description: "not a community")
 		@community_landing_page = Page.create(page_group: @approved_community, title: 'Community homepage', description: 'cool stuff', slug: 'home', created_at: Time.now, is_public: true, published: Time.now)		
 		@non_community_landing_page = Page.create(page_group: @non_community_pagegroup, title: 'Competitions open call', description: 'not a community', slug: 'home', created_at: Time.now, is_public: true, published: Time.now)
