@@ -4,6 +4,7 @@ ActiveAdmin.register User do
 
   scope :enabled
   scope :disabled
+  scope :admins
 
   index do
     selectable_column
