@@ -76,21 +76,25 @@ ActiveAdmin.register PageGroup do
 
     def create
       @page_group = PageGroup.new(page_group_params.except(:new_editors, :remove_editors))
-      ActiveRecord::Base.transaction do
-        non_existent_emails, success = @page_group.add_editor_roles_by_emails(params[:page_group][:new_editors]) if params[:page_group][:new_editors].present?
 
-        unless success
+      if params[:page_group][:new_editors].present?
+        users_to_add_roles, non_existent_emails = validate_editor_emails
+        if non_existent_emails.present?
           flash.now[:error] = "Page group could not be created. User not found with email(s): #{non_existent_emails.join(', ')}"
           render :new and return
         end
-
-        if @page_group.save
-          redirect_to admin_page_group_path(@page_group), notice: 'Page group was successfully created.'
-        else
-          render :new
-        end
       end
+
+      ActiveRecord::Base.transaction do
+        @page_group.save!
+        add_editor_roles(users_to_add_roles) if users_to_add_roles.present?
+      end
+
+      redirect_to admin_page_group_path(@page_group), notice: 'Page group was successfully created.'
+    rescue ActiveRecord::RecordInvalid
+      render :new, status: :unprocessable_entity
     end
+
 
     def update
       ActiveRecord::Base.transaction do
@@ -118,14 +122,27 @@ ActiveAdmin.register PageGroup do
       end
 
       if params[:page_group][:new_editors].present?
-        non_existent_emails, success = @page_group.add_editor_roles_by_emails(params[:page_group][:new_editors])
-        unless success
+        users_to_add_roles, non_existent_emails = validate_editor_emails
+
+        if non_existent_emails.present?
           @error_message = "User not found with email(s): #{non_existent_emails.join(', ')}"
           return false
+        elsif users_to_add_roles.present?
+          add_editor_roles(users_to_add_roles)
+          return true
         end
       end
 
       true
+    end
+
+    def validate_editor_emails
+      editor_emails = params[:page_group][:new_editors].split(',').map(&:strip).uniq
+      User.validate_users_by_emails(editor_emails)
+    end
+
+    def add_editor_roles(users_to_add_roles)
+      users_to_add_roles.each { |user| user.add_role(User::USER_ROLES[1], @page_group) }
     end
   end
 end

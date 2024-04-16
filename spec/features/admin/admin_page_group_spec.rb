@@ -30,7 +30,8 @@ RSpec.describe 'PageGroup Management', type: :feature do
       }.to change(PageGroup, :count).by(1)
 
       new_page_group = PageGroup.last
-      expect(new_page_group.editors).to include(valid_editor)
+
+      expect(new_page_group.reload.editors).to include(valid_editor)
       expect(page).to have_content('Page group was successfully created.')
     end
 
