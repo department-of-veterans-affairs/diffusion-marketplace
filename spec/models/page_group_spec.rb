@@ -91,35 +91,23 @@ RSpec.describe PageGroup, type: :model do
     end
   end
 
-  describe "#add_editor_roles_by_emails" do
-    let!(:page_group) { create(:page_group) }
-    let!(:existing_user) { create(:user, email: "existing@example.com") }
-    let!(:existing_user2) { create(:user, email: "existing2@example.com") }
+  describe '#remove_editor_roles' do
+    let(:page_group) { create(:page_group) }
+    let!(:editor1) { create(:user) }
+    let!(:editor2) { create(:user) }
+    let!(:editor3) { create(:user) }
 
-    context "when all emails are valid" do
-      it "assigns roles to users and returns true" do
-        emails = "#{existing_user.email},#{existing_user2.email}"
-
-        non_existent_emails, success = page_group.add_editor_roles_by_emails(emails)
-
-        expect(non_existent_emails).to be_nil
-        expect(success).to be true
-        expect(existing_user.has_role?(:page_group_editor, page_group)).to be true
-        expect(existing_user2.has_role?(:page_group_editor, page_group)).to be true
-      end
+    before do
+      editor1.add_role(:page_group_editor, page_group)
+      editor2.add_role(:page_group_editor, page_group)
+      editor3.add_role(:page_group_editor, page_group)
     end
 
-    context "when some emails are invalid" do
-      it "does not assign roles and returns false with non-existent emails" do
-        invalid_email = "invalid@example.com"
-        emails = "#{existing_user.email},#{invalid_email}"
+    it 'removes the specified editor roles' do
+      ids_to_remove = [editor1.id, editor2.id]
+      page_group.remove_editor_roles(ids_to_remove)
 
-        non_existent_emails, success = page_group.add_editor_roles_by_emails(emails)
-
-        expect(non_existent_emails).to match_array([invalid_email])
-        expect(success).to be false
-        expect(existing_user.has_role?(:page_group_editor, page_group)).to be false # Ensure no roles are assigned even if one fails
-      end
+      expect(page_group.editors).to eq([editor3])
     end
   end
 end
