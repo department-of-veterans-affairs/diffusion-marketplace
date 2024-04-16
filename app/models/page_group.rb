@@ -59,20 +59,6 @@ class PageGroup < ApplicationRecord
     end
   end
 
-  def add_editor_roles_by_emails(editor_emails)
-    emails = editor_emails.to_s.split(',').map(&:strip).uniq
-    users = User.where(email: emails)
-    existing_emails = users.pluck(:email)
-    non_existent_emails = emails - existing_emails
-
-    if non_existent_emails.empty?
-      users.each { |user| user.add_role(:page_group_editor, self) }
-      [nil, true]
-    else
-      [non_existent_emails, false]
-    end
-  end
-
   private
 
   def remove_all_editor_roles
