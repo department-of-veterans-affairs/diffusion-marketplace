@@ -23,7 +23,7 @@
 <% if @page_group&.is_community? # only shown on mobile width %>
   <%= render partial: "page/community_subnav", locals: { community_slug: @page_group_slug, subnav_hash: @page_group.subnav_hash } %>
   <section class="<%= 'dm-gradient-banner' if heading.present? %><%= ' gradient-banner-with-image' if page_image.present? %> <%= classes if classes.present? %>">
-    <div class="grid-container padding-top-2 padding-bottom-8">
+    <div class="grid-container padding-y-4 desktop:padding-y-8">
         <%= render partial: 'shared/page_heading_banner',
           locals: {
             heading: heading,
