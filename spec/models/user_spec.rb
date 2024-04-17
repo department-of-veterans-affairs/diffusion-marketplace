@@ -7,16 +7,26 @@ RSpec.describe User, type: :model do
   end
 
   describe 'Roles' do
-    it 'should have one admin role' do
-      user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+    let(:user) { create(:user) }
+    let!(:admin_role) { user.add_role(User::USER_ROLES[0].to_sym) }
+    let!(:pg_a) { create(:page_group) }
+    let!(:pg_b) { create(:page_group) }
+    let!(:editor_role_a) { user.add_role(:page_group_editor, pg_a) }
+    let!(:editor_role_b) { user.add_role(:page_group_editor, pg_b) }
 
-      user.add_role(User::USER_ROLES[0].to_sym)
+    it 'can have multiple unique page_group_editor roles and one admin role' do
+      expect(user.roles.count).to eq(3)
+      expect(user.roles).to include(admin_role, editor_role_a, editor_role_b)
+    end
 
-      expect(user.roles.count).to eq(1)
+    it 'will not duplicate an editor role' do
+      expect(user.add_role(User::USER_ROLES[0].to_sym)).to eq(admin_role)
+      expect(user.roles.count).to eq(3)
+      expect(user.roles).to include(admin_role, editor_role_a, editor_role_b)
 
-      user.add_role(User::USER_ROLES[0].to_sym)
-
-      expect(user.roles.count).to eq(1)
+      expect(user.add_role(:page_group_editor, pg_a)).to eq(editor_role_a)
+      expect(user.roles.count).to eq(3)
+      expect(user.roles).to include(admin_role, editor_role_a, editor_role_b)
     end
   end
 
