@@ -46,7 +46,9 @@ ActiveAdmin.register User do
       f.input :skip_va_validation
       f.input :password
       f.input :password_confirmation
-      f.input :roles, as: :check_boxes
+      # instance-scoped editor roles should be left out of the collection as they are handled in the
+      # given instance's edit form:
+      f.input :roles, as: :check_boxes, collection: Role.where(name: ['admin'])
       f.input :disabled
     end
     f.actions

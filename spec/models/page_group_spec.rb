@@ -3,12 +3,28 @@ require 'rails_helper'
 RSpec.describe PageGroup, type: :model do
   describe 'associations' do
     it { is_expected.to have_many(:pages).dependent(:destroy) }
+    it { is_expected.to have_many(:editors) }
   end
 
   describe 'validations' do
     it { is_expected.to validate_uniqueness_of(:name) }
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:description) }
+  end
+
+  describe 'callbacks' do
+    describe 'before_destroy :remove_editor_roles' do
+      let!(:page_group) { create(:page_group) }
+      let!(:editor) { create(:user) }
+      let!(:editor_role) { editor.add_role :page_group_editor, page_group }
+
+      it 'removes associated editor roles upon page_group destruction' do
+        expect(page_group.editor_roles.exists?(id: editor_role.id)).to be true
+
+        expect { page_group.destroy }.to change(Role, :count).by(-1)
+        expect(Role.exists?(id: editor_role.id)).to be false
+      end
+    end
   end
 
   describe 'friendly_id' do
@@ -72,6 +88,26 @@ RSpec.describe PageGroup, type: :model do
         expect(result.keys).to include("#{admin_only_page_group.name} - Admin Preview")
         expect(result.values).to include(admin_only_page_group.slug)
       end
+    end
+  end
+
+  describe '#remove_editor_roles' do
+    let(:page_group) { create(:page_group) }
+    let!(:editor1) { create(:user) }
+    let!(:editor2) { create(:user) }
+    let!(:editor3) { create(:user) }
+
+    before do
+      editor1.add_role(:page_group_editor, page_group)
+      editor2.add_role(:page_group_editor, page_group)
+      editor3.add_role(:page_group_editor, page_group)
+    end
+
+    it 'removes the specified editor roles' do
+      ids_to_remove = [editor1.id, editor2.id]
+      page_group.remove_editor_roles(ids_to_remove)
+
+      expect(page_group.editors).to eq([editor3])
     end
   end
 end

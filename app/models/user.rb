@@ -39,7 +39,7 @@ class User < ApplicationRecord
     object_presigned_url(avatar, style)
   end
 
-  USER_ROLES = %w[admin].freeze
+  USER_ROLES = %w[admin page_group_editor].freeze
 
   validate :valid_email
   validate :password_complexity
@@ -193,6 +193,18 @@ class User < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     ['first_name', 'email']
+  end
+
+  def editable_page_group_ids
+    roles.where(name: 'page_group_editor', resource_type: 'PageGroup').pluck(:resource_id)
+  end
+
+  def self.validate_users_by_emails(emails)
+    users = where(email: emails)
+    existing_emails = users.pluck(:email)
+    non_existent_emails = emails - existing_emails
+
+    [users, non_existent_emails]
   end
 
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
