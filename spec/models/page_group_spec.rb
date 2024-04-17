@@ -27,6 +27,33 @@ RSpec.describe PageGroup, type: :model do
     end
   end
 
+  describe 'scopes' do
+    describe '.accessible_by' do
+      let(:admin) { create(:user) }
+      let(:editor) { create(:user) }
+      let(:page_group_a) { create(:page_group) }
+      let(:page_group_b) { create(:page_group) }
+      let(:page_group_c) { create(:page_group) }
+
+      before do
+        admin.add_role(:admin)
+        editor.add_role(:page_group_editor, page_group_b)
+      end
+
+      context 'when the user is an admin' do
+        it 'returns all page groups' do
+          expect(described_class.accessible_by(admin)).to contain_exactly(page_group_a, page_group_b, page_group_c)
+        end
+      end
+
+      context 'when the user is a page group editor' do
+        it 'returns only accessible page groups' do
+          expect(described_class.accessible_by(editor)).to contain_exactly(page_group_b)
+        end
+      end
+    end
+  end
+
   describe 'friendly_id' do
     it 'generates a slug from the name' do
       page_group = create(:page_group, name: 'Unique Name')

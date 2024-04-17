@@ -8,7 +8,8 @@ class PageGroup < ApplicationRecord
   friendly_id :name, use: :slugged
 
   has_many :pages, dependent: :destroy
-  has_many :editor_roles, -> { where(name: 'page_group_editor', resource_type: 'PageGroup') }, class_name: 'Role', foreign_key: :resource_id
+  has_many :editor_roles, -> { where(name: 'page_group_editor', resource_type: 'PageGroup') },
+            class_name: 'Role', foreign_key: :resource_id, inverse_of: :page_group
   has_many :editors, through: :editor_roles, source: :users
 
   before_destroy :remove_editor_roles
@@ -19,6 +20,14 @@ class PageGroup < ApplicationRecord
   resourcify
 
   scope :community, -> { where(name: COMMUNITIES) }
+
+  scope :accessible_by, -> (user) do
+    if user.has_role?(:admin)
+      all
+    else
+      where(id: user.editable_page_group_ids)  # Non-admins get access to their editable page groups
+    end
+  end
 
   def self.community_with_home_hash(public = true, admin = false)
     query = PageGroup.community.joins(:pages).where(pages: { slug: 'home' })
