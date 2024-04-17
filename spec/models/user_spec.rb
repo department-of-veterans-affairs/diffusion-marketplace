@@ -19,4 +19,20 @@ RSpec.describe User, type: :model do
       expect(user.roles.count).to eq(1)
     end
   end
+
+  describe '#editable_page_group_ids' do
+    let(:user) { create(:user) }
+    let(:page_group_a) { create(:page_group) }
+    let(:page_group_b) { create(:page_group) }
+    let(:page_group_c) { create(:page_group) }
+
+    before do
+      user.add_role(:page_group_editor, page_group_a)
+      user.add_role(:page_group_editor, page_group_b)
+    end
+
+    it 'returns only ids of page groups where the user is a page group editor' do
+      expect(user.editable_page_group_ids).to contain_exactly(page_group_a.id, page_group_b.id)
+    end
+  end
 end
