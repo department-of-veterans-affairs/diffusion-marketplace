@@ -310,6 +310,7 @@ ActiveAdmin.setup do |config|
   #
   # config.order_clause = MyOrderClause
   config.namespace :editor do |editor|
+    editor.authorization_adapter = EditorAuthAdapter
     editor.site_title = "Editor Portal"
     editor.root_to = 'pages#index'
     editor.comments_menu = false
