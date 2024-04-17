@@ -141,8 +141,4 @@ class ApplicationController < ActionController::Base
       PageGroup.community_with_home_hash(current_user.nil?, current_user&.has_role?(:admin))
     end
   end
-
-  def check_for_expected_roles(roles)
-
-  end
 end
