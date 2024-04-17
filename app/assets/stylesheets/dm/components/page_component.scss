@@ -168,22 +168,26 @@
     }
   }
 
-  .page-map-component {
-    .page-marker-container {
-      padding: 52px 8px 0 8px;
-    }
+  .page-map-component-container {
+    background-color: #F5F5F5;
 
-    .infoBox {
-      img {
-        @include u-position('absolute');
-        @include u-right('105');
-        @include u-top('105');
+    .page-map-component {
+      .page-marker-container {
+        padding: 52px 8px 0 8px;
+      }
+
+      .infoBox {
+        img {
+          @include u-position('absolute');
+          @include u-right('105');
+          @include u-top('105');
+        }
+      }
+
+      .page_builder_map {
+        height: 440px;
       }
     }
-  }
-
-  .page_builder_map {
-    height: 440px;
   }
 
   .page-triple-paragraph-component-bg {
