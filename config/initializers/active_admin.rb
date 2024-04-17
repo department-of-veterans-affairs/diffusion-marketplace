@@ -309,4 +309,9 @@ ActiveAdmin.setup do |config|
   # You can inherit it with own class and inject it for all resources
   #
   # config.order_clause = MyOrderClause
+  config.namespace :editor do |editor|
+    editor.site_title = "Editor Portal"
+    editor.root_to = 'pages#index'
+    editor.comments_menu = false
+  end
 end
