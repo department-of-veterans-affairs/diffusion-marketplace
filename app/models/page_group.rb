@@ -12,7 +12,7 @@ class PageGroup < ApplicationRecord
             class_name: 'Role', foreign_key: :resource_id, inverse_of: :page_group
   has_many :editors, through: :editor_roles, source: :users
 
-  before_destroy :remove_editor_roles
+  before_destroy :remove_all_editor_roles
 
   validates_uniqueness_of :name
   validates :name, presence: true
@@ -93,7 +93,7 @@ class PageGroup < ApplicationRecord
 
   private
 
-  def remove_editor_roles
+  def remove_all_editor_roles
     editor_roles.destroy_all
   end
 end

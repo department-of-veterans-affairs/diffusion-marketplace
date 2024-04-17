@@ -13,7 +13,7 @@ RSpec.describe PageGroup, type: :model do
   end
 
   describe 'callbacks' do
-    describe 'before_destroy :remove_editor_roles' do
+    describe 'before_destroy :remove_all_editor_roles' do
       let!(:page_group) { create(:page_group) }
       let!(:editor) { create(:user) }
       let!(:editor_role) { editor.add_role :page_group_editor, page_group }
