@@ -2,18 +2,11 @@ require 'rails_helper'
 
 describe 'Page Builder', type: :feature do
   before do
-    @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123',
-                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @admin.add_role(:admin)
-
-    @page_group = PageGroup.create(name: 'programming', description: 'Pages about programming go in this group.')
-    @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group)
+    @admin = create(:user, :admin, email: 'sandy.cheeks@va.gov')
+    @page_group = create(:page_group, name: 'programming', description: 'Pages about programming go in this group.')
+    @page = create(:page, title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group)
     @image_file = "#{Rails.root}/spec/assets/charmander.png"
-    @admin = User.create!(email: 'dokugamine.riruka@va.gov', password: 'Password123',
-                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @admin.add_role(:admin)
-    @practice = Practice.create!(name: 'Best Innovation Ever', user: @admin, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
-
+    @practice = create(:practice, name: 'Best Innovation Ever', user: @admin, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
 
     login_as(@admin, scope: :user, run_callbacks: false)
   end
