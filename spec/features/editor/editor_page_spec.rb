@@ -1,22 +1,43 @@
 require 'rails_helper'
 
 describe 'Page Builder', type: :feature, js: true do
-  before do
-    @admin = create(:user, :admin, email: 'sandy.cheeks@va.gov')
-    @editor = create(:user, email: 'sponge.bob@va.gov')
-    @page_group = create(:page_group, name: 'programming', description: 'Pages about programming go in this group.')
-    @editor.add_role(:page_group_editor, @page_group)
-    @page = create(:page, title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group)
-    @image_file = "#{Rails.root}/spec/assets/charmander.png"
-    @practice = create(:practice, name: 'Best Innovation Ever', user: @admin, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
+  let!(:admin) { create(:user, :admin) }
+  let!(:editor) { create(:user) }
+  let!(:page_group) { create(:page_group, name: 'programming') }
+  let!(:pb_page_a) { create(:page, title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: page_group) }
+  let!(:pb_page_b) { create(:page, page_group: page_group) }
+  let!(:image_file) { "#{Rails.root}/spec/assets/charmander.png" }
+  let!(:practice) { create(:practice, name: 'Best Innovation Ever') }
 
-    login_as(@editor, scope: :user, run_callbacks: false)
+
+  before do
+    editor.add_role(:page_group_editor, page_group)
+    login_as(editor, scope: :user, run_callbacks: false)
+  end
+
+  describe 'index' do
+    it 'Should show only and all pages belonging to page_groups for which user is editor' do
+      page_group2 = create(:page_group)
+      pb_page_c = create(:page, page_group: page_group2)
+      visit_pages_tab_of_editor_panel
+
+      expect(page).to have_content(pb_page_a.slug)
+      expect(page).to have_content(pb_page_b.slug)
+      expect(page).to_not have_content(pb_page_c.slug)
+
+      editor.add_role(:page_group_editor, page_group2)
+      visit_pages_tab_of_editor_panel
+
+      expect(page).to have_content(pb_page_a.slug)
+      expect(page).to have_content(pb_page_b.slug)
+      expect(page).to have_content(pb_page_c.slug)
+    end
   end
 
   describe 'Validations' do
     it 'Should only allow unique page URLs' do
-
       visit_pages_tab_of_editor_panel
+
       click_link 'New Page'
 
       fill_in_necessary_page_fields('test-page')
@@ -36,19 +57,19 @@ describe 'Page Builder', type: :feature, js: true do
 
       expect(page).to have_content('Description is too long (maximum is 140 characters')
       expect(Page.last.slug).to_not eq('test-page-1')
-      expect(Page.last.slug).to eq('test-page')
+      expect(Page.last.slug).to eq(pb_page_b.slug)
     end
 
     it 'should not allow the user to upload an image for the Page without corresponding alt text' do
-      visit edit_editor_page_path(@page)
+      visit edit_editor_page_path(pb_page_a)
 
       within(:css, '#page_image_input') do
-        find('input[type="file"]').attach_file(@image_file)
+        find('input[type="file"]').attach_file(image_file)
       end
       save_page
 
       expect(page).to have_content("Image alt text can't be blank if Page image is present")
-      expect(@page.image.present?).to eq(false)
+      expect(pb_page_a.image.present?).to eq(false)
     end
   end
 
@@ -76,7 +97,7 @@ describe 'Page Builder', type: :feature, js: true do
       visit new_editor_page_path
       fill_in_necessary_page_fields('hello-world')
       within(:css, '#page_image_input') do
-        find('input[type="file"]').attach_file(@image_file)
+        find('input[type="file"]').attach_file(image_file)
       end
       fill_in('Image alternative text (required if image present)', with: 'Descriptive alt text')
       save_page
@@ -123,7 +144,7 @@ describe 'Page Builder', type: :feature, js: true do
     context 'PageMapComponent' do
       it 'should allow the user to create a PageMapComponent' do
         # Create one
-        visit edit_editor_page_path(@page)
+        visit edit_editor_page_path(pb_page_a)
         click_link('Add New Page component')
         select('Google Map', from: 'page_page_components_attributes_0_component_type')
         fill_in("page_page_components_attributes_0_component_attributes_title", with: 'Diffusion Map')
@@ -139,7 +160,7 @@ describe 'Page Builder', type: :feature, js: true do
 
     context 'PageAccordionComponent' do
       it 'should allow the user to toggle border styling' do
-        visit edit_editor_page_path(@page)
+        visit edit_editor_page_path(pb_page_a)
         # Add a 'PageAccordionComponent' and select the border option
         click_link('Add New Page component')
         select('Accordion', from: 'page_page_components_attributes_0_component_type')
@@ -159,7 +180,7 @@ describe 'Page Builder', type: :feature, js: true do
 
     context 'Validations' do
       it 'should indicate validation errors for page components' do
-        visit edit_editor_page_path(@page)
+        visit edit_editor_page_path(pb_page_a)
         # Add a 'PageAccordionComponent' and select the border option
         click_link('Add New Page component')
         select('Block Quote', from: 'page_page_components_attributes_0_component_type')
