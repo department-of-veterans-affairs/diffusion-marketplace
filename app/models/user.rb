@@ -50,6 +50,7 @@ class User < ApplicationRecord
 
   scope :enabled, -> {where(disabled: false)}
   scope :disabled, -> {where(disabled: true)}
+  scope :admins, -> {includes(:roles).where(roles: { name: 'admin' })}
   scope :created_by_date_or_earlier, -> (date) { where('created_at >= ?', date) }
 
   paginates_per 50
