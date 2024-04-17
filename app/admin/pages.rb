@@ -246,7 +246,6 @@ ActiveAdmin.register Page do
     before_action :set_page,
                   :delete_page_image_and_alt_text,
                   only: [:create, :update]
-    rescue_from StandardError, with: :handle_standard_error
     rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
 
     def create
@@ -278,10 +277,6 @@ ActiveAdmin.register Page do
       # raise a standard error if the description for the page is longer than 140 characters (per design on 11/22/21).
       # This adds a custom message to match other page-builder validation errors.
       raise StandardError, 'Validation failed. Page description cannot be longer than 140 characters.' if description.length > 140
-    end
-
-    def handle_standard_error(exception)
-      redirect_to_correct_path(flash: { error: exception.message })
     end
 
     def handle_record_invalid(exception)
