@@ -39,7 +39,7 @@ class User < ApplicationRecord
     object_presigned_url(avatar, style)
   end
 
-  USER_ROLES = %w[admin].freeze
+  USER_ROLES = %w[admin page_group_editor].freeze
 
   validate :valid_email
   validate :password_complexity
@@ -50,6 +50,7 @@ class User < ApplicationRecord
 
   scope :enabled, -> {where(disabled: false)}
   scope :disabled, -> {where(disabled: true)}
+  scope :admins, -> {includes(:roles).where(roles: { name: 'admin' })}
   scope :created_by_date_or_earlier, -> (date) { where('created_at >= ?', date) }
 
   paginates_per 50
@@ -199,6 +200,14 @@ class User < ApplicationRecord
     roles.where(name: 'page_group_editor', resource_type: 'PageGroup').pluck(:resource_id)
   end
 
+  def self.validate_users_by_emails(emails)
+    users = where(email: emails)
+    existing_emails = users.pluck(:email)
+    non_existent_emails = emails - existing_emails
+
+    [users, non_existent_emails]
+  end
+
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
 
   protected
@@ -215,5 +224,4 @@ class User < ApplicationRecord
 
     raise msg unless ldap.get_operation_result.code == 0
   end
-
 end

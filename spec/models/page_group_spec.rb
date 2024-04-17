@@ -118,25 +118,23 @@ RSpec.describe PageGroup, type: :model do
     end
   end
 
-  describe '#editors_emails_string' do
-    context 'when there are users associated through :page_group_editor roles' do
-      let(:page_group) { create(:page_group) }
-      let(:editor_a) { create(:user, email: "editor_a@email.com") }
-      let(:editor_b) { create(:user, email: "editor_b@email.com") }
+  describe '#remove_editor_roles' do
+    let(:page_group) { create(:page_group) }
+    let!(:editor1) { create(:user) }
+    let!(:editor2) { create(:user) }
+    let!(:editor3) { create(:user) }
 
-      it 'returns a comma-separated string of editor emails' do
-        editor_a.add_role :page_group_editor, page_group
-        editor_b.add_role :page_group_editor, page_group
-        expect(page_group.editors_emails_string).to eq("#{editor_a.email}, #{editor_b.email}")
-        end
+    before do
+      editor1.add_role(:page_group_editor, page_group)
+      editor2.add_role(:page_group_editor, page_group)
+      editor3.add_role(:page_group_editor, page_group)
     end
 
-    context 'when there are no editors' do
-      let(:empty_page_group) { create(:page_group) }
+    it 'removes the specified editor roles' do
+      ids_to_remove = [editor1.id, editor2.id]
+      page_group.remove_editor_roles(ids_to_remove)
 
-      it 'returns an empty string' do
-        expect(empty_page_group.editors_emails_string).to eq('')
-      end
+      expect(page_group.editors).to eq([editor3])
     end
   end
 end

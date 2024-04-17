@@ -23,14 +23,14 @@ RSpec.describe 'PageGroup Management', type: :feature do
     it 'successfully creates a PageGroup with valid editor emails' do
       fill_in 'Name', with: 'New Page Group'
       fill_in 'Description', with: 'A description for the new page group.'
-      fill_in 'Community editors', with: valid_editor.email
+      fill_in 'Add Community Editor(s)', with: valid_editor.email
 
       expect {
         click_button 'Create Page group'
       }.to change(PageGroup, :count).by(1)
 
       new_page_group = PageGroup.last
-      expect(new_page_group.editors).to include(valid_editor)
+      expect(new_page_group.reload.editors).to include(valid_editor)
       expect(page).to have_content('Page group was successfully created.')
     end
 
@@ -39,7 +39,7 @@ RSpec.describe 'PageGroup Management', type: :feature do
 
       fill_in 'Name', with: 'Failed Page Group'
       fill_in 'Description', with: 'This should not be created.'
-      fill_in 'Community editors', with: nonexistent_email
+      fill_in 'Add Community Editor(s)', with: nonexistent_email
 
       expect {
         click_button 'Create Page group'
@@ -66,7 +66,7 @@ RSpec.describe 'PageGroup Management', type: :feature do
 
         fill_in 'Name', with: 'Updated Page Group Name'
         fill_in 'Description', with: 'Updated description here.'
-        fill_in 'Community editors', with: editor.email
+        fill_in 'Add Community Editor(s)', with: editor.email
 
         click_button 'Update Page group'
 
@@ -81,13 +81,16 @@ RSpec.describe 'PageGroup Management', type: :feature do
 
         fill_in 'Name', with: 'Updated Page Group Name'
         fill_in 'Description', with: 'Updated description here.'
-        fill_in 'Community editors', with: "#{existing_editor.email}, #{editor.email}"
+        fill_in 'Add Community Editor(s)', with: "#{existing_editor.email}, #{editor.email}"
 
         click_button 'Update Page group'
 
         expect(page).to have_content('Page group was successfully updated.')
+        expect(page).to have_content("editor_email1@va.gov")
+        expect(page).to have_content("editor_email2@va.gov")
         visit edit_admin_page_group_path(page_group)
-        expect(page).to have_content("editor_email1@va.gov, editor_email2@va.gov")
+        expect(page).to have_content("editor_email1@va.gov")
+        expect(page).to have_content("editor_email2@va.gov")
         expect(page_group.editors).to include(editor, existing_editor)
       end
 
@@ -96,13 +99,15 @@ RSpec.describe 'PageGroup Management', type: :feature do
         existing_editor.add_role(:page_group_editor, page_group)
         visit edit_admin_page_group_path(page_group)
 
-        fill_in 'Name', with: 'Updated Page Group Name'
-        fill_in 'Description', with: 'Updated description here.'
-        fill_in 'Community editors', with: "#{existing_editor.email}"
+        within("ul#current_editors") do
+          find("li", text: editor.email).find("input[type='checkbox']").set(true)
+        end
 
         click_button 'Update Page group'
 
         expect(page).to have_content('Page group was successfully updated.')
+        expect(page).to have_content(existing_editor.email)
+        expect(page).not_to have_content(editor.email)
         visit edit_admin_page_group_path(page_group)
         expect(page).to have_content(existing_editor.email)
         expect(page).not_to have_content(editor.email)
@@ -115,13 +120,17 @@ RSpec.describe 'PageGroup Management', type: :feature do
         existing_editor.add_role(:page_group_editor, page_group)
         visit edit_admin_page_group_path(page_group)
 
-        fill_in 'Name', with: 'Updated Page Group Name'
-        fill_in 'Description', with: 'Updated description here.'
-        fill_in 'Community editors', with: ""
+        within("ul#current_editors") do
+          all("li").each do |li|
+            li.find("input[type='checkbox']").set(true)
+          end
+        end
 
         click_button 'Update Page group'
 
         expect(page).to have_content('Page group was successfully updated.')
+        expect(page).not_to have_content(existing_editor.email)
+        expect(page).not_to have_content(editor.email)
         visit edit_admin_page_group_path(page_group)
         expect(page).not_to have_content(existing_editor.email)
         expect(page).not_to have_content(editor.email)
@@ -134,12 +143,12 @@ RSpec.describe 'PageGroup Management', type: :feature do
 
         fill_in 'Name', with: 'Updated Page Group Name'
         fill_in 'Description', with: 'Updated description for sad path.'
-        fill_in 'Community editors', with: nonexistent_email
+        fill_in 'Add Community Editor(s)', with: nonexistent_email
 
         click_button 'Update Page group'
 
         expect(page).to have_content('User not found with email(s): nonexistent@va.gov')
-        expect(page_group.reload.editors_emails_string).not_to include(nonexistent_email)
+        expect(page_group.reload.editors).not_to include(nonexistent_email)
       end
     end
   end

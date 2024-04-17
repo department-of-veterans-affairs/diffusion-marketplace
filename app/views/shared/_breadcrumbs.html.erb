@@ -16,42 +16,29 @@
     breadcrumbs.pop
   end
 
-  is_page_builder_page = controller === 'page'
-  is_commmunity_page = is_page_builder_page && PageGroup.where(slug: params["page_group_friendly_id"]).first.is_community? 
-  community_name = params["page_group_friendly_id"]
   page_image = session[:page_image]
   alt_text = session[:page_image_alt_text]
 %>
 
-<% if is_commmunity_page # only shown on mobile width %>
-  <button type="button" id="communitySubnavBtn" class="nav-container tablet:display-none desktop:display-none padding-y-2 padding-x-2" aria-controls="community-subnav" aria-expanded="false">
-        <span>VA Immersive</span>
-        <i class="text-align-right fa fa-plus"></i>
-  </button>
-<% end %>
+<% if @page_group&.is_community? # only shown on mobile width %>
+  <%= render partial: "page/community_subnav_mobile", locals: { community_slug: @page_group_slug } %>
+  <section class="<%= 'dm-gradient-banner' if heading.present? %><%= ' gradient-banner-with-image' if page_image.present? %> <%= classes if classes.present? %>">
+    <div class="grid-container padding-top-2 padding-bottom-8">
+        <%= render partial: "page/community_subnav", locals: { subnav_hash: @page_group.subnav_hash } %>
+        <%= render partial: 'shared/page_heading_banner',
+          locals: {
+            heading: heading,
+            description: description,
+            page_image: page_image,
+            alt_text: alt_text
+          }
+        %>
+    </div>
+  </section>
+<% else %>
 <section class="<%= 'dm-gradient-banner' if heading.present? %><%= ' gradient-banner-with-image' if page_image.present? %> <%= classes if classes.present? %>">
-  <div class="grid-container <%= 'padding-top-2 padding-bottom-8' if is_commmunity_page %> <%= 'padding-y-4 desktop:padding-y-8' if heading.present? && !is_commmunity_page %>">
-    <% if is_commmunity_page %>
-      <nav id="community-subnav" class="font-sans-lg" aria-label="Community subnavigation">
-        <ul class="padding-x-0 padding-bottom-2 display-none tablet:padding-bottom-8 desktop:tablet:padding-bottom-8 flex-row tablet:display-flex">
-          <li class=""><a href="/communities/<%= community_name %>/">Community</a></li>
-          <% subpages = {
-            "About": "about",
-            "Innovations": "innovations",
-            "Events and News": "events-and-news",
-            "Getting Started": "getting-started",
-            "Publications": "publications"
-          } %>
-          <% subpages.each do |title,slug| %>
-            <li>
-              <a href="/communities/<%= community_name%>/<%= slug %>" class="<%= "current-page" if params["page_slug"] == slug %>">
-                <%= title %>
-              </a>
-            </li>
-          <% end %>
-        </ul>
-      </nav>
-    <% elsif breadcrumbs.present? # use breadcrumbs on non-community pages %>
+  <div class="grid-container <%= 'padding-y-4 desktop:padding-y-8' if heading.present? %>">
+    <% if breadcrumbs.present? %>
       <div id="breadcrumbs"
            class="grid-col-auto usa-breadcrumb breadcrumbs-container <%= heading.present? ? "dm-breadcrumb--gradient-bg padding-top-0 padding-bottom-105" : 'padding-y-4' %>"
            aria-label="Breadcrumbs">
@@ -64,7 +51,7 @@
               breadcrumb_display = is_same_path ? 'Home' : breadcrumbs.first['display'] || breadcrumbs.first[:display]
               breadcrumb_display.upcase if heading.present?
             %>
-            <li class="usa-breadcrumb__list-item<%= ' page-builder-breadcrumb position-static' if is_page_builder_page %>">
+            <li class="usa-breadcrumb__list-item<%= ' page-builder-breadcrumb position-static' if @page %>">
               <i class='fas fa-arrow-left margin-right-05 <%= heading.present? ? 'text-white' : 'text-gray-50' %>'></i>
               <%= link_to(breadcrumb_display, breadcrumb_path, class: 'usa-breadcrumb__link padding-left-05 font-sans-sm') %>
             </li>
@@ -76,26 +63,14 @@
         </ol>
       </div>
     <% end %>
-    <% if heading.present? %>
-      <div class="dm-breadcrumb-heading grid-row grid-gap-3">
-        <div class="grid-col-12<%= ' desktop:grid-col-7' if page_image.present? %>">
-          <h1 class="usa-prose-h1 margin-top-0 margin-bottom-4 text-white grid-col-12">
-            <%= heading %>
-          </h1>
-          <% if description.present? %>
-            <p class="dm-heading-description font-sans-lg <%= page_image.present? ? ' grid-col-12' : ' grid-col-10' %> text-white dm-word-break-break-word hyphens-auto">
-              <%= description %>
-            </p>
-          <% end %>
-        </div>
-        <% if page_image.present? %>
-          <div class="page-image-column desktop:grid-col-5">
-            <div class="page-image-container">
-              <img src="<%= page_image %>" alt="<%= alt_text %>" class="height-full width-full"/>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
+    <%= render partial: 'shared/page_heading_banner',
+          locals: {
+            heading: heading,
+            description: description,
+            page_image: page_image,
+            alt_text: alt_text
+          }
+    %>
   </div>
 </section>
+<% end %>
