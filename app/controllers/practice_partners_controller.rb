@@ -1,6 +1,10 @@
 class PracticePartnersController < ApplicationController
   before_action :set_practice_partner, only: [:show, :edit, :update, :destroy]
 
+  def index
+    redirect_to root_path
+  end
+
   # GET /practice_partners/1
   # GET /practice_partners/1.json
   def show

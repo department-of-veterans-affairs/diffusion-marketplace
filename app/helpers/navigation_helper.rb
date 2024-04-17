@@ -194,11 +194,6 @@ module NavigationHelper
     end
 
     if controller == 'practice_partners'
-      # practice partners path
-      if action == 'index'
-        empty_breadcrumbs
-      end
-
       # practice partner show path
       if action == 'show'
         empty_breadcrumbs
