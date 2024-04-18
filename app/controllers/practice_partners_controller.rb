@@ -1,10 +1,8 @@
 class PracticePartnersController < ApplicationController
   before_action :set_practice_partner, only: [:show, :edit, :update, :destroy]
 
-  # GET /practice_partners
-  # GET /practice_partners.json
   def index
-    @practice_partners = PracticePartner.cached_practice_partners.major_partners.order(name: :asc)
+    redirect_to root_path
   end
 
   # GET /practice_partners/1

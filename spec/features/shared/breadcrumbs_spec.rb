@@ -80,11 +80,6 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to_not have_css('#breadcrumbs')
     end
 
-    it 'should not display breadcrumbs for the partners index' do
-      visit(partners_path)
-      expect(page).to_not have_css('#breadcrumbs')
-    end
-
     it 'should not display breadcrumbs for the diffusion map' do
       click_button('Browse by locations')
       find("a[href='/diffusion-map']").click
@@ -146,10 +141,9 @@ describe 'Breadcrumbs', type: :feature do
   end
 
   describe 'Innovations partners' do
-    it 'should show display breadcrumbs only for the show pages' do
+    it 'displays breadcrumbs for show pages' do
       @user_practice.update(published: true, approved: true)
-      visit(partners_path)
-      click_on('Diffusion of Excellence')
+      visit(practice_partner_path(@pp))
       expect(page).to have_css("#breadcrumbs", visible: true)
       expect(page).to have_css('.dm-gradient-banner')
       within(:css, '#breadcrumbs') do
