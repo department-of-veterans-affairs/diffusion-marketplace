@@ -3,8 +3,7 @@ class ApplicationController < ActionController::Base
   include StatusHelper
   include Pagy::Backend
 
-  protect_from_forgery with: :exception
-
+  protect_from_forgery with: :exception, prepend: true
   before_action :setup_breadcrumb_navigation
   before_action :reload_turbolinks
   before_action :store_user_location!, if: :storable_location?
@@ -15,7 +14,6 @@ class ApplicationController < ActionController::Base
   before_action :set_visitor_props
   before_action :set_communities_for_header
 
-  protect_from_forgery with: :exception, prepend: true
 
   def reload_turbolinks
     @reload_turbolinks = revision.present? && Rails.cache.redis.keys('revision').present? ? revision != cached_revision : true
@@ -24,16 +22,14 @@ class ApplicationController < ActionController::Base
 
   def authenticate_active_admin_user!
     authenticate_user!
-    if current_user.present?
-      is_admin = current_user.has_role?(:admin)
-      terms_accepted = current_user.accepted_terms
-      flash[:alert] = "Unauthorized Access!" if !is_admin
-      flash[:alert] = "Accept terms and conditions" if !terms_accepted
 
-      if !is_admin || !terms_accepted
-        redirect_to root_path
-      end
+    if current_user.present? && !current_user.accepted_terms
+      redirect_to root_path, alert: "Accept terms and conditions"
     end
+  end
+
+  def access_denied(_exception)
+    redirect_to root_path, alert: "Unauthorized Access!"
   end
 
   def signed_resource

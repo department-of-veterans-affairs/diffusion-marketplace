@@ -13,7 +13,7 @@ RSpec.describe PageGroup, type: :model do
   end
 
   describe 'callbacks' do
-    describe 'before_destroy :remove_editor_roles' do
+    describe 'before_destroy :remove_all_editor_roles' do
       let!(:page_group) { create(:page_group) }
       let!(:editor) { create(:user) }
       let!(:editor_role) { editor.add_role :page_group_editor, page_group }
@@ -23,6 +23,33 @@ RSpec.describe PageGroup, type: :model do
 
         expect { page_group.destroy }.to change(Role, :count).by(-1)
         expect(Role.exists?(id: editor_role.id)).to be false
+      end
+    end
+  end
+
+  describe 'scopes' do
+    describe '.accessible_by' do
+      let(:admin) { create(:user) }
+      let(:editor) { create(:user) }
+      let(:page_group_a) { create(:page_group) }
+      let(:page_group_b) { create(:page_group) }
+      let(:page_group_c) { create(:page_group) }
+
+      before do
+        admin.add_role(:admin)
+        editor.add_role(:page_group_editor, page_group_b)
+      end
+
+      context 'when the user is an admin' do
+        it 'returns all page groups' do
+          expect(described_class.accessible_by(admin)).to contain_exactly(page_group_a, page_group_b, page_group_c)
+        end
+      end
+
+      context 'when the user is a page group editor' do
+        it 'returns only accessible page groups' do
+          expect(described_class.accessible_by(editor)).to contain_exactly(page_group_b)
+        end
       end
     end
   end

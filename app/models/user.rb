@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   devise :confirmable unless ENV['VAEC_ENV'] == 'true'
 
-  rolify before_add: :remove_all_roles
+  rolify unique: true
 
   has_many :visits, class_name: 'Ahoy::Visit'
 
@@ -224,5 +224,4 @@ class User < ApplicationRecord
 
     raise msg unless ldap.get_operation_result.code == 0
   end
-
 end

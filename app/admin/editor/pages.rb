@@ -1,8 +1,6 @@
-ActiveAdmin.register Page do
+ActiveAdmin.register Page, as: 'Pages', namespace: :editor do
+  menu if: proc { current_user.has_role?(:admin) || current_user.has_role?(:page_group_editor, :any) }
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
   permit_params :title,
                 :page_group_id,
                 :slug,
@@ -74,18 +72,15 @@ ActiveAdmin.register Page do
                   ],
                 ]
 
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:permitted, :attributes]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-  #
+  config.filters = false
+  config.clear_action_items!
+  config.batch_actions = false
 
-  remove_filter :versions
-  index do
+  action_item :new, only: :index do
+    link_to 'New Page', new_editor_page_path
+  end
+
+  index download_links: false do
     selectable_column
     column(:title) { |page| link_to(page.title, admin_page_path(page)) }
     column(:page_group)
@@ -158,7 +153,6 @@ ActiveAdmin.register Page do
         end
       end
     end
-    active_admin_comments
   end
 
   member_action :publish_page, method: :post do
@@ -181,6 +175,7 @@ ActiveAdmin.register Page do
     f.semantic_errors *f.object.errors.attribute_names # shows errors on :base
     f.inputs "Page Information" do
       f.input :page_group,
+              collection: PageGroup.accessible_by(current_user).pluck(:name, :id),
               label: 'Page Group / Community',
               hint: 'The community name will be included in the URL. (e.g.: "/communities/va-immersive/about-us" where "va-immersive" is the Community and "about-us" is the URL suffix chosen below.'
       if resource.ever_published
@@ -243,10 +238,22 @@ ActiveAdmin.register Page do
 
 
   controller do
+    skip_before_action :set_communities_for_header
     before_action :set_page,
                   :delete_page_image_and_alt_text,
                   only: [:create, :update]
     rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
+
+    def scoped_collection
+      super.includes(:page_group).then do |scope|
+        if current_user.has_role?(:admin)
+          scope
+        else
+          editor_page_group_ids = PageGroup.accessible_by(current_user).pluck(:id)
+          scope.where(page_group_id: editor_page_group_ids)
+        end
+      end
+    end
 
     def create
       create_or_update_page
@@ -270,7 +277,7 @@ ActiveAdmin.register Page do
         @page.update!(page_params)
       end
 
-      redirect_to admin_page_path(@page), notice: "Page was successfully #{action_name == 'create' ? 'created' : 'updated'}."
+      redirect_to editor_page_path(@page), notice: "Page was successfully #{action_name == 'create' ? 'created' : 'updated'}."
     end
 
     def validate_page_description_length(description)
@@ -306,7 +313,14 @@ ActiveAdmin.register Page do
 
     def redirect_to_correct_path(options = {})
       flash = options[:flash] || {}
-      path = action_name == 'update' ? edit_admin_page_path(@page) : new_admin_page_path
+      path = case action_name
+              when 'update'
+                edit_editor_page_path(@page)
+              when 'create'
+                new_editor_page_path
+              else
+                editor_pages_path
+              end
 
       redirect_to path, flash: flash
     end
