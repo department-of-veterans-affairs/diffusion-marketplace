@@ -1,8 +1,12 @@
+<button type="button" id="communitySubnavBtn" class="display-block tablet:display-none desktop:display-none padding-y-2 padding-x-2" aria-controls="community-subnav" aria-expanded="false">
+    <span><%= @page_group.name %></span>
+    <i class="text-align-right fa fa-plus"></i>
+</button>
 <nav id="community-subnav" class="font-sans-lg" aria-label="Community subnavigation">
-  <ul class="padding-x-0 padding-bottom-2 display-none tablet:padding-bottom-8 desktop:tablet:padding-bottom-8 flex-row tablet:display-flex">
+  <ul class="padding-x-0 padding-y-2 margin-y-0 display-none tablet:display-flex desktop:display-flex ">
     <% subnav_hash.each do |title, page_slug| %>
       <% break if @page_group.subnav_hash.length == 1 %>
-      <li>
+      <li class="subnav-item">
         <a href="/communities/<%= @page_group_slug %>/<%= page_slug %>" class="<%= "current-page" if params["page_slug"] == page_slug %>">
           <%= title %>
         </a>
