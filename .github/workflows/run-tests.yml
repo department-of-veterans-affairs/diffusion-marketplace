@@ -17,7 +17,7 @@ on:
         "ci-migration-bj",
       ]
   pull_request:
-    branches: ["master", "feature/homepage-refresh"]
+    branches: ["master"]
 jobs:
   build:
     name: rspec
@@ -67,12 +67,6 @@ jobs:
         run: sudo apt-get -yqq install libpq-dev
       - name: Precompile assets
         run: RAILS_ENV=test bundle exec rails assets:precompile
-      - uses: actions/cache@v2
-        with:
-          path: public/assets
-          key: ${{ runner.os }}-assets-${{ hashFiles('**/assets/**') }}
-          restore-keys: |
-            ${{ runner.os }}-assets-
       - name: Run bundle install
         run: |
           gem install bundler
