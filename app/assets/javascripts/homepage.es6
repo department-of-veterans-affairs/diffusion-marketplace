@@ -95,7 +95,7 @@ function setupClickTracking(listSelector, eventName, dataAttribute) {
 
       let properties = { from_homepage: true};
       properties[dataAttribute === 'data-practice-id' ? 'practice_name' : 'category_name'] = name;
-      properties[dataAttribute.slice(5)] = id; // Removes 'data-' and uses the rest as the key
+      properties[dataAttribute.slice(5)] = parseInt(id); // Removes 'data-' and uses the rest as the key
 
       ahoy.track(eventName, properties);
 
