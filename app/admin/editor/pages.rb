@@ -1,4 +1,4 @@
-ActiveAdmin.register Page, as: 'Pages', namespace: :editor do
+ActiveAdmin.register Page, namespace: :editor do
   menu if: proc { current_user.has_role?(:admin) || current_user.has_role?(:page_group_editor, :any) }
 
   permit_params :title,
@@ -73,12 +73,7 @@ ActiveAdmin.register Page, as: 'Pages', namespace: :editor do
                 ]
 
   config.filters = false
-  config.clear_action_items!
   config.batch_actions = false
-
-  action_item :new, only: :index do
-    link_to 'New Page', new_editor_page_path
-  end
 
   index download_links: false do
     selectable_column
