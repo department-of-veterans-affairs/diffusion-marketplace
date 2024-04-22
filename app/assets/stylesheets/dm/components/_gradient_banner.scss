@@ -5,13 +5,16 @@
 *****************************************/
 
 .dm-gradient-banner {
-  background: linear-gradient(236.03deg, color($theme-color-primary-vivid) 10.06%, #182F4C 93.13%);
-  transform: matrix(1, 0, 0, -1, 0, 0);
-
-    // since the transform style from dm-gradient-banner flips the text along with the gradient colors, we need to flip the text inside of the grid-container to return it to its original state
-    .grid-container {
-      transform: matrix(1, 0, 0, -1, 0, 0);
-    }
+    /* fallback for old browsers */
+    background: #172F52; /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: linear-gradient(to right, #172F52 0%, #275A9A 100%);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(left, #172F52 0%, #275A9A 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: linear-gradient(to right, #172F52 0%, #275A9A 100%);
+    /* IE6-8 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#172F52', endColorstr='#275A9A',GradientType=1);
 
   // Per research, the banner may have varying heights. As of 8/10/21, the designs use 318px (desktop version). Add any other height options as an extension class here
   &-318 {
