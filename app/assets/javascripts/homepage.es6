@@ -61,7 +61,7 @@ function updateDropdown(categories, innovations) {
           .text(category.name);
       let listItem = $('<li></li>')
           .addClass('search-result')
-          .attr('data-category-id', category.id)
+          .attr('data-category_id', category.id)
           .append(link);
 
       $('#category-list').append(listItem);
@@ -130,7 +130,7 @@ addEventListener('turbolinks:load', function () {
   if ($('#dm-homepage-search-button').length > 0) {
     setupSearchDropdown();
     setupClickTracking('#practice-list', "Dropdown Practice Link Clicked", 'data-practice-id');
-    setupClickTracking('#category-list', "Category selected", 'data-category-id');
+    setupClickTracking('#category-list', "Category selected", 'data-category_id');
     setupBrowseAllTracking();
   }
 });
