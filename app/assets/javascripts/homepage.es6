@@ -61,7 +61,7 @@ function updateDropdown(categories, innovations) {
           .text(category.name);
       let listItem = $('<li></li>')
           .addClass('search-result')
-          .attr('data-category-id', category.id)
+          .attr('data-category_id', category.id)
           .append(link);
 
       $('#category-list').append(listItem);
@@ -95,7 +95,7 @@ function setupClickTracking(listSelector, eventName, dataAttribute) {
 
       let properties = { from_homepage: true};
       properties[dataAttribute === 'data-practice-id' ? 'practice_name' : 'category_name'] = name;
-      properties[dataAttribute.slice(5)] = id; // Removes 'data-' and uses the rest as the key
+      properties[dataAttribute.slice(5)] = parseInt(id); // Removes 'data-' and uses the rest as the key
 
       ahoy.track(eventName, properties);
 
@@ -130,7 +130,7 @@ addEventListener('turbolinks:load', function () {
   if ($('#dm-homepage-search-button').length > 0) {
     setupSearchDropdown();
     setupClickTracking('#practice-list', "Dropdown Practice Link Clicked", 'data-practice-id');
-    setupClickTracking('#category-list', "Category selected", 'data-category-id');
+    setupClickTracking('#category-list', "Category selected", 'data-category_id');
     setupBrowseAllTracking();
   }
 });

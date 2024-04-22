@@ -58,7 +58,7 @@
               <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Categories">Categories</h3>
               <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
                 <% @dropdown_categories[0..2].each do |category| %>
-                  <li class="search-result" data-category-id=<%= category[:id] %>>
+                  <li class="search-result" data-category_id=<%= category[:id] %>>
                     <a href=<%= "/search?category=#{URI.encode_www_form_component(category[:name])}" %>><%= category[:name] %></a>
                   </li>
                 <% end %>
