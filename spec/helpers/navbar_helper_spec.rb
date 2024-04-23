@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DashboardHelper, type: :helper do
+RSpec.describe NavbarHelper, type: :helper do
   let(:user) { nil }
 
   let(:published_public_page_group) { create(:page_group) }

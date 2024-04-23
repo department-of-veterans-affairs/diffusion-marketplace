@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include NavigationHelper
   include StatusHelper
   include Pagy::Backend
-  include DashboardHelper
+  include NavbarHelper
 
   protect_from_forgery with: :exception, prepend: true
   before_action :setup_breadcrumb_navigation

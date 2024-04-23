@@ -1,4 +1,4 @@
-module DashboardHelper
+module NavbarHelper
   extend ActiveSupport::Concern
 
   def communities_with_home_hash(user=nil)
