@@ -28,20 +28,9 @@
 
 .gradient-banner-with-image {
   @media screen and (max-width: 1023px) {
-    @include u-position('relative');
-    // 87 + 40px
-    // Half of the image height plus 40px (page-builder starting top margin for the 'page-builder-page' element).
-    // Based off of Figma designs 10/3/2022
-    margin-bottom: 127px;
   }
 
   .dm-breadcrumb-heading {
-    @media screen and (max-width: 1023px) {
-      // (87 - 32) + 32
-      // (Half of image height minus bottom gradient banner padding), plus desired spacing between top of image and
-      // bottom of description text (should mimic homepage gradient banner image) - per design 10/6/2022).
-      padding-bottom: 87px;
-    }
 
     .dm-heading-description {
       line-height: 1.53;
