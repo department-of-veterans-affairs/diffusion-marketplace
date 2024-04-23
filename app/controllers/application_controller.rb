@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include NavigationHelper
   include StatusHelper
   include Pagy::Backend
+  include DashboardHelper
 
   protect_from_forgery with: :exception, prepend: true
   before_action :setup_breadcrumb_navigation
@@ -132,13 +133,18 @@ class ApplicationController < ActionController::Base
   def set_communities_for_header
     user_role = if current_user.nil?
                   'public'
+                elsif current_user.has_role?(:admin)
+                  'admin'
+                elsif current_user.has_role?(:page_group_editor, :any)
+                  "editor_#{current_user.editable_page_group_ids.sort.join('_')}"
                 else
-                  current_user.has_role?(:admin) ? 'admin' : 'user'
+                  'user'
                 end
-    cache_key = "communities_#{user_role}"
+
+    cache_key = "communities_#{user_role}_#{current_user&.id}"
 
     @communities = Rails.cache.fetch(cache_key, expires_in: 24.hours) do
-      PageGroup.community_with_home_hash(current_user.nil?, current_user&.has_role?(:admin))
+      communities_with_home_hash(current_user)
     end
   end
 end
