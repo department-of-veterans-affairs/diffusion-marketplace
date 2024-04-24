@@ -131,20 +131,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_communities_for_header
-    user_role = if current_user.nil?
-                  'public'
-                elsif current_user.has_role?(:admin)
-                  'admin'
-                elsif current_user.has_role?(:page_group_editor, :any)
-                  "editor_#{current_user.editable_page_group_ids.sort.join('_')}"
-                else
-                  'user'
-                end
-
-    cache_key = "communities_#{user_role}_#{current_user&.id}"
-
-    @communities = Rails.cache.fetch(cache_key, expires_in: 24.hours) do
-      communities_with_home_hash(current_user)
-    end
+    @communities = communities_with_home_hash(current_user)
   end
 end
