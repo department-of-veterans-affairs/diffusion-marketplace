@@ -12,10 +12,10 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     page_group_2 = create(:page_group, name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
     public_community = create(:page_group, name: 'VA Immersive', slug: 'va-immersive', description: 'va-immersive page')
     va_only_community = create(:page_group, name: 'Suicide Prevention', slug: 'suicide-prevention', description: 'Suicide prevention page')
-    unpublished_community = create(:page_group, name: 'Age-Friendly', slug: 'age-friendly', description: 'va-immersive page')
+    @unpublished_community = create(:page_group, name: 'Age-Friendly', slug: 'age-friendly', description: 'va-immersive page')
     create(:page, page_group: public_community, title: 'VA Immersive', description: 'VA Immersive', slug: 'home', has_chrome_warning_banner: false, is_public: true, created_at: Date.yesterday, published: Date.yesterday)
     create(:page, page_group: va_only_community, title: 'Suicide Prevention homepage', description: 'VA-only home page', slug: 'home', has_chrome_warning_banner: false, created_at: Date.yesterday, is_public: false, published: Date.yesterday)
-    create(:page, page_group: unpublished_community, title: 'Age-Friendly homepage', description: 'Unpublished home page', slug: 'home', has_chrome_warning_banner: false, created_at: Date.yesterday, is_public: false, published: nil)
+    create(:page, page_group: @unpublished_community, title: 'Age-Friendly homepage', description: 'Unpublished home page', slug: 'home', has_chrome_warning_banner: false, created_at: Date.yesterday, is_public: false, published: nil)
     visit('/')
     page.driver.browser.manage.window.resize_to(1300, 1000)
   end
@@ -111,20 +111,20 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       within('#communities-dropdown') do
         expect(page).to have_content('VA Immersive')
         expect(page).not_to have_content('Suicide Prevention')
-        expect(page).not_to have_content('Age-Friendly - Admin Preview')
+        expect(page).not_to have_content('Age-Friendly - Preview')
         expect(page).not_to have_link(href: '/communities/suicide-prevention')
         expect(page).not_to have_link(href: '/communities/age-friendly')
       end
     end
 
-    it 'only shows in-progress communities to admins' do
+    it 'shows in-progress communities to admins' do
       log_in_as_admin_and_visit_homepage
 
       click_on 'Communities'
       within('#communities-dropdown') do
       expect(page).to have_content('VA Immersive')
         expect(page).to have_content('Suicide Prevention')
-        expect(page).to have_content('Age-Friendly - Admin Preview')
+        expect(page).to have_content('Age-Friendly - Preview')
         expect(page).to have_link(href: '/communities/va-immersive')
         expect(page).to have_link(href: '/communities/suicide-prevention')
         expect(page).to have_link(href: '/communities/age-friendly')
@@ -143,6 +143,23 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/communities/va-immersive')
         expect(page).to have_link(href: '/communities/suicide-prevention')
         expect(page).not_to have_link(href: '/communities/age-friendly')
+      end
+    end
+
+    it 'shows in-progress communities to editors' do
+      editor = create(:user)
+      editor.add_role(:page_group_editor, @unpublished_community)
+      login_as(editor, :scope => :user, :run_callbacks => false)
+      visit('/')
+
+      click_on 'Communities'
+      within('#communities-dropdown') do
+      expect(page).to have_content('VA Immersive')
+        expect(page).to have_content('Suicide Prevention')
+        expect(page).to have_content('Age-Friendly - Preview')
+        expect(page).to have_link(href: '/communities/va-immersive')
+        expect(page).to have_link(href: '/communities/suicide-prevention')
+        expect(page).to have_link(href: '/communities/age-friendly')
       end
     end
   end
