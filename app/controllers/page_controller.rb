@@ -2,7 +2,6 @@ class PageController < ApplicationController
   before_action :set_page, only: :show
   before_action :check_authorization, only: :show
   before_action :set_page_components, only: :show
-  before_action :redirect_unpublished_pages, only: :show
 
   def show
     set_page_variables
@@ -22,20 +21,24 @@ class PageController < ApplicationController
   end
 
   def check_authorization
-    return unless helpers.is_user_a_guest? && !@page.is_public
+    return if @page.is_public && @page.published
+    return if current_user.present? && (@page.published || user_has_page_preview_priveleges)
 
-    respond_to do |format|
-      warning = 'You are not authorized to view this content.'
-      flash[:warning] = warning
-      format.html { redirect_to '/', warning: warning }
-      format.json { render warning: warning }
-    end
+    respond_with_unauthorized_warning
   end
 
-  def redirect_unpublished_pages
-    return if @page.published || current_user&.has_role?(:admin)
+  def user_has_page_preview_priveleges
+    current_user.has_role?(:admin) || current_user.has_role?(:page_group_editor, @page.page_group)
+  end
 
-    redirect_to root_path
+  def respond_with_unauthorized_warning
+    warning = 'You are not authorized to view this content.'
+    flash[:warning] = warning
+
+    respond_to do |format|
+      format.html { redirect_to root_url, warning: warning }
+      format.json { render json: { warning: warning }, status: :unauthorized }
+    end
   end
 
   def set_page_components
@@ -72,8 +75,6 @@ class PageController < ApplicationController
       communities_url = "#{host_name}/communities/#{page_group.slug}#{'/' + @page_slug unless is_landing_page}"
 
       redirect_to(URI.parse(communities_url).path)
-    elsif !@page.published
-      redirect_to(root_path) if current_user.nil? || !current_user.has_role?(:admin)
     end
   end
 
