@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe PageController, type: :request do
   describe 'show' do
     let(:page_group) { create(:page_group, name: 'VA Immersive', description: 'Pages about programming go in this group.') }
+    let(:user) { create(:user) }
 
     context 'public pages' do
       it "should redirect the user with a prepended '/communities' to the URL if the Page is a community page and the URL doesn't include '/communities'" do
@@ -28,7 +29,6 @@ RSpec.describe PageController, type: :request do
       end
 
       it 'should allow access for a logged-in user' do
-        user = create(:user)
         login_as(user, :scope => :user, :run_callbacks => false)
 
         get '/va-immersive/va-users-only'
@@ -37,21 +37,36 @@ RSpec.describe PageController, type: :request do
     end
 
     context 'un-published pages' do
-      it 'should redirect to root path for non-logged in users' do
+      before do
         create(:page, slug: 'un-published', page_group: page_group, is_public: true, published: false)
+      end
 
+      it 'should redirect to root path for non-logged in users' do
         get '/va-immersive/un-published'
         expect(response).to redirect_to(root_path)
       end
 
       it 'should redirect to root path for non-logged in users' do
-        create(:page, slug: 'un-published', page_group: page_group, is_public: false, published: false)
-
-        user = create(:user)
         login_as(user, :scope => :user, :run_callbacks => false)
 
         get '/va-immersive/un-published'
         expect(response).to redirect_to(root_path)
+      end
+
+      it 'should allow access for an admin' do
+        user.add_role(:admin)
+        login_as(user, :scope => :user, :run_callbacks => false)
+
+        get '/va-immersive/un-published'
+        expect(response.header['Location']).to include('/communities/va-immersive/un-published')
+      end
+
+      it 'should allow access for an editor' do
+        user.add_role(:page_group_editor, page_group)
+        login_as(user, :scope => :user, :run_callbacks => false)
+
+        get '/va-immersive/un-published'
+        expect(response.header['Location']).to include('/communities/va-immersive/un-published')
       end
     end
   end
