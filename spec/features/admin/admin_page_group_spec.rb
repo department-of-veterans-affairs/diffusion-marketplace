@@ -4,7 +4,6 @@ RSpec.describe 'PageGroup Management', type: :feature do
   describe 'Creating a PageGroup' do
     let!(:admin) { create(:user, :admin) }
     let!(:valid_editor) { create(:user) }
-    let!(:nonexistent_email) { "nonexistent@va.gov" }
 
     before do
       login_as(admin, scope: :user, run_callbacks: false)
@@ -35,6 +34,7 @@ RSpec.describe 'PageGroup Management', type: :feature do
     end
 
     it 'fails to create a PageGroup with invalid editor emails and shows an error message' do
+      nonexistent_email = "nonexistent@va.gov"
       visit new_admin_page_group_path
 
       fill_in 'Name', with: 'Failed Page Group'
@@ -54,7 +54,6 @@ RSpec.describe 'PageGroup Management', type: :feature do
     let!(:page_group) { create(:page_group) }
     let!(:editor) { create(:user, email: "editor_email1@va.gov") }
     let!(:existing_editor) { create(:user) }
-    let!(:nonexistent_email) { "nonexistent@va.gov" }
 
     before do
       login_as(admin, scope: :user, run_callbacks: false)
@@ -139,6 +138,7 @@ RSpec.describe 'PageGroup Management', type: :feature do
       end
 
       it 'attempts to update a PageGroup with a nonexistent editor email' do
+        nonexistent_email = "nonexistent@va.gov"
         visit edit_admin_page_group_path(page_group)
 
         fill_in 'Name', with: 'Updated Page Group Name'
