@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Page Builder', type: :feature, js: true do
+describe 'Page Management', type: :feature, js: true do
   let!(:admin) { create(:user, :admin) }
   let!(:editor) { create(:user) }
   let!(:page_group) { create(:page_group, name: 'programming') }
