@@ -71,6 +71,16 @@ describe 'The admin dashboard', type: :feature do
       expect(page).to have_content('Unauthorized access!')
     end
 
+    it 'if logged in as a page_group_editor, should be redirected to editor dashboard' do
+      @user.add_role(:page_group_editor)
+
+      login_as(@user, scope: :user, run_callbacks: false)
+      visit '/admin'
+
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_current_path(editor_root_path)
+    end
+
     it 'should show the admin dashboard if logged in as an admin' do
       login_as(@admin, scope: :user, run_callbacks: false)
       visit '/admin'
