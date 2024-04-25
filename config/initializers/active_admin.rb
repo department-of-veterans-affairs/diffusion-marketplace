@@ -54,6 +54,7 @@ ActiveAdmin.setup do |config|
   #
   # This setting changes the method which Active Admin calls
   # within the application controller.
+  config.before_action :redirect_editor_from_admin_dashboard
   config.authentication_method = :authenticate_active_admin_user!
 
   # == User Authorization

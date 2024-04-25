@@ -21,6 +21,14 @@ class ApplicationController < ActionController::Base
     reset_revision_cache if @reload_turbolinks
   end
 
+  def redirect_editor_from_admin_dashboard
+    is_in_admin_namespace = request.fullpath.starts_with?('/admin')
+
+    if current_user.has_role?(:page_group_editor, :any) && !current_user.has_role?(:admin) && is_in_admin_namespace
+      redirect_to editor_root_path
+    end
+  end
+
   def authenticate_active_admin_user!
     authenticate_user!
 
