@@ -1,5 +1,10 @@
 ActiveAdmin.register Page, namespace: :editor do
-  menu if: proc { current_user.has_role?(:admin) || current_user.has_role?(:page_group_editor, :any) }
+  menu priority: 1
+
+  actions :all, except: [:destroy]
+
+  config.filters = false
+  config.batch_actions = false
 
   permit_params :title,
                 :page_group_id,
@@ -71,9 +76,6 @@ ActiveAdmin.register Page, namespace: :editor do
                     practices: []
                   ],
                 ]
-
-  config.filters = false
-  config.batch_actions = false
 
   index download_links: false do
     selectable_column
