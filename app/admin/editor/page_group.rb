@@ -5,6 +5,7 @@ ActiveAdmin.register PageGroup, namespace: :editor do
   config.batch_actions = false
 
   permit_params :name, :description, :slug, :has_landing_page, :new_editors
+
   form do |f|
     f.inputs "Editors", class: 'inputs' do
       if f.object.persisted?
