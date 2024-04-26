@@ -71,4 +71,25 @@ ActiveAdmin.register User do
       super
     end
   end
+
+  csv do
+    column :email
+    column :last_sign_in_at
+    column :created_at
+    column :sign_in_count
+    column :first_name
+    column :last_name
+    column :job_title
+    column "Admin" do |user|
+      user.has_role?(:admin) ? 'TRUE' : 'FALSE'
+    end
+     column "PageGroup Editor Roles" do |user|
+      roles = user.roles.where(name: 'page_group_editor').map(&:resource_id)
+      if roles.empty?
+        ''
+      else
+        "\uFEFF" + roles.join(', ')
+      end
+    end
+  end
 end
