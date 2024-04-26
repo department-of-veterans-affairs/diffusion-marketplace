@@ -29,7 +29,13 @@ ActiveAdmin.register User do
       row :visn
       row :created_at
       row :confirmed_at
-      row :roles
+      row "Admin" do |user|
+        user.has_role?(:admin)
+      end
+      row "PageGroup Editor Roles" do |user|
+        page_group_roles = user.roles.where(name: 'page_group_editor').map(&:resource_id).join(', ')
+        page_group_roles.present? ? page_group_roles : nil
+      end
       row :disabled
     end
     active_admin_comments
