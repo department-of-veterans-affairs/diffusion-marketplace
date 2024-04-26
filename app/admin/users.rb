@@ -33,8 +33,10 @@ ActiveAdmin.register User do
         user.has_role?(:admin)
       end
       row "PageGroup Editor Roles" do |user|
-        page_group_roles = user.roles.where(name: 'page_group_editor').map(&:resource_id).join(', ')
-        page_group_roles.present? ? page_group_roles : nil
+        page_group_roles = user.roles.where(name: 'page_group_editor').map do |role|
+          role.resource.try(:name)
+        end.compact
+        page_group_roles.empty? ? nil : page_group_roles.join(', ')
       end
       row :disabled
     end
@@ -83,13 +85,11 @@ ActiveAdmin.register User do
     column "Admin" do |user|
       user.has_role?(:admin) ? 'TRUE' : 'FALSE'
     end
-     column "PageGroup Editor Roles" do |user|
-      roles = user.roles.where(name: 'page_group_editor').map(&:resource_id)
-      if roles.empty?
-        ''
-      else
-        "\uFEFF" + roles.join(', ')
+    column "PageGroup Editor Roles" do |user|
+      roles = user.roles.where(name: 'page_group_editor').map do |role|
+        role.resource.name
       end
+      roles.compact.empty? ? '' : roles.join(', ')
     end
   end
 end
