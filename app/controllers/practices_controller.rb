@@ -622,7 +622,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
     )
   end
-
+  # remove
   def can_view_practice
     # if practice is not published
     unless @practice.published && @practice.approved
