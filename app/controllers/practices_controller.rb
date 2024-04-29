@@ -601,26 +601,29 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
                                      publications_attributes: [:id, :_destroy, :title, :link, :position],
                                      additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
                                      practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
-                                     department: {},
-                                     category: {},
-                                     practice_award: {},
-                                     practice_resources_attributes: {},
-                                     practice_problem_resources_attributes: {},
-                                     practice_solution_resources_attributes: {},
-                                     practice_results_resources_attributes: {},
-                                     practice_multimedia_attributes: {},
-                                     practice_email: {},
+                                     department: [:name, :short_name, :description, :position],
+                                     category: [:name, :short_name, :description, :position, :related_terms, :is_other],
+                                     practice_award: [:name],
+                                     practice_resources_attributes: [:],
+                                     practice_problem_resources_attributes: resource_attributes,
+                                     practice_solution_resources_attributes: resource_attributes,
+                                     practice_results_resources_attributes: resource_attributes,
+                                     practice_multimedia_attributes: resource_attributes,
+                                     practice_email: [:address],
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
                                      categories_attributes: [:id, :_destroy, :name, :parent_category_id, :is_other],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :va_facility_id, :clinical_resource_hub_id, :facility_type_and_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
-                                     duration: {},
                                      practice_editors_attributes: [:id, :email, :_destroy],
                                      practice_partner_practices_attributes:  [:id, :practice_partner_id, :_destroy]
 
     )
+  end
+
+  def resource_attributes
+    [:link_url, :attachment_file_name, :attachment_content_type, :attachment_file_size, :name, :description, :position, :resource_type, :image_alt_text]
   end
 
   def can_view_practice
