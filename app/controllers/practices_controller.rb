@@ -603,7 +603,6 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
                                      practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
                                      department: {},
                                      category: {},
-                                     practice_award: {},
                                      practice_resources_attributes: {},
                                      practice_problem_resources_attributes: {},
                                      practice_solution_resources_attributes: {},
