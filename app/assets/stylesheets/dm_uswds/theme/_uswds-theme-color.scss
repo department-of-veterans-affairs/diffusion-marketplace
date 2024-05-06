@@ -14,6 +14,7 @@ COLOR SETTINGS
 Read more about settings and
 USWDS color tokens in the documentation:
 https://v2.designsystem.digital.gov/style-tokens/color
+v3: https://designsystem.digital.gov/design-tokens/color/system-tokens/
 ----------------------------------------
 */
 
@@ -37,12 +38,12 @@ $theme-color-base-ink:              'gray-90';
 // Primary colors
 $theme-color-primary-family:        'blue-warm-vivid';
 $theme-color-primary-lightest:      false;
-$theme-color-primary-lighter:       'blue-warm-10v';
-$theme-color-primary-light:         'blue-warm-30v';
-$theme-color-primary:               'blue-warm-50v';
-$theme-color-primary-vivid:         'blue-warm-60v';
-$theme-color-primary-dark:          'blue-warm-70v';
-$theme-color-primary-darker:        'blue-warm-80v';
+$theme-color-primary-lighter:       'blue-warm-10v'; // #d4e5ff
+$theme-color-primary-light:         'blue-warm-30v'; // #81aefc
+$theme-color-primary:               'blue-warm-50v'; // #2672de
+$theme-color-primary-vivid:         'blue-warm-60v'; // #0050d8
+$theme-color-primary-dark:          'blue-warm-70v'; // #1a4480
+$theme-color-primary-darker:        'blue-warm-80v'; // #162e51
 $theme-color-primary-darkest:       false;
 
 // Secondary colors
@@ -69,11 +70,11 @@ $theme-color-accent-warm-darkest:   false;
 // Accent cool colors
 $theme-color-accent-cool-family:    'blue-warm-vivid';
 $theme-color-accent-cool-lightest:  false;
-$theme-color-accent-cool-lighter:   'blue-warm-10v';
-$theme-color-accent-cool-light:     'blue-warm-30v';
-$theme-color-accent-cool:           'blue-warm-60v';
-$theme-color-accent-cool-dark:      'blue-warm-70v';
-$theme-color-accent-cool-darker:    'blue-warm-80v';
+$theme-color-accent-cool-lighter:   'blue-warm-10v'; // #d4e5ff
+$theme-color-accent-cool-light:     'blue-warm-30v'; // #81aefc
+$theme-color-accent-cool:           'blue-warm-60v'; // #0050d8
+$theme-color-accent-cool-dark:      'blue-warm-70v'; // #1a4480
+$theme-color-accent-cool-darker:    'blue-warm-80v'; // #162e51
 $theme-color-accent-cool-darkest:   false;
 
 /*
