@@ -196,8 +196,7 @@
 
   // replicates .dm-practice-card-img-container
   .dm-news-img-container {
-    max-height: 165px;
-    min-width: 100%;
+    aspect-ratio: 6/5;
     display: flex;
     justify-content: center;
     align-items: center;
