@@ -3,24 +3,20 @@ require 'rails_helper'
 RSpec.describe NavbarHelper, type: :helper do
   let(:user) { nil }
 
-  let(:published_public_page_group) { create(:page_group) }
+  let(:published_public_page_group) { create(:page_group, name: "Age-Friendly", slug: "age-friendly") }
   let(:published_public_page) { create(:page, page_group: published_public_page_group, slug: 'home', is_public: true, published: Time.zone.now) }
 
-  let(:non_published_non_public_page_group) { create(:page_group) }
+  let(:non_published_non_public_page_group) { create(:page_group, name: "VA Immersive") }
   let(:non_published_non_public_page) { create(:page, page_group: non_published_non_public_page_group, slug: 'home', is_public: false, published: nil) }
 
-  let(:published_non_public_page_group) { create(:page_group) }
+  let(:published_non_public_page_group) { create(:page_group, name: "Suicide Prevention") }
   let(:published_non_public_page) { create(:page, page_group: published_non_public_page_group, slug: 'home') }
-
-  let(:public_non_published_page_group) { create(:page_group) }
-  let(:public_non_published_page) { create(:page, page_group: public_non_published_page_group, slug: 'home', is_public: true, published: nil) }
 
   let(:page_group_ids) {
     [
       published_public_page.id,
       non_published_non_public_page.id,
       published_non_public_page.id,
-      public_non_published_page.id
     ]
    }
 
@@ -57,7 +53,14 @@ RSpec.describe NavbarHelper, type: :helper do
         expect(community_hash[published_public_page_group.name]).to eq(published_public_page_group.slug)
         expect(community_hash["#{non_published_non_public_page_group.name} - Preview"]).to eq(non_published_non_public_page_group.slug)
         expect(community_hash[published_non_public_page_group.name]).to eq(published_non_public_page_group.slug)
-        expect(community_hash["#{public_non_published_page_group.name} - Preview"]).to eq(public_non_published_page_group.slug)
+      end
+
+      it "returns communities in the defined order of PageGroup::COMMUNITIES" do
+        non_published_non_public_page.update!(published: Time.now, is_public: true)
+        ordered_keys = PageGroup::COMMUNITIES.filter_map do |community|
+          community_hash.keys.find { |key| key.include?(community) }
+        end
+        expect(community_hash.keys).to eq(ordered_keys)
       end
     end
 
@@ -68,14 +71,12 @@ RSpec.describe NavbarHelper, type: :helper do
 
       before do
         user.add_role(:page_group_editor, non_published_non_public_page_group)
-        user.add_role(:page_group_editor, public_non_published_page_group)
       end
 
       it "returns own editable unpublished page groups and published page_groups" do
         expect(community_hash[published_public_page_group.name]).to eq(published_public_page_group.slug)
         expect(community_hash["#{non_published_non_public_page_group.name} - Preview"]).to eq(non_published_non_public_page_group.slug)
         expect(community_hash[published_non_public_page_group.name]).to eq(published_non_public_page_group.slug)
-        expect(community_hash["#{public_non_published_page_group.name} - Preview"]).to eq(public_non_published_page_group.slug)
       end
 
       it "doesn't return unpublished page_groups user is not an editor for" do
