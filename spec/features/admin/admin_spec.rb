@@ -611,7 +611,7 @@ describe 'The admin dashboard', type: :feature do
       execute_script("document.getElementById('user_role_ids_1').checked = true;")
       click_button('Update User')
       expect(page).to have_current_path(admin_user_path(User.last))
-      expect(page).to have_content('admin')
+      expect(page).to have_css('tr.row.row-admin', text: 'YES')
     end
   end
 
