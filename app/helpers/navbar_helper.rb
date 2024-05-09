@@ -30,14 +30,12 @@ module NavbarHelper
   end
 
   def assemble_page_group_hash(query)
-    query.each_with_object({}) do |page_group, acc|
-      key = page_group.name
-      home_page = page_group.pages.first
-      home_page_published = home_page.published?
-      if !home_page_published
-        key += " - Preview"
+    PageGroup::COMMUNITIES.each_with_object({}) do |community, communities_hash|
+      page_group = query.find_by(name: community)
+      if page_group.present?
+        community += " - Preview" if !page_group.pages.first&.published?
+        communities_hash[community] = page_group.slug
       end
-      acc[key] = page_group.slug
     end
   end
 end
