@@ -1,7 +1,7 @@
 class PageGroup < ApplicationRecord
   COMMUNITIES = [
-		"Age-Friendly",
     "VA Immersive",
+		"Age-Friendly",
 		"Suicide Prevention"
   ]
   extend FriendlyId
