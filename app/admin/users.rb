@@ -29,7 +29,15 @@ ActiveAdmin.register User do
       row :visn
       row :created_at
       row :confirmed_at
-      row :roles
+      row "Admin" do |user|
+        user.has_role?(:admin)
+      end
+      row "PageGroup Editor Roles" do |user|
+        page_group_roles = user.roles.where(name: 'page_group_editor').map do |role|
+          role.resource.try(:name)
+        end.compact
+        page_group_roles.empty? ? nil : page_group_roles.join(', ')
+      end
       row :disabled
     end
     active_admin_comments
@@ -47,8 +55,8 @@ ActiveAdmin.register User do
       f.input :skip_va_validation
       f.input :password
       f.input :password_confirmation
-      # instance-scoped editor roles should be left out of the collection as they are handled in the
-      # given instance's edit form:
+      # instance-scoped editor roles should be left out of the collection as they are managed in the
+      # given page_group's edit form:
       f.input :roles, as: :check_boxes, collection: Role.where(name: ['admin'])
       f.input :disabled
     end
@@ -63,6 +71,25 @@ ActiveAdmin.register User do
       end
 
       super
+    end
+  end
+
+  csv do
+    column :email
+    column :last_sign_in_at
+    column :created_at
+    column :sign_in_count
+    column :first_name
+    column :last_name
+    column :job_title
+    column "Admin" do |user|
+      user.has_role?(:admin) ? 'TRUE' : 'FALSE'
+    end
+    column "PageGroup Editor Roles" do |user|
+      roles = user.roles.where(name: 'page_group_editor').map do |role|
+        role.resource.name
+      end
+      roles.compact.empty? ? '' : roles.join(', ')
     end
   end
 end
