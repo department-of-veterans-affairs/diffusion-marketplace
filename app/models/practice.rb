@@ -153,6 +153,9 @@ class Practice < ApplicationRecord
         'QUERI Partnered Evaluation Initiative',
         'Rural Promising Practice',
         'VHA Shark Tank Winner',
+        'Mission Daybreak Grand challenge winner',
+        'Mission Daybreak Grand challenge finalist',
+        'Mission Daybreak Grand challenge Promise Award recipient',
         'Other'
       ]
 
