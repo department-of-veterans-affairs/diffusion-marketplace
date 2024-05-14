@@ -4,6 +4,7 @@
     <%= render partial: 'practices/show/ahoy_event_tracking', formats: [:js] if current_user.present? %>
   <% end %>
 <% end %>
+<% implementation_data_present = @practice.timelines.any? || @practice.department_practices.any? || @practice.practice_resources.any? || @practice.risk_mitigations.any? %>
 <% provide :footer_classes, 'practice-show' %>
 
 <section class="usa-section padding-y-0 margin-bottom-1 margin-top-0">
@@ -28,9 +29,11 @@
       <li class="usa-sidenav__item">
         <a href="#overview" class="top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
-      <li class="usa-sidenav__item">
-        <a href="#implementation" class="bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
-      </li>
+      <% if implementation_data_present %>
+        <li class="usa-sidenav__item">
+          <a href="#implementation" class="bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
+        </li>
+      <% end %>
       <li class="usa-sidenav__item">
         <a href="#contact" class="bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
       </li>
@@ -146,7 +149,7 @@
 <% end %>
 
 <!-- Implementation section -->
-<% if @practice.timelines.any? || @practice.department_practices.any? || @practice.practice_resources.any? || @practice.risk_mitigations.any? %>
+<% if implementation_data_present %>
   <section id="implementation" class="grid-container nav-header">
     <div class="grid-row grid-gap-2">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
