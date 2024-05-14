@@ -199,7 +199,7 @@ class SavePracticeService
     end
     if category_params.present?
       category_attribute_params = @practice_params[:categories_attributes]
-      cat_keys = category_params.keys
+      cat_keys = category_params.keys.map {|key| key.gsub("_resource", "")}
 
       cat_keys.each do |key|
         if practice_categories.ids.exclude?(key.to_i) && !key.include?('other')
@@ -237,7 +237,7 @@ class SavePracticeService
         other_parent_cat_options = ['other-clinical', 'other-operational', 'other-strategic']
         other_parent_cat_options.each do |opc|
           parent_cat = Category.get_category_by_name(opc.split('-').pop).first
-          if cat_keys.exclude?(opc)
+          if parent_cat && cat_keys.exclude?(opc)
             other_practice_categories.each do |oc|
               if oc.parent_category == parent_cat && CategoryPractice.where(category: oc).where('practice_id != ?', @practice.id).blank?
                 oc.destroy
