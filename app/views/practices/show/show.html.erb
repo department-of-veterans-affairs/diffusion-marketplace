@@ -4,6 +4,7 @@
     <%= render partial: 'practices/show/ahoy_event_tracking', formats: [:js] if current_user.present? %>
   <% end %>
 <% end %>
+<% implementation_data_present = @practice.timelines.any? || @practice.department_practices.any? || @practice.practice_resources.any? || @practice.risk_mitigations.any? %>
 <% provide :footer_classes, 'practice-show' %>
 
 <section class="usa-section padding-y-0 margin-bottom-1 margin-top-0">
@@ -28,9 +29,11 @@
       <li class="usa-sidenav__item">
         <a href="#overview" class="top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
-      <li class="usa-sidenav__item">
-        <a href="#implementation" class="bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
-      </li>
+      <% if implementation_data_present %>
+        <li class="usa-sidenav__item">
+          <a href="#implementation" class="bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
+        </li>
+      <% end %>
       <li class="usa-sidenav__item">
         <a href="#contact" class="bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
       </li>
@@ -146,37 +149,39 @@
 <% end %>
 
 <!-- Implementation section -->
-<section id="implementation" class="grid-container nav-header">
-  <div class="grid-row grid-gap-2">
-    <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
-    <div class="desktop:grid-col-9 grid-col-12 padding-top-10">
-      <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
-      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">Implementation</h2>
-      <div class="metric-section practice-section margin-bottom-5">
-        <% if @practice.timelines.any? %>
-          <section id="dm-implementation-timeline" class="margin-bottom-5">
-            <%= render partial: 'practices/show/implementation/timelines' %>
-          </section>
-        <% end %>
-        <% if @practice.department_practices.any? %>
-          <section id="dm-implementation-departments" class="margin-bottom-5">
-            <%= render partial: 'practices/show/implementation/departments' %>
-          </section>
-        <% end %>
-        <% if @practice.practice_resources.any? %>
-          <section id="dm-implementation-show-resources">
-            <%= render partial: 'practices/show/implementation/show_resources' %>
-          </section>
-        <% end %>
-        <% if @practice.risk_mitigations.any? %>
-          <section id="dm-implementation-risk-mitigations" class="margin-bottom-5">
-            <%= render partial: 'practices/show/implementation/risks_and_mitigations' %>
-          </section>
-        <% end %>
+<% if implementation_data_present %>
+  <section id="implementation" class="grid-container nav-header">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+      <div class="desktop:grid-col-9 grid-col-12 padding-top-10">
+        <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
+        <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">Implementation</h2>
+        <div class="metric-section practice-section margin-bottom-5">
+          <% if @practice.timelines.any? %>
+            <section id="dm-implementation-timeline" class="margin-bottom-5">
+              <%= render partial: 'practices/show/implementation/timelines' %>
+            </section>
+          <% end %>
+          <% if @practice.department_practices.any? %>
+            <section id="dm-implementation-departments" class="margin-bottom-5">
+              <%= render partial: 'practices/show/implementation/departments' %>
+            </section>
+          <% end %>
+          <% if @practice.practice_resources.any? %>
+            <section id="dm-implementation-show-resources">
+              <%= render partial: 'practices/show/implementation/show_resources' %>
+            </section>
+          <% end %>
+          <% if @practice.risk_mitigations.any? %>
+            <section id="dm-implementation-risk-mitigations" class="margin-bottom-5">
+              <%= render partial: 'practices/show/implementation/risks_and_mitigations' %>
+            </section>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+<% end %>
 
 
 <!-- Contact Section-->

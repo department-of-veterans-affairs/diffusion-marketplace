@@ -28,14 +28,9 @@ describe 'Practice', type: :feature, js: true do
     end
 
     it 'should allow the user to update the departments for the practice' do
-      # no departments should be there
+      # the implementation section should not render if there is no implementation data
       visit practice_path(@practice)
-      within(:css, '#implementation') do
-        expect(page).to have_no_content('Departments')
-        expect(page).to have_no_content('Admissions')
-        expect(page).to have_no_content('Anesthetics')
-        expect(page).to have_no_content('Chaplaincy')
-      end
+      expect(page).to have_no_css('#implementation')
 
       # navigate to the PE Implementation form
       click_link('Edit')
