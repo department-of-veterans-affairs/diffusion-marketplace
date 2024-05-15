@@ -1,64 +1,71 @@
 .usa-prose-intro {
-  @include u-font('sans', 'lg');
-  @include u-line-height('alt', 5);
+  @include u-font("sans", "lg");
+  @include u-line-height("alt", 5);
   @include u-measure(6);
-  @include u-text('normal');
+  @include u-text("normal");
 }
 
 .usa-prose-body {
-  @include u-font('body', 'sm');
-  @include u-line-height('body', 5);
-  @include u-maxw('none', !important);
+  @include u-font("body", "sm");
+  @include u-line-height("body", 5);
+  @include u-maxw("none", !important);
   @include u-measure(6);
-  @include u-text('normal');
+  @include u-text("normal");
+  font-size: 1rem;
 }
 
 .usa-prose-h1 {
-  @include u-font('sans', '2xl');
-  @include u-line-height('heading', 2);
-  @include u-text('bold');
+  @include u-font("sans", "2xl");
+  @include u-line-height("heading", 2);
+  @include u-text("bold");
+  font-size: 2.986rem;
 }
 
 .usa-prose-h2 {
-  @include u-font('sans', 'xl');
-  @include u-line-height('heading', 2);
+  @include u-font("sans", "xl");
+  @include u-line-height("heading", 2);
+  font-size: 2.488rem;
 }
 
 .usa-prose-h3 {
-  @include u-font('sans', 'lg');
+  @include u-font("sans", "lg");
+  font-size: 2.074rem;
 }
 
 .usa-prose-h4 {
-  @include u-font('heading', 'sm');
-  @include u-line-height('heading', 2);
+  @include u-font("heading", "sm");
+  @include u-line-height("heading", 2);
   @include u-measure(6);
-  @include u-text('bold');
+  @include u-text("bold");
+  font-size: 1.728rem;
 }
 
 .usa-prose-h5 {
-  @include u-font('heading', 'xs');
-  @include u-line-height('heading', 2);
+  @include u-font("heading", "xs");
+  @include u-line-height("heading", 2);
   @include u-measure(6);
-  @include u-text('bold');
+  @include u-text("bold");
+  font-size: 1.44rem;
 }
 
 .usa-prose-h6 {
-  @include u-font('sans', '3xs');
-  @include u-line-height('heading', 2);
+  @include u-font("sans", "3xs");
+  @include u-line-height("heading", 2);
   @include u-measure(6);
-  @include u-text('ls-1');
-  @include u-text('normal');
-  @include u-text('uppercase');
+  @include u-text("ls-1");
+  @include u-text("normal");
+  @include u-text("uppercase");
+  font-size: 1.2rem;
 }
 
 .usa-prose-ul {
-  @include u-font('body', 'sm');
-  @include u-line-height('body', 5);
-  @include u-text('normal');
+  @include u-font("body", "sm");
+  @include u-line-height("body", 5);
+  @include u-text("normal");
 }
 
 .usa-prose-caption {
-  @include u-font('body', '2xs');
-  @include u-line-height('body', 3);
-  @include u-text('italic');
+  @include u-font("body", "2xs");
+  @include u-line-height("body", 3);
+  @include u-text("italic");
 }
