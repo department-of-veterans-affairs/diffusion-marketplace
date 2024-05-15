@@ -601,26 +601,55 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
                                      publications_attributes: [:id, :_destroy, :title, :link, :position],
                                      additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
                                      practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
-                                     department: {},
-                                     category: {},
-                                     practice_award: {},
-                                     practice_resources_attributes: {},
-                                     practice_problem_resources_attributes: {},
-                                     practice_solution_resources_attributes: {},
-                                     practice_results_resources_attributes: {},
-                                     practice_multimedia_attributes: {},
-                                     practice_email: {},
+                                     department: permitted_dynamic_keys(params[:practice][:department]),
+                                     category: permitted_dynamic_keys(params[:practice][:category]),
+                                     practice_award: permitted_dynamic_keys(params[:practice][:practice_award]),
+                                     practice_resources_attributes: permitted_dynamic_keys(params[:practice][:practice_resources_attributes]),
+                                     practice_problem_resources_attributes: permitted_dynamic_keys(params[:practice][:practice_problem_resources_attributes]),
+                                     practice_solution_resources_attributes: permitted_dynamic_keys(params[:practice][:practice_solution_resources_attributes]),
+                                     practice_results_resources_attributes: permitted_dynamic_keys(params[:practice][:practice_results_resources_attributes]),
+                                     practice_multimedia_attributes: permitted_dynamic_keys(params[:practice][:practice_multimedia_attributes]),
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
                                      categories_attributes: [:id, :_destroy, :name, :parent_category_id, :is_other],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :va_facility_id, :clinical_resource_hub_id, :facility_type_and_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
-                                     duration: {},
                                      practice_editors_attributes: [:id, :email, :_destroy],
                                      practice_partner_practices_attributes:  [:id, :practice_partner_id, :_destroy]
 
     )
+  end
+
+  def permitted_dynamic_keys(params)
+    return {} unless params
+
+    params.transform_keys! do |key|
+      key.match?(/^\d+$/) ? "#{key}_resource" : key
+    end
+
+    params.keys.index_with do |_key|
+      [
+        :id,
+        :link_url,
+        :attachment_file_name,
+        :description,
+        :position,
+        :resource,
+        :resource_type_label,
+        :resource_type,
+        :media_type,
+        :crop_x,
+        :crop_y,
+        :crop_w,
+        :crop_h,
+        :name,
+        :image_alt_text,
+        :attachment,
+        :_destroy,
+        :value
+      ]
+    end
   end
 
   def can_view_practice
@@ -716,7 +745,11 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
         end
       end
 
-      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
+      pr_params = {
+        practice: @practice,
+        practice_params: practice_params,
+        current_endpoint: current_endpoint,
+      }
 
       updated = initiating_facility_params_error.present? ? initiating_facility_params_error : SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction' && !updated.is_a?(StandardError)
