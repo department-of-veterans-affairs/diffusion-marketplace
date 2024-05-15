@@ -1,4 +1,17 @@
 .dm-page-content {
+  a {
+    color: color($transition-palette-default);
+    &:hover {
+      color: color($transition-palette-hover);
+    }
+    &:active {
+      color: color($transition-palette-active);
+    }
+    &:visited {
+      color: color($transition-palette-visited-color);
+    }
+  }
+
   p, li {
     margin-top: 1rem;
     margin-bottom: 1rem;
