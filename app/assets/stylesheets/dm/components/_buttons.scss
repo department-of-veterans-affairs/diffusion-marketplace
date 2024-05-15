@@ -189,12 +189,12 @@
 }
 
 @mixin transition-btn-colors { // homepage refresh 2024 colors - delete and update primary palette later
-  @include u-bg('primary-darker');
+  @include u-bg($transition-palette-default);
 
   &:hover {
-    @include u-bg('primary-dark');
+    @include u-bg($transition-palette-hover);
   }
   &:active {
-    @include u-bg('primary-vivid');
+    @include u-bg($transition-palette-active);
   }
 }
