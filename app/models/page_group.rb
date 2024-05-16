@@ -7,7 +7,7 @@ class PageGroup < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  has_many :pages, dependent: :destroy
+  has_many :pages, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :page_group
   has_many :editor_roles, -> { where(name: 'page_group_editor', resource_type: 'PageGroup') },
             class_name: 'Role', foreign_key: :resource_id, inverse_of: :page_group
   has_many :editors, through: :editor_roles, source: :users

@@ -1,6 +1,7 @@
 class Page < ApplicationRecord
   has_paper_trail
-  belongs_to :page_group
+  belongs_to :page_group, inverse_of: :pages
+  acts_as_list scope: :page_group
 
   attr_accessor :delete_image_and_alt_text
 
