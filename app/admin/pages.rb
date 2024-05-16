@@ -84,7 +84,7 @@ ActiveAdmin.register Page do
   # end
   #
 
-  remove_filter :versions
+  remove_filter :versions, :position
   index do
     selectable_column
     column(:title) { |page| link_to(page.title, admin_page_path(page)) }
