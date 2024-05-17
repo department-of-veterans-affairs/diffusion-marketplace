@@ -14,7 +14,7 @@
             <% end %>
             <div class="usa-card__header">
                 <h3 class="news-item-title">
-                    <%= link_to_if(news_item.title.present? && news_item.url.present?, news_item.title, news_item.url, class: set_link_classes(news_item.url), target: get_link_target_attribute(news_item.url)) %>
+                    <%= news_item&.title %>
                 </h3>
             </div>
             <div id="<%= news_item.id %>" class="news-item-description usa-prose usa-card__body">
@@ -25,7 +25,9 @@
                 <% elsif news_item.authors.present? %>
                     <p>Published by <%= news_item&.authors %></p>
                 <% end %>
-                <div><%= news_item&.text&.html_safe %></div>
+                <div class="margin-bottom-3"><%= news_item&.text&.html_safe %></div>
+
+                <%= link_to_if(news_item.url_link_text.present? && news_item.url.present?, news_item.url_link_text, news_item.url, class: set_link_classes(news_item.url), target: get_link_target_attribute(news_item.url)) %>
             </div>
         </div>
     </li>
