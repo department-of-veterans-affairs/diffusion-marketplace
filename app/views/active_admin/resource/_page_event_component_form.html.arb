@@ -92,7 +92,7 @@ html = Arbre::Context.new do
           input value: component&.url_link_text || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url_link_text]"
-          para 'URL used for event title link, e.g. https://va.gov', class: 'inline-hints'
+          para 'Add a call to action, e.g. "Register", "Join Webinar", View Event"', class: 'inline-hints'
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
