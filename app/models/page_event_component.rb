@@ -5,7 +5,8 @@ class PageEventComponent < ApplicationRecord
 
   FORM_FIELDS = { # Fields and labels in .arb form
     title: 'Title',
-    url: 'URL',
+    url: 'Link URL',
+    url_link_text: 'Link Title',
     presented_by: 'Presented by',
     start_date: 'Start date',
     end_date: 'End date',
