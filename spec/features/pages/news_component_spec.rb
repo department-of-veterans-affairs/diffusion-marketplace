@@ -8,6 +8,8 @@ describe 'Page Builder - Show - News Components', type: :feature do
     login_as(user, scope: :user, run_callbacks: false)
   end
 
+  # See spec/features/pages/paginated_components_spec.rb for pagination threshold testing
+
   context 'Publication info' do
     it 'date only' do
       news_component = PageNewsComponent.create(title: 'Date only', published_date: Date.new(2023,05,16) )
@@ -43,6 +45,30 @@ describe 'Page Builder - Show - News Components', type: :feature do
 
       expect(page).to have_css("img[src*='#{news_component.image_s3_presigned_url}']")
       expect(page).to have_css("img[alt='Test Image']")
+    end
+  end
+
+  context 'Link' do
+    it 'renders nothing for empty URLs' do
+      news_component = PageNewsComponent.create(title: 'Date and author', published_date: Date.new(2023,05,16), authors: 'Bubbles, Blossom, and Buttercup', url: nil, text: nil )
+      PageComponent.create(page: @page, component: news_component, created_at: Time.now,)
+      visit 'programming/ruby-rocks'
+      expect(page).not_to have_link('View News')
+    end
+
+    it 'renders generic link title if none is provided' do
+      news_component = PageNewsComponent.create(title: 'Date and author', published_date: Date.new(2023,05,16), authors: 'Bubbles, Blossom, and Buttercup', url: '/about')
+      PageComponent.create(page: @page, component: news_component, created_at: Time.now,)
+      visit 'programming/ruby-rocks'
+      expect(page).to have_link('View News', href: '/about')
+    end
+
+    it 'renders custom link title if provided' do
+      news_component = PageNewsComponent.create(title: 'Date and author', published_date: Date.new(2023,05,16), authors: 'Bubbles, Blossom, and Buttercup', url: '/about', url_link_text: 'Register now' )
+      PageComponent.create(page: @page, component: news_component, created_at: Time.now,)
+      visit 'programming/ruby-rocks'
+      expect(page).to have_link('Register now', href: '/about')
+      expect(page).not_to have_link('View News')
     end
   end
 end

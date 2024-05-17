@@ -20,7 +20,9 @@
                   <% end %>
                 </div>
                 <p><%= event&.text&.html_safe %></p>
-                <%= link_to_if(event.url_link_text.present? && event.url.present?, event.url_link_text, event.url, class: set_link_classes(event.url), target: get_link_target_attribute(event.url)) %>
+                <% unless event.url.blank? %>
+                    <%= link_to(event.url_link_text.present? ? event.url_link_text : 'View Event', event.url, class: set_link_classes(event.url), target: get_link_target_attribute(event.url)) %>
+                <% end %>
             </div>
         </div>
     </li>
