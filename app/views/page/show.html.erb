@@ -164,10 +164,10 @@
             %>
             <% unless elc[:events].all?(&:passed_and_hidden) %>
               <div class="grid-container">
-                <ul class="event-component-list usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                <ul class="event-component-list grid-row grid-gap usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
                   <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
                 </ul>
-                <% if elc[:pagy].count > 2  %>
+                <% if elc[:pagy].count > 3  %>
                   <div class="text-center dm-load-more-events-<%= component_index %>-btn-container margin-bottom-4">
                     <% link = pagy_link_proc(elc[:pagy]) %>
                     <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>

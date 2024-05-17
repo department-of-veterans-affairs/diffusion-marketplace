@@ -138,7 +138,7 @@ class PageController < ApplicationController
 
 
     set_pagy_practice_list_array(practice_lists) if practice_lists.present?
-    paginate_components(events, "events", 2) if events.present?
+    paginate_components(events, "events", 3) if events.present?
     paginate_components(news_items, "news", 6) if news_items.present?
     paginate_components(publications, "publications", 10) if publications.present?
   end
