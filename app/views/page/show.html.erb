@@ -214,7 +214,7 @@
                 <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
               </ul>
               <% if nic[:pagy].count > 6 %>
-                <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
+                <div class="text-center dm-load-more-news-<%= component_index %>-btn-container margin-top-5" >
                   <% link = pagy_link_proc(nic[:pagy]) %>
                   <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
                 </div>
