@@ -21,7 +21,8 @@
                 </div>
                 <p><%= event&.text&.html_safe %></p>
                 <% unless event.url.blank? %>
-                    <%= link_to(event.url_link_text.present? ? event.url_link_text : 'View Event', event.url, class: set_link_classes(event.url), target: get_link_target_attribute(event.url)) %>
+                    <% link_text = event.url_link_text.present? ? event.url_link_text : 'View Event' %>
+                    <%= link_to(link_text, event.url, 'aria-label': "#{link_text}: #{event.title}", class: set_link_classes(event.url), target: get_link_target_attribute(event.url)) %>
                 <% end %>
             </div>
         </div>
