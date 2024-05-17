@@ -23,28 +23,40 @@ html = Arbre::Context.new do
       a 'Move to Top', href: '#', class: 'move-to-top float-right', id: component&.page_component&.id
 
       ol do
+        li class: 'file input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
+          label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_image", class: 'label'
+          input value: component&.image || nil, type: 'file', accept: '.jpg, .jpeg, .png',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
+          para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+        end
+
+        if component&.image.present?
+          li do
+            div class: 'page-image-preview-container no-padding' do
+              div class: 'placeholder'
+              div class: 'page-image-container' do
+                img class: 'page-image', src: component.image_s3_presigned_url, alt: component.image_alt_text
+                para "Current image name: #{component.image_file_name}"
+              end
+            end
+          end
+        end
+
+        li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text_input" do
+          label 'Alternative Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text", class: 'label'
+          input value: component&.image_alt_text || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][image_alt_text]"
+          para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
+        end
+
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
           label 'Title', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
           input value: component&.title || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
           para 'News item title styled as an /"H3"', class: 'inline-hints'
-        end
-
-        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
-          label 'Link URL', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.url || nil, type: 'text',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
-          para 'Link to news item hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
-        end
-
-        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text_input" do
-          label 'Link title', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.url_link_text || nil, type: 'text',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][url_link_text]"
-          para 'Link to news item hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
         end
 
         li class: 'date input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_published_date_input" do
@@ -75,32 +87,20 @@ html = Arbre::Context.new do
           para '', class: 'inline-hints'
         end
 
-        li class: 'file input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
-          label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_image", class: 'label'
-          input value: component&.image || nil, type: 'file', accept: '.jpg, .jpeg, .png',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
-          para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
+          label 'Link URL', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.url || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
+          para 'Link to news item hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
         end
 
-        if component&.image.present?
-          li do
-            div class: 'page-image-preview-container no-padding' do
-              div class: 'placeholder'
-              div class: 'page-image-container' do
-                img class: 'page-image', src: component.image_s3_presigned_url, alt: component.image_alt_text
-                para "Current image name: #{component.image_file_name}"
-              end
-            end
-          end
-        end
-
-        li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text_input" do
-          label 'Alternative Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text", class: 'label'
-          input value: component&.image_alt_text || nil, type: 'text', required: 'required',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_image_alt_text",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][image_alt_text]"
-          para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text_input" do
+          label 'Link Title', for: "page_page_components_attributes_news_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.url_link_text || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url_link_text",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url_link_text]"
+          para 'Link to news item hosted elsewhere, e.g. https://va.gov', class: 'inline-hints'
         end
       end
     end
