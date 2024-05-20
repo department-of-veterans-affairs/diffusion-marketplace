@@ -11,27 +11,14 @@ describe 'Page Builder - Show - Events', type: :feature, js: true do
 
   context 'Hide events after date' do
     it 'displays events correctly with pagination functionality' do
-      @h1 = create(:page_header2_component,subtopic_title: "Visible Upcoming Events")
-      PageComponent.create(page: @page, component: @h1)
-      upcoming_events = create_list(:page_event_component, @event_pagination_size + 1) do |event, i| 
-        event.title = "upcoming event #{i + 1}"
-        event.start_date = 5.days.from_now
-        event.end_date = 7.days.from_now
-        event.hide_after_date = true
-        event.save
-        PageComponent.create(page: @page, component: event)
-      end
+      upcoming_attrs = { start_date: 5.days.from_now, end_date: 7.days.from_now, hide_after_date: true }
+      create_events_list("upcoming event", upcoming_attrs)
 
-      @h2 = create(:page_header2_component,subtopic_title: "Past Events")
-      PageComponent.create(page: @page, component: @h2)
-      past_events = create_list(:page_event_component, @event_pagination_size + 1) do |event, i|
-        event.title = "past event #{i + 1}"
-        event.start_date = 3.days.ago
-        event.end_date = 2.days.ago
-        event.hide_after_date = false
-        event.save
-        PageComponent.create(page: @page, component: event)
-      end
+      @divider = PageHrComponent.create
+      PageComponent.create(page: @page, component: @divider)
+
+      past_attrs = { start_date: 3.days.ago, end_date: 2.days.ago, hide_after_date: false }
+      create_events_list("past event", past_attrs)
 
       visit 'programming/ruby-rocks'
 
@@ -40,31 +27,16 @@ describe 'Page Builder - Show - Events', type: :feature, js: true do
         expect(page).to have_content ("past event #{i + 1}")
       end
 
-      expect(page).not_to have_content("upcoming event #{@event_pagination_size + 1}")
-      page.has_link?('Load more', href: /events-0=2/)
-      find('a', text: 'Load more', match: :first).click
-      expect(page).to have_content("upcoming event #{@event_pagination_size + 1}")
-
-      expect(page).not_to have_content("past event #{@event_pagination_size + 1}")
-      page.has_link?('Load more', href: /events-1=2/)
-      find('a', text: 'Load more', match: :first).click
-      expect(page).to have_content("past event #{@event_pagination_size + 1}")
+      check_pagination('upcoming event',0)
+      check_pagination('past event',1)
     end
 
-    it 'hides events once they have passed and are marked as auto-hide and updates pagination' do
-      @h1 = create(:page_header2_component,subtopic_title: "Visible Upcoming Events")
-      PageComponent.create(page: @page, component: @h1)
+    it 'hides expired events marked as auto-hide and updates pagination' do
       expired_event = create(:page_event_component, hide_after_date: true, title: "expired event", start_date: 3.days.ago, end_date: 2.days.ago)
       PageComponent.create(page: @page, component: @expired_event)
 
-      create_list(:page_event_component, @event_pagination_size) do |event, i| # zero index
-        event.title = "upcoming event #{i + 1}"
-        event.start_date = 5.days.from_now
-        event.end_date = 7.days.from_now
-        event.hide_after_date = true
-        event.save!
-        PageComponent.create(page: @page, component: event)
-      end
+      upcoming_attrs = { start_date: 5.days.from_now, end_date: 7.days.from_now, hide_after_date: true }
+      create_events_list('upcoming event', upcoming_attrs, 0)
 
       visit 'programming/ruby-rocks'
 
@@ -74,17 +46,8 @@ describe 'Page Builder - Show - Events', type: :feature, js: true do
     end
 
     it 'displays text if all events in a group are passed and hidden' do
-      @h1 = create(:page_header2_component,subtopic_title: "Visible Upcoming Events")
-      PageComponent.create(page: @page, component: @h1)
-
-      past_events = create_list(:page_event_component, @event_pagination_size + 1) do |event, i|
-        event.title = "expired event #{i + 1}"
-        event.start_date = 3.days.ago
-        event.end_date = 2.days.ago
-        event.hide_after_date = true
-        event.save
-        PageComponent.create(page: @page, component: event)
-      end
+      expired_attrs = { start_date: 3.days.ago, end_date: 2.days.ago, hide_after_date: true }
+      create_events_list('expired event', expired_attrs)
 
       (@event_pagination_size + 1).times { |i| PageComponent.create(page: @page, component: @expired_event)}
 
@@ -93,6 +56,23 @@ describe 'Page Builder - Show - Events', type: :feature, js: true do
       expect(page).to have_no_link('Load more', href: /events-0=2/)
       expect(page).to have_content('Please check back for more events soon!')
     end
+  end
+
+  # create just enough components for a "Load more" button
+  def create_events_list(event_name, attrs_hash, num_over_pagy_threshold = 1)
+    create_list(:page_event_component, @event_pagination_size + num_over_pagy_threshold, attrs_hash) do |event, i|
+      event.title = "#{event_name} #{i + 1}"
+      event.save
+      PageComponent.create(page: @page, component: event)
+    end
+  end
+
+  # check that load more button shows hidden content
+  def check_pagination(event_name, index = 0)
+    expect(page).not_to have_content("#{event_name} #{@event_pagination_size + 1}")
+      page.has_link?('Load more', href: "/events-#{index}=2/")
+      find('a', text: 'Load more', match: :first).click
+      expect(page).to have_content("#{event_name} #{@event_pagination_size + 1}")
   end
 end
 
