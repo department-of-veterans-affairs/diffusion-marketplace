@@ -164,10 +164,10 @@
             %>
             <% unless elc[:events].all?(&:passed_and_hidden) %>
               <div class="grid-container">
-                <ul class="event-component-list usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                <ul class="event-component-list grid-row grid-gap usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
                   <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
                 </ul>
-                <% if elc[:pagy].count > 2  %>
+                <% if elc[:pagy].count > PageEventComponent::PAGINATION  %>
                   <div class="text-center dm-load-more-events-<%= component_index %>-btn-container margin-bottom-4">
                     <% link = pagy_link_proc(elc[:pagy]) %>
                     <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
@@ -210,11 +210,11 @@
               @news_list_component_index = component_index + 1
             %>
             <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
-              <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %>">
+              <ul class="usa-card-group grid-row grid-gap news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %>">
                 <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
               </ul>
-              <% if nic[:pagy].count > 4 %>
-                <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
+              <% if nic[:pagy].count > 6 %>
+                <div class="text-center dm-load-more-news-<%= component_index %>-btn-container margin-top-5" >
                   <% link = pagy_link_proc(nic[:pagy]) %>
                   <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
                 </div>
