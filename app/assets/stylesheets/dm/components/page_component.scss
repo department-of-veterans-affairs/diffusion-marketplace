@@ -43,39 +43,42 @@
     @include u-margin-bottom(0, !important);
   }
 
-  .pb-link {
-    .pb-link-card-title, .pb-link-card-body {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .pb-link-card-title {
-      color: color($theme-color-primary-vivid);
-      -webkit-line-clamp: 2;
-    }
-
-    .pb-link-card-body {
-      color: color($theme-color-base-ink);
-      @include u-text-decoration('no-underline');
-      -webkit-line-clamp: 4;
-    }
-
-    &:hover {
-      .pb-link-card-title {
-        color: color($theme-color-primary-dark) !important;
+  .subpage-hyperlink-component {
+    a.subpage-hyperlink-component-link {
+      text-decoration: none !important;
+      .subpage-hyperlink-component-card-title, .subpage-hyperlink-component-card-body {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
-    }
 
-    &:active {
-      .pb-link-card-title {
-        color: color($theme-color-primary-darker) !important;
+      .subpage-hyperlink-component-card-title {
+        color: color($theme-link-color);
+        -webkit-line-clamp: 2;
       }
-    }
 
-    &:visited {
-      .pb-link-card-title {
-        color: color($theme-link-visited-color);
+      .subpage-hyperlink-component-card-body {
+        color: color($theme-color-base-ink);
+        text-decoration: none !important;
+        -webkit-line-clamp: 4;
+      }
+
+      &:hover {
+        .subpage-hyperlink-component-card-title {
+          color: color($theme-link-hover-color) !important;
+        }
+      }
+
+      &:active {
+        .subpage-hyperlink-component-card-title {
+          color: color($theme-link-active-color) !important;
+        }
+      }
+
+      &:visited {
+        .subpage-hyperlink-component-card-title {
+          color: color($theme-link-visited-color);
+        }
       }
     }
   }

@@ -22,7 +22,7 @@ const COMPONENT_CLASSES = [
     }
 
     function containerizeSubpageHyperlinkCards() {
-      let cardClass = 'pb-link-card';
+      let cardClass = 'subpage-hyperlink-component-link-card';
       let cardContainerClass = 'pb-two-column-card-link-container';
 
       function addContainerAndAppendElements(container, containerClass, elementOne, elementTwo) {

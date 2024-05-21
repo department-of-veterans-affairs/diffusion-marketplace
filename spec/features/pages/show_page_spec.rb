@@ -254,8 +254,8 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'should allow admins to toggle card styling for link components' do
-    expect(page).to_not have_selector('.pb-link-card')
-    expect(page).to have_selector('.pb-link-default')
+    expect(page).to_not have_selector('.subpage-hyperlink-component-link-card')
+    expect(page).to have_selector('.subpage-hyperlink-component-link-default')
 
     visit '/admin/pages'
     all('.edit_link').last.click
@@ -268,9 +268,9 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_content('Page was successfully updated.')
     visit '/programming/ruby-rocks'
 
-    expect(page).to_not have_selector('.pb-link-default')
+    expect(page).to_not have_selector('.subpage-hyperlink-component-link-default')
     expect(page).to have_selector('.pb-two-column-card-link-container')
-    expect(page).to have_selector('.pb-link-card')
+    expect(page).to have_selector('.subpage-hyperlink-component-link-card')
   end
 
   context 'Page image and alt text' do
