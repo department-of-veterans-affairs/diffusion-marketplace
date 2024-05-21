@@ -7,7 +7,7 @@
 
   p, li {
     a {
-      @extend .usa-link;
+      @extend .usa-link; // links created by WYSIWYG inherit USWDS styles
     }
     margin-top: 1rem;
     margin-bottom: 1rem;
