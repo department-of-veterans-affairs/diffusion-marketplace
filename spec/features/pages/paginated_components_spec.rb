@@ -6,7 +6,7 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     @user.add_role(:admin)
     @page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
     @paragraph_component = PageParagraphComponent.create(text: "<div><p>Just some filler text</p></div>")
-    @event_pagination_size = 3
+    @event_pagination_size = PageEventComponent::PAGINATION
     @news_pagination_size = 6
 
 
