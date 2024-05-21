@@ -3,6 +3,10 @@
     @extend .usa-link;
   }
 
+  a.usa-button {
+    @extend .usa-button;
+  }
+
   p, li {
     margin-top: 1rem;
     margin-bottom: 1rem;
