@@ -136,15 +136,15 @@ $theme-link-visited-color:     'violet-70';
 $theme-link-hover-color:       'blue-warm-80v';
 $theme-link-active-color:      'blue-warm-70v';
 
+// Buttons - 2024 transition palette
+$transition-btn-palette-default: 'blue-warm-80v';
+$transition-btn-palette-hover: 'blue-warm-70v';
+$transition-btn-palette-active: 'blue-60';
+$transition-btn-palette-visited-color: 'blue-warm-80v';
+
 /*
 ----------------------------------------
 Custom colors
 ----------------------------------------
 */
 $theme-color-dm-white: 'white';
-
-// 2024 transition palette
-$transition-palette-default: 'blue-warm-80v';
-$transition-palette-hover: 'blue-warm-70v';
-$transition-palette-active: 'blue-warm-60v';
-$transition-palette-visited-color: 'violet-70';

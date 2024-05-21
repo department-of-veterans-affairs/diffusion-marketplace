@@ -1,13 +1,14 @@
 .dm-page-content {
-  a {
-    @extend .usa-link;
-  }
 
   a.usa-button {
     @extend .usa-button;
+    @include transition-btn-colors;
   }
 
   p, li {
+    a {
+      @extend .usa-link;
+    }
     margin-top: 1rem;
     margin-bottom: 1rem;
     line-height: 1.62;
