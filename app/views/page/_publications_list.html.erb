@@ -1,20 +1,7 @@
 <% publications.each do |publication|%>
     <div class="page-publication-component">
         <h3 class="publication-title margin-bottom-3">
-            <% if publication.attachment? %>
-              <%= link_to publication.attachment_s3_presigned_url,
-              class: 'usa-link',
-              target: '_blank',
-              download: publication.attachment_file_name,
-              'data-resource-id': publication.id,
-              'data-resource-path': publication.attachment.path do %>
-                <i class="far fa-file margin-right-1"></i><%=publication.title %><span class="sr-only">Download <%= publication.attachment_file_name %>/span>
-              <% end %>
-            <% elsif publication.url? %>
-              <%= link_to(publication.title, publication.url, class: set_link_classes(publication.url), target: get_link_target_attribute(publication.url)) %>
-            <% else %>
-              <%= publication.title %>
-            <% end %>
+          <%= publication.title %>
         </h3>
         <p>
             <% if publication.published_in? || publication.published_on_year? %>
@@ -25,6 +12,22 @@
         </p>
         <p>
           <%= "By #{publication.authors}" if publication.authors.present? %>
+        </p>
+        <p>
+          <% if publication.attachment? || publication.url %>
+            <% link_text = publication.url_link_text.present? ? publication.url_link_text : "Read Publication" %>
+            <% if publication.attachment? %>
+              <% page_component = publication.page_component %>
+              <%= link_to page_resource_download_path(id: page_component.component_id, page_id: page_component.page.id.to_s),
+              class: 'usa-link',
+              target: '_blank',
+              'aria-label': "#{link_text}: #{publication.title}" do %>
+                <i class="far fa-file margin-right-1"></i><%= link_text %><span class="usa-sr-only">Download <%= publication.attachment_file_name %></span>
+              <% end %>
+            <% elsif publication.url? %>
+              <%= link_to( link_text, publication.url, 'aria-label': "#{link_text}: #{publication.title}", class: set_link_classes(publication.url), target: get_link_target_attribute(publication.url)) %>
+            <% end %>
+          <% end %>
         </p>
     </div>
 <% end %>

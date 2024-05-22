@@ -30,35 +30,6 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     end
   end
 
-  context 'Title' do
-    it 'links to uploaded PDFs' do
-      downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
-      publication_component = PagePublicationComponent.create(title: 'Journal article PDF', attachment: downloadable_file, published_in: 'The Journal of Science', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
-      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
-      visit '/programming/ruby-rocks'
-
-      expect(page).to have_content('Journal article PDF')
-      expect(page).to have_css('.fa-file')
-    end
-
-    it 'links to external URLs' do
-      publication_component = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
-      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
-      visit '/programming/ruby-rocks'
-
-      expect(page).to have_content('External article link')
-      expect(page).to have_css('.usa-link--external')
-    end
-
-    it 'renders the title if no URL or attachment is provided' do
-      publication_component = PagePublicationComponent.create(title: 'Placeholder title', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
-      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
-      visit '/programming/ruby-rocks'
-
-      expect(page).to have_content('Placeholder title')
-    end
-  end
-
   context 'Published in' do
     it 'renders with appropriate prepositions' do
       publication_and_date = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
@@ -97,6 +68,37 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
       visit '/programming/ruby-rocks'
 
       expect(page).to have_content('Published in Wikipedia')
+    end
+  end
+
+  context 'Link' do
+    it 'links to uploaded PDFs' do
+      downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
+      publication_component = PagePublicationComponent.create(title: 'Journal article PDF', attachment: downloadable_file, published_in: 'The Journal of Science', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
+      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
+      visit '/programming/ruby-rocks'
+
+      expect(page).to have_link('Read Publication')
+      expect(page).to have_css('.fa-file')
+      expect(find_link('Read Publication')[:'aria-label']).to eq('Read Publication: Journal article PDF')
+    end
+
+    it 'links to external URLs' do
+      publication_component = PagePublicationComponent.create(title: 'External article link', url: 'https://wikipedia.org', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
+      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
+      visit '/programming/ruby-rocks'
+
+      expect(page).to have_link('Read Publication', href: 'https://wikipedia.org')
+      expect(page).to have_css('.usa-link--external')
+      expect(find_link('Read Publication')[:'aria-label']).to eq('Read Publication: External article link')
+    end
+
+    it 'custom link text' do
+      publication_component = PagePublicationComponent.create(title: 'Placeholder title', url: '/about', url_link_text: 'Review the Study', published_in: 'Wikipedia', published_on_day: 5, published_on_month: 5, published_on_year: 2022)
+      PageComponent.create(page: @page, component: publication_component, created_at: Time.now)
+      visit '/programming/ruby-rocks'
+      expect(page).to have_link('Review the Study', href: '/about')
+      expect(find_link('Review the Study')[:'aria-label']).to eq('Review the Study: Placeholder title')
     end
   end
 end

@@ -1,8 +1,8 @@
 require 'rails_helper'
 describe 'Page Builder - Show - Events', type: :feature, js: true do
   before do
-    page_group = create(:page_group, name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
-    @page = create(:page, page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    @page_group = create(:page_group, name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
+    @page = create(:page, page_group: @page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     @event_pagination_size = PageEventComponent::PAGINATION
 
     user = create(:user)

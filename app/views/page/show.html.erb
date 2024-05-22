@@ -258,7 +258,7 @@
                 @publication_list_component_index = component_index + 1
                 publications_count = plc[:pagy].count
               %>
-              <% if publications_count <= 3 # use card styling for 2 or fewer  %>
+              <% if publications_count <= 3 # use card styling for 3 or fewer  %>
                 <ul class="publication-component-list-cards usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
                   <%= render(partial: 'publications_list_cards', locals: {publications: plc[:publications], publications_count: publications_count}) %>
                 </ul>
