@@ -1,8 +1,6 @@
 class PageEventComponent < ApplicationRecord
   has_one :page_component, as: :component, autosave: true
 
-  PAGINATION = 3.freeze
-
   FORM_FIELDS = { # Fields and labels in .arb form
     title: 'Title',
     url: 'URL',
