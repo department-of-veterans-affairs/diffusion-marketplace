@@ -1,8 +1,8 @@
 require 'rails_helper'
 describe 'Page Builder - Show - Events', type: :feature, js: true do
   before do
-    page_group = create(:page_group, name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
-    @page = create(:page, page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    @page_group = create(:page_group, name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
+    @page = create(:page, page_group: @page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     @event_pagination_size = PageEventComponent::PAGINATION
 
     user = create(:user)
@@ -58,7 +58,46 @@ describe 'Page Builder - Show - Events', type: :feature, js: true do
     end
   end
 
-  # create just enough components for a "Load more" button
+  context 'Link' do
+    before do
+      @link_testing = @page = create(:page, page_group: @page_group, title: 'link testing', description: 'one component per page', slug: 'link-testing', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    end
+
+    it 'renders nothing for empty URLs' do
+      event_component = create(:page_event_component, url: nil, url_link_text: nil)
+      PageComponent.create(page: @link_testing, component: event_component, created_at: Time.now,)
+      visit 'programming/link-testing'
+      expect(page).not_to have_link('View Event')
+    end
+
+    it 'renders generic link title if none is provided' do
+      event_component = create(:page_event_component, url: '/about', url_link_text: nil)
+      PageComponent.create(page: @link_testing, component: event_component, created_at: Time.now,)
+      visit 'programming/link-testing'
+      expect(page).to have_link('View Event', href: '/about')
+    end
+
+    it 'renders custom link title if provided' do
+      event_component = create(:page_event_component, url: '/about', url_link_text: 'Register now' )
+      PageComponent.create(page: @link_testing, component: event_component, created_at: Time.now,)
+      visit 'programming/link-testing'
+      expect(page).to have_link('Register now', href: '/about')
+      expect(page).not_to have_link('View Event')
+    end
+
+    it 'provides aria label with the component title for screenreaders' do
+      event_component = create(:page_event_component, title: "Webinar", url: '/about', url_link_text: nil)
+      PageComponent.create(page: @link_testing, component: event_component, created_at: Time.now,)
+      event_component = create(:page_event_component, title: "Conference", url: '/about', url_link_text: 'Register now' )
+      PageComponent.create(page: @link_testing, component: event_component, created_at: Time.now,)
+      visit 'programming/link-testing'
+
+      expect(find_link('View Event')[:'aria-label']).to eq('View Event: Webinar')
+      expect(find_link('Register now')[:'aria-label']).to eq('Register now: Conference')
+    end
+  end
+
+    # create just enough components for a "Load more" button
   def create_events_list(event_name, attrs_hash, num_over_pagy_threshold = 1)
     create_list(:page_event_component, @event_pagination_size + num_over_pagy_threshold, attrs_hash) do |event, i|
       event.title = "#{event_name} #{i + 1}"

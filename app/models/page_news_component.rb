@@ -4,7 +4,8 @@ class PageNewsComponent < ApplicationRecord
 
   FORM_FIELDS = {
     title: 'Title',
-    url: 'URL',
+    url: 'Link URL',
+    url_link_text: 'Link text',
     published_date: 'Publication date',
     authors: 'Author(s)',
     text: 'Description',
