@@ -28,6 +28,17 @@ class PageEventComponent < ApplicationRecord
       start_date.present? && start_date < Date.current) && hide_after_date?
   end
 
+  def column_size(event_count)
+    case event_count
+    when 1
+      return 'tablet:grid-col-12'
+    when 2
+      return 'tablet:grid-col-6'
+    else
+      return 'tablet:grid-col-4'
+    end
+  end
+
   def rendered_date
     return if self.start_date.blank?
 

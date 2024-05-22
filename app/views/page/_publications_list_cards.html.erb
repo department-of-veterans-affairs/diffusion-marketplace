@@ -1,5 +1,5 @@
 <% publications.each do |publication| %>
-  <li class="page-publication-component usa-card tablet:grid-col-6">
+  <li class="page-publication-component usa-card <%= publication.column_size(publications_count) %>">
     <div class="usa-card__container border-0">
         <div class="usa-card__header">
             <h3 class="publication-title">

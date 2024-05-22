@@ -1,5 +1,5 @@
 <% news_items.each do |news_item| %>
-    <li class="page-news-component usa-card tablet:grid-col-4">
+    <li class="page-news-component usa-card <%= news_item.column_size(news_item_count) %>">
         <div class="usa-card__container margin-top-5">
             <% if news_item.image.present? %>
                 <div class="usa-card__media--inset">
