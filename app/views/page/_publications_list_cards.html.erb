@@ -4,18 +4,7 @@
     <div class="usa-card__container border-0">
         <div class="usa-card__header">
             <h3 class="publication-title">
-                <% if publication.attachment? %>
-                  <% page_component = publication.page_component %>
-                  <%= link_to page_resource_download_path(id: page_component.component_id, page_id: page_component.page.id.to_s),
-                  class: 'usa-link',
-                  target: '_blank' do %>
-                    <i class="far fa-file margin-right-1"></i><%=publication.title %><span class="usa-sr-only">Download <%= publication.attachment_file_name %></span>
-                  <% end %>
-                <% elsif publication.url? %>
-                  <%= link_to(publication.title, publication.url, class: set_link_classes(publication.url), target: get_link_target_attribute(publication.url)) %>
-                <% else %>
-                  <%= publication.title %>
-                <% end %>
+              <%= publication&.title %>
             </h3>
         </div>
         <div id="<%= publication.id %>" class="publication-item-description usa-prose usa-card__body">
@@ -29,6 +18,18 @@
           <p>
             <%= "By #{publication.authors}" if publication.authors.present? %>
           </p>
+          <% if publication.attachment? || publication.url %>
+            <% if publication.attachment? %>
+              <% page_component = publication.page_component %>
+              <%= link_to page_resource_download_path(id: page_component.component_id, page_id: page_component.page.id.to_s),
+              class: 'usa-link',
+              target: '_blank' do %>
+                <i class="far fa-file margin-right-1"></i><%= "View Publication" %><span class="usa-sr-only">Download <%= publication.attachment_file_name %></span>
+              <% end %>
+            <% elsif publication.url? %>
+              <%= link_to( "View Publication", publication.url, class: set_link_classes(publication.url), target: get_link_target_attribute(publication.url)) %>
+            <% end %>
+          <% end %>
         </div>
     </div>
   </li>
