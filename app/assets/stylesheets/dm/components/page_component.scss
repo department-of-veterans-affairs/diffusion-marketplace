@@ -1,5 +1,14 @@
 .dm-page-content {
+
+  a.usa-button {
+    @extend .usa-button;
+    @include transition-btn-colors;
+  }
+
   p, li {
+    a {
+      @extend .usa-link; // links created by WYSIWYG inherit USWDS styles
+    }
     margin-top: 1rem;
     margin-bottom: 1rem;
     line-height: 1.62;
@@ -39,116 +48,43 @@
     @include u-margin-bottom(0, !important);
   }
 
-  .pb-link {
-    .pb-link-card-title, .pb-link-card-body {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .pb-link-card-title {
-      color: color($theme-color-primary-vivid);
-      -webkit-line-clamp: 2;
-    }
-
-    .pb-link-card-body {
-      color: color($theme-color-base-ink);
-      @include u-text-decoration('no-underline');
-      -webkit-line-clamp: 4;
-    }
-
-    &:hover {
-      .pb-link-card-title {
-        color: color($theme-color-primary-dark) !important;
-      }
-    }
-
-    &:active {
-      .pb-link-card-title {
-        color: color($theme-color-primary-darker) !important;
-      }
-    }
-
-    &:visited {
-      .pb-link-card-title {
-        color: color($theme-link-visited-color);
-      }
-    }
-  }
-
-  // Per design, these styles should mimic the homepage's 'Featured' innovation and 'Featured' topic styles as much as possible (10/14/2022)
-  .page-compound-body-component {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    column-gap: 24px;
-
-    .grid-item-text {
-      grid-column: 1 / 13;
-      grid-row: 2 / 2;
-
-      &.no-images {
-        grid-row: 1 / 1;
+  .subpage-hyperlink-component {
+    a.subpage-hyperlink-component-link {
+      text-decoration: none !important;
+      .subpage-hyperlink-component-card-title, .subpage-hyperlink-component-card-body {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
-      @media screen and (min-width: 1024px) {
-        grid-column: 1 / 7;
-        grid-row: 1 / 1;
-
-        &.no-images {
-          grid-column: 1 / 9;
-        }
-
-        &.right-align {
-          grid-column: 7 / 13;
-
-          &.no-images {
-            grid-column: 5 / 13;
-          }
-        }
+      .subpage-hyperlink-component-card-title {
+        color: color($theme-link-color);
+        -webkit-line-clamp: 2;
       }
-    }
 
-    .grid-item-images {
-      grid-column: 1 / 13;
-      grid-row: 1 / 2;
-      @include u-margin-bottom(4);
+      .subpage-hyperlink-component-card-body {
+        color: color($theme-color-base-ink);
+        text-decoration: none !important;
+        -webkit-line-clamp: 4;
+      }
 
-      @media screen and (min-width: 1024px) {
-        grid-column: 8 / 13;
-        grid-row: 1 / 1;
-        @include u-margin-bottom(0);
-
-        &.left-align {
-          grid-column: 1 / 6;
+      &:hover {
+        .subpage-hyperlink-component-card-title {
+          color: color($theme-link-hover-color) !important;
         }
       }
 
-      .image-container {
-        height: 174px;
-        max-width: 308px;
-
-        @media screen and (min-width: 1024px) {
-          height: 223px;
-          @include u-maxw('none');
-        }
-
-        a {
-          &:focus {
-            img {
-              outline: 0.25rem solid #2491ff;
-              outline-offset: 0;
-            }
-          }
-        }
-
-        img {
-          object-fit: cover;
+      &:active {
+        .subpage-hyperlink-component-card-title {
+          color: color($theme-link-active-color) !important;
         }
       }
-    }
 
-    p {
-      @include u-margin(0);
+      &:visited {
+        .subpage-hyperlink-component-card-title {
+          color: color($theme-link-visited-color);
+        }
+      }
     }
   }
 
