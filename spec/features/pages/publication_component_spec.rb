@@ -8,18 +8,18 @@ describe 'Page Builder - Show - Paginated Components', type: :feature do
     login_as(user, scope: :user, run_callbacks: false)
   end
 
-  context '2 or fewer publications' do
+  context '3 or fewer publications' do
     it 'applies card styling' do
-      create_publication_components(2, @page)
+      create_publication_components(3, @page)
       visit '/programming/ruby-rocks'
 
-      expect(page).to have_css('.page-publication-component', count: 2)
+      expect(page).to have_css('.page-publication-component', count: 3)
       expect(page).to have_css '.usa-card__container'
       expect(page).not_to have_content('Load more')
     end
   end
 
-  context '3 or more publications' do
+  context '4 or more publications' do
     it 'applies list styling' do
       create_publication_components(11, @page)
       visit '/programming/ruby-rocks'

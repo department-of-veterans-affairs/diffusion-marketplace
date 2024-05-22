@@ -161,13 +161,14 @@
               component_index = @event_list_component_index
               elc = @event_list_components[component_index]
               @event_list_component_index = component_index + 1
+              event_count = elc[:pagy].count
             %>
             <% unless elc[:events].all?(&:passed_and_hidden) %>
               <div class="grid-container">
                 <ul class="event-component-list grid-row grid-gap usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-                  <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
+                  <%= render(partial: 'events_list', locals: {events: elc[:events], event_count: event_count}) %>
                 </ul>
-                <% if elc[:pagy].count > PageEventComponent::PAGINATION  %>
+                <% if event_count > PageEventComponent::PAGINATION  %>
                   <div class="text-center dm-load-more-events-<%= component_index %>-btn-container margin-bottom-4">
                     <% link = pagy_link_proc(elc[:pagy]) %>
                     <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
@@ -208,12 +209,13 @@
               component_index = @news_list_component_index
               nic = @news_items_components[component_index]
               @news_list_component_index = component_index + 1
+              news_item_count = nic[:pagy].count
             %>
             <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
               <ul class="usa-card-group grid-row grid-gap news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %>">
-                <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
+                <%= render partial:'news_items_list', locals: { news_items: nic[:news], news_item_count: news_item_count} %>
               </ul>
-              <% if nic[:pagy].count > 6 %>
+              <% if news_item_count > 6 %>
                 <div class="text-center dm-load-more-news-<%= component_index %>-btn-container margin-top-5" >
                   <% link = pagy_link_proc(nic[:pagy]) %>
                   <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
@@ -254,16 +256,17 @@
                 component_index = @publication_list_component_index
                 plc = @publication_list_components[component_index]
                 @publication_list_component_index = component_index + 1
+                publications_count = plc[:pagy].count
               %>
-              <% if plc[:pagy].count <= 2 # use card styling for 2 or fewer  %>
+              <% if publications_count <= 3 # use card styling for 2 or fewer  %>
                 <ul class="publication-component-list-cards usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-                  <%= render(partial: 'publications_list_cards', locals: {publications: plc[:publications]}) %>
+                  <%= render(partial: 'publications_list_cards', locals: {publications: plc[:publications], publications_count: publications_count}) %>
                 </ul>
-              <% elsif plc[:pagy].count > 2 # use list styling for all other card lists %>
+              <% elsif publications_count > 3 # use list styling for all other card lists %>
                 <div class="publication-component-list dm-paginated-<%= component_index %>-publications margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
                   <%= render(partial: 'publications_list', locals: {publications: plc[:publications]}) %>
                 </div>
-                <% if plc[:pagy].count > 10 # Load more button %>
+                <% if publications_count > 10 # Load more button %>
                   <div class="text-center dm-load-more-publications-<%= component_index %>-btn-container">
                     <% link = pagy_link_proc(plc[:pagy]) %>
                     <%=  link.call(plc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
