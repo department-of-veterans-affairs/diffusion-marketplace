@@ -1,14 +1,15 @@
 footer {
   .dm-footer-heading {
-    color: color('white');
+    color: color($theme-color-base-lighter);
   }
 
   .dm-footer-link {
       @include u-text('normal');
-      color: color('white');
+      color: color($theme-color-base-lighter);
       text-decoration: none;
 
       &:hover, &:focus, &:active {
+        color: color($theme-color-secondary-darker);
         text-decoration: underline;
       }
   }
