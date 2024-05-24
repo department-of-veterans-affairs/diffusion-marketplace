@@ -22,6 +22,8 @@ class PagePublicationComponent < ApplicationRecord
     authors: 'Authors'
   }.freeze
 
+  PAGINATION = 10.freeze
+
   def attachment_s3_presigned_url(style = nil)
     object_presigned_url(attachment, style)
   end

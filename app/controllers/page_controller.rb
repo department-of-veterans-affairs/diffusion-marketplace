@@ -140,7 +140,7 @@ class PageController < ApplicationController
     set_pagy_practice_list_array(practice_lists) if practice_lists.present?
     paginate_components(events, "events", PageEventComponent::PAGINATION) if events.present?
     paginate_components(news_items, "news", 6) if news_items.present?
-    paginate_components(publications, "publications", 10) if publications.present?
+    paginate_components(publications, "publications", PagePublicationComponent::PAGINATION) if publications.present?
   end
 
   # Paginate adjacent news or event components
