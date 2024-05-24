@@ -215,7 +215,7 @@
               <ul class="usa-card-group grid-row grid-gap news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %>">
                 <%= render partial:'news_items_list', locals: { news_items: nic[:news], news_item_count: news_item_count} %>
               </ul>
-              <% if news_item_count > 6 %>
+              <% if news_item_count > PageNewsComponent::PAGINATION %>
                 <div class="text-center dm-load-more-news-<%= component_index %>-btn-container margin-top-5" >
                   <% link = pagy_link_proc(nic[:pagy]) %>
                   <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
