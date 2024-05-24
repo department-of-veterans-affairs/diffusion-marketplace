@@ -52,33 +52,30 @@
   }
 
   .usa-nav__primary-item {
-    a {
+    a, button > span {
       @include u-font('sans', 'md');
     }
 
     button {
-      span {
-        @include u-font('sans', 'md');
+      &[aria-expanded="false"], &[aria-expanded="true"] {
+        background-size: 10px 10px;
+        background-position: right 8% top 45%;
       }
-    }
-    button[aria-expanded="false"], button[aria-expanded="true"] {
-      background-size: 10px 10px;
-      background-position: right 8% top 45%;
-    }
 
-    button[aria-expanded="false"] {
-      background-image: asset_url("header-nav-down-arrow.svg") !important;
+      &[aria-expanded="false"] {
+        background-image: asset_url("header-nav-down-arrow.svg") !important;
 
-      &:hover{
-        background-image: asset_url("header-nav-down-arrow-hover.svg") !important;
+        &:hover{
+          background-image: asset_url("header-nav-down-arrow-hover.svg") !important;
+        }
       }
-    }
 
-    button[aria-expanded="true"] {
-      background-image: asset_url("header-nav-up-arrow.svg") !important;
+      &[aria-expanded="true"] {
+        background-image: asset_url("header-nav-up-arrow.svg") !important;
 
-      &:hover{
-        background-image: asset_url("header-nav-up-arrow-hover.svg") !important;
+        &:hover{
+          background-image: asset_url("header-nav-up-arrow-hover.svg") !important;
+        }
       }
     }
   }
@@ -157,18 +154,6 @@
 
         &.usa-accordion__button {
           border-bottom-width: 1px !important;
-        }
-
-        &[aria-controls="browse-by-locations-dropdown"] {
-          width: 133px !important;
-        }
-
-        &[aria-controls="communities-dropdown"] {
-          width: 84px !important;
-        }
-
-        &[aria-controls="dm-user-profile-options"] {
-          width: 78px !important;
         }
       }
 
