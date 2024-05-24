@@ -28,11 +28,11 @@
 
   .usa-menu-btn {
     background-color: white;
-    color: #162E51;
+    color: color($transition-btn-palette-default);
 
     &:hover {
       cursor: pointer;
-      background-color: #162E51;
+      background-color: color($transition-btn-palette-default);
       color: white;
     }
   }
@@ -261,7 +261,7 @@
 
         .usa-current {
           @include u-text($theme-color-dm-white, !important);
-          @include u-text('bold');
+          text-decoration: underline;
         }
       }
     }
