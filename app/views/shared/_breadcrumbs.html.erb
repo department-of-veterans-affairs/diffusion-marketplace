@@ -52,7 +52,7 @@
             %>
             <li class="usa-breadcrumb__list-item<%= ' page-builder-breadcrumb position-static' if @page %>">
               <i class='fas fa-arrow-left margin-right-05 <%= heading.present? ? 'text-white' : 'text-gray-50' %>'></i>
-              <%= link_to(breadcrumb_display, breadcrumb_path, class: 'usa-breadcrumb__link padding-left-05 font-sans-sm') %>
+              <%= link_to(breadcrumb_display, breadcrumb_path, class: 'usa-link usa-breadcrumb__link padding-left-05 font-sans-sm') %>
             </li>
           <% else %>
             <% breadcrumbs.each do |b| %>
