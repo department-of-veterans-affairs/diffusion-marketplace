@@ -52,6 +52,15 @@
   }
 
   .usa-nav__primary-item {
+    a {
+      @include u-font('sans', 'md');
+    }
+
+    button {
+      span {
+        @include u-font('sans', 'md');
+      }
+    }
     button[aria-expanded="false"], button[aria-expanded="true"] {
       background-size: 10px 10px;
       background-position: right 8% top 45%;
@@ -247,11 +256,11 @@
       }
 
       &#browse-by-locations-dropdown {
-        left: 18.5rem;
+        left: 20.9rem;
       }
 
       &#communities-dropdown {
-        left: 30.8rem;
+        left: 35.6rem;
       }
 
 
