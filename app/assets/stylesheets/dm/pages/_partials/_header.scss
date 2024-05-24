@@ -14,6 +14,14 @@
     }
   }
 
+  #primary-nav {
+    .usa-nav__primary-item {
+      a, button > span {
+        @include u-font('sans', 'md');
+      }
+    }
+  }
+
   .usa-current {
     &::after {
       @include u-border(2px);
@@ -52,10 +60,6 @@
   }
 
   .usa-nav__primary-item {
-    a, button > span {
-      @include u-font('sans', 'md');
-    }
-
     button {
       &[aria-expanded="false"], &[aria-expanded="true"] {
         background-size: 10px 10px;
