@@ -94,7 +94,7 @@ describe 'Homepage', type: :feature do
   it 'allows the user to subscribe to the DM newsletter by taking them to the GovDelivery site' do
     fill_in('Your email address', with: 'vladilena.milize@test.com')
 
-    new_window = window_opened_by { click_button('Subscribe today') }
+    new_window = window_opened_by { click_button('Subscribe') }
 
     within_window new_window do
       wait_time = Capybara.default_max_wait_time
