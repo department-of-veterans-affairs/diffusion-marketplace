@@ -28,17 +28,6 @@ class PagePublicationComponent < ApplicationRecord
     object_presigned_url(attachment, style)
   end
 
-  def column_size(publications_count)
-    case publications_count
-    when 1
-      return 'tablet:grid-col-12'
-    when 2
-      return 'tablet:grid-col-6'
-    else
-      return 'tablet:grid-col-4'
-    end
-  end
-
   def publication_date
     if self.published_on_month? && self.published_on_day? && self.published_on_year? # on Month Day, Year
       return "on #{Date::MONTHNAMES[self.published_on_month]} #{self.published_on_day}, #{self.published_on_year}"
