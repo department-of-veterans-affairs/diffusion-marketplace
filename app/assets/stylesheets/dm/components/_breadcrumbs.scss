@@ -1,5 +1,6 @@
 // `usa-breadcrumb` OVERRIDES
 .usa-breadcrumb {
+  @extend .usa-link;
   @include u-bg('transparent', !important);
   .fas {
     font-size: 13px;
@@ -13,7 +14,7 @@
     }
 
     &:visited {
-      @include u-text('primary-vivid', !important);
+      color: color($theme-link-color);
     }
   }
 
