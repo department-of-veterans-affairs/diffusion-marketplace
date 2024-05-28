@@ -13,6 +13,8 @@ class PageNewsComponent < ApplicationRecord
     image_alt_text: 'Alternative Text'
   }.freeze
 
+  PAGINATION = 6.freeze
+
   validates_with InternalUrlValidator,
                  on: [:create, :update],
                  if: Proc.new { |component| component.url.present? && component.url.chars.first === '/' }

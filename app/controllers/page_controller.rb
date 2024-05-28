@@ -139,8 +139,8 @@ class PageController < ApplicationController
 
     set_pagy_practice_list_array(practice_lists) if practice_lists.present?
     paginate_components(events, "events", PageEventComponent::PAGINATION) if events.present?
-    paginate_components(news_items, "news", 6) if news_items.present?
-    paginate_components(publications, "publications", 10) if publications.present?
+    paginate_components(news_items, "news", PageNewsComponent::PAGINATION) if news_items.present?
+    paginate_components(publications, "publications", PagePublicationComponent::PAGINATION) if publications.present?
   end
 
   # Paginate adjacent news or event components
@@ -183,9 +183,9 @@ class PageController < ApplicationController
       practices = helpers.is_user_a_guest? ? Practice.where(id: practices_ids).public_facing.sort_by_retired.sort_a_to_z : Practice.where(id: practices_ids).published_enabled_approved.sort_by_retired.sort_a_to_z
 
       if @practice_list_components[page_practice_list_index].present?
-        @practice_list_components[page_practice_list_index][:pagy], @practice_list_components[page_practice_list_index][:paginated] = get_pagy_array(practices, page_practice_list_index, params_index, 6, "practices")
+        @practice_list_components[page_practice_list_index][:pagy], @practice_list_components[page_practice_list_index][:paginated] = get_pagy_array(practices, page_practice_list_index, params_index, PagePracticeListComponent::PAGINATION, "practices")
       else
-        pagy_practices, paginated_practices = get_pagy_array(practices, page_practice_list_index, params_index, 6, "practices")
+        pagy_practices, paginated_practices = get_pagy_array(practices, page_practice_list_index, params_index, PagePracticeListComponent::PAGINATION, "practices")
         practice_list_pagy = { pagy: pagy_practices, practices: paginated_practices}
         @practice_list_components.push(practice_list_pagy)
       end
