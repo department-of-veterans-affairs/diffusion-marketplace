@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_16_224142) do
+ActiveRecord::Schema.define(version: 2024_05_28_183046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -572,6 +572,7 @@ ActiveRecord::Schema.define(version: 2024_05_16_224142) do
     t.string "location"
     t.string "presented_by"
     t.boolean "hide_after_date", default: false
+    t.string "url_link_text"
     t.index ["page_component_id"], name: "index_page_event_components_on_page_component_id"
   end
 
@@ -663,6 +664,7 @@ ActiveRecord::Schema.define(version: 2024_05_16_224142) do
     t.string "image_content_type"
     t.bigint "image_file_size"
     t.datetime "image_updated_at"
+    t.string "url_link_text"
     t.index ["page_component_id"], name: "index_page_news_components_on_page_component_id"
   end
 
@@ -713,6 +715,7 @@ ActiveRecord::Schema.define(version: 2024_05_16_224142) do
     t.integer "published_on_month"
     t.integer "published_on_day"
     t.integer "published_on_year"
+    t.string "url_link_text"
     t.index ["page_component_id"], name: "index_page_publication_components_on_page_component_id"
   end
 
@@ -796,6 +799,7 @@ ActiveRecord::Schema.define(version: 2024_05_16_224142) do
     t.datetime "image_updated_at"
     t.boolean "is_public", default: false
     t.integer "position"
+    t.string "short_name"
     t.index ["page_group_id"], name: "index_pages_on_page_group_id"
   end
 
