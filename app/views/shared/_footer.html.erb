@@ -8,7 +8,7 @@
 
   <div class="usa-footer__primary-section bg-primary-darker padding-y-4 desktop:padding-x-7">
     <nav class="usa-footer__nav margin-x-auto padding-0" aria-label="Footer navigation">
-      <section class="usa-footer__primary-content usa-footer__primary-content--collapsible">
+      <section class="usa-footer__primary-content usa-footer__primary-content--collapsible grid-container">
         <img src="<%= asset_path( 'dm-footer-logo.svg' ) %>" alt="VA Diffusion Marketplace"/>
         <div class="grid-row text-white margin-bottom-5">
           <p class="font-sans-md line-height-sans-6">
@@ -16,8 +16,13 @@
           </p>
         </div>
         <div class="grid-row margin-bottom-8">
-          <div class="grid-col-12 desktop:grid-col-3">
-            <ul class="add-list-reset">
+          <div class="grid-col-12 tablet:grid-col-6 desktop:grid-col-3">
+            <ul class="add-list-reset" aria-labelledby="footer-visit">
+              <li class="grid-row dm-footer-heading">
+                <h3 id="footer-visit" class="usa-prose-h3">
+                  Visit
+                </h3>
+              </li>
               <li class="grid-row">
                 <%= link_to 'Home',
                             root_path,
@@ -42,8 +47,13 @@
               </li>
             </ul>
           </div>
-          <div class="grid-col-12 desktop:grid-col-3">
-            <ul class="add-list-reset">
+          <div class="grid-col-12 tablet:grid-col-6 desktop:grid-col-3">
+            <ul class="add-list-reset" aria-labelledby="footer-support">
+              <li class="grid-row dm-footer-heading">
+                <h3 id="footer-support" class="usa-prose-h3">
+                  Support
+                </h3>
+              </li>
               <li class="grid-row">
                 <a class="dm-footer-link margin-bottom-2" href="https://www.va.gov/ABOUT_VA/index.asp">
                   About VA
@@ -66,8 +76,13 @@
               </li>
             </ul>
           </div>
-          <div class="grid-col-12 desktop:grid-col-3">
-            <ul class="add-list-reset">
+          <div class="grid-col-12 tablet:grid-col-6 desktop:grid-col-3">
+            <ul class="add-list-reset" aria-labelledby="footer-legal">
+              <li class="grid-row dm-footer-heading">
+                <h3 id="footer-legal" class="usa-prose-h3">
+                  Legal
+                </h3>
+              </li>
               <li class="grid-row">
                 <a class="dm-footer-link margin-bottom-2" href="https://www.va.gov/web/standards/disclaimer.cfm">
                   Disclaimers
@@ -91,8 +106,13 @@
               </li>
             </ul>
           </div>
-          <div class="grid-col-12 desktop:grid-col-3">
-            <ul class="add-list-reset">
+          <div class="grid-col-12 tablet:grid-col-6 desktop:grid-col-3">
+            <ul class="add-list-reset" aria-labelledby="footer-resources">
+              <li class="grid-row dm-footer-heading">
+                <h3 id="footer-resources" class="usa-prose-h3">
+                  Resources
+                </h3>
+              </li>
               <li class="grid-row">
                 <a class="dm-footer-link margin-bottom-2" href="https://www.va.gov/ormdi/NOFEAR_Select.asp">
                   No FEAR Act data
