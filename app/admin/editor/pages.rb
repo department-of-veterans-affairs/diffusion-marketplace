@@ -19,6 +19,8 @@ ActiveAdmin.register Page, namespace: :editor do
                 :image,
                 :image_alt_text,
                 :delete_image_and_alt_text,
+                :included_in_community_subnav,
+                :short_name,
                 page_components_attributes: [
                   :id,
                   :component_type,
@@ -104,8 +106,10 @@ ActiveAdmin.register Page, namespace: :editor do
       }
       row :page_group
       row :slug
+      row :included_in_community_subnav
       row :template_type
       row :title
+      row :short_name
       row :description
       row :has_chrome_warning_banner
       row :published
@@ -182,6 +186,12 @@ ActiveAdmin.register Page, namespace: :editor do
       end
       f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
+      f.input :included_in_community_subnav,
+              label: 'Include in community sub-nav',
+              as: :boolean,
+              hint: 'Add or remove from community sub-nav links'
+      f.input :short_name,
+              hint: 'Overrides title for use as link text in sub-nav'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
       f.input :image,
               value: f.resource.image_file_name,
@@ -235,9 +245,7 @@ ActiveAdmin.register Page, namespace: :editor do
 
 
   controller do
-    skip_before_action :set_communities_for_header
     before_action :set_page,
-                  :delete_page_image_and_alt_text,
                   only: [:create, :update]
     rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
 
@@ -267,14 +275,16 @@ ActiveAdmin.register Page, namespace: :editor do
     end
 
     def create_or_update_page
-      page_params = permitted_params[:page]
-
       ActiveRecord::Base.transaction do
         @page ||= Page.new
+
+        delete_page_image_and_alt_text
+        page_params = permitted_params[:page]
         @page.update!(page_params)
+        update_page_group_position
       end
 
-      redirect_to editor_page_path(@page), notice: "Page was successfully #{action_name == 'create' ? 'created' : 'updated'}."
+      redirect_to admin_page_path(@page), notice: "Page was successfully #{action_name == 'create' ? 'created' : 'updated'}."
     end
 
     def validate_page_description_length(description)
@@ -327,6 +337,14 @@ ActiveAdmin.register Page, namespace: :editor do
 
         params[:page][:image] = nil
         params[:page][:image_alt_text] = nil
+      end
+    end
+
+    def update_page_group_position
+      include_in_community_subnav = (params[:page][:included_in_community_subnav] == "1")
+
+      if include_in_community_subnav != @page.included_in_community_subnav
+        @page.add_or_remove_from_community_subnav
       end
     end
   end
