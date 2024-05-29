@@ -3,7 +3,7 @@ class Page < ApplicationRecord
   belongs_to :page_group, inverse_of: :pages
   acts_as_list scope: :page_group
 
-  attr_accessor :delete_image_and_alt_text, :included_in_community_subnav
+  attr_accessor :delete_image_and_alt_text, :is_community_page
 
   has_many :page_components, -> { order(position: :asc) }, dependent: :destroy, autosave: true
   has_attached_file :image, styles: { thumb: '768x432>' }
@@ -30,6 +30,8 @@ class Page < ApplicationRecord
 
   enum template_type: { default: 0, narrow: 1 }
 
+  scope :community_pages, -> { where.not(position: nil) }
+
   def image_s3_presigned_url(style = nil)
     object_presigned_url(image, style)
   end
@@ -46,7 +48,7 @@ class Page < ApplicationRecord
     ]
   end
 
-  def included_in_community_subnav
+  def is_community_page
     self.position.present?
   end
 
