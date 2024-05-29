@@ -1,4 +1,4 @@
-@import 'activeadmin_addons/all';
+@import "activeadmin_addons/all";
 // SASS variable overrides must be declared before loading up Active Admin's styles.
 //
 // To view the variables that Active Admin provides, take a look at
@@ -9,15 +9,15 @@
 // $sidebar-width: 242px;
 
 // Active Admin's got SASS!
-@import 'active_admin/mixins';
-@import 'active_admin/base';
-@import 'active_skin';
-@import 'wigu/active_admin_theme';
+@import "active_admin/mixins";
+@import "active_admin/base";
+@import "active_skin";
+@import "wigu/active_admin_theme";
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "uswds/uswds";
 @import "/dm_uswds/theme/uswds-theme-color";
-@import '/dm/classes';
+@import "/dm/classes";
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
@@ -26,7 +26,9 @@
 
 @mixin tooltip-icon {
   margin-left: 0.25rem;
-  font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f059";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f059";
 }
 
 @mixin bold($font-color: $black) {
@@ -51,14 +53,16 @@
 
   .attributes_table {
     table {
-      th, td {
+      th,
+      td {
         color: black;
       }
     }
   }
 
   table.index_table {
-    th, td {
+    th,
+    td {
       color: black;
     }
   }
@@ -83,10 +87,10 @@
   }
 
   .polyform {
-    display: none
+    display: none;
   }
 
-  .active_admin_action_button{
+  .active_admin_action_button {
     @include bold($theme-color-base-ink);
     background-image: none;
     border: none;
@@ -95,16 +99,17 @@
     border-radius: 4px;
     background-color: #5ea3d3;
     display: inline-block;
-    font-size: 1.0em;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 1em;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-decoration: none;
     padding: 10px 20px;
     line-height: 12px;
-      &:link,&:visited{
-        color: $theme-color-dm-white;
-        text-decoration: none;
-      }
-    &:hover{
+    &:link,
+    &:visited {
+      color: $theme-color-dm-white;
+      text-decoration: none;
+    }
+    &:hover {
       background-color: #72aed8 !important;
       text-decoration: none;
     }
@@ -119,7 +124,7 @@
   }
 
   .page_components .required > label::after {
-      content: ' *';
+    content: " *";
   }
 
   .page_components .form-header {
@@ -136,7 +141,6 @@
   .max-height-15 {
     max-height: 15rem;
   }
-
 
   .aa-downloadable-file-link {
     margin: 0.5em 0 0 20%;
@@ -180,7 +184,7 @@
       margin-bottom: 0;
 
       li {
-        color: #5E6469;
+        color: #5e6469;
         list-style-type: none;
         font-size: 13px;
       }
@@ -218,7 +222,7 @@
       margin-right: 0;
 
       li {
-        color: #5E6469;
+        color: #5e6469;
         list-style-type: none;
         font-size: 13px;
       }
@@ -231,10 +235,12 @@
     }
   }
 
-  #page_is_visible_input, #page_has_chrome_warning_banner_input, #page_is_public_input {
+  #page_is_visible_input,
+  #page_has_chrome_warning_banner_input,
+  #page_is_public_input {
     // Active admin 'hint'
     .inline-hints {
-      @include u-display('inline-block');
+      @include u-display("inline-block");
     }
   }
 }
@@ -270,9 +276,9 @@
 .dm-retired-reason-container {
   label {
     @include u-margin-top(5);
-    @include u-position('absolute');
-    @include u-text('bold');
-    @include u-text('uppercase');
+    @include u-position("absolute");
+    @include u-text("bold");
+    @include u-text("uppercase");
     left: 10px;
     color: #8494a8;
   }
@@ -301,8 +307,8 @@
     background-color: #5ea3d3;
     padding: 10px 20px;
     color: #ffffff !important;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 1.0em;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1em;
   }
 
   .admin-email-all-practice-editors {
@@ -310,8 +316,8 @@
     background-color: #5ea3d3;
     padding: 10px 20px;
     color: #ffffff !important;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 1.0em;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1em;
     margin-right: 2px;
   }
 }
@@ -344,4 +350,51 @@
 
 .toggle-large-title-styling {
   margin-top: 7px;
+}
+
+.handle {
+  cursor: grab;
+  display: inline-flex;
+  align-items: center;
+}
+
+.handle:active {
+  cursor: grabbing;
+}
+
+.fa-stack {
+  text-align: center;
+}
+
+.fa-stack .fa-caret-down {
+  position: absolute;
+  bottom: 0;
+}
+
+.fa-stack .fa-caret-up {
+  position: absolute;
+  top: 0;
+}
+
+.community-nav-pages-list,
+.page_group_editors-list {
+  margin-left: 20%;
+}
+
+.community-nav-section {
+  border-bottom: 1px solid #ccc; /* Adds a subtle line */
+  padding-bottom: 1rem; /* Ensures spacing between the line and the content below it */
+  margin-bottom: 1rem; /* Adds space after the border to separate from next section */
+}
+
+.drag-position-hint,
+.no-community-pages,
+.no-unpositioned-pages,
+.unpositioned-page-hint {
+  display: block;
+  margin-left: 20%;
+  margin-top: 5px;
+  font-size: smaller;
+  color: #666;
+  font-style: italic;
 }
