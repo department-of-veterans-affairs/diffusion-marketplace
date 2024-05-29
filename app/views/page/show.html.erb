@@ -161,13 +161,14 @@
               component_index = @event_list_component_index
               elc = @event_list_components[component_index]
               @event_list_component_index = component_index + 1
+              event_count = elc[:pagy].count
             %>
             <% unless elc[:events].all?(&:passed_and_hidden) %>
               <div class="grid-container">
-                <ul class="event-component-list usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-                  <%= render(partial: 'events_list', locals: {events: elc[:events]}) %>
+                <ul class="event-component-list grid-row grid-gap usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
+                  <%= render(partial: 'events_list', locals: {events: elc[:events], event_count: event_count}) %>
                 </ul>
-                <% if elc[:pagy].count > 2  %>
+                <% if event_count > PageEventComponent::PAGINATION  %>
                   <div class="text-center dm-load-more-events-<%= component_index %>-btn-container margin-bottom-4">
                     <% link = pagy_link_proc(elc[:pagy]) %>
                     <%=  link.call(elc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
@@ -208,13 +209,14 @@
               component_index = @news_list_component_index
               nic = @news_items_components[component_index]
               @news_list_component_index = component_index + 1
+              news_item_count = nic[:pagy].count
             %>
             <div class="grid-container margin-bottom-5 <%= ' margin-bottom-0' if last_component === index %>">
-              <ul class="usa-card-group news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %>">
-                <%= render partial:'news_items_list', locals: {news_items: nic[:news]} %>
+              <ul class="usa-card-group grid-row grid-gap news-component-list dm-paginated-<%= component_index %>-news <%= page_narrow_classes %>">
+                <%= render partial:'news_items_list', locals: { news_items: nic[:news], news_item_count: news_item_count} %>
               </ul>
-              <% if nic[:pagy].count > 4 %>
-                <div class="text-center dm-load-more-news-<%= component_index %>-btn-container" >
+              <% if news_item_count > PageNewsComponent::PAGINATION %>
+                <div class="text-center dm-load-more-news-<%= component_index %>-btn-container margin-top-5" >
                   <% link = pagy_link_proc(nic[:pagy]) %>
                   <%=  link.call(nic[:pagy].vars[:page] + 1, 'Load more').html_safe %>
                 </div>
@@ -236,7 +238,7 @@
                 <div class="dm-practice-card-list dm-paginated-<%= component_index %>-practices">
                   <%= render partial: 'shared/practice_cards_row', locals: { practices: pplc[:practices] } %>
                 </div>
-                <% if pplc[:pagy].count > 6 %>
+                <% if pplc[:pagy].count > PagePracticeListComponent::PAGINATION %>
                   <div class="text-center dm-load-more-practices-<%= component_index %>-btn-container" >
                     <% link = pagy_link_proc(pplc[:pagy]) %>
                     <%=  link.call(pplc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
@@ -254,16 +256,17 @@
                 component_index = @publication_list_component_index
                 plc = @publication_list_components[component_index]
                 @publication_list_component_index = component_index + 1
+                publications_count = plc[:pagy].count
               %>
-              <% if plc[:pagy].count <= 2 # use card styling for 2 or fewer  %>
+              <% if publications_count <= 3 # use card styling for 3 or fewer  %>
                 <ul class="publication-component-list-cards usa-card-group dm-paginated-<%= component_index %>-events margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
-                  <%= render(partial: 'publications_list_cards', locals: {publications: plc[:publications]}) %>
+                  <%= render(partial: 'publications_list_cards', locals: {publications: plc[:publications], publications_count: publications_count}) %>
                 </ul>
-              <% elsif plc[:pagy].count > 2 # use list styling for all other card lists %>
+              <% elsif publications_count > 3 # use list styling for all other card lists %>
                 <div class="publication-component-list dm-paginated-<%= component_index %>-publications margin-bottom-4 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
                   <%= render(partial: 'publications_list', locals: {publications: plc[:publications]}) %>
                 </div>
-                <% if plc[:pagy].count > 10 # Load more button %>
+                <% if publications_count > PagePublicationComponent::PAGINATION # Load more button %>
                   <div class="text-center dm-load-more-publications-<%= component_index %>-btn-container">
                     <% link = pagy_link_proc(plc[:pagy]) %>
                     <%=  link.call(plc[:pagy].vars[:page] + 1, 'Load more').html_safe %>
@@ -288,14 +291,14 @@
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-container">
             <% if component.card? %>
-              <div class="grid-col-12 tablet:grid-col-6 pb-link-card margin-bottom-3">
-                <a class="pb-link text-no-underline" href="<%= component.url %>">
+              <div class="subpage-hyperlink-component grid-col-12 tablet:grid-col-6 subpage-hyperlink-component-link-card margin-bottom-3">
+                <a class="subpage-hyperlink-component-link" href="<%= component.url %>">
                   <div class="usa-card__container margin-0 radius-md border-width-1px">
-                    <div class="pb-link-card-title text-semibold text-underline font-sans-lg line-height-25px margin-top-0 padding-x-2 padding-top-4">
+                    <div class="subpage-hyperlink-component-card-title text-semibold text-underline font-sans-lg line-height-25px margin-top-0 padding-x-2 padding-top-4">
                         <%= component.title %>
                     </div>
                     <div class="usa-card__body padding-x-2 padding-bottom-4">
-                      <p class="usa-prose-body pb-link-card-body">
+                      <p class="usa-prose-body subpage-hyperlink-component-card-body">
                         <%= component.description %>
                       </p>
                     </div>
@@ -303,7 +306,7 @@
                 </a>
               </div>
             <% else %>
-              <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 pb-link-default <%= 'margin-x-auto' if @page.narrow? %>">
+              <div class="subpage-hyperlink-component grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 subpage-hyperlink-component-link-default <%= 'margin-x-auto' if @page.narrow? %>">
                 <a href="<%= component.url %>" class="width-full usa-link text-no-underline">
                   <h2 class="font-sans-xl display-inline margin-top-0 text-underline"><%= component.title %></h2>
                   <span class="margin-left-1 fas fa-chevron-right fa-icon-125 text-middle padding-bottom-2"></span>
@@ -359,7 +362,7 @@
           %>
           <div class='page-map-component-container'>
             <div class="grid-container">
-              <div class="page-map-component padding-top-5 padding-bottom-5 <%= page_narrow_classes %>">
+              <div class="page-map-component margin-bottom-10<%= page_narrow_classes %>">
                 <% if title.present? %>
                   <div class="font-sans-lg text-bold">
                     <%= content_tag(:h2, title, class: 'margin-right-1') %>

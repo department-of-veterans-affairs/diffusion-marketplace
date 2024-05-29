@@ -37,12 +37,8 @@
 }
 
 .edit-profile-link {
-  color: color($theme-color-primary-vivid) !important;
-   
-  &:hover {
-    text-decoration: none !important;
-    color: color($theme-color-primary-dark) !important;
-  }
+  @extend .usa-link;
+  text-decoration: none !important;
 
   .edit-profile-icon {
     &:after {

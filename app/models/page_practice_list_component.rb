@@ -4,4 +4,6 @@ class PagePracticeListComponent < ApplicationRecord
   FORM_FIELDS = { # Fields and labels in .arb form
     practices: 'Innovations'
   }.freeze
+
+  PAGINATION = 6.freeze
 end

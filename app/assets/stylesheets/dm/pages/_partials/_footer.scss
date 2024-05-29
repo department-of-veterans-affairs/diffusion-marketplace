@@ -1,4 +1,19 @@
 footer {
+  .dm-footer-heading {
+    color: color($theme-color-base-lighter);
+  }
+
+  .dm-footer-link {
+      @include u-text('normal');
+      color: color($theme-color-base-lighter);
+      text-decoration: none;
+
+      &:hover, &:focus, &:active {
+        color: color($theme-color-secondary-darker);
+        text-decoration: underline;
+      }
+  }
+
   .usa-footer__return-to-top {
     @include u-padding-top(0, !important);
     padding-bottom: 32px !important;

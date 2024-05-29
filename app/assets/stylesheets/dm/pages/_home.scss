@@ -10,11 +10,7 @@
       @include u-height('full');
       @include u-width('full');
       object-fit: cover;
-      height: 174px !important;
-
-      @media screen and (min-width: 1024px) {
-        height: 223px !important;
-      }
+      aspect-ratio: 58 / 39;
 
       @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
         @include u-display('none', !important);

@@ -1,29 +1,3 @@
-.dm-footer-link {
-  color: color($theme-color-secondary-darker);
-  @include u-text('normal');
-  text-decoration: underline;
-
-  &:hover {
-    color: color($theme-color-secondary-darkest);
-    text-decoration: underline;
-  }
-
-  &:visited {
-    color: color($theme-color-secondary-darker);
-    text-decoration: underline;
-
-    &:hover {
-      color: color($theme-color-secondary-darkest);
-      text-decoration: underline;
-    }
-  }
-
-  &:active {
-    color: color($theme-color-secondary-darkest);
-    text-decoration: underline;
-  }
-}
-
 .dm-alt-link {
   &-gold {
     color: color($theme-color-accent-warm) !important;

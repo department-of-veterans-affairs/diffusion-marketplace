@@ -4,13 +4,16 @@ class PageNewsComponent < ApplicationRecord
 
   FORM_FIELDS = {
     title: 'Title',
-    url: 'URL',
+    url: 'Link URL',
+    url_link_text: 'Link text',
     published_date: 'Publication date',
     authors: 'Author(s)',
     text: 'Description',
     image: 'Image',
     image_alt_text: 'Alternative Text'
   }.freeze
+
+  PAGINATION = 6.freeze
 
   validates_with InternalUrlValidator,
                  on: [:create, :update],

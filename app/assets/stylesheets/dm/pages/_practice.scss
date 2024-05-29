@@ -389,22 +389,15 @@
 }
 
 .dm-icon-link {
-  color: color($theme-color-primary) !important;
+  @extend .usa-link;
+  @include u-text('no-underline', !important);
 
   &:visited {
-    color: color($theme-color-primary) !important;
+    color: color($theme-link-color) !important;
   }
 
   &:hover, &:active {
     cursor: pointer !important;
-  }
-
-  &:hover {
-    color: color($theme-color-primary-dark) !important;
-  }
-
-  &:active {
-    color: color($theme-color-primary-darker) !important;
   }
 }
 
