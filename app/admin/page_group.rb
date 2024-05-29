@@ -3,7 +3,7 @@ ActiveAdmin.register PageGroup do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 
-  permit_params :name, :description, :slug, :has_landing_page
+  permit_params :name, :description, :slug, :has_landing_page, :pages_attributes
   remove_filter :editor_roles, :roles
 
   form do |f|
@@ -14,11 +14,13 @@ ActiveAdmin.register PageGroup do
 
     f.inputs "Editors", class: 'inputs' do
       if f.object.persisted?
+        editors = f.object.editors
+
         li do
           label "Current Editors", for: "current_editors", class: "label"
-          if f.object.editors.any?
-            ul id: 'current_editors', style: 'margin-left: 340px;' do
-              f.object.editors.each do |editor|
+          if editors.any?
+            ul id: 'current_editors', class: 'page_group_editors-list' do
+              editors.each do |editor|
                 li class: 'margin-bottom-1' do
                   span editor.email
                   span class: 'margin-left-1' do
@@ -40,6 +42,54 @@ ActiveAdmin.register PageGroup do
               hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov, test@va.gov"
     end
 
+    f.inputs 'Pages', class: 'inputs' do
+      if f.object.persisted?
+        community_pages = f.object.pages.where.not(position: nil).to_a
+
+        li class: 'community-nav-section' do
+          label "Community sub-nav link ordering", for: "current_pages", class: "label"
+          if community_pages.any?
+            ul id: 'current_pages', class: 'community-nav-pages-list' do
+              community_pages.each_with_index do |page, index|
+                li class: 'margin-bottom-1', data: { page_id: page.id } do
+                  span class: 'handle' do
+                    span page.short_name.present? ? page.short_name : page.title
+                    span class: "fa fa-stack" do
+                      i class: "fa fa-caret-up"
+                      i class: "fa fa-caret-down"
+                    end
+                  end
+                  f.hidden_field :id, value: page.id, name: "page_group[pages_attributes][#{index}][id]"
+                  f.hidden_field :position, value: page.position, name: "page_group[pages_attributes][#{index}][position]"
+                end
+              end
+            end
+            span "Drag to adjust position of links as seen in community sub-nav", class: 'drag-position-hint'
+            span "Uses Page's TITLE as link text if COMMUNITY SUBNAV LINK TEXT is blank, update in Page's edit form", class: 'drag-position-hint'
+          else
+            span "No pages assigned", class: 'no-community-pages'
+          end
+        end
+
+        li do
+          non_community_pages = f.object.pages.where(position: nil)
+          label "Pages not in community sub-nav", for: "unpositioned_pages", class: "label"
+          if non_community_pages.any?
+            ul id: 'unpositioned_pages', class: 'community-nav-pages-list' do
+              non_community_pages.each do |page|
+                li class: 'margin-bottom-1' do
+                  link_to page.title, edit_admin_page_path(page)
+                end
+              end
+            end
+            span "Visit a Page's edit screen to add or remove as link in community sub-nav", class: 'unpositioned-page-hint'
+          else
+            span "No pages assigned", class: 'no-unpositioned-pages'
+          end
+        end
+      end
+    end
+
     f.actions
   end
 
@@ -55,6 +105,23 @@ ActiveAdmin.register PageGroup do
           end
         end
       end
+      row "Community Pages" do |pg|
+        community_pages = pg.pages.where.not(position: nil).to_a
+        ul do
+          community_pages.each do |page|
+            li link_to page.title, edit_admin_page_path(page)
+          end
+        end
+      end
+
+      row "Non-Community Pages" do |pg|
+        non_community_pages = pg.pages.where(position: nil)
+        ul do
+          non_community_pages.each do |page|
+            li link_to page.title, edit_admin_page_path(page)
+          end
+        end
+      end
     end
   end
 
@@ -62,7 +129,7 @@ ActiveAdmin.register PageGroup do
     before_action :set_page_group, only: [:create, :update]
 
     def page_group_params
-      params.require(:page_group).permit(:name, :description, :slug, :has_landing_page, editors: [])
+      params.require(:page_group).permit(:name, :description, :slug, :has_landing_page, pages_attributes: {}, editors: [])
     end
 
     def set_page_group
@@ -98,9 +165,10 @@ ActiveAdmin.register PageGroup do
 
     def update
       ActiveRecord::Base.transaction do
-        @page_group.assign_attributes(page_group_params.except(:remove_editors, :new_editors))
+        @page_group.assign_attributes(page_group_params.except(:remove_editors, :new_editors, :pages_attributes))
+
         if @page_group.save
-          if update_editors
+          if update_editors && update_pages
             redirect_to admin_page_group_path(@page_group), notice: 'Page group was successfully updated.'
           else
             raise ActiveRecord::Rollback
@@ -133,6 +201,14 @@ ActiveAdmin.register PageGroup do
         end
       end
 
+      true
+    end
+
+    def update_pages
+      params[:page_group][:pages_attributes].each do |_, page_params|
+        page = @page_group.pages.find(page_params[:id])
+        page.update(position: page_params[:position])
+      end
       true
     end
 
