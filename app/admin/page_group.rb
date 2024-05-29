@@ -205,9 +205,11 @@ ActiveAdmin.register PageGroup do
     end
 
     def update_pages
-      params[:page_group][:pages_attributes].each do |_, page_params|
-        page = @page_group.pages.find(page_params[:id])
-        page.update(position: page_params[:position])
+      if params[:page_group][:pages_attributes].present?
+        params[:page_group][:pages_attributes].each do |_, page_params|
+          page = @page_group.pages.find(page_params[:id])
+          page.update(position: page_params[:position])
+        end
       end
       true
     end
