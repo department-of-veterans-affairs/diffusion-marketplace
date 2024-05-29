@@ -5,6 +5,7 @@
 //= require arrive.min
 //= require tinymce
 //= require ./practice_editor_utilities
+//= require admin/page_group
 
 const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
@@ -165,7 +166,6 @@ const pageComponentNames = [
         if (currentMCE) {
             tinymce.remove('#' + currentMCE);
         }
-        
         // Set the currentMCE variable to the current selector.
         currentMCE = selector;
 
