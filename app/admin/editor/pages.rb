@@ -19,7 +19,7 @@ ActiveAdmin.register Page, namespace: :editor do
                 :image,
                 :image_alt_text,
                 :delete_image_and_alt_text,
-                :included_in_community_subnav,
+                :is_community_page,
                 :short_name,
                 page_components_attributes: [
                   :id,
@@ -106,7 +106,7 @@ ActiveAdmin.register Page, namespace: :editor do
       }
       row :page_group
       row :slug
-      row :included_in_community_subnav
+      row :is_community_page
       row :template_type
       row :title
       row :short_name
@@ -186,8 +186,8 @@ ActiveAdmin.register Page, namespace: :editor do
       end
       f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
-      f.input :included_in_community_subnav,
-              label: 'Include in community sub-nav',
+      f.input :is_community_page,
+              label: 'Community page?',
               as: :boolean,
               hint: 'Add or remove from community sub-nav links'
       f.input :short_name,
@@ -341,9 +341,9 @@ ActiveAdmin.register Page, namespace: :editor do
     end
 
     def update_page_group_position
-      include_in_community_subnav = (params[:page][:included_in_community_subnav] == "1")
+      include_in_community_subnav = (params[:page][:is_community_page] == "1")
 
-      if include_in_community_subnav != @page.included_in_community_subnav
+      if include_in_community_subnav != @page.is_community_page
         @page.add_or_remove_from_community_subnav
       end
     end

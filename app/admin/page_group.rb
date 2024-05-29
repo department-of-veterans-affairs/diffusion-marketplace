@@ -44,7 +44,7 @@ ActiveAdmin.register PageGroup do
 
     f.inputs 'Pages', class: 'inputs' do
       if f.object.persisted?
-        community_pages = f.object.pages.where.not(position: nil).to_a
+        community_pages = f.object.pages.community_pages.to_a
 
         li class: 'community-nav-section' do
           label "Community sub-nav link ordering", for: "current_pages", class: "label"
