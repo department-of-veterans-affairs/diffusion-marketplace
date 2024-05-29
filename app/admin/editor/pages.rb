@@ -191,7 +191,7 @@ ActiveAdmin.register Page, namespace: :editor do
               as: :boolean,
               hint: 'Add or remove from community sub-nav links'
       f.input :short_name,
-              hint: 'Overrides title for use as link text in sub-nav'
+              hint: 'Overrides title for use as link text in community sub-nav'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
       f.input :image,
               value: f.resource.image_file_name,
