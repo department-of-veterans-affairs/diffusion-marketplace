@@ -354,8 +354,9 @@
 
 .handle {
   cursor: grab;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  margin-right: 20%;
 }
 
 .handle:active {
@@ -366,14 +367,10 @@
   text-align: center;
 }
 
-.fa-stack .fa-caret-down {
-  position: absolute;
-  bottom: 0;
-}
-
-.fa-stack .fa-caret-up {
-  position: absolute;
-  top: 0;
+.fa-stack .fa-caret-left,
+.fa-stack .fa-caret-rigt {
+  position: static;
+  margin-left: 3px;
 }
 
 .community-nav-pages-list,
@@ -382,9 +379,9 @@
 }
 
 .community-nav-section {
-  border-bottom: 1px solid #ccc; /* Adds a subtle line */
-  padding-bottom: 1rem; /* Ensures spacing between the line and the content below it */
-  margin-bottom: 1rem; /* Adds space after the border to separate from next section */
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .drag-position-hint,
@@ -394,7 +391,22 @@
   display: block;
   margin-left: 20%;
   margin-top: 5px;
-  font-size: smaller;
+  font-size: 0.95em;
   color: #666;
   font-style: italic;
+}
+
+#current_pages {
+  display: flex;
+  gap: 1%;
+  margin-left: 20%;
+}
+
+#current_pages li {
+  flex: 0 0 auto; /* Prevents the flex items from growing or shrinking */
+}
+
+#current_pages .handle span {
+  white-space: nowrap;
+  display: inline-block;
 }
