@@ -37,6 +37,8 @@ ActiveAdmin.register PageGroup, namespace: :editor do
               hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov, test@va.gov"
     end
 
+    # TODO: condense 'Editors' and 'Pages' parts of this form into partials to be shared with
+    # admin/editor/page_group form
     f.inputs 'Pages', class: 'inputs' do
       if f.object.persisted?
         community_pages = f.object.pages.community_pages.to_a
@@ -50,8 +52,8 @@ ActiveAdmin.register PageGroup, namespace: :editor do
                   span class: 'handle' do
                     span page.short_name.present? ? page.short_name : page.title
                     span class: "fa fa-stack" do
-                      i class: "fa fa-caret-up"
-                      i class: "fa fa-caret-down"
+                      i class: "fa fa-caret-left"
+                      i class: "fa fa-caret-right"
                     end
                   end
                   f.hidden_field :id, value: page.id, name: "page_group[pages_attributes][#{index}][id]"
@@ -59,8 +61,8 @@ ActiveAdmin.register PageGroup, namespace: :editor do
                 end
               end
             end
-            span "Drag to adjust position of links as seen in community sub-nav", class: 'drag-position-hint'
-            span "Uses Page's TITLE as link text if COMMUNITY SUBNAV LINK TEXT is blank, update in Page's edit form", class: 'drag-position-hint'
+            span "Drag and drop to adjust position of links as seen in community sub-nav", class: 'drag-position-hint'
+            span "Uses Page's TITLE as link text if SHORT NAME is blank", class: 'drag-position-hint'
           else
             span "No pages assigned", class: 'no-community-pages'
           end
