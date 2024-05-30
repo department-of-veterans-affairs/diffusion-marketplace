@@ -187,9 +187,8 @@ ActiveAdmin.register Page, namespace: :editor do
       f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :is_community_page,
-              label: 'Community page?',
-              as: :boolean,
-              hint: "Include as link in #{f.object.page_group&.name || "Community"} sub-nav?"
+              label: "Include as link in #{f.object.page_group&.name || "Community"} sub-nav?",
+              as: :boolean
       f.input :short_name,
               hint: "Overrides TITLE for use as link text in #{f.object.page_group&.name || "Community"} sub-nav"
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
