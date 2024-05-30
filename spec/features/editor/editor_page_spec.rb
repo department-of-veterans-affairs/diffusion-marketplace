@@ -120,7 +120,7 @@ describe 'Page Management', type: :feature, js: true do
       expect(Page.last.image_alt_text.present?).to eq(false)
     end
 
-    it 'allows admin to update short_name and community page status' do
+    it 'allows editor to update short_name and community page status' do
       visit edit_editor_page_path(pb_page_a)
       fill_in 'Short name', with: 'Quick Ref'
       find('input[name="page[is_community_page]"]').set(true)
