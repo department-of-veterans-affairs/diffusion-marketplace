@@ -354,59 +354,19 @@
 
 .handle {
   cursor: grab;
-  display: flex;
-  align-items: center;
-  margin-right: 20%;
 }
 
 .handle:active {
   cursor: grabbing;
 }
 
-.fa-stack {
-  text-align: center;
-}
-
-.fa-stack .fa-caret-left,
-.fa-stack .fa-caret-rigt {
-  position: static;
-  margin-left: 3px;
-}
-
-.community-nav-pages-list,
-.page_group_editors-list {
-  margin-left: 20%;
-}
-
-.community-nav-section {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-}
-
+.current-editors,
+.no-editors-assigned,
+.current-pages,
 .drag-position-hint,
 .no-community-pages,
 .no-unpositioned-pages,
+.unpositioned-pages,
 .unpositioned-page-hint {
-  display: block;
   margin-left: 20%;
-  margin-top: 5px;
-  font-size: 0.95em;
-  color: #666;
-  font-style: italic;
-}
-
-#current_pages {
-  display: flex;
-  gap: 1%;
-  margin-left: 20%;
-}
-
-#current_pages li {
-  flex: 0 0 auto; /* Prevents the flex items from growing or shrinking */
-}
-
-#current_pages .handle span {
-  white-space: nowrap;
-  display: inline-block;
 }

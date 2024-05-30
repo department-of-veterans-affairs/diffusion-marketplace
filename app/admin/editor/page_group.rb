@@ -7,14 +7,16 @@ ActiveAdmin.register PageGroup, namespace: :editor do
   permit_params :name, :description, :slug, :has_landing_page, :new_editors, :pages_attributes
 
   form do |f|
+    # TODO: condense 'Editors' and 'Pages' parts of this form into partials to be shared with
+    # admin/editor/page_group form
     f.inputs "Editors", class: 'inputs' do
       if f.object.persisted?
         editors = f.object.editors
 
         li do
-          label "Current Editors", for: "current_editors", class: "label"
+          label "Current Editors", for: "current-editors", class: "label"
           if editors.any?
-            ul id: 'current_editors', class: 'page_group_editors-list' do
+            ul id: 'current-editors', class: 'current-editors margin-left-3' do
               editors.each do |editor|
                 li class: 'margin-bottom-1' do
                   span editor.email
@@ -26,7 +28,7 @@ ActiveAdmin.register PageGroup, namespace: :editor do
               end
             end
           else
-            span "No editors assigned", class: 'placeholder'
+            span "No editors assigned", class: 'no-editors-assigned display-block margin-top-1 text-italic text-base-dark'
           end
         end
       end
@@ -37,23 +39,21 @@ ActiveAdmin.register PageGroup, namespace: :editor do
               hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov, test@va.gov"
     end
 
-    # TODO: condense 'Editors' and 'Pages' parts of this form into partials to be shared with
-    # admin/editor/page_group form
     f.inputs 'Pages', class: 'inputs' do
       if f.object.persisted?
         community_pages = f.object.pages.community_pages.to_a
 
-        li class: 'community-nav-section' do
-          label "Community sub-nav link ordering", for: "current_pages", class: "label"
+        li class: 'padding-bottom-2 margin-bottom-2 border-bottom-1px border-base-light' do
+          label "Community sub-nav link ordering", for: "current-pages text-no-wrap", class: "label"
           if community_pages.any?
-            ul id: 'current_pages', class: 'community-nav-pages-list' do
+            ul id: 'current-pages', class: 'margin-x-3 display-flex' do
               community_pages.each_with_index do |page, index|
-                li class: 'margin-bottom-1', data: { page_id: page.id } do
-                  span class: 'handle' do
+                li class: 'margin-bottom-1 margin-right-1', data: { page_id: page.id } do
+                  span class: 'handle text-no-wrap' do
                     span page.short_name.present? ? page.short_name : page.title
-                    span class: "fa fa-stack" do
-                      i class: "fa fa-caret-left"
-                      i class: "fa fa-caret-right"
+                    span class: "fa fa-stack margin-left-05" do
+                      i class: "fa fa-caret-left margin-left-05"
+                      i class: "fa fa-caret-right margin-left-05"
                     end
                   end
                   f.hidden_field :id, value: page.id, name: "page_group[pages_attributes][#{index}][id]"
@@ -61,27 +61,27 @@ ActiveAdmin.register PageGroup, namespace: :editor do
                 end
               end
             end
-            span "Drag and drop to adjust position of links as seen in community sub-nav", class: 'drag-position-hint'
-            span "Uses Page's TITLE as link text if SHORT NAME is blank", class: 'drag-position-hint'
+            span "Drag and drop to adjust position of links as seen in community sub-nav", class: 'drag-position-hint display-block text-italic text-base-dark'
+            span "Uses Page's TITLE as link text if SHORT NAME is blank", class: 'drag-position-hint display-block text-italic text-base-dark padding-bottom-1'
           else
-            span "No pages assigned", class: 'no-community-pages'
+            span "No pages assigned", class: 'no-community-pages display-block text-italic text-base-dark padding-bottom-1'
           end
         end
 
-        li do
+        li class: 'margin-top-1'do
           non_community_pages = f.object.pages.where(position: nil)
-          label "Pages not in community sub-nav", for: "unpositioned_pages", class: "label"
+          label "Pages not in community sub-nav", for: "unpositioned-pages", class: "label"
           if non_community_pages.any?
-            ul id: 'unpositioned_pages', class: 'community-nav-pages-list' do
+            ul class: 'unpositioned-pages' do
               non_community_pages.each do |page|
                 li class: 'margin-bottom-1' do
                   link_to page.title, edit_editor_page_path(page)
                 end
               end
             end
-            span "Visit a Page's edit screen to add or remove as link in community sub-nav", class: 'unpositioned-page-hint'
+            span "Visit a Page's edit screen to add or remove as link in community sub-nav", class: 'unpositioned-page-hint display-block margin-top-1 text-italic text-base-dark'
           else
-            span "No pages assigned", class: 'no-unpositioned-pages'
+            span "No pages assigned", class: 'no-unpositioned-pages display-block margin-top-1 text-italic text-base-dark'
           end
         end
       end
