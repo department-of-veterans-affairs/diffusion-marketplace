@@ -284,7 +284,7 @@ ActiveAdmin.register Page, namespace: :editor do
         update_page_group_position
       end
 
-      redirect_to admin_page_path(@page), notice: "Page was successfully #{action_name == 'create' ? 'created' : 'updated'}."
+      redirect_to editor_page_path(@page), notice: "Page was successfully #{action_name == 'create' ? 'created' : 'updated'}."
     end
 
     def validate_page_description_length(description)
