@@ -80,7 +80,7 @@ ActiveAdmin.register PageGroup do
             ul class: 'unpositioned-pages' do
               non_community_pages.each do |page|
                 li class: 'margin-bottom-1' do
-                  link_to page.title, edit_editor_page_path(page)
+                  link_to page.title, edit_admin_page_path(page)
                 end
               end
             end
