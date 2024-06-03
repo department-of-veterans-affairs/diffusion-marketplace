@@ -1,16 +1,25 @@
 class PageMapComponent < ApplicationRecord
   has_one :page_component, as: :component, autosave: true
 
-    FORM_FIELDS = { # Fields and labels in .arb form
-      title: 'Title',
-      map_info_window_text: 'Map Info Window Text',
-      description_text_alignment: 'Text alignment',
-      description: 'Description',
-      practices: 'Innovation List',
-      display_successful_adoptions?: 'Successful',
-      display_in_progress_adoptions?: 'In Progress',
-      display_unsuccessful_adoptions?: 'Unsuccessful'
-    }.freeze
+  FORM_FIELDS = { # Fields and labels in .arb form
+    title: 'Title',
+    map_info_window_text: 'Map Info Window Text',
+    description_text_alignment: 'Text alignment',
+    description: 'Description',
+    practices: 'Innovation List',
+    display_successful_adoptions?: 'Successful',
+    display_in_progress_adoptions?: 'In Progress',
+    display_unsuccessful_adoptions?: 'Unsuccessful'
+  }.freeze
+
+  CACHE_IMPACTING_FIELDS = [
+    :practices,
+    :display_successful_adoptions,
+    :display_in_progress_adoptions,
+    :display_unsuccessful_adoptions
+  ].freeze
+
+  after_commit :reset_cached_map_data, if: :cache_impacting_fields_changed?
 
   def get_practice_data_by_diffusion_histories(facility_id)
     adoptions = DiffusionHistory.where(va_facility_id: facility_id)
@@ -42,5 +51,13 @@ class PageMapComponent < ApplicationRecord
       end
     end
     va_facility_ids
+  end
+
+  def reset_cached_map_data
+    Rails.cache.delete("page_map_component_markers_#{page_component.page.id}")
+  end
+
+  def cache_impacting_fields_changed?
+    CACHE_IMPACTING_FIELDS.any? { |field| saved_change_to_attribute?(field) }
   end
 end

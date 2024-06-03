@@ -79,6 +79,10 @@ class PageController < ApplicationController
   end
 
   def build_map_component_markers
+    cache_key = "page_map_component_markers_#{@page.id}"
+    cached_markers = Rails.cache.fetch(cache_key)
+    return cached_markers if cached_markers
+
     map_components_with_markers = {}
     @page_components.each do |pc|
       # If the page component is a map, add the ActiveRecord and the map markers to the hash, using the id as the key
@@ -121,6 +125,7 @@ class PageController < ApplicationController
       end
     end
 
+    Rails.cache.write(cache_key, map_components_with_markers)
     map_components_with_markers
   end
 
