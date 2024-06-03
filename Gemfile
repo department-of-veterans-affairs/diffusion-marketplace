@@ -144,7 +144,7 @@ gem 'acts_as_votable'
 gem 'json', '~> 2.3.0'
 
 # Active Admin
-gem 'activeadmin', '~> 3.2.0'
+gem 'activeadmin', '~> 3.2.2'
 gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'
