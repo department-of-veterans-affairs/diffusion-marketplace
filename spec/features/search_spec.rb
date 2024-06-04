@@ -811,7 +811,7 @@ describe 'Search', type: :feature do
       set_combobox_val(0, 'Togus VA Medical Center')
       click_button('Adopting facility')
       set_combobox_val(1, 'VISN-2')
-      click_button('Categories')
+      click_button('Tags')
       select_category('.cat-5-label')
       update_results
 
