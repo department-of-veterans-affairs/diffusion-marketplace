@@ -54,7 +54,7 @@ class PageMapComponent < ApplicationRecord
   end
 
   def reset_cached_map_data
-    Rails.cache.delete("page_map_component_markers_#{page_component.page.id}")
+    Rails.cache.delete("page_map_component_markers_#{page_component&.page&.id}")
   end
 
   def cache_impacting_fields_changed?
