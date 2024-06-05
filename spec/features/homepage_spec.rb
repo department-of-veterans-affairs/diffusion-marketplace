@@ -160,7 +160,7 @@ describe 'Homepage', type: :feature do
     it 'links to the search page' do
       within '#search-dropdown' do
         expect(page).to have_link('Browse all innovations', href: '/search')
-        expect(page).to have_link('Browse all categories', href: '/search')
+        expect(page).to have_link('Browse all tags', href: '/search')
       end
     end
 
@@ -211,9 +211,9 @@ describe 'Homepage', type: :feature do
       expect(event.properties["type"]).to eq("innovation")
     end
 
-    it 'tracks clicks on "Browse all categories" link' do
+    it 'tracks clicks on "Browse all tags" link' do
       expect {
-        find('a', text: 'Browse all categories').click
+        find('a', text: 'Browse all tags').click
         wait_for_ajax
       }.to change(Ahoy::Event, :count).by(1)
 

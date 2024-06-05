@@ -18,7 +18,7 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
-        update_category_practices: 'error updating practice categories',
+        update_category_practices: 'error updating practice tags',
         crop_resource_images: 'error cropping practice resource images'
     }
   end

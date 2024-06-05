@@ -34,7 +34,7 @@
           type="search"
           name="search"
           autocomplete="off"
-          placeholder="Innovations, categories..."
+          placeholder="Search innovations, tags..."
           aria-labelledby="dm-homepage-search-form"
         >
         <div
@@ -55,7 +55,7 @@
               <a class="browse-all-link text-bold" href="<%= search_path %>">Browse all innovations</a>
             </div>
             <div class="result-section">
-              <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Categories">Categories</h3>
+              <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Tags">Tags</h3>
               <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
                 <% @dropdown_categories[0..2].each do |category| %>
                   <li class="search-result" data-category_id=<%= category[:id] %>>
@@ -63,7 +63,7 @@
                   </li>
                 <% end %>
               </ul>
-              <a class="browse-all-link text-bold" href="<%= search_path %>">Browse all categories</a>
+              <a class="browse-all-link text-bold" href="<%= search_path %>">Browse all tags</a>
             </div>
           </div>
         </div>

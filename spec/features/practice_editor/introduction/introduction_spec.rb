@@ -65,9 +65,9 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Type or select from the dropdown any of the following partners your innovation is associated with.')
       expect(page).to have_content('Diffusion phase')
       expect(page).to have_content('Select the diffusion phase that applies to your innovation.')
-      # categories
-      expect(page).to have_content('Categories')
-      expect(page).to have_content('Select the categories most relevant to your innovation (suggested: up to 10).')
+      # tags
+      expect(page).to have_content('Tags')
+      expect(page).to have_content('Select the tags most relevant to your innovation (suggested: up to 10).')
       expect(page).to have_no_content('Hidden Cat')
       expect(page).to have_content('Clinical')
       expect(page).to have_content('Operational')
