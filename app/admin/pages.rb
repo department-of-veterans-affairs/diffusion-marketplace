@@ -195,7 +195,7 @@ ActiveAdmin.register Page do
               value: f.resource.image_file_name,
               type: 'file',
               label: 'Image',
-              hint: 'File types allowed: jpg, jpeg, and png. Max file size: 25MB',
+              hint: 'File types allowed: jpg, jpeg, and png. Recommended dimensions: 390 x 300 pixels or larger. Max file size: 25MB',
               input_html: { accept: '.jpg, .jpeg, .png' }
       # Page image preview
       image = f.resource.image
