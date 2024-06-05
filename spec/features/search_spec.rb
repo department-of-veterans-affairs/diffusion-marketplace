@@ -104,16 +104,6 @@ describe 'Search', type: :feature do
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
     dh_7 = DiffusionHistory.create!(practice_id: @practice10.id, va_facility: facility_5)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_7.id, status: 'Completed')
-    partner_1 = PracticePartner.create!(name: 'Practice Partner 1', is_major: true)
-    PracticePartnerPractice.create!(practice: @practice, practice_partner: partner_1)
-    PracticePartnerPractice.create!(practice: @practice3, practice_partner: partner_1)
-    partner_2 = PracticePartner.create!(name: 'Practice Partner 2', is_major: true)
-    PracticePartnerPractice.create!(practice: @practice, practice_partner: partner_2)
-    PracticePartnerPractice.create!(practice: @practice4, practice_partner: partner_2)
-    partner_3 = PracticePartner.create!(name: 'Practice Partner 3', is_major: true)
-    PracticePartnerPractice.create!(practice: @practice3, practice_partner: partner_3)
-    partner_4 = PracticePartner.create!(name: 'Practice Partner 4')
-    PracticePartnerPractice.create!(practice: @practice5, practice_partner: partner_4)
     user_login
   end
 
@@ -167,10 +157,6 @@ describe 'Search', type: :feature do
 
   def select_category(label_class)
     find(label_class).click
-  end
-
-  def select_practice_partner(index)
-    all('.practice-partner-search-checkbox-label')[index].click
   end
 
   def add_crh_adoptions_and_practice_origin_facilities
