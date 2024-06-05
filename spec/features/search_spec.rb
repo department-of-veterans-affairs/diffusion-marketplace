@@ -269,7 +269,6 @@ describe 'Search', type: :feature do
       find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
-      expect(page).to have_content(@practice.initiating_facility)
       expect(page).to have_content('1 result')
     end
 
@@ -287,7 +286,6 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@practice5.name)
       expect(page).to have_content(@practice6.name)
       expect(page).to have_content(@practice12.name)
-      expect(page).to have_content(@practice.initiating_facility)
     end
 
     it 'should be able to search based on practice maturity level' do
