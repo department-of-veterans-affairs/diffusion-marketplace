@@ -52,7 +52,7 @@
       </div>
       <div class="dm-practice-card-origin margin-bottom-2">
         <span class="font-sans-2xs text-italic line-height-sans-3 dm-practice-card-origin-info">
-          Created in <%= practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)' %><%= practice.initiating_facility_type.present? ? " #{origin_display(practice)}" : '' %>
+          Created<%= practice.initiating_facility_type.present? ? " #{origin_display(practice)}" : '' %>
         </span>
       </div>
     </div>
