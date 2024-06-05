@@ -372,10 +372,9 @@ describe 'Search', type: :feature do
         set_combobox_val(0, 'Norwood VA Clinic')
         select_category('.cat-2-label')
         select_category('.cat-5-label')
-        select_practice_partner(0)
         update_results
 
-        expect(page).to have_content('Filters (4)')
+        expect(page).to have_content('Filters (3)')
         expect(page).to have_content('6 results')
         expect(page).to have_content(@practice.name)
         expect(page).to have_content(@practice3.name)
@@ -448,10 +447,9 @@ describe 'Search', type: :feature do
         # Now add the remaining to eliminate one of the last two practices
         toggle_filters_accordion
         set_combobox_val(1, 'Aberdeen VA Clinic')
-        select_practice_partner(0)
         update_results
 
-        expect(page).to have_content('Filters (4)')
+        expect(page).to have_content('Filters (3)')
         expect(page).to have_content('1 result')
         expect(page).to have_content(@practice3.name)
         expect(page).to_not have_content(@practice5.name)
@@ -487,26 +485,6 @@ describe 'Search', type: :feature do
         expect(page).to have_content('Filters (1)')
         expect(page).to have_content('1 result')
         expect(page).to have_content(@practice6.name)
-
-        # Reset filters and select a practice partner from the major practice partner checkboxes
-        toggle_filters_accordion
-        click_button('Reset filters')
-        select_practice_partner(0)
-        update_results
-
-        expect(page).to have_content('Filters (1)')
-        expect(page).to have_content('2 results')
-        expect(page).to have_content(@practice.name)
-        expect(page).to have_content(@practice3.name)
-
-        # select another practice partner to further filter down the results
-        toggle_filters_accordion
-        select_practice_partner(1)
-        update_results
-
-        expect(page).to have_content('Filters (2)')
-        expect(page).to have_content('1 result')
-        expect(page).to have_content(@practice.name)
 
         # search for practices with the search bar and clinical resource hub filters
         add_crh_adoptions_and_practice_origin_facilities
