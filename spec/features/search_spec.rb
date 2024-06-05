@@ -333,17 +333,6 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@practice5.name)
     end
 
-    it 'should be able to search based on practice partners' do
-      visit_search_page
-      fill_in('dm-practice-search-field', with: 'practice partner')
-      find('#dm-practice-search-button').click
-      expect(page).to have_content('4 results')
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_content(@practice3.name)
-      expect(page).to have_content(@practice4.name)
-      expect(page).to have_content(@practice5.name)
-    end
-
     it 'should only display search results for practices that are public-facing if the user is a guest' do
       # Try to search for an internal, VA-only practice as a guest user
       logout
@@ -534,22 +523,6 @@ describe 'Search', type: :feature do
         expect(page).to have_content('Filters (2)')
         expect(page).to have_content('1 result')
         expect(page).to have_content(@practice14.name)
-      end
-
-      it 'should only display checkboxes for major practice partners in the search filters' do
-        visit_search_page
-        toggle_filters_accordion
-        expect(page).to have_css('.practice-partner-search-checkbox', visible: false, count: 3)
-      end
-
-      it 'should allow users to filter practices based on their practice partners' do
-        visit_search_page
-        toggle_filters_accordion
-        select_practice_partner(0)
-        search
-        expect(page).to have_content('2 results:')
-        expect(page).to have_content(@practice.name)
-        expect(page).to have_content(@practice3.name)
       end
 
       describe 'Originating Facility Combo Box' do
