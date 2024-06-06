@@ -44,7 +44,7 @@ ActiveAdmin.register PageGroup do
               hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov, test@va.gov"
     end
 
-    if f.object.persisted?
+    if f.object.persisted? && f.object.is_community?
       f.inputs 'Pages', class: 'inputs' do
         community_pages = f.object.pages.community_pages.to_a
 
