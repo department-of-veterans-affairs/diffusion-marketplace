@@ -222,8 +222,8 @@ describe 'VISN pages', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
       visit '/visns/2'
-      expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
-      expect(page).to have_content('Collectively, its facilities have created 8 innovations and have adopted 5 innovations.')
+      expect(page).to have_content('This VISN has 3 healthcare facilities and serves Veterans in Florida and Georgia.')
+      expect(page).to have_content('Collectively, its healthcare facilities have created 8 innovations and have adopted 5 innovations.')
       expect(page).to have_content('Toge Inumaki')
     end
 
@@ -384,7 +384,7 @@ describe 'VISN pages', type: :feature do
         find_all('.facility-complexity-modal').last.click
 
         expect(page).to have_content('1a-Highest complexity')
-        expect(page).to have_content('Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs')
+        expect(page).to have_content('Healthcare facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs')
 
         # check to make sure it closes properly
         find('.usa-modal__close').click
