@@ -34,12 +34,12 @@
             visn_practices_adopted_count = @practices_adopted_by_visn.size
           %>
 
-          This VISN has <%= visn_facilities_count %> facilit<%= visn_facilities_count != 1 ? 'ies' : 'y' %> and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
-          Collectively, its facilities have created <%= visn_practices_created_count %> innovation<%= 's' if visn_practices_created_count != 1 %> and have adopted
+          This VISN has <%= visn_facilities_count %> healthcare facilit<%= visn_facilities_count != 1 ? 'ies' : 'y' %> and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
+          Collectively, its healthcare facilities have created <%= visn_practices_created_count %> innovation<%= 's' if visn_practices_created_count != 1 %> and have adopted
           <%= visn_practices_adopted_count %> innovation<%= 's' if visn_practices_adopted_count != 1 %>.
           This VISN has <%= get_facility_type_text_by_visn(@visn) %>.
         </p>
-        <%= link_to 'Jump to list of VA facilities', va_facilities_path, class: 'usa-link' %>
+        <%= link_to 'Jump to list of VA healthcare facilities', va_facilities_path, class: 'usa-link' %>
       </div>
       <% user_type = session[:user_type] %>
       <% if @primary_visn_liaison.present? && ((ENV['VAEC_ENV'].nil? && user_type === 'guest') || user_type === 'ntlm') %>

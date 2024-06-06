@@ -1,15 +1,15 @@
-<h2 class="va-facilities-header line-height-37px font-sans-xl<% ' margin-top-10' unless practices_created == 0 && practices_adopted == 0 %> margin-bottom-05">List of VA facilities in this VISN</h2>
+<h2 class="va-facilities-header line-height-37px font-sans-xl<% ' margin-top-10' unless practices_created == 0 && practices_adopted == 0 %> margin-bottom-05">List of VA healthcare facilities in this VISN</h2>
 <div class="usa-table-container--scrollable margin-bottom-0">
   <table class="usa-table usa-table--borderless width-full visn-facilities-table display-none">
     <caption class="usa-sr-only">VISN <%= @visn.number %> facilities</caption>
     <thead>
     <tr>
       <th data-sortable scope="col" role="columnheader">
-        Facility name
+        Healthcare facility name
       </th>
       <th data-sortable scope="col" role="columnheader">
         <a href="#facility-complexity-modal" aria-controls="facility-complexity-modal" data-open-modal class="dotted cursor-pointer facility-complexity-modal">
-          <span class="usa-sr-only">Open facility complexity modal</span>
+          <span class="usa-sr-only">Open modal: definition</span>
           Complexity level
         </a>
         <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: true, is_map: false } %>
