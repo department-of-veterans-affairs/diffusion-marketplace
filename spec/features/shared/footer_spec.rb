@@ -12,10 +12,10 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
       visit practice_path(@practice)
     end
 
-    describe 'Return to top' do
+    describe 'Back to top' do
       it 'should exist' do
         within('footer') do
-          expect(page).to have_content('Return to top')
+          expect(page).to have_content('Back to Top')
         end
       end
     end
