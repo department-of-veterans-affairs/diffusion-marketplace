@@ -213,7 +213,7 @@ describe 'Homepage', type: :feature do
 
     it 'tracks clicks on "Browse all tags" link' do
       expect {
-        find('a', text: 'Browse all tags').click
+        find('a', text: 'Browse all Tags').click
         wait_for_ajax
       }.to change(Ahoy::Event, :count).by(1)
 
