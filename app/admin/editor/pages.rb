@@ -187,10 +187,10 @@ ActiveAdmin.register Page, namespace: :editor do
       f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :is_community_page,
-              label: "Include as link in #{f.object.page_group&.name || "Community"} sub-nav?",
+              label: "Should we include this page in the #{f.object.page_group&.name || "Community"} sub-navigation?",
               as: :boolean
       f.input :short_name,
-              hint: "Overrides TITLE for use as link text in #{f.object.page_group&.name || "Community"} sub-nav"
+              hint: "This is the page's nickname for the #{f.object.page_group&.name || "Community"} sub-navigation. Needs to be short – 1 to 2 words maximum."
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
       f.input :image,
               value: f.resource.image_file_name,

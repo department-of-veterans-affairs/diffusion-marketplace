@@ -39,12 +39,12 @@ ActiveAdmin.register PageGroup, namespace: :editor do
               hint: "Enter VA emails as a comma-separated list, e.g. marketplace@va.gov, test@va.gov"
     end
 
-    f.inputs 'Pages', class: 'inputs' do
-      if f.object.persisted?
+    if f.object.persisted?
+      f.inputs 'Pages', class: 'inputs' do
         community_pages = f.object.pages.community_pages.to_a
 
         li class: 'padding-bottom-2 margin-bottom-2 border-bottom-1px border-base-light' do
-          label "Community sub-nav link ordering", for: "current-pages text-no-wrap", class: "label"
+          label "Community Sub-Navigation Order", for: "current-pages text-no-wrap", class: "label"
           if community_pages.any?
             ul id: 'current-pages', class: 'margin-x-3 display-flex' do
               community_pages.each_with_index do |page, index|
@@ -61,8 +61,8 @@ ActiveAdmin.register PageGroup, namespace: :editor do
                 end
               end
             end
-            span "Drag and drop to adjust position of links as seen in community sub-nav", class: 'drag-position-hint display-block text-italic text-base-dark'
-            span "Uses Page's TITLE as link text if SHORT NAME is blank", class: 'drag-position-hint display-block text-italic text-base-dark padding-bottom-1'
+            span "Drag and drop to adjust the position of pages as seen in the community's sub-navigation.", class: 'drag-position-hint display-block text-italic text-base-dark'
+            span "Note that sub-navigation title will default to the original page title, rather than to a nickname, if the page nickname is left blank.", class: 'drag-position-hint display-block text-italic text-base-dark padding-bottom-1'
           else
             span "No pages assigned", class: 'no-community-pages display-block text-italic text-base-dark padding-bottom-1'
           end
@@ -70,7 +70,7 @@ ActiveAdmin.register PageGroup, namespace: :editor do
 
         li class: 'margin-top-1'do
           non_community_pages = f.object.pages.where(position: nil)
-          label "Pages not in community sub-nav", for: "unpositioned-pages", class: "label"
+          label "Pages Not In the Community Sub-Navigation", for: "unpositioned-pages", class: "label"
           if non_community_pages.any?
             ul class: 'unpositioned-pages' do
               non_community_pages.each do |page|
@@ -79,7 +79,7 @@ ActiveAdmin.register PageGroup, namespace: :editor do
                 end
               end
             end
-            span "Visit a Page's edit screen to add or remove as link in community sub-nav", class: 'unpositioned-page-hint display-block margin-top-1 text-italic text-base-dark'
+            span "Visit a page's edit screen to add it to / remove it from the community sub-navigation.", class: 'unpositioned-page-hint display-block margin-top-1 text-italic text-base-dark'
           else
             span "No pages assigned", class: 'no-unpositioned-pages display-block margin-top-1 text-italic text-base-dark'
           end
