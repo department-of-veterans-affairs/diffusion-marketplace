@@ -132,18 +132,18 @@
                 Innovation origin*
               </p>
               <span>Select the location where this innovation originated</span>
-              <div class="grid-row grid-gap grid-col-1 margin-bottom-3">
-                <div class="usa-radio position-relative">
+              <div class="margin-bottom-3">
+                <div class="usa-radio">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
                                        'facility',
                                        @practice.facility?,
                                        class: 'usa-radio__input initiating-facility-type-radio',
                                        id: "initiating_facility_type_facility"
                   %>
-                  <%= label_tag 'initiating_facility_type_facility', 'Facility', class: 'usa-radio__label
-                initiating-facility-type-label margin-bottom-0 margin-top-105', for: "initiating_facility_type_facility" %>
+                  <%= label_tag 'initiating_facility_type_facility', 'Heatlhcare Facility', class: 'usa-radio__label
+                initiating-facility-type-label', for: "initiating_facility_type_facility" %>
                 </div>
-                <div class="usa-radio position-relative">
+                <div class="usa-radio">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
                                        'visn',
                                        @practice.visn?,
@@ -151,25 +151,25 @@
                                        id: "initiating_facility_type_visn"
                   %>
                   <%= label_tag 'initiating_facility_type_visn', 'VISN', class: 'usa-radio__label
-                initiating-facility-type-label margin-bottom-0 margin-top-105', for: "initiating_facility_type_visn" %>
+                initiating-facility-type-label', for: "initiating_facility_type_visn" %>
                 </div>
-                <div class="usa-radio position-relative">
+                <div class="usa-radio">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
                                        'department', @practice.department?,
                                        class: 'usa-radio__input initiating-facility-type-radio',
                                        id: "initiating_facility_type_department"
                   %>
                   <%= label_tag 'initiating_facility_type_department', 'Office', class: 'usa-radio__label
-                initiating-facility-type-label margin-bottom-0 margin-top-105', for: "initiating_facility_type_department" %>
+                initiating-facility-type-label', for: "initiating_facility_type_department" %>
                 </div>
-                <div class="usa-radio position-relative">
+                <div class="usa-radio">
                   <%= radio_button_tag 'practice[initiating_facility_type]', 'other',
                                        @practice.other?,
                                        class: 'usa-radio__input initiating-facility-type-radio',
                                        id: "initiating_facility_type_other"
                   %>
                   <%= label_tag 'initiating_facility_type_other', 'Other', class: 'usa-radio__label
-                initiating-facility-type-label margin-bottom-0 margin-top-105', for: "initiating_facility_type_other" %>
+                initiating-facility-type-label', for: "initiating_facility_type_other" %>
                 </div>
               </div>
 
