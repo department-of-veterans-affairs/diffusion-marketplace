@@ -244,7 +244,7 @@ describe 'VA facility pages', type: :feature do
       it 'should display default content' do
         login_and_visit_facility_page
         within(:css, '#dm-facility-adopted-practice-search') do
-          expect(page).to have_content("Innovations adopted at this facility")
+          expect(page).to have_content("Innovations adopted at this healthcare facility")
           find('#facility_category_select_adoptions').click
           within(:css, '#facility_category_select_adoptions--list') do
             expect(page).to have_content('COVID')
