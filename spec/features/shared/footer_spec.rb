@@ -15,7 +15,7 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
     describe 'Back to top' do
       it 'should exist' do
         within('footer') do
-          expect(page).to have_content('Back to Top')
+          expect(page).to have_content('Return to top')
         end
       end
     end
