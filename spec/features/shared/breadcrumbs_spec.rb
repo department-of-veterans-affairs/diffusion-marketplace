@@ -211,13 +211,13 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to have_css("#dm-va-facilities-show", visible: true)
       within(:css, '#breadcrumbs') do
         expect(page).to have_css('.fa-arrow-left')
-        expect(page).to have_content('Facility index')
+        expect(page).to have_content('Healthcare facility index')
         expect(page).to have_link(href: '/facilities')
       end
       find('a[href="/innovations/the-best-innovation-ever"]').click
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Facility index')
+        expect(page).to have_content('Healthcare facility index')
         expect(page).to have_content('A first facility Test Common Name')
         expect(page).to have_no_content('The Best Innovation Ever')
         expect(page).to have_link(href: '/facilities')

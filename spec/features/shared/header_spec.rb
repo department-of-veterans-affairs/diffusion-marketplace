@@ -53,7 +53,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         within('#browse-by-locations-dropdown') do
         expect(page).to have_content('VISN index')
         expect(page).to have_link(href: '/visns')
-        expect(page).to have_content('Facility index')
+        expect(page).to have_content('Healthcare facility index')
         expect(page).to have_link(href: '/facilities')
         expect(page).to have_content('Diffusion map')
         expect(page).to have_link(href: '/diffusion-map')
