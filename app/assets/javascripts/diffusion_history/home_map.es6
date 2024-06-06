@@ -120,7 +120,7 @@ function initialize() {
     const facilityCount = result.length;
     const practiceCount = _.chain(result.map(r => r.practices)).flatten().uniqBy('id').value().length;
 
-    $('#facility-results-count').text(`${facilityCount} facility match${facilityCount === 1 ? '' : 'es'}`);
+    $('#facility-results-count').text(`${facilityCount} healthcare facility match${facilityCount === 1 ? '' : 'es'}`);
     $('#practice-results-count').text(`${practiceCount} innovation${practiceCount === 1 ? '' : 's'}`);
   }
 
