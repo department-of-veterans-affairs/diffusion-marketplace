@@ -67,7 +67,7 @@ describe 'VA facility pages', type: :feature do
         expect(page).to have_content("Facility")
         expect(page).to have_content("State")
         expect(page).to have_content("VISN")
-        expect(page).to have_content("Facility complexity level")
+        expect(page).to have_content("Complexity level")
         expect(page).to have_content("Created")
         expect(page).to have_content("Adopted")
         expect(page).to have_content("A Test name")
