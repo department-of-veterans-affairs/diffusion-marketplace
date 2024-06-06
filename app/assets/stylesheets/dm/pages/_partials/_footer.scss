@@ -1,4 +1,5 @@
 footer {
+  background-color: color('blue-warm-80v');
   .dm-footer-heading {
     color: color($theme-color-base-lighter);
   }
@@ -12,11 +13,6 @@ footer {
         color: color($theme-color-secondary-darker);
         text-decoration: underline;
       }
-  }
-
-  .usa-footer__return-to-top {
-    @include u-padding-top(0, !important);
-    padding-bottom: 32px !important;
   }
 
   nav {
