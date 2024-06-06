@@ -55,7 +55,7 @@ describe 'Clinical_Resource_Hubs', type: :feature do
       end
       it 'should display breadcrumb to facilities index page' do
         visit '/crh/1'
-        expect(page).to have_content("Facility index")
+        expect(page).to have_content("Healthcare facility index")
         find("a[href='/facilities']").click
         expect(page).to have_content("for a full list of VISNs?")
       end
