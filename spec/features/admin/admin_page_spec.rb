@@ -50,7 +50,7 @@ describe 'Page Builder', type: :feature do
 
     it 'allows admin to update short_name and community page status' do
       visit edit_admin_page_path(@page)
-      fill_in 'Short name', with: 'Quick Ref'
+      fill_in 'Page Nickname', with: 'Quick Ref'
       find('input[name="page[is_community_page]"]').set(true)
       all('input[type="submit"]').last.click
       expect(page).to have_content('Page was successfully updated.')
