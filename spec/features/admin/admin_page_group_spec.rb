@@ -49,7 +49,7 @@ RSpec.describe 'PageGroup Management', type: :feature do
     end
   end
 
-  describe 'Editing a PageGroup' do
+  describe "Editing a PageGroup's Editors" do
     let!(:admin) { create(:user, :admin) }
     let!(:page_group) { create(:page_group) }
     let!(:editor) { create(:user, email: "editor_email1@va.gov") }
@@ -149,6 +149,56 @@ RSpec.describe 'PageGroup Management', type: :feature do
 
         expect(page).to have_content('User not found with email(s): nonexistent@va.gov')
         expect(page_group.reload.editors).not_to include(nonexistent_email)
+      end
+    end
+  end
+
+  describe "Editing a PageGroup's Pages" do
+    let!(:admin) { create(:user, :admin) }
+    let!(:page_group) { create(:page_group, name: PageGroup::COMMUNITIES.first) }
+    let!(:page1) { create(:page, slug: "home", title: "Home Page", page_group: page_group) }
+    let!(:page2) { create(:page, slug: "about", title: "About Page", page_group: page_group) }
+    let!(:page3) { create(:page, slug: "innovations", title: "Innovations Page", page_group: page_group) }
+
+    before do
+      login_as(admin, scope: :user, run_callbacks: false)
+    end
+
+    it "displays the page_group's pages in the un-ordered section of 'Pages' section" do
+      page_group.pages.each {|page| page.update!(position: nil)}
+      visit edit_admin_page_group_path(page_group)
+
+      within("ul.unpositioned-pages") do
+        expect(page).to have_content(page1.title)
+        expect(page).to have_content(page2.title)
+        expect(page).to have_content(page3.title)
+      end
+    end
+
+    it "displays the page_group's pages in the ordered section of 'Pages' section" do
+      visit edit_admin_page_group_path(page_group)
+
+      within("ul#current-pages") do
+        expect(page).to have_content(page1.title)
+        expect(page).to have_content(page2.title)
+        expect(page).to have_content(page3.title)
+      end
+    end
+
+    it "displays the page_group's pages by short_name in the ordered section of 'Pages' section" do
+      page1.update!(short_name: "Community")
+      page2.update!(short_name: "About")
+      page3.update!(short_name: "Innovations")
+      visit edit_admin_page_group_path(page_group)
+
+      within("ul#current-pages") do
+        expect(page).to_not have_content(page1.title)
+        expect(page).to_not have_content(page2.title)
+        expect(page).to_not have_content(page3.title)
+
+        expect(page).to have_content(page1.short_name)
+        expect(page).to have_content(page2.short_name)
+        expect(page).to have_content(page3.short_name)
       end
     end
   end
