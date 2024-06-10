@@ -190,6 +190,7 @@ ActiveAdmin.register Page, namespace: :editor do
               label: "Should we include this page in the #{f.object.page_group&.name || "Community"} sub-navigation?",
               as: :boolean
       f.input :short_name,
+              label: 'Page Nickname',
               hint: "This is the page's nickname for the #{f.object.page_group&.name || "Community"} sub-navigation. Needs to be short – 1 to 2 words maximum."
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
       f.input :image,
