@@ -104,16 +104,6 @@ describe 'Search', type: :feature do
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
     dh_7 = DiffusionHistory.create!(practice_id: @practice10.id, va_facility: facility_5)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_7.id, status: 'Completed')
-    partner_1 = PracticePartner.create!(name: 'Practice Partner 1', is_major: true)
-    PracticePartnerPractice.create!(practice: @practice, practice_partner: partner_1)
-    PracticePartnerPractice.create!(practice: @practice3, practice_partner: partner_1)
-    partner_2 = PracticePartner.create!(name: 'Practice Partner 2', is_major: true)
-    PracticePartnerPractice.create!(practice: @practice, practice_partner: partner_2)
-    PracticePartnerPractice.create!(practice: @practice4, practice_partner: partner_2)
-    partner_3 = PracticePartner.create!(name: 'Practice Partner 3', is_major: true)
-    PracticePartnerPractice.create!(practice: @practice3, practice_partner: partner_3)
-    partner_4 = PracticePartner.create!(name: 'Practice Partner 4')
-    PracticePartnerPractice.create!(practice: @practice5, practice_partner: partner_4)
     user_login
   end
 
@@ -167,10 +157,6 @@ describe 'Search', type: :feature do
 
   def select_category(label_class)
     find(label_class).click
-  end
-
-  def select_practice_partner(index)
-    all('.practice-partner-search-checkbox-label')[index].click
   end
 
   def add_crh_adoptions_and_practice_origin_facilities
@@ -269,7 +255,6 @@ describe 'Search', type: :feature do
       find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
-      expect(page).to have_content(@practice.initiating_facility)
       expect(page).to have_content('1 result')
     end
 
@@ -287,7 +272,6 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@practice5.name)
       expect(page).to have_content(@practice6.name)
       expect(page).to have_content(@practice12.name)
-      expect(page).to have_content(@practice.initiating_facility)
     end
 
     it 'should be able to search based on practice maturity level' do
@@ -333,17 +317,6 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@practice5.name)
     end
 
-    it 'should be able to search based on practice partners' do
-      visit_search_page
-      fill_in('dm-practice-search-field', with: 'practice partner')
-      find('#dm-practice-search-button').click
-      expect(page).to have_content('4 results')
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_content(@practice3.name)
-      expect(page).to have_content(@practice4.name)
-      expect(page).to have_content(@practice5.name)
-    end
-
     it 'should only display search results for practices that are public-facing if the user is a guest' do
       # Try to search for an internal, VA-only practice as a guest user
       logout
@@ -385,10 +358,9 @@ describe 'Search', type: :feature do
         set_combobox_val(0, 'Norwood VA Clinic')
         select_category('.cat-2-label')
         select_category('.cat-5-label')
-        select_practice_partner(0)
         update_results
 
-        expect(page).to have_content('Filters (4)')
+        expect(page).to have_content('Filters (3)')
         expect(page).to have_content('6 results')
         expect(page).to have_content(@practice.name)
         expect(page).to have_content(@practice3.name)
@@ -461,10 +433,9 @@ describe 'Search', type: :feature do
         # Now add the remaining to eliminate one of the last two practices
         toggle_filters_accordion
         set_combobox_val(1, 'Aberdeen VA Clinic')
-        select_practice_partner(0)
         update_results
 
-        expect(page).to have_content('Filters (4)')
+        expect(page).to have_content('Filters (3)')
         expect(page).to have_content('1 result')
         expect(page).to have_content(@practice3.name)
         expect(page).to_not have_content(@practice5.name)
@@ -501,26 +472,6 @@ describe 'Search', type: :feature do
         expect(page).to have_content('1 result')
         expect(page).to have_content(@practice6.name)
 
-        # Reset filters and select a practice partner from the major practice partner checkboxes
-        toggle_filters_accordion
-        click_button('Reset filters')
-        select_practice_partner(0)
-        update_results
-
-        expect(page).to have_content('Filters (1)')
-        expect(page).to have_content('2 results')
-        expect(page).to have_content(@practice.name)
-        expect(page).to have_content(@practice3.name)
-
-        # select another practice partner to further filter down the results
-        toggle_filters_accordion
-        select_practice_partner(1)
-        update_results
-
-        expect(page).to have_content('Filters (2)')
-        expect(page).to have_content('1 result')
-        expect(page).to have_content(@practice.name)
-
         # search for practices with the search bar and clinical resource hub filters
         add_crh_adoptions_and_practice_origin_facilities
         visit_search_page
@@ -534,22 +485,6 @@ describe 'Search', type: :feature do
         expect(page).to have_content('Filters (2)')
         expect(page).to have_content('1 result')
         expect(page).to have_content(@practice14.name)
-      end
-
-      it 'should only display checkboxes for major practice partners in the search filters' do
-        visit_search_page
-        toggle_filters_accordion
-        expect(page).to have_css('.practice-partner-search-checkbox', visible: false, count: 3)
-      end
-
-      it 'should allow users to filter practices based on their practice partners' do
-        visit_search_page
-        toggle_filters_accordion
-        select_practice_partner(0)
-        search
-        expect(page).to have_content('2 results:')
-        expect(page).to have_content(@practice.name)
-        expect(page).to have_content(@practice3.name)
       end
 
       describe 'Originating Facility Combo Box' do

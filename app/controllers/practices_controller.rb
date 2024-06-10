@@ -211,7 +211,6 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
     end
     @parent_categories = Category.get_cached_categories_grouped_by_parent
     @categories = Category.cached_categories.get_category_names
-    @practice_partners = PracticePartner.cached_practice_partners.major_partners
   end
 
   # POST /practices/1/favorite.js

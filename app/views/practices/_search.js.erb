@@ -194,12 +194,6 @@ function toggleMobileAdoptingAccordion() {
     });
 }
 
-function toggleMobilePracticePartnersAccordion() {
-    $(document).on('click', '.mobile-practice-partner-accordion', function() {
-        toggleAccordion(this, '.practice-partner-container');
-    });
-}
-
 function closeMobileFiltersModal() {
     $(document).on('click', '#close_filters_modal', function () {
         $('.search-filters-accordion-button').attr('aria-expanded', 'false')
@@ -1084,7 +1078,6 @@ function searchPracticesPage() {
         closeAccordion('.mobile-origin-accordion', '.originating-facility-container');
         closeAccordion('.mobile-adopting-accordion', '.adopting-facility-container');
         closeAccordion('.mobile-category-accordion', '.category-container');
-        closeAccordion('.mobile-practice-partner-accordion', '.practice-partner-container');
 
         // Bring the user back to their original spot on the page, before they opened the mobile modal
         if ($(window).width() < 1024) {
@@ -1107,7 +1100,7 @@ function searchPracticesPage() {
         var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
 
         // Get the values for any chosen categories
-        var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".practice-partner-search-checkbox")');
+        var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox")');
         var chosenCategories = selectedCategoryCheckboxes.map(function () {
             return this.value;
         }).get();
@@ -1122,20 +1115,11 @@ function searchPracticesPage() {
             data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories})
         });
 
-        // Get the values for any chosen practice partners
-        var selectedPracticePartnerCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".clinical-checkbox"):not(".operational-checkbox"):not(".strategic-checkbox")');
-        var chosenPracticePartners = selectedPracticePartnerCheckboxes.map(function () {
-            return this.value;
-        }).get();
-        if (!chosenPracticePartners.length) {
-            chosenPracticePartners = null;
-        }
-
         // Run the search
-        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility, chosenPracticePartners);
+        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
 
         // Display the amount of filters used(if any)
-        var checkboxCount = selectedCategoryCheckboxes.length + selectedPracticePartnerCheckboxes.length;
+        var checkboxCount = selectedCategoryCheckboxes.length;
         var noOriginatingFacilityText = originatingFacilityInput.val() === '';
         var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
         var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
@@ -1295,7 +1279,6 @@ function execSearchFunctions() {
     addAllCheckBoxListener('.all-clinical-checkbox', '.clinical-checkbox');
     addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
     addAllCheckBoxListener('.all-strategic-checkbox', '.strategic-checkbox');
-    toggleMobilePracticePartnersAccordion();
 }
 
 document.addEventListener('turbolinks:load', function () {
