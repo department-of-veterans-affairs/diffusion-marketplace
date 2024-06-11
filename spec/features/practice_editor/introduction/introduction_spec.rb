@@ -12,7 +12,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     ClinicalResourceHub.create!(visn: visn_7, official_station_name: "VISN 7 Clinical Resource Hub (Remote)")
     ClinicalResourceHub.create!(visn: visn_21, official_station_name: "VISN 21 Clinical Resource Hub (Remote)")
 
-
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
     img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
@@ -28,11 +27,14 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     @parent_cat_1 = Category.create!(name: 'Strategic')
     @parent_cat_2 = Category.create!(name: 'Operational')
     @parent_cat_3 = Category.create!(name: 'Clinical')
+    @parent_cat_4 = Category.create!(name: 'Communities')
     @cat_1 = Category.create!(name: 'COVID', parent_category: @parent_cat_1)
     Category.create!(name: 'Environmental Services', parent_category: @parent_cat_2)
     Category.create!(name: 'Follow-up Care', parent_category: @parent_cat_3)
     Category.create!(name: 'Pulmonary Care', parent_category: @parent_cat_3)
     Category.create!(name: 'Hidden Cat')
+    Category.create!(name: 'Suicide Prevention', parent_category: @parent_cat_4)
+    Category.create!(name: 'Age-Friendly', parent_category: @parent_cat_4)
     @cat_2 = Category.create!(name: 'Foobar', parent_category: @parent_cat_2, is_other: true)
     CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice, category: @cat_2, created_at: Time.now)
@@ -545,6 +547,35 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_content('ENVIRONMENTAL SERVICES')
         expect(page).to have_content('PULMONARY CARE')
         expect(page).to have_content('FOLLOW-UP CARE')
+      end
+
+      it 'allows admin to assign Communities categories' do
+        within(:css, '.dm-communities-category-columns-container') do
+          find('.usa-checkbox__label[title="Suicide Prevention"]').click
+          find('.usa-checkbox__label[title="Age-Friendly"]').click
+        end
+
+        click_save
+
+        within(:css, '.dm-communities-category-columns-container') do
+          page.has_checked_field?('Suicide Prevention')
+          page.has_checked_field?('Age-Friendly')
+        end
+
+        visit_practice_show
+        expect(page).to have_content('SUICIDE PREVENTION')
+        expect(page).to have_content('AGE-FRIENDLY')
+      end
+
+      it 'does not show Communities categories for non-admin' do
+        editor = User.create!(email: 'some.guy@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+        PracticeEditor.create!(user: editor, practice: @practice, email: editor.email)
+
+        login_as(editor, :scope => :user, :run_callbacks => false)
+        visit_practice_edit
+        expect(page).not_to have_content('.dm-communities-category-columns-container')
+        expect(page).not_to have_content('SUICIDE PREVENTION')
+        expect(page).not_to have_content('AGE-FRIENDLY')
       end
     end
 
