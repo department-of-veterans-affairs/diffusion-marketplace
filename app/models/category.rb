@@ -31,8 +31,11 @@ class Category < ApplicationRecord
     strip_attributes([self.name])
   end
 
-  def self.get_parent_categories
-    Category.order_by_name.select { |cat| cat.is_other === false && cat.sub_categories.any? }
+  def self.get_parent_categories(is_admin=false)
+    Category.order_by_name.select do |cat|
+      cat.is_other === false && cat.sub_categories.any? &&
+        !(is_admin == false && cat.name == "Communities")
+    end
   end
 
   def clear_categories_cache
