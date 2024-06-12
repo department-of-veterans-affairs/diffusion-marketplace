@@ -30,7 +30,7 @@ class Page < ApplicationRecord
 
   enum template_type: { default: 0, narrow: 1 }
 
-  scope :community_pages, -> { where.not(position: nil) }
+  scope :subnav_pages, -> { where.not(position: nil) }
 
   def image_s3_presigned_url(style = nil)
     object_presigned_url(image, style)

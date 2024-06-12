@@ -59,14 +59,14 @@ RSpec.describe Page, type: :model do
   end
 
   describe 'scopes' do
-    describe '.community_pages' do
+    describe '.subnav_pages' do
       it 'includes pages with non-nil positions' do
         included_page = create(:page, position: 1)
         excluded_page = create(:page)
         excluded_page.update!(position: nil)
 
-        expect(Page.community_pages).to include(included_page)
-        expect(Page.community_pages).not_to include(excluded_page)
+        expect(Page.subnav_pages).to include(included_page)
+        expect(Page.subnav_pages).not_to include(excluded_page)
       end
     end
   end

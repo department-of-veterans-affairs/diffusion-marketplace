@@ -41,9 +41,9 @@ class PageGroup < ApplicationRecord
   def subnav_hash
     return nil if self.pages.empty?
     if self.landing_page&.published? # Use all pages when community homepage has not been published
-      subpages = self.pages.community_pages.filter { |page| page.published? }
+      subpages = self.pages.subnav_pages.filter { |page| page.published? }
     else # Only show published subnav pages when homepage has been published
-      subpages = self.pages.community_pages
+      subpages = self.pages.subnav_pages
     end
     subpages.each_with_object({}) do |page, h|
       link_text = page.short_name.present? ? page.short_name : page.title
