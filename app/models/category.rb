@@ -31,8 +31,11 @@ class Category < ApplicationRecord
     strip_attributes([self.name])
   end
 
-  def self.get_parent_categories
-    Category.order_by_name.select { |cat| cat.is_other === false && cat.sub_categories.any? }
+  def self.get_parent_categories(is_admin=false)
+    Category.order_by_name.select do |cat|
+      cat.is_other === false && cat.sub_categories.any? &&
+        !(is_admin == false && cat.name == "Communities")
+    end
   end
 
   def clear_categories_cache
@@ -61,5 +64,20 @@ class Category < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     ["description", "name", "related_terms"]
+  end
+
+  def self.prepared_categories_for_practice_editor(is_admin)
+    get_parent_categories(is_admin).each_with_object({}) do |parent_category, hash|
+      categories = parent_category.sub_categories.where(is_other: false).order_by_name.to_a
+
+      if categories.any? && parent_category.name != "Communities"
+        all_cat = new(name: "All #{parent_category.name.downcase}", parent_category: parent_category)
+        other_cat = new(name: 'Other', parent_category: parent_category)
+        categories.prepend(all_cat)
+        categories.append(other_cat)
+      end
+
+      hash[parent_category] = categories
+    end
   end
 end

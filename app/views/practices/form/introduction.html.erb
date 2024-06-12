@@ -532,28 +532,18 @@
                 </p>
                 <span>Select the tags most relevant to your innovation (suggested: up to 10).</span>
               </div>
-              <% @parent_categories.each do |pc| %>
-                <%
-                  non_other_sub_categories = pc.sub_categories.where(is_other: false).order_by_name
-                  cat_placeholders = []
-                  if non_other_sub_categories.any?
-                    cat_placeholders << [Category.new(name: "All #{pc.name.downcase}", parent_category: pc)]
-                    cat_placeholders << [Category.new(name: 'Other', parent_category: pc)]
-                  end
+              <% @categories.each do |parent_category, categories| %>
+                <% sliced_categories = split_data_into_three_columns(categories) %>
 
-                  categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories + cat_placeholders.last : []
-                  sliced_categories = split_data_into_three_columns(categories)
-                %>
-
-                <% if non_other_sub_categories.any? %>
-                  <div class="dm-<%= pc.name.downcase %>-category-columns-container">
+                <% if sliced_categories.flatten.any? %>
+                  <div class="dm-<%= parent_category.name.downcase %>-category-columns-container">
                     <div class="grid-row">
-                      <p class="text-bold line-height-26 margin-bottom-05 grid-col-12 display-none desktop:display-block desktop:margin-top-1"><%= pc.name %></p>
+                      <p class="text-bold line-height-26 margin-bottom-05 grid-col-12 display-none desktop:display-block desktop:margin-top-1"><%= parent_category.name %></p>
                       <% sliced_categories.each_with_index do |sc, i| %>
-                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sc, parent_category: pc, column: i } unless i === 3 %>
+                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sc, parent_category: parent_category, column: i } unless i === 3 %>
                       <% end %>
                     </div>
-                    <%= render partial: 'practices/introduction_forms/other_categories', locals: { parent_category: pc, form: f } %>
+                    <%= render partial: 'practices/introduction_forms/other_categories', locals: { parent_category: parent_category, form: f } %>
                   </div>
                 <% end %>
               <% end %>
