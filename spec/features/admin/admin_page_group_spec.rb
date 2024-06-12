@@ -98,7 +98,7 @@ RSpec.describe 'PageGroup Management', type: :feature do
         existing_editor.add_role(:page_group_editor, page_group)
         visit edit_admin_page_group_path(page_group)
 
-        within("ul#current-editors") do
+        within("ul#current-editors-list") do
           find("li", text: editor.email).find("input[type='checkbox']").set(true)
         end
 
@@ -119,7 +119,7 @@ RSpec.describe 'PageGroup Management', type: :feature do
         existing_editor.add_role(:page_group_editor, page_group)
         visit edit_admin_page_group_path(page_group)
 
-        within("ul#current-editors") do
+        within("ul#current-editors-list") do
           all("li").each do |li|
             li.find("input[type='checkbox']").set(true)
           end
