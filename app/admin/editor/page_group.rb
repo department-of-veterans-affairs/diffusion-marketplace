@@ -14,9 +14,9 @@ ActiveAdmin.register PageGroup, namespace: :editor do
         editors = f.object.editors
 
         li do
-          label "Current Editors", for: "current-editors", class: "label"
+          label "Current Editors", for: "current-editors-list", class: "label"
           if editors.any?
-            ul id: 'current-editors', class: 'current-editors margin-left-3' do
+            ul id: 'current-editors-list', class: 'current-editors margin-left-3' do
               editors.each do |editor|
                 li class: 'margin-bottom-1' do
                   span editor.email

@@ -19,9 +19,9 @@ ActiveAdmin.register PageGroup do
         editors = f.object.editors
 
         li do
-          label "Current Editors", for: "current-editors", class: "label"
+          label "Current Editors", for: "current-editors-list", class: "label"
           if editors.any?
-            ul id: 'current-editors', class: 'current-editors margin-left-3' do
+            ul id: 'current-editors-list', class: 'current-editors margin-left-3' do
               editors.each do |editor|
                 li class: 'margin-bottom-1' do
                   span editor.email
@@ -46,13 +46,13 @@ ActiveAdmin.register PageGroup do
 
     if f.object.persisted? && f.object.is_community?
       f.inputs 'Pages', class: 'inputs' do
-        community_pages = f.object.pages.community_pages.to_a
+        subnav_pages = f.object.pages.subnav_pages.to_a
 
         li class: 'padding-bottom-2 margin-bottom-2 border-bottom-1px border-base-light' do
           label "Community Sub-Navigation Order", for: "current-pages text-no-wrap", class: "label"
-          if community_pages.any?
+          if subnav_pages.any?
             ul id: 'current-pages', class: 'margin-x-3 display-flex' do
-              community_pages.each_with_index do |page, index|
+              subnav_pages.each_with_index do |page, index|
                 li class: 'margin-bottom-1 margin-right-1', data: { page_id: page.id } do
                   span class: 'handle text-no-wrap' do
                     span page.short_name.present? ? page.short_name : page.title
@@ -74,11 +74,11 @@ ActiveAdmin.register PageGroup do
         end
 
         li class: 'margin-top-1'do
-          non_community_pages = f.object.pages.where(position: nil)
+          non_subnav_pages = f.object.pages.where(position: nil)
           label "Pages Not In the Community Sub-Navigation", for: "unpositioned-pages", class: "label"
-          if non_community_pages.any?
+          if non_subnav_pages.any?
             ul class: 'unpositioned-pages' do
-              non_community_pages.each do |page|
+              non_subnav_pages.each do |page|
                 li class: 'margin-bottom-1' do
                   link_to page.title, edit_admin_page_path(page)
                 end
@@ -108,18 +108,18 @@ ActiveAdmin.register PageGroup do
         end
       end
       row "Community Pages" do |pg|
-        community_pages = pg.pages.where.not(position: nil).to_a
+        subnav_pages = pg.pages.where.not(position: nil).to_a
         ul do
-          community_pages.each do |page|
+          subnav_pages.each do |page|
             li link_to page.title, edit_admin_page_path(page)
           end
         end
       end
 
       row "Non-Community Pages" do |pg|
-        non_community_pages = pg.pages.where(position: nil)
+        non_subnav_pages = pg.pages.where(position: nil)
         ul do
-          non_community_pages.each do |page|
+          non_subnav_pages.each do |page|
             li link_to page.title, edit_admin_page_path(page)
           end
         end
