@@ -20,7 +20,7 @@
   alt_text = session[:page_image_alt_text]
 %>
 
-<% if @page_group&.is_community? && @page.is_community_page # only shown on mobile width %>
+<% if @page_group&.is_community? && @page.is_subnav_page # only shown on mobile width %>
   <%= render partial: "page/community_subnav", locals: { community_slug: @page_group_slug, subnav_hash: @page_group.subnav_hash } %>
   <section class="<%= 'dm-gradient-banner' if heading.present? %><%= ' gradient-banner-with-image' if page_image.present? %> <%= classes if classes.present? %>">
     <div class="grid-container padding-y-4 desktop:padding-y-8">

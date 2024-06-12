@@ -71,15 +71,15 @@ RSpec.describe Page, type: :model do
     end
   end
 
-  describe '#is_community_page' do
+  describe '#is_subnav_page' do
     it 'returns true if the page has a position' do
       page = build(:page, position: 1)
-      expect(page.is_community_page).to be true
+      expect(page.is_subnav_page).to be true
     end
 
     it 'returns false if the page does not have a position' do
       page = build(:page, position: nil)
-      expect(page.is_community_page).to be false
+      expect(page.is_subnav_page).to be false
     end
   end
 

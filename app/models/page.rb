@@ -3,7 +3,7 @@ class Page < ApplicationRecord
   belongs_to :page_group, inverse_of: :pages
   acts_as_list scope: :page_group
 
-  attr_accessor :delete_image_and_alt_text, :is_community_page
+  attr_accessor :delete_image_and_alt_text, :is_subnav_page
 
   has_many :page_components, -> { order(position: :asc) }, dependent: :destroy, autosave: true
   has_attached_file :image, styles: { thumb: '768x432>' }
@@ -48,7 +48,7 @@ class Page < ApplicationRecord
     ]
   end
 
-  def is_community_page
+  def is_subnav_page
     self.position.present?
   end
 
