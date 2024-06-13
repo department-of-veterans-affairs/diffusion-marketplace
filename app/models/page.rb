@@ -56,7 +56,8 @@ class Page < ApplicationRecord
     if position.present?
       self.remove_from_list
     else
-      self.set_list_position(-1)
+      new_position = page_group.pages.subnav_pages.count + 1
+      self.set_list_position(new_position)
     end
   end
 
