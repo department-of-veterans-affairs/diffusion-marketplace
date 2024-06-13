@@ -106,7 +106,7 @@ describe 'Breadcrumbs', type: :feature do
 
   describe 'Featured innovation' do
     it 'should show breadcrumbs to the home page when a user clicks a highlighted innovation' do
-      click_link('View innovation')
+      click_link('Featured Innovation')
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do
         expect(page).to have_css('.fa-arrow-left')
