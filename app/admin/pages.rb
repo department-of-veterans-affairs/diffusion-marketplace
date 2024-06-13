@@ -16,6 +16,8 @@ ActiveAdmin.register Page do
                 :image,
                 :image_alt_text,
                 :delete_image_and_alt_text,
+                :is_subnav_page,
+                :short_name,
                 page_components_attributes: [
                   :id,
                   :component_type,
@@ -84,7 +86,7 @@ ActiveAdmin.register Page do
   # end
   #
 
-  remove_filter :versions
+  remove_filter :versions, :position, :short_name
   index do
     selectable_column
     column(:title) { |page| link_to(page.title, admin_page_path(page)) }
@@ -112,8 +114,10 @@ ActiveAdmin.register Page do
       }
       row :page_group
       row :slug
+      row :is_subnav_page
       row :template_type
       row :title
+      row :short_name
       row :description
       row :has_chrome_warning_banner
       row :published
@@ -190,6 +194,12 @@ ActiveAdmin.register Page do
       end
       f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
+      f.input :is_subnav_page,
+              label: "Should we include this page in the #{f.object.page_group&.name || "Community"} sub-navigation?",
+              as: :boolean
+      f.input :short_name,
+              label: 'Page Nickname',
+              hint: "This is the page's nickname for the #{f.object.page_group&.name || "Community"} sub-navigation. Needs to be short – 1 to 2 words maximum."
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
       f.input :image,
               value: f.resource.image_file_name,
@@ -244,7 +254,6 @@ ActiveAdmin.register Page do
 
   controller do
     before_action :set_page,
-                  :delete_page_image_and_alt_text,
                   only: [:create, :update]
     rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
 
@@ -263,11 +272,13 @@ ActiveAdmin.register Page do
     end
 
     def create_or_update_page
-      page_params = permitted_params[:page]
-
       ActiveRecord::Base.transaction do
         @page ||= Page.new
+
+        delete_page_image_and_alt_text
+        page_params = permitted_params[:page]
         @page.update!(page_params)
+        update_page_group_position
       end
 
       redirect_to admin_page_path(@page), notice: "Page was successfully #{action_name == 'create' ? 'created' : 'updated'}."
@@ -316,6 +327,14 @@ ActiveAdmin.register Page do
 
         params[:page][:image] = nil
         params[:page][:image_alt_text] = nil
+      end
+    end
+
+    def update_page_group_position
+      include_in_community_subnav = (params[:page][:is_subnav_page] == "1")
+
+      if include_in_community_subnav != @page.is_subnav_page
+        @page.add_or_remove_from_community_subnav
       end
     end
   end

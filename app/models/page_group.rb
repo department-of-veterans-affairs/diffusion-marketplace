@@ -7,7 +7,7 @@ class PageGroup < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  has_many :pages, dependent: :destroy
+  has_many :pages, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :page_group
   has_many :editor_roles, -> { where(name: 'page_group_editor', resource_type: 'PageGroup') },
             class_name: 'Role', foreign_key: :resource_id, inverse_of: :page_group
   has_many :editors, through: :editor_roles, source: :users
@@ -41,21 +41,14 @@ class PageGroup < ApplicationRecord
   def subnav_hash
     return nil if self.pages.empty?
     if self.landing_page&.published? # Use all pages when community homepage has not been published
-      subpages = self.pages.filter { |page| page.published? }.pluck("slug")
+      subpages = self.pages.subnav_pages.filter { |page| page.published? }
     else # Only show published subnav pages when homepage has been published
-      subpages = self.pages.pluck("slug")
+      subpages = self.pages.subnav_pages
     end
-    # TODO: replace hash with PageBuilder UI supplied info
-    approved_subpages =  { # Use hardcoded titles for nav because of mismatch with actual page names
-      "Community": "home",
-      "About": "about",
-      "Innovations": "innovations",
-      "Events and News": "events-and-news",
-      "Getting Started": "getting-started",
-      "Publications": "publications"
-    }
-
-    approved_subpages.filter {|k,v| subpages.include?(v)}
+    subpages.each_with_object({}) do |page, h|
+      link_text = page.short_name.present? ? page.short_name : page.title
+      h[link_text] = page.slug
+    end
   end
 
   def self.ransackable_attributes(auth_object = nil)

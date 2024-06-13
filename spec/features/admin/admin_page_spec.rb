@@ -47,6 +47,17 @@ describe 'Page Builder', type: :feature do
       expect(page).to have_content("Image alt text can't be blank if Page image is present")
       expect(@page.image.present?).to eq(false)
     end
+
+    it 'allows admin to update short_name and community page status' do
+      visit edit_admin_page_path(@page)
+      fill_in 'Page Nickname', with: 'Quick Ref'
+      find('input[name="page[is_subnav_page]"]').set(true)
+      all('input[type="submit"]').last.click
+      expect(page).to have_content('Page was successfully updated.')
+      updated_page = Page.find(@page.id)
+      expect(updated_page.short_name).to eq('Quick Ref')
+      expect(updated_page.is_subnav_page).to be true
+    end
   end
 
   describe 'creating the page' do

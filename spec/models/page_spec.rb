@@ -57,4 +57,46 @@ RSpec.describe Page, type: :model do
       end
     end
   end
+
+  describe 'scopes' do
+    describe '.subnav_pages' do
+      it 'includes pages with non-nil positions' do
+        included_page = create(:page, position: 1)
+        excluded_page = create(:page)
+        excluded_page.update!(position: nil)
+
+        expect(Page.subnav_pages).to include(included_page)
+        expect(Page.subnav_pages).not_to include(excluded_page)
+      end
+    end
+  end
+
+  describe '#is_subnav_page' do
+    it 'returns true if the page has a position' do
+      page = build(:page, position: 1)
+      expect(page.is_subnav_page).to be true
+    end
+
+    it 'returns false if the page does not have a position' do
+      page = build(:page, position: nil)
+      expect(page.is_subnav_page).to be false
+    end
+  end
+
+  describe '#add_or_remove_from_community_subnav' do
+    context 'when the page is already in the community sub-nav' do
+      it 'removes the page from the community sub-nav if it has a position' do
+        page = create(:page, position: 1)
+        expect { page.add_or_remove_from_community_subnav }.to change { page.position }.from(1).to(nil)
+      end
+    end
+
+    context 'when the page is not in the community sub-nav' do
+      it 'adds the page to the community sub-nav by setting position to -1' do
+        page = create(:page)
+        page.update!(position: nil)
+        expect { page.add_or_remove_from_community_subnav }.to change { page.position }.from(nil).to(1)
+      end
+    end
+  end
 end

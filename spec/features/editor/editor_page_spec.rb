@@ -119,6 +119,17 @@ describe 'Page Management', type: :feature, js: true do
       expect(page).to_not have_content('Image Alt Text'.upcase)
       expect(Page.last.image_alt_text.present?).to eq(false)
     end
+
+    it 'allows editor to update short_name and community page status' do
+      visit edit_editor_page_path(pb_page_a)
+      fill_in 'Page Nickname', with: 'Quick Ref'
+      find('input[name="page[is_subnav_page]"]').set(true)
+      all('input[type="submit"]').last.click
+      expect(page).to have_content('Page was successfully updated.')
+      updated_page = Page.find(pb_page_a.id)
+      expect(updated_page.short_name).to eq('Quick Ref')
+      expect(updated_page.is_subnav_page).to be true
+    end
   end
 
   describe 'Page groups' do

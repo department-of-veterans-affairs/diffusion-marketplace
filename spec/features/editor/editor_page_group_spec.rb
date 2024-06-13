@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'PageGroup Management', type: :feature, js: true do
-  describe 'Editing a PageGroup' do
+  describe "Editing a PageGroup's 'Editors'" do
     let!(:page_group) { create(:page_group) }
     let!(:editor) { create(:user, email: "editor_email1@va.gov") }
     let!(:new_editor) { create(:user, email: "editor_email2@va.gov") }
@@ -39,7 +39,7 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
         new_editor.add_role(:page_group_editor, page_group)
         visit edit_editor_page_group_path(page_group)
 
-        within("ul#current_editors") do
+        within("ul#current-editors-list") do
           find("li", text: new_editor.email).find("input[type='checkbox']").set(true)
         end
 
@@ -63,6 +63,57 @@ RSpec.describe 'PageGroup Management', type: :feature, js: true do
 
         expect(page).to have_content('User not found with email(s): nonexistent@va.gov')
         expect(page_group.reload.editors).not_to include(nonexistent_email)
+      end
+    end
+  end
+
+  describe "Editing a PageGroup's Pages" do
+    let!(:page_group) { create(:page_group, name: PageGroup::COMMUNITIES.first) }
+    let!(:editor) { create(:user, email: "editor_email1@va.gov") }
+    let!(:page_a) { create(:page, slug: "home", title: "Home Page", page_group: page_group) }
+    let!(:page_b) { create(:page, slug: "about", title: "About Page", page_group: page_group) }
+    let!(:page_c) { create(:page, slug: "innovations", title: "Innovations Page", page_group: page_group) }
+
+    before do
+      editor.add_role(:page_group_editor, page_group)
+      login_as(editor, scope: :user, run_callbacks: false)
+    end
+
+    it "displays the page_group's pages in the un-ordered section of 'Pages' section" do
+      page_group.pages.each {|page| page.update!(position: nil)}
+      visit edit_editor_page_group_path(page_group)
+
+      within("ul.unpositioned-pages") do
+        expect(page).to have_content(page_a.title)
+        expect(page).to have_content(page_b.title)
+        expect(page).to have_content(page_c.title)
+      end
+    end
+
+    it "displays the page_group's pages in the ordered section of 'Pages' section" do
+      visit edit_editor_page_group_path(page_group)
+
+      within("ul#current-pages") do
+        expect(page).to have_content(page_a.title)
+        expect(page).to have_content(page_b.title)
+        expect(page).to have_content(page_c.title)
+      end
+    end
+
+    it "displays the page_group's pages by short_name in the ordered section of 'Pages' section" do
+      page_a.update!(short_name: "Community")
+      page_b.update!(short_name: "About")
+      page_c.update!(short_name: "Innovations")
+      visit edit_editor_page_group_path(page_group)
+
+      within("ul#current-pages") do
+        expect(page).to_not have_content(page_a.title)
+        expect(page).to_not have_content(page_b.title)
+        expect(page).to_not have_content(page_c.title)
+
+        expect(page).to have_content(page_a.short_name)
+        expect(page).to have_content(page_b.short_name)
+        expect(page).to have_content(page_c.short_name)
       end
     end
   end
