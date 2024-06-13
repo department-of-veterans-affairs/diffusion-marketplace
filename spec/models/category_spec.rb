@@ -54,4 +54,24 @@ RSpec.describe Category, type: :model do
       end
     end
   end
+
+  describe '.get_cached_categories_grouped_by_parent' do
+    let(:parent_a) { create(:category) }
+    let(:parent_b) { create(:category) }
+
+    before do
+      create_list(:category, 3, parent_category: parent_a)
+      create_list(:category, 5, parent_category: parent_b)
+      allow(described_class).to receive(:cached_categories).and_return(described_class.all)
+    end
+
+    it 'returns categories grouped by parent and sorted by group size in descending order' do
+      result = described_class.get_cached_categories_grouped_by_parent
+
+      expect(result.keys.first).to eq(parent_a)
+      expect(result.keys.second).to eq(parent_b)
+      expect(result[parent_a].size).to eq(3)
+      expect(result[parent_b].size).to eq(5)
+    end
+  end
 end

@@ -59,7 +59,10 @@ class Category < ApplicationRecord
   end
 
   def self.get_cached_categories_grouped_by_parent
-    cached_categories.includes([:parent_category]).group_by(&:parent_category)
+    sub_categories = cached_categories.where.not(parent_category_id: nil).includes(:parent_category)
+    grouped_categories = sub_categories.group_by(&:parent_category)
+    sorted_groups = grouped_categories.sort_by { |_parent, categories| -categories.size }
+    sorted_groups.reverse.to_h
   end
 
   def self.ransackable_attributes(auth_object = nil)
