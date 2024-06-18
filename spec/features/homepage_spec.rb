@@ -20,8 +20,10 @@ describe 'Homepage', type: :feature do
 
     @featured_image = "#{Rails.root}/spec/assets/charmander.png"
     @parent_cat = create(:category, name: 'First Parent Category', is_other: false)
+    @parent_cat_b = create(:category, name: 'Communities', is_other: false)
     @cat_1 = create(:category, name: 'COVID', parent_category: @parent_cat)
     @cat_2 = create(:category, name: 'Telehealth', parent_category: @parent_cat)
+    @cat_3 = create(:category, name: 'VA Immersive', parent_category: @parent_cat_b)
 
     create(:category_practice, practice: @practice, category: @cat_1)
     create(:category_practice, practice: @practice_2, category: @cat_2)
@@ -200,6 +202,18 @@ describe 'Homepage', type: :feature do
       expect(event.properties["from_homepage"]).to be_truthy
     end
 
+    it 'tracks clicks on community links' do
+      expect {
+        find('a', text: 'VA Immersive').click
+        wait_for_ajax
+      }.to change(Ahoy::Event, :count).by(1)
+
+      event = Ahoy::Event.last
+      expect(event.name).to eq("Category selected")
+      expect(event.properties["category_name"]).to eq("VA Immersive")
+      expect(event.properties["from_homepage"]).to be_truthy
+    end
+
     it 'tracks clicks on "Browse all Innovations" link' do
       expect {
         find('a', text: 'Browse all Innovations').click
@@ -207,11 +221,12 @@ describe 'Homepage', type: :feature do
       }.to change(Ahoy::Event, :count).by(1)
 
       event = Ahoy::Event.last
+
       expect(event.name).to eq("Dropdown Browse-all Link Clicked")
       expect(event.properties["type"]).to eq("innovation")
     end
 
-    it 'tracks clicks on "Browse all tags" link' do
+    it 'tracks clicks on "Browse all Tags" link' do
       expect {
         find('a', text: 'Browse all Tags').click
         wait_for_ajax
@@ -220,6 +235,17 @@ describe 'Homepage', type: :feature do
       event = Ahoy::Event.last
       expect(event.name).to eq("Dropdown Browse-all Link Clicked")
       expect(event.properties["type"]).to eq("category")
+    end
+
+    it 'tracks clicks on "Browse all Communities" link' do
+      expect {
+        find('a', text: 'Browse all Communities').click
+        wait_for_ajax
+      }.to change(Ahoy::Event, :count).by(1)
+
+      event = Ahoy::Event.last
+      expect(event.name).to eq("Dropdown Browse-all Link Clicked")
+      expect(event.properties["type"]).to eq("community")
     end
   end
 

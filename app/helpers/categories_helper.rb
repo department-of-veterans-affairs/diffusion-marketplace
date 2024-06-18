@@ -1,23 +1,25 @@
 module CategoriesHelper
-  def get_categories_by_popularity
+  def get_categories_by_popularity(only_communities=false)
     time_limit = Time.now - 90.days
-    Rails.cache.fetch('categories_with_popularity', expires_in: 24.hours) do
-      # returns only category names that can be found in the filters on the /search page,
-      # raw SQL allows for joining category selection events to be used for ordering,
-      # left joins allows categories with no selection events to be returned
-      Category.where(is_other: false)
-              .joins(
-                'LEFT JOIN ahoy_events ' \
-                'ON categories.id = CAST(ahoy_events.properties ->> \'category_id\' AS INTEGER) ' \
-                'AND ahoy_events.name = \'Category selected\' ' \
-                'AND ahoy_events.time > \'' + time_limit.to_s(:db) + '\''
-              )
-              .joins(:parent_category)
-              .where.not(parent_category: nil)
-              .group('categories.id')
-              .order('COUNT(ahoy_events.id) DESC, categories.name')
-              .pluck('categories.id', 'categories.name')
-              .map { |id, name| { id: id, name: name } }
+    Rails.cache.fetch("categories_with_popularity_#{only_communities ? 'communities' : 'non_communities'}", expires_in: 24.hours) do
+      query = Category.where(is_other: false)
+              .joins('LEFT JOIN ahoy_events ' \
+                    'ON categories.id = CAST(ahoy_events.properties ->> \'category_id\' AS INTEGER) ' \
+                    'AND ahoy_events.name = \'Category selected\' ' \
+                    'AND ahoy_events.time > \'' + time_limit.to_s(:db) + '\'')
+              .joins('LEFT JOIN categories as parent_categories ON categories.parent_category_id = parent_categories.id')
+              .where.not(parent_category_id: nil)
+
+      if only_communities
+        query = query.where(parent_categories: { name: 'Communities' })
+      else
+        query = query.where.not(parent_categories: { name: 'Communities' })
+      end
+
+      query.group('categories.id')
+          .order('COUNT(ahoy_events.id) DESC, categories.name')
+          .pluck('categories.id', 'categories.name')
+          .map { |id, name| { id: id, name: name } }
     end
   end
 

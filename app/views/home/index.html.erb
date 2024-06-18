@@ -25,6 +25,7 @@
     aria-label="Homepage search section"
     data-categories="<%= @dropdown_categories.to_json %>"
     data-innovations="<%= @dropdown_practices.to_json %>"
+    data-communities="<%= @dropdown_communities.to_json %>"
   >
     <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search" aria-label="Search innovations and categories">
       <div class="dm-homepage-search-container width-full">
@@ -37,15 +38,16 @@
           placeholder="Search innovations, tags..."
           aria-labelledby="dm-homepage-search-form"
         >
-        <div
-          id="search-dropdown"
-          class="radius-md bg-white shadow-5 left-0 right-0"
-          style="display: none;"
-        >
+          <div
+            id="search-dropdown"
+            class="radius-md bg-white shadow-5 left-0 right-0"
+            style="display: none;"
+          >
+
           <div class="dropdown-content margin-4">
-            <div class="result-section">
+            <div class="result-section" data-type="innovation">
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Innovations</h3>
-              <ul id="practice-list" class="usa-list usa-list--unstyled padding-top-1">
+              <ul id="practice-list" class="usa-list usa-list--unstyled padding-bottom-1 padding-top-1 display-block">
                 <% @dropdown_practices[0..2].each do |practice| %>
                   <li class="search-result" data-practice-id=<%= practice[:id] %>>
                     <a href="/innovations/<%= practice[:slug] %>"><%= practice[:name] %></a>
@@ -54,9 +56,10 @@
               </ul>
               <a class="browse-all-link text-bold" href="<%= search_path %>">Browse all Innovations</a>
             </div>
-            <div class="result-section">
+
+            <div class="result-section" data-type="category">
               <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Tags">Tags</h3>
-              <ul id="category-list" class="usa-list usa-list--unstyled padding-top-1">
+              <ul id="category-list" class="usa-list usa-list--unstyled padding-bottom-1 padding-top-1 display-block">
                 <% @dropdown_categories[0..2].each do |category| %>
                   <li class="search-result" data-category_id=<%= category[:id] %>>
                     <a href=<%= "/search?category=#{URI.encode_www_form_component(category[:name])}" %>><%= category[:name] %></a>
@@ -64,6 +67,18 @@
                 <% end %>
               </ul>
               <a class="browse-all-link text-bold" href="<%= search_path %>">Browse all Tags</a>
+            </div>
+
+            <div class="result-section" data-type="community">
+              <h3 class="search-header usa-prose-h3 margin-bottom-0">Communities</h3>
+              <ul id="community-list" class="usa-list usa-list--unstyled padding-bottom-1 padding-top-1 display-block">
+                <% @dropdown_communities[0..2].each do |community| %>
+                  <li class="search-result" data-category_id=<%= community[:id] %>>
+                    <a href=<%= "/search?category=#{URI.encode_www_form_component(community[:name])}" %>><%= community[:name] %></a>
+                  </li>
+                <% end %>
+              </ul>
+              <a class="browse-all-link text-bold" href="<%= search_path %>">Browse all Communities</a>
             </div>
           </div>
         </div>

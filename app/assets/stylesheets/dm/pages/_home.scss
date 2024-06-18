@@ -3,17 +3,18 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .dm-homepage {
-  .homepage-featured-topic-image-container, .homepage-featured-innovation-image-container {
+  .homepage-featured-topic-image-container,
+  .homepage-featured-innovation-image-container {
     max-width: 308px;
 
     img {
-      @include u-height('full');
-      @include u-width('full');
+      @include u-height("full");
+      @include u-width("full");
       object-fit: cover;
       aspect-ratio: 58 / 39;
 
       @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-        @include u-display('none', !important);
+        @include u-display("none", !important);
       }
     }
 
@@ -39,22 +40,23 @@
 
     #search-dropdown {
       top: 100%; /* Position below the input */
-      @include u-border('gray-30');
-      @include u-position('absolute');
+      @include u-border("gray-30");
+      @include u-position("absolute");
       z-index: 2000;
     }
 
     .browse-all-link {
-        color: color($theme-color-base-ink);
-        @include u-text-decoration('underline');
+      color: color($theme-color-base-ink);
+      @include u-text-decoration("underline");
 
-        &:hover, &:focus {
-          color: color('primary-dark');
-        }
+      &:hover,
+      &:focus {
+        color: color("primary-dark");
+      }
 
-        &:active {
-          color: color('primary-vivid');
-        }
+      &:active {
+        color: color("primary-vivid");
+      }
     }
 
     .result-section:not(:last-child) {
@@ -62,22 +64,21 @@
       border-bottom: 1px solid black;
     }
 
-    #category-list, #practice-list {
+    #category-list,
+    #practice-list,
+    #community-list {
       a {
         text-decoration: none;
         color: color($theme-color-base-ink);
-        padding-bottom: 0.5rem; // == padding-bottom-1
-        // truncation
-        display: block;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
 
-
-        &:hover, &:active, &:focus {
-          @include u-text-decoration('underline');
+        &:hover,
+        &:active,
+        &:focus {
+          @include u-text-decoration("underline");
         }
-
 
         &:visited {
           color: color($theme-color-base-ink);
@@ -97,7 +98,7 @@
   .nominate-practice-section {
     .grid-row {
       @media screen and (min-width: 1024px) {
-        @include u-flex('align-center');
+        @include u-flex("align-center");
       }
     }
   }
@@ -109,12 +110,12 @@
 
     .grid-row {
       @media screen and (min-width: 1024px) {
-        @include u-height('full');
+        @include u-height("full");
       }
     }
 
     .subscribe-button-container {
-      @include u-text('left');
+      @include u-text("left");
 
       button {
         width: 166px !important;
@@ -123,13 +124,14 @@
   }
 
   .shark-tank-banner {
-    @include u-line-height('sans', 3);
+    @include u-line-height("sans", 3);
     background-color: color($theme-color-warning-lighter);
 
     a {
       font-weight: 600;
-      &:hover, &:focus {
-        @include u-text-decoration('underline');
+      &:hover,
+      &:focus {
+        @include u-text-decoration("underline");
         color: color($theme-color-base-ink);
       }
     }
