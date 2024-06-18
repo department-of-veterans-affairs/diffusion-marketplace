@@ -84,18 +84,20 @@ RSpec.describe Page, type: :model do
   end
 
   describe '#add_or_remove_from_community_subnav' do
+    let!(:page_group) { create(:page_group) }
+    let!(:page_a) { create(:page, page_group: page_group) }
+
     context 'when the page is already in the community sub-nav' do
       it 'removes the page from the community sub-nav if it has a position' do
-        page = create(:page, position: 1)
-        expect { page.add_or_remove_from_community_subnav }.to change { page.position }.from(1).to(nil)
+        expect { page_a.add_or_remove_from_community_subnav }.to change(page_a, :position).from(1).to(nil)
       end
     end
 
     context 'when the page is not in the community sub-nav' do
-      it 'adds the page to the community sub-nav by setting position to -1' do
-        page = create(:page)
+      it 'adds the page to the community sub-nav pages' do
+        page = create(:page, page_group: page_group)
         page.update!(position: nil)
-        expect { page.add_or_remove_from_community_subnav }.to change { page.position }.from(nil).to(1)
+        expect { page.add_or_remove_from_community_subnav }.to change { page.position }.from(nil).to(2)
       end
     end
   end
