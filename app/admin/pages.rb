@@ -86,7 +86,19 @@ ActiveAdmin.register Page do
   # end
   #
 
-  remove_filter :versions, :position, :short_name
+  remove_filter :versions,
+                :position,
+                :short_name,
+                :page_components,
+                :published,
+                :is_visible,
+                :template_type,
+                :has_chrome_warning_banner,
+                :image_alt_text,
+                :image_file_name,
+                :image_content_type,
+                :image_file_size,
+                :image_updated_at
   index do
     selectable_column
     column(:title) { |page| link_to(page.title, admin_page_path(page)) }
