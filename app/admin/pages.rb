@@ -99,6 +99,7 @@ ActiveAdmin.register Page do
     }
     column(:description)
     column(:published)
+    column(:is_public)
     actions do |page|
       publish_action_str = page.published ? "Unpublish" : "Publish"
       item publish_action_str, publish_page_admin_page_path(page), method: :post
