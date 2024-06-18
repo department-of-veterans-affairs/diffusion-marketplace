@@ -8,6 +8,9 @@ function setupSearchDropdown() {
     const allInnovations = JSON.parse($('.homepage-search').attr('data-innovations') || '[]');
     const mostRecentInnovations = allInnovations.slice(0, 3);
 
+    const allCommunities = JSON.parse($('.homepage-search').attr('data-communities') || '[]');
+    const mostPopularCommunities = allCommunities.slice(0, 3);
+
     searchInput.focus(function() {
         dropdown.show();
         searchInput.attr('aria-expanded', 'true');
@@ -17,7 +20,8 @@ function setupSearchDropdown() {
         let searchTerm = searchInput.val().toLowerCase();
         let filteredCategories = searchTerm ? allCategories.filter(category => category.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCategories;
         let filteredInnovations = searchTerm ? allInnovations.filter(innovation => innovation.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostRecentInnovations;
-        updateDropdown(filteredCategories, filteredInnovations);
+        let filteredCommunities = searchTerm ? allCommunities.filter(community => community.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCommunities;
+        updateDropdown(filteredCategories, filteredInnovations, filteredCommunities);
     });
 
     $(document).keydown(function(e) {
@@ -52,8 +56,8 @@ function setupSearchDropdown() {
     });
 }
 
-function updateDropdown(categories, innovations) {
-  $('#category-list, #practice-list').empty();
+function updateDropdown(categories, innovations, communities) {
+  $('#category-list, #practice-list, #community-list').empty();
 
   categories.forEach(function(category) {
       let link = $('<a></a>')
@@ -77,6 +81,18 @@ function updateDropdown(categories, innovations) {
           .append(link);
 
       $('#practice-list').append(listItem);
+  });
+
+  communities.forEach(function(community) {
+      let link = $('<a></a>')
+          .attr('href', `/search?category=${encodeURIComponent(community.name)}`)
+          .text(community.name);
+      let listItem = $('<li></li>')
+          .addClass('search-result')
+          .attr('data-community-id', community.id)
+          .append(link);
+
+      $('#community-list').append(listItem);
   });
 }
 
@@ -112,10 +128,10 @@ function setupBrowseAllTracking() {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const url = this.getAttribute('href');
-      const isCategoryLink = this.closest('.result-section').querySelector('#category-list') != null;
+      const sectionType = this.closest('.result-section').getAttribute('data-type');
 
       ahoy.track("Dropdown Browse-all Link Clicked", {
-        type: isCategoryLink ? 'category' : 'innovation',
+        type: sectionType,
         url: url
       });
 
@@ -124,13 +140,14 @@ function setupBrowseAllTracking() {
       }, 100);
     });
   });
-};
+}
 
 addEventListener('turbolinks:load', function () {
   if ($('#dm-homepage-search-button').length > 0) {
     setupSearchDropdown();
+    setupBrowseAllTracking();
     setupClickTracking('#practice-list', "Dropdown Practice Link Clicked", 'data-practice-id');
     setupClickTracking('#category-list', "Category selected", 'data-category_id');
-    setupBrowseAllTracking();
+    setupClickTracking('#community-list', "Category selected", 'data-category_id');
   }
 });
