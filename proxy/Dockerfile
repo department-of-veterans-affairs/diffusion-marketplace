@@ -10,7 +10,7 @@ ENV nginxversion="1.25.1-1" \
 
 RUN yum install -y yum-plugin-ovl
 
-RUN yum install -y wget openssl sed gettext &&\
+RUN yum install -y wget openssl sed gettext pcre2 &&\
     yum -y autoremove &&\
     yum clean all &&\
     wget http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-$nginxversion.el$elversion.ngx.x86_64.rpm &&\
