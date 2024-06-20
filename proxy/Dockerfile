@@ -5,12 +5,12 @@ FROM 124858472090.dkr.ecr.us-gov-west-1.amazonaws.com/diffusion-marketplace:cent
 
 MAINTAINER Agile Six Applications, Inc. <contact@agile6.com>
 
-ENV nginxversion="1.21.1-1" \
+ENV nginxversion="1.25.1-1" \
     elversion="7"
 
 RUN yum install -y yum-plugin-ovl
 
-RUN yum install -y wget openssl sed gettext &&\
+RUN yum install -y wget openssl sed gettext pcre2 &&\
     yum -y autoremove &&\
     yum clean all &&\
     wget http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-$nginxversion.el$elversion.ngx.x86_64.rpm &&\
