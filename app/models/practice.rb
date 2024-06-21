@@ -6,8 +6,7 @@ class Practice < ApplicationRecord
   extend PracticeUtils
 
   before_validation :trim_whitespace
-  before_save :clear_searchable_cache_on_save
-  after_save :reset_searchable_practices
+  after_commit :clear_searchable_cache
   after_create :create_practice_editor_for_practice
 
   extend FriendlyId
@@ -52,37 +51,16 @@ class Practice < ApplicationRecord
   end
 
   def clear_searchable_cache
-    cache_keys = ["searchable_practices_json", "searchable_public_practices_json", "s3_signer", "published_enabled_approved_practices"]
-    cache_keys.each do |cache_key|
-      Cache.new.delete_cache_key(cache_key)
+    cached_keys = [
+      "searchable_practices_json",
+      "searchable_public_practices_json",
+      "s3_signer",
+      "published_enabled_approved_practices",
+      "#{cache_key}/as_json"
+    ]
+    cached_keys.each do |cached_key|
+      Cache.new.delete_cache_key(cached_key)
     end
-  end
-
-  def clear_searchable_cache_on_save
-    if self.name_changed? ||
-        self.tagline_changed? ||
-        self.description_changed? ||
-        self.summary_changed? ||
-        self.initiating_facility_changed? ||
-        self.main_display_image_updated_at_changed? ||
-        self.published_changed? ||
-        self.enabled_changed? ||
-        self.approved_changed? ||
-        self.date_initiated_changed? ||
-        self.maturity_level_changed? ||
-        self.overview_problem_changed? ||
-        self.overview_solution_changed? ||
-        self.overview_results_changed?  ||
-        self.retired_changed? ||
-        self.retired_reason_changed? ||
-        self.hidden_changed? ||
-        self.is_public_changed?
-      self.reset_searchable_cache = true
-    end
-  end
-
-  def reset_searchable_practices
-    clear_searchable_cache if self.reset_searchable_cache
   end
 
   def has_facility?
@@ -474,14 +452,16 @@ class Practice < ApplicationRecord
   end
 
   def as_json(*)
-    super(only: get_search_fields).merge(
-      date_initiated: date_initiated? ? date_initiated.strftime("%B %Y") : '(start date unknown)',
-      category_names: get_category_names(self.categories.not_other.not_none),
-      initiating_facility_name: origin_display(self),
-      practice_partner_names: practice_partners.pluck(:name),
-      origin_facilities: practice_origin_facilities.get_va_facilities + practice_origin_facilities.get_clinical_resource_hubs,
-      adoption_facilities: diffusion_histories.get_va_facilities + diffusion_histories.get_clinical_resource_hubs,
-      adoption_count: diffusion_histories.size
-    )
+    Rails.cache.fetch("#{cache_key_with_version}/as_json", expires_in: 12.hours) do
+      super(only: get_search_fields).merge(
+        date_initiated: date_initiated? ? date_initiated.strftime("%B %Y") : '(start date unknown)',
+        category_names: get_category_names(self.categories.not_other.not_none),
+        initiating_facility_name: origin_display(self),
+        practice_partner_names: practice_partners.pluck(:name),
+        origin_facilities: practice_origin_facilities.get_va_facilities + practice_origin_facilities.get_clinical_resource_hubs,
+        adoption_facilities: diffusion_histories.get_va_facilities + diffusion_histories.get_clinical_resource_hubs,
+        adoption_count: diffusion_histories.size
+      )
+    end
   end
 end
