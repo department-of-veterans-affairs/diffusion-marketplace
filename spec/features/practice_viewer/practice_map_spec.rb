@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
+  self.use_transactional_tests = false
   before do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @practice = Practice.create!(name: 'The Best Innovation Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
@@ -93,7 +94,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
   end
 
   after do
-    ENV['GOOGLE_API_KEY'] = nil
+    # ENV['GOOGLE_API_KEY'] = nil
   end
 
   context 'when visiting a practice page with diffusion history' do
