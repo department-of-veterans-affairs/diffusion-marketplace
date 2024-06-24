@@ -13,7 +13,7 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'false' %>
     <%= javascript_include_tag 'shared/_utilityFunctions', 'data-turbolinks-track': 'reload', defer: true %>
     <% if @include_google_maps %>
-      <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}", 'data-turbolinks-track': 'false' %>
+      <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&loading=async", 'data-turbolinks-track': 'false' %>
       <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/mahnunchik/markerclustererplus@master/dist/markerclusterer.min.js", 'data-turbolinks-track': 'false', defer: true %>
       <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/printercu/google-maps-utility-library-v3-read-only@master/infobox/src/infobox_packed.js", 'data-turbolinks-track': 'false', defer: true %>
       <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/googlemaps/js-rich-marker@gh-pages/src/richmarker-compiled.js", 'data-turbolinks-track': 'false', defer: true %>
