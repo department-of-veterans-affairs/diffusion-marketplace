@@ -300,7 +300,7 @@ describe 'Map of Diffusion', type: :feature do
     expect(page).to have_selector('.usa-link[href="/facilities/caribou"', visible: false)
   end
 
-  it 'should allow the user to visit each adoption\'s VA facility page', js: true do
+  it 'should allow the user to visit each adoption\'s VA facility page' do
     # click on the first generated marker
     find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
     # in the marker modal, make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
