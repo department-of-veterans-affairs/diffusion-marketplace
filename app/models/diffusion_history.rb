@@ -3,14 +3,11 @@ class DiffusionHistory < ApplicationRecord
   belongs_to :va_facility, optional: true
   belongs_to :clinical_resource_hub, optional: true
   belongs_to :practice, counter_cache: true
-
+  has_many :diffusion_history_statuses, dependent: :destroy
 
   validates_with DiffusionHistoryValidator, on: [:create, :update] # check CRH exists or facility exists
 
-
-  has_many :diffusion_history_statuses, dependent: :destroy
-  after_save :clear_searchable_practices_cache
-  after_destroy :clear_searchable_practices_cache
+  after_commit -> { practice.clear_searchable_cache }
 
   attr_accessor :facility_name
 
@@ -24,8 +21,4 @@ class DiffusionHistory < ApplicationRecord
   scope :get_with_practice, -> (practice) { joins(:practice).where(practice: practice) }
   scope :exclude_va_facilities, -> { where(va_facility_id: nil) }
   scope :exclude_clinical_resource_hubs, -> { where(clinical_resource_hub_id: nil) }
-
-  def clear_searchable_practices_cache
-    practice.clear_searchable_cache
-  end
 end
