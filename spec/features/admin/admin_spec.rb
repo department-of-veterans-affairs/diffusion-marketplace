@@ -436,7 +436,7 @@ describe 'The admin dashboard', type: :feature do
       pr_3 = Practice.create!(name: 'Another Test Practice 2', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
 
       visit '/'
-      expect(page).to have_no_content('Highlighted by the VA this month')
+      expect(page).to have_no_content('Featured Innovation')
       # feature practice
       visit '/admin'
       click_link('Practices')

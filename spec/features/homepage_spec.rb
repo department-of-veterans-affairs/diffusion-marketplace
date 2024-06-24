@@ -77,7 +77,7 @@ describe 'Homepage', type: :feature do
       expect(page).to have_content('Highlighted body text')
 
       # visit the practice's show page
-      click_link('View innovation')
+      click_link('Featured Innovation')
 
       expect(page).to have_content(@practice.name)
       expect(page).to have_content('Bookmark')
@@ -87,7 +87,7 @@ describe 'Homepage', type: :feature do
   end
 
   it "allows the user to visit the 'Nominate an innovation' page" do
-    click_link('Start nomination')
+    click_link('Nominate')
 
     expect(page).to have_content('Nominate an innovation')
     expect(page).to have_content('VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace using the form below.')

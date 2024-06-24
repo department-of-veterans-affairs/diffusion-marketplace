@@ -74,10 +74,10 @@ describe 'Practices', type: :feature do
       expect(page).to have_link(href: '/about')
       expect(page).to have_content(@highlighted_practice.name)
       expect(page).to have_content('Highlight body text')
-      expect(page).to have_content('View innovation')
-      expect(page).to have_content('Nominate an innovation')
+      expect(page).to have_content('Featured Innovation')
+      expect(page).to have_content('Nominate')
       expect(page).to have_content('Are you working on an innovation that’s making a difference at VA? Submit a nomination for the innovation to be included on the Diffusion Marketplace.')
-      expect(page).to have_link('Start nomination', href: nominate_an_innovation_path )
+      expect(page).to have_link('Nominate', href: nominate_an_innovation_path )
     end
 
     it 'should let the practice owner interact with their practice if not approved or published' do
