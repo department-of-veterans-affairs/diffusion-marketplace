@@ -28,7 +28,6 @@ class Practice < ApplicationRecord
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department, :practice_award, :category
-  attr_accessor :reset_searchable_cache
 
   def self.cached_json_practices(is_guest_user)
     if is_guest_user
@@ -58,8 +57,9 @@ class Practice < ApplicationRecord
       "published_enabled_approved_practices",
       "#{cache_key}/as_json"
     ]
+
     cached_keys.each do |cached_key|
-      Cache.new.delete_cache_key(cached_key)
+      Rails.cache.delete(cached_key)
     end
   end
 
@@ -452,7 +452,7 @@ class Practice < ApplicationRecord
   end
 
   def as_json(*)
-    Rails.cache.fetch("#{cache_key_with_version}/as_json", expires_in: 12.hours) do
+    Rails.cache.fetch("#{cache_key}/as_json") do
       super(only: get_search_fields).merge(
         date_initiated: date_initiated? ? date_initiated.strftime("%B %Y") : '(start date unknown)',
         category_names: get_category_names(self.categories.not_other.not_none),
