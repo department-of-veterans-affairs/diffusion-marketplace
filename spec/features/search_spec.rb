@@ -370,7 +370,7 @@ describe 'Search', type: :feature do
 
         # filter for clinical resource hubs for both originating facility and adopting facility
         add_crh_adoptions_and_practice_origin_facilities
-        # Rails.cache.clear
+
         # reset the practice cache
         visit_search_page
 
