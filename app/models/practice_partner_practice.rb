@@ -12,6 +12,6 @@ class PracticePartnerPractice < ApplicationRecord
   def clear_caches
     Rails.cache.delete("searchable_practices_json")
     Rails.cache.delete("searchable_public_practices_json")
-    practices.clear_searchable_cache
+    practice.clear_searchable_cache
   end
 end
