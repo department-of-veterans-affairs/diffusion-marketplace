@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Practice Show Page Diffusion Map', type: :feature do
-  self.use_transactional_tests = false
   before do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @practice = Practice.create!(name: 'The Best Innovation Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
@@ -151,13 +150,13 @@ describe 'Practice Show Page Diffusion Map', type: :feature do
       VaFacility.where.not(official_station_name: 'Farmington VA Clinic').destroy_all
       visit practice_path(@practice)
       # click on the generated marker to open the modal
-      sleep 1
       find('div[style*="width: 31px"][role="button"]').click
       # make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
       click_link('Farmington VA Clinic (Farmington-New Mexico)')
-        expect(page).to have_content('Farmington VA Clinic')
-        expect(page).to have_content('This facility has created')
-        expect(page).to have_content('Main number:')
+      sleep 1
+      expect(page).to have_content('Farmington VA Clinic')
+      expect(page).to have_content('This facility has created')
+      expect(page).to have_content('Main number:')
     end
   end
 
