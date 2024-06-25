@@ -183,5 +183,4 @@ function _resetCheckboxes() {
 
 $(document).on("turbolinks:load", function () {
     _resetCheckboxes();
-    google.maps.event.addDomListener(window, "load", initialize);
 });
