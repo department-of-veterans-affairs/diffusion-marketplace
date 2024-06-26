@@ -1,4 +1,5 @@
 ActiveAdmin.register Category do
+  menu priority: 1
   batch_action :destroy, false
 
   filter :name
