@@ -81,7 +81,7 @@ describe 'Admin site metrics', type: :feature do
       @page_group_1 = PageGroup.create(name: 'ghost_page', description: 'Pages should not be in the metrics')
       Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group)
 
-      visit '/admin'
+      visit '/admin/site_metrics'
       expect(page).to have_no_content(@page_group_1.name)
       expect(page).to have_link(href: '/programming')
       within(:css, '#dm-custom-page-traffic') do
@@ -89,7 +89,7 @@ describe 'Admin site metrics', type: :feature do
         expect(td_unique.text).to eq('0')
       end
       visit '/programming'
-      visit '/admin'
+      visit '/admin/site_metrics'
       within(:css, '#dm-custom-page-traffic') do
         td_unique = all('td[class*="total_views_custom_page"]')[1]
         expect(td_unique.text).to eq('1')
@@ -98,7 +98,7 @@ describe 'Admin site metrics', type: :feature do
 
     it 'should not display the custom page view section if there are no page groups with homepages' do
       PageGroup.destroy_all
-      visit '/admin'
+      visit '/admin/site_metrics'
       expect(page).to have_no_content('Custom Page Traffic')
       expect(page).to have_no_link(href: '/programming')
     end
@@ -136,7 +136,7 @@ describe 'Admin site metrics', type: :feature do
 
     it 'favorite should display in last month but not in total if unfavorited' do
       user_practice_favorited = UserPractice.create(time_favorited: DateTime.now - 1.months, user: @admin, practice: @practice, favorited: true)
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
 
       within(:css, '#favorited_stats') do
@@ -148,7 +148,7 @@ describe 'Admin site metrics', type: :feature do
 
       user_practice_favorited.favorited = false
       user_practice_favorited.save
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
 
       within(:css, '#favorited_stats') do
@@ -161,7 +161,7 @@ describe 'Admin site metrics', type: :feature do
 
     it 'favorite should display in current month but not in total if unfavorited' do
       user_practice_favorited = UserPractice.create(time_favorited: DateTime.now, user: @admin, practice: @practice, favorited: true)
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
 
       within(:css, '#favorited_stats') do
@@ -173,7 +173,7 @@ describe 'Admin site metrics', type: :feature do
 
       user_practice_favorited.favorited = false
       user_practice_favorited.save
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
 
       within(:css, '#favorited_stats') do
@@ -186,7 +186,7 @@ describe 'Admin site metrics', type: :feature do
 
     it 'should display at least one time_favorited' do
       UserPractice.create(time_favorited: DateTime.now - 1.months, user: @admin, practice: @practice, time_committed: DateTime.now - 1.months, committed: true)
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
 
       within(:css, '#favorited_stats') do
@@ -195,7 +195,7 @@ describe 'Admin site metrics', type: :feature do
       end
 
       UserPractice.create(time_favorited: DateTime.now - 1.months, user: @admin, practice: @practice, time_committed: DateTime.now - 1.months, committed: true)
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
 
       within(:css, '#favorited_stats') do
@@ -220,21 +220,21 @@ describe 'Admin site metrics', type: :feature do
         end
       end
 
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
       check_counts(1)
       visit practice_path(@practice)
       within(:css, '#dm-practice-nav') do
         find('.dm-email-practice').click
       end
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
       check_counts(2)
       visit practice_path(@practice)
       within(:css, '.main-email-address-container') do
         find('.dm-email-practice').click
       end
-      visit '/admin'
+      visit '/admin/site_metrics'
       click_link('Innovation Engagement')
       check_counts(3)
     end
@@ -283,7 +283,7 @@ describe 'Admin site metrics', type: :feature do
       expect(cache_keys).to include('published_enabled_approved_practices')
       @practice.update(name: 'The Coolest Practice Ever!')
       expect(cache_keys).not_to include("searchable_practices_json")
-      visit '/admin'
+      visit '/admin/site_metrics'
       expect(cache_keys).to include('published_enabled_approved_practices')
     end
   end
