@@ -79,7 +79,7 @@ ActiveAdmin.register Category do
       f.input :is_other
     end
     f.actions do
-      f.action :submit, label: 'Create Tag'
+      f.action :submit, label: object.new_record? ? 'Create Tag' : 'Update Tag'
       f.cancel_link
     end
   end
