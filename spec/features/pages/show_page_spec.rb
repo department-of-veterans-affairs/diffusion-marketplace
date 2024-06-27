@@ -151,6 +151,13 @@ describe 'Page Builder - Show', type: :feature do
     expect(page).to have_content('It is pretty cool too')
   end
 
+  it 'should display banner when unpublished' do
+    @page.update(published: false)
+    visit '/programming/ruby-rocks'
+
+    expect(page).to have_content("This page is not visible because it is not published")
+  end
+
   context 'PageAccordionComponent' do
     it 'should display properly' do
       expect(page).to have_content('FAQ 1')
@@ -309,6 +316,7 @@ describe 'Page Builder - Show', type: :feature do
 
       visit '/programming/javascript'
       # Make sure the map components are 508 compliant
+
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_css('.page-map-component', count: 2)
       within(all('.page-map-component').first) do
