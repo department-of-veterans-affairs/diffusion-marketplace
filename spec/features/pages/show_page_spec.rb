@@ -155,7 +155,7 @@ describe 'Page Builder - Show', type: :feature do
     @page.update(published: false)
     visit '/programming/ruby-rocks'
 
-    expect(page).to have_content("This Page will not be visible to non-admins because it is unpublished")
+    expect(page).to have_content("This page is not visible because it is not published")
   end
 
   context 'PageAccordionComponent' do
