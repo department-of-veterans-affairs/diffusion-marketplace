@@ -13,8 +13,12 @@ ActiveAdmin.register Category do
     link_to 'New Tag', new_admin_category_path
   end
 
+  action_item :edit, only: :show do
+    link_to 'Edit Tag', edit_admin_category_path(resource) if authorized?(:edit, resource)
+  end
+
   breadcrumb do
-    if params[:action] == "show"
+    if params[:action] == "show" || params[:action] == "edit"
       [
         link_to('Admin', admin_root_path),
         link_to('Tags', admin_categories_path)
@@ -31,7 +35,7 @@ ActiveAdmin.register Category do
     column :name
     column :short_name
     column :description
-    column "Parent Category" do |p|
+    column "Parent Tag" do |p|
       if p.present?
         Category.find_by_id(p.parent_category_id)
        end
@@ -135,7 +139,12 @@ ActiveAdmin.register Category do
     end
 
     def set_page_title
-      @page_title = params[:action] == 'new' ? 'New Tag' : "Edit Tag - #{resource.name}"
+      case action_name
+      when 'new'
+        @page_title = 'New Tag'
+      when 'edit'
+        @page_title = "Edit Tag"
+      end
     end
   end
 end
