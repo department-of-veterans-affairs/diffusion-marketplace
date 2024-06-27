@@ -1,11 +1,25 @@
 ActiveAdmin.register Category do
+  menu label: "Tags"
   batch_action :destroy, false
 
   filter :name
   filter :description
   filter :related_terms
 
-  index do
+  breadcrumb do
+    if params[:action] == "show"
+      [
+        link_to('Admin', admin_root_path),
+        link_to('Tags', admin_categories_path)
+      ]
+    else
+      [
+        link_to('Admin', admin_root_path),
+      ]
+    end
+  end
+
+  index title: "Tags" do
     id_column
     column :name
     column :short_name
