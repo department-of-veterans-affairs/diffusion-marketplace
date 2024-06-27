@@ -118,7 +118,7 @@ ActiveAdmin.setup do |config|
   # roots for each namespace.
   #
   # Default:
-  config.root_to = 'site_metrics#index'
+  config.root_to = 'categories#index'
 
   # == Admin Comments
   #
