@@ -6,6 +6,13 @@ ActiveAdmin.register Category do
   filter :description
   filter :related_terms
 
+  config.clear_action_items!
+
+  # Add a custom 'New Tag' button for the index page
+  action_item :new_tag, only: :index do
+    link_to 'New Tag', new_admin_category_path
+  end
+
   breadcrumb do
     if params[:action] == "show"
       [
@@ -35,12 +42,12 @@ ActiveAdmin.register Category do
   end
 
   show do
-    attributes_table do
+    attributes_table title: "Tag Details" do
       row :id
       row :name
       row :short_name
       row :description
-      row "Parent Category" do |p|
+      row "Parent Tag" do |p|
         if p.present?
           parent_cat = Category.find_by_id(p.parent_category_id)
         end
@@ -61,16 +68,21 @@ ActiveAdmin.register Category do
       f.input :parent_category_id,
               as: :select, multiple: false,
               include_blank: false, collection: Category.get_parent_categories(true),
-              input_html: { value: object[:parent_category_id] }, wrapper_html: { class: object.sub_categories.any? ? 'display-none' : '' }
+              input_html: { value: object[:parent_category_id] }, wrapper_html: { class: object.sub_categories.any? ? 'display-none' : '' },
+              label: "Parent Tag"
         # ensures input is displayed as comma separated list
       f.input :related_terms_raw, label: 'Related Terms', hint: 'Comma separated list (e.g., COVID-19, Coronavirus)'
       f.input :is_other
     end
-    f.actions
+    f.actions do
+      f.action :submit, label: 'Create Tag'
+      f.cancel_link
+    end
   end
 
   controller do
     before_action :modify_related_terms_for_db, only: [:create, :update]
+    before_action :set_page_title, only: [:new, :edit, :show]
 
     def update
       category = Category.find(params[:id])
@@ -120,6 +132,10 @@ ActiveAdmin.register Category do
         Rails.logger.error "remove_category error: #{e.message}"
         e
       end
+    end
+
+    def set_page_title
+      @page_title = params[:action] == 'new' ? 'New Tag' : "Edit Tag - #{resource.name}"
     end
   end
 end
