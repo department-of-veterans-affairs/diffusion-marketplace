@@ -20,12 +20,12 @@ describe 'Admin Dashboard Categories Tab', type: :feature do
     visit '/admin/categories'
 
     # since the category being created does not have any subcategories, the 'Parent category' select element should show up
-    click_link('New Category')
+    click_link('New Tag')
     expect(page).to have_selector('#category_parent_category_id')
 
     fill_in('Name', with: 'Fifth Category')
     select('Second Parent Category', :from => 'category_parent_category_id')
-    click_button('Create Category')
+    click_button('Create Tag')
 
     expect(page).to have_content('Category was successfully created.')
   end
@@ -44,7 +44,7 @@ describe 'Admin Dashboard Categories Tab', type: :feature do
     expect(page).to_not have_selector('#category_parent_category_id')
 
     fill_in('Name', with: 'Parent Category Three')
-    click_button('Update Category')
+    click_button('Update Tag')
 
     expect(page).to have_content('Category was successfully updated.')
   end
@@ -56,7 +56,7 @@ describe 'Admin Dashboard Categories Tab', type: :feature do
       all('.edit_link').first.click
       select('First Parent Category', :from => 'category_parent_category_id')
       fill_in('Name', with: 'Completely updated category')
-      click_button('Update Category')
+      click_button('Update Tag')
       expect(cache_keys).not_to include("categories")
       add_categories_to_cache
       find('.search-filters-accordion-button').click
@@ -66,10 +66,10 @@ describe 'Admin Dashboard Categories Tab', type: :feature do
     it 'Should be reset if a new category is created through the admin panel' do
       add_categories_to_cache
       visit '/admin/categories'
-      click_link('New Category')
+      click_link('New Tag')
       fill_in('Name', with: 'Newest Category')
       select('Second Parent Category', :from => 'category_parent_category_id')
-      click_button('Create Category')
+      click_button('Create Tag')
       expect(cache_keys).not_to include("categories")
       add_categories_to_cache
       find('.search-filters-accordion-button').click
