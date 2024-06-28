@@ -83,10 +83,9 @@ describe 'The admin dashboard', type: :feature do
 
     it 'should show the admin dashboard if logged in as an admin' do
       login_as(@admin, scope: :user, run_callbacks: false)
-      visit '/admin'
+      visit '/admin/site_metrics'
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_current_path(admin_root_path)
 
       expect(page).to have_link('General', href: '#general')
       expect(page).to have_link('Innovation Engagement', href: '#innovation-engagement')
@@ -99,26 +98,23 @@ describe 'The admin dashboard', type: :feature do
       login_as(@admin, scope: :user, run_callbacks: false)
 
       visit admin_root_path
-      expect(find('.menu_item.current')).to have_text('Site Metrics')
-      expect(page).to have_content('General')
-      expect(page).to have_content('Innovation Engagement')
-      expect(page).to have_content('Users')
+      expect(find('.menu_item.current')).to have_text('Tags')
+      expect(page).to have_content('New Tag')
     end
   end
 
   describe 'Navigation' do
     it 'should have several tabs that allow navigation' do
       login_as(@admin, scope: :user, run_callbacks: false)
-      visit '/admin'
+      visit '/admin/site_metrics'
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_current_path(admin_root_path)
 
       within(:css, '#header') do
         click_link('Site Metrics')
         expect(page).to have_current_path(admin_site_metrics_path)
 
-        click_link('Categories')
+        click_link('Tags')
         expect(page).to have_current_path(admin_categories_path)
 
         click_link('Comments')
@@ -153,33 +149,30 @@ describe 'The admin dashboard', type: :feature do
       login_as(@admin, scope: :user, run_callbacks: false)
       visit '/admin'
 
-      # view categories
-      click_link('Categories')
-      expect(page).to have_current_path(admin_categories_path)
       expect(page).to have_content('COVID')
       expect(page).to have_content('COVID-19, Coronavirus')
       expect(page).to have_content('Telehealth')
 
       # new category
-      click_link('New Category')
+      click_link('New Tag')
       expect(page).to have_current_path(new_admin_category_path)
       fill_in('Name', with: 'Mental Health')
       fill_in('Description', with: 'Mental Health related practices')
       fill_in('Related Terms', with: 'emotional health, emotional wellbeing')
-      click_button('Create Category')
+      click_button('Create Tag')
       expect(page).to have_current_path(admin_category_path(Category.last))
 
       # edit category
-      click_link('Edit Category')
+      click_link('Edit Tag')
       fill_in('Related Terms', with: 'psychological health, mental wellbeing')
-      click_button('Update Category')
+      click_button('Update Tag')
       expect(page).to have_current_path(admin_category_path(Category.last))
       expect(page).to have_content('psychological health, mental wellbeing')
 
       # edit category - remove related terms
-      click_link('Edit Category')
+      click_link('Edit Tag')
       fill_in('Related Terms', with: '')
-      click_button('Update Category')
+      click_button('Update Tag')
       expect(page).to have_current_path(admin_category_path(Category.last))
       expect(page).to have_no_content('psychological health, mental wellbeing')
 
@@ -410,7 +403,7 @@ describe 'The admin dashboard', type: :feature do
 
       # check if categories display correctly
       click_link('Edit', href: edit_admin_practice_path(@practice))
-      expect(page).to have_content('Categories')
+      expect(page).to have_content('Tags')
       expect(page).to have_content('Covid')
       expect(page).to have_content('Telehealth')
       expect(find_field('practice_category_ids').find('option[selected]').text).to eq('Telehealth')

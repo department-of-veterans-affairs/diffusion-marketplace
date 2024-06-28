@@ -1,16 +1,41 @@
 ActiveAdmin.register Category do
+  menu label: "Tags"
   batch_action :destroy, false
 
   filter :name
   filter :description
   filter :related_terms
 
-  index do
+  config.clear_action_items!
+
+  # Add a custom 'New Tag' button for the index page
+  action_item :new_tag, only: :index do
+    link_to 'New Tag', new_admin_category_path
+  end
+
+  action_item :edit, only: :show do
+    link_to 'Edit Tag', edit_admin_category_path(resource) if authorized?(:edit, resource)
+  end
+
+  breadcrumb do
+    if params[:action] == "show" || params[:action] == "edit"
+      [
+        link_to('Admin', admin_root_path),
+        link_to('Tags', admin_categories_path)
+      ]
+    else
+      [
+        link_to('Admin', admin_root_path),
+      ]
+    end
+  end
+
+  index title: "Tags" do
     id_column
     column :name
     column :short_name
     column :description
-    column "Parent Category" do |p|
+    column "Parent Tag" do |p|
       if p.present?
         Category.find_by_id(p.parent_category_id)
        end
@@ -21,12 +46,12 @@ ActiveAdmin.register Category do
   end
 
   show do
-    attributes_table do
+    attributes_table title: "Tag Details" do
       row :id
       row :name
       row :short_name
       row :description
-      row "Parent Category" do |p|
+      row "Parent Tag" do |p|
         if p.present?
           parent_cat = Category.find_by_id(p.parent_category_id)
         end
@@ -47,16 +72,21 @@ ActiveAdmin.register Category do
       f.input :parent_category_id,
               as: :select, multiple: false,
               include_blank: false, collection: Category.get_parent_categories(true),
-              input_html: { value: object[:parent_category_id] }, wrapper_html: { class: object.sub_categories.any? ? 'display-none' : '' }
+              input_html: { value: object[:parent_category_id] }, wrapper_html: { class: object.sub_categories.any? ? 'display-none' : '' },
+              label: "Parent Tag"
         # ensures input is displayed as comma separated list
       f.input :related_terms_raw, label: 'Related Terms', hint: 'Comma separated list (e.g., COVID-19, Coronavirus)'
       f.input :is_other
     end
-    f.actions
+    f.actions do
+      f.action :submit, label: object.new_record? ? 'Create Tag' : 'Update Tag'
+      f.cancel_link
+    end
   end
 
   controller do
     before_action :modify_related_terms_for_db, only: [:create, :update]
+    before_action :set_page_title, only: [:new, :edit, :show]
 
     def update
       category = Category.find(params[:id])
@@ -105,6 +135,15 @@ ActiveAdmin.register Category do
       rescue => e
         Rails.logger.error "remove_category error: #{e.message}"
         e
+      end
+    end
+
+    def set_page_title
+      case action_name
+      when 'new'
+        @page_title = 'New Tag'
+      when 'edit'
+        @page_title = "Edit Tag"
       end
     end
   end
