@@ -12,15 +12,40 @@ class HomeController < ApplicationController
   end
 
   def diffusion_map
-    @visns = Visn.cached_visns.select(:id, :number)
-    @diffusion_history_practices = helpers.is_user_a_guest? ? Practice.public_facing.select(:id, :name).get_with_va_facility_diffusion_histories : Practice.select(:id, :name).get_with_va_facility_diffusion_histories
-
-    @diffusion_histories = helpers.is_user_a_guest? ? get_diffusion_histories(true) : get_diffusion_histories(false)
-    @successful_ct = @diffusion_histories.get_by_successful_status.size
-    @in_progress_ct = @diffusion_histories.get_by_in_progress_status.size
-    @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
+    @map_data = fetch_map_data
     @include_google_maps = true
-    @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.exclude_clinical_resource_hubs.group_by(&:va_facility_id)) do |dhg, marker|
+    render 'maps/diffusion_map'
+  end
+
+  def pii_phi_information
+  end
+
+  private
+
+  def fetch_map_data
+    is_guest = helpers.is_user_a_guest?
+    cache_key = is_guest ? "guest" : "non_guest"
+    Rails.cache.fetch(["map_data", cache_key], expires_in: 24.hours) do
+      diffusion_histories = DiffusionHistory.get_with_practices(is_guest)
+      histories_for_markers = diffusion_histories.order(Arel.sql("lower(practices.name)"))
+                                                 .exclude_clinical_resource_hubs
+                                                 .group_by(&:va_facility_id)
+
+      {
+        visns: Visn.cached_visns.select(:id, :number),
+        diffusion_history_practices: is_guest ? Practice.public_facing.select(:id, :name).get_with_va_facility_diffusion_histories :
+                              Practice.select(:id, :name).get_with_va_facility_diffusion_histories,
+        diffusion_histories: diffusion_histories,
+        successful_ct: diffusion_histories.get_by_successful_status.size,
+        in_progress_ct: diffusion_histories.get_by_in_progress_status.size,
+        unsuccessful_ct: diffusion_histories.get_by_unsuccessful_status.size,
+        dh_markers: build_markers(histories_for_markers)
+      }
+    end
+  end
+
+  def build_markers(diffusion_histories)
+    Gmaps4rails.build_markers(diffusion_histories) do |dhg, marker|
       diffusion_histories = dhg[1]
       facility = @va_facilities.find(dhg[0])
       marker.lat facility.latitude
@@ -69,13 +94,7 @@ class HomeController < ApplicationController
 
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: diffusion_histories, completed: completed, in_progress: in_progress, unsuccessful: unsuccessful, facility: facility, home_page: true})
     end
-    render 'maps/diffusion_map'
   end
-
-  def pii_phi_information
-  end
-
-  private
 
   def get_dropdown_practices
     practice_names = []
