@@ -237,9 +237,9 @@ describe 'Homepage', type: :feature do
       expect(event.properties["type"]).to eq("category")
     end
 
-    it 'tracks clicks on "Browse all Communities" link' do
+    it 'tracks clicks on "Browse all Community Innovations" link' do
       expect {
-        find('a', text: 'Browse all Communities').click
+        find('a', text: 'Browse all Community Innovations').click
         wait_for_ajax
       }.to change(Ahoy::Event, :count).by(1)
 
