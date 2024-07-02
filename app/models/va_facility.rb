@@ -4,10 +4,10 @@ class VaFacility < ApplicationRecord
   belongs_to :visn
   has_many :diffusion_histories, dependent: :destroy
   has_many :practice_origin_facilities, dependent: :destroy
-  before_save :clear_va_facility_cache_on_save
-  after_save :reset_va_facility_cache
+  has_many :practices_through_diffusion, through: :diffusion_histories, source: :practice
+  has_many :practices, through: :practice_origin_facilities
 
-  attr_accessor :reset_cached_va_facilities
+  after_commit :clear_caches
 
   scope :get_by_visn, -> (visn) { cached_va_facilities.order_by_station_name.where(visn: visn) }
   scope :get_classification_counts, -> (facility_type) { where(classification: facility_type, hidden: false).size }
@@ -30,24 +30,17 @@ class VaFacility < ApplicationRecord
     Practice.published_enabled_approved.get_by_adopted_facility(id).size
   end
 
-  def clear_va_facility_cache
-    Cache.new.delete_cache_key('va_facilities')
-  end
-
-  def reset_va_facility_cache
-    clear_va_facility_cache if self.reset_cached_va_facilities
-  end
-
-  def clear_va_facility_cache_on_save
-    if self.changed?
-      self.reset_cached_va_facilities = true
-    end
-  end
-
   def self.cached_va_facilities
     Rails.cache.fetch('va_facilities') do
       VaFacility.where(hidden: false).load
     end
+  end
+
+  private
+
+  def clear_caches
+    Rails.cache.delete('va_facilities')
+    (practices + practices_through_diffusion).uniq.each(&:clear_searchable_cache)
   end
 end
 

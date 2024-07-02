@@ -2,8 +2,7 @@ class Category < ApplicationRecord
   include ExtraSpaceRemover
 
   before_validation :trim_whitespace
-  before_save :clear_categories_cache_on_save
-  after_save :reset_categories_cache
+  after_commit :clear_caches
 
   has_many :sub_categories, class_name: 'Category', foreign_key: 'parent_category_id', dependent: :destroy
   belongs_to :parent_category, class_name: 'Category', optional: true
@@ -38,20 +37,6 @@ class Category < ApplicationRecord
     end
   end
 
-  def clear_categories_cache
-    Cache.new.delete_cache_key('categories')
-  end
-
-  def reset_categories_cache
-    clear_categories_cache if self.reset_cached_categories
-  end
-
-  def clear_categories_cache_on_save
-    if self.changed?
-      self.reset_cached_categories = true
-    end
-  end
-
   def self.cached_categories
     Rails.cache.fetch('categories') do
       Category.where(is_other: false).joins(:parent_category).where.not(parent_category: nil).order_by_name.includes(:parent_category).load
@@ -82,5 +67,12 @@ class Category < ApplicationRecord
 
       hash[parent_category] = categories
     end
+  end
+
+  private
+
+  def clear_caches
+    Rails.cache.delete('categories')
+    practices.each(&:clear_searchable_cache)
   end
 end
