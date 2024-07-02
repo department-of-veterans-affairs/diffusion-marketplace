@@ -8,32 +8,11 @@ class PracticePartner < ApplicationRecord
   has_many :practice_partner_practices, dependent: :destroy
   has_many :practices, through: :practice_partner_practices
 
-  before_save :clear_practice_partners_cache_on_save
-  before_destroy :clear_practice_partners_cache_on_destroy
-  after_save :reset_practice_partners_cache
-  after_destroy :reset_practice_partners_cache
+  after_commit :clear_caches
 
   attr_accessor :reset_cached_practice_partners
 
   scope :major_partners, -> { where(is_major: true) }
-
-  def clear_practice_partners_cache
-    Cache.new.delete_cache_key('practice_partners')
-  end
-
-  def reset_practice_partners_cache
-    clear_practice_partners_cache if self.reset_cached_practice_partners
-  end
-
-  def clear_practice_partners_cache_on_save
-    if self.changed?
-      self.reset_cached_practice_partners = true
-    end
-  end
-
-  def clear_practice_partners_cache_on_destroy
-    self.reset_cached_practice_partners = true
-  end
 
   def self.cached_practice_partners
     Rails.cache.fetch('practice_partners') do
@@ -43,5 +22,12 @@ class PracticePartner < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     ["description","name"]
+  end
+
+  private
+
+  def clear_caches
+    Rails.cache.delete('practice_partners')
+    practices.each(&:clear_searchable_cache)
   end
 end
