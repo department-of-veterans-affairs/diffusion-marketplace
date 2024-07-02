@@ -283,10 +283,10 @@ function initialize() {
   function attachFacilityListListener() {
     $(document).on("click", "#facilityListTrigger", () => {
       const $facilityListBtn = $("#facilityListTrigger");
-      if ($facilityListBtn.text() === "Hide list of facilities") {
-        $facilityListBtn.text("View list of facilities");
+      if ($facilityListBtn.text() === "Hide list of healthcare facilities") {
+        $facilityListBtn.text("View list of healthcare facilities");
       } else {
-        $facilityListBtn.text("Hide list of facilities");
+        $facilityListBtn.text("Hide list of healthcare facilities");
       }
       $("#facilityListContainer").toggle();
     });
