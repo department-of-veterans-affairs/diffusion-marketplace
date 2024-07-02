@@ -301,6 +301,7 @@ describe 'Map of Diffusion', type: :feature do
     find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
     # in the marker modal, make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
     click_link('Caribou VA Clinic')
+      sleep 1
       expect(page).to have_content('Caribou VA Clinic')
       expect(page).to have_content('This facility has created')
       expect(page).to have_content('Main number:')
