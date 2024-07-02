@@ -153,9 +153,10 @@ describe 'Practice Show Page Diffusion Map', type: :feature do
       find('div[style*="width: 31px"][role="button"]').click
       # make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
       click_link('Farmington VA Clinic (Farmington-New Mexico)')
-        expect(page).to have_content('Farmington VA Clinic')
-        expect(page).to have_content('This facility has created')
-        expect(page).to have_content('Main number:')
+      sleep 1
+      expect(page).to have_content('Farmington VA Clinic')
+      expect(page).to have_content('This facility has created')
+      expect(page).to have_content('Main number:')
     end
   end
 

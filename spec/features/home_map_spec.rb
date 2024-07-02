@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe 'Map of Diffusion', type: :feature do
+  self.use_transactional_tests = false
   before do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -102,6 +103,9 @@ describe 'Map of Diffusion', type: :feature do
     # make sure that CRH adoptions are included in the total count, but NOT display on the diffusion map
     dh_7 = DiffusionHistory.create!(practice: @pr_5, clinical_resource_hub: @crh)
     DiffusionHistoryStatus.create!(diffusion_history: dh_7, status: 'Unsuccessful', unsuccessful_reasons: [0])
+
+    # we now cache the map data for 24 hours
+    Rails.cache.clear
 
     visit '/diffusion-map'
     expect(page).to have_content('Explore how innovations are being adopted across the country. There are currently 2 successful adoptions, 3 in-progress adoptions, and 2 unsuccessful adoptions.')
@@ -296,15 +300,15 @@ describe 'Map of Diffusion', type: :feature do
     expect(page).to have_selector('.usa-link[href="/facilities/caribou"', visible: false)
   end
 
-  it 'should allow the user to visit each adoption\'s VA facility page', js: true do
+  it 'should allow the user to visit each adoption\'s VA facility page' do
     # click on the first generated marker
     find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
     # in the marker modal, make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
     click_link('Caribou VA Clinic')
-      sleep 1
-      expect(page).to have_content('Caribou VA Clinic')
-      expect(page).to have_content('This facility has created')
-      expect(page).to have_content('Main number:')
+    sleep 1
+    expect(page).to have_content('Caribou VA Clinic')
+    expect(page).to have_content('This facility has created')
+    expect(page).to have_content('Main number:')
   end
 
   it 'should only display markers for facilities that have adoptions for public-facing practices if the user is a guest' do
@@ -316,6 +320,7 @@ describe 'Map of Diffusion', type: :feature do
 
     # login as an admin and set the 'is_public' flag for a practice to true
     login_as(@admin, :scope => :user, :run_callbacks => false)
+    Rails.cache.clear
     visit '/admin/practices'
     all('.toggle-practice-privacy-link')[4].click
     expect(page).to have_content("\"Practice A\" is now a public-facing innovation")
