@@ -1,4 +1,10 @@
-function initialize(mapId) {
+function initialize() {
+  $('.page_builder_map').each(function() {
+    initializeMap(this.id);
+  });
+}
+
+function initializeMap(mapId) {
     const handler = Gmaps.build('Google', {
         markers: {
             clusterer: null
@@ -49,10 +55,3 @@ function initialize(mapId) {
             buildMapMarkers(componentMapData);
         });
 }
-
-$(document).on("turbolinks:load", function () {
-    // Loop through each 'PageMapComponent' element and create its map
-    $('.page_builder_map').each(function() {
-        google.maps.event.addDomListener(window, "load", initialize($(this).attr('id')));
-    })
-});
