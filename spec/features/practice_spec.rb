@@ -55,7 +55,7 @@ describe 'Practices', type: :feature do
 
       expect(page).to have_current_path(root_path)
       expect(page).to have_content('This innovation is not available for non-VA users.')
-      expect(page).to have_content('Discover VA innovations to adopt at your facility')
+      expect(page).to have_content('Discover VA innovations to adopt at your healthcare facility')
     end
 
     it 'should let authenticated users interact with the marketplace' do
