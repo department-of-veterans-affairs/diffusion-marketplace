@@ -13,8 +13,10 @@
     <%= update_category_usages %>
 <% end %>
 
-<div id="search-page">
+<div id="search-page">  
   <section class="grid-container margin-bottom-neg-3 margin-top-5">
+    <h2 class="usa-prose-h2">Search Results {for: search string}</h2>
+    <span>{NUMBER} Results</span> <span class="usa-tag usa-tag--big">{Filter applied}</span> <span class="usa-tag usa-tag--big">{Filter applied}</span>
     <%= render partial: "shared/messages", locals: {small_text: false} %>
     <form id="update-search-results-form">
       <div class="usa-search usa-search--big margin-bottom-2 grid-col-12">
