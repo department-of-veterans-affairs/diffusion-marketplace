@@ -28,6 +28,7 @@ describe 'Homepage', type: :feature do
     create(:category_practice, practice: @practice, category: @cat_1)
     create(:category_practice, practice: @practice_2, category: @cat_2)
     create(:category_practice, practice: @practice_3, category: @cat_1)
+    create(:category_practice, practice: @practice_3, category: @cat_3)
 
     ampersand_practice = create(:practice, name: 'Coaching & More', slug: 'coaching-and-more', is_public: true, approved: true, published: true, tagline: "HAPPEN tagline", date_initiated: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', support_network_email: 'contact-happen@happen.com', user: @user)
     ampersand_category = create(:category, name: 'Nutrition & Food', parent_category: @parent_cat)
@@ -159,10 +160,34 @@ describe 'Homepage', type: :feature do
       end
     end
 
-    it 'links to the search page' do
-      within '#search-dropdown' do
-        expect(page).to have_link('Browse all Innovations', href: '/search')
-        expect(page).to have_link('Browse all Tags', href: '/search')
+    describe 'links to the search page' do
+      it 'provides a link to the search page' do
+        within '#search-dropdown' do
+          expect(page).to have_link('Browse all Innovations', href: '/search')
+        end
+      end
+
+      it 'provides a link that navs to the search page with the filters accordian engaged' do
+        within '#search-dropdown' do
+          expect(page).to have_link('Browse all Tags', href: '/search?filters=open')
+          click_link 'Browse all Tags'
+        end
+        expect(page).to have_current_path('/search?filters=open')
+        expect(page).to have_css('.usa-accordion__button.search-filters-accordion-button[aria-expanded="true"]')
+        expect(page).to have_css('#search_filters_dropdown:not([hidden])')
+      end
+
+      it 'provides a link that navs to the search page with all community tags engaged', js: true do
+        within '#search-dropdown' do
+          expect(page).to have_link('Browse all Community Innovations', href: '/search?all_communities=true')
+          click_link 'Browse all Community Innovations'
+        end
+
+        expect(page).to have_current_path('/search?all_communities=true')
+        filter_button = find('button.search-filters-accordion-button')
+        expect(filter_button).to have_text('Filters (1)')
+        expect(page).to have_content("1 result:")
+        expect(page).to have_content(@practice_3.name)
       end
     end
 
