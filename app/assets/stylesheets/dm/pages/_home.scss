@@ -137,4 +137,17 @@
       }
     }
   }
+
+
+  #featured-innovations, #featured-tags {
+    .homepage-featured-image {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+  }
+  #feature-nominate-innovation {
+    img {
+      object-fit: cover;
+    }
+  }
 }

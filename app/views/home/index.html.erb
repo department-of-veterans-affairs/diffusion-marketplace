@@ -89,6 +89,100 @@
     </form>
   </section>
 
+  <div class="grid-container">
+    <section id="featured-innovations" class="mobile:margin-bottom-2 tablet:margin-bottom-10 desktop:margin-bottom-10">
+      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Recent Innovations</h2>
+      <div class="grid-row grid-gap">
+        <div id="featured-innovation-1" class="grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+          <%= image_tag("homepage-image.png", class: "homepage-featured-image") %>
+          <h3 id="featured-innovation-1-title" class="feature-title usa-prose-h3">Innovation Title</h3>
+          <p class="usa-prose-body margin-bottom-5">
+            Final Mile honors the lives and service of those whose remains are unclaimed. Final Mile is currently implemented in five VA sites and has completed over 50 Final Mile Ceremonies to date.
+          </p>
+          <a href="" aria-describedby="featured-innovation-1-title" class="usa-link">View Innovation</a>
+        </div>
+        <div id="featured-innovation-2" class="grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+          <%= image_tag("homepage-image.png", class: "homepage-featured-image") %>
+          <h3 id="featured-innovation-2-title" class="feature-title usa-prose-h3">Innovation Title</h3>
+          <p class="usa-prose-body margin-bottom-5">
+            HELPP increases access to podiatry basic foot care services for patients who are at increased risk for amputation by embedding intermediate care technicians (ICTs) into rural VA clinics.
+          </p>
+          <a href="" aria-describedby="featured-innovation-2-title" class="usa-link">View Innovation</a>
+        </div>
+        <div id="featured-innovation-3" class="grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+          <%= image_tag("homepage-image.png", class: "homepage-featured-image") %>
+          <h3 id="featured-innovation-3-title" class="feature-title usa-prose-h3">VA Resource Navigator</h3>
+          <p class="usa-prose-body margin-bottom-5">
+            The VA Resource Navigator is a tool designed by the Veterans Experience Office (VEO) and the Patient Centered Learning (PCL) National Program to help Veterans better find and use VA resources.
+          </p>
+          <a href="" aria-describedby="featured-innovation-3-title" class="usa-link">View Innovation</a>
+        </div>
+      </div>
+    </section>
+    <section id="featured-tags" class="mobile:margin-bottom-2 tablet:margin-bottom-10 desktop:margin-bottom-10">
+      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Trending Tags</h2>
+      <div class="grid-row grid-gap">
+        <div id="featured-tag-1" class="grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+          <%= image_tag("homepage-image.png", class: "homepage-featured-image") %>
+          <h3 id="featured-tag-1-title" class="feature-title usa-prose-h3">Suicide Prevention</h3>
+          <p class="usa-prose-body margin-bottom-5">
+            Check out an assembled list of innovations focused on suicide prevention.
+          </p>
+          <a href="/search?category=Suicide%20Prevention" aria-describedby="featured-tag-1-title" class="usa-link">Learn More</a>
+        </div>
+        <div id="featured-tag-2" class="grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+          <%= image_tag("homepage-image.png", class: "homepage-featured-image") %>
+          <h3 id="featured-tag-2-title" class="feature-title usa-prose-h3">Access to Care</h3>
+          <p class="usa-prose-body margin-bottom-5">
+            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
+          </p>
+          <a href="/search?category=Access%20to%20Care" aria-describedby="featured-tag-2-title" class="usa-link">Learn More</a>
+        </div>
+        <div id="featured-tag-3" class="grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+          <%= image_tag("homepage-image.png", class: "homepage-featured-image") %>
+          <h3 id="featured-tag-3-title" class="feature-title usa-prose-h3">Coordinated Care</h3>
+          <p class="usa-prose-body margin-bottom-5">
+            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour
+          </p>
+          <a href="/search?category=Coordinated%20Care" aria-describedby="featured-tag-3-title" class="usa-link">Learn More</a>
+        </div>
+      </div>
+    </section>
+    <section class="mobile:margin-bottom-2 tablet:margin-bottom-10 desktop:margin-bottom-10">
+      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Innovation Communities</h2>
+      <div class="grid-row grid-gap">
+        <div id="featured-community-1" class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
+          <%= image_tag("homepage-image.png", class: "homepage-featured-image") %>
+          <h3 id="featured-community-1-title" class="feature-title usa-prose-h3">Age-Friendly</h3>
+          <p class="usa-prose-body margin-bottom-5">
+            Reimagining the landscape of healthcare for our aging Veteran population. 
+          </p>
+          <%= link_to 'View Community', '/communities/age-friendly', class: 'usa-link', 'aria-describedby': 'featured-community-1-title' %>
+        </div>
+        <div id="featured-community-2" class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
+          <%= image_tag("homepage-image.png", class: "homepage-featured-image") %>
+          <h3 id="featured-community-2-title" class="feature-title usa-prose-h3">VA Immersive</h3>
+          <p class="usa-prose-body margin-bottom-5">
+            We help improve care delivery and experiences by leveraging immersive technology for falls risk assessment, neurological risk assessment, pain management, anxiety, addiction recovery, physical therapy, recreation therapy, PTSD, employee education, and more. 
+          </p>
+          <%= link_to 'View Community', '/communities/va-immersive', class: 'usa-link', 'aria-describedby': 'featured-community-2-title' %>
+        </div>
+      </div>
+    </section>
+    <section id="feature-nominate-innovation" class="mobile:margin-bottom-2 tablet:margin-bottom-10 desktop:margin-bottom-10">
+      <div class="grid-row grid-gap">
+        <div class="grid-col-12 tablet:grid-col-6 desktop:grid-col-4">
+          <h2 id="submit-innovation-title" class="usa-prose-h2 tablet:margin-top-0 desktop:margin-top-0 tablet:margin-bottom-5 desktop:margin-bottom-5">Submit Innovations</h2>
+          <p class="usa-prose-body margin-bottom-5">
+            A staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace.
+          </p>
+          <%= link_to 'Nominate', nominate_an_innovation_path, class: 'usa-link', 'aria-describedby': 'submit-innovation-title' %>
+        </div>
+        <%= image_tag("homepage-image.png", class: "grid-col-12 tablet:grid-col-6 desktop:grid-col-8") %>
+      </div>
+    </section>
+  </div>
+
   <% if @featured_topic.present? && @featured_topic.title.present? && @featured_topic.description.present? && @featured_topic.url.present? && @featured_topic.cta_text.present? && @featured_topic.attachment.exists?%>
     <%= render partial: 'home/featured_section', locals: {
         section_name: 'topic',
