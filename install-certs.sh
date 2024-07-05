@@ -9,6 +9,7 @@ wget \
         --accept="VA*.cer" \
         http://aia.pki.va.gov/PKI/AIA/VA/
 CA_CERTS=(
+  VA-Internal-S2-RCA2.cer
   VA-Internal-S2-RCA1-v1.cer
   VA-Internal-S2-ICA4.cer
   VA-Internal-S2-ICA5.cer

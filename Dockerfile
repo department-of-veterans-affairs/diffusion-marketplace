@@ -15,9 +15,10 @@ ARG AWS_REGION
 RUN git config --global http.sslVerify false
 
 COPY install-certs.sh .
+RUN bash install-certs.sh
 RUN apt-get update && \
     apt-get install  -y ca-certificates
-RUN bash install-certs.sh
+
 
 
 #COPY va-dc.crt /etc/pki/ca-trust/source/anchors/va-dc.crt
