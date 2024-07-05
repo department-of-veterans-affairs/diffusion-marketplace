@@ -14,6 +14,17 @@
 <% end %>
 
 <div id="search-page">
+  <div class="grid-container"> <!-- START DM-4910 -->
+  <div class="grid-row">
+    <div class="grid-col-12">
+      <h2 class="usa-prose-h2">Search Results {for: search string}</h2>
+      <span class="display-block desktop:display-inline">{NUMBER} Results:</span> <span class="display-block desktop:display-inline usa-tag usa-tag--big">{Filter applied style 1}</span> <span class="display-block desktop:display-inline usa-tag usa-tag--big">{Filter applied style 2}</span><span class="display-block desktop:display-inline usa-tag usa-tag--big">{Filter applied style 3}</span><span class="display-block desktop:display-inline usa-tag usa-tag--big">{Filter applied style 4}</span>
+      <button type="button" class="usa-button usa-button--unstyled" id="resetSearchFiltersButton">
+      Clear filters
+      </button>
+    </div>
+  </div>
+</div> <!-- END DM-4910 -->
   <section class="grid-container margin-bottom-neg-3 margin-top-5">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
     <form id="update-search-results-form">
