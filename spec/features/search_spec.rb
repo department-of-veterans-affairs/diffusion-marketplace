@@ -234,7 +234,7 @@ describe 'Search', type: :feature do
       fill_in('dm-practice-search-field', with: 'practice')
       find('#dm-practice-search-button').click
 
-      expect(page).to have_content('13 results')
+      expect(page).to have_content('13 Results')
       expect(page).to_not have_content(@practice2.name)
 
       # show practices that are approved/published
@@ -244,7 +244,7 @@ describe 'Search', type: :feature do
       search
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('14 results')
+      expect(page).to have_content('14 Results')
       expect(page).to have_content(@practice2.name)
     end
 
@@ -255,7 +255,7 @@ describe 'Search', type: :feature do
       find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
     end
 
     it 'should be able to search based on practice categories related terms' do
@@ -266,7 +266,7 @@ describe 'Search', type: :feature do
       fill_in('dm-practice-search-field', with: 'Coronavirus')
       find('#dm-practice-search-button').click
 
-      expect(page).to have_content('5 results')
+      expect(page).to have_content('5 Results')
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice3.name)
       expect(page).to have_content(@practice5.name)
@@ -283,7 +283,7 @@ describe 'Search', type: :feature do
       find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
     end
 
     it 'should be able to search based on originating facility name' do
@@ -292,7 +292,7 @@ describe 'Search', type: :feature do
       fill_in('dm-practice-search-field', with: 'Togus VA Medical Center')
       find('#dm-practice-search-button').click
 
-      expect(page).to have_content('2 results')
+      expect(page).to have_content('2 Results')
       expect(page).to have_content(@practice3.name)
       expect(page).to have_content(@practice5.name)
     end
@@ -301,19 +301,19 @@ describe 'Search', type: :feature do
       visit_search_page
       fill_in('dm-practice-search-field', with: 'overview problem foobar')
       find('#dm-practice-search-button').click
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content(@practice.name)
 
       visit_search_page
       fill_in('dm-practice-search-field', with: 'overview solution fizzbuzz')
       find('#dm-practice-search-button').click
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content(@practice3.name)
 
       visit_search_page
       fill_in('dm-practice-search-field', with: 'overview results mixmax')
       find('#dm-practice-search-button').click
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content(@practice5.name)
     end
 
@@ -324,12 +324,12 @@ describe 'Search', type: :feature do
 
       fill_in('dm-practice-search-field', with: 'important')
       search
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content('The Most Important Practice')
 
       fill_in('dm-practice-search-field', with: 'Rule')
       search
-      expect(page).to_not have_content('results')
+      expect(page).to_not have_content('Results')
       expect(page).to_not have_content('One Practice to Rule Them All')
       expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
 
@@ -345,7 +345,7 @@ describe 'Search', type: :feature do
 
       fill_in('dm-practice-search-field', with: 'Rule')
       search
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content('One Practice to Rule Them All')
       expect(page).to_not have_content('There are currently no matches for your search on the Marketplace.')
     end
@@ -361,7 +361,7 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('Filters (3)')
-        expect(page).to have_content('6 results')
+        expect(page).to have_content('6 Results')
         expect(page).to have_content(@practice.name)
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice5.name)
@@ -379,7 +379,7 @@ describe 'Search', type: :feature do
         set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
-        expect(page).to have_content('2 results')
+        expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice13.name)
         expect(page).to have_content(@practice14.name)
 
@@ -388,7 +388,7 @@ describe 'Search', type: :feature do
         set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
-        expect(page).to have_content('2 results')
+        expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice12.name)
         expect(page).to have_content(@practice14.name)
       end
@@ -403,7 +403,7 @@ describe 'Search', type: :feature do
         expect(find("#cat-5-input", visible: false)).to be_checked
         expect(find("#cat-6-input", visible: false)).to be_checked
         update_results
-        expect(page).to have_content('7 results')
+        expect(page).to have_content('7 Results')
         toggle_filters_accordion
         select_category('.cat-2-label')
         expect(find("#cat-all-strategic-input", visible: false)).to_not be_checked
@@ -413,7 +413,7 @@ describe 'Search', type: :feature do
         expect(find("#cat-5-input", visible: false)).to be_checked
         expect(find("#cat-6-input", visible: false)).to be_checked
         update_results
-        expect(page).to have_content('5 results')
+        expect(page).to have_content('5 Results')
       end
 
       it 'should collect practices that match ALL of the conditions if the user selects filters AND uses the search input' do
@@ -426,7 +426,7 @@ describe 'Search', type: :feature do
         select_category('.cat-2-label')
         search
         expect(page).to have_content('Filters (2)')
-        expect(page).to have_content('2 results')
+        expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice5.name)
 
@@ -436,7 +436,7 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('Filters (3)')
-        expect(page).to have_content('1 result')
+        expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice3.name)
         expect(page).to_not have_content(@practice5.name)
 
@@ -447,7 +447,7 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('Filters (1)')
-        expect(page).to have_content('4 results')
+        expect(page).to have_content('4 Results')
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice4.name)
         expect(page).to have_content(@practice5.name)
@@ -458,7 +458,7 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('Filters (2)')
-        expect(page).to have_content('2 results')
+        expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice4.name)
         expect(page).to have_content(@practice5.name)
 
@@ -469,7 +469,7 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('Filters (1)')
-        expect(page).to have_content('1 result')
+        expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice6.name)
 
         # search for practices with the search bar and clinical resource hub filters
@@ -483,7 +483,7 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('Filters (2)')
-        expect(page).to have_content('1 result')
+        expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice14.name)
       end
 
@@ -496,7 +496,7 @@ describe 'Search', type: :feature do
           update_results
 
           expect(page).to have_content('Filters (1)')
-          expect(page).to have_content('4 results')
+          expect(page).to have_content('4 Results')
           expect(page).to have_content(@practice3.name)
           expect(page).to have_content(@practice3.name)
           expect(page).to have_content(@practice5.name)
@@ -511,7 +511,7 @@ describe 'Search', type: :feature do
           update_results
 
           expect(page).to have_content('Filters (1)')
-          expect(page).to have_content('2 results')
+          expect(page).to have_content('2 Results')
           expect(page).to have_content(@practice13.name)
           expect(page).to have_content(@practice14.name)
         end
@@ -523,7 +523,7 @@ describe 'Search', type: :feature do
           set_combobox_val(0, 'Vinita VA Clinic')
           update_results
 
-          expect(page).to have_content('1 result')
+          expect(page).to have_content('1 Result')
           expect(page).to have_content(@practice12.name)
         end
       end
@@ -536,7 +536,7 @@ describe 'Search', type: :feature do
           set_combobox_val(1, 'VISN-23')
           update_results
 
-          expect(page).to have_content('2 results')
+          expect(page).to have_content('2 Results')
           expect(page).to have_content(@practice.name)
           expect(page).to have_content(@practice3.name)
 
@@ -549,7 +549,7 @@ describe 'Search', type: :feature do
           update_results
 
           expect(page).to have_content('Filters (1)')
-          expect(page).to have_content('2 results')
+          expect(page).to have_content('2 Results')
           expect(page).to have_content(@practice12.name)
           expect(page).to have_content(@practice14.name)
         end
@@ -561,7 +561,7 @@ describe 'Search', type: :feature do
           set_combobox_val(0, 'Vinita VA Clinic')
           update_results
 
-          expect(page).to have_content('1 result')
+          expect(page).to have_content('1 Result')
           expect(page).to have_content(@practice12.name)
         end
       end
@@ -577,7 +577,7 @@ describe 'Search', type: :feature do
         update_results
 
         # results should be sorted my most relevant(closest match) by default
-        expect(page).to have_content('6 results')
+        expect(page).to have_content('6 Results')
         expect(first('span.dm-practice-title').text).to eq(@practice6.name)
 
         toggle_filters_accordion
@@ -585,7 +585,7 @@ describe 'Search', type: :feature do
         select_category('.cat-4-label')
         update_results
 
-        expect(page).to have_content('6 results')
+        expect(page).to have_content('6 Results')
         expect(first('span.dm-practice-title').text).to_not eq(@practice6.name)
         expect(first('span.dm-practice-title').text).to eq(@practice4.name)
 
@@ -622,7 +622,7 @@ describe 'Search', type: :feature do
         fill_in('dm-practice-search-field', with: 'practice')
         search
 
-        expect(page).to have_content('13 results')
+        expect(page).to have_content('13 Results')
         expect(page).to have_selector('div.dm-practice-card', count: 12)
 
         # show the next set of 12 results
@@ -750,7 +750,7 @@ describe 'Search', type: :feature do
       select_category('.cat-5-label')
       update_results
 
-      expect(page).to have_content('5 results')
+      expect(page).to have_content('5 Results')
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice3.name)
       expect(page).to have_content(@practice5.name)
