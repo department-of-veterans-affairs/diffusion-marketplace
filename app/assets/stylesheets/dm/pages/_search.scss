@@ -6,6 +6,24 @@
     border-radius: 2px;
   }
 
+  #REPLACE-with-something-about-filters {
+    .usa-accordion {
+      width: unset;
+    }
+  }
+
+  #REPLACE-with-something-about-innovation-results {
+    .innovation-preview {
+      border-top: 1px solid color($theme-color-base-lighter);
+
+      img {
+        min-height: 125px;
+        min-width: 195px;
+        object-fit: cover;
+      }
+    }
+  }
+
   .usa-checkbox__label:before {
     border-radius: 0 !important;
   }

@@ -24,7 +24,200 @@
       </button>
     </div>
   </div>
-</div> <!-- END DM-4910 -->
+  </div> <!-- END DM-4910 -->
+
+  <div class="grid-container">
+    <div class="grid-row grid-gap">
+      <!-- START DM- 4912-->
+      <div id="REPLACE-with-something-about-filters" class="grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+        <div class="usa-accordion usa-accordion--bordered">
+          <h2 class="usa-accordion__heading">
+            <button
+              type="button"
+              class="usa-accordion__button"
+              aria-expanded="true"
+              aria-controls="filtersAccordion"
+            >
+              Filter Results
+            </button>
+          </h2>
+        <div id="filtersAccordion" class="usa-accordion__content usa-prose">
+          <fieldset class="usa-fieldset">
+            <legend class="usa-legend">Communities</legend>
+            <div class="usa-checkbox">
+              <input
+                class="usa-checkbox__input"
+                id="check-historical-truth"
+                type="checkbox"
+                name="historical-figures"
+                value="sojourner-truth"
+                checked="checked"
+              />
+              <label class="usa-checkbox__label" for="check-historical-truth"
+                >Sojourner Truth</label
+              >
+            </div>
+            <div class="usa-checkbox">
+              <input
+                class="usa-checkbox__input"
+                id="check-historical-douglass"
+                type="checkbox"
+                name="historical-figures"
+                value="frederick-douglass"
+              />
+              <label class="usa-checkbox__label" for="check-historical-douglass"
+                >Frederick Douglass</label
+              >
+            </div>
+            <div class="usa-checkbox">
+              <input
+                class="usa-checkbox__input"
+                id="check-historical-washington"
+                type="checkbox"
+                name="historical-figures"
+                value="booker-t-washington"
+              />
+              <label class="usa-checkbox__label" for="check-historical-washington"
+                >Booker T. Washington</label
+              >
+            </div>
+          </fieldset>
+          <fieldset class="usa-fieldset">
+            <legend class="usa-legend">Tags</legend>
+            <div class="usa-checkbox">
+              <input
+                class="usa-checkbox__input"
+                id="check-historical-truth"
+                type="checkbox"
+                name="historical-figures"
+                value="sojourner-truth"
+                checked="checked"
+              />
+              <label class="usa-checkbox__label" for="check-historical-truth"
+                >Sojourner Truth</label
+              >
+            </div>
+            <div class="usa-checkbox">
+              <input
+                class="usa-checkbox__input"
+                id="check-historical-douglass"
+                type="checkbox"
+                name="historical-figures"
+                value="frederick-douglass"
+              />
+              <label class="usa-checkbox__label" for="check-historical-douglass"
+                >Frederick Douglass</label
+              >
+            </div>
+            <div class="usa-checkbox">
+              <input
+                class="usa-checkbox__input"
+                id="check-historical-washington"
+                type="checkbox"
+                name="historical-figures"
+                value="booker-t-washington"
+              />
+              <label class="usa-checkbox__label" for="check-historical-washington"
+                >ADD SCROLLBARS for long list</label
+              >
+            </div>
+          </fieldset>
+          <fieldset class="usa-fieldset">
+            <legend class="usa-legend usa-legend">Sort by</legend>
+            <div class="usa-radio">
+              <input
+                class="usa-radio__input"
+                id="historical-truth"
+                type="radio"
+                name="historical-figures"
+                value="sojourner-truth"
+                checked="checked"
+              />
+              <label class="usa-radio__label" for="historical-truth"
+                >Sojourner Truth</label
+              >
+            </div>
+            <div class="usa-radio">
+              <input
+                class="usa-radio__input"
+                id="historical-douglass"
+                type="radio"
+                name="historical-figures"
+                value="frederick-douglass"
+              />
+              <label class="usa-radio__label" for="historical-douglass"
+                >Frederick Douglass</label
+              >
+            </div>
+            <div class="usa-radio">
+              <input
+                class="usa-radio__input"
+                id="historical-washington"
+                type="radio"
+                name="historical-figures"
+                value="booker-t-washington"
+              />
+              <label class="usa-radio__label" for="historical-washington"
+                >Booker T. Washington</label
+              >
+            </div>
+          </fieldset>
+          <!-- TODO: use combobox w/ arrow styling from original partial --> 
+          <label class="usa-label" for="fruit">Originating location</label>
+          <div class="usa-combo-box">
+            <select class="usa-select" name="fruit" id="fruit">
+              <option value>Originating Location</option>
+              <option value="apple">VA Medical Center</option>
+              <option value="apricot">Clinical Resource Hub</option>
+            </select>
+          </div>
+          <!-- TODO: use combobox w/ arrow styling from original partial --> 
+          <label class="usa-label" for="fruit">Adopting location</label>
+          <div class="usa-combo-box">
+            <select class="usa-select" name="fruit" id="fruit">
+              <option value>Adopting Location</option>
+              <option value="apple">VA Medical Center</option>
+              <option value="apricot">Clinical Resource Hub</option>
+            </select>
+          </div>
+        </div>
+      </div> 
+    </div>
+      <!-- END DM-4912 -->
+      <!-- START DM-4913 -->
+      <div id="REPLACE-with-something-about-innovation-results" class="grid-col-12 tablet:grid-col-8 desktop:grid-col-8">
+        <h2 class="usa-prose-h2">Innovations</h2> <!-- TODO: set to "All Innovations" on empty search -->
+        <div class="innovation-preview grid-row padding-y-3"> <!-- TODO: make the entire section clickable as a link -->
+          <img src="#" class="bg-gray grid-col-3">
+          <div class="innovation-preview-body grid-col-fill">
+            <h3 class="usa-prose-h3 innovation-preview-title">{Innovation title}</h3>
+            <p class="innovation-preview-description margin-bottom-3">{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. And here's stuff after an elipsis}</p>
+            <p class="innovation-preview-origin text-italic">By the Charles George Department of Veterans Affairs Medical Center (Ashville)</p>
+          </div>
+        </div>
+        <div class="innovation-preview grid-row padding-y-3"> <!-- TODO: make the entire section clickable as a link -->
+          <img src="#" class="bg-gray grid-col-3">
+          <div class="innovation-preview-body grid-col-fill">
+            <h3 class="usa-prose-h3 innovation-preview-title">{Innovation title}</h3>
+            <p class="innovation-preview-description margin-bottom-3">{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. And here's stuff after an elipsis}</p>
+            <p class="innovation-preview-origin text-italic">By the {Facility Long Name} (Facility shortname)</p>
+          </div>
+        </div>
+        <div class="innovation-preview grid-row padding-y-3"> <!-- TODO: make the entire section clickable as a link -->
+          <img src="#" class="bg-gray grid-col-3">
+          <div class="innovation-preview-body grid-col-fill">
+          <h3 class="usa-prose-h3 innovation-preview-title">{Innovation title}</h3>
+          <p class="innovation-preview-description margin-bottom-3">{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. And here's stuff after an elipsis}</p>
+          <p class="innovation-preview-origin text-italic">By {Non-facility Origin}</p>
+          </div>
+        </div>
+        <button class="usa-button dm-button--outline-secondary">{Load more}</button>
+      </div>
+      <!-- END DM-4913 -->
+    </div>
+  </div>
+
+
   <section class="grid-container margin-bottom-neg-3 margin-top-5">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
     <form id="update-search-results-form">
