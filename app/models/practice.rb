@@ -476,7 +476,7 @@ class Practice < ApplicationRecord
   def as_json(*)
     super(only: get_search_fields).merge(
       date_initiated: date_initiated? ? date_initiated.strftime("%B %Y") : '(start date unknown)',
-      category_names: get_category_names(self.categories.not_other.not_none),
+      category_names: get_category_names(self.categories.not_none),
       initiating_facility_name: origin_display(self),
       practice_partner_names: practice_partners.pluck(:name),
       origin_facilities: practice_origin_facilities.get_va_facilities + practice_origin_facilities.get_clinical_resource_hubs,
