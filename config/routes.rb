@@ -103,11 +103,6 @@ Rails.application.routes.draw do
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
 
-  resource :competitions do
-    get '/shark-tank', action: 'shark_tank', as: 'shark-tank'
-    get '/go-fish', action: 'go_fish', as: 'go-fish'
-  end
-
   # redirect users to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL
   get '/nominate-a-practice', to: redirect('/nominate-an-innovation', status: 302)
   get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_an_innovation'
