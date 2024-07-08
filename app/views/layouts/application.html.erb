@@ -12,12 +12,6 @@
     <meta name="viewport" content= "width=device-width, initial-scale=1, minimum-scale=1">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'false' %>
     <%= javascript_include_tag 'shared/_utilityFunctions', 'data-turbolinks-track': 'reload', defer: true %>
-    <% if @include_google_maps %>
-      <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&callback=Function.prototype", 'data-turbolinks-track': 'false', defer: true %>
-      <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/mahnunchik/markerclustererplus@master/dist/markerclusterer.min.js", 'data-turbolinks-track': 'false', defer: true %>
-      <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/printercu/google-maps-utility-library-v3-read-only@master/infobox/src/infobox_packed.js", 'data-turbolinks-track': 'false', defer: true %>
-      <%= javascript_include_tag "https://cdn.jsdelivr.net/gh/googlemaps/js-rich-marker@gh-pages/src/richmarker-compiled.js", 'data-turbolinks-track': 'false', defer: true %>
-    <% end %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'false' %>
     <%= javascript_tag 'data-turbolinks-track': 'false' do %>
       <%= render partial: 'layouts/ahoy_event_tracking', formats: [:js] %>
@@ -66,6 +60,42 @@
 
     <% if current_user.present? %>
       <%= render partial: 'shared/terms_and_conditions_modal' %>
+    <% end %>
+
+    <% if @include_google_maps %>
+      <script>
+        function loadScript(src, callback) {
+          const script = document.createElement('script');
+          script.src = src;
+          script.defer = true;
+          script.async = true;
+          script.onload = callback;
+          document.head.appendChild(script);
+        }
+
+        function loadMapLibraries() {
+          if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+            setTimeout(loadMapLibraries, 100);
+            return;
+          }
+          loadScript("https://cdn.jsdelivr.net/gh/mahnunchik/markerclustererplus@master/dist/markerclusterer.min.js", function() {
+            loadScript("https://cdn.jsdelivr.net/gh/printercu/google-maps-utility-library-v3-read-only@master/infobox/src/infobox_packed.js", function() {
+              loadScript("https://cdn.jsdelivr.net/gh/googlemaps/js-rich-marker@gh-pages/src/richmarker-compiled.js", function() {
+                if (window.initialize) {
+                  window.initialize();
+                }
+              });
+            });
+          });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          const GOOGLE_API_KEY = "<%= ENV['GOOGLE_API_KEY'] %>";
+          loadScript(`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&loading=async`, function() {
+            loadMapLibraries();
+          });
+        });
+      </script>
     <% end %>
   </body>
 </html>

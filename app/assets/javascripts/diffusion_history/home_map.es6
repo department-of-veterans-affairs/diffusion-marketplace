@@ -314,7 +314,3 @@ function initialize() {
     clearFormOnReload();
   });
 }
-
-$(document).on("turbolinks:load", function () {
-  google.maps.event.addDomListener(window, "load", initialize);
-});
