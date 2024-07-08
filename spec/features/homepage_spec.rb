@@ -19,8 +19,8 @@ describe 'Homepage', type: :feature do
     create(:practice_origin_facility, practice: @practice, facility_type: 0, va_facility_id: 1)
 
     @featured_image = "#{Rails.root}/spec/assets/charmander.png"
-    @parent_cat = create(:category, name: 'First Parent Category', is_other: false)
-    @parent_cat_b = create(:category, name: 'Communities', is_other: false)
+    @parent_cat = create(:category, name: 'First Parent Category')
+    @parent_cat_b = create(:category, name: 'Communities')
     @cat_1 = create(:category, name: 'COVID', parent_category: @parent_cat)
     @cat_2 = create(:category, name: 'Telehealth', parent_category: @parent_cat)
     @cat_3 = create(:category, name: 'VA Immersive', parent_category: @parent_cat_b)

@@ -6,12 +6,12 @@ describe 'Admin Dashboard Categories Tab', type: :feature do
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(:admin)
 
-    @cat_1 = Category.create!(name: 'First Parent Category', is_other: false)
-    @cat_2 = Category.create!(name: 'Second Parent Category', is_other: false)
-    @cat_3 = Category.create!(name: 'First Category', is_other: false, parent_category: @cat_1)
-    @cat_4 = Category.create!(name: 'Second Category', is_other: false, parent_category: @cat_1)
-    @cat_5 = Category.create!(name: 'Third Category', is_other: false, parent_category: @cat_2)
-    @cat_6 = Category.create!(name: 'Fourth Category', is_other: false, parent_category: @cat_2)
+    @cat_1 = Category.create!(name: 'First Parent Category')
+    @cat_2 = Category.create!(name: 'Second Parent Category')
+    @cat_3 = Category.create!(name: 'First Category', parent_category: @cat_1)
+    @cat_4 = Category.create!(name: 'Second Category', parent_category: @cat_1)
+    @cat_5 = Category.create!(name: 'Third Category', parent_category: @cat_2)
+    @cat_6 = Category.create!(name: 'Fourth Category', parent_category: @cat_2)
 
     login_as(@admin, scope: :user, run_callbacks: false)
   end
