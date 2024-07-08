@@ -2,11 +2,11 @@ module CategoriesHelper
   def get_categories_by_popularity(only_communities=false)
     time_limit = Time.now - 90.days
     Rails.cache.fetch("categories_with_popularity_#{only_communities ? 'communities' : 'non_communities'}", expires_in: 24.hours) do
-      query = Category.where(is_other: false)
-              .joins('LEFT JOIN ahoy_events ' \
-                    'ON categories.id = CAST(ahoy_events.properties ->> \'category_id\' AS INTEGER) ' \
-                    'AND ahoy_events.name = \'Category selected\' ' \
-                    'AND ahoy_events.time > \'' + time_limit.to_s(:db) + '\'')
+      query = Category.joins(
+                'LEFT JOIN ahoy_events ' \
+                'ON categories.id = CAST(ahoy_events.properties ->> \'category_id\' AS INTEGER) ' \
+                'AND ahoy_events.name = \'Category selected\' ' \
+                'AND ahoy_events.time > \'' + time_limit.to_s(:db) + '\'')
               .joins('LEFT JOIN categories as parent_categories ON categories.parent_category_id = parent_categories.id')
               .where.not(parent_category_id: nil)
 
@@ -25,7 +25,7 @@ module CategoriesHelper
 
   def update_category_usages
     s_query = ActiveRecord::Base.sanitize_sql_like(params["query"])
-    cat_rec = Category.where("name ILIKE ?", s_query.downcase).not_other.first
+    cat_rec = Category.where("name ILIKE ?", s_query.downcase).first
     return if cat_rec.blank?
     cat_id = cat_rec.id
     last_ahoy_event = Ahoy::Event.where(name: 'Category selected').last(1)
@@ -46,7 +46,7 @@ module CategoriesHelper
 
   def store_chosen_categories(s_query, chosen_categories)
     s_query = s_query.downcase
-    category_ids_and_names = Category.not_other.pluck(:id, :name).map { |cat| { id: cat.first, name: cat.last.downcase } }
+    category_ids_and_names = Category.pluck(:id, :name).map { |cat| { id: cat.first, name: cat.last.downcase } }
     matching_category = category_ids_and_names.find { |cat| s_query.strip.downcase === cat[:name] }
 
     if matching_category.present?
