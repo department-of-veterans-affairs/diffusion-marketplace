@@ -8,7 +8,6 @@ function loadScript(src, callback) {
 
 function loadMapLibraries() {
   if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
-    console.log('Google Maps API not ready, retrying...');
     setTimeout(loadMapLibraries, 100);
     return;
   }
