@@ -1,5 +1,5 @@
 require 'rails_helper'
-describe 'Practice partners pages', type: :feature do
+describe 'Practice partners pages', type: :feature, js: true do
   before do
     @pp = create(:practice_partner, name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
     @pp_2 = create(:practice_partner, :not_major_partner, name: 'Awesome Practice Partner', short_name: 'APP', description: 'Hello world')

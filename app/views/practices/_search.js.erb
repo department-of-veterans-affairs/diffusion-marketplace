@@ -157,13 +157,17 @@ function hideResultsElAndShowSpinner() {
     showSpinner();
 }
 
-function openMobileFiltersModal() {
+function openMobileFiltersModal(openOnPageLoad) {
     $(document).on('click', '#mobile_filters_button', function() {
         $('.search-filters-accordion-button').attr('aria-expanded', 'true');
         $('#search_filters_dropdown').removeAttr('hidden');
         // Return the user to their original spot on the page, before opening the mobile modal
         pagePosition.getScrollPosition();
     });
+
+    if (openOnPageLoad) {
+        $('#mobile_filters_button').trigger('click');
+    }
 }
 
 function toggleAccordion(accordionEl, containerEl) {
@@ -176,10 +180,16 @@ function toggleAccordion(accordionEl, containerEl) {
     }
 }
 
-function toggleMobileCategoriesAccordion() {
+function toggleMobileCategoriesAccordion(openOnPageLoad) {
     $(document).on('click', '.mobile-category-accordion', function() {
         toggleAccordion(this, '.category-container');
     });
+
+    if (openOnPageLoad) {
+        $('.mobile-category-accordion').each(function() {
+            toggleAccordion(this, '.category-container');
+        });
+    }
 }
 
 function toggleMobileOriginAccordion() {
@@ -954,6 +964,7 @@ function searchPracticesPage() {
         const params = new URLSearchParams(window.location.search);
         const query = params.get('query');
         const category = params.get('category');
+        const allCommunities = params.get('all_communities');
 
         if (category) {
             const checkboxSelector = `input[type="checkbox"][name="${category}"]`;
@@ -964,6 +975,24 @@ function searchPracticesPage() {
         } else if (query) {
             search(decodeURI(query));
             searchField.value = decodeURI(query);
+        } else if (allCommunities) {
+            let allCommunitiesCheckbox = document.querySelector('.all-communities-checkbox');
+            if (allCommunitiesCheckbox) {
+                allCommunitiesCheckbox.checked = true;
+                $(allCommunitiesCheckbox).trigger('change');
+            }
+
+            let selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
+            let chosenCategories = selectedCategoryCheckboxes.map(function () {
+                return this.value;
+            }).get();
+
+            if (!chosenCategories.length) {
+                chosenCategories = null;
+            } else {
+                accordionText(chosenCategories.length, 0)
+            }
+            search('', chosenCategories);
         } else {
             // No query or category filter
             searchField.value = '';
@@ -1031,9 +1060,11 @@ function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
 }
 
 function execSearchFunctions() {
-    searchPracticesPage();
-    openMobileFiltersModal();
-    toggleMobileCategoriesAccordion();
+    const urlParams = new URLSearchParams(window.location.search);
+    const openFiltersOnPageLoad = urlParams.get('filters') === 'open';
+
+    openMobileFiltersModal(openFiltersOnPageLoad);
+    toggleMobileCategoriesAccordion(openFiltersOnPageLoad);
     toggleMobileOriginAccordion();
     toggleMobileAdoptingAccordion();
     closeMobileFiltersModal();
@@ -1042,6 +1073,7 @@ function execSearchFunctions() {
     addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
     addAllCheckBoxListener('.all-strategic-checkbox', '.strategic-checkbox');
     addAllCheckBoxListener('.all-communities-checkbox', '.communities-checkbox');
+    searchPracticesPage();
 }
 
 document.addEventListener('turbolinks:load', function () {
