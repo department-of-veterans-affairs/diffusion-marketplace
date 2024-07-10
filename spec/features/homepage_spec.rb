@@ -87,11 +87,11 @@ describe 'Homepage', type: :feature do
     end
   end
 
-  it "allows the user to visit the 'Nominate an innovation' page" do
-    click_link('Nominate')
-
-    expect(page).to have_content('Nominate an innovation')
-    expect(page).to have_content('VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace using the form below.')
+  it 'invites users to submit innovations' do
+    within('#main-content') do
+      expect(page).to have_content('Submit Innovations')
+      expect(page).to have_link('Nominate', href: nominate_an_innovation_path)
+    end
   end
 
   it 'allows the user to subscribe to the DM newsletter by taking them to the GovDelivery site' do

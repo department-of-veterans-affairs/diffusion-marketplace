@@ -95,14 +95,6 @@
     }
   }
 
-  .nominate-practice-section {
-    .grid-row {
-      @media screen and (min-width: 1024px) {
-        @include u-flex("align-center");
-      }
-    }
-  }
-
   .newsletter-subscription-section {
     form {
       max-width: unset !important;
