@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Practice editor - introduction', type: :feature, js: true do
+describe 'Practice editor - introduction', type: :feature do
   before do
     visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
     visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
@@ -117,7 +117,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_no_content(@practice.summary)
     end
 
-    it 'should allow changing date created' do
+    it 'should allow changing date created', js: true do
       expect(page).to have_field('Month', with: '8')
       expect(page).to have_field('Year', with: '2016')
       # Make sure client-side validation is working
