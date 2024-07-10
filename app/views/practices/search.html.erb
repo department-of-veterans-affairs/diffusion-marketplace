@@ -14,36 +14,18 @@
 <% end %>
 
 <div id="search-page">
-  <div class="grid-container"> <!-- START DM-4910 -->
-    <div class="grid-row">
+  <div class="grid-container" id="searchResultsContainer"> <!-- START DM-4910 -->
+    <div class="grid-row margin-bottom-5">
       <div class="grid-col-12">
-        <% if params["query"] %>
-          <h2 class="usa-prose-h2" id="search-results-thingie">Search Results for: <%= params["query"] %></h2>
-          <span
-            id="results-summary"
-            class="display-block desktop:display-inline">Results:
-          </span>
-          <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">
-            {Filter applied style 1}
-          </span>
-          <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">
-            {Filter applied style 2}
-            </span>
-          <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">
-            {Filter applied style 3}
-          </span>
-          <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">
-            {Filter applied style 4}
-          </span>
-          <button type="button" class="usa-button usa-button--unstyled" id="resetSearchFiltersButton">
-            Clear filters
-          </button>
-        <% end %>
+        <h2 class="usa-prose-h2 margin-bottom-5" id="searchHeader"> Search </h2>
+        <span id="results-summary" class="display-block desktop:display-inline">Results:</span>
+        <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big" id="filterStyle1">{Filter applied style 1}</span>
+        <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big" id="filterStyle2">{Filter applied style 2}</span>
+
+        <button type="button" class="usa-button usa-button--unstyled" id="resetSearchFiltersButton">Clear filters</button>
       </div>
     </div>
-  </div> <!-- END DM-4910 -->
 
-  <div class="grid-container">
     <div class="grid-row grid-gap">
       <!-- START DM- 4912-->
       <div id="REPLACE-with-something-about-filters" class="grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
@@ -304,4 +286,3 @@
     <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
   </section>
 </div>
-
