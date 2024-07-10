@@ -15,15 +15,32 @@
 
 <div id="search-page">
   <div class="grid-container"> <!-- START DM-4910 -->
-  <div class="grid-row">
-    <div class="grid-col-12">
-      <h2 class="usa-prose-h2">Search Results {for: search string}</h2>
-      <span id="results-summary" class="display-block desktop:display-inline">Results:</span> <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">{Filter applied style 1}</span> <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">{Filter applied style 2}</span><span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">{Filter applied style 3}</span><span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">{Filter applied style 4}</span>
-      <button type="button" class="usa-button usa-button--unstyled" id="resetSearchFiltersButton">
-      Clear filters
-      </button>
+    <div class="grid-row">
+      <div class="grid-col-12">
+        <% if params["query"] %>
+          <h2 class="usa-prose-h2" id="search-results-thingie">Search Results for: <%= params["query"] %></h2>
+          <span
+            id="results-summary"
+            class="display-block desktop:display-inline">Results:
+          </span>
+          <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">
+            {Filter applied style 1}
+          </span>
+          <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">
+            {Filter applied style 2}
+            </span>
+          <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">
+            {Filter applied style 3}
+          </span>
+          <span class="applied-filter display-block desktop:display-inline usa-tag usa-tag--big">
+            {Filter applied style 4}
+          </span>
+          <button type="button" class="usa-button usa-button--unstyled" id="resetSearchFiltersButton">
+            Clear filters
+          </button>
+        <% end %>
+      </div>
     </div>
-  </div>
   </div> <!-- END DM-4910 -->
 
   <div class="grid-container">
@@ -162,7 +179,7 @@
               >
             </div>
           </fieldset>
-          <!-- TODO: use combobox w/ arrow styling from original partial --> 
+          <!-- TODO: use combobox w/ arrow styling from original partial -->
           <label class="usa-label" for="fruit">Originating location</label>
           <div class="usa-combo-box">
             <select class="usa-select" name="fruit" id="fruit">
@@ -171,7 +188,7 @@
               <option value="apricot">Clinical Resource Hub</option>
             </select>
           </div>
-          <!-- TODO: use combobox w/ arrow styling from original partial --> 
+          <!-- TODO: use combobox w/ arrow styling from original partial -->
           <label class="usa-label" for="fruit">Adopting location</label>
           <div class="usa-combo-box">
             <select class="usa-select" name="fruit" id="fruit">
@@ -181,7 +198,7 @@
             </select>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
       <!-- END DM-4912 -->
       <!-- START DM-4913 -->
