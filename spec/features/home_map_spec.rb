@@ -96,7 +96,7 @@ describe 'Map of Diffusion', type: :feature do
     expect(marker_count).to be(count)
   end
 
-  it 'displays and filters the map', js: true do
+  it 'displays and filters the map' do
     expect(page).to have_content('Explore how innovations are being adopted across the country. There are currently 2 successful adoptions, 3 in-progress adoptions, and 1 unsuccessful adoption.')
     expect_marker_ct(3)
 
