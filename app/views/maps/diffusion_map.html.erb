@@ -15,7 +15,7 @@
 
     <h1>Diffusion map</h1>
     <p class="usa-prose-intro margin-bottom-4-important">
-      Explore how innovations are being adopted across the country. There are currently <%= @successful_ct %> successful adoption<%= @successful_ct === 1 ? '' : 's' %>, <%= @in_progress_ct %> in-progress adoption<%= @in_progress_ct === 1 ? '' : 's' %>, and <%= @unsuccessful_ct %> unsuccessful adoption<%= @unsuccessful_ct === 1 ? '' : 's' %>.
+      Explore how innovations are being adopted across the country. There are currently <%= @map_data[:successful_ct] %> successful adoption<%= @map_data[:successful_ct] === 1 ? '' : 's' %>, <%= @map_data[:in_progress_ct] %> in-progress adoption<%= @map_data[:in_progress_ct] === 1 ? '' : 's' %>, and <%= @map_data[:unsuccessful_ct] %> unsuccessful adoption<%= @map_data[:unsuccessful_ct] === 1 ? '' : 's' %>.
     </p>
     <div class="diffusion-map-container">
       <div class="usa-accordion usa-accordion--bordered map-filters-accordion">
@@ -32,14 +32,14 @@
           <%= render 'maps/home_map_filters' %>
         </div>
       </div>
-      <% diffused_practices = @diffusion_history_practices %>
+      <% diffused_practices = @map_data[:diffusion_history_practices] %>
       <div class="margin-bottom-1">
         <h3 class="usa-prose-h3 margin-bottom-1">Results:</h3>
         <p class="margin-bottom-1 margin-top-0">
         <span id="facility-results-count">
-          <%= @dh_markers.size %> healthcare facility match<%= @dh_markers.size != 1 ? 'es' : '' %>
+          <%= @map_data[:dh_markers].size %> healthcare facility match<%= @map_data[:dh_markers].size != 1 ? 'es' : '' %>
         </span>
-          (of <%= @dh_markers.size %>)
+          (of <%= @map_data[:dh_markers].size %>)
         </p>
         <p class="margin-0">
         <span id="practice-results-count">

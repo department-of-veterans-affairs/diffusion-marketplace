@@ -1,4 +1,4 @@
-<% diffused_practices = @diffusion_history_practices %>
+<% diffused_practices = @map_data[:diffusion_history_practices] %>
 <div id="filterResults" class="map-filters">
   <div class="padding-left-1">
     <button type="button" class="dm-button--unstyled-primary margin-top-105" id="allMarkersButton">Reset filters</button>
@@ -79,7 +79,7 @@
         <div id="visn-list-container" class="map-filters-list">
           <fieldset>
             <legend class="usa-sr-only">VISNs</legend>
-            <% @visns.each do |v| %>
+            <% @map_data[:visns].each do |v| %>
               <input id="VISN_<%= v.id %>" name="visns" type="checkbox" value="<%= v.id %>" class="usa-checkbox__input">
               <label for="VISN_<%= v.id %>" class="usa-checkbox__label">
                 VISN <%= v.number %>
