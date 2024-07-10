@@ -758,4 +758,32 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@practice10.name)
     end
   end
+
+  describe 'search header' do
+    it 'should display appropriate header text when page loads' do
+      visit_search_page
+      expect(find('#searchHeader')).to have_text('Search')
+      expect(find('#searchHeader')).not_to have_text('Search Results for:')
+
+      visit '/'
+      find('#dm-homepage-search-field').click
+      fill_in('dm-homepage-search-field', with: 'test')
+      find_button('dm-homepage-search-button').click
+
+      expect(find('#searchHeader')).to have_text('Search Results for: test')
+    end
+
+    it 'should update the search header when a query is entered and removed in search bar' do
+      visit_search_page
+
+      fill_in('dm-practice-search-field', with: 'test')
+      search
+      expect(find('#searchHeader')).to have_text('Search Results for: test')
+
+      fill_in('dm-practice-search-field', with: '')
+      search
+      expect(find('#searchHeader')).to have_text('Search')
+      expect(find('#searchHeader')).not_to have_text('Search Results for:')
+    end
+  end
 end
