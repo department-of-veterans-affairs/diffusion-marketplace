@@ -88,7 +88,6 @@
       </div>
     </form>
   </section>
-
   <div class="grid-container">
     <section id="featured-innovations" class="mobile:margin-bottom-2 tablet:margin-bottom-10 desktop:margin-bottom-10">
       <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Recent Innovations</h2>
@@ -182,19 +181,6 @@
       </div>
     </section>
   </div>
-
-  <% if @highlighted_pr.present? && @highlighted_pr.name.present? && @highlighted_pr.highlight_body.present? && @highlighted_pr.slug.present? && @highlighted_pr.highlight_attachment.exists? %>
-    <%= render partial: 'home/featured_section', locals: {
-        section_name: 'innovation',
-        image_source: "#{@highlighted_pr.highlight_attachment_s3_presigned_url}",
-        image_alt_text: "#{@highlighted_pr.name} Featured innovation image",
-        featured_h2: "#{@highlighted_pr.name}",
-        featured_body_text: "#{@highlighted_pr.highlight_body}",
-        featured_topic_url: "/innovations/#{@highlighted_pr.slug}",
-        featured_link_text: 'Featured Innovation'
-      }
-    %>
-  <% end %>
   <section class="newsletter-subscription-section bg-primary-darker desktop:padding-y-8" role="region" aria-label="Subscribe to monthly newsletter section">
     <div class="grid-container height-full">
       <div class="grid-row desktop:grid-gap-3">
