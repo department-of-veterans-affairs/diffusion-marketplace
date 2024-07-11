@@ -118,6 +118,13 @@ class HomeController < ApplicationController
   end
 
   def fetch_va_facilities
-    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name
+    latest_update = VaFacility.maximum(:updated_at).try(:to_i)
+    cache_key = "va_facilities/relevant_attributes/#{latest_update}"
+
+    @va_facilities = Rails.cache.fetch(cache_key) do
+      VaFacility.cached_va_facilities
+                .get_relevant_attributes
+                .order_by_state_and_station_name
+    end
   end
 end
