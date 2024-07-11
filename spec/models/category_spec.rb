@@ -7,8 +7,8 @@ RSpec.describe Category, type: :model do
   end
 
   describe '.prepared_categories_for_practice_editor' do
-    let!(:parent_category) { create(:category, :as_parent, :with_sub_categories) }
-    let!(:community_category) { create(:category, :community, :as_parent, :with_sub_categories) }
+    let!(:parent_category) { create(:category, :with_sub_categories) }
+    let!(:community_category) { create(:category, :community, :with_sub_categories) }
 
     context 'when user is an admin' do
       before do
@@ -20,7 +20,6 @@ RSpec.describe Category, type: :model do
 
         expect(result.keys).to include(parent_category, community_category)
         expect(result[parent_category].first.name).to eq("All #{parent_category.name.downcase}")
-        expect(result[parent_category].last.name).to eq('Other')
         expect(result[community_category].first.name).not_to eq("All #{community_category.name.downcase}")
         expect(result[community_category].last.name).not_to eq('Other')
       end

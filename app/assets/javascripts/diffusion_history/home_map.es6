@@ -120,7 +120,7 @@ function initialize() {
     const facilityCount = result.length;
     const practiceCount = _.chain(result.map(r => r.practices)).flatten().uniqBy('id').value().length;
 
-    $('#facility-results-count').text(`${facilityCount} facility match${facilityCount === 1 ? '' : 'es'}`);
+    $('#facility-results-count').text(`${facilityCount} healthcare facility match${facilityCount === 1 ? '' : 'es'}`);
     $('#practice-results-count').text(`${practiceCount} innovation${practiceCount === 1 ? '' : 's'}`);
   }
 
@@ -283,10 +283,12 @@ function initialize() {
   function attachFacilityListListener() {
     $(document).on("click", "#facilityListTrigger", () => {
       const $facilityListBtn = $("#facilityListTrigger");
-      if ($facilityListBtn.text() === "Hide list of facilities") {
-        $facilityListBtn.text("View list of facilities");
+      if ($facilityListBtn.attr("aria-expanded") === "true") {
+        $facilityListBtn.text("View list of healthcare facilities");
+        $facilityListBtn.attr("aria-expanded", "false");
       } else {
-        $facilityListBtn.text("Hide list of facilities");
+        $facilityListBtn.text("Hide list of healthcare facilities");
+        $facilityListBtn.attr("aria-expanded", "true");
       }
       $("#facilityListContainer").toggle();
     });

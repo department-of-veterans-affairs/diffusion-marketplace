@@ -41,7 +41,6 @@ ActiveAdmin.register Category do
        end
     end
     column :related_terms
-    column :is_other
     actions
   end
 
@@ -57,7 +56,6 @@ ActiveAdmin.register Category do
         end
       end
       row :related_terms
-      row :is_other
       row "Innovations Tagged" do |c|
         c.practices
       end
@@ -76,7 +74,6 @@ ActiveAdmin.register Category do
               label: "Parent Tag"
         # ensures input is displayed as comma separated list
       f.input :related_terms_raw, label: 'Related Terms', hint: 'Comma separated list (e.g., COVID-19, Coronavirus)'
-      f.input :is_other
     end
     f.actions do
       f.action :submit, label: object.new_record? ? 'Create Tag' : 'Update Tag'
@@ -115,7 +112,7 @@ ActiveAdmin.register Category do
     private
 
     def category_params
-      params.require(:category).permit(:name, :short_name, :description, :parent_category_id, :is_other, related_terms:[])
+      params.require(:category).permit(:name, :short_name, :description, :parent_category_id, related_terms:[])
     end
 
     def modify_related_terms_for_db

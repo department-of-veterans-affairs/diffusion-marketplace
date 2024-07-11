@@ -89,7 +89,7 @@
         </div>
       </div>
 
-      <label for="facility_name" class="usa-label line-height-26 text-bold">Facility name</label>
+      <label for="facility_name" class="usa-label line-height-26 text-bold">Healthcare facility name</label>
       <div class="usa-combo-box margin-top-1 margin-bottom-2" data-set-facility="false">
         <select id="facility_name" class="usa-select" name="facility_name">
           <% @va_facilities.each do |f| %>
@@ -101,8 +101,8 @@
       </div>
 
       <div class="margin-bottom-2 clearfix">
-        <button type="button" class="dm-button--unstyled-primary margin-bottom-1" id="facilityListTrigger">
-          View list of facilities
+        <button type="button" class="dm-button--unstyled-primary margin-bottom-1" id="facilityListTrigger" aria-expanded="false" aria-controls="facilityListContainer">
+          View list of healthcare facilities
         </button>
         <div id="facilityListContainer" class="map-filters-list display-none">
           <fieldset class="grid-row">
@@ -136,7 +136,7 @@
 
       <div class="margin-bottom-2">
         <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">
-        Facility
+        Healthcare facility
           <a href="#facility-complexity-modal" class="facility-complexity-modal cursor-pointer dotted" aria-controls="facility-complexity-modal" data-open-modal class="cursor-pointer">
             <span class="usa-sr-only">Open facility complexity modal</span>
               complexity
@@ -146,7 +146,7 @@
         <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false, is_map: true } %>
         <% complexity_levels = VaFacility.get_complexity %>
         <fieldset>
-          <legend class="usa-sr-only">Facility Complexity Levels</legend>
+          <legend class="usa-sr-only">Healthcare Facility Complexity Levels</legend>
           <% complexity_levels.each do |cl| %>
             <input id="<%= cl.gsub(' ', '').underscore %>" name="facility_complexities" type="checkbox" value="<%= cl %>" class="usa-checkbox__input">
             <label for="<%= cl.gsub(' ', '').underscore %>" class="usa-checkbox__label">
@@ -158,7 +158,7 @@
       </div>
 
       <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Facility rurality</h4>
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Healthcare facility rurality</h4>
         <% ruralities = {R: "Rural", U: "Urban"} %>
         <fieldset>
           <legend class="usa-sr-only">Ruralities</legend>

@@ -16,7 +16,7 @@ module PracticeUtils
 
   def get_categories_by_practices(practices, practice_categories)
     practices.each do |p|
-      categories = p.categories.not_other.not_none
+      categories = p.categories.not_none
       categories.each do |c|
         practice_categories << c unless practice_categories.include?(c)
       end

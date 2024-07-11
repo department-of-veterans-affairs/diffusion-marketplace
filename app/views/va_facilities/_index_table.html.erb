@@ -4,7 +4,7 @@
     <thead>
       <tr>
         <th class="grid-col-5" data-sortable scope="col" role="columnheader" aria-sort="descending">
-          Facility
+          Healthcare Facility
         </th>
         <th data-sortable scope="col" role="columnheader">
           State
@@ -18,8 +18,8 @@
         </th>
         <th class="grid-col-3" data-sortable scope="col" role="columnheader">
           <a href="#facility-complexity-modal" aria-controls="facility-complexity-modal" data-open-modal class="dotted cursor-pointer facility-complexity-modal">
-            <span class="usa-sr-only">Open facility complexity modal</span>
-            Facility complexity level
+            <span class="usa-sr-only">Open modal: definitition</span>
+            Complexity level
           </a>
           <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false, is_map: false } %>
         </th>

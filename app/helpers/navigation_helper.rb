@@ -164,7 +164,7 @@ module NavigationHelper
 
     ### VAMC breadcrumbs
     def add_facility_index_breadcrumb
-      session[:breadcrumbs] << { 'display': 'Facility index', 'path': va_facilities_path }
+      session[:breadcrumbs] << { 'display': 'Healthcare facility index', 'path': va_facilities_path }
     end
 
     if controller == 'va_facilities'
