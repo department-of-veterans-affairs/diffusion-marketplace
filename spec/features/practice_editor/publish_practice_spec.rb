@@ -160,7 +160,7 @@ describe 'Practice editor', type: :feature do
         visit practice_overview_path(@practice)
         set_overview_required_fields
         @save_button.click
-
+        sleep 1
         visit practice_introduction_path(@practice)
         fill_in('Tagline', with: 'test tagline')
         set_pr_required_fields

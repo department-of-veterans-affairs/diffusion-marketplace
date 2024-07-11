@@ -6,9 +6,8 @@ class Practice < ApplicationRecord
   extend PracticeUtils
 
   before_validation :trim_whitespace
-  before_save :clear_searchable_cache_on_save
-  after_save :reset_searchable_practices
   after_create :create_practice_editor_for_practice
+  after_commit :check_update_to_clear_cache
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -29,7 +28,6 @@ class Practice < ApplicationRecord
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department, :practice_award, :category
-  attr_accessor :reset_searchable_cache
 
   def self.cached_json_practices(is_guest_user)
     if is_guest_user
@@ -51,38 +49,31 @@ class Practice < ApplicationRecord
     end
   end
 
+  def check_update_to_clear_cache
+    important_attrs = [
+      'name', 'tagline', 'description', 'summary', 'initiating_facility',
+      'main_display_image_updated_at', 'published', 'enabled', 'approved',
+      'date_initiated', 'maturity_level', 'overview_problem', 'overview_solution',
+      'overview_results', 'retired', 'retired_reason', 'hidden', 'is_public'
+    ]
+
+    if saved_changes.keys.any? { |key| important_attrs.include?(key) }
+      self.clear_searchable_cache
+    end
+  end
+
   def clear_searchable_cache
-    cache_keys = ["searchable_practices_json", "searchable_public_practices_json", "s3_signer", "published_enabled_approved_practices"]
-    cache_keys.each do |cache_key|
-      Cache.new.delete_cache_key(cache_key)
-    end
-  end
+    cached_keys = [
+      "searchable_practices_json",
+      "searchable_public_practices_json",
+      "s3_signer",
+      "published_enabled_approved_practices",
+      "#{cache_key}/as_json"
+    ]
 
-  def clear_searchable_cache_on_save
-    if self.name_changed? ||
-        self.tagline_changed? ||
-        self.description_changed? ||
-        self.summary_changed? ||
-        self.initiating_facility_changed? ||
-        self.main_display_image_updated_at_changed? ||
-        self.published_changed? ||
-        self.enabled_changed? ||
-        self.approved_changed? ||
-        self.date_initiated_changed? ||
-        self.maturity_level_changed? ||
-        self.overview_problem_changed? ||
-        self.overview_solution_changed? ||
-        self.overview_results_changed?  ||
-        self.retired_changed? ||
-        self.retired_reason_changed? ||
-        self.hidden_changed? ||
-        self.is_public_changed?
-      self.reset_searchable_cache = true
+    cached_keys.each do |cached_key|
+      Rails.cache.delete(cached_key)
     end
-  end
-
-  def reset_searchable_practices
-    clear_searchable_cache if self.reset_searchable_cache
   end
 
   def has_facility?
@@ -474,14 +465,16 @@ class Practice < ApplicationRecord
   end
 
   def as_json(*)
-    super(only: get_search_fields).merge(
-      date_initiated: date_initiated? ? date_initiated.strftime("%B %Y") : '(start date unknown)',
-      category_names: get_category_names(self.categories.not_none),
-      initiating_facility_name: origin_display(self),
-      practice_partner_names: practice_partners.pluck(:name),
-      origin_facilities: practice_origin_facilities.get_va_facilities + practice_origin_facilities.get_clinical_resource_hubs,
-      adoption_facilities: diffusion_histories.get_va_facilities + diffusion_histories.get_clinical_resource_hubs,
-      adoption_count: diffusion_histories.size
-    )
+    Rails.cache.fetch("#{cache_key}/as_json") do
+      super(only: get_search_fields).merge(
+        date_initiated: date_initiated? ? date_initiated.strftime("%B %Y") : '(start date unknown)',
+        category_names: get_category_names(self.categories.not_none),
+        initiating_facility_name: origin_display(self),
+        practice_partner_names: practice_partners.pluck(:name),
+        origin_facilities: practice_origin_facilities.get_va_facilities + practice_origin_facilities.get_clinical_resource_hubs,
+        adoption_facilities: diffusion_histories.get_va_facilities + diffusion_histories.get_clinical_resource_hubs,
+        adoption_count: diffusion_histories.size
+      )
+    end
   end
 end
