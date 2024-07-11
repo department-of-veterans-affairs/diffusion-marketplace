@@ -121,10 +121,10 @@ describe 'Map of Diffusion', type: :feature do
     expect(page).to be_accessible.within '#filterResults'
     expect(page).to have_no_css('#filterResultsTrigger')
     expect(page).to have_selector('#mapFilters', visible: true)
-    expect(page).to have_content('3 facility matches (of 3)')
+    expect(page).to have_content('3 healthcare facility matches (of 3)')
     expect(page).to have_content('4 innovations matched (of 4)')
     # open facility complexity modal
-    modal_text = 'Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs'
+    modal_text = 'Healthcare facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs'
     expect(page).to_not have_content(modal_text)
     find_all('.facility-complexity-modal').last.click
     expect(page).to have_content(modal_text)
@@ -138,7 +138,7 @@ describe 'Map of Diffusion', type: :feature do
     # make sure the accordion closes
     expect(page).to have_selector('#mapFilters', visible: false)
     expect_marker_ct(2)
-    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('2 healthcare facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     open_filters
     reset_filters
@@ -149,21 +149,21 @@ describe 'Map of Diffusion', type: :feature do
     find('.adoption-status-label[for="status_in-progress"]').click
     update_results
     expect_marker_ct(2)
-    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('2 healthcare facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     # in-progress & unsuccessful adoptions
     open_filters
     find('.adoption-status-label[for="status_unsuccessful"]').click
     update_results
     expect_marker_ct(3)
-    expect(page).to have_content('3 facility matches (of 3)')
+    expect(page).to have_content('3 healthcare facility matches (of 3)')
     expect(page).to have_content('4 innovations matched (of 4)')
     # successful adoptions
     open_filters
     find('.adoption-status-label[for="status_in-progress"]').click
     update_results
     expect_marker_ct(1)
-    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 healthcare facility match (of 3)')
     expect(page).to have_content('1 innovation matched (of 4)')
     open_filters
     reset_filters
@@ -174,7 +174,7 @@ describe 'Map of Diffusion', type: :feature do
     find('.usa-checkbox__label[for="VISN_1"]').click
     update_results
     expect_marker_ct(1)
-    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 healthcare facility match (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     # @visn_2
     open_filters
@@ -182,7 +182,7 @@ describe 'Map of Diffusion', type: :feature do
     find('.usa-checkbox__label[for="VISN_2"]').click
     update_results
     expect_marker_ct(2)
-    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('2 healthcare facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     open_filters
     reset_filters
@@ -193,13 +193,13 @@ describe 'Map of Diffusion', type: :feature do
     find('#facility_name--list--option-0').click
     update_results
     expect_marker_ct(1)
-    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 healthcare facility match (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     open_filters
     find('.usa-combo-box__clear-input').click
     update_results
     expect_marker_ct(3)
-    expect(page).to have_content('3 facility matches (of 3)')
+    expect(page).to have_content('3 healthcare facility matches (of 3)')
     expect(page).to have_content('4 innovations matched (of 4)')
     open_filters
     reset_filters
@@ -207,27 +207,27 @@ describe 'Map of Diffusion', type: :feature do
     # filters by facilities
     open_filters
     expect(page).to have_css('#facilityListTrigger')
-    expect(page).to have_content('View list of facilities')
+    expect(page).to have_content('View list of healthcare facilities')
     expect(page).to have_no_css('#facilityListContainer')
     find('#facilityListTrigger').click
-    expect(page).to have_no_content('View list of facilities')
-    expect(page).to have_content('Hide list of facilities')
+    expect(page).to have_no_content('View list of healthcare facilities')
+    expect(page).to have_content('Hide list of healthcare facilities')
     expect(page).to have_css('#facilityListContainer')
     find('.usa-checkbox__label[for="526GB"]').click
     update_results
     expect_marker_ct(1)
-    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 healthcare facility match (of 3)')
     expect(page).to have_content('1 innovation matched (of 4)')
     open_filters
     find('.usa-checkbox__label[for="526GA"]').click
     update_results
     expect_marker_ct(2)
-    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('2 healthcare facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     open_filters
     find('#facilityListTrigger').click
-    expect(page).to have_content('View list of facilities')
-    expect(page).to have_no_content('Hide list of facilities')
+    expect(page).to have_content('View list of healthcare facilities')
+    expect(page).to have_no_content('Hide list of healthcare facilities')
     expect(page).to have_no_css('#facilityListContainer')
     reset_filters
 
@@ -236,7 +236,7 @@ describe 'Map of Diffusion', type: :feature do
     find('.usa-checkbox__label[for="1a_high_complexity"]').click
     update_results
     expect_marker_ct(1)
-    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 healthcare facility match (of 3)')
     expect(page).to have_content('1 innovation matched (of 4)')
     open_filters
     reset_filters
@@ -246,7 +246,7 @@ describe 'Map of Diffusion', type: :feature do
     find('.usa-checkbox__label[for="rurality_U"]').click
     update_results
     expect_marker_ct(2)
-    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('2 healthcare facility matches (of 3)')
     expect(page).to have_content('3 innovations matched (of 4)')
     open_filters
     reset_filters
@@ -257,17 +257,17 @@ describe 'Map of Diffusion', type: :feature do
     find('.usa-checkbox__label[for="practice_ids_4"]').click
     update_results
     expect_marker_ct(1)
-    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 healthcare facility match (of 3)')
     expect(page).to have_content('2 innovations matched (of 4)')
     open_filters
     find('.adoption-status-label[for="status_unsuccessful"]').click
     update_results
-    expect(page).to have_content('0 facility matches (of 3)')
+    expect(page).to have_content('0 healthcare facility matches (of 3)')
     expect(page).to have_content('0 innovations matched (of 4)')
     open_filters
     find("#allMarkersButton").click
     expect_marker_ct(3)
-    expect(page).to have_content('3 facility matches (of 3)')
+    expect(page).to have_content('3 healthcare facility matches (of 3)')
     expect(page).to have_content('4 innovations matched (of 4)')
 
     # map modal

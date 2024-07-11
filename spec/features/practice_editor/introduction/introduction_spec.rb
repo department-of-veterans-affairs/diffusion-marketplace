@@ -173,7 +173,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         # make sure the VISN text is a link to the VISN's show page
         click_link 'VISN-1'
         expect(page).to have_content('1: VA New England Healthcare System')
-        expect(page).to have_content('This VISN has 0 facilities')
+        expect(page).to have_content('This VISN has 0 healthcare facilities')
 
         # set department
         visit_practice_edit
