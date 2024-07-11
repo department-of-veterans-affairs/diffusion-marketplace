@@ -131,8 +131,7 @@ describe 'VA facility pages', type: :feature do
       cat_1 = Category.create!(name: 'COVID', related_terms: ["COVID-19", "COVID 19", "Coronavirus"] )
       cat_2 = Category.create(name: 'Telehealth')
       cat_3 = Category.create!(name: 'Other')
-      cat_4 = Category.create!(name: 'Other Subcategory', is_other: true)
-      cat_5 = Category.create!(name: 'Main Level Cat')
+      cat_4 = Category.create!(name: 'Main Level Cat')
 
       user = User.create!(email: 'test@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
       practice_names = ['Cards for Memory', 'BIONE', 'GERIVETZ', 'Gerofit', 'Pink Gloves Program', 'REVAMP', 'Telemedicine', 'Different practice']
@@ -142,7 +141,7 @@ describe 'VA facility pages', type: :feature do
       end
 
       pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false, user: user)
-      CategoryPractice.create!(practice: pr_1, category: cat_5)
+      CategoryPractice.create!(practice: pr_1, category: cat_4)
 
       @facility_4 = VaFacility.create!(
         visn: @visn,
@@ -162,12 +161,10 @@ describe 'VA facility pages', type: :feature do
         PracticeOriginFacility.create!(practice: pr, facility_type: 0, va_facility: @facility_1)
         if pr.name == 'Different practice'
           CategoryPractice.create!(practice: pr, category: cat_3)
-          CategoryPractice.create!(practice: pr, category: cat_4)
         elsif index < 3
           CategoryPractice.create!(practice: pr, category: cat_1)
         elsif index >= 3
           CategoryPractice.create!(practice: pr, category: cat_2)
-          CategoryPractice.create!(practice: pr, category: cat_4)
           PracticeOriginFacility.create!(practice: pr, facility_type: 0, va_facility: @facility_4)
         end
       end
@@ -249,7 +246,6 @@ describe 'VA facility pages', type: :feature do
           within(:css, '#facility_category_select_adoptions--list') do
             expect(page).to have_content('COVID')
             expect(page).to have_content('Telehealth')
-            expect(page).to have_no_content('Other Subcategory')
           end
           expect(find(".facility_category_select_adoptions.usa-select", visible: false).value).to eq("")
           expect(find("#dm-adopted-practices-search-field").value).to eq("")
@@ -295,8 +291,7 @@ describe 'VA facility pages', type: :feature do
           within(:css, '#dm-created-practice-categories--list') do
             expect(page).to have_content('COVID')
             expect(page).to have_content('Telehealth')
-            expect(page).to have_no_content('Other')
-            expect(page).to have_no_content('Other Subcategory')
+            expect(page).to have_content('Other')
             expect(page).to have_no_content('Main Level Cat')
           end
           expect(find(".dm-created-practice-categories.usa-select", visible: false).value).to eq("")

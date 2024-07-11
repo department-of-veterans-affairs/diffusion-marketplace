@@ -8,7 +8,7 @@
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag '_otherCategories', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_allCategories', 'data-turbolinks-track': 'reload' %>
 
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
@@ -539,7 +539,6 @@
                         <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sc, parent_category: parent_category, column: i } unless i === 3 %>
                       <% end %>
                     </div>
-                    <%= render partial: 'practices/introduction_forms/other_categories', locals: { parent_category: parent_category, form: f } %>
                   </div>
                 <% end %>
               <% end %>

@@ -192,19 +192,4 @@ namespace :categories do
 
     puts "Existing categories have been successfully updated!"
   end
-
-  # Instead of having an 'Other' category record, we will make it view-only in the introduction section of the practice editor
-  desc "Delete 'Other' category"
-  task :delete_other_category => :environment do
-    other_cats = Category.get_category_by_name('Other')
-
-    if other_cats.present?
-      other_cats.each do |oc|
-        oc.destroy
-      end
-      puts "'Other' category has been successfully deleted!"
-    else
-      puts "'Other' category does not exist"
-    end
-  end
 end

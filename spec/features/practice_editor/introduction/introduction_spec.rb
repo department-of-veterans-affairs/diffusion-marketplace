@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Practice editor - introduction', type: :feature, js: true do
+describe 'Practice editor - introduction', type: :feature do
   before do
     visn_1 = Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
     visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
@@ -35,9 +35,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     Category.create!(name: 'Hidden Cat')
     Category.create!(name: 'Suicide Prevention', parent_category: @parent_cat_4)
     Category.create!(name: 'Age-Friendly', parent_category: @parent_cat_4)
-    @cat_2 = Category.create!(name: 'Foobar', parent_category: @parent_cat_2, is_other: true)
     CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
-    CategoryPractice.create!(practice: @practice, category: @cat_2, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
     page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
@@ -83,11 +81,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       within(:css, '.dm-operational-category-columns-container') do
         page.has_unchecked_field?('Environmental Ser...')
         page.has_unchecked_field?('All operational')
-        page.has_checked_field?('Other')
-        expect(page).to have_content('Add another')
-        expect(page).to have_no_content('Delete entry')
-        expect(page).to have_content('Category name')
-        expect(find_field('Category name', visible: true).value).to eq('Foobar')
       end
       within(:css, '.dm-strategic-category-columns-container') do
         page.has_checked_field?('COVID')
@@ -124,7 +117,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_no_content(@practice.summary)
     end
 
-    it 'should allow changing date created' do
+    it 'should allow changing date created', js: true do
       expect(page).to have_field('Month', with: '8')
       expect(page).to have_field('Year', with: '2016')
       # Make sure client-side validation is working
@@ -487,22 +480,11 @@ describe 'Practice editor - introduction', type: :feature, js: true do
           find('.usa-checkbox__label[for="cat-all-strategic-input"]').click
           page.has_unchecked_field?('COVID')
           page.has_unchecked_field?('All strategic')
-          page.has_unchecked_field?('Other')
-          # add "Other" category
-          find('.usa-checkbox__label[for="cat-other-strategic-input"]').click
-          fill_in('Category name', with: 'other strategic category')
-          expect(page).to have_content('Add another')
         end
         within(:css, '.dm-operational-category-columns-container') do
-          # add another "Other" category
-          find('.add-category-link-operational').click
-          other_cat_2 = find_all('.practice-input')[1]
-          other_cat_2.set 'other operational category'
-          # remove the exisiting "Other" category
-          find_all('.remove_nested_fields')[0].click
-          # add subcategory
           find('.usa-checkbox__label[title="Environmental Services"]').click
         end
+
         within(:css, '.dm-clinical-category-columns-container') do
           # add categories
           find('.usa-checkbox__label[title="Pulmonary Care"]').click
@@ -519,18 +501,11 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         end
         click_save
         within(:css, '.dm-strategic-category-columns-container') do
-          expect(find_field('Category name', visible: true).value).to eq('other strategic category')
           page.has_unchecked_field?('COVID')
           page.has_unchecked_field?('All strategic')
-          page.has_checked_field?('Other')
         end
         within(:css, '.dm-operational-category-columns-container') do
-          other_cat_ct = find_all('.practice-input').count
-          expect(other_cat_ct).to eq(1)
-          expect(find_field('Category name', visible: true).value).to eq('other operational category')
-          page.has_checked_field?('Other')
           page.has_checked_field?('Environmental Ser...')
-          find('.usa-checkbox__label[for="cat-other-operational-input"]').click
         end
         within(:css, '.dm-clinical-category-columns-container') do
           page.has_checked_field?('Pulmonary Care')
@@ -539,7 +514,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         end
         click_save
         within(:css, '.dm-operational-category-columns-container') do
-          page.has_unchecked_field?('Other')
           page.has_checked_field?('Environmental Ser...')
         end
         visit_practice_show
