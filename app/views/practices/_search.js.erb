@@ -293,8 +293,11 @@ function searchPracticesPage() {
         // set the search page search bar input value
         searchField.value = query;
 
+        const searchHeader = document.getElementById('searchHeader');
         if (query) {
             trackSearchField(query);
+            searchHeader.textContent = `Search Results for: ${query}`;
+
             var searchBarQueryArray = [];
             search_options.keys.forEach(function(practiceKey) {
                 var queryObj = {};
@@ -302,6 +305,7 @@ function searchPracticesPage() {
                 return searchBarQueryArray.push(queryObj);
             });
         } else {
+            searchHeader.textContent = "Search";
             if (searchLocation[0] === '?filter_by') {
                 trackSearchByFilter(searchLocation[1]);
             }
@@ -728,7 +732,7 @@ function searchPracticesPage() {
         }
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
+        resultsSummary.innerHTML = results.length + ' Result' + (results.length === 1 ? ':' : 's:');
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function (result) {
