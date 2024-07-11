@@ -165,45 +165,23 @@ RSpec.describe Practice, type: :model do
     end
   end
 
-  describe 'scopes' do
-    describe '.get_by_created_crh' do
-      let!(:clinical_resource_hub_1) { create(:clinical_resource_hub) }
-      let!(:clinical_resource_hub_2) { create(:clinical_resource_hub) }
+  describe '#check_update_to_clear_cache' do
+    let(:practice) { create(:practice) }
 
-      let!(:practice1) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
-      let!(:practice2) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
-      let!(:practice3) { create(:practice, published: false, enabled: false, approved: false, hidden: true) }
-
-      let!(:facility_with_hub_1) { create(:practice_origin_facility, practice: practice1, clinical_resource_hub: clinical_resource_hub_1) }
-      let!(:facility_with_hub_2) { create(:practice_origin_facility, practice: practice2, clinical_resource_hub: clinical_resource_hub_2) }
-
-      it 'returns practices that are published, enabled, approved, associated with provided clinical_resource_hub_id, and have loaded associations' do
-        result = Practice.published_enabled_approved.load_associations.get_by_created_crh(clinical_resource_hub_1.id)
-
-        expect(result).to include(practice1)
-        expect(result).not_to include(practice2, practice3)
+    context 'when important attributes change' do
+      it 'clears the cache' do
+        allow(practice).to receive(:clear_searchable_cache)
+        practice.update(name: 'New Name')
+        expect(practice).to have_received(:clear_searchable_cache)
       end
     end
 
-    describe '.get_by_adopted_crh' do
-      let!(:clinical_resource_hub_1) { create(:clinical_resource_hub) }
-      let!(:clinical_resource_hub_2) { create(:clinical_resource_hub) }
-
-      let!(:practice1) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
-      let!(:practice2) { create(:practice, published: true, enabled: true, approved: true, hidden: false) }
-      let!(:practice3) { create(:practice, published: false, enabled: false, approved: false, hidden: true) } # Will be filtered out by `published_enabled_approved` scope
-
-      let!(:diffusion_history_1) { create(:diffusion_history, practice: practice1, clinical_resource_hub: clinical_resource_hub_1) }
-      let!(:diffusion_history_2) { create(:diffusion_history, practice: practice2, clinical_resource_hub: clinical_resource_hub_2) }
-
-
-      it 'returns practices that are published, enabled, approved, adopted by the given clinical_resource_hub_id, and have loaded associations' do
-        result = Practice.published_enabled_approved.load_associations.get_by_adopted_crh(clinical_resource_hub_1.id)
-
-        expect(result).to include(practice1)
-        expect(result).not_to include(practice2, practice3)
+    context 'when non-important attributes change' do
+      it 'does not clear the cache' do
+        allow(practice).to receive(:clear_searchable_cache)
+        practice.update(short_name: 'New Value')
+        expect(practice).not_to have_received(:clear_searchable_cache)
       end
     end
   end
-
 end

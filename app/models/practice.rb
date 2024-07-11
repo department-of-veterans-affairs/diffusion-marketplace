@@ -7,7 +7,7 @@ class Practice < ApplicationRecord
 
   before_validation :trim_whitespace
   after_create :create_practice_editor_for_practice
-  after_commit :clear_searchable_cache
+  after_commit :check_update_to_clear_cache
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -46,6 +46,19 @@ class Practice < ApplicationRecord
   def self.cached_published_enabled_approved_practices
     Rails.cache.fetch('published_enabled_approved_practices', expires_in: 30.minutes) do
       Practice.published_enabled_approved
+    end
+  end
+
+  def check_update_to_clear_cache
+    important_attrs = [
+      'name', 'tagline', 'description', 'summary', 'initiating_facility',
+      'main_display_image_updated_at', 'published', 'enabled', 'approved',
+      'date_initiated', 'maturity_level', 'overview_problem', 'overview_solution',
+      'overview_results', 'retired', 'retired_reason', 'hidden', 'is_public'
+    ]
+
+    if saved_changes.keys.any? { |key| important_attrs.include?(key) }
+      self.clear_searchable_cache
     end
   end
 
