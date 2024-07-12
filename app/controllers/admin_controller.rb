@@ -6,7 +6,7 @@ class AdminController < ApplicationController
       redirect_to controller: :users, action: :index
     else
       password = generate_password
-      user = User.create! user_params.merge(password: password, password_confirmation: password)
+      user = User.create! user_params.merge(password: password.sub(/.*/, "[redacted]"), password_confirmation: password)
       AdminMailer.send_set_password(user_id: user.id, password: password).deliver_now
       flash[:success] = "Created user \"#{user.email}\""
       redirect_to controller: :users, action: :index
