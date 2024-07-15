@@ -27,12 +27,6 @@ module NavigationHelper
         return
       end
 
-      # PII/PHI
-      if action == 'pii_phi_information'
-        empty_breadcrumbs
-        session[:breadcrumbs] << { 'display': 'PII/PHI Information', 'path': pii_phi_information_path }
-      end
-
       # Diffusion map
       if action == 'diffusion_map'
         empty_breadcrumbs

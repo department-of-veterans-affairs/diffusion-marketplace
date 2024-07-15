@@ -17,9 +17,6 @@ class HomeController < ApplicationController
     render 'maps/diffusion_map'
   end
 
-  def pii_phi_information
-  end
-
   private
 
   def fetch_map_data
