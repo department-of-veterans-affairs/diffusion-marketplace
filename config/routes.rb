@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get ':page_group_friendly_id/:page_slug' => 'page#show', as: 'page_show', constraints: PageGroupConstraint
   get 'page_resources/:id/download' => 'page_resources#download', as: 'page_resource_download'
   ActiveAdmin.routes(self)
-  devise_for :users, controllers: { registrations: 'registrations' }
+  devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
   devise_scope :user do
     get   "/check_session_timeout"    => "session_timeout#check_session_timeout"
     get   "/session_timeout"          => "session_timeout#render_timeout"

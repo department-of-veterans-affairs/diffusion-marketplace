@@ -135,7 +135,7 @@ class UsersController < ApplicationController
       end
       @user_location_practices
     else
-      redirect_to new_user_session_path
+      redirect_to root_path
     end
 
     respond_to do |format|

@@ -52,8 +52,7 @@ describe 'Recommended for you page', type: :feature do
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Diffusion Marketplace')
-      expect(page).to have_content('Login')
-      expect(page.current_path).to eq new_user_session_path
+      expect(page.current_path).to eq root_path
     end
 
     it 'should allow the user to visit the recommended for you page if they are logged in' do
