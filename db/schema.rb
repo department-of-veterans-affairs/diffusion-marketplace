@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_09_160927) do
+ActiveRecord::Schema.define(version: 2024_07_16_000712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1344,11 +1344,6 @@ ActiveRecord::Schema.define(version: 2024_07_09_160927) do
 
   create_table "va_employees", force: :cascade do |t|
     t.string "name"
-    t.string "prefix"
-    t.string "suffix"
-    t.string "email"
-    t.text "bio"
-    t.string "job_title"
     t.string "role"
     t.integer "position"
     t.datetime "created_at", null: false
