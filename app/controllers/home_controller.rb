@@ -119,9 +119,7 @@ class HomeController < ApplicationController
     cache_key = "va_facilities/relevant_attributes/#{latest_update}"
 
     @va_facilities = Rails.cache.fetch(cache_key) do
-      VaFacility.cached_va_facilities
-                .get_relevant_attributes
-                .order_by_state_and_station_name
+      VaFacility.where(hidden: false).get_relevant_attributes.order_by_state_and_station_name
     end
   end
 end
