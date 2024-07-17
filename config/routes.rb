@@ -75,11 +75,6 @@ Rails.application.routes.draw do
   resources :users, except: %i[show create new edit] do
     patch :re_enable
   end
-  resources :admin, only: [] do
-    collection do
-      post :create_user
-    end
-  end
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.has_role?(:admin) } do
