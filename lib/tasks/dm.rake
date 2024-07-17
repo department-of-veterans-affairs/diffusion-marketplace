@@ -20,8 +20,6 @@ namespace :dm do
     Rake::Task['visns:create_visn_liaisons_and_transfer_data'].execute
     Rake::Task['clinical_resource_hubs:create_clinical_resource_hubs'].execute
     Rake::Task['diffusion_history:all'].execute
-    Rake::Task['go_fish_practices:assign_go_fish_badge'].execute
-    Rake::Task['shark_tank_practices:assign_shark_tank_badge'].execute
     Rake::Task['inet_partner_practices:assign_inet_partner'].execute
     Rake::Task['categories:add_covid_cats'].execute
     Rake::Task['practice_origin_facilities:move_practice_initiating_facility'].execute
