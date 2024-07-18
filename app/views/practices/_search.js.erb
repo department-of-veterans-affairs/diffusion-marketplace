@@ -756,14 +756,21 @@ function searchPracticesPage() {
     function addAppliedFilter(filterType, filter) {
         const resultsSummary = document.getElementById('results-summary');
         const resetButton = document.getElementById('resetSearchFiltersButton');
-        const appliedFilterString = `${filterType}: ${filter}`
+        const appliedFilterString = `${filterType}: ${filter} `;
 
         const span = document.createElement('span');
         span.className = 'applied-filter display-block desktop:display-inline usa-tag usa-tag--big';
         span.textContent = appliedFilterString;
+
+        const removeButton = document.createElement('span');
+        removeButton.textContent = 'X';
+        removeButton.style.cursor = 'pointer';
+        removeButton.style.marginLeft = '5px';
+
+        span.appendChild(removeButton);
         resultsSummary.parentNode.insertBefore(span, resetButton);
 
-        span.addEventListener('click', function(event) {
+        removeButton.addEventListener('click', function(event) {
             uncheckFilter(filterType, filter);
             $('#resetSearchFiltersButton').addClass('display-none');
             updateResults();
