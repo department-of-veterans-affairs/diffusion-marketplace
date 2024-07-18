@@ -311,10 +311,14 @@ function searchPracticesPage() {
             }
         }
 
+        $('.applied-filter').remove();
+        $('#resetSearchFiltersButton').addClass('display-none');
+
         if (categories) {
             // Collect any practice that has a category that matches the selected category/categories.
             var categoryFilters = [];
             categories.forEach(function (categorySelection) {
+                addAppliedFilter('TAG', categorySelection)
                 return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
             });
         }
@@ -338,6 +342,8 @@ function searchPracticesPage() {
                 } else {
                     originFacilityArray.push({'origin_facilities': "=\"" + vf.official_station_name + "\""});
                 }
+
+                addAppliedFilter('ORIGIN', vf.official_station_name)
             });
         } else if (originatingFacility && !originatingFacility.includes('VISN-')){
             // Collect the practices that have an origin facility matching the selected facility
@@ -348,6 +354,7 @@ function searchPracticesPage() {
                     return originatingFacility === f.official_station_name;
                 }
             });
+            addAppliedFilter('ORIGIN', foundOriginatingFacility.official_station_name)
 
             originFacilityArray.push({'origin_facilities': "=\"" + (foundOriginatingFacility.hasOwnProperty('station_number') ? foundOriginatingFacility.station_number : foundOriginatingFacility.official_station_name) + "\""});
         }
@@ -381,6 +388,7 @@ function searchPracticesPage() {
                     } else {
                         stationNumbers.push(ff.official_station_name);
                     }
+                    addAppliedFilter('ADOPTION', ff.official_station_name)
                 });
 
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
@@ -390,6 +398,7 @@ function searchPracticesPage() {
 
                 foundAdoptingFacility.station_number ? stationNumbers.push(foundAdoptingFacility.station_number) : stationNumbers.push(foundAdoptingFacility.official_station_name)
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
+                addAppliedFilter('ADOPTION', foundAdoptingFacility.official_station_name)
             }
         }
 
@@ -744,6 +753,46 @@ function searchPracticesPage() {
         mark.mark(query);
     }
 
+    function addAppliedFilter(filterType, filter) {
+        const resultsSummary = document.getElementById('results-summary');
+        const resetButton = document.getElementById('resetSearchFiltersButton');
+        const appliedFilterString = `${filterType}: ${filter}`
+
+        const span = document.createElement('span');
+        span.className = 'applied-filter display-block desktop:display-inline usa-tag usa-tag--big';
+        span.textContent = appliedFilterString;
+        resultsSummary.parentNode.insertBefore(span, resetButton);
+
+        span.addEventListener('click', function(event) {
+            uncheckFilter(filterType, filter);
+            $('#resetSearchFiltersButton').addClass('display-none');
+            updateResults();
+            event.stopPropagation();
+        });
+
+        resetButton.classList.remove('display-none');
+    }
+
+    function uncheckFilter(filterType, filter) {
+        if (filterType === 'TAG') {
+            const checkbox = Array.from(document.querySelectorAll('.usa-checkbox__input')).find(c =>
+            c.labels && c.labels.length && c.labels[0].textContent.trim() === filter);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        } else if (filterType === 'ORIGIN') {
+            const button = document.querySelector('.originating-facility-container .usa-combo-box__clear-input');
+            if (button) {
+                button.click();
+            }
+        } else if (filterType === 'ADOPTION') {
+            const button = document.querySelector('.adopting-facility-container .usa-combo-box__clear-input');
+            if (button) {
+                button.click();
+            }
+        }
+    }
+
     // Highlight Fuse.js results
     // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
     function highlighter(resultItem) {
@@ -861,6 +910,10 @@ function searchPracticesPage() {
             $(window).scrollTop(pagePosition.original);
         }
 
+        updateResults();
+    });
+
+    function updateResults() {
         var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
         window.history.pushState({ turbolinks: {} }, "", urlQuery);
 
@@ -919,7 +972,7 @@ function searchPracticesPage() {
         } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
             accordionText(0, 2);
         }
-    });
+    }
 
     // Sort the results based on each sort option
     var sortSelect = $(SORT_EL);
@@ -948,6 +1001,7 @@ function searchPracticesPage() {
     $(document).on('click', '#resetSearchFiltersButton, #resetSearchFiltersButtonMobile', function(e) {
         e.preventDefault();
 
+        // uncheck all filter checkboxes
         $('.usa-combo-box__clear-input').each(function() {
             $(this).trigger('click');
         });
@@ -957,10 +1011,13 @@ function searchPracticesPage() {
                 $(this).prop('checked', false);
             }
         });
+
         // Move the focus area back to the top of the filters window
         $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
         // Reset filter count text
         $('.search-filters-accordion-button').text('Filters');
+        // reset search results
+        searchPracticesPage();
     })
 
     if (window.location.pathname === '/search' && window.location.search !== '' && searchLocation[0] !== '?filter_by') {
