@@ -102,15 +102,20 @@
     }
   }
 
-  #featured-innovations, #featured-tags {
+  #featured-innovations, #featured-tags, #featured-communities, #feature-nominate-innovation  {
+    // responsive whitespace
+    @include u-margin-bottom(2);
+    @include at-media(tablet) {
+      @include u-margin-bottom(5);
+    }
+
     .homepage-featured-image {
+      @include u-margin-top(3);
       aspect-ratio: 4 / 3;
       object-fit: cover;
-    }
-  }
-  #feature-nominate-innovation {
-    img {
-      object-fit: cover;
+       @include at-media(tablet) {
+        @include u-margin-top(0);
+       }
     }
   }
 }
