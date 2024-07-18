@@ -230,8 +230,6 @@ class Practice < ApplicationRecord
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
-  has_many :badge_practices, dependent: :destroy
-  has_many :badges, through: :badge_practices
   has_many :business_case_files, dependent: :destroy
   has_many :category_practices, -> { order(id: :asc) }, dependent: :destroy, autosave: true
   has_many :categories, -> { order(id: :asc) }, through: :category_practices
