@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_16_003806) do
+ActiveRecord::Schema.define(version: 2024_07_18_220057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -125,28 +125,6 @@ ActiveRecord::Schema.define(version: 2024_07_16_003806) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "badge_practices", force: :cascade do |t|
-    t.bigint "badge_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["badge_id"], name: "index_badge_practices_on_badge_id"
-    t.index ["practice_id"], name: "index_badge_practices_on_practice_id"
-  end
-
-  create_table "badges", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.bigint "practice_partner_id"
-    t.string "color"
-    t.string "icon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_partner_id"], name: "index_badges_on_practice_partner_id"
   end
 
   create_table "business_case_files", force: :cascade do |t|
@@ -1504,9 +1482,6 @@ ActiveRecord::Schema.define(version: 2024_07_16_003806) do
   add_foreign_key "additional_staffs", "practices"
   add_foreign_key "ancillary_service_practices", "ancillary_services"
   add_foreign_key "ancillary_service_practices", "practices"
-  add_foreign_key "badge_practices", "badges"
-  add_foreign_key "badge_practices", "practices"
-  add_foreign_key "badges", "practice_partners"
   add_foreign_key "business_case_files", "practices"
   add_foreign_key "category_practices", "categories"
   add_foreign_key "category_practices", "practices"
