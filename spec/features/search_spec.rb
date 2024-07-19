@@ -375,7 +375,7 @@ describe 'Search', type: :feature do
         visit_search_page
 
         toggle_filters_accordion
-        click_button('Reset filters')
+        click_button('Clear filters')
         set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
@@ -384,7 +384,7 @@ describe 'Search', type: :feature do
         expect(page).to have_content(@practice14.name)
 
         toggle_filters_accordion
-        click_button('Reset filters')
+        click_button('Clear filters')
         set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
@@ -442,7 +442,7 @@ describe 'Search', type: :feature do
 
         # Reset filters and select a VISN from the Originating Facility combo box
         toggle_filters_accordion
-        click_button('Reset filters')
+        click_button('Clear filters')
         set_combobox_val(0, 'VISN-1')
         update_results
 
@@ -464,7 +464,7 @@ describe 'Search', type: :feature do
 
         # Reset filters and select a VISN from the Adopting Facility combo box
         toggle_filters_accordion
-        click_button('Reset filters')
+        click_button('Clear filters')
         set_combobox_val(1, 'VISN-7')
         update_results
 
