@@ -194,7 +194,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       all('.usa-tag').first.click
       expect(page).to have_current_path('/search?filter_by=COVID')
       expect(page).to have_selector('#search-page', visible: true)
-      expect(page).to have_content('2 results')
+      expect(page).to have_content('2 Results')
       expect(page).to have_content('A public maximum practice')
       expect(page).to have_content('Another public maximum practice')
     end
@@ -215,7 +215,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     it 'should take the user to the search results page when the See more practices link is clicked' do
       click_link('See more emerging innovations')
       expect(page).to have_selector('#search-page', visible: true)
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content('A public maximum practice')
     end
   end
