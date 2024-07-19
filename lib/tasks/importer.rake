@@ -258,20 +258,7 @@ def va_employees
       vae = vae.split(/\\/)
       vae_name = vae[0]
       vae_role = vae[1]
-      if @answers[@questions.index(avatars[index].to_s)].present?
-        image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(avatars[index].to_s)]}"
-        image_file = File.new(image_path)
-        va_employee = VaEmployee.find_by(name: vae_name, role: vae_role) || VaEmployee.create(name: vae_name, role: vae_role,
-                                                                                              avatar: ActionDispatch::Http::UploadedFile.new(
-                                                                                                  filename: File.basename(image_file),
-                                                                                                  tempfile: image_file,
-                                                                                                  # detect the image's mime type with MIME if you can't provide it yourself.
-                                                                                                  type: MIME::Types.type_for(image_path).first.content_type
-                                                                                              ))
-        index += 1
-      else
-        va_employee = VaEmployee.find_or_create_by(name: vae_name, role: vae_role)
-      end
+      va_employee = VaEmployee.find_or_create_by(name: vae_name, role: vae_role)
       VaEmployeePractice.create va_employee: va_employee, practice: @practice unless VaEmployeePractice.where(va_employee: va_employee, practice: @practice).any?
     end
   end
