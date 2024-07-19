@@ -329,7 +329,7 @@ describe 'Search', type: :feature do
 
       fill_in('dm-practice-search-field', with: 'Rule')
       search
-      expect(page).to_not have_content('Results')
+      expect(page).to have_content('0 Results')
       expect(page).to_not have_content('One Practice to Rule Them All')
       expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
 
