@@ -362,6 +362,7 @@ describe 'Search', type: :feature do
 
         expect(page).to have_content('Filters (3)')
         expect(page).to have_content('6 Results')
+        expect(page).to have_button('Clear filters')
         expect(page).to have_content(@practice.name)
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice5.name)
@@ -375,7 +376,6 @@ describe 'Search', type: :feature do
         visit_search_page
 
         toggle_filters_accordion
-        click_button('Clear filters')
         set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
@@ -563,6 +563,80 @@ describe 'Search', type: :feature do
 
           expect(page).to have_content('1 Result')
           expect(page).to have_content(@practice12.name)
+        end
+      end
+
+      describe 'Dynamic applied filters' do
+        before do
+          visit_search_page
+
+          toggle_filters_accordion
+          set_combobox_val(0, 'Norwood VA Clinic')
+          set_combobox_val(1, 'Marietta VA Clinic')
+          select_category('.cat-2-label')
+          select_category('.cat-5-label')
+          update_results
+        end
+
+        it "should display applied filters with 'Clear filters' button" do
+          expect(page).to have_content('TAG: COVID')
+          expect(page).to have_content('TAG: PULMONARY CARE')
+          expect(page).to have_content('ORIGIN: NORWOOD VA CLINIC')
+          expect(page).to have_content('ADOPTION: MARIETTA VA CLINIC')
+          expect(page).to have_button('Clear filters')
+        end
+
+        it 'should allow filters to be individually removed to update results' do
+          expect(page).to have_content('6 Results')
+          within('#searchResultsContainer') do
+            tag_a = all('span.applied-filter').first
+            tag_a.find('span', text: 'X').click
+          end
+          # expect updated applied filters
+          expect(page).not_to have_content('TAG: COVID')
+          expect(page).to have_content('TAG: PULMONARY CARE')
+          expect(page).to have_content('ORIGIN: NORWOOD VA CLINIC')
+          expect(page).to have_content('ADOPTION: MARIETTA VA CLINIC')
+          expect(page).to have_button('Clear filters')
+          # expect updated results
+          expect(page).to have_content('1 Result')
+          expect(page).not_to have_content(@practice.name)
+          expect(page).not_to have_content(@practice3.name)
+          expect(page).not_to have_content(@practice5.name)
+          expect(page).to have_content(@practice7.name)
+          expect(page).not_to have_content(@practice12.name)
+          # expect updated filter checkboxes
+          expect(page).to have_content('Filters (3)')
+          toggle_filters_accordion
+          label = find('.cat-2-label')
+          parent_div = label.find(:xpath, './..')
+          checkbox = parent_div.find('input[type="checkbox"]', visible: :all)
+          expect(checkbox).not_to be_checked
+          label = find('.cat-5-label')
+          parent_div = label.find(:xpath, './..')
+          checkbox = parent_div.find('input[type="checkbox"]', visible: :all)
+          expect(checkbox).to be_checked
+        end
+
+        it "should remove the 'Clear filters' button when all applied filters are removed" do
+          4.times do
+            within('#searchResultsContainer') do
+              tag_a = all('span.applied-filter').first
+              tag_a.find('span', text: 'X').click
+            end
+          end
+
+          expect(page).not_to have_button('Clear filters')
+        end
+
+        it 'should clear all filters' do
+          click_button('Clear filters')
+
+          expect(page).not_to have_content('TAG: COVID')
+          expect(page).not_to have_content('TAG: PULMONARY CARE')
+          expect(page).not_to have_content('ORIGIN: NORWOOD VA CLINIC')
+          expect(page).not_to have_content('ADOPTION: MARIETTA VA CLINIC')
+          expect(page).not_to have_button('Clear filters')
         end
       end
     end
