@@ -6,7 +6,7 @@ class SavePracticeService
   def initialize(params)
     @practice = params[:practice]
     @practice_params = params[:practice_params]
-    @avatars = ['practice_creators', 'va_employees']
+    @avatars = ['practice_creators']
     @attachments = ['impact_photos', 'additional_documents']
     @resources = ['problem_resources', 'solution_resources', 'results_resources', 'multimedia']
     @current_endpoint = params[:current_endpoint]

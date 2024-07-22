@@ -83,17 +83,13 @@ RSpec.describe SavePracticeService do
 
     context 'while cropping avatar' do
       it 'returns true' do
-        va_employee = VaEmployee.create(name: 'va employee', role: 'doctor', avatar: File.new("#{Rails.root}/spec/assets/charmander.png") )
+        va_employee = VaEmployee.create(name: 'va employee', role: 'doctor')
         VaEmployeePractice.create(va_employee: va_employee, practice: @practice)
         practice_params = {
           va_employees_attributes: {
             '0': {
               id: va_employee.id,
-              _destroy: 'false',
-              crop_x: 50,
-              crop_y: 10,
-              crop_w: 50,
-              crop_h: 10
+              _destroy: 'false'
             }
           }
         }
