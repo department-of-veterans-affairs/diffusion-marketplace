@@ -23,6 +23,7 @@
         }
     }
     var all_categories = <%= raw @categories.to_json %>;
+    var filterClassIndex = 0;
 <% end %>
 
 
@@ -285,6 +286,7 @@ function searchPracticesPage() {
 
     // Search practices and populate the page
     function search(query, categories, originatingFacility, adoptingFacility) {
+        filterClassIndex = 0;
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
         isBlankSearch = !Boolean(query) && categories == undefined && originatingFacility == undefined && adoptingFacility == undefined ? true : false;
@@ -759,7 +761,9 @@ function searchPracticesPage() {
         const appliedFilterString = `${filterType}: ${filter} `;
 
         const span = document.createElement('span');
-        span.className = 'applied-filter display-block desktop:display-inline usa-tag usa-tag--big';
+
+        const className = `applied-filter-${(filterClassIndex % 4) + 1}`;
+        span.className = `applied-filter ${className} display-block desktop:display-inline usa-tag usa-tag--big`;
         span.textContent = appliedFilterString;
 
         const removeButton = document.createElement('span');
@@ -771,6 +775,7 @@ function searchPracticesPage() {
         resultsSummary.parentNode.insertBefore(span, resetButton);
 
         removeButton.addEventListener('click', function(event) {
+            filterClassIndex--;
             uncheckFilter(filterType, filter);
             $('#resetSearchFiltersButton').addClass('display-none');
             updateResults();
@@ -778,6 +783,8 @@ function searchPracticesPage() {
         });
 
         resetButton.classList.remove('display-none');
+
+        filterClassIndex++;
     }
 
     function uncheckFilter(filterType, filter) {
