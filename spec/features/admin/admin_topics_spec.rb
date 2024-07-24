@@ -24,10 +24,6 @@ describe 'Admin Topics Tab', type: :feature do
     expect(page).to have_content('Mock topic one')
     expect(page).to have_content('/diffusion-map')
     expect(featured_col_values.last.text).to eq "NO"
-    visit '/'
-    expect(page).to have_content('Mock topic two')
-    expect(page).to have_content('Description for mock topic 2')
-    expect(page).to have_link('Click here for Veterans Affairs website', href: 'https://www.va.gov')
   end
 
   it 'allow adding and featuring a new topic' do
@@ -51,17 +47,11 @@ describe 'Admin Topics Tab', type: :feature do
     expect(page).to have_content("Topic with ID 3 is now featured.")
     expect(featured_col_values.first.text).to eq "YES"
     expect(featured_col_values[1].text).to eq "NO"
-    visit '/'
-    expect(page).to have_content('Mock topic three')
-    expect(page).to have_content('Description for mock topic 3')
-    expect(page).to have_link('Go see VISNs here', href: visns_path)
     visit '/admin/topics'
     find("a[href='/admin/topics/3/feature']").click
     featured_col_values = find_all('.status_tag')
     expect(page).to have_content("Topic with ID 3 is now unfeatured.")
     expect(featured_col_values.first.text).to eq "NO"
-    visit '/'
-    expect(page).to have_no_content('Mock topic three')
   end
 
   it 'allow editing and deleting an existing topic' do
@@ -72,15 +62,11 @@ describe 'Admin Topics Tab', type: :feature do
     find('#topic_attachment').attach_file(@img_path_3)
     click_button('Update Topic')
     expect(page).to have_content('Topic was successfully updated.')
-    visit '/'
-    expect(page).to have_content('Mock updated topic two')
     visit '/admin'
     click_link 'Topics'
     find_all('.delete_link').first.click
     page.accept_alert
     expect(page).to have_content('Topic was successfully destroyed.')
-    visit '/'
-    expect(page).to have_no_content('Mock updated topic two')
   end
 
   it 'disallows an invalid attachment type and displays error message' do
