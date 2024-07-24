@@ -7,7 +7,6 @@ class HomeController < ApplicationController
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
     @dropdown_categories = get_categories_by_popularity
     @dropdown_communities = get_categories_by_popularity(true)
-    @featured_topic = Topic.find_by(featured: true)
     @dropdown_practices, @practice_names = get_dropdown_practices
   end
 

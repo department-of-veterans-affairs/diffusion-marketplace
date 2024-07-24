@@ -104,20 +104,6 @@ describe 'Breadcrumbs', type: :feature do
     end
   end
 
-  describe 'Featured innovation' do
-    it 'should show breadcrumbs to the home page when a user clicks a highlighted innovation' do
-      click_link('Featured Innovation')
-      expect(page).to have_css("#pr-view-introduction", visible: true)
-      within(:css, '#breadcrumbs') do
-        expect(page).to have_css('.fa-arrow-left')
-        expect(page).to have_content('Home')
-        expect(page).to have_no_content('Another Best Innovation')
-        expect(page).to have_link(href: '/')
-        expect(page).to_not have_link(href: '/innovations/another-best-innovation')
-      end
-    end
-  end
-
   describe 'Innovation search' do
     it 'should show proper breadcrumbs when a user searches for a practice and then visits that practice\'s page' do
       @user_practice.update(published: true, approved: true)
