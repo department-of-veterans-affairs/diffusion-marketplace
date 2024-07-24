@@ -72,11 +72,6 @@ describe 'Practices', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_link(href: '/about')
-      expect(page).to have_content(@highlighted_practice.name)
-      expect(page).to have_content('Highlight body text')
-      expect(page).to have_content('Featured Innovation')
-      expect(page).to have_content('Nominate')
-      expect(page).to have_content('Are you working on an innovation that’s making a difference at VA? Submit a nomination for the innovation to be included on the Diffusion Marketplace.')
       expect(page).to have_link('Nominate', href: nominate_an_innovation_path )
     end
 

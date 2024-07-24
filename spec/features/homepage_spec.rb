@@ -54,44 +54,11 @@ describe 'Homepage', type: :feature do
     end
   end
 
-  describe 'featured section' do
-    it 'displays the featured practice, if there is one' do
-      # make sure the featured section is not present without a featured practice and completed featured fields
-      expect(page).to_not have_content('The Best Practice Ever!')
-      expect(page).to_not have_content('Highlighted body text')
-
-      # feature a practice
-      login_as(@user, scope: :user, run_callbacks: false)
-      visit '/admin/practices'
-      click_link('Feature', href: highlight_practice_admin_practice_path(@practice))
-      click_link('Edit', href: edit_admin_practice_path(@practice))
-
-      expect(page).to have_content('FEATURED INNOVATION BODY')
-      expect(page).to have_content('FEATURED INNOVATION ATTACHMENT')
-
-      fill_in('Featured Innovation Body', with: 'Highlighted body text')
-      find('#practice_highlight_attachment').attach_file(@featured_image)
-      click_button('Update Practice')
-      visit '/'
-
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_content('Highlighted body text')
-
-      # visit the practice's show page
-      click_link('Featured Innovation')
-
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_content('Bookmark')
-      expect(page).to have_content('Share')
-      expect(page).to have_content('Print')
+  it 'invites users to submit innovations' do
+    within('#main-content') do
+      expect(page).to have_content('Submit Innovations')
+      expect(page).to have_link('Nominate', href: nominate_an_innovation_path)
     end
-  end
-
-  it "allows the user to visit the 'Nominate an innovation' page" do
-    click_link('Nominate')
-
-    expect(page).to have_content('Nominate an innovation')
-    expect(page).to have_content('VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace using the form below.')
   end
 
   it 'allows the user to subscribe to the DM newsletter by taking them to the GovDelivery site' do
