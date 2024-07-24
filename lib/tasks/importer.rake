@@ -116,7 +116,6 @@ namespace :importer do
       checklist_files
       publication_files
       publications
-      # badges
       implementation_timeline
       risk_mitigations
       additional_staff
@@ -725,32 +724,6 @@ def publications
     end
   end
 end
-
-# def badges
-#   puts "==> Importing Practice: #{@name} Badges"
-#   question_fields = {
-#   }
-
-#   question_fields.each do |key, value|
-#     q_index = @questions.index(key.to_s)
-#     end_index = q_index + value - 1
-#     (q_index..end_index).each do |i|
-#       answer = @answers[i]
-#       next if answer.blank?
-
-#       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-#         split_answer = answer.split(/\\/)
-#         split_answer.each do |ans|
-#           badge = Badge.find_by(name: answer) || Badge.create(name: answer)
-#           BadgePractice.create badge: badge, practice: @practice unless BadgePractice.where(badge: badge, practice: @practice).any?
-#         end
-#       else
-#         badge = Badge.find_by(name: answer) || Badge.create(name: answer)
-#         BadgePractice.create badge: badge, practice: @practice unless BadgePractice.where(badge: badge, practice: @practice).any?
-#       end
-#     end
-#   end
-# end
 
 def implementation_timeline
   puts "==> Importing Practice: #{@name} Implementation Timeline".light_blue

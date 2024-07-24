@@ -7,8 +7,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:additional_resources) }
     it { should have_many(:ancillary_service_practices) }
     it { should have_many(:ancillary_services) }
-    it { should have_many(:badge_practices) }
-    it { should have_many(:badges) }
     it { should have_many(:business_case_files) }
     it { should have_many(:category_practices) }
     it { should have_many(:categories) }
