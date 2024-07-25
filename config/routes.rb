@@ -133,4 +133,7 @@ Rails.application.routes.draw do
   get '/communities/:page_group_friendly_id' => "page#show"
   get '/communities/:page_group_friendly_id/:page_slug' => 'page#show'
   get '/communities', to: redirect('/communities/va-immersive') # temporary redirect until more communities are added
+
+  # Permanent redirects
+  get '/innovations/save-a-trip-to-primary-care-tool', to: redirect('/innovations/patient-facing-materials-for-care-coordination-in-va-primary-care', status: 301) # remove 10/25/24
 end
