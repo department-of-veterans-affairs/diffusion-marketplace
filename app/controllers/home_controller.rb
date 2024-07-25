@@ -4,7 +4,6 @@ class HomeController < ApplicationController
 
 
   def index
-    @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
     @dropdown_categories = get_categories_by_popularity
     @dropdown_communities = get_categories_by_popularity(true)
     @dropdown_practices, @practice_names = get_dropdown_practices
