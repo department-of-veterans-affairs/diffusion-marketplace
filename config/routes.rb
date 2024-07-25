@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   patch '/close_edit_session', action: 'close_edit_session', controller: 'practices', as: 'close_edit_session'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
+  # Permanent redirects
+  get '/innovations/save-a-trip-to-primary-care-tool', to: redirect('/innovations/patient-facing-materials-for-care-coordination-in-va-primary-care', status: 301) # remove 10/25/
+
   resources :practices, path: 'innovations', except: :index do
     get '/edit/metrics', action: 'metrics', as: 'metrics'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
@@ -121,8 +124,6 @@ Rails.application.routes.draw do
   get '/about', controller: 'about', action: 'index', as: 'about'
   post '/about', controller: 'about', action: 'email'
   get '/terms-and-conditions', controller: 'terms_and_conditions', action: 'index'
-  match '/404', to: 'errors#page_not_found_404', via: :all
-  match '/500', to: 'errors#internal_server_error_500', via: :all
 
   get '/signed_resource', controller: 'application', action: 'signed_resource'
 
@@ -133,4 +134,8 @@ Rails.application.routes.draw do
   get '/communities/:page_group_friendly_id' => "page#show"
   get '/communities/:page_group_friendly_id/:page_slug' => 'page#show'
   get '/communities', to: redirect('/communities/va-immersive') # temporary redirect until more communities are added
+
+  # Catchall error codes
+  match '/404', to: 'errors#page_not_found_404', via: :all
+  match '/500', to: 'errors#internal_server_error_500', via: :all
 end
