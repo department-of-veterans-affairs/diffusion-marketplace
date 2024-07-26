@@ -1,7 +1,12 @@
 // Styles for the practice search page
 #search-page {
   .applied-filter {
-    border-radius: 2px;
+    @extend .usa-tag;
+    @extend .usa-tag--big;
+    display: block;
+    @include at-media(tablet) {
+      display: inline-block;
+    }
   }
 
   .applied-filter-1 {
