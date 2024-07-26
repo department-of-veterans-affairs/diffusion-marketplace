@@ -755,15 +755,15 @@ function searchPracticesPage() {
         mark.mark(query);
     }
 
-    function addAppliedFilter(filterType, filter) {
+    function addAppliedFilter(filterType, filterName) {
         const resultsSummary = document.getElementById('results-summary');
         const resetButton = document.getElementById('resetSearchFiltersButton');
-        const appliedFilterString = `${filterType}: ${filter} `;
-
+        const appliedFilterString = `${filterType}: ${filterName} `;
         const span = document.createElement('span');
 
-        const className = `applied-filter-${(filterClassIndex % 4) + 1}`;
-        span.className = `applied-filter ${className} display-block desktop:display-inline usa-tag usa-tag--big`;
+        filterClassIndex++;
+        const filterClassName = `applied-filter-${(filterClassIndex % 4)}`;
+        span.className = `applied-filter ${filterClassName}`;
         span.textContent = appliedFilterString;
 
         const removeButton = document.createElement('span');
@@ -776,21 +776,19 @@ function searchPracticesPage() {
 
         removeButton.addEventListener('click', function(event) {
             filterClassIndex--;
-            uncheckFilter(filterType, filter);
+            uncheckFilter(filterType, filterName);
             $('#resetSearchFiltersButton').addClass('display-none');
             updateResults();
             event.stopPropagation();
         });
 
         resetButton.classList.remove('display-none');
-
-        filterClassIndex++;
     }
 
-    function uncheckFilter(filterType, filter) {
+    function uncheckFilter(filterType, filterName) {
         if (filterType === 'TAG') {
             const checkbox = Array.from(document.querySelectorAll('.usa-checkbox__input')).find(c =>
-            c.labels && c.labels.length && c.labels[0].textContent.trim() === filter);
+            c.labels && c.labels.length && c.labels[0].textContent.trim() === filterName);
             if (checkbox) {
                 checkbox.checked = false;
             }
