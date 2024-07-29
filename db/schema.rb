@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_18_220057) do
+ActiveRecord::Schema.define(version: 2024_07_25_224021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1227,20 +1227,6 @@ ActiveRecord::Schema.define(version: 2024_07_18_220057) do
     t.bigint "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["practice_id"], name: "index_toolkit_files_on_practice_id"
-  end
-
-  create_table "topics", force: :cascade do |t|
-    t.string "title"
-    t.string "description"
-    t.string "url"
-    t.string "cta_text"
-    t.boolean "featured", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
   end
 
   create_table "user_practices", force: :cascade do |t|
