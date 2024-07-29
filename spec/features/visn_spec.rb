@@ -164,27 +164,29 @@ describe 'VISN pages', type: :feature do
 
     describe 'visns index map' do
       before do
+        visit '/visns'
+        @visns_index_map = find('#visns-index-map', visible: true)
         @visn_marker_div = 'div[style*="width: 48px"][title=""]'
         @visn_markers = find_all(:css, @visn_marker_div)
       end
 
       it 'should be there with the correct amount of markers' do
-        expect(page).to have_selector('#visns-index-map', visible: true)
-        expect(@visn_markers.count).to eq(2)
+        expect(@visns_index_map).to be_visible
+
+        within(@visns_index_map) do
+          expect(@visn_markers.count).to eq(2)
+        end
       end
 
-      it 'should show metadata for each visn' do
-        @visn_markers.last.click
-        expect(page).to have_selector('#visn-2-marker-modal', visible: true)
-        expect_visn_metadata('#visn-2-marker-modal', '8 innovations created here', '5 innovations adopted here')
-      end
+      it 'should show metadata and show page link for each visn' do
+        within(@visns_index_map) do
+          @visn_markers.last.click
+          expect(page).to have_selector('#visn-2-marker-modal', visible: true)
+          expect_visn_metadata('#visn-2-marker-modal', '8 innovations created here', '5 innovations adopted here')
 
-      it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
-        @visn_markers.last.click
-        expect(page).to have_selector('#visn-2-marker-modal', visible: true)
-
-        within(:css, '#visn-2-marker-modal') do
-          expect(find('.visn-modal-link')[:href]).to include('/visns/2')
+          within(:css, '#visn-2-marker-modal') do
+            expect(find('.visn-modal-link')[:href]).to include('/visns/2')
+          end
         end
       end
     end
@@ -228,9 +230,12 @@ describe 'VISN pages', type: :feature do
     end
 
     describe 'visns show map' do
-      it 'should be there with the correct amount of markers (defaulted to VAMC facilities on initial load)' do
+      before do
         visit '/visns/2'
+        find('#visns-show-map', visible: true)
+      end
 
+      it 'should be there with the correct amount of markers (defaulted to VAMC facilities on initial load)' do
         expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(1)
       end
 
