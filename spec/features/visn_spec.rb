@@ -230,9 +230,12 @@ describe 'VISN pages', type: :feature do
     end
 
     describe 'visns show map' do
-      it 'should be there with the correct amount of markers (defaulted to VAMC facilities on initial load)' do
+      before do
         visit '/visns/2'
+        find('#visns-show-map', visible: true)
+      end
 
+      it 'should be there with the correct amount of markers (defaulted to VAMC facilities on initial load)' do
         expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(1)
       end
 
