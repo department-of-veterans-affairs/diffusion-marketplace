@@ -58,7 +58,6 @@ Capybara/RSpec/HaveSelector:
 # Offense count: 13
 Capybara/SpecificActions:
   Exclude:
-    - 'spec/features/admin/admin_topics_spec.rb'
     - 'spec/features/crh_spec.rb'
     - 'spec/features/shared/breadcrumbs_spec.rb'
 
@@ -441,7 +440,6 @@ Performance/RedundantStringChars:
     - 'app/models/page_news_component.rb'
     - 'app/models/page_publication_component.rb'
     - 'app/models/page_simple_button_component.rb'
-    - 'app/models/topic.rb'
     - 'lib/modules/internal_url_utils.rb'
 
 # Offense count: 3
