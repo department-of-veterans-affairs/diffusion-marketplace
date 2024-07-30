@@ -758,19 +758,19 @@ function searchPracticesPage() {
     function addAppliedFilter(filterType, filterName) {
         const resultsSummary = document.getElementById('results-summary');
         const resetButton = document.getElementById('resetSearchFiltersButton');
-        const appliedFilterString = `${filterType}: ${filterName} `;
+        appliedFilterName = filterName.toUpperCase();
+        const appliedFilterString = `${filterType}: ${appliedFilterName} `;
         const appliedFilterButton = document.createElement('button');
         const filterIndex = (filterClassIndex++ % 4) + 1
 
         appliedFilterButton.className = `usa-button applied-filter applied-filter-${filterIndex}`;
+        appliedFilterButton.id = `${filterName}`
         appliedFilterButton.textContent = appliedFilterString + ' X';
         appliedFilterButton.style.cursor = 'pointer';
         appliedFilterButton.setAttribute(
             'aria-label',
             `Remove ${filterType} filter for ${filterName} and update search results`
         );
-
-        resultsSummary.parentNode.insertBefore(appliedFilterButton, resetButton);
 
         appliedFilterButton.addEventListener('click', function(event) {
             filterClassIndex--;
@@ -780,6 +780,7 @@ function searchPracticesPage() {
             event.stopPropagation();
         });
 
+        resultsSummary.parentNode.insertBefore(appliedFilterButton, resetButton);
         resetButton.classList.remove('display-none');
     }
 
