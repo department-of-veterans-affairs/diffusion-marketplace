@@ -759,22 +759,20 @@ function searchPracticesPage() {
         const resultsSummary = document.getElementById('results-summary');
         const resetButton = document.getElementById('resetSearchFiltersButton');
         const appliedFilterString = `${filterType}: ${filterName} `;
-        const span = document.createElement('span');
+        const appliedFilterButton = document.createElement('button');
+        const filterIndex = (filterClassIndex++ % 4) + 1
 
-        filterClassIndex++;
-        const filterClassName = `applied-filter-${(filterClassIndex % 4)}`;
-        span.className = `applied-filter ${filterClassName}`;
-        span.textContent = appliedFilterString;
+        appliedFilterButton.className = `usa-button applied-filter applied-filter-${filterIndex}`;
+        appliedFilterButton.textContent = appliedFilterString + ' X';
+        appliedFilterButton.style.cursor = 'pointer';
+        appliedFilterButton.setAttribute(
+            'aria-label',
+            `Remove ${filterType} filter for ${filterName} and update search results`
+        );
 
-        const removeButton = document.createElement('span');
-        removeButton.textContent = 'X';
-        removeButton.style.cursor = 'pointer';
-        removeButton.style.marginLeft = '5px';
+        resultsSummary.parentNode.insertBefore(appliedFilterButton, resetButton);
 
-        span.appendChild(removeButton);
-        resultsSummary.parentNode.insertBefore(span, resetButton);
-
-        removeButton.addEventListener('click', function(event) {
+        appliedFilterButton.addEventListener('click', function(event) {
             filterClassIndex--;
             uncheckFilter(filterType, filterName);
             $('#resetSearchFiltersButton').addClass('display-none');
