@@ -76,8 +76,8 @@ describe 'The user index', type: :feature do
   end
 
   it 'should have a favorited practice' do
-    @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
-    @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
+    @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: @user)
+    @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', user: @user2)
     UserPractice.create!(user: @user, practice: @practice2, favorited: true)
 
     login_as(@user, scope: :user, run_callbacks: false)
@@ -90,8 +90,8 @@ describe 'The user index', type: :feature do
   end
 
     it 'should have created practices' do
-    @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
-    @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
+    @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: @user)
+    @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', user: @user2)
     @user_pr1_editor = PracticeEditor.create!(practice: @practice1, user: @user, email: @user.email)
 
     login_as(@user, scope: :user, run_callbacks: false)

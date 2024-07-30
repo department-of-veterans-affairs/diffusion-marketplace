@@ -14,7 +14,6 @@ namespace :dm do
   task :full_import => :environment do
     Rake::Task['dm:db_setup'].execute
     Rake::Task['importer:import_answers'].execute
-    Rake::Task['importer:initial_featured'].execute
     Rake::Task['visns:create_visns_and_transfer_data'].execute
     Rake::Task['va_facilities:create_or_update_va_facilities'].execute
     Rake::Task['visns:create_visn_liaisons_and_transfer_data'].execute

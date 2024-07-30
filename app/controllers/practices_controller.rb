@@ -1,11 +1,10 @@
 class PracticesController < ApplicationController # rubocop:disable Metrics/ClassLength
   include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper, UsersHelper
   prepend_before_action :skip_timeout, only: [:session_time_remaining]
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
-                                      :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,
-                                      :departments, :timeline, :risk_and_mitigation, :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics, :editors,
-                                      :extend_editor_session_time, :session_time_remaining, :close_edit_session]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :favorite, :instructions, :overview, :impact, :resources,
+                                      :documentation, :departments, :timeline, :risk_and_mitigation, :checklist, :publication_validation,
+                                      :adoptions, :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics,
+                                      :editors, :extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :set_facility_data, only: [:show]
   before_action :set_office_data, only: [:show]
   before_action :set_visn_data, only: [:show]
@@ -237,28 +236,6 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
         format.json { render json: user_practice.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  def highlight
-    old_highlight = Practice.find_by_highlight(true)
-    old_highlight.update(highlight: false) if old_highlight.present?
-    @practice.update(highlight: true, featured: false)
-    redirect_to edit_practice_path(@practice)
-  end
-
-  def un_highlight
-    @practice.update(highlight: false)
-    redirect_to edit_practice_path(@practice)
-  end
-
-  def feature
-    @practice.update(featured: true)
-    redirect_to edit_practice_path(@practice)
-  end
-
-  def un_feature
-    @practice.update(featured: false)
-    redirect_to edit_practice_path(@practice)
   end
 
   # GET /practices/1/instructions

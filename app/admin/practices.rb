@@ -122,7 +122,6 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
     column :date_published unless params[:scope] == "get_practice_owner_emails"
     column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :hidden unless params[:scope] == "get_practice_owner_emails"
-    column 'Featured', :highlight unless params[:scope] == "get_practice_owner_emails"
     column :retired unless params[:scope] == "get_practice_owner_emails"
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
     column 'Last Emailed', :last_email_date unless params[:scope] == "get_practice_owner_emails"
@@ -133,10 +132,8 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
       item practice_hidden_action_str, hide_practice_admin_practice_path(practice), method: :post
       practice_retired_action_str = practice.retired ? "Activate" : "Retire"
       item practice_retired_action_str, retire_practice_admin_practice_path(practice), method: :post
-      practice_highlight_action_str = practice.highlight ? "Unfeature" : "Feature"
-      item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
-      practice_highlight_action_str = practice.is_public ? "Make Private" : "Make Public"
-      item practice_highlight_action_str, set_practice_privacy_admin_practice_path(practice), class: 'toggle-practice-privacy-link', method: :post
+      practice_public_action_str = practice.is_public ? "Make Private" : "Make Public"
+      item practice_public_action_str, set_practice_privacy_admin_practice_path(practice), class: 'toggle-practice-privacy-link', method: :post
     end
   end
 
@@ -154,29 +151,6 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
   member_action :enable_practice, method: :post do
     resource.enabled = !resource.enabled
     update_boolean_attr(resource, resource.enabled, 'Practice enabled', 'Practice disabled')
-  end
-
-  member_action :highlight_practice, method: :post do
-    to_highlight = !resource.highlight
-
-    highlighted_pr_count = Practice.where(highlight: true, published: true, enabled: true, approved: true).size
-    if to_highlight && !resource.published
-      message = "Innovation must be published to be featured."
-      redirect_back fallback_location: root_path, :flash => { :error => message }
-    elsif to_highlight && highlighted_pr_count >= 1
-      message = "Only one innovation can be featured at a time."
-      redirect_back fallback_location: root_path, :flash => { :error => message }
-    else
-      resource.highlight = to_highlight
-      resource.highlight_body = nil
-      resource.highlight_attachment = nil
-      message = "\"#{resource.name}\" is now the featured innovation."
-      unless resource.highlight
-        message = "\"#{resource.name}\" is no longer the featured innovation."
-      end
-      resource.save
-      redirect_back fallback_location: root_path, notice: message
-    end
   end
 
   member_action :hide_practice, method: :post do
@@ -265,16 +239,6 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
       f.input :name, label: 'Innovation name *Required*'
       f.input :user, label: 'User email *Required*', as: :string, input_html: {name: 'user_email'}
       f.input :categories, as: :select, multiple: true, collection: Category.all.order(name: :asc).map { |cat| ["#{cat.name.capitalize}", cat.id]}, input_html: { value: @practice_categories }
-      if object.highlight
-        f.input :highlight_body, label: 'Featured Innovation Body *Required*', as: :string
-        f.input :highlight_attachment, label: 'Featured Innovation Attachment (.jpg, .jpeg, or .png files only) *Required*', as: :file, input_html: { accept: '.jpg, .jpeg, .png' }
-        if practice.highlight_attachment.exists?
-          div '', style: 'width: 20.2%', class: 'display-inline-block'
-          div class: 'display-inline-block' do
-            image_tag(practice.highlight_attachment_s3_presigned_url(:thumb))
-          end
-        end
-      end
       f.input :is_public, label: 'Innovation public?'
       f.input :retired, label: 'Innovation retired?'
       div class: 'dm-retired-reason-container' do
@@ -303,21 +267,6 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
       row :approved
       row :enabled
       row('Public') { |p| status_tag p.is_public? }
-      row('Featured') { |practice| status_tag practice.highlight? }
-      if practice.highlight
-        row('Featured Body') { |practice| p practice.highlight_body } if practice.highlight_body
-        row "Featured Attachment" do
-          if practice.highlight_attachment.exists?
-            div do
-              image_tag(practice.highlight_attachment_s3_presigned_url(:thumb))
-            end
-          else
-            div do
-              "None"
-            end
-          end
-        end
-      end
       row :retired
       row :retired_reason
     end
@@ -350,7 +299,6 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
     before_action :set_categories_view, only: :edit
     before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
     after_action :update_categories, only: [:create, :update]
-    after_action :update_highlight_attr, only: [:update]
 
     def create_or_update_practice
       begin
@@ -382,17 +330,6 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
           raise StandardError.new 'There was an error. Email cannot be blank.'
         elsif is_invalid_va_email(email)
           raise StandardError.new 'There was an error. Email must be a valid @va.gov address.'
-        end
-
-        # raise an error if the practice's 'highlight_body' and/or 'highlight_attachment' are blank
-        highlight_body_param_blank = practice_params[:highlight_body].blank?
-        highlight_attachment_param_blank = practice_params[:highlight_attachment].blank?
-        highlight_attachment = practice.highlight_attachment
-        highlight_err_str = []
-        if practice_params.include?('highlight_body') && (highlight_body_param_blank || (highlight_attachment_param_blank && !highlight_attachment.exists?))
-          highlight_err_str << "'featured innovation body'" if highlight_body_param_blank
-          highlight_err_str << "'featured innovation attachment'" if highlight_attachment_param_blank && !highlight_attachment.exists?
-          raise StandardError.new "ERROR - The following required 'featured' field#{'s' if highlight_err_str.length > 1 } #{highlight_err_str.length > 1 ? 'were' : 'was' } not completed: " + highlight_err_str.join(', ')
         end
 
         set_practice_user(practice) if email.present?
@@ -482,18 +419,6 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
         else
           current_categories.map { |cat| cat.destroy! unless selected_categories.include? cat.category_id }
         end
-      end
-    end
-
-    def update_highlight_attr
-      practice_highlight_body_params = params[:practice][:highlight_body]
-      practice_highlight_attachment_params = params[:practice][:highlight_attachment]
-      practice_slug = params[:id]
-
-      practice = Practice.find_by(slug: practice_slug)
-      if practice_highlight_body_params.present? && (practice_highlight_attachment_params.present? || practice.highlight_attachment.exists?)
-        practice.update(highlight_body: params[:practice][:highlight_body])
-        practice.update(highlight_attachment: params[:practice][:highlight_attachment]) if practice_highlight_attachment_params.present?
       end
     end
   end
