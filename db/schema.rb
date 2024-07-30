@@ -1037,8 +1037,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.boolean "published", default: false
     t.boolean "approved", default: false
     t.string "slug"
-    t.boolean "highlight", default: false, null: false
-    t.boolean "featured", default: false, null: false
     t.integer "ahoy_visit_id"
     t.boolean "enabled", default: true, null: false
     t.integer "initiating_facility_type", default: 0
@@ -1049,15 +1047,10 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.integer "maturity_level"
     t.datetime "date_published"
     t.datetime "practice_pages_updated"
-    t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
     t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
-    t.string "highlight_attachment_file_name"
-    t.string "highlight_attachment_content_type"
-    t.bigint "highlight_attachment_file_size"
-    t.datetime "highlight_attachment_updated_at"
     t.text "main_display_image_alt_text"
     t.integer "diffusion_histories_count", default: 0
     t.datetime "last_email_date"
