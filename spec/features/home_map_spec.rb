@@ -68,9 +68,6 @@ describe 'Map of Diffusion', type: :feature do
     DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'Unsuccessful', unsuccessful_reasons: [0])
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
     login_as(@user, :scope => :user, :run_callbacks => false)
-    visit '/diffusion-map'
-    expect(page).to have_selector(".diffusion-map-container", visible: true)
-    expect(page).to have_selector(".map-filters-accordion", visible: true)
   end
 
   after do
@@ -97,6 +94,9 @@ describe 'Map of Diffusion', type: :feature do
   end
 
   it 'displays and filters the map' do
+    visit '/diffusion-map'
+    expect(page).to have_selector(".diffusion-map-container", visible: true)
+    expect(page).to have_selector(".map-filters-accordion", visible: true)
     expect(page).to have_content('Explore how innovations are being adopted across the country. There are currently 2 successful adoptions, 3 in-progress adoptions, and 1 unsuccessful adoption.')
     expect_marker_ct(3)
 
@@ -301,6 +301,8 @@ describe 'Map of Diffusion', type: :feature do
   end
 
   it 'should allow the user to visit each adoption\'s VA facility page' do
+    visit '/diffusion-map'
+    expect(page).to have_selector(".diffusion-map-container", visible: true)
     # click on the first generated marker
     find('div[style*="width: 31px"][title="Caribou VA Clinic, 3 total adoptions"]').click
     # in the marker modal, make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
