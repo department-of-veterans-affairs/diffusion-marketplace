@@ -23,7 +23,7 @@
         }
     }
     var all_categories = <%= raw @categories.to_json %>;
-    var filterClassIndex = 0;
+    var allChosenCategories = [];
 <% end %>
 
 
@@ -286,7 +286,6 @@ function searchPracticesPage() {
 
     // Search practices and populate the page
     function search(query, categories, originatingFacility, adoptingFacility) {
-        filterClassIndex = 0;
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
         isBlankSearch = !Boolean(query) && categories == undefined && originatingFacility == undefined && adoptingFacility == undefined ? true : false;
@@ -317,12 +316,25 @@ function searchPracticesPage() {
         $('#resetSearchFiltersButton').addClass('display-none');
 
         if (categories) {
-            // Collect any practice that has a category that matches the selected category/categories.
+            //     // Collect any practice that has a category that matches the selected category/categories.
             var categoryFilters = [];
-            categories.forEach(function (categorySelection) {
-                addAppliedFilter('TAG', categorySelection)
-                return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+
+            Object.entries(categories).forEach(function ([parentCategory, selectedValues]) {
+                if (parentCategory !== 'communities') {
+                    selectedValues.forEach(function (categorySelection) {
+                        addAppliedFilter('TAG', categorySelection);
+                        categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+                    });
+                }
             });
+
+            // Iterate over 'communities' categories
+            if (categories['communities']) {
+                categories['communities'].forEach(function (categorySelection) {
+                    addAppliedFilter('COMMUNITY', categorySelection);
+                    categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+                });
+            }
         }
 
         var originFacilityArray = originatingFacility ? [] : null;
@@ -419,7 +431,7 @@ function searchPracticesPage() {
                 var cat_names = result.item.category_names;
                 if (cat_names && Array.isArray(cat_names)) {
                     cat_names.forEach(function (cn) {
-                        if (categories.includes(cn)) {
+                        if (allChosenCategories.includes(cn)) {
                             resultScore = result.score / 2;
                         }
                         result.score = resultScore;
@@ -758,13 +770,19 @@ function searchPracticesPage() {
     function addAppliedFilter(filterType, filterName) {
         const resultsSummary = document.getElementById('results-summary');
         const resetButton = document.getElementById('resetSearchFiltersButton');
-        appliedFilterName = filterName.toUpperCase();
+        const appliedFilterName = filterName.toUpperCase();
         const appliedFilterString = `${filterType}: ${appliedFilterName} `;
         const appliedFilterButton = document.createElement('button');
-        const filterIndex = (filterClassIndex++ % 4) + 1
+        const filterClassIndexMap = {
+            'TAG': 1,
+            'COMMUNITY': 2,
+            'ORIGIN': 3,
+            'ADOPTION': 4
+        };
+        const filterClassIndex = filterClassIndexMap[filterType] || 1;
 
-        appliedFilterButton.className = `usa-button applied-filter applied-filter-${filterIndex}`;
-        appliedFilterButton.id = `${filterName}`
+        appliedFilterButton.className = `usa-button applied-filter applied-filter-${filterClassIndex}`;
+        appliedFilterButton.id = `${filterName}`;
         appliedFilterButton.textContent = appliedFilterString + ' X';
         appliedFilterButton.style.cursor = 'pointer';
         appliedFilterButton.setAttribute(
@@ -773,7 +791,6 @@ function searchPracticesPage() {
         );
 
         appliedFilterButton.addEventListener('click', function(event) {
-            filterClassIndex--;
             uncheckFilter(filterType, filterName);
             $('#resetSearchFiltersButton').addClass('display-none');
             updateResults();
@@ -785,9 +802,9 @@ function searchPracticesPage() {
     }
 
     function uncheckFilter(filterType, filterName) {
-        if (filterType === 'TAG') {
+        if (filterType === 'TAG' || filterType === 'COMMUNITY') {
             const checkbox = Array.from(document.querySelectorAll('.usa-checkbox__input')).find(c =>
-            c.labels && c.labels.length && c.labels[0].textContent.trim() === filterName);
+                c.labels && c.labels.length && c.labels[0].textContent.trim() === filterName);
             if (checkbox) {
                 checkbox.checked = false;
             }
@@ -942,19 +959,32 @@ function searchPracticesPage() {
 
         // Get the values for any chosen categories
         var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
-        var chosenCategories = selectedCategoryCheckboxes.map(function () {
-            return this.value;
-        }).get();
-        if (!chosenCategories.length) {
+
+        var chosenCategories = {};
+
+        selectedCategoryCheckboxes.each(function () {
+            var parentCategory = this.dataset.parentCategory;
+            var value = this.value;
+
+            if (!chosenCategories[parentCategory]) {
+                chosenCategories[parentCategory] = [];
+            }
+
+            chosenCategories[parentCategory].push(value);
+        });
+
+        if (Object.keys(chosenCategories).length === 0) {
             chosenCategories = null;
+        } else {
+            // Update Category Usage....
+            allChosenCategories = Object.values(chosenCategories).flat();
+            Rails.ajax({
+                type: 'patch',
+                url: "/update_category_usage",
+                data: jQuery.param({query: searchField.value, chosenCategories: allChosenCategories})
+            });
         }
 
-        // Update Category Usage....
-        Rails.ajax({
-            type: 'patch',
-            url: "/update_category_usage",
-            data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories})
-        });
 
         // Run the search
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
