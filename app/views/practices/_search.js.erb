@@ -975,16 +975,15 @@ function searchPracticesPage() {
 
         if (Object.keys(chosenCategories).length === 0) {
             chosenCategories = null;
-        } else {
-            // Update Category Usage....
-            allChosenCategories = Object.values(chosenCategories).flat();
-            Rails.ajax({
-                type: 'patch',
-                url: "/update_category_usage",
-                data: jQuery.param({query: searchField.value, chosenCategories: allChosenCategories})
-            });
         }
 
+        // Update Category Usage....
+        allChosenCategories = Object.values(chosenCategories).flat();
+        Rails.ajax({
+            type: 'patch',
+            url: "/update_category_usage",
+            data: jQuery.param({query: searchField.value, chosenCategories: allChosenCategories})
+        });
 
         // Run the search
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
