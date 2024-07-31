@@ -49,8 +49,9 @@ _domains = [
 
 
 impact_categories = [
-    Category.find_or_create_by!(name: 'Clinical', short_name: 'clinical', description: 'Categorys on clinical domains'),
-    Category.find_or_create_by!(name: 'Operational', short_name: 'operational', description: 'Categorys on operational domains'),
+    Category.find_or_create_by!(name: 'Clinical', short_name: 'clinical', description: 'Categories on clinical domains'),
+    Category.find_or_create_by!(name: 'Operational', short_name: 'operational', description: 'Categories on operational domains'),
+    Category.find_or_create_by!(name: 'Communities', short_name: 'communities', description: 'Community categories'),
 ]
 
 _clinical_impacts = [
@@ -109,6 +110,13 @@ _operational_impacts = [
     Category.find_or_create_by!(name: 'Social Services', short_name: 'social_services', description: 'Social Services', parent_category: impact_categories[1]),
     Category.find_or_create_by!(name: 'Contracting & Purchasing', short_name: 'contracting_purchasing', description: 'Contracting & Purchasing', parent_category: impact_categories[1]),
     Category.find_or_create_by!(name: 'None', short_name: 'none', description: 'No clinical impact', parent_category: impact_categories[1]),
+]
+
+_community_impacts = [
+    Category.find_or_create_by!(name: 'VA Immersive', short_name: 'va immersive', description: 'VA Immersive', parent_category: impact_categories[2]),
+    Category.find_or_create_by!(name: 'Suicide Prevention', short_name: 'suicide prevention', description: 'Suicide Prevention', parent_category: impact_categories[2]),
+    Category.find_or_create_by!(name: 'Age-Friendly', short_name: 'age-friendly', description: 'Age-Friendly', parent_category: impact_categories[2]),
+    Category.find_or_create_by!(name: 'QUERI', short_name: 'queri', description: 'QUERI', parent_category: impact_categories[2]),
 ]
 
 
