@@ -2,7 +2,7 @@
 # Host is a Windows Domain Controller
 
 production:
-  host: VAC103DC2R04.r04.med.va.gov
+  host: vaaac3dc2.aac.dva.va.gov
   port: 3269
   default_domain: va.gov
   base: DC=va,DC=gov
