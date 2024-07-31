@@ -566,7 +566,7 @@ describe 'Search', type: :feature do
         end
       end
 
-      describe 'Dynamic applied filters' do
+      describe 'Dynamic applied filters', js: true do
         before do
           visit_search_page
 
@@ -589,8 +589,7 @@ describe 'Search', type: :feature do
         it 'should allow filters to be individually removed to update results' do
           expect(page).to have_content('6 Results')
           within('#searchResultsContainer') do
-            tag_a = all('span.applied-filter').first
-            tag_a.find('span', text: 'X').click
+            all('button.applied-filter').first.click
           end
           # expect updated applied filters
           expect(page).not_to have_content('TAG: COVID')
@@ -619,12 +618,10 @@ describe 'Search', type: :feature do
         end
 
         it "should remove the 'Clear filters' button when all applied filters are removed" do
-          4.times do
-            within('#searchResultsContainer') do
-              tag_a = all('span.applied-filter').first
-              tag_a.find('span', text: 'X').click
-            end
-          end
+          find_button('COVID').click
+          find_button('Pulmonary Care').click
+          find_button('Norwood VA Clinic').click
+          find_button('Marietta VA Clinic').click
 
           expect(page).not_to have_button('Clear filters')
         end
