@@ -218,7 +218,7 @@ namespace :categories do
       ]
     }
 
-    community_practices.each do |category_names, practice_names|
+    community_practices.each do |category_name, practice_names|
       category =  Category.find_by(name: category_name)
 
       if category
