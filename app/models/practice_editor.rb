@@ -16,7 +16,7 @@ class PracticeEditor < ApplicationRecord
   def self.create_and_invite(practice, user)
     # Email param ensures the user associated with the practice editor has a valid va.gov email address
     self.create!(practice: practice, user: user, email: user.email)
-    unless Rails.env == "development"
+    if (Rails.env.production? && ENV['PROD_SERVERNAME'] == 'PROD') || Rails.env.test?
       PracticeEditorMailer.invite_to_edit_practice_email(practice, user).deliver
     end
   end
