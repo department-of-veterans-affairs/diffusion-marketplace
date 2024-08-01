@@ -70,10 +70,6 @@
     }
   }
 
-  .usa-checkbox__label:before {
-    border-radius: 0 !important;
-  }
-
   .usa-combo-box__toggle-list,
   .usa-combo-box__clear-input {
     top: 2.3em !important;
@@ -93,6 +89,34 @@
 
   .button-box {
     margin-bottom: 24px;
+  }
+
+  .filters-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
+  }
+
+  .filters-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .filters-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .filters-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .filters-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .filter-submit-button {
+    @include transition-btn-colors;
   }
 }
 
@@ -201,10 +225,6 @@
       @include u-margin-bottom(0);
     }
   }
-
-  #update-search-results-button {
-    @include transition-btn-colors;
-  }
 }
 
 #update-search-results-form {
@@ -285,7 +305,6 @@
 
 #filter_button_container {
   @media screen and (max-width: 1023px) {
-    position: absolute;
     bottom: 0;
     width: 100%;
   }
