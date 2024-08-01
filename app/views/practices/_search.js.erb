@@ -941,6 +941,26 @@ function searchPracticesPage() {
         updateResults();
     });
 
+    function getSelectedCategories() {
+        // Get the values for any chosen categories
+        var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
+
+        var chosenCategories = {};
+
+        selectedCategoryCheckboxes.each(function () {
+            var parentCategory = this.dataset.parentCategory;
+            var value = this.value;
+
+            if (!chosenCategories[parentCategory]) {
+                chosenCategories[parentCategory] = [];
+            }
+
+            chosenCategories[parentCategory].push(value);
+        });
+        allChosenCategories = Object.values(chosenCategories).flat();
+        return chosenCategories;
+    }
+
     function updateResults() {
         var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
         window.history.pushState({ turbolinks: {} }, "", urlQuery);
@@ -957,40 +977,25 @@ function searchPracticesPage() {
 
         var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
 
-        // Get the values for any chosen categories
-        var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
-
-        var chosenCategories = {};
-
-        selectedCategoryCheckboxes.each(function () {
-            var parentCategory = this.dataset.parentCategory;
-            var value = this.value;
-
-            if (!chosenCategories[parentCategory]) {
-                chosenCategories[parentCategory] = [];
-            }
-
-            chosenCategories[parentCategory].push(value);
-        });
+        var chosenCategories = getSelectedCategories();
 
         if (Object.keys(chosenCategories).length === 0) {
             chosenCategories = null;
-        } else {
-            // Update Category Usage....
-            allChosenCategories = Object.values(chosenCategories).flat();
-            Rails.ajax({
-                type: 'patch',
-                url: "/update_category_usage",
-                data: jQuery.param({query: searchField.value, chosenCategories: allChosenCategories})
-            });
         }
+
+        // Update Category Usage....
+        Rails.ajax({
+            type: 'patch',
+            url: "/update_category_usage",
+            data: jQuery.param({query: searchField.value, chosenCategories: allChosenCategories})
+        });
 
 
         // Run the search
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
 
         // Display the amount of filters used(if any)
-        var checkboxCount = selectedCategoryCheckboxes.length;
+        var checkboxCount = allChosenCategories.length;
         var noOriginatingFacilityText = originatingFacilityInput.val() === '';
         var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
         var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
@@ -1078,22 +1083,19 @@ function searchPracticesPage() {
             search(decodeURI(query));
             searchField.value = decodeURI(query);
         } else if (allCommunities) {
+            // check the 'All Communities' checkbox
             let allCommunitiesCheckbox = document.querySelector('.all-communities-checkbox');
             if (allCommunitiesCheckbox) {
                 allCommunitiesCheckbox.checked = true;
                 $(allCommunitiesCheckbox).trigger('change');
             }
-
-            let selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
-            let chosenCategories = selectedCategoryCheckboxes.map(function () {
-                return this.value;
-            }).get();
-
-            if (!chosenCategories.length) {
-                chosenCategories = null;
-            } else {
-                accordionText(chosenCategories.length, 0)
+            // Collect the applied category filters
+            var chosenCategories = getSelectedCategories();
+            // udpate the applied filters count in filter dropdown text
+            if (allChosenCategories.length !== 0)  {
+                accordionText(allChosenCategories.length, 0)
             }
+            // run search with applied category filters
             search('', chosenCategories);
         } else {
             // No query or category filter
