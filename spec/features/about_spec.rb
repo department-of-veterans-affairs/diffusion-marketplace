@@ -26,7 +26,7 @@ describe 'About us page', type: :feature do
       all('.usa-accordion__heading')[2].click
       click_link('Emerging')
       expect(page).to have_content('Search')
-      expect(page).to have_content('2 results:')
+      expect(page).to have_content('2 Results:')
       expect(page).to have_content('Project HAPPEN')
       expect(page).to have_content('Best Practice Ever')
     end
