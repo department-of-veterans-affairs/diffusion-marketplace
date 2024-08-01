@@ -1161,6 +1161,30 @@ function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
     });
 }
 
+function moveFilters() {
+  const width = window.innerWidth;
+  const filtersContainer = document.getElementById('filtersContainer');
+  const mobileContainer = document.getElementById('filtersAccordion');
+  const desktopContainer = document.getElementById('desktopFilters');
+
+  if (width < 1024) {
+    if (desktopContainer.contains(filtersContainer)) {
+      desktopContainer.removeChild(filtersContainer);
+    }
+    if (!mobileContainer.contains(filtersContainer)) {
+      mobileContainer.appendChild(filtersContainer);
+    }
+  } else {
+    if (mobileContainer.contains(filtersContainer)) {
+      mobileContainer.removeChild(filtersContainer);
+    }
+    if (!desktopContainer.contains(filtersContainer)) {
+      desktopContainer.appendChild(filtersContainer);
+    }
+  }
+  filtersContainer.style.display = 'block';
+}
+
 function execSearchFunctions() {
     const urlParams = new URLSearchParams(window.location.search);
     const openFiltersOnPageLoad = urlParams.get('filters') === 'open';
@@ -1176,7 +1200,10 @@ function execSearchFunctions() {
     addAllCheckBoxListener('.all-strategic-checkbox', '.strategic-checkbox');
     addAllCheckBoxListener('.all-communities-checkbox', '.communities-checkbox');
     searchPracticesPage();
+    moveFilters();
 }
+
+window.addEventListener('resize', moveFilters);
 
 document.addEventListener('turbolinks:load', function () {
     execSearchFunctions();
