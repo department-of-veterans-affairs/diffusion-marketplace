@@ -300,7 +300,7 @@ describe 'Map of Diffusion', type: :feature do
     expect(page).to have_selector('.usa-link[href="/facilities/caribou"', visible: false)
   end
 
-  it 'should allow the user to visit each adoption\'s VA facility page' do
+  it 'should allow the user to visit each adoption\'s VA facility page', js: true do
     visit '/diffusion-map'
     expect(page).to have_selector(".diffusion-map-container", visible: true)
     # click on the first generated marker
