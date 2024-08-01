@@ -166,7 +166,6 @@ def basic_answers
       # 'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
       "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
       'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
-      'Do you have anything else you would like to share regarding your practice?': :additional_notes,
       "On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefore use the tagline: \"Delivery of prosthetic limbs to Veterans in less than ½ the time\".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.": :tagline,
       "On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: \"Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans.\"Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.": :description,
       'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
