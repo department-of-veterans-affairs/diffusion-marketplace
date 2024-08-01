@@ -32,7 +32,6 @@ describe 'Importer' do
       expect(flow3.training_test).to be(true)
       expect(flow3.training_length).to eq('126 minutes over 1 month initial training')
       expect(flow3.required_training_summary).to include('At your own pace, one month per group')
-      expect(flow3.phase_gate).to include('Initial Diffusion')
       expect(flow3.it_required).to be(true)
       expect(flow3.need_new_license).to eq(false)
 

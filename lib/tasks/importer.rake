@@ -165,7 +165,6 @@ def basic_answers
       # 'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
       # 'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
       "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
-      "Please identify where your practice falls currently in VHA’s Phase Gate Model of Innovation.": :phase_gate,
       "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
       'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
       'Do you have anything else you would like to share regarding your practice?': :additional_notes,
@@ -196,7 +195,6 @@ def basic_answers
   end
   @practice.initiating_facility = @practice.initiating_facility&.split('_')[1]
   @practice.date_initiated = DateTime.strptime(@answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)], "%m/%d/%Y") if @answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)].present?
-  @practice.phase_gate = @practice.phase_gate.split('.')[1].split('-')[0].squish
   @practice.save
 end
 
