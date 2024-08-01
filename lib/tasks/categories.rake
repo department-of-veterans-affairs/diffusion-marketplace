@@ -192,4 +192,43 @@ namespace :categories do
 
     puts "Existing categories have been successfully updated!"
   end
+
+  desc 'Add Communities categories to practices'
+  task :add_communities_cats => :environment do
+    community_practices = {
+      'VA Immersive' => [
+        'Cards for Connection',
+        'Healthier Kidneys Through Your Kitchen',
+        'WHoOpSafe'
+      ],
+      'QUERI' => [
+        'Green Gloves Program',
+        'GERI-VET',
+        'Preoperative Frailty Screening & Prehabilitation'
+      ],
+      'Age-Friendly' => [
+        'PRIDE In All Who Served: Reducing Healthcare Disparities for LGBT Veterans',
+        'Red Coat Ambassador Program',
+        'Red Coat Ambassador Program'
+      ],
+      'Suicide Prevention' => [
+        'Transcending Self Therapy: Integrative Cognitive Behavioral Treatment',
+        'Tour Of Duty',
+        'Gerofit'
+      ]
+    }
+
+    community_practices.each do |category_name, practice_names|
+      category =  Category.find_by(name: category_name)
+
+      if category
+        practice_names.each do |practice_name|
+          practice = Practice.find_by(name: practice_name)
+          if practice
+            CategoryPractice.find_or_create_by!(practice: practice, category: category)
+          end
+        end
+      end
+    end
+  end
 end
