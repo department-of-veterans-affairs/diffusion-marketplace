@@ -15,5 +15,9 @@ class RemoveRetiredFieldsFromPractices < ActiveRecord::Migration[6.1]
     remove_column :practices, :impact_financial_roi, :text
     remove_column :practices, :impact_financial_other, :text
     remove_column :practices, :successful_implementation, :string
+    remove_column :practices, :implementation_time_estimate, :string
+    remove_column :practices, :implementation_time_estimate_description, :string
+    remove_column :practices, :implentation_summary, :text
+    remove_column :practices, :implementation_fte, :text
   end
 end

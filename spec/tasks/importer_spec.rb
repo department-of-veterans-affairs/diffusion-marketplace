@@ -21,7 +21,6 @@ describe 'Importer' do
       expect(flow3.date_initiated).to eq(DateTime.strptime('2/22/2019', "%m/%d/%Y"))
       expect(flow3.number_adopted).to be(25)
       expect(flow3.support_network_email).to eq('FLOW3@va.gov')
-      expect(flow3.implementation_time_estimate).to eq('6-12 months')
       expect(flow3.summary).to include('FLOW3 is a system of three interrelated software')
       expect(flow3.difficulty_aggregate).to be(1)
       expect(flow3.sustainability_aggregate).to be(2)
