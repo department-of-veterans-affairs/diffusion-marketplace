@@ -22,7 +22,6 @@
 | `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
 | `rails milestones:milestones_transfer` | Transfers all of the original timeline entry milestones to the new milestone model  |
 | `rails inet_partner_practices:assign_inet_partner` | Assigns the iNET practice partner to practices that have iNET as a partner  |
-| `rails categories:add_covid_cats` | Adds COVID related categories and assigns them to practices  |
 | `rails practice_origin_facilities:move_practice_initiating_facility` | Moves practice initiating facilities to the practice_origin_facilities table  |
 | `rails port_milestones_to_timelines:port_milestones_to_timelines` | Ports data from Milestone table description field to Timelines.milestone field.  |
 | `rails practice_multimedia:transfer_practice_impact_photos` | Ports data from ImpactPhotos table PracticeMultimedia table.  |
@@ -159,7 +158,6 @@ This will run:
 6. `rails visns:create_visn_liaisons_and_transfer_data` - Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
 7. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
 10. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
-11. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
 12. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
 13. `rails practice_multimedia:transfer_practice_impact_photos` - moves practice impact photos to practice multimedia
 14. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
