@@ -19,5 +19,11 @@ class RemoveRetiredFieldsFromPractices < ActiveRecord::Migration[6.1]
     remove_column :practices, :implementation_time_estimate_description, :string
     remove_column :practices, :implentation_summary, :text
     remove_column :practices, :implementation_fte, :text
+    remove_column :practices, :risk_level_aggregate, :integer
+    remove_column :practices, :cost_savings_aggregate, :integer
+    remove_column :practices, :cost_to_implement_aggregate, :integer
+    remove_column :practices, :veteran_satisfaction_aggregate, :integer
+    remove_column :practices, :difficulty_aggregate, :integer
+    remove_column :practices, :sustainability_aggregate, :integer
   end
 end

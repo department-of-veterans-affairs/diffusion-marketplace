@@ -22,8 +22,6 @@ describe 'Importer' do
       expect(flow3.number_adopted).to be(25)
       expect(flow3.support_network_email).to eq('FLOW3@va.gov')
       expect(flow3.summary).to include('FLOW3 is a system of three interrelated software')
-      expect(flow3.difficulty_aggregate).to be(1)
-      expect(flow3.sustainability_aggregate).to be(2)
       expect(flow3.origin_title).to eq('Innovating delivery processes')
       expect(flow3.origin_story).to include('Dr. Jeffrey Heckman, a physician in the VA Puget S')
       expect(flow3.need_new_license).to be(false)
