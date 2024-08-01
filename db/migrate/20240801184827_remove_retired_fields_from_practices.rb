@@ -6,5 +6,9 @@ class RemoveRetiredFieldsFromPractices < ActiveRecord::Migration[6.1]
     remove_column :practices, :phase_gate, :string
     remove_column :practices, :va_pulse_link, :string
     remove_column :practices, :business_case_summary, :text
+    remove_column :practices, :additional_notes, :text
+    remove_column :practices, :impact_veteran_experience, :text
+    remove_column :practices, :impact_veteran_satisfaction, :text
+    remove_column :practices, :impact_other_veteran_experience, :text
   end
 end
