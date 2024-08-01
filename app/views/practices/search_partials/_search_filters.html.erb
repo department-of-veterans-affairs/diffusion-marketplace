@@ -4,7 +4,8 @@
   <div class="sub-category-checkboxes filters-scrollbar maxh-mobile">
     <% @parent_categories.each do |parent_category, sub_categories| %>
       <% if sub_categories.any? %>
-        <% all_cats_checkbox_id = "cat-all-#{parent_category.name.downcase.gsub(' ', '-')}-input" %>
+        <% parent_cat_name = "#{parent_category.name.downcase.gsub(' ', '-')}" %>
+        <% all_cats_checkbox_id = "cat-all-#{parent_cat_name}-input" %>
         <% parent_cat_name = parent_category.name.split(' ').join('-').downcase %>
         <div class="usa-checkbox">
           <input
@@ -29,6 +30,7 @@
                 type="checkbox"
                 name=<%= category.name %>
                 value=<%= category.name %>
+                data-parent-category=<%= parent_cat_name %>
               />
               <label class="usa-checkbox__label <%= category_checkbox_id %>" for=<%= category_checkbox_id %>>
                 <%= category.name %>
