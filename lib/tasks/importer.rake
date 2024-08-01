@@ -165,7 +165,6 @@ def basic_answers
       # 'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
       # 'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
       "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
-      "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
       'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
       'Do you have anything else you would like to share regarding your practice?': :additional_notes,
       "On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefore use the tagline: \"Delivery of prosthetic limbs to Veterans in less than ½ the time\".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.": :tagline,
