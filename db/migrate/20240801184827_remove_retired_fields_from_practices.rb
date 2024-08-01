@@ -10,5 +10,9 @@ class RemoveRetiredFieldsFromPractices < ActiveRecord::Migration[6.1]
     remove_column :practices, :impact_veteran_experience, :text
     remove_column :practices, :impact_veteran_satisfaction, :text
     remove_column :practices, :impact_other_veteran_experience, :text
+    remove_column :practices, :impact_financial_estimate_saved, :text
+    remove_column :practices, :impact_financial_per_veteran, :text
+    remove_column :practices, :impact_financial_roi, :text
+    remove_column :practices, :impact_financial_other, :text
   end
 end
