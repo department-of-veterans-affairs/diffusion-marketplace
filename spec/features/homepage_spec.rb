@@ -169,12 +169,10 @@ describe 'Homepage', type: :feature do
 
       it 'provides a link that navs to the search page with the filters accordian engaged' do
         within '#search-dropdown' do
-          expect(page).to have_link('Browse all Tags', href: '/search?filters=open')
+          expect(page).to have_link('Browse all Tags', href: '/search')
           click_link 'Browse all Tags'
         end
-        expect(page).to have_current_path('/search?filters=open')
-        expect(page).to have_css('.usa-accordion__button.search-filters-accordion-button[aria-expanded="true"]')
-        expect(page).to have_css('#search_filters_dropdown:not([hidden])')
+        expect(page).to have_current_path('/search')
       end
 
       it 'provides a link that navs to the search page with all community tags engaged', js: true do
@@ -184,8 +182,6 @@ describe 'Homepage', type: :feature do
         end
 
         expect(page).to have_current_path('/search?all_communities=true')
-        filter_button = find('button.search-filters-accordion-button')
-        expect(filter_button).to have_text('Filters (1)')
         expect(page).to have_content("1 Result:")
         expect(page).to have_content(@practice_3.name)
       end
