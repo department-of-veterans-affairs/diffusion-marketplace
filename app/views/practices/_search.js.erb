@@ -320,7 +320,7 @@ function searchPracticesPage() {
             var categoryFilters = [];
 
             Object.entries(categories).forEach(function ([parentCategory, selectedValues]) {
-                if (parentCategory !== 'communities') {
+                if (parentCategory !== 'communities' && selectedValues.length) {
                     selectedValues.forEach(function (categorySelection) {
                         addAppliedFilter('TAG', categorySelection);
                         categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
@@ -329,7 +329,7 @@ function searchPracticesPage() {
             });
 
             // Iterate over 'communities' categories
-            if (categories['communities']) {
+            if (categories['communities'] && categories['communities'].length) {
                 categories['communities'].forEach(function (categorySelection) {
                     addAppliedFilter('COMMUNITY', categorySelection);
                     categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
@@ -914,9 +914,9 @@ function searchPracticesPage() {
     }
 
     var accordionButton = $('.search-filters-accordion-button')
-    function accordionText(checkboxCount, inputCount) {
-        return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')');
-    }
+    // function accordionText(checkboxCount, inputCount) {
+    //     return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')');
+    // }
 
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
@@ -941,21 +941,25 @@ function searchPracticesPage() {
         updateResults();
     });
 
-    function updateResults() {
+    function updateResults(checkFacilityInputs=true) {
         var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
         window.history.pushState({ turbolinks: {} }, "", urlQuery);
 
-        // Get the value of the originating facility combo box
-        var originatingFacilityInput = $('#originating-facility-and-visn-select');
-        var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
+        var originatingFacility = null;
+        var adoptingFacility = null;
+        if (checkFacilityInputs) {
+            // Get the value of the originating facility combo box
+            var originatingFacilityInput = $('#originating-facility-and-visn-select');
+            var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
 
-        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi);
+            originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi);
 
-        // Get the value of the adopting facility combo box
-        var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
-        var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
+            // Get the value of the adopting facility combo box
+            var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
+            var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
 
-        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
+            adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
+        }
 
         // Get the values for any chosen categories
         var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
@@ -985,34 +989,33 @@ function searchPracticesPage() {
             });
         }
 
-
         // Run the search
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
 
-        // Display the amount of filters used(if any)
-        var checkboxCount = selectedCategoryCheckboxes.length;
-        var noOriginatingFacilityText = originatingFacilityInput.val() === '';
-        var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
-        var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
-        var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== '';
+        // // Display the amount of filters used(if any)
+        // var checkboxCount = selectedCategoryCheckboxes.length;
+        // var noOriginatingFacilityText = originatingFacilityInput.val() === '';
+        // var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
+        // var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
+        // var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== '';
 
-        if (checkboxCount > 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
-            accordionText(checkboxCount, 1);
-        } else if (checkboxCount > 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
-            accordionText(checkboxCount, 1);
-        } else if (checkboxCount > 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
-            accordionText(checkboxCount, 0);
-        } else if (checkboxCount > 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
-            accordionText(checkboxCount, 2);
-        } else if (checkboxCount === 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
-            accordionText(0, 1);
-        } else if (checkboxCount === 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
-            accordionText(0, 1);
-        } else if (checkboxCount === 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
-            return accordionButton.text('Filters');
-        } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
-            accordionText(0, 2);
-        }
+        // if (checkboxCount > 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
+        //     accordionText(checkboxCount, 1);
+        // } else if (checkboxCount > 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
+        //     accordionText(checkboxCount, 1);
+        // } else if (checkboxCount > 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
+        //     accordionText(checkboxCount, 0);
+        // } else if (checkboxCount > 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
+        //     accordionText(checkboxCount, 2);
+        // } else if (checkboxCount === 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
+        //     accordionText(0, 1);
+        // } else if (checkboxCount === 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
+        //     accordionText(0, 1);
+        // } else if (checkboxCount === 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
+        //     return accordionButton.text('Filters');
+        // } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
+        //     accordionText(0, 2);
+        // }
     }
 
     // Sort the results based on each sort option
@@ -1056,7 +1059,7 @@ function searchPracticesPage() {
         // Move the focus area back to the top of the filters window
         $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
         // Reset filter count text
-        $('.search-filters-accordion-button').text('Filters');
+        // $('.search-filters-accordion-button').text('Filters');
         // reset search results
         searchPracticesPage();
     })
@@ -1072,34 +1075,17 @@ function searchPracticesPage() {
             const checkboxSelector = `input[type="checkbox"][name="${category}"]`;
             const checkbox = $(checkboxSelector);
             checkbox.prop('checked', true);
-            accordionText(1, 0)
-            search('', [category]);
-        } else if (query) {
-            search(decodeURI(query));
-            searchField.value = decodeURI(query);
         } else if (allCommunities) {
             let allCommunitiesCheckbox = document.querySelector('.all-communities-checkbox');
             if (allCommunitiesCheckbox) {
                 allCommunitiesCheckbox.checked = true;
                 $(allCommunitiesCheckbox).trigger('change');
             }
-
-            let selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
-            let chosenCategories = selectedCategoryCheckboxes.map(function () {
-                return this.value;
-            }).get();
-
-            if (!chosenCategories.length) {
-                chosenCategories = null;
-            } else {
-                accordionText(chosenCategories.length, 0)
-            }
-            search('', chosenCategories);
-        } else {
-            // No query or category filter
-            searchField.value = '';
-            search('');
-        }
+        } else if (query) {
+            searchField.value = decodeURI(query);
+        };
+        // update search results but skip checking facility checkboxes
+        updateResults(false);
     } else if ((searchLocation[0] === '?filter_by') || (window.location.pathname === '/search' && window.location.search === '')) {
         hideResultsSectionElAndShowSpinner();
         search('');
