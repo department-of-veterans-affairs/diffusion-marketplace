@@ -115,7 +115,6 @@ Lint/AmbiguousOperator:
 Lint/AmbiguousOperatorPrecedence:
   Exclude:
     - 'app/helpers/application_helper.rb'
-    - 'app/mailers/covid_category_mailer.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
