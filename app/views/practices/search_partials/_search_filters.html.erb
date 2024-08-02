@@ -1,7 +1,8 @@
 
 <fieldset class="usa-fieldset padding-bottom-2">
-  <h4> Tags </h4>
+  <h3> Filters </h3>
   <div class="sub-category-checkboxes filters-scrollbar maxh-mobile">
+    <h4> Tags </h4>
     <% @parent_categories.each do |parent_category, sub_categories| %>
       <% if sub_categories.any? %>
         <% parent_cat_name = "#{parent_category.name.downcase.gsub(' ', '-')}" %>
