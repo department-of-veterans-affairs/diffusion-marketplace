@@ -319,22 +319,15 @@ function searchPracticesPage() {
             //     // Collect any practice that has a category that matches the selected category/categories.
             var categoryFilters = [];
 
-            Object.entries(categories).forEach(function ([parentCategory, selectedValues]) {
-                if (parentCategory !== 'communities' && selectedValues.length) {
-                    selectedValues.forEach(function (categorySelection) {
-                        addAppliedFilter('TAG', categorySelection);
-                        categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+            Object.entries(categories).forEach(function ([parentCat, subCats]) {
+                if (subCats.length) {
+                    var catType = parentCat === 'communities' ? 'COMMUNITY' : 'TAG';
+                    subCats.forEach(function (subCat) {
+                        addAppliedFilter(catType, subCat);
+                        categoryFilters.push({'category_names': "=\"" + subCat + "\""});
                     });
                 }
             });
-
-            // Iterate over 'communities' categories
-            if (categories['communities'] && categories['communities'].length) {
-                categories['communities'].forEach(function (categorySelection) {
-                    addAppliedFilter('COMMUNITY', categorySelection);
-                    categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
-                });
-            }
         }
 
         var originFacilityArray = originatingFacility ? [] : null;
