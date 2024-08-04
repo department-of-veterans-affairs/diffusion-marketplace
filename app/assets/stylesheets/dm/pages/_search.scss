@@ -216,16 +216,6 @@
   .fa-times {
     display: block !important;
   }
-
-  .search-category-filters,
-  .search-originating-facility-filter,
-  .search-adopting-facility-filter {
-    @include u-margin-bottom(1);
-
-    @media screen and (min-width: 1024px) {
-      @include u-margin-bottom(0);
-    }
-  }
 }
 
 #update-search-results-form {
