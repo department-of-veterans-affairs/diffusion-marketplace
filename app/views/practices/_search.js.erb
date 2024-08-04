@@ -14,16 +14,8 @@
     var SORT_EL = '#search_sort_option';
     var isBlankSearch = false;
     var NO_SEARCH_RESULTS_TEXT = '.no-query-results-p';
-    // Add Namespace for scroll position
-    var pagePosition = {
-        original: 0,
-        // Log the user's spot on the page when they open the filters modal on mobile
-        getScrollPosition: function () {
-            this.original = $(window).scrollTop();
-        }
-    }
+
     var all_categories = <%= raw @categories.to_json %>;
-    var allChosenCategories = [];
 <% end %>
 
 
@@ -849,18 +841,6 @@ function searchPracticesPage() {
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
         hideResultsSectionElAndShowSpinner();
-
-        // Close search filter accordion if it's open
-        if (accordionButton.attr('aria-expanded') == 'true') {
-            accordionButton.attr('aria-expanded', 'false');
-            $('#search_filters_dropdown').attr('hidden', 'true');
-        }
-
-        // Bring the user back to their original spot on the page, before they opened the mobile modal
-        if ($(window).width() < 1024) {
-            $(window).scrollTop(pagePosition.original);
-        }
-
         updateResults();
     });
 
@@ -1065,8 +1045,6 @@ function moveFilters() {
 }
 
 function execSearchFunctions() {
-    const urlParams = new URLSearchParams(window.location.search);
-
     addAllCheckBoxListener('.all-clinical-checkbox', '.clinical-checkbox');
     addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
     addAllCheckBoxListener('.all-strategic-checkbox', '.strategic-checkbox');
