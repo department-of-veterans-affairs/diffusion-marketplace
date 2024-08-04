@@ -91,28 +91,28 @@
     margin-bottom: 24px;
   }
 
-  .filters-scrollbar {
+  .category-filters {
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
     overflow-y: scroll;
     scroll-behavior: smooth;
   }
 
-  .filters-scrollbar::-webkit-scrollbar {
+  .category-filters::-webkit-scrollbar {
     width: 8px;
   }
 
-  .filters-scrollbar::-webkit-scrollbar-track {
+  .category-filters::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.1);
   }
 
-  .filters-scrollbar::-webkit-scrollbar-thumb {
+  .category-filters::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     border: 2px solid rgba(0, 0, 0, 0.1);
   }
 
-  .filters-scrollbar::-webkit-scrollbar-thumb:hover {
+  .category-filters::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.3);
   }
 

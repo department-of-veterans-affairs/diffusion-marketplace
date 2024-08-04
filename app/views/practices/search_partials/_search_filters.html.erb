@@ -1,7 +1,6 @@
-
-<fieldset class="usa-fieldset padding-bottom-2">
-  <h3> Filters </h3>
-  <div class="sub-category-checkboxes filters-scrollbar maxh-mobile">
+<h3> Refine Results </h3>
+<fieldset class="usa-fieldset">
+  <div class="category-filters maxh-mobile">
     <h4> Tags </h4>
     <% @parent_categories.each do |parent_category, sub_categories| %>
       <% if sub_categories.any? %>
@@ -46,7 +45,7 @@
 
 <hr class="border border-base-lighter margin-x-neg-205">
 
-<fieldset class="usa-fieldset padding-top-1 padding-bottom-3">
+<fieldset class="usa-fieldset padding-top-2 padding-bottom-3">
   <div id="originating-facility-container">
     <p class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Originating Location</p>
     <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
@@ -56,14 +55,14 @@
 
 <hr class="border border-base-lighter margin-x-neg-205">
 
-<fieldset class="usa-fieldset padding-top-1 padding-bottom-5">
+<fieldset class="usa-fieldset padding-bottom-5">
   <div id="adopting-facility-container">
     <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 desktop:display-block">Adopting location</p>
     <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
   </div>
 </fieldset>
 
-<div class="border-base-lightest padding-1" id="filter_button_container">
+<div class="border-base-lightest padding-top-1" id="filter_button_container">
   <button type="submit" id="update-search-results-button" class="usa-button filter-submit-button display-block line-height-19px" name="button">
     Apply filters
   </button>
