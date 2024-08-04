@@ -95,6 +95,7 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
     overflow-y: scroll;
+    scroll-behavior: smooth;
   }
 
   .filters-scrollbar::-webkit-scrollbar {
