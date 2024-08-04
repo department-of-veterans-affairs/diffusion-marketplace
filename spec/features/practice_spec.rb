@@ -180,7 +180,7 @@ describe 'Practices', type: :feature do
 
     it 'should display the practice departments section' do
       login_as(@user, :scope => :user, :run_callbacks => false)
-      @user_practice.update(published: true, approved: true, difficulty_aggregate: 1, sustainability_aggregate: 2, number_departments: 3, it_required: true, process: 'New approach', implementation_time_estimate: '6 months', training_provider: 'Practice champion', training_test: true, need_new_license: true, training_length: '1 month')
+      @user_practice.update(published: true, approved: true, number_departments: 3, it_required: true, process: 'New approach', training_provider: 'Practice champion', training_test: true, need_new_license: true, training_length: '1 month')
       visit practice_path(@user_practice)
 
       expect(page).to be_accessible.according_to :wcag2a, :section508

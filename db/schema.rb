@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_18_220057) do
+ActiveRecord::Schema.define(version: 2024_08_01_184827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1030,35 +1030,10 @@ ActiveRecord::Schema.define(version: 2024_07_18_220057) do
     t.string "medical_center"
     t.integer "number_adopted", default: 0
     t.integer "number_failed", default: 0
-    t.text "business_case_summary"
     t.string "support_network_email"
-    t.string "va_pulse_link"
-    t.text "additional_notes"
     t.datetime "date_initiated"
-    t.text "impact_veteran_experience"
-    t.text "impact_veteran_satisfaction"
-    t.text "impact_other_veteran_experience"
-    t.text "impact_financial_estimate_saved"
-    t.text "impact_financial_per_veteran"
-    t.text "impact_financial_roi"
-    t.text "impact_financial_other"
-    t.string "phase_gate"
-    t.string "successful_implementation"
-    t.string "target_measures"
-    t.integer "target_success"
-    t.string "implementation_time_estimate"
-    t.string "implementation_time_estimate_description"
-    t.text "implentation_summary"
-    t.text "implementation_fte"
     t.string "tagline"
-    t.string "gold_status_tagline"
     t.string "summary"
-    t.integer "risk_level_aggregate", default: 0
-    t.integer "cost_savings_aggregate", default: 0
-    t.integer "cost_to_implement_aggregate", default: 0
-    t.integer "veteran_satisfaction_aggregate", default: 0
-    t.integer "difficulty_aggregate", default: 0
-    t.integer "sustainability_aggregate", default: 0
     t.string "origin_title"
     t.string "origin_story"
     t.boolean "need_additional_staff"
