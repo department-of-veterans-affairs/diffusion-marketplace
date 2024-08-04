@@ -1,7 +1,7 @@
-<h3> Refine Results </h3>
+<h3 class="padding-bottom-2"> Refine Results </h3>
 <fieldset class="usa-fieldset">
+  <legend class="usa-legend usa-typography--h text-bold padding-bottom-2">Tags</legend>
   <div class="category-filters maxh-mobile">
-    <h4> Tags </h4>
     <% @parent_categories.each do |parent_category, sub_categories| %>
       <% if sub_categories.any? %>
         <% parent_cat_name = "#{parent_category.name.downcase.gsub(' ', '-')}" %>
@@ -47,7 +47,7 @@
 
 <fieldset class="usa-fieldset padding-top-2 padding-bottom-3">
   <div id="originating-facility-container">
-    <p class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Originating Location</p>
+    <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Originating Location</legend>
     <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
     <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
   </div>
@@ -57,7 +57,7 @@
 
 <fieldset class="usa-fieldset padding-bottom-5">
   <div id="adopting-facility-container">
-    <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 desktop:display-block">Adopting location</p>
+    <legend class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 desktop:display-block">Adopting location</legend>
     <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
   </div>
 </fieldset>
