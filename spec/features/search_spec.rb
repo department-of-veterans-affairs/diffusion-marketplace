@@ -115,12 +115,8 @@ describe 'Search', type: :feature do
     find('#dm-practice-search-button').click
   end
 
-  def toggle_filters_accordion
-    find('.search-filters-accordion-button').click
-  end
-
   def update_results
-    click_button('Update results')
+    click_button('Apply filters')
   end
 
   def update_practice_introduction(practice)
@@ -156,7 +152,9 @@ describe 'Search', type: :feature do
   end
 
   def select_category(label_class)
-    find(label_class).click
+    within('#filtersContainer') do
+      find(label_class).click
+    end
   end
 
   def add_crh_adoptions_and_practice_origin_facilities
@@ -212,7 +210,6 @@ describe 'Search', type: :feature do
 
     it 'should display certain text if no matches are found' do
       visit_search_page
-      toggle_filters_accordion
       fill_in('dm-practice-search-field', with: 'test')
       set_combobox_val(0, 'James J. Howard Veterans\' Outpatient Clinic')
       select_category('.cat-2-label')
@@ -354,13 +351,11 @@ describe 'Search', type: :feature do
       it 'should collect practices that match ANY of the conditions if the user selects filters, but does not use the search input' do
         visit_search_page
 
-        toggle_filters_accordion
         set_combobox_val(0, 'Norwood VA Clinic')
         select_category('.cat-2-label')
         select_category('.cat-5-label')
         update_results
 
-        expect(page).to have_content('Filters (3)')
         expect(page).to have_content('6 Results')
         expect(page).to have_button('Clear filters')
         expect(page).to have_content(@practice.name)
@@ -375,7 +370,6 @@ describe 'Search', type: :feature do
         # reset the practice cache
         visit_search_page
 
-        toggle_filters_accordion
         set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
@@ -383,7 +377,6 @@ describe 'Search', type: :feature do
         expect(page).to have_content(@practice13.name)
         expect(page).to have_content(@practice14.name)
 
-        toggle_filters_accordion
         click_button('Clear filters')
         set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
@@ -395,7 +388,6 @@ describe 'Search', type: :feature do
 
       it 'should select all subcategories when selecting the parent category' do
         visit_search_page
-        toggle_filters_accordion
         select_category('.cat-all-strategic-label')
         expect(find("#cat-2-input", visible: false)).to be_checked
         expect(find("#cat-3-input", visible: false)).to be_checked
@@ -404,7 +396,6 @@ describe 'Search', type: :feature do
         expect(find("#cat-6-input", visible: false)).to be_checked
         update_results
         expect(page).to have_content('7 Results')
-        toggle_filters_accordion
         select_category('.cat-2-label')
         expect(find("#cat-all-strategic-input", visible: false)).to_not be_checked
         expect(find("#cat-2-input", visible: false)).to_not be_checked
@@ -421,54 +412,44 @@ describe 'Search', type: :feature do
         visit_search_page
 
         fill_in('dm-practice-search-field', with: 'practice')
-        toggle_filters_accordion
         set_combobox_val(0, 'Togus VA Medical Center')
         select_category('.cat-2-label')
         search
-        expect(page).to have_content('Filters (2)')
         expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice5.name)
 
         # Now add the remaining to eliminate one of the last two practices
-        toggle_filters_accordion
         set_combobox_val(1, 'Aberdeen VA Clinic')
         update_results
 
-        expect(page).to have_content('Filters (3)')
         expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice3.name)
         expect(page).to_not have_content(@practice5.name)
 
         # Reset filters and select a VISN from the Originating Facility combo box
-        toggle_filters_accordion
         click_button('Clear filters')
         set_combobox_val(0, 'VISN-1')
         update_results
 
-        expect(page).to have_content('Filters (1)')
         expect(page).to have_content('4 Results')
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice4.name)
         expect(page).to have_content(@practice5.name)
         expect(page).to have_content(@practice6.name)
 
-        toggle_filters_accordion
         select_category('.cat-4-label')
         update_results
 
-        expect(page).to have_content('Filters (2)')
         expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice4.name)
         expect(page).to have_content(@practice5.name)
 
         # Reset filters and select a VISN from the Adopting Facility combo box
-        toggle_filters_accordion
         click_button('Clear filters')
         set_combobox_val(1, 'VISN-7')
         update_results
 
-        expect(page).to have_content('Filters (1)')
         expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice6.name)
 
@@ -477,12 +458,10 @@ describe 'Search', type: :feature do
         visit_search_page
 
         fill_in('dm-practice-search-field', with: 'important')
-        toggle_filters_accordion
         set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
         set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
-        expect(page).to have_content('Filters (2)')
         expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice14.name)
       end
@@ -491,11 +470,9 @@ describe 'Search', type: :feature do
         it 'should, when the user selects a VISN, collect practices that either have that VISN as their initiating_facility OR have a practice_origin_facility that belongs to that VISN' do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'VISN-1')
           update_results
 
-          expect(page).to have_content('Filters (1)')
           expect(page).to have_content('4 Results')
           expect(page).to have_content(@practice3.name)
           expect(page).to have_content(@practice3.name)
@@ -506,11 +483,9 @@ describe 'Search', type: :feature do
           add_crh_adoptions_and_practice_origin_facilities
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'VISN-8')
           update_results
 
-          expect(page).to have_content('Filters (1)')
           expect(page).to have_content('2 Results')
           expect(page).to have_content(@practice13.name)
           expect(page).to have_content(@practice14.name)
@@ -519,11 +494,9 @@ describe 'Search', type: :feature do
         it 'should, when the user selects a facility, only collect practices that have a practice_origin_facility that matches the selected facility' do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'Vinita VA Clinic')
           update_results
 
-          expect(page).to have_content('1 Result')
           expect(page).to have_content(@practice12.name)
         end
       end
@@ -532,7 +505,6 @@ describe 'Search', type: :feature do
         it 'should, when the user selects a VISN, collect practices that have an adoption facility that belongs to that VISN' do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(1, 'VISN-23')
           update_results
 
@@ -544,11 +516,9 @@ describe 'Search', type: :feature do
           add_crh_adoptions_and_practice_origin_facilities
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(1, 'VISN-8')
           update_results
 
-          expect(page).to have_content('Filters (1)')
           expect(page).to have_content('2 Results')
           expect(page).to have_content(@practice12.name)
           expect(page).to have_content(@practice14.name)
@@ -557,7 +527,6 @@ describe 'Search', type: :feature do
         it 'should, when the user selects a facility, only collect practices that have an adopting facility that matches the selected facility' do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'Vinita VA Clinic')
           update_results
 
@@ -570,7 +539,6 @@ describe 'Search', type: :feature do
         before do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'Norwood VA Clinic')
           set_combobox_val(1, 'Marietta VA Clinic')
           select_category('.cat-2-label')
@@ -591,6 +559,7 @@ describe 'Search', type: :feature do
           within('#searchResultsContainer') do
             all('button.applied-filter').first.click
           end
+
           # expect updated applied filters
           expect(page).not_to have_content('TAG: COVID')
           expect(page).to have_content('TAG: PULMONARY CARE')
@@ -605,8 +574,6 @@ describe 'Search', type: :feature do
           expect(page).to have_content(@practice7.name)
           expect(page).not_to have_content(@practice12.name)
           # expect updated filter checkboxes
-          expect(page).to have_content('Filters (3)')
-          toggle_filters_accordion
           label = find('.cat-2-label')
           parent_div = label.find(:xpath, './..')
           checkbox = parent_div.find('input[type="checkbox"]', visible: :all)
@@ -641,8 +608,6 @@ describe 'Search', type: :feature do
     describe 'Sorting' do
       it 'should sort the results based on the sort option chosen' do
         visit_search_page
-
-        toggle_filters_accordion
         set_combobox_val(0, 'VISN-1')
         select_category('.cat-2-label')
         update_results
@@ -650,8 +615,6 @@ describe 'Search', type: :feature do
         # results should be sorted my most relevant(closest match) by default
         expect(page).to have_content('6 Results')
         expect(first('span.dm-practice-title').text).to eq(@practice6.name)
-
-        toggle_filters_accordion
         select_category('.cat-3-label')
         select_category('.cat-4-label')
         update_results
@@ -705,8 +668,6 @@ describe 'Search', type: :feature do
     describe 'Querying' do
       it 'should not create a query if the user does not enter text into the search input' do
         visit_search_page
-
-        toggle_filters_accordion
         set_combobox_val(0, 'VISN-2')
         select_category('.cat-2-label')
         select_category('.cat-3-label')
@@ -727,8 +688,6 @@ describe 'Search', type: :feature do
 
       it 'should, if there is no query and the user clicks on a practice card, add a search page breadcrumb that does not include a query' do
         visit_search_page
-
-        toggle_filters_accordion
         select_category('.cat-2-label')
         update_results
         all('.dm-practice-link-aria-hidden').first.click
@@ -812,12 +771,12 @@ describe 'Search', type: :feature do
     it 'should function appropriately' do
       visit_search_page
 
-      click_button('Filters')
-      click_button('Originating facility')
+      click_button('Refine Results')
+      # click_button('Originating facility')
       set_combobox_val(0, 'Togus VA Medical Center')
-      click_button('Adopting facility')
+      # click_button('Adopting facility')
       set_combobox_val(1, 'VISN-2')
-      click_button('Tags')
+      # click_button('Tags')
       select_category('.cat-5-label')
       update_results
 
