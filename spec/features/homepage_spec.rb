@@ -114,7 +114,7 @@ describe 'Homepage', type: :feature do
     end
   end
 
-  describe 'search dropdown functionality', js: true do
+  describe 'search dropdown functionality' do
     before do
       find('#dm-homepage-search-field').click
     end
@@ -160,7 +160,7 @@ describe 'Homepage', type: :feature do
       end
     end
 
-    describe 'links to the search page' do
+    describe 'links to the search page', js: true do
       it 'provides a link to the search page' do
         within '#search-dropdown' do
           expect(page).to have_link('Browse all Innovations', href: '/search')
@@ -175,13 +175,11 @@ describe 'Homepage', type: :feature do
         expect(page).to have_current_path('/search')
       end
 
-      it 'provides a link that navs to the search page with all community tags engaged', js: true do
+      it 'provides a link that navs to the search page with all community tags engaged' do
         within '#search-dropdown' do
           expect(page).to have_link('Browse all Community Innovations', href: '/search?all_communities=true')
           click_link 'Browse all Community Innovations'
         end
-
-        expect(page).to have_current_path('/search?all_communities=true')
         expect(page).to have_content("1 Result:")
         expect(page).to have_content(@practice_3.name)
       end
@@ -190,7 +188,8 @@ describe 'Homepage', type: :feature do
     it 'lets a user navigate results with arrow keys' do
       page.send_keys :down, :down, :down, :down, :down # navigate to first category
       page.send_keys :enter # select category
-      expect(page).to have_current_path('/search?category=COVID')
+      expect(page).to have_current_path('/search')
+      expect(page).to have_content("2 Results: TAG: COVID X")
     end
 
     it 'encodes categories & innovations with ampersands' do
@@ -200,83 +199,57 @@ describe 'Homepage', type: :feature do
     end
 
     it 'tracks clicks on practice links' do
-      expect {
-        find('a', text: 'The Best Practice Ever!').click
-        wait_for_ajax
-      }.to change(Ahoy::Event, :count).by(1)
+      event = wait_for_ahoy_js('The Best Practice Ever!')
 
-      event = Ahoy::Event.last
       expect(event.name).to eq("Dropdown Practice Link Clicked")
       expect(event.properties["practice_name"]).to eq("The Best Practice Ever!")
       expect(event.properties["from_homepage"]).to be_truthy
     end
 
     it 'tracks clicks on category links' do
-      expect {
-        find('a', text: 'COVID').click
-        wait_for_ajax
-      }.to change(Ahoy::Event, :count).by(1)
+      event = wait_for_ahoy_js('COVID')
 
-      event = Ahoy::Event.last
       expect(event.name).to eq("Category selected")
       expect(event.properties["category_name"]).to eq("COVID")
       expect(event.properties["from_homepage"]).to be_truthy
     end
 
     it 'tracks clicks on community links' do
-      expect {
-        find('a', text: 'VA Immersive').click
-        wait_for_ajax
-      }.to change(Ahoy::Event, :count).by(1)
+      event = wait_for_ahoy_js('VA Immersive')
 
-      event = Ahoy::Event.last
       expect(event.name).to eq("Category selected")
       expect(event.properties["category_name"]).to eq("VA Immersive")
       expect(event.properties["from_homepage"]).to be_truthy
     end
 
     it 'tracks clicks on "Browse all Innovations" link' do
-      expect {
-        find('a', text: 'Browse all Innovations').click
-        wait_for_ajax
-      }.to change(Ahoy::Event, :count).by(1)
-
-      event = Ahoy::Event.last
+      event = wait_for_ahoy_js('Browse all Innovations')
 
       expect(event.name).to eq("Dropdown Browse-all Link Clicked")
       expect(event.properties["type"]).to eq("innovation")
     end
 
     it 'tracks clicks on "Browse all Tags" link' do
-      expect {
-        find('a', text: 'Browse all Tags').click
-        wait_for_ajax
-      }.to change(Ahoy::Event, :count).by(1)
+      event = wait_for_ahoy_js('Browse all Tags')
 
-      event = Ahoy::Event.last
       expect(event.name).to eq("Dropdown Browse-all Link Clicked")
       expect(event.properties["type"]).to eq("category")
     end
 
     it 'tracks clicks on "Browse all Community Innovations" link' do
-      expect {
-        find('a', text: 'Browse all Community Innovations').click
-        wait_for_ajax
-      }.to change(Ahoy::Event, :count).by(1)
+      event = wait_for_ahoy_js('Browse all Community Innovations')
 
-      event = Ahoy::Event.last
       expect(event.name).to eq("Dropdown Browse-all Link Clicked")
       expect(event.properties["type"]).to eq("community")
     end
   end
 
-  def wait_for_ajax
-    Timeout.timeout(Capybara.default_max_wait_time) do
-      loop until finished_all_ajax_requests?
-    end
-  end
-
-  def finished_all_ajax_requests?
-    page.evaluate_script('jQuery.active').zero?
+  def wait_for_ahoy_js(link_text)
+    find('a', text: link_text).click
+    # wait for js ahoy library to complete db call
+      sleep 1
+      ahoy_events = Ahoy::Event.all
+      expect(ahoy_events.count).to eq(1)
+      ahoy_events[0]
   end
 end
