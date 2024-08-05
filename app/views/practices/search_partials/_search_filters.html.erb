@@ -23,6 +23,7 @@
         <div class="sub-category-checkboxes padding-bottom-3 margin-left-205">
           <% sub_categories.each do |category| %>
             <% category_checkbox_id = "cat-#{category.id}-input" %>
+            <% category_checkbox_label = "cat-#{category.id}-label" %>
             <div class="usa-checkbox">
               <input
                 class="usa-checkbox__input <%= parent_cat_name %>-checkbox"
@@ -32,7 +33,7 @@
                 value="<%= category.name %>"
                 data-parent-category=<%= parent_cat_name %>
               />
-              <label class="usa-checkbox__label <%= category_checkbox_id %>" for=<%= category_checkbox_id %>>
+              <label class="usa-checkbox__label <%= category_checkbox_label %>" for=<%= category_checkbox_id %>>
                 <%= category.name %>
               </label>
             </div>
