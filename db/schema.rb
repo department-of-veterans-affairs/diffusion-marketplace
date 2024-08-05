@@ -364,6 +364,14 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "homepages", force: :cascade do |t|
+    t.string "section_title_one"
+    t.string "section_title_two"
+    t.string "section_title_three"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "impact_photos", force: :cascade do |t|
     t.string "title"
     t.text "description"
