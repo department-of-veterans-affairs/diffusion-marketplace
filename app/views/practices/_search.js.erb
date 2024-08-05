@@ -355,7 +355,7 @@ function searchPracticesPage(skipSearchTracking=false) {
         the results will have the same score because it stops after the first match.
         */
         function improveResultScoreBasedOnAmountOfCategoryMatches(results) {
-            allChosenCategories = Object.values(categories).flat();
+            var allChosenCategories = Object.values(categories).flat();
             results.map(function(result) {
                 var resultScore = result.score;
                 var cat_names = result.item.category_names;
@@ -723,7 +723,7 @@ function searchPracticesPage(skipSearchTracking=false) {
         appliedFilterButton.addEventListener('click', function(event) {
             uncheckFilter(filterType, filterName);
             $('#resetSearchFiltersButton').addClass('display-none');
-            updateResults(false);
+            updateResults();
             event.stopPropagation();
         });
 
@@ -844,56 +844,71 @@ function searchPracticesPage(skipSearchTracking=false) {
         updateResults();
     });
 
-    function updateResults(checkFacilityInputs=true) {
-        var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
+    function updateResults(checkFacilityInputs = true) {
+        const searchFieldValue = searchField.value.trim();
+        const urlQuery = searchFieldValue === '' ? '/search' : `/search?query=${searchFieldValue}`;
         window.history.pushState({ turbolinks: {} }, "", urlQuery);
 
-        var originatingFacility = null;
-        var adoptingFacility = null;
+        let originatingFacility = null;
+        let adoptingFacility = null;
+
         if (checkFacilityInputs) {
-            // Get the value of the originating facility combo box
-            var originatingFacilityInput = $('#originating-facility-and-visn-select');
-            var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
+            originatingFacility = getFacilityValue(
+                '#originating-facility-and-visn-select',
+                '#originating-facility-and-visn-select--list > li[aria-selected=true]'
+            );
 
-            originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi);
-
-            // Get the value of the adopting facility combo box
-            var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
-            var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
-
-            adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
+            adoptingFacility = getFacilityValue(
+                '#adopting-facility-and-visn-select',
+                '#adopting-facility-and-visn-select--list > li[aria-selected=true]'
+            );
         }
 
-        // Get the values for any chosen categories
-        var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
+        const { chosenCategoriesByParent, allCategories } = getSelectedCategories();
 
-        var chosenCategories = {};
+        if (!skipSearchTracking) {
+            updateCategoryUsage(searchFieldValue, allCategories);
+        }
+
+        search(searchFieldValue, chosenCategoriesByParent, originatingFacility, adoptingFacility);
+    }
+
+    function getFacilityValue(inputSelector, listItemSelector) {
+        const facilityInput = $(inputSelector);
+        const facilityLi = $(listItemSelector);
+        return getComboBoxVal(facilityInput, facilityLi);
+    }
+
+    function getSelectedCategories() {
+        const selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
+
+        const chosenCategoriesByParent = {};
+        const allCategories = [];
 
         selectedCategoryCheckboxes.each(function () {
-            var parentCategory = this.dataset.parentCategory;
-            var value = this.value;
+            const parentCategory = this.dataset.parentCategory;
+            const value = this.value;
 
-            if (!chosenCategories[parentCategory]) {
-                chosenCategories[parentCategory] = [];
+            if (!chosenCategoriesByParent[parentCategory]) {
+                chosenCategoriesByParent[parentCategory] = [];
             }
 
-            chosenCategories[parentCategory].push(value);
+            chosenCategoriesByParent[parentCategory].push(value);
+            allCategories.push(value);
         });
 
-        if (Object.keys(chosenCategories).length === 0) {
-            chosenCategories = null;
-        } else if (!skipSearchTracking) {
-            // Update Category Usage....
-            allChosenCategories = Object.values(chosenCategories).flat();
-            Rails.ajax({
-                type: 'patch',
-                url: "/update_category_usage",
-                data: jQuery.param({query: searchField.value, chosenCategories: allChosenCategories})
-            });
-        }
+        return {
+            chosenCategoriesByParent: Object.keys(chosenCategoriesByParent).length === 0 ? null : chosenCategoriesByParent,
+            allCategories
+        };
+    }
 
-        // Run the search
-        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
+    function updateCategoryUsage(query, chosenCategories) {
+        Rails.ajax({
+            type: 'patch',
+            url: "/update_category_usage",
+            data: jQuery.param({ query, chosenCategories })
+        });
     }
 
     // Sort the results based on each sort option
@@ -959,7 +974,7 @@ function searchPracticesPage(skipSearchTracking=false) {
         } else if (query) {
             searchField.value = decodeURI(query);
         };
-        // update search results but skip checking facility checkboxes
+        // update search results but skip checking Location comboboxes
         updateResults(false);
     } else if ((searchLocation[0] === '?filter_by') || (window.location.pathname === '/search' && window.location.search === '')) {
         hideResultsSectionElAndShowSpinner();
