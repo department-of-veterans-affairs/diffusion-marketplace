@@ -151,7 +151,7 @@ function hideResultsElAndShowSpinner() {
 }
 
 
-function searchPracticesPage() {
+function searchPracticesPage(skipSearchTracking=false) {
     const searchField = document.querySelector('#dm-practice-search-field');
     // Skip if not the search page
     if (location.pathname !== '/search') return;
@@ -253,7 +253,6 @@ function searchPracticesPage() {
         $('#resetSearchFiltersButton').addClass('display-none');
 
         if (categories) {
-            //     // Collect any practice that has a category that matches the selected category/categories.
             var categoryFilters = [];
 
             Object.entries(categories).forEach(function ([parentCat, subCats]) {
@@ -356,6 +355,7 @@ function searchPracticesPage() {
         the results will have the same score because it stops after the first match.
         */
         function improveResultScoreBasedOnAmountOfCategoryMatches(results) {
+            allChosenCategories = Object.values(categories).flat();
             results.map(function(result) {
                 var resultScore = result.score;
                 var cat_names = result.item.category_names;
@@ -723,7 +723,7 @@ function searchPracticesPage() {
         appliedFilterButton.addEventListener('click', function(event) {
             uncheckFilter(filterType, filterName);
             $('#resetSearchFiltersButton').addClass('display-none');
-            updateResults();
+            updateResults(false);
             event.stopPropagation();
         });
 
@@ -882,7 +882,7 @@ function searchPracticesPage() {
 
         if (Object.keys(chosenCategories).length === 0) {
             chosenCategories = null;
-        } else {
+        } else if (!skipSearchTracking) {
             // Update Category Usage....
             allChosenCategories = Object.values(chosenCategories).flat();
             Rails.ajax({
@@ -1045,11 +1045,14 @@ function moveFilters() {
 }
 
 function execSearchFunctions() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const skipSearchTracking = urlParams.has('all_communities') || urlParams.has('category');;
+
     addAllCheckBoxListener('.all-clinical-checkbox', '.clinical-checkbox');
     addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
     addAllCheckBoxListener('.all-strategic-checkbox', '.strategic-checkbox');
     addAllCheckBoxListener('.all-communities-checkbox', '.communities-checkbox');
-    searchPracticesPage();
+    searchPracticesPage(skipSearchTracking);
     moveFilters();
 }
 
