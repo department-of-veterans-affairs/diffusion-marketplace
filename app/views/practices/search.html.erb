@@ -45,29 +45,29 @@
       </div>
 
       <div class="grid-row grid-gap">
-          <div id="filtersContainer" class="display-none">
-            <%= render 'practices/search_partials/search_filters' %>
-          </div>
+        <div id="filtersContainer" class="display-none">
+          <%= render 'practices/search_partials/search_filters' %>
+        </div>
 
-          <div class="desktop:grid-col-4 mobile-hide tablet-hide" id="desktopFiltersContainer">
+        <div class="desktop:grid-col-4 mobile-hide tablet-hide" id="desktopFiltersContainer">
+          <!-- Content will be injected here via js -->
+        </div>
+
+        <div class="usa-accordion usa-accordion--bordered desktop-hide tablet:grid-col-4 mobile:grid-col-4">
+          <h2 class="usa-accordion__heading">
+            <button
+              type="button"
+              class="usa-accordion__button"
+              aria-expanded="false"
+              aria-controls="mobileFiltersContainer"
+            >
+              Refine Results
+            </button>
+          </h2>
+          <div class="usa-accordion__content usa-prose" id="mobileFiltersContainer" >
             <!-- Content will be injected here via js -->
           </div>
-
-          <div class="usa-accordion usa-accordion--bordered desktop-hide tablet:grid-col-4 mobile:grid-col-4">
-            <h2 class="usa-accordion__heading">
-              <button
-                type="button"
-                class="usa-accordion__button"
-                aria-expanded="false"
-                aria-controls="mobileFiltersContainer"
-              >
-                Refine Results
-              </button>
-            </h2>
-            <div class="usa-accordion__content usa-prose" id="mobileFiltersContainer" >
-              <!-- Content will be injected here via js -->
-            </div>
-          </div>
+        </div>
         <div class="grid-col-8">
           <%= render partial: 'shared/search_sort_select_section',
             locals: {
