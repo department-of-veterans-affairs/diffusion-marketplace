@@ -12,7 +12,6 @@ describe 'Practices', type: :feature do
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Time.now(), user: @user2)
     @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, date_initiated: Time.now(), user: @user2)
     @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, date_initiated: Time.now(), user: @user2)
-    @highlighted_practice = Practice.create!(name: 'Highlighted practice', approved: true, published: true, enabled: true, highlight: true, highlight_body: 'Highlight body text', date_initiated: Time.now(), highlight_attachment: File.new("#{Rails.root}/spec/assets/charmander.png"), user: @user2)
 
     visn_20 = Visn.create!(id: 15, name: "Northwest Network", number: 20)
     @facility_1 = VaFacility.create!(visn: visn_20, station_number: "687HA", official_station_name: "Yakima VA Clinic", common_name: "Yakima", street_address_state: "WA")
@@ -72,11 +71,6 @@ describe 'Practices', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_link(href: '/about')
-      expect(page).to have_content(@highlighted_practice.name)
-      expect(page).to have_content('Highlight body text')
-      expect(page).to have_content('Featured Innovation')
-      expect(page).to have_content('Nominate')
-      expect(page).to have_content('Are you working on an innovation that’s making a difference at VA? Submit a nomination for the innovation to be included on the Diffusion Marketplace.')
       expect(page).to have_link('Nominate', href: nominate_an_innovation_path )
     end
 

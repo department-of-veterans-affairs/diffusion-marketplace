@@ -44,12 +44,6 @@ Rails.application.routes.draw do
     get '/published', action: 'published', as: 'published'
     post '/favorite', action: 'favorite', as: 'favorite'
     delete '/diffusion_history/:diffusion_history_id', action: 'destroy_diffusion_history', as: 'destroy_diffusion_history'
-    member do
-      post :highlight
-      post :un_highlight
-      post :feature
-      post :un_feature
-    end
     resources :comments do
       member do
           put 'like' => 'commontator/comments#upvote'
