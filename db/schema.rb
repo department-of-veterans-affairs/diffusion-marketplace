@@ -364,6 +364,7 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
   end
 
   create_table "homepage_features", force: :cascade do |t|
+    t.bigint "homepage_id"
     t.string "title"
     t.string "description"
     t.string "url"
@@ -373,9 +374,11 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["homepage_id"], name: "index_homepage_features_on_homepage_id"
   end
 
   create_table "homepages", force: :cascade do |t|
+    t.string "internal_title"
     t.string "section_title_one"
     t.string "section_title_two"
     t.string "section_title_three"

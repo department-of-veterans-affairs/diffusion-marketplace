@@ -1,22 +1,24 @@
 ActiveAdmin.register Homepage do
-  permit_params :section_title_one, :section_title_two, :section_title_three
+  permit_params :internal_title, :section_title_one, :section_title_two, :section_title_three, homepage_feature_attributes: [:id, :title, :description, :url, :cta_text, :image, :image_alt_text, :section_id, :position, :_destroy]
 
  #  batch_action :destroy, false
 
- remove_filter :section_title_one, :section_title_two, :section_title_three
+ remove_filter :internal_title, :section_title_one, :section_title_two, :section_title_three, :homepage_features
  #  filter :title
  #  filter :description
  #  filter :url
 
   index do
- #    id_column
-    # column :title
- #    column :url
- #    column :featured
- #    actions do |topic|
- #      topic_featured_action_str = topic.featured ? "Unfeature" : "Feature"
- #      item topic_featured_action_str, feature_admin_topic_path(topic), method: :post
- #    end
+    id_column
+    column :internal_title
+ #    # column :title
+ # #    column :url
+ # #    column :featured
+ # #    actions do |topic|
+ # #      topic_featured_action_str = topic.featured ? "Unfeature" : "Feature"
+ # #      item topic_featured_action_str, feature_admin_topic_path(topic), method: :post
+ # #    end
+    actions
   end
 
  #  member_action :feature, method: :post do
@@ -74,6 +76,74 @@ ActiveAdmin.register Homepage do
  #      end
  #    f.actions
  #  end
+
+    form do |f|
+    f.inputs 'Nickname' do
+      f.input :internal_title, as: :string, required: true
+    end
+    f.inputs 'Section 1' do
+      f.input :section_title_one
+      f.has_many :homepage_features do |t|
+        t.input :title
+        t.input :description
+        t.input :url
+        t.input :cta_text
+        # add image upload 
+        # condition for image alt text
+        # add something here to limit adding another if there are 3!
+      end
+    end
+
+    f.inputs 'Section 2' do
+      f.input :section_title_one
+      f.has_many :homepage_features do |t|
+        t.input :title
+        t.input :description
+        t.input :url
+        t.input :cta_text
+        # add image upload 
+        # condition for image alt text
+        # add something here to limit adding another if there are 3!
+      end
+    end
+
+    f.inputs 'Section 3' do
+      f.input :section_title_one
+      f.has_many :homepage_features do |t|
+        t.input :title
+        t.input :description
+        t.input :url
+        t.input :cta_text
+        # add image upload 
+        # condition for image alt text
+        # add something here to limit adding another if there are 3!
+      end
+    end
+
+    # f.inputs 'Features' do
+    #   # f.has_many :homepage_features, heading: false, sortable: :position, sortable_start: 1 do |t|
+    #   f.has_many :homepage_features do |t|
+    #     t.input :title
+    #     t.input :description
+    #     t.input :url
+    #     t.input :cta_text
+    #     # new_record: 'Leave Comment',
+    #              # remove_record: 'Remove Comment'
+    #     #          allow_destroy: -> (c) { c.author?(current_admin_user) } do |b|
+    #     # end
+    #   end
+    # end
+    # f.inputs 'Comments' do
+    #   f.has_many :comments,
+    #              heading: false,
+    #              new_record: 'Leave Comment',
+    #              remove_record: 'Remove Comment',
+    #              allow_destroy: -> (c) { c.author?(current_admin_user) } do |b|
+    #     b.input :body
+    #   end
+    # end
+    f.actions
+  end
 
  #  # The following controller overrides is a brute force way of catching
  #  # Paperclip::Errors::NotIdentifiedByImageMagickError's, which were being displayed to the
