@@ -69,20 +69,16 @@
           </div>
         </div>
         <div class="grid-col-8">
-          <%= render partial: 'shared/search_sort_select_section',
-            locals: {
-              sort_options: [
-                ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],
-                ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
-                ['Sort by most adopted innovations', 'adoptions', class: 'usa-select'],
-                ['Sort by most recently added', 'added', class: 'usa-select']
-              ],
-              section_id: 'dm-search-practices',
-              section_classes: 'dm-search-practices display-none margin-top-2',
-              first_div_classes: 'grid-row margin-bottom-105 flex-align-center',
-              second_div_classes: 'grid-col-12 order-first margin-top-0 dm-sort-container margin-bottom-3 desktop:margin-top-1 desktop:margin-bottom-0 desktop:margin-top-0 desktop:order-last desktop:grid-col-4'
-            }
+          <%
+            section_id = 'dm-search-practices'
+            section_classes = 'dm-search-practices display-none margin-top-2'
+            first_div_classes = 'grid-row margin-bottom-105 flex-align-center'
           %>
+
+          <% label_text =  local_assigns[:is_crh_show] ? 'Sort by' : '' %>
+          <section id="<%= section_id %>" class="<%= section_classes %>">
+            <div id="search-results" class="grid-row grid-gap-3"></div>
+          </section>
           <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: "dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10" } %>
           <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
         </div>
