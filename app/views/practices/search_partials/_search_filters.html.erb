@@ -56,10 +56,32 @@
 
 <hr class="border border-base-lighter margin-x-neg-205">
 
-<fieldset class="usa-fieldset padding-bottom-5">
+<fieldset class="usa-fieldset padding-top-2 padding-bottom-3">
   <div id="adopting-facility-container">
-    <legend class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 desktop:display-block">Adopting location</legend>
+    <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Adopting location</legend>
     <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
+  </div>
+</fieldset>
+
+<hr class="border border-base-lighter margin-x-neg-205">
+
+<fieldset class="usa-fieldset margin-top-3 padding-bottom-3">
+  <div id="search-sort-options-container">
+    <%
+      sort_options = [
+        ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],
+        ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
+        ['Sort by most adopted innovations', 'adoptions', class: 'usa-select'],
+        ['Sort by most recently added', 'added', class: 'usa-select']
+      ]
+      second_div_classes = 'grid-col-12 order-first margin-top-0 dm-sort-container'
+    %>
+    <% label_text =  local_assigns[:is_crh_show] ? 'Sort by' : '' %>
+    <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Sort By</legend>
+    <div class="<%= second_div_classes %>" id="search_sort_options">
+      <%= label_tag 'search_sort_option', label_text, class: 'usa-label margin-0', 'aria-label': 'Search sort options'%>
+      <%= select_tag('', options_for_select(sort_options), id: 'search_sort_option', name: 'search_sort_option', class: 'height-5 usa-select margin-0') %>
+    </div>
   </div>
 </fieldset>
 
