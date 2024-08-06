@@ -382,6 +382,7 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.string "section_title_one"
     t.string "section_title_two"
     t.string "section_title_three"
+    t.boolean "published", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

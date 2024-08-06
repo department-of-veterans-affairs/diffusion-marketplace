@@ -5,6 +5,7 @@ class CreateHomepages < ActiveRecord::Migration[6.1]
       t.string :section_title_one
       t.string :section_title_two
       t.string :section_title_three
+      t.boolean :published, default: false
 
       t.timestamps
     end
