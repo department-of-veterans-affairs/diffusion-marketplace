@@ -64,7 +64,7 @@ function searchPracticesByVisn() {
         $(SEARCH_RESULTS).removeClass('display-none');
         // Print results to the page
         document.querySelector('#search-results').innerHTML = finalResults;
-        
+
         $(SEARCH_RESULTS).showMoreItems({
             startNum: 6,
             afterNum: 6,
@@ -78,7 +78,7 @@ function searchPracticesByVisn() {
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
         // Set variables
-        var resultsSummary = document.querySelector('#results-summary');
+        var resultsSummary = document.querySelector('#results-sort');
         // set the search page search bar input value
         searchField.value = query;
         if (query !== '') {

@@ -49,7 +49,7 @@ describe 'Homepage', type: :feature do
       fill_in('dm-homepage-search-field', with: 'James A. Haley')
       find('#dm-homepage-search-button').click
 
-      expect(page).to have_content('1 result:')
+      expect(page).to have_content('1 Result:')
       expect(page).to have_content(@practice.name)
     end
   end
@@ -186,7 +186,7 @@ describe 'Homepage', type: :feature do
         expect(page).to have_current_path('/search?all_communities=true')
         filter_button = find('button.search-filters-accordion-button')
         expect(filter_button).to have_text('Filters (1)')
-        expect(page).to have_content("1 result:")
+        expect(page).to have_content("1 Result:")
         expect(page).to have_content(@practice_3.name)
       end
     end

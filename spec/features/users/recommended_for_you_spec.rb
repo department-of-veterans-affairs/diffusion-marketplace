@@ -110,7 +110,7 @@ describe 'Recommended for you page', type: :feature do
 
       click_link('See more innovations')
       expect(page).to have_selector('#search-page', visible: true)
-      expect(page).to have_content('4 results')
+      expect(page).to have_content('4 Results')
     end
   end
 

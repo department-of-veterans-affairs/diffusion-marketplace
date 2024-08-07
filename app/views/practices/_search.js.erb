@@ -23,6 +23,7 @@
         }
     }
     var all_categories = <%= raw @categories.to_json %>;
+    var allChosenCategories = [];
 <% end %>
 
 
@@ -293,8 +294,11 @@ function searchPracticesPage() {
         // set the search page search bar input value
         searchField.value = query;
 
+        const searchHeader = document.getElementById('searchHeader');
         if (query) {
             trackSearchField(query);
+            searchHeader.textContent = `Search Results for: ${query}`;
+
             var searchBarQueryArray = [];
             search_options.keys.forEach(function(practiceKey) {
                 var queryObj = {};
@@ -302,17 +306,35 @@ function searchPracticesPage() {
                 return searchBarQueryArray.push(queryObj);
             });
         } else {
+            searchHeader.textContent = "Search";
             if (searchLocation[0] === '?filter_by') {
                 trackSearchByFilter(searchLocation[1]);
             }
         }
 
+        $('.applied-filter').remove();
+        $('#resetSearchFiltersButton').addClass('display-none');
+
         if (categories) {
-            // Collect any practice that has a category that matches the selected category/categories.
+            //     // Collect any practice that has a category that matches the selected category/categories.
             var categoryFilters = [];
-            categories.forEach(function (categorySelection) {
-                return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+
+            Object.entries(categories).forEach(function ([parentCategory, selectedValues]) {
+                if (parentCategory !== 'communities') {
+                    selectedValues.forEach(function (categorySelection) {
+                        addAppliedFilter('TAG', categorySelection);
+                        categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+                    });
+                }
             });
+
+            // Iterate over 'communities' categories
+            if (categories['communities']) {
+                categories['communities'].forEach(function (categorySelection) {
+                    addAppliedFilter('COMMUNITY', categorySelection);
+                    categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+                });
+            }
         }
 
         var originFacilityArray = originatingFacility ? [] : null;
@@ -334,6 +356,8 @@ function searchPracticesPage() {
                 } else {
                     originFacilityArray.push({'origin_facilities': "=\"" + vf.official_station_name + "\""});
                 }
+
+                addAppliedFilter('ORIGIN', vf.official_station_name)
             });
         } else if (originatingFacility && !originatingFacility.includes('VISN-')){
             // Collect the practices that have an origin facility matching the selected facility
@@ -344,6 +368,7 @@ function searchPracticesPage() {
                     return originatingFacility === f.official_station_name;
                 }
             });
+            addAppliedFilter('ORIGIN', foundOriginatingFacility.official_station_name)
 
             originFacilityArray.push({'origin_facilities': "=\"" + (foundOriginatingFacility.hasOwnProperty('station_number') ? foundOriginatingFacility.station_number : foundOriginatingFacility.official_station_name) + "\""});
         }
@@ -377,6 +402,7 @@ function searchPracticesPage() {
                     } else {
                         stationNumbers.push(ff.official_station_name);
                     }
+                    addAppliedFilter('ADOPTION', ff.official_station_name)
                 });
 
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
@@ -386,6 +412,7 @@ function searchPracticesPage() {
 
                 foundAdoptingFacility.station_number ? stationNumbers.push(foundAdoptingFacility.station_number) : stationNumbers.push(foundAdoptingFacility.official_station_name)
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
+                addAppliedFilter('ADOPTION', foundAdoptingFacility.official_station_name)
             }
         }
 
@@ -404,7 +431,7 @@ function searchPracticesPage() {
                 var cat_names = result.item.category_names;
                 if (cat_names && Array.isArray(cat_names)) {
                     cat_names.forEach(function (cn) {
-                        if (categories.includes(cn)) {
+                        if (allChosenCategories.includes(cn)) {
                             resultScore = result.score / 2;
                         }
                         result.score = resultScore;
@@ -728,7 +755,7 @@ function searchPracticesPage() {
         }
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
+        resultsSummary.innerHTML = results.length + ' Result' + (results.length === 1 ? ':' : 's:');
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function (result) {
@@ -738,6 +765,60 @@ function searchPracticesPage() {
         // Highlight search results where exact keyword matches
         var mark = new Mark('#search-results');
         mark.mark(query);
+    }
+
+    function addAppliedFilter(filterType, filterName) {
+        const resultsSummary = document.getElementById('results-summary');
+        const resetButton = document.getElementById('resetSearchFiltersButton');
+        const appliedFilterName = filterName.toUpperCase();
+        const appliedFilterString = `${filterType}: ${appliedFilterName} `;
+        const appliedFilterButton = document.createElement('button');
+        const filterClassIndexMap = {
+            'TAG': 1,
+            'COMMUNITY': 2,
+            'ORIGIN': 3,
+            'ADOPTION': 4
+        };
+        const filterClassIndex = filterClassIndexMap[filterType] || 1;
+
+        appliedFilterButton.className = `usa-button applied-filter applied-filter-${filterClassIndex}`;
+        appliedFilterButton.id = `${filterName}`;
+        appliedFilterButton.textContent = appliedFilterString + ' X';
+        appliedFilterButton.style.cursor = 'pointer';
+        appliedFilterButton.setAttribute(
+            'aria-label',
+            `Remove ${filterType} filter for ${filterName} and update search results`
+        );
+
+        appliedFilterButton.addEventListener('click', function(event) {
+            uncheckFilter(filterType, filterName);
+            $('#resetSearchFiltersButton').addClass('display-none');
+            updateResults();
+            event.stopPropagation();
+        });
+
+        resultsSummary.parentNode.insertBefore(appliedFilterButton, resetButton);
+        resetButton.classList.remove('display-none');
+    }
+
+    function uncheckFilter(filterType, filterName) {
+        if (filterType === 'TAG' || filterType === 'COMMUNITY') {
+            const checkbox = Array.from(document.querySelectorAll('.usa-checkbox__input')).find(c =>
+                c.labels && c.labels.length && c.labels[0].textContent.trim() === filterName);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        } else if (filterType === 'ORIGIN') {
+            const button = document.querySelector('.originating-facility-container .usa-combo-box__clear-input');
+            if (button) {
+                button.click();
+            }
+        } else if (filterType === 'ADOPTION') {
+            const button = document.querySelector('.adopting-facility-container .usa-combo-box__clear-input');
+            if (button) {
+                button.click();
+            }
+        }
     }
 
     // Highlight Fuse.js results
@@ -857,6 +938,10 @@ function searchPracticesPage() {
             $(window).scrollTop(pagePosition.original);
         }
 
+        updateResults();
+    });
+
+    function updateResults() {
         var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
         window.history.pushState({ turbolinks: {} }, "", urlQuery);
 
@@ -874,19 +959,32 @@ function searchPracticesPage() {
 
         // Get the values for any chosen categories
         var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
-        var chosenCategories = selectedCategoryCheckboxes.map(function () {
-            return this.value;
-        }).get();
-        if (!chosenCategories.length) {
+
+        var chosenCategories = {};
+
+        selectedCategoryCheckboxes.each(function () {
+            var parentCategory = this.dataset.parentCategory;
+            var value = this.value;
+
+            if (!chosenCategories[parentCategory]) {
+                chosenCategories[parentCategory] = [];
+            }
+
+            chosenCategories[parentCategory].push(value);
+        });
+
+        if (Object.keys(chosenCategories).length === 0) {
             chosenCategories = null;
+        } else {
+            // Update Category Usage....
+            allChosenCategories = Object.values(chosenCategories).flat();
+            Rails.ajax({
+                type: 'patch',
+                url: "/update_category_usage",
+                data: jQuery.param({query: searchField.value, chosenCategories: allChosenCategories})
+            });
         }
 
-        // Update Category Usage....
-        Rails.ajax({
-            type: 'patch',
-            url: "/update_category_usage",
-            data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories})
-        });
 
         // Run the search
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
@@ -915,7 +1013,7 @@ function searchPracticesPage() {
         } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
             accordionText(0, 2);
         }
-    });
+    }
 
     // Sort the results based on each sort option
     var sortSelect = $(SORT_EL);
@@ -944,6 +1042,7 @@ function searchPracticesPage() {
     $(document).on('click', '#resetSearchFiltersButton, #resetSearchFiltersButtonMobile', function(e) {
         e.preventDefault();
 
+        // uncheck all filter checkboxes
         $('.usa-combo-box__clear-input').each(function() {
             $(this).trigger('click');
         });
@@ -953,10 +1052,13 @@ function searchPracticesPage() {
                 $(this).prop('checked', false);
             }
         });
+
         // Move the focus area back to the top of the filters window
         $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
         // Reset filter count text
         $('.search-filters-accordion-button').text('Filters');
+        // reset search results
+        searchPracticesPage();
     })
 
     if (window.location.pathname === '/search' && window.location.search !== '' && searchLocation[0] !== '?filter_by') {
