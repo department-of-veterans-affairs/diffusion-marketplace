@@ -120,6 +120,55 @@ function buildPracticeCard(result) {
     return cardHtml;
 }
 
+function buildSearchPagePracticeCard(result) {
+    var cardHtml = '';
+    var practiceImage = result.item.image || 'default-image-placeholder.jpg'; // use a default placeholder if no image is available
+    var practiceName = result.item.name;
+    var practiceId = result.item.id;
+    var practiceTagline = result.item.tagline || '';
+    var initiatingFacilityName = result.item.initiating_facility_name || '';
+
+    var cardHeaderHtml =
+        '<h3 class="text-normal font-sans-lg multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
+            '<a href="/innovations/' + result.item.slug + '" class="dm-practice-title">' +
+                practiceName +
+            '</a>' +
+        '</h3>';
+
+    // Default card image placeholder
+    var cardImagePlaceholder =
+        '<div class="practice-card-img-placeholder" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '" data-practice-name="' + practiceName + '" style="width: 200px; height: 133px; background-color: #f0f0f0;"></div>';
+
+    var cardRetiredBanner = '';
+    if (result.item.retired) {
+        cardRetiredBanner = '<div class="dm-practice-retired-banner" style="display: block; width: 100%; margin-bottom: 10px;"><h5>Retired</h5></div>';
+    }
+
+    cardHtml += `
+        <div class="result-item" style="display: block; width: 100%; margin-bottom: 10px;">
+            <div class="result-item" style="display: flex; width: 100%; margin-bottom: 30px; align-items: flex-start;">
+                <div class="result-item-image" style="flex: 0 0 200px; margin-right: 30px;">
+                    ${cardImagePlaceholder}
+                </div>
+                <div class="result-item-content" style="flex: 1;">
+                    ${cardHeaderHtml}
+                    <p class="multiline-ellipses-1 font-sans-sm practice-card-tagline" style="margin-bottom: 15px;">
+                        ${practiceTagline}
+                    </p>
+                    <div class="dm-practice-card-origin margin-bottom-2" style="margin-bottom: 15px;">
+                        <span class="font-sans-2xs text-italic line-height-sans-3 dm-practice-card-origin-info">
+                            Created by ${initiatingFacilityName}
+                        </span>
+                    </div>
+                    ${cardRetiredBanner}
+                </div>
+            </div>
+        </div>
+    `;
+
+    return cardHtml;
+}
+
 function showSpinner() {
     $(SPINNER).removeClass('display-none');
     $(SPINNER).addClass('display-flex');
@@ -163,9 +212,13 @@ function searchPracticesPage(skipSearchTracking=false) {
 
         var resultsArray = [];
         var finalResults = '';
-        tmpResults.sort(sortByRetired).forEach(function (result) {
-            const practiceCard = buildPracticeCard(result)
-            finalResults += practiceCard;
+        tmpResults.sort(sortByRetired).forEach(function (result, index) {
+            // Use the new function to build practice cards for the search page with horizontal layout
+            const practiceCard = buildSearchPagePracticeCard(result);
+            finalResults += practiceCard
+            if (index < tmpResults.length - 1) {
+                finalResults += '<hr>'; // Add horizontal line separator
+            }
             resultsArray.push(practiceCard);
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
