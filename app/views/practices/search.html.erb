@@ -69,14 +69,7 @@
           </div>
         </div>
         <div class="grid-col-8">
-          <%
-            section_id = 'dm-search-practices'
-            section_classes = 'dm-search-practices display-none margin-top-2'
-            first_div_classes = 'grid-row margin-bottom-105 flex-align-center'
-          %>
-
-          <% label_text =  local_assigns[:is_crh_show] ? 'Sort by' : '' %>
-          <section id="<%= section_id %>" class="<%= section_classes %>">
+          <section id="dm-search-practices" class="dm-search-practices display-none margin-top-2">
             <div id="search-results" class="grid-row grid-gap-3"></div>
           </section>
           <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: "dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10" } %>
