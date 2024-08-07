@@ -4,18 +4,22 @@
   <div id="search-sort-options-container">
     <%
       sort_options = [
-        ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],
-        ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
-        ['Sort by most adopted innovations', 'adoptions', class: 'usa-select'],
-        ['Sort by most recently added', 'added', class: 'usa-select']
+        ['Sort by most relevant', 'most_relevant'],
+        ['Sort by A to Z', 'a_to_z'],
+        ['Sort by most adopted innovations', 'adoptions'],
+        ['Sort by most recently added', 'added']
       ]
-      second_div_classes = 'grid-col-12 order-first margin-top-0 dm-sort-container'
     %>
-    <% label_text =  local_assigns[:is_crh_show] ? 'Sort by' : '' %>
-    <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Sort By</legend>
-    <div class="<%= second_div_classes %>" id="search_sort_options">
-      <%= label_tag 'search_sort_option', label_text, class: 'usa-label margin-0', 'aria-label': 'Search sort options'%>
-      <%= select_tag('', options_for_select(sort_options), id: 'search_sort_option', name: 'search_sort_option', class: 'height-5 usa-select margin-0') %>
+    <div>
+      <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Sort By</legend>
+      <% sort_options.each do |option| %>
+        <div class="usa-radio">
+          <input id="search_sort_option_<%= option[1] %>" class="usa-radio__input" type="radio" name="search_sort_option" value="<%= option[1] %>" <%= 'checked' if option[1] == 'adoptions' %>>
+          <label class="usa-radio__label" for="search_sort_option_<%= option[1] %>">
+            <%= option[0] %>
+          </label>
+        </div>
+      <% end %>
     </div>
   </div>
 </fieldset>
