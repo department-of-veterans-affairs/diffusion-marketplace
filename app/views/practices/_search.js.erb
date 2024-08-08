@@ -144,7 +144,7 @@ function buildSearchResult(result) {
         resultRetiredBanner = '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
     }
 
-    resultHtml += `<div class="dm-search-result display-block width-full margin-bottom-1">
+    resultHtml += `<div class="dm-search-result padding-y-2 display-block width-full">
         <div id="result-container" class="display-flex width-full flex-align-start">
             ${resultImagePlaceholder}
             ${resultRetiredBanner}
@@ -211,7 +211,7 @@ function searchPracticesPage(skipSearchTracking=false) {
             const practiceCard = buildSearchResult(result);
             finalResults += practiceCard
             if (index < tmpResults.length - 1) {
-                finalResults += '<hr class="maxw-full">'; // Add horizontal line separator
+                finalResults += '<hr class="grid-col-12">'; // Add horizontal line separator
             }
             resultsArray.push(practiceCard);
 
@@ -235,8 +235,8 @@ function searchPracticesPage(skipSearchTracking=false) {
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
             replaceSearchPageImagePlaceholders();
             $(SEARCH_RESULTS).showMoreItems({
-                startNum: 12,
-                afterNum: 12,
+                startNum: 24,
+                afterNum: 24,
                 moreText: 'Load more',
                 noMoreText: 'No more results'
             })
@@ -917,7 +917,7 @@ function searchPracticesPage(skipSearchTracking=false) {
     }
 
     function getSelectedCategories() {
-        const selectedCategoryCheckboxes = $('#filtersContainer [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
+        const selectedCategoryCheckboxes = $('#search-filters-container [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
 
         const chosenCategoriesByParent = {};
         const allCategories = [];
@@ -1071,7 +1071,7 @@ function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
 
 function moveFilters() {
   const width = window.innerWidth;
-  const filtersContainer = document.getElementById('filtersContainer');
+  const filtersContainer = document.getElementById('search-filters-container');
   const mobileContainer = document.getElementById('mobileFiltersContainer');
   const desktopContainer = document.getElementById('desktopFiltersContainer');
 
