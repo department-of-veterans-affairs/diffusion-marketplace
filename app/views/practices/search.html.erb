@@ -46,7 +46,7 @@
       </div>
 
       <div class="grid-row grid-gap">
-        <div id="filtersContainer" class="display-none">
+        <div id="search-filters-container" class="display-none">
           <%= render 'practices/search_partials/search_filters' %>
         </div>
 
@@ -70,8 +70,8 @@
           </div>
         </div>
         <div class="grid-col-8">
-          <section id="dm-search-practices" class="dm-search-practices display-none margin-top-2">
-            <div id="search-results" class="grid-row grid-gap-3"></div>
+          <section id="dm-search-practices" class="dm-search-practices display-none margin-top-2 margin-left-4">
+            <div id="search-results" class="grid-row"></div>
           </section>
           <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: "dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10" } %>
           <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
