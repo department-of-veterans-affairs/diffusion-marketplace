@@ -26,23 +26,7 @@
     line-height: 115%;
   }
 
-  .dm-search-result-img-container {
-    height: 165px;
-    min-width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-
-    img {
-      flex-shrink: 0;
-      min-height: 100%;
-      min-width: 100%;
-    }
-  }
-
-  // styling for when there is no practice thumbnail
-  .search-result-img-placeholder {
+  .search-result-img-container {
     height: 133px;
     background-color: color($theme-color-base-darkest);
     display: flex;
