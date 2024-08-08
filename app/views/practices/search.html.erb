@@ -16,31 +16,32 @@
 <div id="search-page">
   <section class="grid-container margin-bottom-neg-3 margin-top-5" id="searchResultsContainer">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
-    <form id="update-search-results-form">
       <div class="grid-row margin-bottom-5">
         <div class="grid-col-12">
-          <h2 class="usa-prose-h2 margin-bottom-5" id="searchHeader"> Search </h2>
-          <div class="usa-search usa-search--big margin-bottom-2 grid-col-12">
-            <div role="search" class="flex-column">
-              <label for="dm-practice-search-field"></label>
-              <div id="search-bar-container" class="display-flex">
-                <input
-                  class="usa-input"
-                  id="dm-practice-search-field"
-                  title="Type at least three characters to search."
-                  autocomplete="off"
-                  type="search"
-                  name="search"
-                  placeholder="Search innovations, tags, communities..."
-                >
-                <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
-                  <span class="usa-search__submit-text text-bold">Search</span>
-                </button>
+          <form id="update-search-results-form">
+            <h2 class="usa-prose-h2 margin-bottom-5" id="searchHeader"> Search </h2>
+            <div class="usa-search usa-search--big margin-bottom-2 grid-col-12">
+              <div role="search" class="flex-column">
+                <label for="dm-practice-search-field"></label>
+                <div id="search-bar-container" class="display-flex">
+                  <input
+                    class="usa-input"
+                    id="dm-practice-search-field"
+                    title="Type at least three characters to search."
+                    autocomplete="off"
+                    type="search"
+                    name="search"
+                    placeholder="Search innovations, tags, communities..."
+                  >
+                  <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
+                    <span class="usa-search__submit-text text-bold">Search</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <span id="results-summary" class="display-block desktop:display-inline margin-right-2">Results:</span>
-          <button type="button" class="usa-button usa-button--unstyled display-none" id="resetSearchFiltersButton">Clear filters</button>
+            <span id="results-summary" class="display-block desktop:display-inline margin-right-2">Results:</span>
+            <button type="button" class="usa-button usa-button--unstyled display-none" id="resetSearchFiltersButton">Clear filters</button>
+          </form>
         </div>
       </div>
 
@@ -76,7 +77,6 @@
           <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
         </div>
       </div>
-    </form>
   </section>
 </div>
 
