@@ -41,11 +41,9 @@ function toggleFocusStylingForPracticeTitle() {
 function replaceImagePlaceholders() {
     $('.dm-practice-card').each(function() {
         const placeholder = $(this).find('.practice-card-img-placeholder');
-        
         const practiceId = placeholder.attr('data-practice-id');
         const imagePath = placeholder.attr('data-practice-image');
         const practiceName = placeholder.attr('data-practice-name');
-        
         if (practiceId && imagePath) {
             fetchSignedResource(imagePath).then(signedUrl => {
                 replacePlaceholderWithImage(signedUrl, practiceId, practiceName);
@@ -73,6 +71,37 @@ function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
                    .addClass('practice-card-img');
     });
 }
+function replaceSearchPageImagePlaceholders() {
+    $('.dm-search-result').each(function() {
+        const placeholder = $(this).find('.search-result-img-container');
+
+        const practiceId = placeholder.attr('data-practice-id');
+        const imagePath = placeholder.attr('data-practice-image');
+        const practiceName = placeholder.attr('data-practice-name');
+
+        if (practiceId && imagePath) {
+            console.log(`${practiceId}: ${imagePath}`)
+            fetchSignedResource(imagePath).then(signedUrl => {
+                replaceSearchResultPlaceholderImage(signedUrl, practiceId, practiceName);
+            });
+        }
+    });
+}
+
+function replaceSearchResultPlaceholderImage(imageUrl, practiceId, practiceName) {
+    loadImage(imageUrl, function(loadedImageSrc) {
+        const imgElement = $('<img>')
+            .attr('data-resource-id', practiceId)
+            .attr('src', loadedImageSrc)
+            .attr('alt', practiceName + ' Search Result Image')
+            .addClass('grid-row search-result-img');
+
+        const placeholder = $('.search-result-img-container[data-practice-id="' + practiceId + '"]');
+        placeholder.empty()
+                   .append(imgElement)
+    });
+}
+
 
 function loadImage(imageSrc, callback) {
     var img = new Image();
