@@ -119,15 +119,15 @@
   .filter-submit-button {
     @include transition-btn-colors;
   }
+
+  hr {
+    border: none;
+    height: 1px;
+    background: #dcdee0;
+  }
 }
 
 .dm-search-practices {
-  hr {
-    border: none;
-    height: 2px;
-    background: #dcdee0;
-  }
-
   mark {
     background: color($theme-color-accent-warm);
     font-weight: bold;
