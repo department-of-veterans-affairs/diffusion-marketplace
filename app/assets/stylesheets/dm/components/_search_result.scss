@@ -33,6 +33,12 @@
     flex: 0 0 220px;
     margin-right: 30px;
 
+    img {
+      flex-shrink: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+
     h3 {
       align-self: flex-end;
       color: color($theme-color-dm-white);
