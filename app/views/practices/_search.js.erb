@@ -14,7 +14,7 @@
     var SORT_EL = 'input[name="search_sort_option"]';
     var isBlankSearch = false;
     var NO_SEARCH_RESULTS_TEXT = '.no-query-results-p';
-
+    var practiceElements = {};
     var all_categories = <%= raw @categories.to_json %>;
 <% end %>
 
@@ -202,15 +202,24 @@ function searchPracticesPage(skipSearchTracking=false) {
     // Template out the search results
     function buildSearchResults(results, sortOption) {
         $(SPINNER).addClass('display-none');
-        var tmpResults = results.sort(sortOption);
+        var sortedResults = results.sort(sortOption);
 
         var resultsArray = [];
         var finalResults = '';
-        tmpResults.sort(sortByRetired).forEach(function (result, index) {
-            // Use the new function to build practice cards for the search page with horizontal layout
-            const practiceCard = buildSearchResult(result);
+        sortedResults.sort(sortByRetired).forEach(function (result, index) {
+            let practiceCard;
+
+            // Check if the element is already in the accumulator
+            if (practiceElements[result.item.id]) {
+                practiceCard = practiceElements[result.item.id];
+            } else {
+                // If not, build it and store it in the accumulator
+                practiceCard = buildSearchResult(result);
+                practiceElements[result.item.id] = practiceCard;
+            }
+
             finalResults += practiceCard
-            if (index < tmpResults.length - 1) {
+            if (index < sortedResults.length - 1) {
                 finalResults += '<hr class="grid-col-12">'; // Add horizontal line separator
             }
             resultsArray.push(practiceCard);
@@ -233,7 +242,7 @@ function searchPracticesPage(skipSearchTracking=false) {
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
-            replaceSearchPageImagePlaceholders();
+            replaceSearchPageImagePlaceholders(practiceElements);
             $(SEARCH_RESULTS).showMoreItems({
                 startNum: 24,
                 afterNum: 24,
