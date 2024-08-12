@@ -139,6 +139,14 @@ class ApplicationController < ActionController::Base
   end
 
   def set_communities_for_header
-    @communities = communities_with_home_hash(current_user)
+    @communities = communities_with_home_hash
+  end
+
+  def is_admin?
+    @is_admin ||= current_user.has_role?(:admin)
+  end
+
+  def is_editor?
+    @is_editor ||= current_user.has_role?(:page_group_editor, :any)
   end
 end
