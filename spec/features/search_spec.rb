@@ -152,7 +152,7 @@ describe 'Search', type: :feature do
   end
 
   def select_category(label_class)
-    within('#filtersContainer') do
+    within('#search-filters-container') do
       find(label_class).click
     end
   end
@@ -614,38 +614,38 @@ describe 'Search', type: :feature do
 
         # results should be sorted my most relevant(closest match) by default
         expect(page).to have_content('6 Results')
-        expect(first('span.dm-practice-title').text).to eq(@practice6.name)
+        expect(first('a.dm-link-title').text).to eq(@practice6.name)
         select_category('.cat-3-label')
         select_category('.cat-4-label')
         update_results
 
         expect(page).to have_content('6 Results')
-        expect(first('span.dm-practice-title').text).to_not eq(@practice6.name)
-        expect(first('span.dm-practice-title').text).to eq(@practice4.name)
+        expect(first('a.dm-link-title').text).to_not eq(@practice6.name)
+        expect(first('a.dm-link-title').text).to eq(@practice4.name)
 
         # choose 'A to Z' option
-        select('Sort by A to Z', from: 'search_sort_option')
-        expect(all('span.dm-practice-title').first.text).to eq(@practice4.name)
-        expect(all('span.dm-practice-title')[1].text).to eq(@practice6.name)
-        expect(all('span.dm-practice-title')[2].text).to eq(@practice5.name)
-        expect(all('span.dm-practice-title')[3].text).to eq(@practice3.name)
-        expect(all('span.dm-practice-title')[4].text).to eq(@practice.name)
-        expect(all('span.dm-practice-title')[5].text).to eq(@practice12.name)
+        find('label', text: 'Sort by A to Z').click
+        expect(all('a.dm-link-title').first.text).to eq(@practice4.name)
+        expect(all('a.dm-link-title')[1].text).to eq(@practice6.name)
+        expect(all('a.dm-link-title')[2].text).to eq(@practice5.name)
+        expect(all('a.dm-link-title')[3].text).to eq(@practice3.name)
+        expect(all('a.dm-link-title')[4].text).to eq(@practice.name)
+        expect(all('a.dm-link-title')[5].text).to eq(@practice12.name)
 
         # choose 'most adoptions' option
-        select('Sort by most adopted innovations', from: 'search_sort_option')
-        expect(all('span.dm-practice-title').first.text).to eq(@practice.name)
-        expect(all('span.dm-practice-title')[1].text).to eq(@practice3.name)
-        expect(all('span.dm-practice-title')[2].text).to eq(@practice6.name)
+        find('label', text: 'Sort by most adopted innovations').click
+        expect(all('a.dm-link-title').first.text).to eq(@practice.name)
+        expect(all('a.dm-link-title')[1].text).to eq(@practice3.name)
+        expect(all('a.dm-link-title')[2].text).to eq(@practice6.name)
 
         # choose 'most recently added' option
-        select('Sort by most recently added', from: 'search_sort_option')
-        expect(all('span.dm-practice-title').first.text).to eq(@practice12.name)
-        expect(all('span.dm-practice-title')[1].text).to eq(@practice6.name)
-        expect(all('span.dm-practice-title')[2].text).to eq(@practice5.name)
-        expect(all('span.dm-practice-title')[3].text).to eq(@practice4.name)
-        expect(all('span.dm-practice-title')[4].text).to eq(@practice3.name)
-        expect(all('span.dm-practice-title')[5].text).to eq(@practice.name)
+        find('label', text: 'Sort by most recently added').click
+        expect(all('a.dm-link-title').first.text).to eq(@practice12.name)
+        expect(all('a.dm-link-title')[1].text).to eq(@practice6.name)
+        expect(all('a.dm-link-title')[2].text).to eq(@practice5.name)
+        expect(all('a.dm-link-title')[3].text).to eq(@practice4.name)
+        expect(all('a.dm-link-title')[4].text).to eq(@practice3.name)
+        expect(all('a.dm-link-title')[5].text).to eq(@practice.name)
       end
     end
 
@@ -657,11 +657,11 @@ describe 'Search', type: :feature do
         search
 
         expect(page).to have_content('13 Results')
-        expect(page).to have_selector('div.dm-practice-card', count: 12)
+        expect(page).to have_selector('div.dm-search-result', count: 12)
 
         # show the next set of 12 results
         click_button('Load more')
-        expect(page).to have_selector('div.dm-practice-card', count: 13)
+        expect(page).to have_selector('div.dm-search-result', count: 13)
       end
     end
 
@@ -690,7 +690,7 @@ describe 'Search', type: :feature do
         visit_search_page
         select_category('.cat-2-label')
         update_results
-        all('.dm-practice-link-aria-hidden').first.click
+        all('.dm-link-title').first.click
 
         expect(page).to have_link('Search', href: '/search')
       end
@@ -700,7 +700,7 @@ describe 'Search', type: :feature do
 
         fill_in('dm-practice-search-field', with: 'test')
         search
-        all('.dm-practice-link-aria-hidden').first.click
+        all('.dm-link-title').first.click
 
         expect(page).to have_link('Search', href: '/search?query=test')
       end
@@ -733,9 +733,7 @@ describe 'Search', type: :feature do
       add_search_to_cache
       expect(cache_keys).to include("searchable_practices_json")
       login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit '/admin'
-      click_link('Practices')
-      click_link('New Practice')
+      visit '/admin/practices/new'
       fill_in('Innovation name', with: 'The Newest Practice')
       fill_in('User email', with: 'practice_owner@va.gov')
       click_button('Create Practice')
