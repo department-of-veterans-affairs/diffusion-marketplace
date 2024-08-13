@@ -209,11 +209,9 @@ function searchPracticesPage(skipSearchTracking=false) {
         sortedResults.sort(sortByRetired).forEach(function (result, index) {
             let practiceCard;
 
-            // Check if the element is already in the accumulator
             if (practiceElements[result.item.id]) {
                 practiceCard = practiceElements[result.item.id];
             } else {
-                // If not, build it and store it in the accumulator
                 practiceCard = buildSearchResult(result);
                 practiceElements[result.item.id] = practiceCard;
             }
@@ -982,7 +980,7 @@ function searchPracticesPage(skipSearchTracking=false) {
     });
 
     // Clear all filter options
-    $(document).on('click', '#resetSearchFiltersButton, #resetSearchFiltersButtonMobile', function(e) {
+    $(document).on('click', '#resetSearchFiltersButton', function(e) {
         e.preventDefault();
 
         // uncheck all filter checkboxes
@@ -996,8 +994,6 @@ function searchPracticesPage(skipSearchTracking=false) {
             }
         });
 
-        // Move the focus area back to the top of the filters window
-        $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
         searchPracticesPage();
     })
 
@@ -1116,7 +1112,7 @@ function preventFocusShift() {
                 event.target.focus({preventScroll: true});
             });
         });
-    }
+    };
 };
 
 function execSearchFunctions() {
