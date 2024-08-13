@@ -719,7 +719,7 @@ describe 'Search', type: :feature do
     end
   end
 
-  describe 'Cache' do
+  describe 'Cache', js: true do
     it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
       expect(cache_keys).to include("searchable_practices_json")
