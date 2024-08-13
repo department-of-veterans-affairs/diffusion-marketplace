@@ -204,7 +204,6 @@ function searchPracticesPage(skipSearchTracking=false) {
         $(SPINNER).addClass('display-none');
         var sortedResults = results.sort(sortOption);
 
-        var resultsArray = [];
         var finalResults = '';
         sortedResults.sort(sortByRetired).forEach(function (result, index) {
             let practiceCard;
@@ -221,7 +220,6 @@ function searchPracticesPage(skipSearchTracking=false) {
             }
 
             finalResults += practiceCard;
-            resultsArray.push(practiceCard);
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
             '<!--' +
