@@ -152,7 +152,7 @@ describe 'Search', type: :feature do
   end
 
   def select_category(label_class)
-    within('#search-filters-container') do
+    within('#search-filters') do
       find(label_class).click
     end
   end

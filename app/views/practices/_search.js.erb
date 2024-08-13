@@ -926,7 +926,7 @@ function searchPracticesPage(skipSearchTracking=false) {
     }
 
     function getSelectedCategories() {
-        const selectedCategoryCheckboxes = $('#search-filters-container [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
+        const selectedCategoryCheckboxes = $('#search-filters [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
 
         const chosenCategoriesByParent = {};
         const allCategories = [];
@@ -1080,7 +1080,7 @@ function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
 
 function moveFilters() {
   const width = window.innerWidth;
-  const filtersContainer = document.getElementById('search-filters-container');
+  const filtersContainer = document.getElementById('search-filters');
   const mobileContainer = document.getElementById('mobileFiltersContainer');
   const desktopContainer = document.getElementById('desktopFiltersContainer');
 
