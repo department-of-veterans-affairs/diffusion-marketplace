@@ -74,12 +74,11 @@ function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
 
 function replaceSearchPageImagePlaceholders(practiceEls) {
     $('.dm-search-result').each(function() {
-        const $resultElement = $(this); // The whole result element
+        const $resultElement = $(this);
         const placeholder = $resultElement.find('.search-result-img-container');
 
-        // Check if the image is already present
         if (placeholder.find('img').length > 0) {
-            return; // Image already present, skip fetching
+            return;
         }
 
         const practiceId = placeholder.attr('data-practice-id');
@@ -88,7 +87,7 @@ function replaceSearchPageImagePlaceholders(practiceEls) {
 
         if (practiceId && imagePath) {
             fetchSignedResource(imagePath).then(signedUrl => {
-                // Call replaceSearchResultPlaceholderImage and update the accumulator with its return value
+
                 replaceSearchResultPlaceholderImage(signedUrl, practiceId, practiceName).then(updatedElement => {
                     practiceEls[practiceId] = updatedElement;
                 });
@@ -109,7 +108,6 @@ function replaceSearchResultPlaceholderImage(imageUrl, practiceId, practiceName)
             const placeholder = $('.search-result-img-container[data-practice-id="' + practiceId + '"]');
             placeholder.empty().append(imgElement);
 
-            // Return the updated outer HTML of the entire result element
             resolve(placeholder.closest('.dm-search-result').get(0).outerHTML);
         });
     });
