@@ -12,8 +12,8 @@
   <h4 class="text-bold">Sort By</h3>
   <% sort_options.each do |option| %>
     <div class="usa-radio">
-      <input id="search_sort_option_<%= option[1] %>" class="usa-radio__input" type="radio" name="search_sort_option" value="<%= option[1] %>" <%= 'checked' if option[1] == 'adoptions' %> aria-label="<%= option[0] %>">
-      <label class="usa-radio__label" for="search_sort_option_<%= option[1] %>" aria-label="<%= option[0] %>">
+      <input id="search_sort_option_<%= option[1] %>" class="usa-radio__input" type="radio" name="search_sort_option" value="<%= option[1] %>" <%= 'checked' if option[1] == 'adoptions' %>>
+      <label class="usa-radio__label" for="search_sort_option_<%= option[1] %>">
         <%= option[0] %>
       </label>
     </div>
