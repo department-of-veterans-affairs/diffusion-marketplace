@@ -23,12 +23,4 @@ class CreateHomepages < ActiveRecord::Migration[6.1]
       t.timestamps
     end
   end
-
-  def up
-    add_attachment :homepage_features, :featured_image
-  end
-
-  def down
-    remove_attachment :homepage_features, :featured_image
-  end
 end

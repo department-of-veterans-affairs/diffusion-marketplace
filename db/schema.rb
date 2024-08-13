@@ -374,6 +374,10 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "featured_image_file_name"
+    t.string "featured_image_content_type"
+    t.bigint "featured_image_file_size"
+    t.datetime "featured_image_updated_at"
     t.index ["homepage_id"], name: "index_homepage_features_on_homepage_id"
   end
 

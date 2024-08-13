@@ -1,6 +1,6 @@
 class Homepage < ApplicationRecord
   has_many :homepage_features, dependent: :destroy
-  accepts_nested_attributes_for :homepage_features, allow_destroy: true
+  accepts_nested_attributes_for :homepage_features, allow_destroy: true, reject_if: :empty_fields?
   
   def self.ransackable_associations(auth_object = nil)
     []
