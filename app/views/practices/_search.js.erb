@@ -215,9 +215,9 @@ function searchPracticesPage(skipSearchTracking=false) {
                 practiceElements[result.item.id] = practiceCard;
             }
 
-            if (index > 0) {
-                finalResults += '<hr class="grid-col-12">';
-            }
+            // if (index > 0) {
+            //     finalResults += '<hr class="grid-col-12">';
+            // }
 
             finalResults += practiceCard;
 
@@ -237,7 +237,7 @@ function searchPracticesPage(skipSearchTracking=false) {
             $(SEARCH_RESULTS).removeClass('display-none');
 
             // Print results to the page
-            document.querySelector('#search-results').innerHTML = finalResults;
+            document.querySelector(SEARCH_RESULTS).innerHTML = finalResults;
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
             replaceSearchPageImagePlaceholders(practiceElements);
             $(SEARCH_RESULTS).showMoreItems({
@@ -736,7 +736,7 @@ function searchPracticesPage(skipSearchTracking=false) {
         });
 
         // Highlight search results where exact keyword matches
-        var mark = new Mark('#search-results');
+        var mark = new Mark(SEARCH_RESULTS);
         mark.mark(query);
     }
 
