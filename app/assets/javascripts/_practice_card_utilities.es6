@@ -102,7 +102,7 @@ function replaceSearchResultPlaceholderImage(imageUrl, practiceId, practiceName)
             const imgElement = $('<img>')
                 .attr('data-resource-id', practiceId)
                 .attr('src', loadedImageSrc)
-                .attr('alt', practiceName + ' Search Result Image')
+                .attr('alt', '')
                 .addClass('grid-row search-result-img');
 
             const placeholder = $('.search-result-img-container[data-practice-id="' + practiceId + '"]');
