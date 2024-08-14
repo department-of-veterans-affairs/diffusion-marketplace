@@ -63,5 +63,16 @@
       @include u-margin-bottom(2);
       @include u-text('normal');
     }
+
+    .innovation-tagline {
+      display: block;
+      @include u-height(10);
+      overflow: hidden;
+    }
+
+    .originating-facility {
+      @include u-font('sans','2xs');
+      @include u-text('italic');
+    }
   }
 }
