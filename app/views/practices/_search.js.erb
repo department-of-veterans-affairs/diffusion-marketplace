@@ -144,11 +144,11 @@ function buildSearchResult(result) {
         resultRetiredBanner = '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
     }
 
-    resultHtml += `<div class="dm-search-result padding-top-4 padding-bottom-4 display-block width-full">
+    resultHtml += `<div class="dm-search-result">
         <div class="display-flex width-full flex-align-start">
             ${resultImagePlaceholder}
             ${resultRetiredBanner}
-            <div>
+            <div class="search-result-description">
                 ${resultHeaderHtml}
                 <p class="display-block font-sans-sm maxw-full overflow-hidden height-10">
                     ${practiceTagline}
