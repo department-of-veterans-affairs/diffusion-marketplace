@@ -52,24 +52,6 @@
     }
   }
 
-  #REPLACE-with-something-about-filters {
-    .usa-accordion {
-      width: unset;
-    }
-  }
-
-  #REPLACE-with-something-about-innovation-results {
-    .innovation-preview {
-      border-top: 1px solid color($theme-color-base-lighter);
-
-      img {
-        min-height: 125px;
-        min-width: 195px;
-        object-fit: cover;
-      }
-    }
-  }
-
   .usa-combo-box__toggle-list,
   .usa-combo-box__clear-input {
     top: 2.3em !important;
@@ -219,10 +201,6 @@
 }
 
 #update-search-results-form {
-  #mobile_filters_button {
-    @include transition-btn-colors;
-  }
-
   #dm-practice-search-button {
     @include transition-btn-colors;
     background-image: none !important;
@@ -240,13 +218,6 @@
     left: unset !important;
     position: unset !important;
   }
-}
-
-#close_filters_modal {
-  background: none !important;
-  border: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
 .category-container,
@@ -279,18 +250,6 @@
     @media screen and (max-width: 1023px) {
       @include u-margin-top(0, !important);
     }
-  }
-}
-
-.mobile-modal-container {
-  position: relative;
-  padding-bottom: 93px;
-  min-height: 100vh;
-
-  @media screen and (min-width: 1024px) {
-    position: unset;
-    padding-bottom: 0;
-    min-height: unset;
   }
 }
 
