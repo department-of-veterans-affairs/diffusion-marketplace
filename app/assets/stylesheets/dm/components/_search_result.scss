@@ -45,3 +45,7 @@
     }
   }
 }
+
+.dm-search-result:not(:first-child) {
+  border-top: 2px solid #e6e6e6 !important;
+}
