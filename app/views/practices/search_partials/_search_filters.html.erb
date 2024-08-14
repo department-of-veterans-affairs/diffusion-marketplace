@@ -1,6 +1,6 @@
 <h3 class="padding-bottom-1"> Refine Results </h3>
 
-<div id="search-sort-options-container" class="padding-bottom-2" aria-label="Sort options">
+<div id="search-sort-options-container" class="padding-bottom-3 border-bottom-2px border-gray-10" aria-label="Sort options">
   <%
     sort_options = [
       ['Sort by most relevant', 'most_relevant'],
@@ -20,9 +20,7 @@
   <% end %>
 </div>
 
-<hr class="grid-col-12">
-
-<fieldset class="usa-fieldset padding-bottom-2">
+<fieldset class="usa-fieldset margin-top-3 padding-bottom-3 border-bottom-2px border-gray-10">
   <legend class="usa-legend usa-typography--h text-bold padding-bottom-1 padding-top-1">Tags</legend>
   <div class="category-filters maxh-mobile">
     <% @parent_categories.each do |parent_category, sub_categories| %>
@@ -67,9 +65,7 @@
   </div>
 </fieldset>
 
-<hr class="grid-col-12">
-
-<fieldset class="usa-fieldset padding-top-1 padding-bottom-3">
+<fieldset class="usa-fieldset margin-top-3 padding-top-1 padding-bottom-3 border-bottom-2px border-gray-10">
   <div id="originating-facility-container">
     <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Originating Location</legend>
     <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
@@ -77,9 +73,7 @@
   </div>
 </fieldset>
 
-<hr class="grid-col-12">
-
-<fieldset class="usa-fieldset padding-top-1 padding-bottom-3">
+<fieldset class="usa-fieldset margin-top-3 padding-top-1 padding-bottom-3">
   <div id="adopting-facility-container">
     <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Adopting location</legend>
     <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
