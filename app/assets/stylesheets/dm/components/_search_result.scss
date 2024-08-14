@@ -34,22 +34,36 @@
     height: 133px;
     background-color: color($theme-color-base-lightest);
     display: flex;
-    flex: 0 0 220px;
-    margin-right: 30px;
+    @include u-margin-bottom(3);
 
     img {
       flex-shrink: 0;
-      min-height: 100%;
-      min-width: 100%;
+      @include at-media(tablet) {
+        min-height: 100%;
+        min-width: 100%;
+      }
     }
 
     h3 {
       align-self: flex-end;
       color: color($theme-color-dm-white);
     }
-  }
-}
 
-.dm-search-result:not(:first-child) {
-  border-top: 2px solid #e6e6e6 !important;
+    @include at-media(tablet) {
+      flex: 0 0 220px;
+      margin-right: 30px;
+      margin-bottom: unset;
+    }
+  }
+
+  .search-result-img-container.loaded-image {
+   background-color: unset;
+  }
+
+  .search-result-description {
+    @include grid-col(12);
+    @include at-media(tablet) {
+
+    }
+  }
 }

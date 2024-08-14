@@ -103,10 +103,11 @@ function replaceSearchResultPlaceholderImage(imageUrl, practiceId, practiceName)
                 .attr('data-resource-id', practiceId)
                 .attr('src', loadedImageSrc)
                 .attr('alt', '')
-                .addClass('grid-row search-result-img');
+                .addClass('search-result-img');
 
             const placeholder = $('.search-result-img-container[data-practice-id="' + practiceId + '"]');
             placeholder.empty().append(imgElement);
+            placeholder.addClass('loaded-image');
 
             resolve(placeholder.closest('.dm-search-result').get(0).outerHTML);
         });
