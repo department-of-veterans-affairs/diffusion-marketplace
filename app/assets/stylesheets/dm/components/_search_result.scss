@@ -5,11 +5,6 @@
   @include u-width('full');
   @include u-padding-y(4);
 
-  .result-item-image-container {
-    flex: 0 0 220px;
-    margin-right: 30px;
-  }
-
   .dm-practice-retired-banner {
     position: absolute;
     width: 80px;
