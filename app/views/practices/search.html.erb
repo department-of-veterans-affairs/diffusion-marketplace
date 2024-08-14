@@ -16,7 +16,7 @@
 <div id="search-page">
   <section class="grid-container margin-bottom-neg-3 margin-top-5" id="searchResultsContainer">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <div class="grid-row margin-bottom-5">
+      <div class="grid-row margin-bottom-2">
         <div class="grid-col-12">
           <form id="update-search-results-form">
             <h2 class="usa-prose-h2 margin-bottom-5" id="searchHeader"> Search </h2>
@@ -71,6 +71,9 @@
         </div>
         <div class="grid-col-12 desktop:grid-col-8">
           <section id="dm-search-practices" class="dm-search-practices display-none margin-top-2 margin-left-4">
+            <div class="padding-bottom-2">
+              <h2>All Innovations</h2>
+            </div>
             <div id="search-results" class="grid-row"></div>
           </section>
           <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: "dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10" } %>
