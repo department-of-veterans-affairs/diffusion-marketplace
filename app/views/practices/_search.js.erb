@@ -215,10 +215,6 @@ function searchPracticesPage(skipSearchTracking=false) {
                 practiceElements[result.item.id] = practiceCard;
             }
 
-            // if (index > 0) {
-            //     finalResults += '<hr class="grid-col-12">';
-            // }
-
             finalResults += practiceCard;
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
@@ -241,8 +237,8 @@ function searchPracticesPage(skipSearchTracking=false) {
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
             replaceSearchPageImagePlaceholders(practiceElements);
             $(SEARCH_RESULTS).showMoreItems({
-                startNum: 23,
-                afterNum: 23,
+                startNum: 12,
+                afterNum: 12,
                 moreText: 'Load more',
                 noMoreText: 'No more results'
             })
