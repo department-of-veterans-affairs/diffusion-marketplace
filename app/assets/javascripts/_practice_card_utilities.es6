@@ -41,11 +41,9 @@ function toggleFocusStylingForPracticeTitle() {
 function replaceImagePlaceholders() {
     $('.dm-practice-card').each(function() {
         const placeholder = $(this).find('.practice-card-img-placeholder');
-        
         const practiceId = placeholder.attr('data-practice-id');
         const imagePath = placeholder.attr('data-practice-image');
         const practiceName = placeholder.attr('data-practice-name');
-        
         if (practiceId && imagePath) {
             fetchSignedResource(imagePath).then(signedUrl => {
                 replacePlaceholderWithImage(signedUrl, practiceId, practiceName);
@@ -71,6 +69,47 @@ function replacePlaceholderWithImage(imageUrl, practiceId, practiceName) {
                    .append(containerDiv)
                    .removeClass('practice-card-img-placeholder')
                    .addClass('practice-card-img');
+    });
+}
+
+function replaceSearchPageImagePlaceholders(practiceEls) {
+    $('.dm-search-result').each(function() {
+        const $resultElement = $(this);
+        const placeholder = $resultElement.find('.search-result-img-container');
+
+        if (placeholder.find('img').length > 0) {
+            return;
+        }
+
+        const practiceId = placeholder.attr('data-practice-id');
+        const imagePath = placeholder.attr('data-practice-image');
+        const practiceName = placeholder.attr('data-practice-name');
+
+        if (practiceId && imagePath) {
+            fetchSignedResource(imagePath).then(signedUrl => {
+
+                replaceSearchResultPlaceholderImage(signedUrl, practiceId, practiceName).then(updatedElement => {
+                    practiceEls[practiceId] = updatedElement;
+                });
+            });
+        }
+    });
+}
+
+function replaceSearchResultPlaceholderImage(imageUrl, practiceId, practiceName) {
+    return new Promise((resolve, reject) => {
+        loadImage(imageUrl, function(loadedImageSrc) {
+            const imgElement = $('<img>')
+                .attr('data-resource-id', practiceId)
+                .attr('src', loadedImageSrc)
+                .attr('alt', '')
+                .addClass('grid-row search-result-img');
+
+            const placeholder = $('.search-result-img-container[data-practice-id="' + practiceId + '"]');
+            placeholder.empty().append(imgElement);
+
+            resolve(placeholder.closest('.dm-search-result').get(0).outerHTML);
+        });
     });
 }
 
