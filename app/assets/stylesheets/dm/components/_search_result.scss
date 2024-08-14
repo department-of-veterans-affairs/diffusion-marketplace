@@ -1,5 +1,8 @@
 .dm-search-result {
   position: relative;
+  @include u-display(block);
+  @include u-width('full');
+  @include u-padding-y(4);
 
   .result-item-image-container {
     flex: 0 0 220px;
