@@ -11,19 +11,11 @@
     var SPINNER = '.dm-loading-spinner';
     var LOAD_MORE_CONTAINER = '.button-box';
     var SEARCH_RESULTS = '#search-results';
-    var SORT_EL = '#search_sort_option';
+    var SORT_EL = 'input[name="search_sort_option"]';
     var isBlankSearch = false;
     var NO_SEARCH_RESULTS_TEXT = '.no-query-results-p';
-    // Add Namespace for scroll position
-    var pagePosition = {
-        original: 0,
-        // Log the user's spot on the page when they open the filters modal on mobile
-        getScrollPosition: function () {
-            this.original = $(window).scrollTop();
-        }
-    }
+    var practiceElements = {};
     var all_categories = <%= raw @categories.to_json %>;
-    var allChosenCategories = [];
 <% end %>
 
 
@@ -128,6 +120,49 @@ function buildPracticeCard(result) {
     return cardHtml;
 }
 
+function buildSearchResult(result) {
+    var resultHtml = '';
+    var practiceImage = result.item.image || 'default-image-placeholder.jpg'; // use a default placeholder if no image is available
+    var practiceName = result.item.name;
+    var practiceId = result.item.id;
+    var practiceTagline = result.item.tagline || '';
+    var initiatingFacilityName = result.item.initiating_facility_name || '';
+
+    var resultHeaderHtml =
+        '<h3 class="text-normal font-sans-lg multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
+            '<a href="/innovations/' + result.item.slug + '"" class="dm-link-title">' +
+                practiceName +
+            '</a>' +
+        '</h3>';
+
+    // Default card image placeholder
+    var resultImagePlaceholder =
+        '<div class="search-result-img-container" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '" data-practice-name="' + practiceName + '" ></div>';
+
+    var resultRetiredBanner = '';
+    if (result.item.retired) {
+        resultRetiredBanner = '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+    }
+
+    resultHtml += `<div class="dm-search-result padding-top-4 padding-bottom-4 display-block width-full">
+        <div class="display-flex width-full flex-align-start">
+            ${resultImagePlaceholder}
+            ${resultRetiredBanner}
+            <div>
+                ${resultHeaderHtml}
+                <p class="display-block font-sans-sm maxw-full overflow-hidden height-10">
+                    ${practiceTagline}
+                </p>
+                <span class="font-sans-2xs text-italic line-height-sans-3">
+                    ${initiatingFacilityName}
+                </span>
+            </div>
+        </div>
+    </div>`;
+
+    return resultHtml;
+}
+
 function showSpinner() {
     $(SPINNER).removeClass('display-none');
     $(SPINNER).addClass('display-flex');
@@ -158,63 +193,8 @@ function hideResultsElAndShowSpinner() {
     showSpinner();
 }
 
-function openMobileFiltersModal(openOnPageLoad) {
-    $(document).on('click', '#mobile_filters_button', function() {
-        $('.search-filters-accordion-button').attr('aria-expanded', 'true');
-        $('#search_filters_dropdown').removeAttr('hidden');
-        // Return the user to their original spot on the page, before opening the mobile modal
-        pagePosition.getScrollPosition();
-    });
 
-    if (openOnPageLoad) {
-        $('#mobile_filters_button').trigger('click');
-    }
-}
-
-function toggleAccordion(accordionEl, containerEl) {
-    if (($(accordionEl).attr('aria-expanded') === 'true')) {
-        $(accordionEl).attr('aria-expanded', 'false');
-        $(containerEl).addClass('display-none');
-    } else {
-        $(accordionEl).attr('aria-expanded', 'true');
-        $(containerEl).removeClass('display-none');
-    }
-}
-
-function toggleMobileCategoriesAccordion(openOnPageLoad) {
-    $(document).on('click', '.mobile-category-accordion', function() {
-        toggleAccordion(this, '.category-container');
-    });
-
-    if (openOnPageLoad) {
-        $('.mobile-category-accordion').each(function() {
-            toggleAccordion(this, '.category-container');
-        });
-    }
-}
-
-function toggleMobileOriginAccordion() {
-    $(document).on('click', '.mobile-origin-accordion', function() {
-        toggleAccordion(this, '.originating-facility-container');
-    });
-}
-
-function toggleMobileAdoptingAccordion() {
-    $(document).on('click', '.mobile-adopting-accordion', function() {
-        toggleAccordion(this, '.adopting-facility-container');
-    });
-}
-
-function closeMobileFiltersModal() {
-    $(document).on('click', '#close_filters_modal', function () {
-        $('.search-filters-accordion-button').attr('aria-expanded', 'false')
-        $('#search_filters_dropdown').attr('hidden', 'true');
-        // Bring the user back to their original spot on the page, in case they scrolled down while in the modal
-        $(window).scrollTop(pagePosition.original);
-    });
-}
-
-function searchPracticesPage() {
+function searchPracticesPage(skipSearchTracking=false) {
     const searchField = document.querySelector('#dm-practice-search-field');
     // Skip if not the search page
     if (location.pathname !== '/search') return;
@@ -222,14 +202,20 @@ function searchPracticesPage() {
     // Template out the search results
     function buildSearchResults(results, sortOption) {
         $(SPINNER).addClass('display-none');
-        var tmpResults = results.sort(sortOption);
+        var sortedResults = results.sort(sortOption);
 
-        var resultsArray = [];
         var finalResults = '';
-        tmpResults.sort(sortByRetired).forEach(function (result) {
-            const practiceCard = buildPracticeCard(result)
+        sortedResults.sort(sortByRetired).forEach(function (result, index) {
+            let practiceCard;
+
+            if (practiceElements[result.item.id]) {
+                practiceCard = practiceElements[result.item.id];
+            } else {
+                practiceCard = buildSearchResult(result);
+                practiceElements[result.item.id] = practiceCard;
+            }
+
             finalResults += practiceCard;
-            resultsArray.push(practiceCard);
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
             '<!--' +
@@ -239,14 +225,6 @@ function searchPracticesPage() {
             '-->'
         });
         if (results.length > 0) {
-
-            // Hide sorting options if there's only 1 result
-            if (results.length === 1) {
-                sortSelect.addClass('display-none');
-            } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
-                sortSelect.removeClass('display-none');
-            }
-
             // Show the results summary section
             if ($(RESULTS_SECTION).hasClass('display-none')) {
                 $(RESULTS_SECTION).removeClass('display-none');
@@ -255,9 +233,9 @@ function searchPracticesPage() {
             $(SEARCH_RESULTS).removeClass('display-none');
 
             // Print results to the page
-            document.querySelector('#search-results').innerHTML = finalResults;
+            document.querySelector(SEARCH_RESULTS).innerHTML = finalResults;
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
-            replaceImagePlaceholders();
+            replaceSearchPageImagePlaceholders(practiceElements);
             $(SEARCH_RESULTS).showMoreItems({
                 startNum: 12,
                 afterNum: 12,
@@ -316,25 +294,17 @@ function searchPracticesPage() {
         $('#resetSearchFiltersButton').addClass('display-none');
 
         if (categories) {
-            //     // Collect any practice that has a category that matches the selected category/categories.
             var categoryFilters = [];
 
-            Object.entries(categories).forEach(function ([parentCategory, selectedValues]) {
-                if (parentCategory !== 'communities') {
-                    selectedValues.forEach(function (categorySelection) {
-                        addAppliedFilter('TAG', categorySelection);
-                        categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+            Object.entries(categories).forEach(function ([parentCat, subCats]) {
+                if (subCats.length) {
+                    var catType = parentCat === 'communities' ? 'COMMUNITY' : 'TAG';
+                    subCats.forEach(function (subCat) {
+                        addAppliedFilter(catType, subCat);
+                        categoryFilters.push({'category_names': "=\"" + subCat + "\""});
                     });
                 }
             });
-
-            // Iterate over 'communities' categories
-            if (categories['communities']) {
-                categories['communities'].forEach(function (categorySelection) {
-                    addAppliedFilter('COMMUNITY', categorySelection);
-                    categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
-                });
-            }
         }
 
         var originFacilityArray = originatingFacility ? [] : null;
@@ -426,6 +396,7 @@ function searchPracticesPage() {
         the results will have the same score because it stops after the first match.
         */
         function improveResultScoreBasedOnAmountOfCategoryMatches(results) {
+            var allChosenCategories = Object.values(categories).flat();
             results.map(function(result) {
                 var resultScore = result.score;
                 var cat_names = result.item.category_names;
@@ -745,12 +716,10 @@ function searchPracticesPage() {
         if (!query && !categories && !originatingFacility && !adoptingFacility) {
             // on an empty search or filtered search, sort by most adoptions and disable the score sorting option, since the score for each result is the same
             buildSearchResults(results, sortByAdoptionCounts);
-            $(SORT_EL).children().first().attr('disabled', 'true');
             $(SORT_EL).prop('selectedIndex', 2);
         } else {
             buildSearchResults(results, sortByScore);
             // re-enable the score sorting option
-            $(SORT_EL).children().first().removeAttr('disabled');
             $(SORT_EL).prop('selectedIndex', 0);
         }
 
@@ -763,7 +732,7 @@ function searchPracticesPage() {
         });
 
         // Highlight search results where exact keyword matches
-        var mark = new Mark('#search-results');
+        var mark = new Mark(SEARCH_RESULTS);
         mark.mark(query);
     }
 
@@ -809,12 +778,12 @@ function searchPracticesPage() {
                 checkbox.checked = false;
             }
         } else if (filterType === 'ORIGIN') {
-            const button = document.querySelector('.originating-facility-container .usa-combo-box__clear-input');
+            const button = document.querySelector('#originating-facility-container .usa-combo-box__clear-input');
             if (button) {
                 button.click();
             }
         } else if (filterType === 'ADOPTION') {
-            const button = document.querySelector('.adopting-facility-container .usa-combo-box__clear-input');
+            const button = document.querySelector('#adopting-facility-container .usa-combo-box__clear-input');
             if (button) {
                 button.click();
             }
@@ -908,117 +877,84 @@ function searchPracticesPage() {
         }
     }
 
-    function closeAccordion(accordionEl, containerEl) {
-        $(accordionEl).attr('aria-expanded', 'false');
-        $(containerEl).addClass('display-none');
-    }
-
-    var accordionButton = $('.search-filters-accordion-button')
-    function accordionText(checkboxCount, inputCount) {
-        return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')');
-    }
-
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
         hideResultsSectionElAndShowSpinner();
-
-        // Close search filter accordion if it's open
-        if (accordionButton.attr('aria-expanded') == 'true') {
-            accordionButton.attr('aria-expanded', 'false');
-            $('#search_filters_dropdown').attr('hidden', 'true');
-        }
-
-        // Close mobile accordions
-        closeAccordion('.mobile-origin-accordion', '.originating-facility-container');
-        closeAccordion('.mobile-adopting-accordion', '.adopting-facility-container');
-        closeAccordion('.mobile-category-accordion', '.category-container');
-
-        // Bring the user back to their original spot on the page, before they opened the mobile modal
-        if ($(window).width() < 1024) {
-            $(window).scrollTop(pagePosition.original);
-        }
-
         updateResults();
     });
 
-    function updateResults() {
-        var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
+    function updateResults(checkFacilityInputs = true) {
+        const searchFieldValue = searchField.value.trim();
+        const urlQuery = searchFieldValue === '' ? '/search' : `/search?query=${searchFieldValue}`;
         window.history.pushState({ turbolinks: {} }, "", urlQuery);
 
-        // Get the value of the originating facility combo box
-        var originatingFacilityInput = $('#originating-facility-and-visn-select');
-        var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
+        let originatingFacility = null;
+        let adoptingFacility = null;
 
-        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi);
+        if (checkFacilityInputs) {
+            originatingFacility = getFacilityValue(
+                '#originating-facility-and-visn-select',
+                '#originating-facility-and-visn-select--list > li[aria-selected=true]'
+            );
 
-        // Get the value of the adopting facility combo box
-        var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
-        var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
+            adoptingFacility = getFacilityValue(
+                '#adopting-facility-and-visn-select',
+                '#adopting-facility-and-visn-select--list > li[aria-selected=true]'
+            );
+        }
 
-        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
+        const { chosenCategoriesByParent, allCategories } = getSelectedCategories();
 
-        // Get the values for any chosen categories
-        var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
+        if (!skipSearchTracking) {
+            updateCategoryUsage(searchFieldValue, allCategories);
+        }
 
-        var chosenCategories = {};
+        search(searchFieldValue, chosenCategoriesByParent, originatingFacility, adoptingFacility);
+    }
+
+    function getFacilityValue(inputSelector, listItemSelector) {
+        const facilityInput = $(inputSelector);
+        const facilityLi = $(listItemSelector);
+        return getComboBoxVal(facilityInput, facilityLi);
+    }
+
+    function getSelectedCategories() {
+        const selectedCategoryCheckboxes = $('#search-filters [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
+
+        const chosenCategoriesByParent = {};
+        const allCategories = [];
 
         selectedCategoryCheckboxes.each(function () {
-            var parentCategory = this.dataset.parentCategory;
-            var value = this.value;
+            const parentCategory = this.dataset.parentCategory;
+            const value = this.value;
 
-            if (!chosenCategories[parentCategory]) {
-                chosenCategories[parentCategory] = [];
+            if (!chosenCategoriesByParent[parentCategory]) {
+                chosenCategoriesByParent[parentCategory] = [];
             }
 
-            chosenCategories[parentCategory].push(value);
+            chosenCategoriesByParent[parentCategory].push(value);
+            allCategories.push(value);
         });
 
-        if (Object.keys(chosenCategories).length === 0) {
-            chosenCategories = null;
-        } else {
-            // Update Category Usage....
-            allChosenCategories = Object.values(chosenCategories).flat();
-            Rails.ajax({
-                type: 'patch',
-                url: "/update_category_usage",
-                data: jQuery.param({query: searchField.value, chosenCategories: allChosenCategories})
-            });
-        }
+        return {
+            chosenCategoriesByParent: Object.keys(chosenCategoriesByParent).length === 0 ? null : chosenCategoriesByParent,
+            allCategories
+        };
+    }
 
-
-        // Run the search
-        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
-
-        // Display the amount of filters used(if any)
-        var checkboxCount = selectedCategoryCheckboxes.length;
-        var noOriginatingFacilityText = originatingFacilityInput.val() === '';
-        var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
-        var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
-        var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== '';
-
-        if (checkboxCount > 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
-            accordionText(checkboxCount, 1);
-        } else if (checkboxCount > 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
-            accordionText(checkboxCount, 1);
-        } else if (checkboxCount > 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
-            accordionText(checkboxCount, 0);
-        } else if (checkboxCount > 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
-            accordionText(checkboxCount, 2);
-        } else if (checkboxCount === 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
-            accordionText(0, 1);
-        } else if (checkboxCount === 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
-            accordionText(0, 1);
-        } else if (checkboxCount === 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
-            return accordionButton.text('Filters');
-        } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
-            accordionText(0, 2);
-        }
+    function updateCategoryUsage(query, chosenCategories) {
+        Rails.ajax({
+            type: 'patch',
+            url: "/update_category_usage",
+            data: jQuery.param({ query, chosenCategories })
+        });
     }
 
     // Sort the results based on each sort option
     var sortSelect = $(SORT_EL);
     sortSelect.on('change', function() {
-        switch ($(this).val()) {
+        var selectedValue = $(SORT_EL + ':checked').val();
+        switch (selectedValue) {
             case "most_relevant":
                 hideResultsElAndShowSpinner();
                 buildSearchResults(results, sortByScore);
@@ -1039,7 +975,7 @@ function searchPracticesPage() {
     });
 
     // Clear all filter options
-    $(document).on('click', '#resetSearchFiltersButton, #resetSearchFiltersButtonMobile', function(e) {
+    $(document).on('click', '#resetSearchFiltersButton', function(e) {
         e.preventDefault();
 
         // uncheck all filter checkboxes
@@ -1053,11 +989,6 @@ function searchPracticesPage() {
             }
         });
 
-        // Move the focus area back to the top of the filters window
-        $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
-        // Reset filter count text
-        $('.search-filters-accordion-button').text('Filters');
-        // reset search results
         searchPracticesPage();
     })
 
@@ -1072,34 +1003,17 @@ function searchPracticesPage() {
             const checkboxSelector = `input[type="checkbox"][name="${category}"]`;
             const checkbox = $(checkboxSelector);
             checkbox.prop('checked', true);
-            accordionText(1, 0)
-            search('', [category]);
-        } else if (query) {
-            search(decodeURI(query));
-            searchField.value = decodeURI(query);
         } else if (allCommunities) {
             let allCommunitiesCheckbox = document.querySelector('.all-communities-checkbox');
             if (allCommunitiesCheckbox) {
                 allCommunitiesCheckbox.checked = true;
                 $(allCommunitiesCheckbox).trigger('change');
             }
-
-            let selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
-            let chosenCategories = selectedCategoryCheckboxes.map(function () {
-                return this.value;
-            }).get();
-
-            if (!chosenCategories.length) {
-                chosenCategories = null;
-            } else {
-                accordionText(chosenCategories.length, 0)
-            }
-            search('', chosenCategories);
-        } else {
-            // No query or category filter
-            searchField.value = '';
-            search('');
-        }
+        } else if (query) {
+            searchField.value = decodeURI(query);
+        };
+        // update search results but skip checking Location comboboxes
+        updateResults(false);
     } else if ((searchLocation[0] === '?filter_by') || (window.location.pathname === '/search' && window.location.search === '')) {
         hideResultsSectionElAndShowSpinner();
         search('');
@@ -1115,12 +1029,6 @@ function trackSearchField(searchTerm) {
 function trackSearchByFilter(filterTerm) {
     var decodedFilterTerm = decodeURI(filterTerm);
     ahoy.track('Practice search by filter', {filter_term: decodedFilterTerm});
-}
-
-function preventFiltersAccordionContentFlickerOnPageLoad() {
-    $(document).arrive('.desktop-filters-accordion-heading', { existing: true }, (el) => {
-        $(el).next().removeClass('display-none');
-    });
 }
 
 function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
@@ -1145,22 +1053,61 @@ function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
     });
 }
 
+function moveFilters() {
+  const width = window.innerWidth;
+  const filtersContainer = document.getElementById('search-filters');
+  const mobileContainer = document.getElementById('mobile-filters-container');
+  const desktopContainer = document.getElementById('desktop-filters-container');
+
+  if (!filtersContainer || !mobileContainer || !desktopContainer) {
+    return;
+  }
+
+  if (width < 1024) {
+    if (desktopContainer.contains(filtersContainer)) {
+      desktopContainer.removeChild(filtersContainer);
+    }
+    if (!mobileContainer.contains(filtersContainer)) {
+      mobileContainer.appendChild(filtersContainer);
+    }
+  } else {
+    if (mobileContainer.contains(filtersContainer)) {
+      mobileContainer.removeChild(filtersContainer);
+    }
+    if (!desktopContainer.contains(filtersContainer)) {
+      desktopContainer.appendChild(filtersContainer);
+    }
+  }
+  filtersContainer.style.display = 'block';
+}
+
+function preventFocusShift() {
+    const categoryFilters = document.querySelector('.category-filters');
+
+    if (categoryFilters) {
+        categoryFilters.querySelectorAll('.usa-checkbox').forEach(function(checkbox) {
+            checkbox.addEventListener('mouseup', function(event) {
+                event.preventDefault();
+                event.target.focus({preventScroll: true});
+            });
+        });
+    };
+};
+
 function execSearchFunctions() {
     const urlParams = new URLSearchParams(window.location.search);
-    const openFiltersOnPageLoad = urlParams.get('filters') === 'open';
+    const skipSearchTracking = urlParams.has('all_communities') || urlParams.has('category');;
 
-    openMobileFiltersModal(openFiltersOnPageLoad);
-    toggleMobileCategoriesAccordion(openFiltersOnPageLoad);
-    toggleMobileOriginAccordion();
-    toggleMobileAdoptingAccordion();
-    closeMobileFiltersModal();
-    preventFiltersAccordionContentFlickerOnPageLoad();
     addAllCheckBoxListener('.all-clinical-checkbox', '.clinical-checkbox');
     addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
     addAllCheckBoxListener('.all-strategic-checkbox', '.strategic-checkbox');
     addAllCheckBoxListener('.all-communities-checkbox', '.communities-checkbox');
-    searchPracticesPage();
+    searchPracticesPage(skipSearchTracking);
+    moveFilters();
+    preventFocusShift();
 }
+
+window.addEventListener('resize', moveFilters);
 
 document.addEventListener('turbolinks:load', function () {
     execSearchFunctions();

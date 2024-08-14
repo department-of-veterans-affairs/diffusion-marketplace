@@ -1,0 +1,51 @@
+.dm-search-result {
+  position: relative;
+
+  .result-item-image-container {
+    flex: 0 0 220px;
+    margin-right: 30px;
+  }
+
+  .dm-practice-retired-banner {
+    position: absolute;
+    width: 80px;
+    height: 24px;
+    justify-content: center;
+    background-color: color($theme-color-base-light);
+    padding: 5px;
+    border-radius: 0px 2px 2px 0px;
+    z-index: 2;
+    top: 20px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: color($theme-color-base-ink);
+    font-size: 13px;
+    line-height: 115%;
+  }
+
+  .search-result-img-container {
+    height: 133px;
+    background-color: color($theme-color-base-lightest);
+    display: flex;
+    flex: 0 0 220px;
+    margin-right: 30px;
+
+    img {
+      flex-shrink: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+
+    h3 {
+      align-self: flex-end;
+      color: color($theme-color-dm-white);
+    }
+  }
+}
+
+.dm-search-result:not(:first-child) {
+  border-top: 2px solid #e6e6e6 !important;
+}
