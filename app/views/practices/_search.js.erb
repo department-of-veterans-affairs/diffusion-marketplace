@@ -291,7 +291,7 @@ function searchPracticesPage(skipSearchTracking=false) {
         }
 
         $('.applied-filter').remove();
-        $('#resetSearchFiltersButton').addClass('display-none');
+        $('#reset-search-filters-button').addClass('display-none');
 
         if (categories) {
             var categoryFilters = [];
@@ -738,7 +738,7 @@ function searchPracticesPage(skipSearchTracking=false) {
 
     function addAppliedFilter(filterType, filterName) {
         const resultsSummary = document.getElementById('results-summary');
-        const resetButton = document.getElementById('resetSearchFiltersButton');
+        const resetButton = document.getElementById('reset-search-filters-button');
         const appliedFilterName = filterName.toUpperCase();
         const appliedFilterString = `${filterType}: ${appliedFilterName} `;
         const appliedFilterButton = document.createElement('button');
@@ -761,7 +761,7 @@ function searchPracticesPage(skipSearchTracking=false) {
 
         appliedFilterButton.addEventListener('click', function(event) {
             uncheckFilter(filterType, filterName);
-            $('#resetSearchFiltersButton').addClass('display-none');
+            $('#reset-search-filters-button').addClass('display-none');
             updateResults();
             event.stopPropagation();
         });
@@ -975,7 +975,7 @@ function searchPracticesPage(skipSearchTracking=false) {
     });
 
     // Clear all filter options
-    $(document).on('click', '#resetSearchFiltersButton', function(e) {
+    $(document).on('click', '#reset-search-filters-button', function(e) {
         e.preventDefault();
 
         const originInput = document.querySelector('#originating-facility-container input.usa-combo-box__input');
