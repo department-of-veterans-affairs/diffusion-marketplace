@@ -778,14 +778,14 @@ function searchPracticesPage(skipSearchTracking=false) {
                 checkbox.checked = false;
             }
         } else if (filterType === 'ORIGIN') {
-            const button = document.querySelector('#originating-facility-container .usa-combo-box__clear-input');
-            if (button) {
-                button.click();
+            const input = document.querySelector('#originating-facility-container input[type="text"]');
+            if (input) {
+                input.value = '';
             }
         } else if (filterType === 'ADOPTION') {
-            const button = document.querySelector('#adopting-facility-container .usa-combo-box__clear-input');
-            if (button) {
-                button.click();
+            const input = document.querySelector('#adopting-facility-container input[type="text"]');
+            if (input) {
+                input.value = '';
             }
         }
     }
@@ -978,10 +978,17 @@ function searchPracticesPage(skipSearchTracking=false) {
     $(document).on('click', '#resetSearchFiltersButton', function(e) {
         e.preventDefault();
 
-        // uncheck all filter checkboxes
-        $('.usa-combo-box__clear-input').each(function() {
-            $(this).trigger('click');
-        });
+        const originInput = document.querySelector('#originating-facility-container input.usa-combo-box__input');
+        const adoptionInput = document.querySelector('#adopting-facility-container input.usa-combo-box__input');
+
+        if (originInput) {
+            originInput.value = '';
+        }
+
+        if (adoptionInput) {
+            adoptionInput.value = '';
+        }
+
 
         $('.usa-checkbox__input').each(function() {
             if ($(this).prop('checked')) {
