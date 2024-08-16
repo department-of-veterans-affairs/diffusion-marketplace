@@ -814,4 +814,94 @@ describe 'Search', type: :feature do
       expect(find('#searchHeader')).not_to have_text('Search Results for:')
     end
   end
+
+  describe 'Keyboard Accessibility', js: true do
+    before do
+      visit_search_page
+    end
+
+    it 'should allow navigation through interactive elements using the Tab key' do
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'dm-practice-search-field'
+
+      find('body').send_keys(:tab)
+      expect(page.evaluate_script('document.activeElement.id')).to eq('dm-practice-search-button')
+
+      find('body').send_keys(:tab)
+      expect(page.evaluate_script('document.activeElement.id')).to eq('search_sort_option_adoptions')
+
+      3.times { find('body').send_keys(:tab) }
+      expect(page.evaluate_script('document.activeElement.className')).to include('usa-checkbox__input')
+
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
+      expect(page.evaluate_script('document.activeElement.id')).to eq('update-search-results-button')
+
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.className').include?('dm-link-title')
+      expect(page.evaluate_script('document.activeElement.className')).to include('dm-link-title')
+
+      find('body').send_keys(:tab)
+      expect(page.evaluate_script('document.activeElement.className')).to include('dm-link-title')
+    end
+
+    it 'should allow changing sort to A to Z using the keyboard and verify the top result' do
+      expect(first('a.dm-link-title').text).to eq(@practice.name)
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'search_sort_option_adoptions'
+      find('body').send_keys(:arrow_up)
+      expect(page.evaluate_script('document.activeElement.id')).to eq('search_sort_option_a_to_z')
+      expect(first('a.dm-link-title').text).to eq(@practice4.name)
+    end
+
+    context 'filters' do
+      it 'should allow adding and removing of single filter' do
+        find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == "cat-#{@cat_1.id}-input"
+        find('body').send_keys(:space)
+        expect(page.evaluate_script('document.activeElement.checked')).to be true
+
+        find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
+        find('body').send_keys(:enter)
+        expect(page).to have_content(@practice.name)
+        expect(page).to have_content(@practice3.name)
+        expect(page).not_to have_content(@practice4.name)
+
+        find('body').send_keys(:shift, :tab) until page.evaluate_script('document.activeElement.textContent').include?('TAG: COVID')
+        find('body').send_keys(:space)
+        expect(page).to have_content(@practice.name)
+        expect(page).to have_content(@practice3.name)
+        expect(page).to have_content(@practice4.name)
+      end
+
+      it 'should allow adding and removing of all filters' do
+        find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == "cat-#{@cat_1.id}-input"
+        find('body').send_keys(:space)
+        find('body').send_keys(:tab)
+        find('body').send_keys(:space)
+        find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
+        find('body').send_keys(:enter)
+        expect(page).to have_content("TAG: COVID X")
+        expect(page).to have_content("TAG: ENVIRONMENTAL SERVICES X")
+        find('body').send_keys(:shift, :tab) until page.evaluate_script('document.activeElement.id').include?('resetSearchFiltersButton')
+        find('body').send_keys(:enter)
+        expect(page).not_to have_content("TAG: COVID X")
+        expect(page).not_to have_content("TAG: ENVIRONMENTAL SERVICES X")
+      end
+    end
+
+    it 'should allow selecting adopting and originating locations' do
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'originating-facility-and-visn-select'
+      find('body').send_keys(:space)
+      3.times { find('body').send_keys(:arrow_down) }
+      find('body').send_keys(:enter)
+
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'adopting-facility-and-visn-select'
+      find('body').send_keys(:space)
+      8.times { find('body').send_keys(:arrow_down) }
+      find('body').send_keys(:enter)
+
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
+      find('body').send_keys(:space)
+      expect(page).to have_content('ADOPTION: EAST LIVERPOOL VA CLINIC X')
+      expect(page).to have_content('ORIGIN: NEWARK VA CLINIC X')
+      expect(page).to have_content('1 Result')
+      expect(page).to have_content('The Most Important Practice')
+    end
+  end
 end
