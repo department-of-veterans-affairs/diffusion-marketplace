@@ -1081,19 +1081,6 @@ function moveFilters() {
   filtersContainer.style.display = 'block';
 }
 
-function preventFocusShift() {
-    const categoryFilters = document.querySelector('.category-filters');
-
-    if (categoryFilters) {
-        categoryFilters.querySelectorAll('.usa-checkbox').forEach(function(checkbox) {
-            checkbox.addEventListener('mouseup', function(event) {
-                event.preventDefault();
-                event.target.focus({preventScroll: true});
-            });
-        });
-    };
-};
-
 function execSearchFunctions() {
     const urlParams = new URLSearchParams(window.location.search);
     const skipSearchTracking = urlParams.has('all_communities') || urlParams.has('category');;
@@ -1104,7 +1091,6 @@ function execSearchFunctions() {
     addAllCheckBoxListener('.all-communities-checkbox', '.communities-checkbox');
     searchPracticesPage(skipSearchTracking);
     moveFilters();
-    preventFocusShift();
 }
 
 window.addEventListener('resize', moveFilters);
