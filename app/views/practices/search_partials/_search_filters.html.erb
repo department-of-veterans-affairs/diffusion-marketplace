@@ -28,7 +28,7 @@
         <% parent_cat_name = "#{parent_category.name.downcase.gsub(' ', '-')}" %>
         <% all_cats_checkbox_id = "cat-all-#{parent_cat_name}-input" %>
         <% parent_cat_name = parent_category.name.split(' ').join('-').downcase %>
-        <div class="usa-checkbox">
+        <div class="usa-checkbox position-relative">
           <input
             class="usa-checkbox__input all-<%= parent_cat_name %>-checkbox"
             id=<%= all_cats_checkbox_id %>
@@ -45,7 +45,7 @@
           <% sub_categories.each do |category| %>
             <% category_checkbox_id = "cat-#{category.id}-input" %>
             <% category_checkbox_label = "cat-#{category.id}-label" %>
-            <div class="usa-checkbox">
+            <div class="usa-checkbox position-relative">
               <input
                 class="usa-checkbox__input <%= parent_cat_name %>-checkbox"
                 id=<%= category_checkbox_id %>
