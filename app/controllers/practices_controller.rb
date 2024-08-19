@@ -577,7 +577,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:tagline, :process, :it_required, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :date_initiated,
+    params.require(:practice).permit(:tagline, :process, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :date_initiated,
                                      :number_adopted, :number_departments, :number_failed,
                                      :private_contact_info, :support_network_email,
                                      :initiating_facility_type, :initiating_department_office_id,

@@ -10,5 +10,6 @@ class RemoveMoreFieldsFromPractices < ActiveRecord::Migration[6.1]
     remove_column :practices, :training_test_details, :boolean
     remove_column :practices, :required_training_summary, :text
     remove_column :practices, :training_length, :string
+    remove_column :practices, :it_required, :boolean
   end
 end
