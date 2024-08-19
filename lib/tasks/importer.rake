@@ -167,7 +167,6 @@ def basic_answers
       'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
       'Is Information Technology (IT) required to implement the practice?': :it_required,
       'Is this practice a New Clinical Approach or New Process? Or is this practice a process change of something already being done? (Choose one of the following.)': :process,
-      'Please list who provides the training.': :training_provider,
       'Training details:': :required_training_summary,
       'Please enter a 10-20 word title for the origin story of this Practice': :origin_title,
       'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story,
