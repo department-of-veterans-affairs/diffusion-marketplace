@@ -7,7 +7,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:additional_resources) }
     it { should have_many(:ancillary_service_practices) }
     it { should have_many(:ancillary_services) }
-    it { should have_many(:business_case_files) }
     it { should have_many(:category_practices) }
     it { should have_many(:categories) }
     it { should have_many(:checklist_files) }
@@ -39,7 +38,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:practice_permissions) }
     it { should have_many(:survey_result_files) }
     it { should have_many(:timelines) }
-    it { should have_many(:toolkit_files) }
     it { should have_many(:user_practices) }
     it { should have_many(:users) }
     it { should have_many(:va_employee_practices) }

@@ -231,7 +231,6 @@ class Practice < ApplicationRecord
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
-  has_many :business_case_files, dependent: :destroy
   has_many :category_practices, -> { order(id: :asc) }, dependent: :destroy, autosave: true
   has_many :categories, -> { order(id: :asc) }, through: :category_practices
   has_many :checklist_files, dependent: :destroy
@@ -265,7 +264,6 @@ class Practice < ApplicationRecord
   has_many :risk_mitigations, -> { order(position: :asc) }, dependent: :destroy
   has_many :survey_result_files, dependent: :destroy
   has_many :timelines, -> { order(position: :asc) }, dependent: :destroy
-  has_many :toolkit_files, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
   has_many :va_employee_practices, dependent: :destroy
