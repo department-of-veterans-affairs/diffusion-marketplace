@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_19_002628) do
+ActiveRecord::Schema.define(version: 2024_08_19_013959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -127,20 +127,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_002628) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "business_case_files", force: :cascade do |t|
-    t.string "title"
-    t.integer "position"
-    t.text "description"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_business_case_files_on_practice_id"
-  end
-
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -159,20 +145,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_002628) do
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_category_practices_on_category_id"
     t.index ["practice_id"], name: "index_category_practices_on_practice_id"
-  end
-
-  create_table "checklist_files", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_checklist_files_on_practice_id"
   end
 
   create_table "clinical_condition_practices", force: :cascade do |t|
@@ -1094,20 +1066,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_002628) do
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
 
-  create_table "publication_files", force: :cascade do |t|
-    t.string "title"
-    t.integer "position"
-    t.text "description"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_publication_files_on_practice_id"
-  end
-
   create_table "publications", force: :cascade do |t|
     t.string "title"
     t.string "link"
@@ -1177,20 +1135,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_002628) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["practice_id"], name: "index_timelines_on_practice_id"
-  end
-
-  create_table "toolkit_files", force: :cascade do |t|
-    t.string "title"
-    t.integer "position"
-    t.text "description"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_toolkit_files_on_practice_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -1446,10 +1390,8 @@ ActiveRecord::Schema.define(version: 2024_08_19_002628) do
   add_foreign_key "additional_staffs", "practices"
   add_foreign_key "ancillary_service_practices", "ancillary_services"
   add_foreign_key "ancillary_service_practices", "practices"
-  add_foreign_key "business_case_files", "practices"
   add_foreign_key "category_practices", "categories"
   add_foreign_key "category_practices", "practices"
-  add_foreign_key "checklist_files", "practices"
   add_foreign_key "clinical_condition_practices", "clinical_conditions"
   add_foreign_key "clinical_condition_practices", "practices"
   add_foreign_key "clinical_location_practices", "clinical_locations"
@@ -1524,14 +1466,12 @@ ActiveRecord::Schema.define(version: 2024_08_19_002628) do
   add_foreign_key "practice_solution_resources", "practices"
   add_foreign_key "practice_testimonials", "practices"
   add_foreign_key "practices", "users"
-  add_foreign_key "publication_files", "practices"
   add_foreign_key "publications", "practices"
   add_foreign_key "required_staff_trainings", "practices"
   add_foreign_key "risk_mitigations", "practices"
   add_foreign_key "risks", "risk_mitigations"
   add_foreign_key "survey_result_files", "practices"
   add_foreign_key "timelines", "practices"
-  add_foreign_key "toolkit_files", "practices"
   add_foreign_key "user_practices", "practices"
   add_foreign_key "va_employee_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"
