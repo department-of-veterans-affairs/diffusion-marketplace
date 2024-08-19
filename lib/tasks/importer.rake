@@ -162,21 +162,10 @@ def basic_answers
       # 'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
       # The below question's text needs to be changed when a new sheet can be provided.
       "Please provide the \"facility id\" of the facility that initiated this Practice.": :initiating_facility,
-      # 'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
-      # 'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
       "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
-      "Please identify where your practice falls currently in VHA’s Phase Gate Model of Innovation.": :phase_gate,
-      "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
-      'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
-      'Do you have anything else you would like to share regarding your practice?': :additional_notes,
       "On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefore use the tagline: \"Delivery of prosthetic limbs to Veterans in less than ½ the time\".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.": :tagline,
       "On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: \"Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans.\"Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.": :description,
       'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
-      # 'Please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
-      # 'Please provide your best estimate rating of your Practice with regards to Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
-      'Please provide your best estimate of the Cost to Implement your Practice on a scale of 1 - 4': :cost_to_implement_aggregate,
-      'Please provide your best estimate of the Complexity of Implementation of your Practice on a scale of 1 - 4 (Complexity of getting the practice started.)': :difficulty_aggregate,
-      'Please provide your best estimate of the Complexity of Maintenance and Sustainability of your Practice on a scale of 1 - 4': :sustainability_aggregate,
       'Is Information Technology (IT) required to implement the practice?': :it_required,
       'Is this practice a New Clinical Approach or New Process? Or is this practice a process change of something already being done? (Choose one of the following.)': :process,
       # 'Did your institution have to hire additional staff to implement this Practice?': :need_additional_staff,
@@ -196,7 +185,6 @@ def basic_answers
   end
   @practice.initiating_facility = @practice.initiating_facility&.split('_')[1]
   @practice.date_initiated = DateTime.strptime(@answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)], "%m/%d/%Y") if @answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)].present?
-  @practice.phase_gate = @practice.phase_gate.split('.')[1].split('-')[0].squish
   @practice.save
 end
 
