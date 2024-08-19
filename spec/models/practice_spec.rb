@@ -30,7 +30,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:practice_management_practices) }
     it { should have_many(:practice_managements) }
     it { should have_many(:publications) }
-    it { should have_many(:publication_files) }
     it { should have_many(:required_staff_trainings) }
     it { should have_many(:risk_mitigations) }
     it { should have_many(:practice_partner_practices) }

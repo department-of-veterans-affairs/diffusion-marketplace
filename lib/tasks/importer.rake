@@ -112,7 +112,6 @@ namespace :importer do
       video_files
       additional_documents
       checklist_files
-      publication_files
       publications
       implementation_timeline
       risk_mitigations
@@ -607,27 +606,6 @@ def checklist_files
     image_file = File.new(image_path)
 
     ChecklistFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-        filename: File.basename(image_file),
-        tempfile: image_file,
-        # detect the image's mime type with MIME if you can't provide it yourself.
-        type: MIME::Types.type_for(image_path).first.content_type
-    )
-  end
-end
-
-def publication_files
-  puts "==> Importing Practice: #{@name} Publication Files".light_blue
-  @practice.publication_files.each(&:destroy)
-  question_fields = {
-      'Does your practice have peer-reviewed publications associated with it?': :attachment,
-      'Additional publication upload 1': :attachment
-  }
-  question_fields.each do |key, value|
-    next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
-    image_file = File.new(image_path)
-
-    PublicationFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
         filename: File.basename(image_file),
         tempfile: image_file,
         # detect the image's mime type with MIME if you can't provide it yourself.
