@@ -6,5 +6,6 @@ class RemoveMoreFieldsFromPractices < ActiveRecord::Migration[6.1]
     remove_column :practices, :need_new_license, :boolean
     remove_column :practices, :training_provider, :string
     remove_column :practices, :training_provider_role, :string
+    remove_column :practices, :training_test, :boolean
   end
 end

@@ -126,7 +126,6 @@ namespace :importer do
       domains
       practice_permissions
       timelines
-      training_details
       it_required
     end
     puts "*********** Completed Importing Practices! ***********".green
@@ -912,25 +911,6 @@ def practice_permissions
       PracticePermission.find_or_create_by!(description: @answers[i], practice: @practice)
     end
   end
-end
-
-def training_details
-  puts "==> Importing Practice: #{@name} Training Details".light_blue
-  question_fields = {
-      "Training details:": 3
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-
-    @practice.training_length = @answers[q_index]
-    @practice.required_training_summary = @answers[q_index + 1]
-    @practice.training_test_details = @answers[q_index + 2]
-    training_test = @answers[q_index + 2]
-    next if training_test.blank?
-    @practice.training_test = training_test.downcase.include?('yes') ? true : false
-  end
-  @practice.save
 end
 
 def it_required
