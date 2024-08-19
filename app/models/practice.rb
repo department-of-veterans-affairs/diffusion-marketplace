@@ -233,7 +233,6 @@ class Practice < ApplicationRecord
   has_many :ancillary_services, through: :ancillary_service_practices
   has_many :category_practices, -> { order(id: :asc) }, dependent: :destroy, autosave: true
   has_many :categories, -> { order(id: :asc) }, through: :category_practices
-  has_many :checklist_files, dependent: :destroy
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
   has_many :clinical_location_practices, dependent: :destroy

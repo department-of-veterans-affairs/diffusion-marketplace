@@ -9,7 +9,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:ancillary_services) }
     it { should have_many(:category_practices) }
     it { should have_many(:categories) }
-    it { should have_many(:checklist_files) }
     it { should have_many(:clinical_condition_practices) }
     it { should have_many(:clinical_conditions) }
     it { should have_many(:clinical_location_practices) }
