@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'CategoriesHelper', type: :helper do
   describe '#get_categories_by_popularity' do
     before do
+      Rails.cache.clear
       @parent_category1 = create(:category, name: 'Parent Category 1')
       @parent_category2 = create(:category, name: 'Parent Category 2')
 
