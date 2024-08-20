@@ -231,10 +231,8 @@ class Practice < ApplicationRecord
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
-  has_many :business_case_files, dependent: :destroy
   has_many :category_practices, -> { order(id: :asc) }, dependent: :destroy, autosave: true
   has_many :categories, -> { order(id: :asc) }, through: :category_practices
-  has_many :checklist_files, dependent: :destroy
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
   has_many :clinical_location_practices, dependent: :destroy
@@ -260,12 +258,10 @@ class Practice < ApplicationRecord
   has_many :practice_partners, through: :practice_partner_practices
   has_many :practice_permissions, -> { order(position: :asc) }, dependent: :destroy
   has_many :publications, -> { order(position: :asc) }, dependent: :destroy
-  has_many :publication_files, dependent: :destroy
   has_many :required_staff_trainings, dependent: :destroy
   has_many :risk_mitigations, -> { order(position: :asc) }, dependent: :destroy
   has_many :survey_result_files, dependent: :destroy
   has_many :timelines, -> { order(position: :asc) }, dependent: :destroy
-  has_many :toolkit_files, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
   has_many :va_employee_practices, dependent: :destroy
