@@ -885,9 +885,9 @@ function searchPracticesPage(skipSearchTracking=false) {
 
     function updateResults(checkFacilityInputs = true) {
         const searchFieldValue = searchField.value.trim();
-        const urlQuery = searchFieldValue === '' ? '/search' : `/search?query=${searchFieldValue}`;
-        window.history.pushState({ turbolinks: {} }, "", urlQuery);
-
+        if (searchFieldValue !== '') {
+            window.history.pushState({ turbolinks: {} }, "", `/search?query=${searchFieldValue}`);
+        }
         let originatingFacility = null;
         let adoptingFacility = null;
 
