@@ -67,16 +67,14 @@
 
 <fieldset class="usa-fieldset margin-top-3 padding-top-1 padding-bottom-3 border-bottom-2px border-gray-10">
   <div id="originating-facility-container">
-    <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Originating Location</legend>
-    <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
+    <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: { form_label: 'Originating location', facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
     <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
   </div>
 </fieldset>
 
 <fieldset class="usa-fieldset margin-top-3 padding-top-1 padding-bottom-3">
   <div id="adopting-facility-container">
-    <legend class="text-bold line-height-26 margin-bottom-1 grid-col-12 desktop:display-block">Adopting location</legend>
-    <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
+    <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: { form_label: 'Adopting location', facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
   </div>
 </fieldset>
 
