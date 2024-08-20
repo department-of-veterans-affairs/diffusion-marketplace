@@ -28,6 +28,7 @@ class Practice < ApplicationRecord
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department, :practice_award, :category
+  attr_accessor :main_display_image_alt_text, :highlight_attachment_content_type
 
   def self.cached_json_practices(is_guest_user)
     if is_guest_user
