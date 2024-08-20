@@ -291,7 +291,7 @@ function searchPracticesPage(skipSearchTracking=false) {
         }
 
         $('.applied-filter').remove();
-        $('#resetSearchFiltersButton').addClass('display-none');
+        $('#reset-search-filters-button').addClass('display-none');
 
         if (categories) {
             var categoryFilters = [];
@@ -742,7 +742,7 @@ function searchPracticesPage(skipSearchTracking=false) {
 
     function addAppliedFilter(filterType, filterName) {
         const resultsSummary = document.getElementById('results-summary');
-        const resetButton = document.getElementById('resetSearchFiltersButton');
+        const resetButton = document.getElementById('reset-search-filters-button');
         const appliedFilterName = filterName.toUpperCase();
         const appliedFilterString = `${filterType}: ${appliedFilterName} `;
         const appliedFilterButton = document.createElement('button');
@@ -765,7 +765,7 @@ function searchPracticesPage(skipSearchTracking=false) {
 
         appliedFilterButton.addEventListener('click', function(event) {
             uncheckFilter(filterType, filterName);
-            $('#resetSearchFiltersButton').addClass('display-none');
+            $('#reset-search-filters-button').addClass('display-none');
             updateResults();
             event.stopPropagation();
         });
@@ -782,14 +782,14 @@ function searchPracticesPage(skipSearchTracking=false) {
                 checkbox.checked = false;
             }
         } else if (filterType === 'ORIGIN') {
-            const button = document.querySelector('#originating-facility-container .usa-combo-box__clear-input');
-            if (button) {
-                button.click();
+            const input = document.querySelector('#originating-facility-container input[type="text"]');
+            if (input) {
+                input.value = '';
             }
         } else if (filterType === 'ADOPTION') {
-            const button = document.querySelector('#adopting-facility-container .usa-combo-box__clear-input');
-            if (button) {
-                button.click();
+            const input = document.querySelector('#adopting-facility-container input[type="text"]');
+            if (input) {
+                input.value = '';
             }
         }
     }
@@ -979,13 +979,20 @@ function searchPracticesPage(skipSearchTracking=false) {
     });
 
     // Clear all filter options
-    $(document).on('click', '#resetSearchFiltersButton', function(e) {
+    $(document).on('click', '#reset-search-filters-button', function(e) {
         e.preventDefault();
 
-        // uncheck all filter checkboxes
-        $('.usa-combo-box__clear-input').each(function() {
-            $(this).trigger('click');
-        });
+        const originInput = document.querySelector('#originating-facility-container input.usa-combo-box__input');
+        const adoptionInput = document.querySelector('#adopting-facility-container input.usa-combo-box__input');
+
+        if (originInput) {
+            originInput.value = '';
+        }
+
+        if (adoptionInput) {
+            adoptionInput.value = '';
+        }
+
 
         $('.usa-checkbox__input').each(function() {
             if ($(this).prop('checked')) {

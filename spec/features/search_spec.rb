@@ -7,6 +7,7 @@ describe 'Search', type: :feature do
   end
 
   before do
+    Rails.cache.clear
     visn_1 = Visn.find_or_create_by!(name: "VA New England Healthcare System", number: 1)
     visn_2 = Visn.find_or_create_by!(name: "New York/New Jersey VA Health Care Network", number: 2)
     Visn.find_or_create_by!(name: "VA Healthcare - VISN 4", number: 4)
@@ -878,7 +879,7 @@ describe 'Search', type: :feature do
         find('body').send_keys(:enter)
         expect(page).to have_content("TAG: COVID X")
         expect(page).to have_content("TAG: ENVIRONMENTAL SERVICES X")
-        find('body').send_keys(:shift, :tab) until page.evaluate_script('document.activeElement.id').include?('resetSearchFiltersButton')
+        find('body').send_keys(:shift, :tab) until page.evaluate_script('document.activeElement.id').include?('reset-search-filters-button')
         find('body').send_keys(:enter)
         expect(page).not_to have_content("TAG: COVID X")
         expect(page).not_to have_content("TAG: ENVIRONMENTAL SERVICES X")
