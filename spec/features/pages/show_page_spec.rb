@@ -100,7 +100,7 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: @page, component: accordion_component, created_at: Time.now)
     PageComponent.create(page: @page, component: @accordion_component_2, created_at: Time.now)
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
-
+    Rails.cache.clear
     # must be logged in to view pages
     login_as(user, scope: :user, run_callbacks: false)
     visit '/programming/ruby-rocks'
