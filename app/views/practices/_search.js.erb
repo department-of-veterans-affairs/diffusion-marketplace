@@ -1007,28 +1007,12 @@ function searchPracticesPage() {
 function trackSearchField(searchTerm) {
     if (searchTerm) {
         ahoy.track('Practice search', {search_term: searchTerm});
-        if (typeof ga === 'function') {
-            ga('send', {
-                hitType: 'event',
-                eventCategory: 'search',
-                eventAction: 'search',
-                location: '/search?query=' + searchTerm
-            });
-        }
     }
 }
 
 function trackSearchByFilter(filterTerm) {
     var decodedFilterTerm = decodeURI(filterTerm);
     ahoy.track('Practice search by filter', {filter_term: decodedFilterTerm});
-    if (typeof ga === 'function') {
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'search filter',
-            eventAction: 'search filter',
-            location: '/search?filter_by=' + decodedFilterTerm
-        });
-    }
 }
 
 function preventFiltersAccordionContentFlickerOnPageLoad() {

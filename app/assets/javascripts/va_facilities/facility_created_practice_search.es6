@@ -47,14 +47,6 @@ function filterCategoriesEventListener() {
 function trackSearch(term) {
   if (term !== '') {
     ahoy.track("Facility practice search", { search_term: term });
-    if (typeof ga === "function") {
-      ga("send", {
-        hitType: "event",
-        eventCategory: "Facility search",
-        eventAction: "Facility search",
-        location: `/facilities/${facilitySlug}`
-      });
-    }
   }
 }
 
