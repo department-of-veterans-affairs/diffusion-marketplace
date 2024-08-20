@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_01_184827) do
+ActiveRecord::Schema.define(version: 2024_08_19_002628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1036,15 +1036,6 @@ ActiveRecord::Schema.define(version: 2024_08_01_184827) do
     t.string "summary"
     t.string "origin_title"
     t.string "origin_story"
-    t.boolean "need_additional_staff"
-    t.boolean "need_training"
-    t.boolean "need_policy_change"
-    t.boolean "need_new_license"
-    t.boolean "training_test"
-    t.boolean "training_test_details"
-    t.string "training_provider"
-    t.text "required_training_summary"
-    t.string "training_length"
     t.string "facility_complexity_level"
     t.integer "main_display_image_original_w"
     t.integer "main_display_image_original_h"
@@ -1059,7 +1050,6 @@ ActiveRecord::Schema.define(version: 2024_08_01_184827) do
     t.integer "origin_picture_crop_w"
     t.integer "origin_picture_crop_h"
     t.integer "number_departments", default: 0
-    t.boolean "it_required"
     t.string "process"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1078,7 +1068,6 @@ ActiveRecord::Schema.define(version: 2024_08_01_184827) do
     t.boolean "highlight", default: false, null: false
     t.boolean "featured", default: false, null: false
     t.integer "ahoy_visit_id"
-    t.string "training_provider_role"
     t.boolean "enabled", default: true, null: false
     t.integer "initiating_facility_type", default: 0
     t.integer "initiating_department_office_id"

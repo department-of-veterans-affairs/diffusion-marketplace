@@ -126,9 +126,6 @@ namespace :importer do
       domains
       practice_permissions
       timelines
-      training_details
-      license_required
-      it_required
     end
     puts "*********** Completed Importing Practices! ***********".green
   end
@@ -166,14 +163,7 @@ def basic_answers
       "On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefore use the tagline: \"Delivery of prosthetic limbs to Veterans in less than ½ the time\".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.": :tagline,
       "On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: \"Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans.\"Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.": :description,
       'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
-      'Is Information Technology (IT) required to implement the practice?': :it_required,
       'Is this practice a New Clinical Approach or New Process? Or is this practice a process change of something already being done? (Choose one of the following.)': :process,
-      # 'Did your institution have to hire additional staff to implement this Practice?': :need_additional_staff,
-      # 'Is there training required?': :need_training,
-      'Please list who provides the training.': :training_provider,
-      'Training details:': :required_training_summary,
-      # 'Will a policy change be required?': :need_policy_change,
-      # 'Will a new license or certification be required?': :need_new_license,
       'Please enter a 10-20 word title for the origin story of this Practice': :origin_title,
       'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story,
       'Number of facilities that have successfully implemented the Practice (Please enter a whole number):': :number_adopted,
@@ -917,58 +907,6 @@ def practice_permissions
       next if @answers[i].blank?
       PracticePermission.find_or_create_by!(description: @answers[i], practice: @practice)
     end
-  end
-end
-
-def training_details
-  puts "==> Importing Practice: #{@name} Training Details".light_blue
-  question_fields = {
-      "Training details:": 3
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-
-    @practice.training_length = @answers[q_index]
-    @practice.required_training_summary = @answers[q_index + 1]
-    @practice.training_test_details = @answers[q_index + 2]
-    training_test = @answers[q_index + 2]
-    next if training_test.blank?
-    @practice.training_test = training_test.downcase.include?('yes') ? true : false
-  end
-  @practice.save
-end
-
-def license_required
-  puts "==> Importing Practice: #{@name} License Details".light_blue
-  question_fields = {
-      'Will a new license or certification be required?': 1
-  }
-  question_fields.each do |key, value|
-    next if @answers[@questions.index(key.to_s)].blank?
-
-    answer = @answers[@questions.index(key.to_s)]
-
-    @practice.need_new_license = true if answer.downcase == 'yes'
-    @practice.need_new_license = false if answer.downcase == 'no'
-    @practice.save
-  end
-end
-
-def it_required
-  puts "==> Importing Practice: #{@name} IT Required".light_blue
-  question_fields = {
-      "Is Information Technology (IT) required to implement the practice?": 1
-  }
-
-  question_fields.each do |key, value|
-    next if @answers[@questions.index(key.to_s)].blank?
-
-    answer = @answers[@questions.index(key.to_s)]
-
-    @practice.it_required = true if answer.downcase == 'yes'
-    @practice.it_required = false if answer.downcase == 'no'
-    @practice.save
   end
 end
 
