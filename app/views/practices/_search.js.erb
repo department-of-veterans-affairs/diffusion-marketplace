@@ -326,9 +326,11 @@ function searchPracticesPage(skipSearchTracking=false) {
                 } else {
                     originFacilityArray.push({'origin_facilities': "=\"" + vf.official_station_name + "\""});
                 }
-
-                addAppliedFilter('ORIGIN', vf.official_station_name)
             });
+
+            // Add applied filter pill for just the Clinical Resource Hub
+            addAppliedFilter('ORIGIN', visnFacilities[visnFacilities.length - 1].official_station_name)
+
         } else if (originatingFacility && !originatingFacility.includes('VISN-')){
             // Collect the practices that have an origin facility matching the selected facility
             var foundOriginatingFacility = facilities.find(function(f) {
@@ -372,8 +374,10 @@ function searchPracticesPage(skipSearchTracking=false) {
                     } else {
                         stationNumbers.push(ff.official_station_name);
                     }
-                    addAppliedFilter('ADOPTION', ff.official_station_name)
                 });
+
+                // Add applied filter pill for just the Clinical Resource Hub
+                addAppliedFilter('ADOPTION', filteredFacilities[filteredFacilities.length - 1].official_station_name)
 
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             } else {
