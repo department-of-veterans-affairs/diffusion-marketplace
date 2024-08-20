@@ -363,14 +363,6 @@ function trackCrhSearchField(searchTerm) {
     if (searchTerm !== '') {
         if ($('fieldset').attr('data-search-filter') === 'false') {
             ahoy.track('CRH practice search', {search_term: searchTerm});
-            if (typeof ga === 'function') {
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'CRH search',
-                    eventAction: 'VCRHISN search',
-                    location: '/crh/' + visn["number"] + '/?query=' + searchTerm
-                });
-            }
         }
     }
     setFieldsetAttr('false');
