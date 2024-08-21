@@ -2,7 +2,7 @@
   border-top: 2px solid #e6e6e6 !important;
   position: relative;
   @include u-display(block);
-  @include u-width('full');
+  @include u-width("full");
   @include u-padding-y(4);
 
   .dm-practice-retired-banner {
@@ -33,6 +33,7 @@
 
     img {
       flex-shrink: 0;
+      object-fit: cover;
       @include at-media(tablet) {
         min-height: 100%;
         min-width: 100%;
@@ -52,7 +53,7 @@
   }
 
   .search-result-img-container.loaded-image {
-   background-color: unset;
+    background-color: unset;
   }
 
   .search-result-description {
@@ -61,7 +62,7 @@
     h3 {
       @include u-margin-top(0);
       @include u-margin-bottom(2);
-      @include u-text('normal');
+      @include u-text("normal");
     }
 
     .innovation-tagline {
@@ -71,8 +72,8 @@
     }
 
     .originating-facility {
-      @include u-font('sans','2xs');
-      @include u-text('italic');
+      @include u-font("sans", "2xs");
+      @include u-text("italic");
     }
   }
 }
