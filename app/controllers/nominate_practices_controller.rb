@@ -49,7 +49,7 @@ class NominatePracticesController < ApplicationController
     end
   end
 
-  def log_recaptcha_failure(score, email)
+  def log_recaptcha_failure(recaptcha_reply, email)
     Rails.logger.info(
       "Nominate innovation form reCAPTCHA score below threshold: reply: #{recaptcha_reply}, submitted_email: #{email}"
     )
