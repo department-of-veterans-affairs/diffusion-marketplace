@@ -8,7 +8,7 @@ class NominatePracticesController < ApplicationController
       handle_nomination
     else
       begin
-        recaptcha_result = verify_recaptcha(action: 'email', minimum_score: 0.3)
+        recaptcha_result = verify_recaptcha(action: 'email', minimum_score: 0.5)
 
         if recaptcha_result
           handle_nomination
