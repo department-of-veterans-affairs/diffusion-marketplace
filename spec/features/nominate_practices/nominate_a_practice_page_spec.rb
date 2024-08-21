@@ -52,4 +52,36 @@ describe 'Nominate a practice page', type: :feature do
       expect(page).to have_current_path(root_path)
     end
   end
+
+  context 'Error Logging' do
+    before do
+      allow(Rails.logger).to receive(:info)
+      allow(Rails.logger).to receive(:error)
+      visit '/nominate-an-innovation'
+      fill_in('Your email address', with: 'test@test.com')
+      fill_in('Subject line', with: 'Test subject')
+      fill_in('Your message', with: 'This is a test message')
+    end
+
+    it 'logs recaptcha failure with insufficient score' do
+      allow_any_instance_of(ApplicationController).to receive(:verify_recaptcha).and_return(false)
+      allow_any_instance_of(ApplicationController).to receive(:recaptcha_reply).and_return({'score' => 0.2})
+
+      click_button('Send message')
+
+      expect(Rails.logger).to have_received(:info).with(/Nominate innovation form reCAPTCHA score below threshold/)
+      expect(page).to have_current_path('/nominate-an-innovation')
+      expect(page).to have_content('reCAPTCHA verification failed, please try again.')
+    end
+
+    it 'logs an error when recaptcha verification raises an exception' do
+      allow_any_instance_of(ApplicationController).to receive(:verify_recaptcha).and_raise(StandardError.new("recaptcha service error"))
+
+      click_button('Send message')
+
+      expect(Rails.logger).to have_received(:error).with(/reCAPTCHA verification failed in NominatePracticesController#email/)
+      expect(page).to have_current_path('/nominate-an-innovation')
+      expect(page).to have_content('reCAPTCHA verification failed due to an error. Please try again.')
+    end
+  end
 end
