@@ -19,5 +19,8 @@
     <input type="submit" value="Send message" class="usa-button margin-right-0">
   </div>
 
-  <%= recaptcha_v3(action: 'email', turbo: 'true', site_key: ENV['RECAPTCHA_SITE_KEY_V3']) if ENV['RECAPTCHA_SITE_KEY_V3'] %>
+  <% unless current_user.present? %>
+    <span id="recaptcha-placeholder"></span>
+    <%= recaptcha_v3(action: 'email', turbo: 'true', site_key: ENV['RECAPTCHA_SITE_KEY_V3']) if ENV['RECAPTCHA_SITE_KEY_V3'] %>
+  <% end %>
 <% end %>
