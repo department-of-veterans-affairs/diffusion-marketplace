@@ -13,7 +13,7 @@ class VaFacility < ApplicationRecord
   scope :get_classification_counts, -> (facility_type) { where(classification: facility_type, hidden: false).size }
   scope :get_classifications, -> { pluck(:classification).uniq }
   scope :get_ids, -> { pluck(:id) }
-  scope :get_locations, -> { order(:street_address_state).pluck(:street_address_state).uniq }
+  scope :get_locations, -> { order(:street_address_state).pluck(:street_address_state).uniq.compact }
   scope :get_complexity, -> { order(:fy17_parent_station_complexity_level).pluck(:fy17_parent_station_complexity_level).uniq }
   scope :get_relevant_attributes, -> {
       select(:street_address_state, :official_station_name, :id, :visn_id, :common_name, :station_number, :latitude,
@@ -43,4 +43,3 @@ class VaFacility < ApplicationRecord
     (practices + practices_through_diffusion).uniq.each(&:clear_searchable_cache)
   end
 end
-
