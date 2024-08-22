@@ -1130,20 +1130,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.index ["practice_id"], name: "index_timelines_on_practice_id"
   end
 
-  create_table "topics", force: :cascade do |t|
-    t.string "title"
-    t.string "description"
-    t.string "url"
-    t.string "cta_text"
-    t.boolean "featured", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-  end
-
   create_table "user_practices", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "practice_id"
