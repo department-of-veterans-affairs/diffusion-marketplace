@@ -1092,6 +1092,25 @@ function moveFilters() {
   filtersContainer.style.display = 'block';
 }
 
+function setupSkipToFirstResult() {
+    const skipDiv = document.getElementById('skip-tag-filters');
+
+    if (skipDiv) {
+      skipDiv.addEventListener('focus', function() {
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+
+            const firstResultLink = document.querySelector('.dm-link-title');
+            if (firstResultLink) {
+              firstResultLink.focus();
+            }
+          }
+        }, { once: true });
+      });
+    }
+};
+
 function execSearchFunctions() {
     const urlParams = new URLSearchParams(window.location.search);
     const skipSearchTracking = urlParams.has('all_communities') || urlParams.has('category');;
@@ -1102,6 +1121,7 @@ function execSearchFunctions() {
     addAllCheckBoxListener('.all-communities-checkbox', '.communities-checkbox');
     searchPracticesPage(skipSearchTracking);
     moveFilters();
+    setupSkipToFirstResult();
 }
 
 window.addEventListener('resize', moveFilters);
