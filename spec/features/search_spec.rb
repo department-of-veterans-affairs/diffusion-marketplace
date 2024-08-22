@@ -557,7 +557,7 @@ describe 'Search', type: :feature do
 
         it 'should allow filters to be individually removed to update results' do
           expect(page).to have_content('6 Results')
-          within('#searchResultsContainer') do
+          within('#search-results-container') do
             all('button.applied-filter').first.click
           end
 
