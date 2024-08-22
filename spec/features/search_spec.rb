@@ -877,12 +877,12 @@ describe 'Search', type: :feature do
         find('body').send_keys(:space)
         find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
         find('body').send_keys(:enter)
-        expect(page).to have_content("TAG: COVID X")
-        expect(page).to have_content("TAG: ENVIRONMENTAL SERVICES X")
+        expect(page).to have_content("TAG: COVID")
+        expect(page).to have_content("TAG: ENVIRONMENTAL SERVICES")
         find('body').send_keys(:shift, :tab) until page.evaluate_script('document.activeElement.id').include?('reset-search-filters-button')
         find('body').send_keys(:enter)
-        expect(page).not_to have_content("TAG: COVID X")
-        expect(page).not_to have_content("TAG: ENVIRONMENTAL SERVICES X")
+        expect(page).not_to have_content("TAG: COVID")
+        expect(page).not_to have_content("TAG: ENVIRONMENTAL SERVICES")
       end
     end
 
@@ -899,8 +899,8 @@ describe 'Search', type: :feature do
 
       find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
       find('body').send_keys(:space)
-      expect(page).to have_content('ADOPTION: EAST LIVERPOOL VA CLINIC X')
-      expect(page).to have_content('ORIGIN: NEWARK VA CLINIC X')
+      expect(page).to have_content('ADOPTION: EAST LIVERPOOL VA CLINIC')
+      expect(page).to have_content('ORIGIN: NEWARK VA CLINIC')
       expect(page).to have_content('1 Result')
       expect(page).to have_content('The Most Important Practice')
     end
