@@ -117,7 +117,7 @@ describe 'Search', type: :feature do
   end
 
   def update_results
-    click_button('Apply filters')
+    click_button('Apply Filters')
   end
 
   def update_practice_introduction(practice)
@@ -358,7 +358,7 @@ describe 'Search', type: :feature do
         update_results
 
         expect(page).to have_content('6 Results')
-        expect(page).to have_button('Clear filters')
+        expect(page).to have_button('Clear Filters')
         expect(page).to have_content(@practice.name)
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice5.name)
@@ -378,7 +378,7 @@ describe 'Search', type: :feature do
         expect(page).to have_content(@practice13.name)
         expect(page).to have_content(@practice14.name)
 
-        click_button('Clear filters')
+        click_button('Clear Filters')
         set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
@@ -429,7 +429,7 @@ describe 'Search', type: :feature do
         expect(page).to_not have_content(@practice5.name)
 
         # Reset filters and select a VISN from the Originating Facility combo box
-        click_button('Clear filters')
+        click_button('Clear Filters')
         set_combobox_val(0, 'VISN-1')
         update_results
 
@@ -447,7 +447,7 @@ describe 'Search', type: :feature do
         expect(page).to have_content(@practice5.name)
 
         # Reset filters and select a VISN from the Adopting Facility combo box
-        click_button('Clear filters')
+        click_button('Clear Filters')
         set_combobox_val(1, 'VISN-7')
         update_results
 
@@ -547,17 +547,17 @@ describe 'Search', type: :feature do
           update_results
         end
 
-        it "should display applied filters with 'Clear filters' button" do
+        it "should display applied filters with 'Clear Filters' button" do
           expect(page).to have_content('TAG: COVID')
           expect(page).to have_content('TAG: PULMONARY CARE')
           expect(page).to have_content('ORIGIN: NORWOOD VA CLINIC')
           expect(page).to have_content('ADOPTION: MARIETTA VA CLINIC')
-          expect(page).to have_button('Clear filters')
+          expect(page).to have_button('Clear Filters')
         end
 
         it 'should allow filters to be individually removed to update results' do
           expect(page).to have_content('6 Results')
-          within('#searchResultsContainer') do
+          within('#search-results-container') do
             all('button.applied-filter').first.click
           end
 
@@ -566,7 +566,7 @@ describe 'Search', type: :feature do
           expect(page).to have_content('TAG: PULMONARY CARE')
           expect(page).to have_content('ORIGIN: NORWOOD VA CLINIC')
           expect(page).to have_content('ADOPTION: MARIETTA VA CLINIC')
-          expect(page).to have_button('Clear filters')
+          expect(page).to have_button('Clear Filters')
           # expect updated results
           expect(page).to have_content('1 Result')
           expect(page).not_to have_content(@practice.name)
@@ -585,23 +585,23 @@ describe 'Search', type: :feature do
           expect(checkbox).to be_checked
         end
 
-        it "should remove the 'Clear filters' button when all applied filters are removed" do
+        it "should remove the 'Clear Filters' button when all applied filters are removed" do
           find_button('COVID').click
           find_button('Pulmonary Care').click
           find_button('Norwood VA Clinic').click
           find_button('Marietta VA Clinic').click
 
-          expect(page).not_to have_button('Clear filters')
+          expect(page).not_to have_button('Clear Filters')
         end
 
         it 'should clear all filters' do
-          click_button('Clear filters')
+          click_button('Clear Filters')
 
           expect(page).not_to have_content('TAG: COVID')
           expect(page).not_to have_content('TAG: PULMONARY CARE')
           expect(page).not_to have_content('ORIGIN: NORWOOD VA CLINIC')
           expect(page).not_to have_content('ADOPTION: MARIETTA VA CLINIC')
-          expect(page).not_to have_button('Clear filters')
+          expect(page).not_to have_button('Clear Filters')
         end
       end
     end
@@ -625,7 +625,7 @@ describe 'Search', type: :feature do
         expect(first('a.dm-link-title').text).to eq(@practice4.name)
 
         # choose 'A to Z' option
-        find('label', text: 'Sort by A to Z').click
+        find('label', text: 'A to Z').click
         expect(all('a.dm-link-title').first.text).to eq(@practice4.name)
         expect(all('a.dm-link-title')[1].text).to eq(@practice6.name)
         expect(all('a.dm-link-title')[2].text).to eq(@practice5.name)
@@ -634,13 +634,13 @@ describe 'Search', type: :feature do
         expect(all('a.dm-link-title')[5].text).to eq(@practice12.name)
 
         # choose 'most adoptions' option
-        find('label', text: 'Sort by most adopted innovations').click
+        find('label', text: 'Most Adopted').click
         expect(all('a.dm-link-title').first.text).to eq(@practice.name)
         expect(all('a.dm-link-title')[1].text).to eq(@practice3.name)
         expect(all('a.dm-link-title')[2].text).to eq(@practice6.name)
 
         # choose 'most recently added' option
-        find('label', text: 'Sort by most recently added').click
+        find('label', text: 'Most Recently Added').click
         expect(all('a.dm-link-title').first.text).to eq(@practice12.name)
         expect(all('a.dm-link-title')[1].text).to eq(@practice6.name)
         expect(all('a.dm-link-title')[2].text).to eq(@practice5.name)
