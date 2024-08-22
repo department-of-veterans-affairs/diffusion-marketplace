@@ -66,9 +66,12 @@
     }
 
     .innovation-tagline {
-      display: block;
-      @include u-height(10);
+      display: -webkit-box;
+      @include u-margin-bottom(2);
       overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      width: 100%;
     }
 
     .originating-facility {
