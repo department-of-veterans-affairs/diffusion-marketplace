@@ -1,5 +1,8 @@
 <h3 class="desktop:display-block tablet:display-none mobile-lg:display-none"> Refine Results </h3>
 
+<!-- hidden div to skip filters section with keyboard nav -->
+<div tabindex="0" id="skip-tag-filters" aria-label="Skip to results"></div>
+
 <div id="search-sort-options-container" class="padding-bottom-3 border-bottom-2px border-gray-10" aria-label="Sort options">
   <%
     sort_options = [
