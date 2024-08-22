@@ -773,6 +773,7 @@ function searchPracticesPage(skipSearchTracking=false) {
         const svgIcon = document.createElementNS(svgNamespace, "svg");
         svgIcon.setAttribute("xmlns", svgNamespace);
         svgIcon.setAttribute("viewBox", "0 0 352 512");
+        svgIcon.setAttribute("aria-hidden", "true");
 
         const path = document.createElementNS(svgNamespace, "path");
         path.setAttribute("d",
