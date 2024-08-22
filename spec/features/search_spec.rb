@@ -7,6 +7,7 @@ describe 'Search', type: :feature do
   end
 
   before do
+    Rails.cache.clear
     visn_1 = Visn.find_or_create_by!(name: "VA New England Healthcare System", number: 1)
     visn_2 = Visn.find_or_create_by!(name: "New York/New Jersey VA Health Care Network", number: 2)
     Visn.find_or_create_by!(name: "VA Healthcare - VISN 4", number: 4)
@@ -115,12 +116,8 @@ describe 'Search', type: :feature do
     find('#dm-practice-search-button').click
   end
 
-  def toggle_filters_accordion
-    find('.search-filters-accordion-button').click
-  end
-
   def update_results
-    click_button('Update results')
+    click_button('Apply Filters')
   end
 
   def update_practice_introduction(practice)
@@ -156,7 +153,9 @@ describe 'Search', type: :feature do
   end
 
   def select_category(label_class)
-    find(label_class).click
+    within('#search-filters') do
+      find(label_class).click
+    end
   end
 
   def add_crh_adoptions_and_practice_origin_facilities
@@ -212,7 +211,6 @@ describe 'Search', type: :feature do
 
     it 'should display certain text if no matches are found' do
       visit_search_page
-      toggle_filters_accordion
       fill_in('dm-practice-search-field', with: 'test')
       set_combobox_val(0, 'James J. Howard Veterans\' Outpatient Clinic')
       select_category('.cat-2-label')
@@ -234,7 +232,7 @@ describe 'Search', type: :feature do
       fill_in('dm-practice-search-field', with: 'practice')
       find('#dm-practice-search-button').click
 
-      expect(page).to have_content('13 results')
+      expect(page).to have_content('13 Results')
       expect(page).to_not have_content(@practice2.name)
 
       # show practices that are approved/published
@@ -244,7 +242,7 @@ describe 'Search', type: :feature do
       search
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('14 results')
+      expect(page).to have_content('14 Results')
       expect(page).to have_content(@practice2.name)
     end
 
@@ -255,7 +253,7 @@ describe 'Search', type: :feature do
       find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
     end
 
     it 'should be able to search based on practice categories related terms' do
@@ -266,7 +264,7 @@ describe 'Search', type: :feature do
       fill_in('dm-practice-search-field', with: 'Coronavirus')
       find('#dm-practice-search-button').click
 
-      expect(page).to have_content('5 results')
+      expect(page).to have_content('5 Results')
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice3.name)
       expect(page).to have_content(@practice5.name)
@@ -283,7 +281,7 @@ describe 'Search', type: :feature do
       find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
     end
 
     it 'should be able to search based on originating facility name' do
@@ -292,7 +290,7 @@ describe 'Search', type: :feature do
       fill_in('dm-practice-search-field', with: 'Togus VA Medical Center')
       find('#dm-practice-search-button').click
 
-      expect(page).to have_content('2 results')
+      expect(page).to have_content('2 Results')
       expect(page).to have_content(@practice3.name)
       expect(page).to have_content(@practice5.name)
     end
@@ -301,19 +299,19 @@ describe 'Search', type: :feature do
       visit_search_page
       fill_in('dm-practice-search-field', with: 'overview problem foobar')
       find('#dm-practice-search-button').click
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content(@practice.name)
 
       visit_search_page
       fill_in('dm-practice-search-field', with: 'overview solution fizzbuzz')
       find('#dm-practice-search-button').click
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content(@practice3.name)
 
       visit_search_page
       fill_in('dm-practice-search-field', with: 'overview results mixmax')
       find('#dm-practice-search-button').click
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content(@practice5.name)
     end
 
@@ -324,12 +322,12 @@ describe 'Search', type: :feature do
 
       fill_in('dm-practice-search-field', with: 'important')
       search
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content('The Most Important Practice')
 
       fill_in('dm-practice-search-field', with: 'Rule')
       search
-      expect(page).to_not have_content('results')
+      expect(page).to have_content('0 Results')
       expect(page).to_not have_content('One Practice to Rule Them All')
       expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
 
@@ -345,7 +343,7 @@ describe 'Search', type: :feature do
 
       fill_in('dm-practice-search-field', with: 'Rule')
       search
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content('One Practice to Rule Them All')
       expect(page).to_not have_content('There are currently no matches for your search on the Marketplace.')
     end
@@ -354,14 +352,13 @@ describe 'Search', type: :feature do
       it 'should collect practices that match ANY of the conditions if the user selects filters, but does not use the search input' do
         visit_search_page
 
-        toggle_filters_accordion
         set_combobox_val(0, 'Norwood VA Clinic')
         select_category('.cat-2-label')
         select_category('.cat-5-label')
         update_results
 
-        expect(page).to have_content('Filters (3)')
-        expect(page).to have_content('6 results')
+        expect(page).to have_content('6 Results')
+        expect(page).to have_button('Clear Filters')
         expect(page).to have_content(@practice.name)
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice5.name)
@@ -374,28 +371,24 @@ describe 'Search', type: :feature do
         # reset the practice cache
         visit_search_page
 
-        toggle_filters_accordion
-        click_button('Reset filters')
         set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
-        expect(page).to have_content('2 results')
+        expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice13.name)
         expect(page).to have_content(@practice14.name)
 
-        toggle_filters_accordion
-        click_button('Reset filters')
+        click_button('Clear Filters')
         set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
-        expect(page).to have_content('2 results')
+        expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice12.name)
         expect(page).to have_content(@practice14.name)
       end
 
       it 'should select all subcategories when selecting the parent category' do
         visit_search_page
-        toggle_filters_accordion
         select_category('.cat-all-strategic-label')
         expect(find("#cat-2-input", visible: false)).to be_checked
         expect(find("#cat-3-input", visible: false)).to be_checked
@@ -403,8 +396,7 @@ describe 'Search', type: :feature do
         expect(find("#cat-5-input", visible: false)).to be_checked
         expect(find("#cat-6-input", visible: false)).to be_checked
         update_results
-        expect(page).to have_content('7 results')
-        toggle_filters_accordion
+        expect(page).to have_content('7 Results')
         select_category('.cat-2-label')
         expect(find("#cat-all-strategic-input", visible: false)).to_not be_checked
         expect(find("#cat-2-input", visible: false)).to_not be_checked
@@ -413,7 +405,7 @@ describe 'Search', type: :feature do
         expect(find("#cat-5-input", visible: false)).to be_checked
         expect(find("#cat-6-input", visible: false)).to be_checked
         update_results
-        expect(page).to have_content('5 results')
+        expect(page).to have_content('5 Results')
       end
 
       it 'should collect practices that match ALL of the conditions if the user selects filters AND uses the search input' do
@@ -421,55 +413,45 @@ describe 'Search', type: :feature do
         visit_search_page
 
         fill_in('dm-practice-search-field', with: 'practice')
-        toggle_filters_accordion
         set_combobox_val(0, 'Togus VA Medical Center')
         select_category('.cat-2-label')
         search
-        expect(page).to have_content('Filters (2)')
-        expect(page).to have_content('2 results')
+        expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice5.name)
 
         # Now add the remaining to eliminate one of the last two practices
-        toggle_filters_accordion
         set_combobox_val(1, 'Aberdeen VA Clinic')
         update_results
 
-        expect(page).to have_content('Filters (3)')
-        expect(page).to have_content('1 result')
+        expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice3.name)
         expect(page).to_not have_content(@practice5.name)
 
         # Reset filters and select a VISN from the Originating Facility combo box
-        toggle_filters_accordion
-        click_button('Reset filters')
+        click_button('Clear Filters')
         set_combobox_val(0, 'VISN-1')
         update_results
 
-        expect(page).to have_content('Filters (1)')
-        expect(page).to have_content('4 results')
+        expect(page).to have_content('4 Results')
         expect(page).to have_content(@practice3.name)
         expect(page).to have_content(@practice4.name)
         expect(page).to have_content(@practice5.name)
         expect(page).to have_content(@practice6.name)
 
-        toggle_filters_accordion
         select_category('.cat-4-label')
         update_results
 
-        expect(page).to have_content('Filters (2)')
-        expect(page).to have_content('2 results')
+        expect(page).to have_content('2 Results')
         expect(page).to have_content(@practice4.name)
         expect(page).to have_content(@practice5.name)
 
         # Reset filters and select a VISN from the Adopting Facility combo box
-        toggle_filters_accordion
-        click_button('Reset filters')
+        click_button('Clear Filters')
         set_combobox_val(1, 'VISN-7')
         update_results
 
-        expect(page).to have_content('Filters (1)')
-        expect(page).to have_content('1 result')
+        expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice6.name)
 
         # search for practices with the search bar and clinical resource hub filters
@@ -477,13 +459,11 @@ describe 'Search', type: :feature do
         visit_search_page
 
         fill_in('dm-practice-search-field', with: 'important')
-        toggle_filters_accordion
         set_combobox_val(0, 'VISN 8 Clinical Resource Hub (Remote)')
         set_combobox_val(1, 'VISN 8 Clinical Resource Hub (Remote)')
         update_results
 
-        expect(page).to have_content('Filters (2)')
-        expect(page).to have_content('1 result')
+        expect(page).to have_content('1 Result')
         expect(page).to have_content(@practice14.name)
       end
 
@@ -491,12 +471,10 @@ describe 'Search', type: :feature do
         it 'should, when the user selects a VISN, collect practices that either have that VISN as their initiating_facility OR have a practice_origin_facility that belongs to that VISN' do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'VISN-1')
           update_results
 
-          expect(page).to have_content('Filters (1)')
-          expect(page).to have_content('4 results')
+          expect(page).to have_content('4 Results')
           expect(page).to have_content(@practice3.name)
           expect(page).to have_content(@practice3.name)
           expect(page).to have_content(@practice5.name)
@@ -506,12 +484,10 @@ describe 'Search', type: :feature do
           add_crh_adoptions_and_practice_origin_facilities
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'VISN-8')
           update_results
 
-          expect(page).to have_content('Filters (1)')
-          expect(page).to have_content('2 results')
+          expect(page).to have_content('2 Results')
           expect(page).to have_content(@practice13.name)
           expect(page).to have_content(@practice14.name)
         end
@@ -519,11 +495,9 @@ describe 'Search', type: :feature do
         it 'should, when the user selects a facility, only collect practices that have a practice_origin_facility that matches the selected facility' do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'Vinita VA Clinic')
           update_results
 
-          expect(page).to have_content('1 result')
           expect(page).to have_content(@practice12.name)
         end
       end
@@ -532,11 +506,10 @@ describe 'Search', type: :feature do
         it 'should, when the user selects a VISN, collect practices that have an adoption facility that belongs to that VISN' do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(1, 'VISN-23')
           update_results
 
-          expect(page).to have_content('2 results')
+          expect(page).to have_content('2 Results')
           expect(page).to have_content(@practice.name)
           expect(page).to have_content(@practice3.name)
 
@@ -544,12 +517,10 @@ describe 'Search', type: :feature do
           add_crh_adoptions_and_practice_origin_facilities
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(1, 'VISN-8')
           update_results
 
-          expect(page).to have_content('Filters (1)')
-          expect(page).to have_content('2 results')
+          expect(page).to have_content('2 Results')
           expect(page).to have_content(@practice12.name)
           expect(page).to have_content(@practice14.name)
         end
@@ -557,12 +528,80 @@ describe 'Search', type: :feature do
         it 'should, when the user selects a facility, only collect practices that have an adopting facility that matches the selected facility' do
           visit_search_page
 
-          toggle_filters_accordion
           set_combobox_val(0, 'Vinita VA Clinic')
           update_results
 
-          expect(page).to have_content('1 result')
+          expect(page).to have_content('1 Result')
           expect(page).to have_content(@practice12.name)
+        end
+      end
+
+      describe 'Dynamic applied filters', js: true do
+        before do
+          visit_search_page
+
+          set_combobox_val(0, 'Norwood VA Clinic')
+          set_combobox_val(1, 'Marietta VA Clinic')
+          select_category('.cat-2-label')
+          select_category('.cat-5-label')
+          update_results
+        end
+
+        it "should display applied filters with 'Clear Filters' button" do
+          expect(page).to have_content('TAG: COVID')
+          expect(page).to have_content('TAG: PULMONARY CARE')
+          expect(page).to have_content('ORIGIN: NORWOOD VA CLINIC')
+          expect(page).to have_content('ADOPTION: MARIETTA VA CLINIC')
+          expect(page).to have_button('Clear Filters')
+        end
+
+        it 'should allow filters to be individually removed to update results' do
+          expect(page).to have_content('6 Results')
+          within('#search-results-container') do
+            all('button.applied-filter').first.click
+          end
+
+          # expect updated applied filters
+          expect(page).not_to have_content('TAG: COVID')
+          expect(page).to have_content('TAG: PULMONARY CARE')
+          expect(page).to have_content('ORIGIN: NORWOOD VA CLINIC')
+          expect(page).to have_content('ADOPTION: MARIETTA VA CLINIC')
+          expect(page).to have_button('Clear Filters')
+          # expect updated results
+          expect(page).to have_content('1 Result')
+          expect(page).not_to have_content(@practice.name)
+          expect(page).not_to have_content(@practice3.name)
+          expect(page).not_to have_content(@practice5.name)
+          expect(page).to have_content(@practice7.name)
+          expect(page).not_to have_content(@practice12.name)
+          # expect updated filter checkboxes
+          label = find('.cat-2-label')
+          parent_div = label.find(:xpath, './..')
+          checkbox = parent_div.find('input[type="checkbox"]', visible: :all)
+          expect(checkbox).not_to be_checked
+          label = find('.cat-5-label')
+          parent_div = label.find(:xpath, './..')
+          checkbox = parent_div.find('input[type="checkbox"]', visible: :all)
+          expect(checkbox).to be_checked
+        end
+
+        it "should remove the 'Clear Filters' button when all applied filters are removed" do
+          find_button('COVID').click
+          find_button('Pulmonary Care').click
+          find_button('Norwood VA Clinic').click
+          find_button('Marietta VA Clinic').click
+
+          expect(page).not_to have_button('Clear Filters')
+        end
+
+        it 'should clear all filters' do
+          click_button('Clear Filters')
+
+          expect(page).not_to have_content('TAG: COVID')
+          expect(page).not_to have_content('TAG: PULMONARY CARE')
+          expect(page).not_to have_content('ORIGIN: NORWOOD VA CLINIC')
+          expect(page).not_to have_content('ADOPTION: MARIETTA VA CLINIC')
+          expect(page).not_to have_button('Clear Filters')
         end
       end
     end
@@ -570,48 +609,44 @@ describe 'Search', type: :feature do
     describe 'Sorting' do
       it 'should sort the results based on the sort option chosen' do
         visit_search_page
-
-        toggle_filters_accordion
         set_combobox_val(0, 'VISN-1')
         select_category('.cat-2-label')
         update_results
 
         # results should be sorted my most relevant(closest match) by default
-        expect(page).to have_content('6 results')
-        expect(first('span.dm-practice-title').text).to eq(@practice6.name)
-
-        toggle_filters_accordion
+        expect(page).to have_content('6 Results')
+        expect(first('a.dm-link-title').text).to eq(@practice6.name)
         select_category('.cat-3-label')
         select_category('.cat-4-label')
         update_results
 
-        expect(page).to have_content('6 results')
-        expect(first('span.dm-practice-title').text).to_not eq(@practice6.name)
-        expect(first('span.dm-practice-title').text).to eq(@practice4.name)
+        expect(page).to have_content('6 Results')
+        expect(first('a.dm-link-title').text).to_not eq(@practice6.name)
+        expect(first('a.dm-link-title').text).to eq(@practice4.name)
 
         # choose 'A to Z' option
-        select('Sort by A to Z', from: 'search_sort_option')
-        expect(all('span.dm-practice-title').first.text).to eq(@practice4.name)
-        expect(all('span.dm-practice-title')[1].text).to eq(@practice6.name)
-        expect(all('span.dm-practice-title')[2].text).to eq(@practice5.name)
-        expect(all('span.dm-practice-title')[3].text).to eq(@practice3.name)
-        expect(all('span.dm-practice-title')[4].text).to eq(@practice.name)
-        expect(all('span.dm-practice-title')[5].text).to eq(@practice12.name)
+        find('label', text: 'A to Z').click
+        expect(all('a.dm-link-title').first.text).to eq(@practice4.name)
+        expect(all('a.dm-link-title')[1].text).to eq(@practice6.name)
+        expect(all('a.dm-link-title')[2].text).to eq(@practice5.name)
+        expect(all('a.dm-link-title')[3].text).to eq(@practice3.name)
+        expect(all('a.dm-link-title')[4].text).to eq(@practice.name)
+        expect(all('a.dm-link-title')[5].text).to eq(@practice12.name)
 
         # choose 'most adoptions' option
-        select('Sort by most adopted innovations', from: 'search_sort_option')
-        expect(all('span.dm-practice-title').first.text).to eq(@practice.name)
-        expect(all('span.dm-practice-title')[1].text).to eq(@practice3.name)
-        expect(all('span.dm-practice-title')[2].text).to eq(@practice6.name)
+        find('label', text: 'Most Adopted').click
+        expect(all('a.dm-link-title').first.text).to eq(@practice.name)
+        expect(all('a.dm-link-title')[1].text).to eq(@practice3.name)
+        expect(all('a.dm-link-title')[2].text).to eq(@practice6.name)
 
         # choose 'most recently added' option
-        select('Sort by most recently added', from: 'search_sort_option')
-        expect(all('span.dm-practice-title').first.text).to eq(@practice12.name)
-        expect(all('span.dm-practice-title')[1].text).to eq(@practice6.name)
-        expect(all('span.dm-practice-title')[2].text).to eq(@practice5.name)
-        expect(all('span.dm-practice-title')[3].text).to eq(@practice4.name)
-        expect(all('span.dm-practice-title')[4].text).to eq(@practice3.name)
-        expect(all('span.dm-practice-title')[5].text).to eq(@practice.name)
+        find('label', text: 'Most Recently Added').click
+        expect(all('a.dm-link-title').first.text).to eq(@practice12.name)
+        expect(all('a.dm-link-title')[1].text).to eq(@practice6.name)
+        expect(all('a.dm-link-title')[2].text).to eq(@practice5.name)
+        expect(all('a.dm-link-title')[3].text).to eq(@practice4.name)
+        expect(all('a.dm-link-title')[4].text).to eq(@practice3.name)
+        expect(all('a.dm-link-title')[5].text).to eq(@practice.name)
       end
     end
 
@@ -622,20 +657,18 @@ describe 'Search', type: :feature do
         fill_in('dm-practice-search-field', with: 'practice')
         search
 
-        expect(page).to have_content('13 results')
-        expect(page).to have_selector('div.dm-practice-card', count: 12)
+        expect(page).to have_content('13 Results')
+        expect(page).to have_selector('div.dm-search-result', count: 12)
 
         # show the next set of 12 results
         click_button('Load more')
-        expect(page).to have_selector('div.dm-practice-card', count: 13)
+        expect(page).to have_selector('div.dm-search-result', count: 13)
       end
     end
 
     describe 'Querying' do
       it 'should not create a query if the user does not enter text into the search input' do
         visit_search_page
-
-        toggle_filters_accordion
         set_combobox_val(0, 'VISN-2')
         select_category('.cat-2-label')
         select_category('.cat-3-label')
@@ -656,11 +689,9 @@ describe 'Search', type: :feature do
 
       it 'should, if there is no query and the user clicks on a practice card, add a search page breadcrumb that does not include a query' do
         visit_search_page
-
-        toggle_filters_accordion
         select_category('.cat-2-label')
         update_results
-        all('.dm-practice-link-aria-hidden').first.click
+        all('.dm-link-title').first.click
 
         expect(page).to have_link('Search', href: '/search')
       end
@@ -670,7 +701,7 @@ describe 'Search', type: :feature do
 
         fill_in('dm-practice-search-field', with: 'test')
         search
-        all('.dm-practice-link-aria-hidden').first.click
+        all('.dm-link-title').first.click
 
         expect(page).to have_link('Search', href: '/search?query=test')
       end
@@ -689,7 +720,7 @@ describe 'Search', type: :feature do
     end
   end
 
-  describe 'Cache' do
+  describe 'Cache', js: true do
     it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
       expect(cache_keys).to include("searchable_practices_json")
@@ -703,9 +734,7 @@ describe 'Search', type: :feature do
       add_search_to_cache
       expect(cache_keys).to include("searchable_practices_json")
       login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit '/admin'
-      click_link('Practices')
-      click_link('New Practice')
+      visit '/admin/practices/new'
       fill_in('Innovation name', with: 'The Newest Practice')
       fill_in('User email', with: 'practice_owner@va.gov')
       click_button('Create Practice')
@@ -741,21 +770,139 @@ describe 'Search', type: :feature do
     it 'should function appropriately' do
       visit_search_page
 
-      click_button('Filters')
-      click_button('Originating facility')
+      click_button('Refine Results')
+      # click_button('Originating facility')
       set_combobox_val(0, 'Togus VA Medical Center')
-      click_button('Adopting facility')
+      # click_button('Adopting facility')
       set_combobox_val(1, 'VISN-2')
-      click_button('Tags')
+      # click_button('Tags')
       select_category('.cat-5-label')
       update_results
 
-      expect(page).to have_content('5 results')
+      expect(page).to have_content('5 Results')
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice3.name)
       expect(page).to have_content(@practice5.name)
       expect(page).to have_content(@practice7.name)
       expect(page).to have_content(@practice10.name)
+    end
+  end
+
+  describe 'search header' do
+    it 'should display appropriate header text when page loads' do
+      visit_search_page
+      expect(find('#searchHeader')).to have_text('Search')
+      expect(find('#searchHeader')).not_to have_text('Search Results for:')
+
+      visit '/'
+      find('#dm-homepage-search-field').click
+      fill_in('dm-homepage-search-field', with: 'test')
+      find_button('dm-homepage-search-button').click
+
+      expect(find('#searchHeader')).to have_text('Search Results for: test')
+    end
+
+    it 'should update the search header when a query is entered and removed in search bar' do
+      visit_search_page
+
+      fill_in('dm-practice-search-field', with: 'test')
+      search
+      expect(find('#searchHeader')).to have_text('Search Results for: test')
+
+      fill_in('dm-practice-search-field', with: '')
+      search
+      expect(find('#searchHeader')).to have_text('Search')
+      expect(find('#searchHeader')).not_to have_text('Search Results for:')
+    end
+  end
+
+  describe 'Keyboard Accessibility', js: true do
+    before do
+      visit_search_page
+    end
+
+    it 'should allow navigation through interactive elements using the Tab key' do
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'dm-practice-search-field'
+
+      find('body').send_keys(:tab)
+      expect(page.evaluate_script('document.activeElement.id')).to eq('dm-practice-search-button')
+
+      find('body').send_keys(:tab)
+      expect(page.evaluate_script('document.activeElement.id')).to eq('search_sort_option_adoptions')
+
+      3.times { find('body').send_keys(:tab) }
+      expect(page.evaluate_script('document.activeElement.className')).to include('usa-checkbox__input')
+
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
+      expect(page.evaluate_script('document.activeElement.id')).to eq('update-search-results-button')
+
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.className').include?('dm-link-title')
+      expect(page.evaluate_script('document.activeElement.className')).to include('dm-link-title')
+
+      find('body').send_keys(:tab)
+      expect(page.evaluate_script('document.activeElement.className')).to include('dm-link-title')
+    end
+
+    it 'should allow changing sort to A to Z using the keyboard and verify the top result' do
+      expect(first('a.dm-link-title').text).to eq(@practice.name)
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'search_sort_option_adoptions'
+      find('body').send_keys(:arrow_up)
+      expect(page.evaluate_script('document.activeElement.id')).to eq('search_sort_option_a_to_z')
+      expect(first('a.dm-link-title').text).to eq(@practice4.name)
+    end
+
+    context 'filters' do
+      it 'should allow adding and removing of single filter' do
+        find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == "cat-#{@cat_1.id}-input"
+        find('body').send_keys(:space)
+        expect(page.evaluate_script('document.activeElement.checked')).to be true
+
+        find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
+        find('body').send_keys(:enter)
+        expect(page).to have_content(@practice.name)
+        expect(page).to have_content(@practice3.name)
+        expect(page).not_to have_content(@practice4.name)
+
+        find('body').send_keys(:shift, :tab) until page.evaluate_script('document.activeElement.textContent').include?('TAG: COVID')
+        find('body').send_keys(:space)
+        expect(page).to have_content(@practice.name)
+        expect(page).to have_content(@practice3.name)
+        expect(page).to have_content(@practice4.name)
+      end
+
+      it 'should allow adding and removing of all filters' do
+        find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == "cat-#{@cat_1.id}-input"
+        find('body').send_keys(:space)
+        find('body').send_keys(:tab)
+        find('body').send_keys(:space)
+        find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
+        find('body').send_keys(:enter)
+        expect(page).to have_content("TAG: COVID")
+        expect(page).to have_content("TAG: ENVIRONMENTAL SERVICES")
+        find('body').send_keys(:shift, :tab) until page.evaluate_script('document.activeElement.id').include?('reset-search-filters-button')
+        find('body').send_keys(:enter)
+        expect(page).not_to have_content("TAG: COVID")
+        expect(page).not_to have_content("TAG: ENVIRONMENTAL SERVICES")
+      end
+    end
+
+    it 'should allow selecting adopting and originating locations' do
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'originating-facility-and-visn-select'
+      find('body').send_keys(:space)
+      3.times { find('body').send_keys(:arrow_down) }
+      find('body').send_keys(:enter)
+
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'adopting-facility-and-visn-select'
+      find('body').send_keys(:space)
+      8.times { find('body').send_keys(:arrow_down) }
+      find('body').send_keys(:enter)
+
+      find('body').send_keys(:tab) until page.evaluate_script('document.activeElement.id') == 'update-search-results-button'
+      find('body').send_keys(:space)
+      expect(page).to have_content('ADOPTION: EAST LIVERPOOL VA CLINIC')
+      expect(page).to have_content('ORIGIN: NEWARK VA CLINIC')
+      expect(page).to have_content('1 Result')
+      expect(page).to have_content('The Most Important Practice')
     end
   end
 end

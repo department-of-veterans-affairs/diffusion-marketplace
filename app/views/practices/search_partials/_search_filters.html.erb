@@ -1,88 +1,85 @@
-<div class="grid-row padding-x-3 padding-bottom-0 desktop:padding-x-0">
-  <fieldset class="padding-0">
-    <legend class="usa-sr-only">Tag Filters</legend>
-    <div class="bg-gray-5 desktop:padding-bottom-2px search-category-filters">
-      <h2 class="usa-accordion__heading">
-        <button class="usa-accordion__button mobile-category-accordion desktop:display-none"
-                aria-expanded="false"
-                type="button">
-          Tags
-        </button>
-      </h2>
+<h3 class="desktop:display-block tablet:display-none mobile-lg:display-none"> Refine Results </h3>
 
-      <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
-        <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block margin-top-2">
-        <a href="#parent-category-modal" class="dotted parent-category-modal cursor-pointer margin-bottom-2" aria-controls="parent-category-modal" data-open-modal>
-          <span class="usa-sr-only">Open parent tag definitions modal</span>
-          Tags
-        </a>
-          <%= render partial: 'shared/parent_category_modal' %>
-        </p>
-        <% @parent_categories.each do |parent_category, sub_categories| %>
-          <%
-            if sub_categories.any?
-              categories = [{name: "All #{parent_category.name.downcase}", parent_category: parent_category, id: parent_category.name}] + sub_categories
-            else
-              categories = []
-            end
-            sliced_categories = split_data_into_three_columns(categories)
-          %>
-          <% if sub_categories.any? %>
-            <div class="grid-row grid-col-12 category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex padding-left-0 padding-right-0">
-              <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1 desktop:margin-bottom-0"><%= parent_category.name %></p>
-              <% sliced_categories.each_with_index do |sc, i| %>
-                <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sc, column: i, parent_category: parent_category } unless i === 3 %>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
+<div id="search-sort-options-container" class="padding-bottom-3 border-bottom-2px border-gray-10" aria-label="Sort options">
+  <%
+    sort_options = [
+      ['Most Relevant', 'most_relevant'],
+      ['A to Z', 'a_to_z'],
+      ['Most Adopted', 'adoptions'],
+      ['Most Recently Added', 'added']
+    ]
+  %>
+  <h4 class="text-bold">Sort By</h3>
+  <% sort_options.each do |option| %>
+    <div class="usa-radio">
+      <input id="search_sort_option_<%= option[1] %>" class="usa-radio__input" type="radio" name="search_sort_option" value="<%= option[1] %>" <%= 'checked' if option[1] == 'adoptions' %>>
+      <label class="usa-radio__label" for="search_sort_option_<%= option[1] %>">
+        <%= option[0] %>
+      </label>
     </div>
-  </fieldset>
-
-  <fieldset class="padding-0">
-    <legend class="usa-sr-only">Originating Facility Filter</legend>
-    <div class="bg-gray-5 desktop:padding-bottom-2px search-originating-facility-filter">
-      <h2 class="usa-accordion__heading">
-        <button class="usa-accordion__button mobile-origin-accordion desktop:display-none"
-                aria-expanded="false"
-                type="button">
-          Originating facility
-        </button>
-      </h2>
-
-      <div class="grid-row originating-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
-        <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Originating location</p>
-        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
-        <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
-      </div>
-    </div>
-  </fieldset>
-
-  <fieldset class="padding-0">
-    <legend class="usa-sr-only">Adopting Facility Filter</legend>
-    <div class="bg-gray-5 desktop:padding-bottom-2px search-adopting-facility-filter">
-      <h2 class="usa-accordion__heading">
-        <button class="usa-accordion__button mobile-adopting-accordion desktop:display-none"
-                aria-expanded="false"
-                type="button">
-          Adopting facility
-        </button>
-      </h2>
-
-      <div class="grid-row adopting-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
-        <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Adopting location</p>
-        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
-      </div>
-    </div>
-  </fieldset>
+  <% end %>
 </div>
 
-<div class="padding-y-2 padding-x-3 border-top-2px border-base-lightest bg-white desktop:border-top-0 desktop:padding-2" id="filter_button_container">
-  <button type="submit" id="update-search-results-button" class="usa-button usa-button--primary display-block width-full desktop:margin-bottom-1 line-height-19px" name="button">
-    Update results
-  </button>
-  <button type="button" class="usa-button usa-button--secondary display-none desktop:display-block width-full line-height-19px" id="resetSearchFiltersButton">
-    Reset filters
+<fieldset class="usa-fieldset margin-top-3 padding-bottom-3 border-bottom-2px border-gray-10">
+  <legend class="usa-legend usa-typography--h text-bold padding-bottom-1 padding-top-1">Tags</legend>
+  <div class="category-filters maxh-mobile">
+    <% @parent_categories.each do |parent_category, sub_categories| %>
+      <% if sub_categories.any? %>
+        <% parent_cat_name = "#{parent_category.name.downcase.gsub(' ', '-')}" %>
+        <% all_cats_checkbox_id = "cat-all-#{parent_cat_name}-input" %>
+        <% parent_cat_name = parent_category.name.split(' ').join('-').downcase %>
+        <div class="usa-checkbox position-relative">
+          <input
+            class="usa-checkbox__input all-<%= parent_cat_name %>-checkbox"
+            id=<%= all_cats_checkbox_id %>
+            type="checkbox"
+            name="All <%= parent_cat_name %>"
+            value="All <%= parent_cat_name %>"
+          />
+          <label class="usa-checkbox__label cat-all-<%= parent_cat_name %>-label" for=<%= all_cats_checkbox_id %>>
+            <%= "All #{parent_category.name}" %>
+          </label>
+        </div>
+
+        <div class="sub-category-checkboxes padding-bottom-3 margin-left-205">
+          <% sub_categories.each do |category| %>
+            <% category_checkbox_id = "cat-#{category.id}-input" %>
+            <% category_checkbox_label = "cat-#{category.id}-label" %>
+            <div class="usa-checkbox position-relative">
+              <input
+                class="usa-checkbox__input <%= parent_cat_name %>-checkbox"
+                id=<%= category_checkbox_id %>
+                type="checkbox"
+                name="<%= category.name %>"
+                value="<%= category.name %>"
+                data-parent-category=<%= parent_cat_name %>
+              />
+              <label class="usa-checkbox__label <%= category_checkbox_label %>" for=<%= category_checkbox_id %>>
+                <%= category.name %>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</fieldset>
+
+<fieldset class="usa-fieldset margin-top-3 padding-top-1 padding-bottom-3 border-bottom-2px border-gray-10">
+  <div id="originating-facility-container">
+    <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: { form_label: 'Originating location', facility_type_selector: 'originating-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities} %>
+    <%= render partial: 'shared/visn_info_modal', locals: { hide_modal_on_initial_load: false } %>
+  </div>
+</fieldset>
+
+<fieldset class="usa-fieldset margin-top-3 padding-top-1 padding-bottom-3">
+  <div id="adopting-facility-container">
+    <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: { form_label: 'Adopting location', facility_type_selector: 'adopting-facility-and-visn-select', visn_grouped_facilities: @visn_grouped_facilities } %>
+  </div>
+</fieldset>
+
+<div class="border-base-lightest padding-top-2" id="filter_button_container">
+  <button type="submit" id="update-search-results-button" class="usa-button filter-submit-button display-block line-height-19px" name="button" form="update-search-results-form">
+    Apply Filters
   </button>
 </div>

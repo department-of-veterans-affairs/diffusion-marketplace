@@ -1,0 +1,79 @@
+.dm-search-result {
+  border-top: 2px solid #e6e6e6 !important;
+  position: relative;
+  @include u-display(block);
+  @include u-width("full");
+  @include u-padding-y(4);
+
+  .dm-practice-retired-banner {
+    position: absolute;
+    width: 80px;
+    height: 24px;
+    justify-content: center;
+    background-color: color($theme-color-base-light);
+    padding: 5px;
+    border-radius: 0px 2px 2px 0px;
+    z-index: 2;
+    top: 20px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: color($theme-color-base-ink);
+    font-size: 13px;
+    line-height: 115%;
+  }
+
+  .search-result-img-container {
+    height: 133px;
+    background-color: color($theme-color-base-lightest);
+    display: flex;
+    @include u-margin-bottom(3);
+
+    img {
+      flex-shrink: 0;
+      object-fit: cover;
+      @include at-media(tablet) {
+        min-height: 100%;
+        min-width: 100%;
+      }
+    }
+
+    h3 {
+      align-self: flex-end;
+      color: color($theme-color-dm-white);
+    }
+
+    @include at-media(tablet) {
+      flex: 0 0 220px;
+      margin-right: 30px;
+      margin-bottom: unset;
+    }
+  }
+
+  .search-result-img-container.loaded-image {
+    background-color: unset;
+  }
+
+  .search-result-description {
+    @include grid-col(12);
+
+    h3 {
+      @include u-margin-top(0);
+      @include u-margin-bottom(2);
+      @include u-text("normal");
+    }
+
+    .innovation-tagline {
+      display: block;
+      @include u-height(10);
+      overflow: hidden;
+    }
+
+    .originating-facility {
+      @include u-font("sans", "2xs");
+      @include u-text("italic");
+    }
+  }
+}

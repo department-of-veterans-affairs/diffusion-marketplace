@@ -177,7 +177,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         find('#dm-navbar-search-desktop-button').click
       end
 
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content('A public practice')
       expect(page).to have_current_path('/search?query=test')
 
@@ -214,7 +214,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       open_mobile_menu
       fill_in('dm-navbar-search-mobile-field', with: 'test')
       find('#dm-navbar-search-mobile-button').click
-      expect(page).to have_content('1 result')
+      expect(page).to have_content('1 Result')
       expect(page).to have_content('A public practice')
       expect(page).to have_current_path('/search?query=test')
 

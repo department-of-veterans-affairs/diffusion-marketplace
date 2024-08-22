@@ -1,10 +1,68 @@
 // Styles for the practice search page
 #search-page {
-  .usa-checkbox__label:before {
-    border-radius: 0 !important;
+  .applied-filter {
+    @extend .usa-tag;
+    @extend .usa-tag--big;
+    display: block;
+    @include at-media(tablet) {
+      display: inline-block;
+    }
+
+    svg {
+      vertical-align: text-bottom;
+      margin-left: 4px;
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      line-height: 1;
+    }
   }
 
-  .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
+  .applied-filter-1 {
+    @include transition-btn-colors;
+  }
+
+  .applied-filter-2 {
+    background-color: color("blue-10");
+    color: color("blue-60");
+
+    &:hover {
+      background-color: color("blue-20");
+    }
+
+    &:active {
+      background-color: color("blue-40");
+    }
+  }
+
+  .applied-filter-3 {
+    background-color: color("gray-60");
+    color: white;
+
+    &:hover {
+      background-color: color("gray-50");
+    }
+
+    &:active {
+      background-color: color("gray-80");
+    }
+  }
+
+  .applied-filter-4 {
+    background-color: color("gray-30");
+    color: black;
+
+    &:hover {
+      background-color: color("gray-20");
+    }
+
+    &:active {
+      background-color: color("gray-50");
+    }
+  }
+
+  .usa-combo-box__toggle-list,
+  .usa-combo-box__clear-input {
     top: 2.3em !important;
   }
 
@@ -23,15 +81,44 @@
   .button-box {
     margin-bottom: 24px;
   }
+
+  .category-filters {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
+  .category-filters::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .category-filters::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .category-filters::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .category-filters::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .filter-submit-button {
+    @include transition-btn-colors;
+  }
+
+  hr {
+    border: none;
+    height: 1px;
+    background: #dcdee0;
+  }
 }
 
 .dm-search-practices {
-  hr {
-    border: none;
-    height: 2px;
-    background: #dcdee0;
-  }
-
   mark {
     background: color($theme-color-accent-warm);
     font-weight: bold;
@@ -57,7 +144,7 @@
     height: calc(1em * 1.5 * 2);
   }
   .three-lines {
-    -webkit-line-clamp : 3;
+    -webkit-line-clamp: 3;
     height: calc(1em * 1.5 * 3);
   }
   .four-lines {
@@ -73,7 +160,7 @@
   /* Adapted from: http://www.mademyday.de/css-height-equals-width-with-pure-css.html */
   .img-box {
     position: relative;
-    width: 100%;  /* desired width */
+    width: 100%; /* desired width */
   }
 
   .img-box-content {
@@ -82,11 +169,11 @@
     width: 100%;
     height: 210px;
 
-    @media all and (min-width: 640px){
+    @media all and (min-width: 640px) {
       height: 200px;
     }
 
-    @media all and (min-width: 870px){
+    @media all and (min-width: 870px) {
       width: 254px;
       height: 257px;
     }
@@ -120,25 +207,9 @@
   .fa-times {
     display: block !important;
   }
-
-  .search-category-filters, .search-originating-facility-filter, .search-adopting-facility-filter {
-    @include u-margin-bottom(1);
-
-    @media screen and (min-width: 1024px) {
-      @include u-margin-bottom(0);
-    }
-  }
-
-  #update-search-results-button {
-    @include transition-btn-colors;
-  }
 }
 
 #update-search-results-form {
-  #mobile_filters_button {
-    @include transition-btn-colors;
-  }
-
   #dm-practice-search-button {
     @include transition-btn-colors;
     background-image: none !important;
@@ -158,14 +229,9 @@
   }
 }
 
-#close_filters_modal {
-  background: none !important;
-  border: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.category-container, .originating-facility-container, .adopting-facility-container {
+.category-container,
+.originating-facility-container,
+.adopting-facility-container {
   background-color: color($theme-color-secondary-light);
 
   @media screen and (min-width: 1024px) {
@@ -173,9 +239,9 @@
   }
 }
 
-.category-container, {
+.category-container {
   .desktop\:grid-col-4 {
-    @include u-padding-right('05');
+    @include u-padding-right("05");
   }
   div:last-child {
     .usa-checkbox {
@@ -196,21 +262,8 @@
   }
 }
 
-.mobile-modal-container {
-  position: relative;
-  padding-bottom: 93px;
-  min-height: 100vh;
-
-  @media screen and (min-width: 1024px) {
-    position: unset;
-    padding-bottom: 0;
-    min-height: unset;
-  }
-}
-
 #filter_button_container {
   @media screen and (max-width: 1023px) {
-    position: absolute;
     bottom: 0;
     width: 100%;
   }

@@ -11,17 +11,10 @@
     var SPINNER = '.dm-loading-spinner';
     var LOAD_MORE_CONTAINER = '.button-box';
     var SEARCH_RESULTS = '#search-results';
-    var SORT_EL = '#search_sort_option';
+    var SORT_EL = 'input[name="search_sort_option"]';
     var isBlankSearch = false;
     var NO_SEARCH_RESULTS_TEXT = '.no-query-results-p';
-    // Add Namespace for scroll position
-    var pagePosition = {
-        original: 0,
-        // Log the user's spot on the page when they open the filters modal on mobile
-        getScrollPosition: function () {
-            this.original = $(window).scrollTop();
-        }
-    }
+    var practiceElements = {};
     var all_categories = <%= raw @categories.to_json %>;
 <% end %>
 
@@ -127,6 +120,49 @@ function buildPracticeCard(result) {
     return cardHtml;
 }
 
+function buildSearchResult(result) {
+    var resultHtml = '';
+    var practiceImage = result.item.image || 'default-image-placeholder.jpg'; // use a default placeholder if no image is available
+    var practiceName = result.item.name;
+    var practiceId = result.item.id;
+    var practiceTagline = result.item.tagline || '';
+    var initiatingFacilityName = result.item.initiating_facility_name || '';
+
+    var resultHeaderHtml =
+        '<h3>' +
+            '<a href="/innovations/' + result.item.slug + '"" class="dm-link-title">' +
+                practiceName +
+            '</a>' +
+        '</h3>';
+
+    // Default card image placeholder
+    var resultImagePlaceholder =
+        '<div class="search-result-img-container" data-practice-id="' + practiceId + '" data-practice-image="' + practiceImage + '" data-practice-name="' + practiceName + '" ></div>';
+
+    var resultRetiredBanner = '';
+    if (result.item.retired) {
+        resultRetiredBanner = '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+    }
+
+    resultHtml += `<div class="dm-search-result">
+        <div class="display-block tablet:display-flex width-full tablet:flex-align-start">
+            ${resultImagePlaceholder}
+            ${resultRetiredBanner}
+            <div class="search-result-description">
+                ${resultHeaderHtml}
+                <p class="innovation-tagline">
+                    ${practiceTagline}
+                </p>
+                <span class="originating-facility">
+                    ${initiatingFacilityName}
+                </span>
+            </div>
+        </div>
+    </div>`;
+
+    return resultHtml;
+}
+
 function showSpinner() {
     $(SPINNER).removeClass('display-none');
     $(SPINNER).addClass('display-flex');
@@ -157,63 +193,8 @@ function hideResultsElAndShowSpinner() {
     showSpinner();
 }
 
-function openMobileFiltersModal(openOnPageLoad) {
-    $(document).on('click', '#mobile_filters_button', function() {
-        $('.search-filters-accordion-button').attr('aria-expanded', 'true');
-        $('#search_filters_dropdown').removeAttr('hidden');
-        // Return the user to their original spot on the page, before opening the mobile modal
-        pagePosition.getScrollPosition();
-    });
 
-    if (openOnPageLoad) {
-        $('#mobile_filters_button').trigger('click');
-    }
-}
-
-function toggleAccordion(accordionEl, containerEl) {
-    if (($(accordionEl).attr('aria-expanded') === 'true')) {
-        $(accordionEl).attr('aria-expanded', 'false');
-        $(containerEl).addClass('display-none');
-    } else {
-        $(accordionEl).attr('aria-expanded', 'true');
-        $(containerEl).removeClass('display-none');
-    }
-}
-
-function toggleMobileCategoriesAccordion(openOnPageLoad) {
-    $(document).on('click', '.mobile-category-accordion', function() {
-        toggleAccordion(this, '.category-container');
-    });
-
-    if (openOnPageLoad) {
-        $('.mobile-category-accordion').each(function() {
-            toggleAccordion(this, '.category-container');
-        });
-    }
-}
-
-function toggleMobileOriginAccordion() {
-    $(document).on('click', '.mobile-origin-accordion', function() {
-        toggleAccordion(this, '.originating-facility-container');
-    });
-}
-
-function toggleMobileAdoptingAccordion() {
-    $(document).on('click', '.mobile-adopting-accordion', function() {
-        toggleAccordion(this, '.adopting-facility-container');
-    });
-}
-
-function closeMobileFiltersModal() {
-    $(document).on('click', '#close_filters_modal', function () {
-        $('.search-filters-accordion-button').attr('aria-expanded', 'false')
-        $('#search_filters_dropdown').attr('hidden', 'true');
-        // Bring the user back to their original spot on the page, in case they scrolled down while in the modal
-        $(window).scrollTop(pagePosition.original);
-    });
-}
-
-function searchPracticesPage() {
+function searchPracticesPage(skipSearchTracking=false) {
     const searchField = document.querySelector('#dm-practice-search-field');
     // Skip if not the search page
     if (location.pathname !== '/search') return;
@@ -221,14 +202,20 @@ function searchPracticesPage() {
     // Template out the search results
     function buildSearchResults(results, sortOption) {
         $(SPINNER).addClass('display-none');
-        var tmpResults = results.sort(sortOption);
+        var sortedResults = results.sort(sortOption);
 
-        var resultsArray = [];
         var finalResults = '';
-        tmpResults.sort(sortByRetired).forEach(function (result) {
-            const practiceCard = buildPracticeCard(result)
+        sortedResults.sort(sortByRetired).forEach(function (result, index) {
+            let practiceCard;
+
+            if (practiceElements[result.item.id]) {
+                practiceCard = practiceElements[result.item.id];
+            } else {
+                practiceCard = buildSearchResult(result);
+                practiceElements[result.item.id] = practiceCard;
+            }
+
             finalResults += practiceCard;
-            resultsArray.push(practiceCard);
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
             '<!--' +
@@ -238,14 +225,6 @@ function searchPracticesPage() {
             '-->'
         });
         if (results.length > 0) {
-
-            // Hide sorting options if there's only 1 result
-            if (results.length === 1) {
-                sortSelect.addClass('display-none');
-            } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
-                sortSelect.removeClass('display-none');
-            }
-
             // Show the results summary section
             if ($(RESULTS_SECTION).hasClass('display-none')) {
                 $(RESULTS_SECTION).removeClass('display-none');
@@ -254,9 +233,9 @@ function searchPracticesPage() {
             $(SEARCH_RESULTS).removeClass('display-none');
 
             // Print results to the page
-            document.querySelector('#search-results').innerHTML = finalResults;
+            document.querySelector(SEARCH_RESULTS).innerHTML = finalResults;
             // After the html for the card has been built and applied to the DOM, replace the image 'src' based on the signed url
-            replaceImagePlaceholders();
+            replaceSearchPageImagePlaceholders(practiceElements);
             $(SEARCH_RESULTS).showMoreItems({
                 startNum: 12,
                 afterNum: 12,
@@ -293,8 +272,11 @@ function searchPracticesPage() {
         // set the search page search bar input value
         searchField.value = query;
 
+        const searchHeader = document.getElementById('searchHeader');
         if (query) {
             trackSearchField(query);
+            searchHeader.textContent = `Search Results for: ${query}`;
+
             var searchBarQueryArray = [];
             search_options.keys.forEach(function(practiceKey) {
                 var queryObj = {};
@@ -302,16 +284,26 @@ function searchPracticesPage() {
                 return searchBarQueryArray.push(queryObj);
             });
         } else {
+            searchHeader.textContent = "Search";
             if (searchLocation[0] === '?filter_by') {
                 trackSearchByFilter(searchLocation[1]);
             }
         }
 
+        $('.applied-filter').remove();
+        $('#reset-search-filters-button').addClass('display-none');
+
         if (categories) {
-            // Collect any practice that has a category that matches the selected category/categories.
             var categoryFilters = [];
-            categories.forEach(function (categorySelection) {
-                return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+
+            Object.entries(categories).forEach(function ([parentCat, subCats]) {
+                if (subCats.length) {
+                    var catType = parentCat === 'communities' ? 'COMMUNITY' : 'TAG';
+                    subCats.forEach(function (subCat) {
+                        addAppliedFilter(catType, subCat);
+                        categoryFilters.push({'category_names': "=\"" + subCat + "\""});
+                    });
+                }
             });
         }
 
@@ -335,6 +327,10 @@ function searchPracticesPage() {
                     originFacilityArray.push({'origin_facilities': "=\"" + vf.official_station_name + "\""});
                 }
             });
+
+            // Add applied filter pill for just the Clinical Resource Hub
+            addAppliedFilter('ORIGIN', visnFacilities[visnFacilities.length - 1].official_station_name)
+
         } else if (originatingFacility && !originatingFacility.includes('VISN-')){
             // Collect the practices that have an origin facility matching the selected facility
             var foundOriginatingFacility = facilities.find(function(f) {
@@ -344,6 +340,7 @@ function searchPracticesPage() {
                     return originatingFacility === f.official_station_name;
                 }
             });
+            addAppliedFilter('ORIGIN', foundOriginatingFacility.official_station_name)
 
             originFacilityArray.push({'origin_facilities': "=\"" + (foundOriginatingFacility.hasOwnProperty('station_number') ? foundOriginatingFacility.station_number : foundOriginatingFacility.official_station_name) + "\""});
         }
@@ -379,6 +376,9 @@ function searchPracticesPage() {
                     }
                 });
 
+                // Add applied filter pill for just the Clinical Resource Hub
+                addAppliedFilter('ADOPTION', filteredFacilities[filteredFacilities.length - 1].official_station_name)
+
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             } else {
                 // Collect any practice that has a diffusion history with a facility that matches the selected facility
@@ -386,6 +386,7 @@ function searchPracticesPage() {
 
                 foundAdoptingFacility.station_number ? stationNumbers.push(foundAdoptingFacility.station_number) : stationNumbers.push(foundAdoptingFacility.official_station_name)
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
+                addAppliedFilter('ADOPTION', foundAdoptingFacility.official_station_name)
             }
         }
 
@@ -399,12 +400,13 @@ function searchPracticesPage() {
         the results will have the same score because it stops after the first match.
         */
         function improveResultScoreBasedOnAmountOfCategoryMatches(results) {
+            var allChosenCategories = Object.values(categories).flat();
             results.map(function(result) {
                 var resultScore = result.score;
                 var cat_names = result.item.category_names;
                 if (cat_names && Array.isArray(cat_names)) {
                     cat_names.forEach(function (cn) {
-                        if (categories.includes(cn)) {
+                        if (allChosenCategories.includes(cn)) {
                             resultScore = result.score / 2;
                         }
                         result.score = resultScore;
@@ -715,20 +717,24 @@ function searchPracticesPage() {
         }
 
         // Get the results and then filter them
+        const sortRadioInputs = document.querySelectorAll(SORT_EL);
         if (!query && !categories && !originatingFacility && !adoptingFacility) {
             // on an empty search or filtered search, sort by most adoptions and disable the score sorting option, since the score for each result is the same
             buildSearchResults(results, sortByAdoptionCounts);
-            $(SORT_EL).children().first().attr('disabled', 'true');
-            $(SORT_EL).prop('selectedIndex', 2);
+            if (sortRadioInputs) {
+                sortRadioInputs[0].disabled = true;
+                sortRadioInputs[2].checked = true;
+            }
         } else {
             buildSearchResults(results, sortByScore);
-            // re-enable the score sorting option
-            $(SORT_EL).children().first().removeAttr('disabled');
-            $(SORT_EL).prop('selectedIndex', 0);
+            if (sortRadioInputs) {
+                sortRadioInputs[0].disabled = false;
+                sortRadioInputs[0].checked = true;
+            }
         }
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
+        resultsSummary.innerHTML = results.length + ' Result' + (results.length === 1 ? ':' : 's:');
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function (result) {
@@ -736,8 +742,79 @@ function searchPracticesPage() {
         });
 
         // Highlight search results where exact keyword matches
-        var mark = new Mark('#search-results');
+        var mark = new Mark(SEARCH_RESULTS);
         mark.mark(query);
+    }
+
+    function addAppliedFilter(filterType, filterName) {
+        const resultsSummary = document.getElementById('results-summary');
+        const resetButton = document.getElementById('reset-search-filters-button');
+        const appliedFilterName = filterName.toUpperCase();
+        const appliedFilterString = `${filterType}: ${appliedFilterName} `;
+        const appliedFilterButton = document.createElement('button');
+        const filterClassIndexMap = {
+            'TAG': 1,
+            'COMMUNITY': 2,
+            'ORIGIN': 3,
+            'ADOPTION': 4
+        };
+        const filterClassIndex = filterClassIndexMap[filterType] || 1;
+
+        appliedFilterButton.className = `usa-button applied-filter applied-filter-${filterClassIndex}`;
+        appliedFilterButton.id = `${filterName}`;
+        appliedFilterButton.textContent = appliedFilterString;
+        appliedFilterButton.style.cursor = 'pointer';
+        appliedFilterButton.setAttribute(
+            'aria-label',
+            `Remove ${filterType} filter for ${filterName} and update search results`
+        );
+
+        const svgNamespace = "http://www.w3.org/2000/svg";
+        const svgIcon = document.createElementNS(svgNamespace, "svg");
+        svgIcon.setAttribute("xmlns", svgNamespace);
+        svgIcon.setAttribute("viewBox", "0 0 352 512");
+        svgIcon.setAttribute("aria-hidden", "true");
+
+        const path = document.createElementNS(svgNamespace, "path");
+        path.setAttribute("d",
+            "M242.72 256L349.35 149.37a16 16 0 0 0 0-22.63L325.25 102a16 16 0 0 0-22.63 0L176 228.72 " +
+            "49.37 102.05a16 16 0 0 0-22.63 0L2.7 126.74a16 16 0 0 0 0 22.63L109.33 256 2.7 362.63a16 " +
+            "16 0 0 0 0 22.63l24.07 24.07a16 16 0 0 0 22.63 0L176 283.28l126.63 126.62a16 16 0 0 0 " +
+            "22.63 0l24.07-24.07a16 16 0 0 0 0-22.63z"
+        );
+
+        svgIcon.appendChild(path);
+        appliedFilterButton.appendChild(svgIcon);
+
+        appliedFilterButton.addEventListener('click', function(event) {
+            uncheckFilter(filterType, filterName);
+            $('#reset-search-filters-button').addClass('display-none');
+            updateResults();
+            event.stopPropagation();
+        });
+
+        resultsSummary.parentNode.insertBefore(appliedFilterButton, resetButton);
+        resetButton.classList.remove('display-none');
+    }
+
+    function uncheckFilter(filterType, filterName) {
+        if (filterType === 'TAG' || filterType === 'COMMUNITY') {
+            const checkbox = Array.from(document.querySelectorAll('.usa-checkbox__input')).find(c =>
+                c.labels && c.labels.length && c.labels[0].textContent.trim() === filterName);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        } else if (filterType === 'ORIGIN') {
+            const input = document.querySelector('#originating-facility-container input[type="text"]');
+            if (input) {
+                input.value = '';
+            }
+        } else if (filterType === 'ADOPTION') {
+            const input = document.querySelector('#adopting-facility-container input[type="text"]');
+            if (input) {
+                input.value = '';
+            }
+        }
     }
 
     // Highlight Fuse.js results
@@ -827,100 +904,84 @@ function searchPracticesPage() {
         }
     }
 
-    function closeAccordion(accordionEl, containerEl) {
-        $(accordionEl).attr('aria-expanded', 'false');
-        $(containerEl).addClass('display-none');
-    }
-
-    var accordionButton = $('.search-filters-accordion-button')
-    function accordionText(checkboxCount, inputCount) {
-        return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')');
-    }
-
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
         hideResultsSectionElAndShowSpinner();
+        updateResults();
+    });
 
-        // Close search filter accordion if it's open
-        if (accordionButton.attr('aria-expanded') == 'true') {
-            accordionButton.attr('aria-expanded', 'false');
-            $('#search_filters_dropdown').attr('hidden', 'true');
+    function updateResults(checkFacilityInputs = true) {
+        const searchFieldValue = searchField.value.trim();
+        if (searchFieldValue !== '') {
+            window.history.pushState({ turbolinks: {} }, "", `/search?query=${searchFieldValue}`);
+        }
+        let originatingFacility = null;
+        let adoptingFacility = null;
+
+        if (checkFacilityInputs) {
+            originatingFacility = getFacilityValue(
+                '#originating-facility-and-visn-select',
+                '#originating-facility-and-visn-select--list > li[aria-selected=true]'
+            );
+
+            adoptingFacility = getFacilityValue(
+                '#adopting-facility-and-visn-select',
+                '#adopting-facility-and-visn-select--list > li[aria-selected=true]'
+            );
         }
 
-        // Close mobile accordions
-        closeAccordion('.mobile-origin-accordion', '.originating-facility-container');
-        closeAccordion('.mobile-adopting-accordion', '.adopting-facility-container');
-        closeAccordion('.mobile-category-accordion', '.category-container');
+        const { chosenCategoriesByParent, allCategories } = getSelectedCategories();
 
-        // Bring the user back to their original spot on the page, before they opened the mobile modal
-        if ($(window).width() < 1024) {
-            $(window).scrollTop(pagePosition.original);
+        if (!skipSearchTracking) {
+            updateCategoryUsage(searchFieldValue, allCategories);
         }
 
-        var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
-        window.history.pushState({ turbolinks: {} }, "", urlQuery);
+        search(searchFieldValue, chosenCategoriesByParent, originatingFacility, adoptingFacility);
+    }
 
-        // Get the value of the originating facility combo box
-        var originatingFacilityInput = $('#originating-facility-and-visn-select');
-        var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
+    function getFacilityValue(inputSelector, listItemSelector) {
+        const facilityInput = $(inputSelector);
+        const facilityLi = $(listItemSelector);
+        return getComboBoxVal(facilityInput, facilityLi);
+    }
 
-        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi);
+    function getSelectedCategories() {
+        const selectedCategoryCheckboxes = $('#search-filters [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
 
-        // Get the value of the adopting facility combo box
-        var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
-        var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
+        const chosenCategoriesByParent = {};
+        const allCategories = [];
 
-        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
+        selectedCategoryCheckboxes.each(function () {
+            const parentCategory = this.dataset.parentCategory;
+            const value = this.value;
 
-        // Get the values for any chosen categories
-        var selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
-        var chosenCategories = selectedCategoryCheckboxes.map(function () {
-            return this.value;
-        }).get();
-        if (!chosenCategories.length) {
-            chosenCategories = null;
-        }
+            if (!chosenCategoriesByParent[parentCategory]) {
+                chosenCategoriesByParent[parentCategory] = [];
+            }
 
-        // Update Category Usage....
+            chosenCategoriesByParent[parentCategory].push(value);
+            allCategories.push(value);
+        });
+
+        return {
+            chosenCategoriesByParent: Object.keys(chosenCategoriesByParent).length === 0 ? null : chosenCategoriesByParent,
+            allCategories
+        };
+    }
+
+    function updateCategoryUsage(query, chosenCategories) {
         Rails.ajax({
             type: 'patch',
             url: "/update_category_usage",
-            data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories})
+            data: jQuery.param({ query, chosenCategories })
         });
-
-        // Run the search
-        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
-
-        // Display the amount of filters used(if any)
-        var checkboxCount = selectedCategoryCheckboxes.length;
-        var noOriginatingFacilityText = originatingFacilityInput.val() === '';
-        var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
-        var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
-        var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== '';
-
-        if (checkboxCount > 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
-            accordionText(checkboxCount, 1);
-        } else if (checkboxCount > 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
-            accordionText(checkboxCount, 1);
-        } else if (checkboxCount > 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
-            accordionText(checkboxCount, 0);
-        } else if (checkboxCount > 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
-            accordionText(checkboxCount, 2);
-        } else if (checkboxCount === 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
-            accordionText(0, 1);
-        } else if (checkboxCount === 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
-            accordionText(0, 1);
-        } else if (checkboxCount === 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
-            return accordionButton.text('Filters');
-        } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
-            accordionText(0, 2);
-        }
-    });
+    }
 
     // Sort the results based on each sort option
     var sortSelect = $(SORT_EL);
     sortSelect.on('change', function() {
-        switch ($(this).val()) {
+        var selectedValue = $(SORT_EL + ':checked').val();
+        switch (selectedValue) {
             case "most_relevant":
                 hideResultsElAndShowSpinner();
                 buildSearchResults(results, sortByScore);
@@ -941,22 +1002,28 @@ function searchPracticesPage() {
     });
 
     // Clear all filter options
-    $(document).on('click', '#resetSearchFiltersButton, #resetSearchFiltersButtonMobile', function(e) {
+    $(document).on('click', '#reset-search-filters-button', function(e) {
         e.preventDefault();
 
-        $('.usa-combo-box__clear-input').each(function() {
-            $(this).trigger('click');
-        });
+        const originInput = document.querySelector('#originating-facility-container input.usa-combo-box__input');
+        const adoptionInput = document.querySelector('#adopting-facility-container input.usa-combo-box__input');
+
+        if (originInput) {
+            originInput.value = '';
+        }
+
+        if (adoptionInput) {
+            adoptionInput.value = '';
+        }
+
 
         $('.usa-checkbox__input').each(function() {
             if ($(this).prop('checked')) {
                 $(this).prop('checked', false);
             }
         });
-        // Move the focus area back to the top of the filters window
-        $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
-        // Reset filter count text
-        $('.search-filters-accordion-button').text('Filters');
+
+        searchPracticesPage();
     })
 
     if (window.location.pathname === '/search' && window.location.search !== '' && searchLocation[0] !== '?filter_by') {
@@ -970,34 +1037,17 @@ function searchPracticesPage() {
             const checkboxSelector = `input[type="checkbox"][name="${category}"]`;
             const checkbox = $(checkboxSelector);
             checkbox.prop('checked', true);
-            accordionText(1, 0)
-            search('', [category]);
-        } else if (query) {
-            search(decodeURI(query));
-            searchField.value = decodeURI(query);
         } else if (allCommunities) {
             let allCommunitiesCheckbox = document.querySelector('.all-communities-checkbox');
             if (allCommunitiesCheckbox) {
                 allCommunitiesCheckbox.checked = true;
                 $(allCommunitiesCheckbox).trigger('change');
             }
-
-            let selectedCategoryCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox"):not(".all-communities-checkbox")');
-            let chosenCategories = selectedCategoryCheckboxes.map(function () {
-                return this.value;
-            }).get();
-
-            if (!chosenCategories.length) {
-                chosenCategories = null;
-            } else {
-                accordionText(chosenCategories.length, 0)
-            }
-            search('', chosenCategories);
-        } else {
-            // No query or category filter
-            searchField.value = '';
-            search('');
-        }
+        } else if (query) {
+            searchField.value = decodeURI(query);
+        };
+        // update search results but skip checking Location comboboxes
+        updateResults(false);
     } else if ((searchLocation[0] === '?filter_by') || (window.location.pathname === '/search' && window.location.search === '')) {
         hideResultsSectionElAndShowSpinner();
         search('');
@@ -1013,12 +1063,6 @@ function trackSearchField(searchTerm) {
 function trackSearchByFilter(filterTerm) {
     var decodedFilterTerm = decodeURI(filterTerm);
     ahoy.track('Practice search by filter', {filter_term: decodedFilterTerm});
-}
-
-function preventFiltersAccordionContentFlickerOnPageLoad() {
-    $(document).arrive('.desktop-filters-accordion-heading', { existing: true }, (el) => {
-        $(el).next().removeClass('display-none');
-    });
 }
 
 function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
@@ -1043,22 +1087,47 @@ function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
     });
 }
 
+function moveFilters() {
+  const width = window.innerWidth;
+  const filtersContainer = document.getElementById('search-filters');
+  const mobileContainer = document.getElementById('mobile-filters-container');
+  const desktopContainer = document.getElementById('desktop-filters-container');
+
+  if (!filtersContainer || !mobileContainer || !desktopContainer) {
+    return;
+  }
+
+  if (width < 1024) {
+    if (desktopContainer.contains(filtersContainer)) {
+      desktopContainer.removeChild(filtersContainer);
+    }
+    if (!mobileContainer.contains(filtersContainer)) {
+      mobileContainer.appendChild(filtersContainer);
+    }
+  } else {
+    if (mobileContainer.contains(filtersContainer)) {
+      mobileContainer.removeChild(filtersContainer);
+    }
+    if (!desktopContainer.contains(filtersContainer)) {
+      desktopContainer.appendChild(filtersContainer);
+    }
+  }
+  filtersContainer.style.display = 'block';
+}
+
 function execSearchFunctions() {
     const urlParams = new URLSearchParams(window.location.search);
-    const openFiltersOnPageLoad = urlParams.get('filters') === 'open';
+    const skipSearchTracking = urlParams.has('all_communities') || urlParams.has('category');;
 
-    openMobileFiltersModal(openFiltersOnPageLoad);
-    toggleMobileCategoriesAccordion(openFiltersOnPageLoad);
-    toggleMobileOriginAccordion();
-    toggleMobileAdoptingAccordion();
-    closeMobileFiltersModal();
-    preventFiltersAccordionContentFlickerOnPageLoad();
     addAllCheckBoxListener('.all-clinical-checkbox', '.clinical-checkbox');
     addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
     addAllCheckBoxListener('.all-strategic-checkbox', '.strategic-checkbox');
     addAllCheckBoxListener('.all-communities-checkbox', '.communities-checkbox');
-    searchPracticesPage();
+    searchPracticesPage(skipSearchTracking);
+    moveFilters();
 }
+
+window.addEventListener('resize', moveFilters);
 
 document.addEventListener('turbolinks:load', function () {
     execSearchFunctions();
