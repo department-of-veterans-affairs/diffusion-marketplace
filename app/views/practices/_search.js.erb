@@ -762,12 +762,28 @@ function searchPracticesPage(skipSearchTracking=false) {
 
         appliedFilterButton.className = `usa-button applied-filter applied-filter-${filterClassIndex}`;
         appliedFilterButton.id = `${filterName}`;
-        appliedFilterButton.textContent = appliedFilterString + ' X';
+        appliedFilterButton.textContent = appliedFilterString;
         appliedFilterButton.style.cursor = 'pointer';
         appliedFilterButton.setAttribute(
             'aria-label',
             `Remove ${filterType} filter for ${filterName} and update search results`
         );
+
+        const svgNamespace = "http://www.w3.org/2000/svg";
+        const svgIcon = document.createElementNS(svgNamespace, "svg");
+        svgIcon.setAttribute("xmlns", svgNamespace);
+        svgIcon.setAttribute("viewBox", "0 0 352 512");
+
+        const path = document.createElementNS(svgNamespace, "path");
+        path.setAttribute("d",
+            "M242.72 256L349.35 149.37a16 16 0 0 0 0-22.63L325.25 102a16 16 0 0 0-22.63 0L176 228.72 " +
+            "49.37 102.05a16 16 0 0 0-22.63 0L2.7 126.74a16 16 0 0 0 0 22.63L109.33 256 2.7 362.63a16 " +
+            "16 0 0 0 0 22.63l24.07 24.07a16 16 0 0 0 22.63 0L176 283.28l126.63 126.62a16 16 0 0 0 " +
+            "22.63 0l24.07-24.07a16 16 0 0 0 0-22.63z"
+        );
+
+        svgIcon.appendChild(path);
+        appliedFilterButton.appendChild(svgIcon);
 
         appliedFilterButton.addEventListener('click', function(event) {
             uncheckFilter(filterType, filterName);
