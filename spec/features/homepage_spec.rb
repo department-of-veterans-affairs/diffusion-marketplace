@@ -189,7 +189,7 @@ describe 'Homepage', type: :feature do
       page.send_keys :down, :down, :down, :down, :down # navigate to first category
       page.send_keys :enter # select category
       expect(page).to have_current_path('/search?category=COVID')
-      expect(page).to have_content("2 Results: TAG: COVID X")
+      expect(page).to have_content("2 Results: TAG: COVID")
     end
 
     it 'encodes categories & innovations with ampersands' do
