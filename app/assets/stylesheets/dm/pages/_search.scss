@@ -7,6 +7,15 @@
     @include at-media(tablet) {
       display: inline-block;
     }
+
+    svg {
+      vertical-align: text-bottom;
+      margin-left: 4px;
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      line-height: 1;
+    }
   }
 
   .applied-filter-1 {
@@ -258,13 +267,4 @@
     bottom: 0;
     width: 100%;
   }
-}
-
-.applied-filter svg {
-  vertical-align: text-bottom;
-  margin-left: 4px;
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-  line-height: 1;
 }
