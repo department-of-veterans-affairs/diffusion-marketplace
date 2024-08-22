@@ -717,14 +717,20 @@ function searchPracticesPage(skipSearchTracking=false) {
         }
 
         // Get the results and then filter them
+        const sortRadioInputs = document.querySelectorAll(SORT_EL);
         if (!query && !categories && !originatingFacility && !adoptingFacility) {
             // on an empty search or filtered search, sort by most adoptions and disable the score sorting option, since the score for each result is the same
             buildSearchResults(results, sortByAdoptionCounts);
-            $(SORT_EL).prop('selectedIndex', 2);
+            if (sortRadioInputs) {
+                sortRadioInputs[0].disabled = true;
+                sortRadioInputs[2].checked = true;
+            }
         } else {
             buildSearchResults(results, sortByScore);
-            // re-enable the score sorting option
-            $(SORT_EL).prop('selectedIndex', 0);
+            if (sortRadioInputs) {
+                sortRadioInputs[0].disabled = false;
+                sortRadioInputs[0].checked = true;
+            }
         }
 
         // Print the number of results for the query
