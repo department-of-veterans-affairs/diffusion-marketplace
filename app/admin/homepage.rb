@@ -119,19 +119,19 @@ ActiveAdmin.register Homepage do
         t.input :url, label: 'Call to Action URL', hint: 'e.g. /about or https://va.gov'
         t.input :cta_text, label: 'Call to Action Text', hint: 'e.g. View Innovation, Register Now'
         t.input :featured_image, :as => :file, hint: "#{t.object&.featured_image? ? t.object.featured_image_file_name : 'Recommended dimensions:'}"
-        if t.object.featured_image.exists?
-          fieldset do
-            img class: 'inline-hints', src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text, style: 'max-width:200px;'
-          end
-        end
-
-        # Image preview
         # if t.object.featured_image.exists?
-        #   div do
-        #     img src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
-        #     para "Current image name: #{t.object.featured_image_file_name}"
+        #   fieldset do
+        #     img class: 'inline-hints', src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text, style: 'max-width:200px;'
         #   end
         # end
+
+        # Image preview
+        if t.object.featured_image.exists?
+          div do
+            img src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
+            para "Current image name: #{t.object.featured_image_file_name}"
+          end
+        end
         # if t.object.featured_image.exists?
         #   li do
         #     div class: 'page-image-preview-container no-padding' do
