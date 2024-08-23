@@ -56,14 +56,21 @@ ActiveAdmin.register Homepage do
       row :created_at
     end
 
-    panel resource.section_title_one do
+    panel "Features" do
       # scope this to just this section
       table_for homepage.homepage_features do
+        column :section_id
         column :title
+        column :featured_image_file_name
         column :description
         column :url
         column :cta_text
         # image preview
+        column :featured_image do |hf|
+          image_tag hf&.featured_image&.image_s3_presigned_url(:thumb)
+        end
+        # column ('Image preview') { |hf| image_tag(:featured_image&.attachment_s3_presigned_url(:thumb)) hf.featured_image? }
+        # column image_tag(:featured_image&.attachment_s3_presigned_url(:thumb))
       end
     end
   end
@@ -93,126 +100,79 @@ ActiveAdmin.register Homepage do
         hint: 'e.g. September 2024 homepage'
     end
     f.inputs 'Section 1' do
-      byebug
       f.input :section_title_one, required: true, label: 'Section Title', hint: 'e.g. Featured Innovations'
-      f.has_many :homepage_features, collection: HomepageFeature.where(section_id: 1, homepage_id: f.object.id), new_record: 'Add Feature', allow_destroy: true do |t|
-        current_section = 1
-        # Filter to only include HomepageFeatures with section_id: 1
-        t.object = f.object.homepage_features.where(section_id: 1).find_by(id: t.object.id) || HomepageFeature.new
-        t.input :title, label: 'Feature Title'
-        t.input :description
-        t.input :url, label: 'Call to Action URL', hint: 'e.g. /about or https://va.gov'
-        t.input :cta_text, label: 'Call to Action Text', hint: 'e.g. View Innovation, Register Now'
-        t.input :featured_image, :as => :file
-        # Image preview
-        # if t.object.featured_image.exists?
-        #   div do
-        #   img src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
-        #   para "Current image name: #{t.object.featured_image_file_name}"
-        # end
-        # end
-        # Checkbox for deleting the image
-        if t.object.featured_image.exists?
-          t.input :delete_image, as: :boolean, label: 'Delete image?'
-        end
-        t.input :image_alt_text, hint: 'Briefly describe this image for visually impaired users'
-        
-        # 
-        # Pre-populate 'feature_name' with a default value if it's a new record or empty
-        if t.object.any_fields_filled?
-          t.input :section_id, label: 'Section ID', input_html: { value: current_section }, as: :hidden
-        else
-          t.input :section_id, label: 'Section ID', input_html: { value: nil }, as: :hidden
-          # t.object.section_id = nil
-        end
-      end
     end
 
     f.inputs 'Section 2' do
       f.input :section_title_two, required: true, label: 'Section Title', hint: 'e.g. Trending Tags'
-      f.has_many :homepage_features, collection: HomepageFeature.where(section_id: 2, homepage_id: f.object.id), new_record: 'Add Feature', allow_destroy: true do |t|
-        current_section = 2
-        # Filter to only include HomepageFeatures with section_id: 2
-        t.object = f.object.homepage_features.where(section_id: 2).find_by(id: t.object.id)
+    end
+
+    f.inputs 'Section 3' do
+      f.input :section_title_three, required: true, label: 'Section Title', hint: 'e.g. Innovation Communities'
+    end
+
+    f.has_many :homepage_features, heading: "Features", new_record: 'Add Feature', allow_destroy: true do |t|
+      # f.has_many :homepage_features, new_record: 'Add Feature', allow_destroy: true, sortable: :position, sortable_start: 1 do |t|
+        t.input :section_id, as: :select, collection: [1,2,3], label: 'Section', hint: "Maximum of 3 features per section"
         t.input :title, label: 'Feature Title'
         t.input :description
         t.input :url, label: 'Call to Action URL', hint: 'e.g. /about or https://va.gov'
         t.input :cta_text, label: 'Call to Action Text', hint: 'e.g. View Innovation, Register Now'
-        t.input :featured_image, :as => :file
-        # # Image preview
+        t.input :featured_image, :as => :file, hint: "#{t.object&.featured_image? ? t.object.featured_image_file_name : 'Recommended dimensions:'}"
+        if t.object.featured_image.exists?
+          fieldset do
+            img class: 'inline-hints', src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text, style: 'max-width:200px;'
+          end
+        end
+
+        # Image preview
         # if t.object.featured_image.exists?
-        #   img class: 'page-image', src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
-        #   para "Current image name: #{t.object.featured_image_file_name}"
+        #   div do
+        #     img src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
+        #     para "Current image name: #{t.object.featured_image_file_name}"
+        #   end
         # end
-        # Checkbox for deleting the image
+        # if t.object.featured_image.exists?
+        #   li do
+        #     div class: 'page-image-preview-container no-padding' do
+        #       div class: 'placeholder'
+        #       div class: 'page-image-container' do
+        #         img class: 'page-image', src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
+        #         para "Current image name: #{t.object.featured_image_file_name}"
+        #       end
+        #     end
+        #   end
+        # end
+
+        # # Checkbox for deleting the image
         if t.object.featured_image.exists?
           t.input :delete_image, as: :boolean, label: 'Delete image?'
         end
         t.input :image_alt_text, hint: 'Briefly describe this image for visually impaired users'
-        
-        # Pre-populate 'feature_name' with a default value if it's a new record or empty
-        # default_section_id = t.object.section_id.present? ? t.object.section_id : 2
-        # t.input :section_id, label: 'Section ID', input_html: { value: default_section_id }, as: :hidden
-        # byebug
-        if t.object.any_fields_filled?
-          t.input :section_id, label: 'Section ID', input_html: { value: current_section }, as: :hidden
-        else
-          t.object.section_id = nil
-        end
+
       end
-    end
-
-    # f.inputs 'Section 3' do
-      # f.input :section_title_three, required: true, label: 'Section Title', hint: 'e.g. Innovation Communities'
-      # f.has_many :homepage_features, new_record: 'Add Feature' do |t|
-      #   # Filter to only include HomepageFeatures with section_id: 3
-      #   t.object = f.object.homepage_features.where(section_id: 3).find_by(id: t.object.id) || HomepageFeature.new
-      #   t.input :title, label: 'Feature Title'
-      #   t.input :description
-      #   t.input :url, label: 'Call to Action URL', hint: 'e.g. /about or https://va.gov'
-      #   t.input :cta_text, label: 'Call to Action Text', hint: 'e.g. View Innovation, Register Now'
-      #   t.input :featured_image, :as => :file
-      #   # # Image preview
-      #   # if t.object.featured_image.exists?
-      #   #   img class: 'page-image', src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
-      #   #   para "Current image name: #{t.object.featured_image_file_name}"
-      #   # end
-      #   # Checkbox for deleting the image
-      #   if t.object.featured_image.exists?
-      #     t.input :delete_image, as: :boolean, label: 'Delete image?'
-      #   end
-      #   t.input :image_alt_text, hint: 'Briefly describe this image for visually impaired users'
-        
-      #   # Pre-populate 'feature_name' with a default value if it's a new record or empty
-      #   default_section_id = t.object.section_id.present? ? t.object.section_id : 3
-      #   t.input :section_id, label: 'Section ID', input_html: { value: default_section_id }, as: :hidden
-      # end
-    # end
-
-    # f.inputs 'Features' do
-    #   # f.has_many :homepage_features, heading: false, sortable: :position, sortable_start: 1 do |t|
-    #   f.has_many :homepage_features do |t|
-    #     t.input :title
-    #     t.input :description
-    #     t.input :url
-    #     t.input :cta_text
-    #     # new_record: 'Leave Comment',
-    #              # remove_record: 'Remove Comment'
-    #     #          allow_destroy: -> (c) { c.author?(current_admin_user) } do |b|
-    #     # end
-    #   end
-    # end
-    # f.inputs 'Comments' do
-    #   f.has_many :comments,
-    #              heading: false,
-    #              new_record: 'Leave Comment',
-    #              remove_record: 'Remove Comment',
-    #              allow_destroy: -> (c) { c.author?(current_admin_user) } do |b|
-    #     b.input :body
-    #   end
-    # end
     f.actions
   end
+
+  # li class: 'file input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
+  #         label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_image", class: 'label'
+  #         input value: component&.image_file_name || nil, type: 'file', required: 'required', accept: '.jpg, .jpeg, .png',
+  #           id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
+  #           name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
+  #         para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+  #       end
+
+  #       if component&.image.present?
+  #         li do
+  #           div class: 'page-image-preview-container no-padding' do
+  #             div class: 'placeholder'
+  #             div class: 'page-image-container' do
+  #               img class: 'page-image', src: component.image_s3_presigned_url, alt: component.image_alt_text
+  #               para "Current image name: #{component.image_file_name}"
+  #             end
+  #           end
+  #         end
+  #       end
 
   # # The following controller overrides is a brute force way of catching
   # # Paperclip::Errors::NotIdentifiedByImageMagickError's, which were being displayed to the

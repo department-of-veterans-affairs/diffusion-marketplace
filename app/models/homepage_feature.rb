@@ -2,8 +2,7 @@ class HomepageFeature < ApplicationRecord
   belongs_to :homepage
   has_attached_file :featured_image
   validates_attachment_content_type :featured_image, content_type: /\Aimage\/.*\z/, if: -> { featured_image.present? }
-  validates :section_id, presence: true, allow_nil: false
-  # validate :any_fields_filled?
+  # validates :section_id, presence: true, allow_nil: true
 
   attr_accessor :delete_image
   before_save :check_image_deletion
@@ -20,13 +19,6 @@ class HomepageFeature < ApplicationRecord
     object_presigned_url(featured_image, style)
   end
 
-  def any_fields_filled?
-    return attributes.except("id", "created_at", "updated_at", "homepage_id", "section_id").values.any?(&:present?)
-  end
-
-  def empty_fields? 
-    return true if any_fields_filled? == false
-  end
 
   private
 
