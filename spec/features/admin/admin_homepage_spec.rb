@@ -56,6 +56,11 @@ describe 'Page Builder', type: :feature do
   	end
 
   	it 'renders a maximum of 3 items per section' do
+      Homepage.create(published: true)
+      4.times {|i| HomepageFeature.create(homepage_id: 1, section_id: 1, title: "Feature #{i + 1}") }
+      visit root_path
+      expect(page).to have_content('Feature 3')
+      expect(page).not_to have_content('Feature 4')
   	end
 
   	it 'adjusts column sizes' do
