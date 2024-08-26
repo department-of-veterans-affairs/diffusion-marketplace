@@ -10,9 +10,9 @@ class HomeController < ApplicationController
     @homepage = Homepage.where(published: true)&.first
     if @homepage
       current_features = @homepage&.homepage_features
-      @section_one_features = current_features&.where(section_id: 1)
-      @section_two_features = current_features&.where(section_id: 2)
-      @section_three_features = current_features&.where(section_id: 3)
+      @section_one_features = current_features&.where(section_id: 1).first(3)
+      @section_two_features = current_features&.where(section_id: 2).first(3)
+      @section_three_features = current_features&.where(section_id: 3).first(3)
     end
   end
 
