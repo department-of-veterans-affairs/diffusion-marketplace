@@ -5,24 +5,11 @@ ActiveAdmin.register Homepage do
   config.filters = false
   config.sort_order = 'published_asc'
 
-  # # Custom action to publish a homepage
-  # member_action :publish, method: :post do
-  #   currently_published = resource.published?
-  #   resource.update(published: !currently_published)
-  #   redirect_to resource_path, notice: "Homepage has been published."
-  # end
-
   # Customizing the action items (buttons) on the show page
   action_item :publish, priority: 0, only: :show do
     publish_action_str = resource.published? ? 'Unpublish' : 'Publish'
     link_to publish_action_str, publish_admin_homepage_path(resource), method: :post
   end
-
-  # action_item :publish, priority: 0, only: :index do
-  #   if params[:id].present? && (homepage = Homepage.find_by(id: params[:id]))
-  #     link_to "Publish", publish_admin_homepage_path(homepage), method: :post if !homepage.published?
-  #   end
-  # end
 
   member_action :publish, priority: 0, method: :post do
     # add logic for unpublishing current homepage
@@ -88,24 +75,7 @@ ActiveAdmin.register Homepage do
     end
   end
 
- # form do |f|
- #    f.inputs do
- #      f.input :title, as: :string, required: true
- #      f.input :description, as: :string, required: true
- #      f.input :url, label: "Call to action URL", as: :string, hint: "Can be an internal (e.g. /partners) or external (e.g. https://www.va.gov) URL", required: true
- #      f.input :cta_text, label: "Call to action text", as: :string, required: true
- #      f.input :attachment, :as => :file, required: true
- #      if topic.attachment.exists?
- #        div '', style: 'width: 20%', class: 'display-inline-block'
- #          div class: 'display-inline-block' do
- #            image_tag(topic.attachment_s3_presigned_url(:thumb))
- #          end
- #        end
- #      end
- #    f.actions
- #  end
-
-    form do |f|
+  form do |f|
     f.semantic_errors # shows errors on :base
     f.inputs 'Nickname' do
       f.input :internal_title, as: :string,
@@ -148,7 +118,7 @@ ActiveAdmin.register Homepage do
             end
           )
 
-        # # Checkbox for deleting the image
+        # Checkbox for deleting the image
         if t.object.featured_image.exists?
           t.input :delete_image, as: :boolean, label: 'Delete image?'
         end
@@ -157,26 +127,6 @@ ActiveAdmin.register Homepage do
       end
     f.actions
   end
-
-  # li class: 'file input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_image_input" do
-  #         label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_image", class: 'label'
-  #         input value: component&.image_file_name || nil, type: 'file', required: 'required', accept: '.jpg, .jpeg, .png',
-  #           id: "page_page_components_attributes_#{placeholder}_component_attributes_image",
-  #           name: "page[page_components_attributes][#{placeholder}][component_attributes][image]"
-  #         para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
-  #       end
-
-  #       if component&.image.present?
-  #         li do
-  #           div class: 'page-image-preview-container no-padding' do
-  #             div class: 'placeholder'
-  #             div class: 'page-image-container' do
-  #               img class: 'page-image', src: component.image_s3_presigned_url, alt: component.image_alt_text
-  #               para "Current image name: #{component.image_file_name}"
-  #             end
-  #           end
-  #         end
-  #       end
 
   # # The following controller overrides is a brute force way of catching
   # # Paperclip::Errors::NotIdentifiedByImageMagickError's, which were being displayed to the
