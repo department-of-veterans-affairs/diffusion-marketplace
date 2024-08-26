@@ -12,12 +12,13 @@ ActiveAdmin.register Homepage do
   end
 
   member_action :publish, priority: 0, method: :post do
-    # add logic for unpublishing current homepage
+    already_published = Homepage.where(published: true)
     if resource.published
       message = "\"#{resource.internal_title.to_s}\" unpublished"
       resource.published = false
     else
-      message = "\"#{resource.internal_title.to_s}\" published"
+      message = "\"#{resource.internal_title.to_s}\" published, \"#{already_published.pluck(:internal_title).join(',')}\" unpublished "
+      already_published.update_all(published: false)
       resource.published = true
     end
     resource.save
@@ -133,7 +134,7 @@ ActiveAdmin.register Homepage do
   # # user when submitting a corrupted image file, that our recent WASA report took issue with.
   # # The intention is to obscure the error while preserving active_admin's built-in error handling
   # # for anything other than a paperclip error.
-  # controller do
+  controller do
   #   def create(_options={}, &block)
   #     create! do |success, failure|
   #       yield(success, failure) if block
@@ -161,5 +162,14 @@ ActiveAdmin.register Homepage do
   #       failure.html { render :edit }
   #     end
   #   end
-  # end
+
+    def destroy(_options={}, &block)
+      if resource.published?
+        message = "Homepage must be unpublished before deleting"
+        redirect_back fallback_location: admin_homepages_path, flash: { error: message }
+      else
+        super
+      end
+    end
+  end
 end
