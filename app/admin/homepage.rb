@@ -109,7 +109,7 @@ ActiveAdmin.register Homepage do
     end
   end
 
- # form do |f| 
+ # form do |f|
  #    f.inputs do
  #      f.input :title, as: :string, required: true
  #      f.input :description, as: :string, required: true
@@ -126,11 +126,11 @@ ActiveAdmin.register Homepage do
  #    f.actions
  #  end
 
-    form do |f|  
+    form do |f|
     f.semantic_errors # shows errors on :base
     f.inputs 'Nickname' do
-      f.input :internal_title, as: :string, 
-        required: true, 
+      f.input :internal_title, as: :string,
+        required: true,
         hint: 'e.g. September 2024 homepage'
     end
     f.inputs 'Section 1' do
@@ -152,31 +152,22 @@ ActiveAdmin.register Homepage do
         t.input :description
         t.input :url, label: 'Call to Action URL', hint: 'e.g. /about or https://va.gov'
         t.input :cta_text, label: 'Call to Action Text', hint: 'e.g. View Innovation, Register Now'
-        t.input :featured_image, :as => :file, hint: "#{t.object&.featured_image? ? t.object.featured_image_file_name : 'Recommended dimensions:'}"
-        # if t.object.featured_image.exists?
-        #   fieldset do
-        #     img class: 'inline-hints', src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text, style: 'max-width:200px;'
-        #   end
-        # end
-
-        # Image preview
-        if t.object.featured_image.exists?
-          div do
-            img src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
-            para "Current image name: #{t.object.featured_image_file_name}"
-          end
-        end
-        # if t.object.featured_image.exists?
-        #   li do
-        #     div class: 'page-image-preview-container no-padding' do
-        #       div class: 'placeholder'
-        #       div class: 'page-image-container' do
-        #         img class: 'page-image', src: t.object.image_s3_presigned_url, alt: t.object.image_alt_text
-        #         para "Current image name: #{t.object.featured_image_file_name}"
-        #       end
-        #     end
-        #   end
-        # end
+        t.input :featured_image,
+          as: :file,
+          hint: (
+            if t.object.featured_image.exists?
+              content_tag(:div) do
+                image_tag(
+                  t.object.image_s3_presigned_url,
+                  alt: t.object.image_alt_text,
+                  style: 'max-width: 400px; display: block; margin-bottom: 5px;'
+                ) +
+                content_tag(:span, "Current image name: #{t.object.featured_image_file_name}")
+              end
+            else
+              'Recommended dimensions:'
+            end
+          )
 
         # # Checkbox for deleting the image
         if t.object.featured_image.exists?
