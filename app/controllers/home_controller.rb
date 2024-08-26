@@ -7,6 +7,13 @@ class HomeController < ApplicationController
     @dropdown_categories = get_categories_by_popularity
     @dropdown_communities = get_categories_by_popularity(true)
     @dropdown_practices, @practice_names = get_dropdown_practices
+    @homepage = Homepage.where(published: true)&.first
+    if @homepage
+      current_features = @homepage&.homepage_features
+      @section_one_features = current_features&.where(section_id: 1)
+      @section_two_features = current_features&.where(section_id: 2)
+      @section_three_features = current_features&.where(section_id: 3)
+    end
   end
 
   def diffusion_map

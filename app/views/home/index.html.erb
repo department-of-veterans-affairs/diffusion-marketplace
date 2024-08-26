@@ -90,8 +90,9 @@
   </section>
   <div class="grid-container">
     <section id="featured-innovations" class="">
-      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Featured Innovations</h2>
+      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5"><%= @homepage&.section_title_one %> </h2>
       <div class="grid-row grid-gap">
+        <% if @section_one_features.blank? || @homepage.blank? %>
         <div id="featured-innovation-1" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
           <%= image_tag("homepage/innovation-CREW.jpg", alt: "Two people preparing vegetables at a cutting board",class: "homepage-featured-image") %>
           <h3 id="featured-innovation-1-title" class="feature-title usa-prose-h3">CREW: Carbohydrate Reduction Empowering Wellness (formerly Therapeutic Carbohydrate Reduction (TCR) Aspire)</h3>
@@ -116,56 +117,94 @@
           </p>
           <a href="/innovations/close-to-me-infusion-service" aria-describedby="featured-innovation-3-title" class="usa-link">View Innovation</a>
         </div>
+        <% else %>
+          <% @section_one_features.each_with_index do |hf, index| %>
+            <div id="featured-innovation-<%= index + 1 %>" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+              <%= image_tag("homepage/innovation-CREW.jpg", alt: hf&.image_alt_text, class: "homepage-featured-image") %>
+              <h3 id="featured-innovation-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
+              <p class="usa-prose-body margin-bottom-5">
+                <% hf&.description %>
+              </p>
+              <%= link_to hf.cta_text, hf&.url, class: 'usa-link', 'aria-describedby': "featured-innovation-#{index + 1}-title" %>
+          </div>
+          <% end %>
+        <% end %>
       </div>
     </section>
     <section id="featured-tags" class="">
-      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Trending Tags</h2>
+      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5"><%= @homepage&.section_title_two %></h2>
       <div class="grid-row grid-gap">
-        <div id="featured-tag-1" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
-          <%= image_tag("homepage/tag-suicide-prevention.jpg", alt: "VA Secretary Denis McDonough greeting a volunteer at a VA clinic", class: "homepage-featured-image") %>
-          <h3 id="featured-tag-1-title" class="feature-title usa-prose-h3">Suicide Prevention</h3>
-          <p class="usa-prose-body margin-bottom-5">
-            Discover our range of innovations focused on suicide prevention, ensuring Veterans receive the essential mental health care they deserve.
-          </p>
-          <a href="/search?category=Suicide%20Prevention" aria-describedby="featured-tag-1-title" class="usa-link">Learn More</a>
-        </div>
-        <div id="featured-tag-2" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
-          <%= image_tag("homepage/tag-homeheatlh.jpg", alt: "a miniature house in glove hands of a medical staff member", class: "homepage-featured-image") %>
-          <h3 id="featured-tag-2-title" class="feature-title usa-prose-h3">Home Health</h3>
-          <p class="usa-prose-body margin-bottom-5">
-            Explore cutting-edge home health innovations, providing Veterans with personalized and accessible care in the comfort of their own homes
-          </p>
-          <a href="/search?category=Home%20Health" aria-describedby="featured-tag-2-title" class="usa-link">Learn More</a>
-        </div>
-        <div id="featured-tag-3" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
-          <%= image_tag("homepage/tag-specialty-care.jpg", alt: "a man attached to a blood pressure monitor", class: "homepage-featured-image") %>
-          <h3 id="featured-tag-3-title" class="feature-title usa-prose-h3">Specialty Care</h3>
-          <p class="usa-prose-body margin-bottom-5">
-            Access the latest innovations in specialty care, dedicated to providing advanced medical treatments and  personalized care tailored to Veterans' unique health needs.
-          </p>
-          <a href="/search?category=Coordinated%20Care" aria-describedby="featured-tag-3-title" class="usa-link">Learn More</a>
-        </div>
+        <% if @section_two_features.blank? || @homepage.blank? %>
+          <div id="featured-tag-1" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+            <%= image_tag("homepage/tag-suicide-prevention.jpg", alt: "VA Secretary Denis McDonough greeting a volunteer at a VA clinic", class: "homepage-featured-image") %>
+            <h3 id="featured-tag-1-title" class="feature-title usa-prose-h3">Suicide Prevention</h3>
+            <p class="usa-prose-body margin-bottom-5">
+              Discover our range of innovations focused on suicide prevention, ensuring Veterans receive the essential mental health care they deserve.
+            </p>
+            <a href="/search?category=Suicide%20Prevention" aria-describedby="featured-tag-1-title" class="usa-link">Learn More</a>
+          </div>
+          <div id="featured-tag-2" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+            <%= image_tag("homepage/tag-homeheatlh.jpg", alt: "a miniature house in glove hands of a medical staff member", class: "homepage-featured-image") %>
+            <h3 id="featured-tag-2-title" class="feature-title usa-prose-h3">Home Health</h3>
+            <p class="usa-prose-body margin-bottom-5">
+              Explore cutting-edge home health innovations, providing Veterans with personalized and accessible care in the comfort of their own homes
+            </p>
+            <a href="/search?category=Home%20Health" aria-describedby="featured-tag-2-title" class="usa-link">Learn More</a>
+          </div>
+          <div id="featured-tag-3" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+            <%= image_tag("homepage/tag-specialty-care.jpg", alt: "a man attached to a blood pressure monitor", class: "homepage-featured-image") %>
+            <h3 id="featured-tag-3-title" class="feature-title usa-prose-h3">Specialty Care</h3>
+            <p class="usa-prose-body margin-bottom-5">
+              Access the latest innovations in specialty care, dedicated to providing advanced medical treatments and  personalized care tailored to Veterans' unique health needs.
+            </p>
+            <a href="/search?category=Coordinated%20Care" aria-describedby="featured-tag-3-title" class="usa-link">Learn More</a>
+          </div>
+        <% else %>
+          <% @section_two_features.each_with_index do |hf, index| %>
+            <div id="featured-tag-<%= index + 1 %>" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+              <%= image_tag("homepage/tag-suicide-prevention.jpg", alt: hf&.image_alt_text, class: "homepage-featured-image") %>
+              <h3 id="featured-tag-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
+              <p class="usa-prose-body margin-bottom-5">
+                <% hf&.description %>
+              </p>
+              <%= link_to hf.cta_text, hf&.url, class: 'usa-link', 'aria-describedby': "featured-tag-#{index + 1}-title" %>
+            </div>
+          <% end %>
+        <% end %>
       </div>
     </section>
     <section id="featured-communities" class="">
-      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Innovation Communities</h2>
+      <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5"><%= @homepage&.section_title_three %></h2>
       <div class="grid-row grid-gap">
-        <div id="featured-community-1" class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
-          <%= image_tag("homepage/community-age-friendly.jpg", alt: 'doctor and patient looking at a tablet together', class: "homepage-featured-image") %>
-          <h3 id="featured-community-1-title" class="feature-title usa-prose-h3">Age-Friendly</h3>
-          <p class="usa-prose-body margin-bottom-5">
-            Reimagining the landscape of healthcare for our aging Veteran population. 
-          </p>
-          <%= link_to 'View Community', '/communities/age-friendly', class: 'usa-link', 'aria-describedby': 'featured-community-1-title' %>
-        </div>
-        <div id="featured-community-2" class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
-          <%= image_tag("homepage/community-vr.jpg", alt: "a person wearing a VR headset, weraing a mask, and a Veterans Affairs lanyard", class: "homepage-featured-image") %>
-          <h3 id="featured-community-2-title" class="feature-title usa-prose-h3">VA Immersive</h3>
-          <p class="usa-prose-body margin-bottom-5">
-            We help improve care delivery and experiences by leveraging immersive technology for falls risk assessment, neurological risk assessment, pain management, anxiety, addiction recovery, physical therapy, recreation therapy, PTSD, employee education, and more.
-          </p>
-          <%= link_to 'View Community', '/communities/va-immersive', class: 'usa-link', 'aria-describedby': 'featured-community-2-title' %>
-        </div>
+        <% if @section_three_features.blank? || @homepage.blank? %>
+          <div id="featured-community-1" class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
+            <%= image_tag("homepage/community-age-friendly.jpg", alt: 'doctor and patient looking at a tablet together', class: "homepage-featured-image") %>
+            <h3 id="featured-community-1-title" class="feature-title usa-prose-h3">Age-Friendly</h3>
+            <p class="usa-prose-body margin-bottom-5">
+              Reimagining the landscape of healthcare for our aging Veteran population. 
+            </p>
+            <%= link_to 'View Community', '/communities/age-friendly', class: 'usa-link', 'aria-describedby': 'featured-community-1-title' %>
+          </div>
+          <div id="featured-community-2" class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
+            <%= image_tag("homepage/community-vr.jpg", alt: "a person wearing a VR headset, weraing a mask, and a Veterans Affairs lanyard", class: "homepage-featured-image") %>
+            <h3 id="featured-community-2-title" class="feature-title usa-prose-h3">VA Immersive</h3>
+            <p class="usa-prose-body margin-bottom-5">
+              We help improve care delivery and experiences by leveraging immersive technology for falls risk assessment, neurological risk assessment, pain management, anxiety, addiction recovery, physical therapy, recreation therapy, PTSD, employee education, and more.
+            </p>
+            <%= link_to 'View Community', '/communities/va-immersive', class: 'usa-link', 'aria-describedby': 'featured-community-2-title' %>
+          </div>
+        <% else %>
+          <% @section_three_features.each_with_index do |hf, index| %>
+            <div id="featured-community-<%= index + 1 %>" class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
+              <%= image_tag("homepage/community-age-friendly.jpg", alt: 'doctor and patient looking at a tablet together', class: "homepage-featured-image") %>
+              <h3 id="featured-community-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
+              <p class="usa-prose-body margin-bottom-5">
+                <% hf&.description %>
+              </p>
+              <%= link_to 'View Community', '/communities/age-friendly', class: 'usa-link', 'aria-describedby': "featured-community-#{index + 1}-title" %>
+            </div>
+          <% end %>
+        <% end %>
       </div>
     </section>
     <section id="feature-nominate-innovation" class="">

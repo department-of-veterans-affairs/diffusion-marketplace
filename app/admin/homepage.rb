@@ -66,9 +66,9 @@ ActiveAdmin.register Homepage do
         column :url
         column :cta_text
         # image preview
-        column :featured_image do |hf|
-          image_tag hf&.featured_image&.image_s3_presigned_url(:thumb)
-        end
+        # column :featured_image do |hf|
+        #   image_tag hf&.featured_image&.image_s3_presigned_url(:thumb)
+        # end
         # column ('Image preview') { |hf| image_tag(:featured_image&.attachment_s3_presigned_url(:thumb)) hf.featured_image? }
         # column image_tag(:featured_image&.attachment_s3_presigned_url(:thumb))
       end
