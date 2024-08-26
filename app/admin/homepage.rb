@@ -56,8 +56,7 @@ ActiveAdmin.register Homepage do
       row :created_at
     end
 
-    panel "Section 1" do
-      # scope this to just this section
+    panel "Section 1: #{homepage&.section_title_one}" do
       table_for homepage.homepage_features.where(section_id: 1) do
         column :section_id
         column :title
@@ -65,16 +64,9 @@ ActiveAdmin.register Homepage do
         column :description
         column :url
         column :cta_text
-        # image preview
-        # column :featured_image do |hf|
-        #   image_tag hf&.featured_image&.image_s3_presigned_url(:thumb)
-        # end
-        # column ('Image preview') { |hf| image_tag(:featured_image&.attachment_s3_presigned_url(:thumb)) hf.featured_image? }
-        # column image_tag(:featured_image&.attachment_s3_presigned_url(:thumb))
       end
     end
-    panel "Section 2" do
-      # scope this to just this section
+    panel "Section 2: #{homepage&.section_title_two}" do
       table_for homepage.homepage_features.where(section_id: 2) do
         column :section_id
         column :title
@@ -82,16 +74,9 @@ ActiveAdmin.register Homepage do
         column :description
         column :url
         column :cta_text
-        # image preview
-        # column :featured_image do |hf|
-        #   image_tag hf&.featured_image&.image_s3_presigned_url(:thumb)
-        # end
-        # column ('Image preview') { |hf| image_tag(:featured_image&.attachment_s3_presigned_url(:thumb)) hf.featured_image? }
-        # column image_tag(:featured_image&.attachment_s3_presigned_url(:thumb))
       end
     end
-    panel "Section 3" do
-      # scope this to just this section
+    panel "Section 3: #{homepage&.section_title_three}" do
       table_for homepage.homepage_features.where(section_id: 3) do
         column :section_id
         column :title
@@ -99,12 +84,6 @@ ActiveAdmin.register Homepage do
         column :description
         column :url
         column :cta_text
-        # image preview
-        # column :featured_image do |hf|
-        #   image_tag hf&.featured_image&.image_s3_presigned_url(:thumb)
-        # end
-        # column ('Image preview') { |hf| image_tag(:featured_image&.attachment_s3_presigned_url(:thumb)) hf.featured_image? }
-        # column image_tag(:featured_image&.attachment_s3_presigned_url(:thumb))
       end
     end
   end
