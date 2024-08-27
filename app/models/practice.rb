@@ -1,4 +1,4 @@
-class Practice < ApplicationRecord
+class Practice < Innovation
   include ActiveModel::Dirty
   include PracticeEditorUtils
   include VaEmail
