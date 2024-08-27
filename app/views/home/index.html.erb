@@ -124,7 +124,7 @@
             <% column_classes = HomepageFeature.column_size(@section_one_features.count) %>
             <% @section_one_features.each_with_index do |hf, index| %>
               <div id="featured-innovation-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
-                <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>"/>
+                <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>" class="homepage-featured-image"/>
                 <h3 id="featured-innovation-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
                 <p class="usa-prose-body margin-bottom-5">
                   <% hf&.description %>
@@ -170,7 +170,7 @@
             <% column_classes = HomepageFeature.column_size(@section_two_features.count) %>
             <% @section_two_features.each_with_index do |hf, index| %>
               <div id="featured-tag-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
-                <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>"/>
+                <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>" class="homepage-featured-image"/>
                 <h3 id="featured-tag-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
                 <p class="usa-prose-body margin-bottom-5">
                   <% hf&.description %>
@@ -208,7 +208,7 @@
             <% column_classes = HomepageFeature.column_size(@section_three_features.count) %>
             <% @section_three_features.each_with_index do |hf, index| %>
               <div id="featured-community-<%= index + 1 %>" class="<%= column_classes %>">
-                <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>"/>
+                <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>" class="homepage-featured-image"/>
                 <h3 id="featured-community-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
                 <p class="usa-prose-body margin-bottom-5">
                   <% hf&.description %>

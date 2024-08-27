@@ -131,9 +131,10 @@
     .homepage-featured-image {
       @include u-margin-top(3);
       aspect-ratio: 4 / 3;
-      object-fit: cover;
+      object-fit: cover;  // best-guess crop images that do not match aspect ratio
        @include at-media(tablet) {
         @include u-margin-top(0);
+        width: 100%; // stretch images that smaller than column width
        }
     }
   }
