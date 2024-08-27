@@ -106,14 +106,12 @@ ActiveAdmin.register Homepage do
           as: :file,
           hint: (
             if t.object.featured_image.exists?
-              content_tag(:div) do
-                image_tag(
-                  t.object.image_s3_presigned_url,
-                  alt: t.object.image_alt_text,
-                  style: 'max-width: 400px; display: block; margin-bottom: 5px;'
-                ) +
-                content_tag(:span, "Current image name: #{t.object.featured_image_file_name}")
-              end
+              image_tag(
+                t.object.image_s3_presigned_url,
+                alt: t.object.image_alt_text,
+                style: 'max-width: 400px; display: block;'
+              ) +
+              content_tag(:span, "Current image name: #{t.object.featured_image_file_name}")
             else
               'Recommended dimensions:'
             end
