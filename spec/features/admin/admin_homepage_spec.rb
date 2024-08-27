@@ -17,8 +17,9 @@ describe 'Homepage editor', type: :feature do
       within('#homepage_1') do
         expect(page).to have_link('Unpublish')
         click_link('Delete')
-        expect(page).to have_content('Homepage must be unpublished before deleting')
+        page.accept_alert
       end
+      expect(page).to have_content('Homepage must be unpublished before deleting')
   	end
 
   	it 'uses hardcoded backfill content when no homepage is available' do # remove this after the first homepage is created
