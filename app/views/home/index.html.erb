@@ -93,41 +93,41 @@
       <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5"><%= @homepage&.section_title_one %> </h2>
       <div class="grid-row grid-gap">
         <% if @section_one_features.blank? || @homepage.blank? %>
-        <div id="featured-innovation-1" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
-          <%= image_tag("homepage/innovation-CREW.jpg", alt: "Two people preparing vegetables at a cutting board",class: "homepage-featured-image") %>
-          <h3 id="featured-innovation-1-title" class="feature-title usa-prose-h3">CREW: Carbohydrate Reduction Empowering Wellness (formerly Therapeutic Carbohydrate Reduction (TCR) Aspire)</h3>
-          <p class="usa-prose-body margin-bottom-5">
-            CREW is a 16-week lifestyle program that uses goal setting and whole health coaching to support Veterans with Type 2 Diabetes and other metabolic health conditions.
-          </p>
-          <a href="/innovations/therapeutic-carbohydrate-restricted-tcr-aspire" aria-describedby="featured-innovation-1-title" class="usa-link">View Innovation</a>
-        </div>
-        <div id="featured-innovation-2" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
-          <%= image_tag("homepage/innovation-PRIDE.jpg", alt: "Rainbow flag and trans flag patterned identification tags encircled by a stethoscope", class: "homepage-featured-image") %>
-          <h3 id="featured-innovation-2-title" class="feature-title usa-prose-h3">PRIDE In All Who Served</h3>
-          <p class="usa-prose-body margin-bottom-5">
-            PRIDE In All Who Served is a health promotion group for LGBTQIA+ Veterans that fosters support and improves health literacy. Veterans have praised the program for significantly enhancing their well-being and communication with healthcare providers.
-          </p>
-          <a href="/innovations/pride-in-all-who-served-reducing-healthcare-disparities-for-lgbt-veterans" aria-describedby="featured-innovation-2-title" class="usa-link">View Innovation</a>
-        </div>
-        <div id="featured-innovation-3" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
-          <%= image_tag("homepage/innovation-Close-to-Me.jpg", alt: "Doctor and patient discuss cancer test results", class: "homepage-featured-image") %>
-          <h3 id="featured-innovation-3-title" class="feature-title usa-prose-h3">Close to Me Cancer Care</h3>
-          <p class="usa-prose-body margin-bottom-5">
-            Close to Me Cancer Care, sponsored by the VHA National Oncology Program Office, provides anti-cancer therapy services at Community Based Outpatients Clinics (CBOCs) to increase access points to care for Veterans.
-          </p>
-          <a href="/innovations/close-to-me-infusion-service" aria-describedby="featured-innovation-3-title" class="usa-link">View Innovation</a>
-        </div>
+          <div id="featured-innovation-1" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+            <%= image_tag("homepage/innovation-CREW.jpg", alt: "Two people preparing vegetables at a cutting board",class: "homepage-featured-image") %>
+            <h3 id="featured-innovation-1-title" class="feature-title usa-prose-h3">CREW: Carbohydrate Reduction Empowering Wellness (formerly Therapeutic Carbohydrate Reduction (TCR) Aspire)</h3>
+            <p class="usa-prose-body margin-bottom-5">
+              CREW is a 16-week lifestyle program that uses goal setting and whole health coaching to support Veterans with Type 2 Diabetes and other metabolic health conditions.
+            </p>
+            <a href="/innovations/therapeutic-carbohydrate-restricted-tcr-aspire" aria-describedby="featured-innovation-1-title" class="usa-link">View Innovation</a>
+          </div>
+          <div id="featured-innovation-2" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+            <%= image_tag("homepage/innovation-PRIDE.jpg", alt: "Rainbow flag and trans flag patterned identification tags encircled by a stethoscope", class: "homepage-featured-image") %>
+            <h3 id="featured-innovation-2-title" class="feature-title usa-prose-h3">PRIDE In All Who Served</h3>
+            <p class="usa-prose-body margin-bottom-5">
+              PRIDE In All Who Served is a health promotion group for LGBTQIA+ Veterans that fosters support and improves health literacy. Veterans have praised the program for significantly enhancing their well-being and communication with healthcare providers.
+            </p>
+            <a href="/innovations/pride-in-all-who-served-reducing-healthcare-disparities-for-lgbt-veterans" aria-describedby="featured-innovation-2-title" class="usa-link">View Innovation</a>
+          </div>
+          <div id="featured-innovation-3" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+            <%= image_tag("homepage/innovation-Close-to-Me.jpg", alt: "Doctor and patient discuss cancer test results", class: "homepage-featured-image") %>
+            <h3 id="featured-innovation-3-title" class="feature-title usa-prose-h3">Close to Me Cancer Care</h3>
+            <p class="usa-prose-body margin-bottom-5">
+              Close to Me Cancer Care, sponsored by the VHA National Oncology Program Office, provides anti-cancer therapy services at Community Based Outpatients Clinics (CBOCs) to increase access points to care for Veterans.
+            </p>
+            <a href="/innovations/close-to-me-infusion-service" aria-describedby="featured-innovation-3-title" class="usa-link">View Innovation</a>
+          </div>
         <% else %>
           <% column_classes = HomepageFeature.column_size(@section_one_features.count) %>
           <% @section_one_features.each_with_index do |hf, index| %>
             <div id="featured-innovation-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
-              <%= image_tag("homepage/innovation-CREW.jpg", alt: hf&.image_alt_text, class: "homepage-featured-image") %>
+              <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>"/>
               <h3 id="featured-innovation-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
               <p class="usa-prose-body margin-bottom-5">
                 <% hf&.description %>
               </p>
               <%= link_to hf.cta_text, hf&.url, class: 'usa-link', 'aria-describedby': "featured-innovation-#{index + 1}-title" %>
-          </div>
+            </div>
           <% end %>
         <% end %>
       </div>
@@ -164,7 +164,7 @@
           <% column_classes = HomepageFeature.column_size(@section_one_features.count) %>
           <% @section_two_features.each_with_index do |hf, index| %>
             <div id="featured-tag-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
-              <%= image_tag("homepage/tag-suicide-prevention.jpg", alt: hf&.image_alt_text, class: "homepage-featured-image") %>
+              <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>"/>
               <h3 id="featured-tag-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
               <p class="usa-prose-body margin-bottom-5">
                 <% hf&.description %>
@@ -183,7 +183,7 @@
             <%= image_tag("homepage/community-age-friendly.jpg", alt: 'doctor and patient looking at a tablet together', class: "homepage-featured-image") %>
             <h3 id="featured-community-1-title" class="feature-title usa-prose-h3">Age-Friendly</h3>
             <p class="usa-prose-body margin-bottom-5">
-              Reimagining the landscape of healthcare for our aging Veteran population. 
+              Reimagining the landscape of healthcare for our aging Veteran population.
             </p>
             <%= link_to 'View Community', '/communities/age-friendly', class: 'usa-link', 'aria-describedby': 'featured-community-1-title' %>
           </div>
@@ -198,7 +198,7 @@
         <% else %>
           <% @section_three_features.each_with_index do |hf, index| %>
             <div id="featured-community-<%= index + 1 %>" class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
-              <%= image_tag("homepage/community-age-friendly.jpg", alt: 'doctor and patient looking at a tablet together', class: "homepage-featured-image") %>
+              <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>"/>
               <h3 id="featured-community-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
               <p class="usa-prose-body margin-bottom-5">
                 <% hf&.description %>
