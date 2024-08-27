@@ -16,7 +16,9 @@ class HomepageFeature < ApplicationRecord
   end
 
   def image_s3_presigned_url(style = nil)
-    object_presigned_url(featured_image, style)
+    if featured_image.present?
+      object_presigned_url(featured_image, style)
+    end
   end
 
   def self.column_size(item_count = 3)
