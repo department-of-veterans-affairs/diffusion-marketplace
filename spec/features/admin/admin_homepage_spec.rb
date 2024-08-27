@@ -90,13 +90,8 @@ describe 'Homepage editor', type: :feature do
       3.times {|i| HomepageFeature.create(homepage_id: 1, section_id: 1, title: "Feature #{i + 1}") }
       2.times {|i| HomepageFeature.create(homepage_id: 1, section_id: 2, title: "Feature #{i + 1}") }
       visit root_path
-      # within('#featured-innovations') do
-        # byebug
-        expect('#featured-innovation-1').to have_css('div.tablet:grid-col-4')
-      # end
-      within('#featured-tags') do
-        expect('#featured-tag-1').to have_css('.tablet\:grid-col-6')
-      end
+      expect(page).to have_css('#featured-innovation-1.three-column-layout')
+      expect(page).to have_css('#featured-tag-1.two-column-layout')
     end
   end
 
