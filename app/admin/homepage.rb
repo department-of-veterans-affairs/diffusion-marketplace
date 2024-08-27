@@ -84,15 +84,15 @@ ActiveAdmin.register Homepage do
         hint: 'e.g. September 2024 homepage'
     end
     f.inputs 'Section 1' do
-      f.input :section_title_one, required: true, label: 'Section Title', hint: 'e.g. Featured Innovations'
+      f.input :section_title_one, label: 'Section 1 Title', hint: 'e.g. Featured Innovations'
     end
 
     f.inputs 'Section 2' do
-      f.input :section_title_two, required: true, label: 'Section Title', hint: 'e.g. Trending Tags'
+      f.input :section_title_two, label: 'Section 2 Title', hint: 'e.g. Trending Tags'
     end
 
     f.inputs 'Section 3' do
-      f.input :section_title_three, required: true, label: 'Section Title', hint: 'e.g. Innovation Communities'
+      f.input :section_title_three, label: 'Section 3 Title', hint: 'e.g. Innovation Communities'
     end
 
     f.has_many :homepage_features, heading: "Features", new_record: 'Add Feature', allow_destroy: true do |t|

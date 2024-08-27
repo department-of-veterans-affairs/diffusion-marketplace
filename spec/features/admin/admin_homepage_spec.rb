@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Page Builder', type: :feature do
+describe 'Homepage editor', type: :feature do
   before do
     @admin = create(:user, :admin, email: 'sandy.cheeks@va.gov')
     @image_file = "#{Rails.root}/spec/assets/charmander.png"
@@ -50,6 +50,17 @@ describe 'Page Builder', type: :feature do
 
   describe 'creating the page' do
   	it 'publishes section titles' do
+      visit admin_homepages_path
+      click 'New homepage'
+      fill_in 'Internal title', with: 'august'
+      fill_in 'Section 1 Title', with: 'Featured Innovations'
+      fill_in 'Section 2 Title', with: 'Trending Tags'
+      fill_in 'Section 3 Title', with: 'Innovation Communities'
+      click_button 'Create Homepage'
+      visit root_path
+      expect(page).to have_content 'Featured Innovations'
+      expect(page).to have_content 'Trending Tags'
+      expect(page).to have_content 'Innovation Communities'
   	end
 
   	it 'creates homepage features' do
