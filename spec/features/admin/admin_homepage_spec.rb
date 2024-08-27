@@ -22,6 +22,15 @@ describe 'Homepage editor', type: :feature do
   	end
 
   	it 'uses hardcoded backfill content when no homepage is available' do # remove this after the first homepage is created
+      visit root_path
+      titles = ['Featured Innovations', 'Trending Tags', 'Innovation Communities']
+      titles.each { |title| expect(page).to have_content title }
+      visit new_admin_homepage_path
+      find('#homepage_submit_action')
+        click_button 'Create Homepage'
+      click_link 'Publish'
+      visit root_path
+      titles.each { |title| expect(page).not_to have_content title }
   	end
 
   	it 'unpublishes the current homepage when publishing a new page' do
