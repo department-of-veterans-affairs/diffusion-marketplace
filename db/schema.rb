@@ -365,6 +365,34 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "homepage_features", force: :cascade do |t|
+    t.bigint "homepage_id"
+    t.string "title"
+    t.string "description"
+    t.string "url"
+    t.string "cta_text"
+    t.string "image_alt_text"
+    t.integer "section_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "featured_image_file_name"
+    t.string "featured_image_content_type"
+    t.bigint "featured_image_file_size"
+    t.datetime "featured_image_updated_at"
+    t.index ["homepage_id"], name: "index_homepage_features_on_homepage_id"
+  end
+
+  create_table "homepages", force: :cascade do |t|
+    t.string "internal_title"
+    t.string "section_title_one"
+    t.string "section_title_two"
+    t.string "section_title_three"
+    t.boolean "published", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "impact_photos", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -1039,8 +1067,6 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
     t.boolean "published", default: false
     t.boolean "approved", default: false
     t.string "slug"
-    t.boolean "highlight", default: false, null: false
-    t.boolean "featured", default: false, null: false
     t.integer "ahoy_visit_id"
     t.boolean "enabled", default: true, null: false
     t.integer "initiating_facility_type", default: 0
@@ -1051,15 +1077,10 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
     t.integer "maturity_level"
     t.datetime "date_published"
     t.datetime "practice_pages_updated"
-    t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
     t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
-    t.string "highlight_attachment_file_name"
-    t.string "highlight_attachment_content_type"
-    t.bigint "highlight_attachment_file_size"
-    t.datetime "highlight_attachment_updated_at"
     t.text "main_display_image_alt_text"
     t.integer "diffusion_histories_count", default: 0
     t.datetime "last_email_date"
@@ -1164,20 +1185,6 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["practice_id"], name: "index_timelines_on_practice_id"
-  end
-
-  create_table "topics", force: :cascade do |t|
-    t.string "title"
-    t.string "description"
-    t.string "url"
-    t.string "cta_text"
-    t.boolean "featured", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
   end
 
   create_table "user_practices", force: :cascade do |t|
