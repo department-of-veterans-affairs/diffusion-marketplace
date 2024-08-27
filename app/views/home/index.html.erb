@@ -118,8 +118,9 @@
           <a href="/innovations/close-to-me-infusion-service" aria-describedby="featured-innovation-3-title" class="usa-link">View Innovation</a>
         </div>
         <% else %>
+          <% column_classes = HomepageFeature.column_size(@section_one_features.count) %>
           <% @section_one_features.each_with_index do |hf, index| %>
-            <div id="featured-innovation-<%= index + 1 %>" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+            <div id="featured-innovation-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
               <%= image_tag("homepage/innovation-CREW.jpg", alt: hf&.image_alt_text, class: "homepage-featured-image") %>
               <h3 id="featured-innovation-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
               <p class="usa-prose-body margin-bottom-5">
@@ -160,8 +161,9 @@
             <a href="/search?category=Coordinated%20Care" aria-describedby="featured-tag-3-title" class="usa-link">Learn More</a>
           </div>
         <% else %>
+          <% column_classes = HomepageFeature.column_size(@section_one_features.count) %>
           <% @section_two_features.each_with_index do |hf, index| %>
-            <div id="featured-tag-<%= index + 1 %>" class="margin-bottom-3 grid-col-12 tablet:grid-col-4 desktop:grid-col-4">
+            <div id="featured-tag-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
               <%= image_tag("homepage/tag-suicide-prevention.jpg", alt: hf&.image_alt_text, class: "homepage-featured-image") %>
               <h3 id="featured-tag-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
               <p class="usa-prose-body margin-bottom-5">

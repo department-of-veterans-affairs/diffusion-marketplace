@@ -19,6 +19,14 @@ class HomepageFeature < ApplicationRecord
     object_presigned_url(featured_image, style)
   end
 
+  def self.column_size(item_count = 3)
+    if item_count >= 3
+      'three-column-layout'
+    else # update this later to deal with incoming designs
+      'two-column-layout'
+    end
+  end
+
 
   private
 

@@ -54,19 +54,30 @@ describe 'Page Builder', type: :feature do
 
   	it 'creates homepage features' do
   	end
+  end
 
-  	it 'renders a maximum of 3 items per section' do
+  describe 'page render' do
+    it 'maximum of 3 items per section' do
       Homepage.create(published: true)
       4.times {|i| HomepageFeature.create(homepage_id: 1, section_id: 1, title: "Feature #{i + 1}") }
       visit root_path
       expect(page).to have_content('Feature 3')
       expect(page).not_to have_content('Feature 4')
-  	end
+    end
 
-  	it 'adjusts column sizes' do
-  	end
+    it 'adjusts column sizes' do
+      Homepage.create(published: true, section_title_one: 'Section 1', section_title_two: 'Section 2')
+      3.times {|i| HomepageFeature.create(homepage_id: 1, section_id: 1, title: "Feature #{i + 1}") }
+      2.times {|i| HomepageFeature.create(homepage_id: 1, section_id: 2, title: "Feature #{i + 1}") }
+      visit root_path
+      # within('#featured-innovations') do
+        # byebug
+        expect('#featured-innovation-1').to have_css('div.tablet:grid-col-4')
+      # end
+      within('#featured-tags') do
+        expect('#featured-tag-1').to have_css('.tablet\:grid-col-6')
+      end
+    end
   end
-
-
 
 end
