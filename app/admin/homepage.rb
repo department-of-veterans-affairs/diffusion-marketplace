@@ -135,33 +135,33 @@ ActiveAdmin.register Homepage do
   # # The intention is to obscure the error while preserving active_admin's built-in error handling
   # # for anything other than a paperclip error.
   controller do
-  #   def create(_options={}, &block)
-  #     create! do |success, failure|
-  #       yield(success, failure) if block
+    def create(_options={}, &block)
+      create! do |success, failure|
+        yield(success, failure) if block
 
-  #       resource.errors.messages.each do |k,v|
-  #         if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
-  #           resource.errors.messages[k] = "There was an issue with uploading your image file."
-  #         end
-  #       end
+        resource.errors.messages.each do |k,v|
+          if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
+            resource.errors.messages[k] = "There was an issue with uploading your image file."
+          end
+        end
 
-  #       failure.html { render :new }
-  #     end
-  #   end
+        failure.html { render :new }
+      end
+    end
 
-  #   def update(_options={}, &block)
-  #     update! do |success, failure|
-  #       yield(success, failure) if block
+    def update(_options={}, &block)
+      update! do |success, failure|
+        yield(success, failure) if block
 
-  #       resource.errors.messages.each do |k,v|
-  #         if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
-  #           resource.errors.messages[k] = "There was an issue with uploading your image file."
-  #         end
-  #       end
+        resource.errors.messages.each do |k,v|
+          if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
+            resource.errors.messages[k] = "There was an issue with uploading your image file."
+          end
+        end
 
-  #       failure.html { render :edit }
-  #     end
-  #   end
+        failure.html { render :edit }
+      end
+    end
 
     def destroy(_options={}, &block)
       if resource.published?
