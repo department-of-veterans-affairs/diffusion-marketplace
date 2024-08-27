@@ -109,7 +109,7 @@ ActiveAdmin.register Homepage do
               image_tag(
                 t.object.image_s3_presigned_url,
                 alt: t.object.image_alt_text,
-                style: 'max-width: 400px; display: block;'
+                style: 'max-width: 400px; display: block;object-fit:cover;aspect-ratio:4/3;'
               ) +
               content_tag(:span, "Current image name: #{t.object.featured_image_file_name}")
             else
