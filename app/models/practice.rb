@@ -271,6 +271,7 @@ class Practice < Innovation
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_metrics, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_testimonials, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_multimedia, -> { order(id: :asc) }, as: :innovable, dependent: :destroy
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
