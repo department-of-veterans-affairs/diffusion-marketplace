@@ -458,7 +458,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
 
     def set_categories_view
       @practice_categories = []
-      current_categories = CategoryPractice.where(practice_id: params[:id])
+      current_categories = CategoryPractice.where(innovable_id: params[:id])
       unless current_categories.empty?
         current_categories.map do |cp|
           @practice_categories.push(cp[:category_id])
