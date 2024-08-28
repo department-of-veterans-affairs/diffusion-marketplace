@@ -45,6 +45,7 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:video_files) }
     it { should have_many(:practice_emails) }
     it { should have_many(:practice_editors) }
+    it { should have_many(:practice_multimedia).order(id: :asc).dependent(:destroy) }
   end
 
   describe 'counter_cache' do

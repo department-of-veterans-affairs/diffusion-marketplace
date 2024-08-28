@@ -11,7 +11,7 @@ class PracticeMultimedium < ApplicationRecord
   before_post_process :skip_for_non_image
 
   do_not_validate_attachment_file_type :attachment
-  belongs_to :practice
+  belongs_to :innovable, polymorphic: true
 
   enum resource_type: {image: 0, video: 1, file: 2, link: 3}
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
