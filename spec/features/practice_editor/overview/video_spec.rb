@@ -12,7 +12,7 @@ describe 'Practice editor', type: :feature, js: true do
     PracticeProblemResource.create(practice: @pr_with_resources, name: 'existing problem video',link_url: @video_url_1, resource_type: 1)
     PracticeSolutionResource.create(practice: @pr_with_resources, name: 'existing solution video', link_url: @video_url_1, resource_type: 1)
     PracticeResultsResource.create(practice: @pr_with_resources, name: 'existing results video',  link_url: @video_url_1, resource_type: 1)
-    PracticeMultimedium.create(practice: @pr_with_resources, name: 'existing multimedia video',  link_url: @video_url_1, resource_type: 1)
+    PracticeMultimedium.create(innovable: @pr_with_resources, name: 'existing multimedia video',  link_url: @video_url_1, resource_type: 1)
     @frame_index = { problem: 0, solution: 1, results: 2, multimedia: 3 }
     login_as(@admin, :scope => :user, :run_callbacks => false)
   end
