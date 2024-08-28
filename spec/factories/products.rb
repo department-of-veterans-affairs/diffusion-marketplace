@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :product do
-    title { "Sample Product" }
+    name { "Sample Product" }
     tagline { "This is a sample tagline for a product." }
     item_number { "ITEM12345" }
     vendor { "Sample Vendor" }
@@ -10,5 +10,9 @@ FactoryBot.define do
     description { "This is a sample product description." }
 
     association :user
+
+    trait :with_image do
+      main_display_image { Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/jumbotron-img.jpg'), 'image/jpg') }
+    end
   end
 end
