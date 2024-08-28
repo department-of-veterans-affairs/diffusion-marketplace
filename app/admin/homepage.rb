@@ -137,38 +137,10 @@ ActiveAdmin.register Homepage do
       create! do |success, failure|
         yield(success, failure) if block
 
-        resource.errors.messages.each do |k,v|
-          if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
-            resource.errors.messages[k] = "There was an issue with uploading your image file."
-          end
-        end
-
+        handle_paperclip_errors
         failure.html { render :new }
       end
     end
-
-    # def update(_options={}, &block)
-    #   update! do |success, failure|
-    #     yield(success, failure) if block
-
-    #     params[:homepage][:homepage_features_attributes].each do |_, feature_attributes|
-    #       if feature_attributes[:delete_image] == "1"
-    #         feature = resource.homepage_features.find(feature_attributes[:id])
-    #         feature.featured_image = nil
-    #         feature.image_alt_text = nil
-    #         feature.save
-    #       end
-    #     end
-
-    #     resource.errors.messages.each do |k,v|
-    #       if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
-    #         resource.errors.messages[k] = "There was an issue with uploading your image file."
-    #       end
-    #     end
-
-    #     failure.html { render :edit }
-    #   end
-    # end
 
     def update(_options={}, &block)
       update! do |success, failure|
