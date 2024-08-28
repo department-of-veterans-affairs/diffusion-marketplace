@@ -261,7 +261,7 @@ class Practice < Innovation
   has_many :timelines, -> { order(position: :asc) }, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
-  has_many :va_employee_practices, dependent: :destroy
+  has_many :va_employee_practices, as: :innovable, dependent: :destroy
   has_many :va_employees, -> { order(position: :asc) }, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
