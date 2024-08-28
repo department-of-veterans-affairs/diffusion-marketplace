@@ -5,9 +5,9 @@ RSpec.describe Product, type: :model do
     it { should belong_to(:user).optional }
     it { should have_many(:category_practices).dependent(:destroy) }
     it { should have_many(:categories).through(:category_practices) }
-    it { should have_many(:practice_multimedia).order(id: :asc).dependent(:destroy) }
-    # it { should have_many(:va_employee_practices).dependent(:destroy) }
-    # it { should have_many(:va_employees).through(:va_employee_practices).order(position: :asc) }
+    # it { should have_many(:practice_multimedia).order(id: :asc).dependent(:destroy) }
+    it { should have_many(:va_employee_practices).dependent(:destroy) }
+    it { should have_many(:va_employees).through(:va_employee_practices).order(position: :asc) }
   end
 
   describe 'validations' do

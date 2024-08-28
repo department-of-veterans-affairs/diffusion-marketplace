@@ -232,7 +232,7 @@ def va_employees
       vae_name = vae[0]
       vae_role = vae[1]
       va_employee = VaEmployee.find_or_create_by(name: vae_name, role: vae_role)
-      VaEmployeePractice.create va_employee: va_employee, practice: @practice unless VaEmployeePractice.where(va_employee: va_employee, practice: @practice).any?
+      VaEmployeePractice.create va_employee: va_employee, innovable: @practice unless VaEmployeePractice.where(va_employee: va_employee, innovable: @practice).any?
     end
   end
 end
