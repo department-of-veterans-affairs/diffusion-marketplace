@@ -125,11 +125,9 @@
             <% @section_one_features.each_with_index do |hf, index| %>
               <div id="featured-innovation-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
                 <%= image_tag "#{hf&.image_s3_presigned_url}", alt: hf&.image_alt_text, class: 'homepage-featured-image' if hf.featured_image.exists? %>
-                <h3 id="featured-innovation-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
-                <p class="usa-prose-body margin-bottom-5">
-                  <%= hf&.description %>
-                </p>
-                <%= link_to hf.cta_text, hf&.url, class: 'usa-link', 'aria-describedby': "featured-innovation-#{index + 1}-title" %>
+                <%= tag.h3 hf.title, id: "featured-tag-#{index + 1}-title", class: 'feature-title usa-prose-h3' if hf.title.present? %>
+                <%= tag.p hf.description, class: 'usa-prose-body margin-bottom' if hf.description.present? %>
+                <%= link_to hf&.cta_text, hf.url, class: 'usa-link', 'aria-describedby': "featured-innovation-#{index + 1}-title" if hf.url.present? %>
               </div>
             <% end %>
           </div>
@@ -171,11 +169,9 @@
             <% @section_two_features.each_with_index do |hf, index| %>
               <div id="featured-tag-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
                 <%= image_tag "#{hf&.image_s3_presigned_url}", alt: hf&.image_alt_text, class: 'homepage-featured-image' if hf.featured_image.exists? %>
-                <h3 id="featured-tag-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
-                <p class="usa-prose-body margin-bottom-5">
-                  <%= hf&.description %>
-                </p>
-                <%= link_to hf.cta_text, hf&.url, class: 'usa-link', 'aria-describedby': "featured-tag-#{index + 1}-title" %>
+                <%= tag.h3 hf.title, id: "featured-tag-#{index + 1}-title", class: 'feature-title usa-prose-h3' if hf.title.present? %>
+                <%= tag.p hf.description, class: 'usa-prose-body margin-bottom' if hf.description.present? %>
+                <%= link_to hf&.cta_text, hf.url, class: 'usa-link', 'aria-describedby': "featured-tag-#{index + 1}-title" if hf.url.present? %>
               </div>
             <% end %>
           </div>
@@ -209,11 +205,9 @@
             <% @section_three_features.each_with_index do |hf, index| %>
               <div id="featured-community-<%= index + 1 %>" class="<%= column_classes %>">
                 <%= image_tag "#{hf&.image_s3_presigned_url}", alt: hf&.image_alt_text, class: 'homepage-featured-image' if hf.featured_image.exists? %>
-                <h3 id="featured-community-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
-                <p class="usa-prose-body margin-bottom-5">
-                  <%= hf&.description %>
-                </p>
-                <%= link_to 'View Community', '/communities/age-friendly', class: 'usa-link', 'aria-describedby': "featured-community-#{index + 1}-title" %>
+                <%= tag.h3 hf.title, id: "featured-tag-#{index + 1}-title", class: 'feature-title usa-prose-h3' if hf.title.present? %>
+                <%= tag.p hf.description, class: 'usa-prose-body margin-bottom' if hf.description.present? %>
+                <%= link_to hf&.cta_text, hf.url, class: 'usa-link', 'aria-describedby': "featured-community-#{index + 1}-title" if hf.url.present? %>
               </div>
             <% end %>
           </div>
