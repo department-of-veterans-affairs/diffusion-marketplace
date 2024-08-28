@@ -172,7 +172,6 @@ class Practice < Innovation
   validates_uniqueness_of :name, {message: 'Innovation name already exists'}
   validates :user, presence: true, format: valid_va_email
   validates_attachment_content_type :highlight_attachment, content_type: /\Aimage\/.*\z/
-  # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
