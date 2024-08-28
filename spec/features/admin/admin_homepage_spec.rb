@@ -116,6 +116,20 @@ describe 'Homepage editor', type: :feature do
         expect(page).not_to have_content('A Charmander pokemon')
       end
     end
+
+    it 'homepage features' do
+      Homepage.create
+      HomepageFeature.create(homepage_id: 1, section_id: 1, title: 'A Very Cool Innovation')
+      visit edit_admin_homepage_path(1)
+      feature_form = find('.has_many_fields', match: :first)
+      within(feature_form) do
+        check 'Delete'
+        expect(page).to have_selector("input[value='A Very Cool Innovation']")
+      end
+      save_page
+      visit edit_admin_homepage_path(1)
+      expect(page).not_to have_selector("input[value='A Very Cool Innovation']")
+    end
   end
 
   describe 'page render' do
