@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_27_222020) do
+ActiveRecord::Schema.define(version: 2024_08_28_202835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1244,11 +1244,12 @@ ActiveRecord::Schema.define(version: 2024_08_27_222020) do
 
   create_table "va_employee_practices", force: :cascade do |t|
     t.integer "position"
-    t.bigint "practice_id"
     t.bigint "va_employee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_va_employee_practices_on_practice_id"
+    t.string "innovable_type"
+    t.bigint "innovable_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_va_employee_practices_on_innovable"
     t.index ["va_employee_id"], name: "index_va_employee_practices_on_va_employee_id"
   end
 
@@ -1497,7 +1498,6 @@ ActiveRecord::Schema.define(version: 2024_08_27_222020) do
   add_foreign_key "survey_result_files", "practices"
   add_foreign_key "timelines", "practices"
   add_foreign_key "user_practices", "practices"
-  add_foreign_key "va_employee_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"
   add_foreign_key "va_facilities", "visns"
   add_foreign_key "va_secretary_priority_practices", "practices"
