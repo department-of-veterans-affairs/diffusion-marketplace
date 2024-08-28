@@ -147,16 +147,34 @@ ActiveAdmin.register Homepage do
       end
     end
 
+    # def update(_options={}, &block)
+    #   update! do |success, failure|
+    #     yield(success, failure) if block
+
+    #     params[:homepage][:homepage_features_attributes].each do |_, feature_attributes|
+    #       if feature_attributes[:delete_image] == "1"
+    #         feature = resource.homepage_features.find(feature_attributes[:id])
+    #         feature.featured_image = nil
+    #         feature.image_alt_text = nil
+    #         feature.save
+    #       end
+    #     end
+
+    #     resource.errors.messages.each do |k,v|
+    #       if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
+    #         resource.errors.messages[k] = "There was an issue with uploading your image file."
+    #       end
+    #     end
+
+    #     failure.html { render :edit }
+    #   end
+    # end
+
     def update(_options={}, &block)
       update! do |success, failure|
         yield(success, failure) if block
-
-        resource.errors.messages.each do |k,v|
-          if v.include?("Paperclip::Errors::NotIdentifiedByImageMagickError")
-            resource.errors.messages[k] = "There was an issue with uploading your image file."
-          end
-        end
-
+        handle_image_deletions if params[:homepage][:homepage_features_attributes].present?
+        handle_paperclip_errors
         failure.html { render :edit }
       end
     end
@@ -167,6 +185,25 @@ ActiveAdmin.register Homepage do
         redirect_back fallback_location: admin_homepages_path, flash: { error: message }
       else
         super
+      end
+    end
+
+    private
+
+    def handle_image_deletions
+      params[:homepage][:homepage_features_attributes].each do |_, feature_attributes|
+        if feature_attributes[:delete_image] == "1"
+          feature = resource.homepage_features.find(feature_attributes[:id])
+          feature.update(featured_image: nil, image_alt_text: nil)
+        end
+      end
+    end
+
+    def handle_paperclip_errors
+      resource.errors.messages.each do |k, v|
+        if v.any? { |msg| msg.include?("Paperclip::Errors::NotIdentifiedByImageMagickError") }
+          resource.errors.add(k, "There was an issue with uploading your image file.")
+        end
       end
     end
   end
