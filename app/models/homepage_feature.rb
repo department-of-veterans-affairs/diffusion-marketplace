@@ -33,7 +33,9 @@ class HomepageFeature < ApplicationRecord
   private
 
   def check_image_deletion
-    self.featured_image.destroy if delete_image == '1'
-    self.image_alt_text = nil
+    if delete_image == '1'
+      self.featured_image.destroy
+      self.image_alt_text = nil
+    end
   end
 end

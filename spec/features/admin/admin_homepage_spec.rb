@@ -73,8 +73,8 @@ describe 'Homepage editor', type: :feature do
         fill_in 'Description', with: "A finalist for the 2024 Shark Tank competition, this practice's impact on veteran health outcomes is..."
         fill_in 'Call to Action URL', with: '/about'
         fill_in 'Call to Action Text', with: 'Learn more'
-        # stub image upload
-        # fill_in 'Image alt text', with: "A Charmander pokemon"
+        find('input[type="file"]').attach_file(@image_file)
+        fill_in 'Image alt text', with: "A Charmander pokemon"
       end
       save_page
       visit admin_homepages_path
@@ -84,8 +84,11 @@ describe 'Homepage editor', type: :feature do
       expect(page).to have_content('A Very Cool Innovation')
       "A finalist for the 2024 Shark Tank competition, this practice's impact on veteran health outcomes is..."
       expect(page).to have_link('Learn more', href: '/about')
-      # expect image
+      expect(page).to have_css("img[alt='A Charmander pokemon']")
   	end
+  end
+
+  describe 'deleting assets' do
   end
 
   describe 'page render' do
