@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_28_202835) do
+ActiveRecord::Schema.define(version: 2024_08_28_211655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -848,7 +848,6 @@ ActiveRecord::Schema.define(version: 2024_08_28_202835) do
   end
 
   create_table "practice_multimedia", force: :cascade do |t|
-    t.bigint "practice_id"
     t.string "link_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -861,7 +860,9 @@ ActiveRecord::Schema.define(version: 2024_08_28_202835) do
     t.integer "position"
     t.integer "resource_type", default: 0
     t.text "image_alt_text"
-    t.index ["practice_id"], name: "index_practice_multimedia_on_practice_id"
+    t.string "innovable_type"
+    t.bigint "innovable_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_practice_multimedia_on_innovable"
   end
 
   create_table "practice_origin_facilities", force: :cascade do |t|
@@ -1477,7 +1478,6 @@ ActiveRecord::Schema.define(version: 2024_08_28_202835) do
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_metrics", "practices"
-  add_foreign_key "practice_multimedia", "practices"
   add_foreign_key "practice_origin_facilities", "clinical_resource_hubs"
   add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_origin_facilities", "va_facilities"
