@@ -1,7 +1,7 @@
 class CreateProducts < ActiveRecord::Migration[6.0]
   def change
     create_table :products do |t|
-      t.string :title
+      t.string :name
       t.string :tagline
       t.string :item_number
       t.string :vendor
@@ -10,6 +10,11 @@ class CreateProducts < ActiveRecord::Migration[6.0]
       t.string :origin_story
       t.text :description
       t.references :user, null: true, foreign_key: true
+
+      t.integer :crop_x
+      t.integer :crop_y
+      t.integer :crop_w
+      t.integer :crop_h
 
       t.timestamps
     end
