@@ -1,7 +1,6 @@
 class PracticeMultimedium < ApplicationRecord
   include ExtraSpaceRemover
 
-  acts_as_list scope: :practice
 
   before_validation :trim_whitespace
   after_create :attachment_crop
@@ -12,6 +11,7 @@ class PracticeMultimedium < ApplicationRecord
 
   do_not_validate_attachment_file_type :attachment
   belongs_to :innovable, polymorphic: true
+  acts_as_list scope: :innovable
 
   enum resource_type: {image: 0, video: 1, file: 2, link: 3}
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
