@@ -127,7 +127,7 @@
                 <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>" class="homepage-featured-image"/>
                 <h3 id="featured-innovation-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
                 <p class="usa-prose-body margin-bottom-5">
-                  <% hf&.description %>
+                  <%= hf&.description %>
                 </p>
                 <%= link_to hf.cta_text, hf&.url, class: 'usa-link', 'aria-describedby': "featured-innovation-#{index + 1}-title" %>
               </div>
@@ -173,7 +173,7 @@
                 <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>" class="homepage-featured-image"/>
                 <h3 id="featured-tag-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
                 <p class="usa-prose-body margin-bottom-5">
-                  <% hf&.description %>
+                  <%= hf&.description %>
                 </p>
                 <%= link_to hf.cta_text, hf&.url, class: 'usa-link', 'aria-describedby': "featured-tag-#{index + 1}-title" %>
               </div>
@@ -211,7 +211,7 @@
                 <img src="<%= hf.image_s3_presigned_url %>" alt="<%= hf.image_alt_text %>" class="homepage-featured-image"/>
                 <h3 id="featured-community-<%= index + 1 %>-title" class="feature-title usa-prose-h3"><%= hf&.title %></h3>
                 <p class="usa-prose-body margin-bottom-5">
-                  <% hf&.description %>
+                  <%= hf&.description %>
                 </p>
                 <%= link_to 'View Community', '/communities/age-friendly', class: 'usa-link', 'aria-describedby': "featured-community-#{index + 1}-title" %>
               </div>

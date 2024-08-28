@@ -82,7 +82,7 @@ describe 'Homepage editor', type: :feature do
       visit root_path
       expect(page).to have_content('Custom title')
       expect(page).to have_content('A Very Cool Innovation')
-      "A finalist for the 2024 Shark Tank competition, this practice's impact on veteran health outcomes is..."
+      expect(page).to have_content("A finalist for the 2024 Shark Tank competition, this practice's impact on veteran health outcomes is...")
       expect(page).to have_link('Learn more', href: '/about')
       expect(page).to have_css("img[alt='A Charmander pokemon']")
     end
