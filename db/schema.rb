@@ -1068,7 +1068,7 @@ ActiveRecord::Schema.define(version: 2024_08_27_222020) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "title"
+    t.string "name"
     t.string "tagline"
     t.string "item_number"
     t.string "vendor"
@@ -1077,6 +1077,10 @@ ActiveRecord::Schema.define(version: 2024_08_27_222020) do
     t.string "origin_story"
     t.text "description"
     t.bigint "user_id"
+    t.integer "crop_x"
+    t.integer "crop_y"
+    t.integer "crop_w"
+    t.integer "crop_h"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "main_display_image_file_name"
