@@ -38,23 +38,10 @@ describe 'Homepage editor', type: :feature do
   		Homepage.create(internal_title: 'august', published: true)
   		Homepage.create(internal_title: 'september', published: false)
   		visit admin_homepages_path
-  		
-      within('#homepage_1') do
-  			expect(page).to have_link('Unpublish')
-  		end
-  		
-      within('#homepage_2') do
-  			click_link('Publish')
-  		end
-  		
-      within('#homepage_1') do
-  			expect(page).to have_link('Publish')
-  		
-      end
-  		
-      within('#homepage_2') do
-  			expect(page).to have_link('Unpublish')
-  		end
+      within('#homepage_1') { expect(page).to have_link('Unpublish') }
+      within('#homepage_2') { click_link('Publish') }
+      within('#homepage_1') { expect(page).to have_link('Publish') }
+      within('#homepage_2') { expect(page).to have_link('Unpublish') }
   	end
   end
 
