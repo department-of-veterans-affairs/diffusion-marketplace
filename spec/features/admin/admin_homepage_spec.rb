@@ -61,19 +61,43 @@ describe 'Homepage editor', type: :feature do
   describe 'creating the page' do
   	it 'publishes section titles' do
       visit admin_homepages_path
-      click 'New homepage'
+      click_link 'New Homepage'
       fill_in 'Internal title', with: 'august'
       fill_in 'Section 1 Title', with: 'Featured Innovations'
       fill_in 'Section 2 Title', with: 'Trending Tags'
       fill_in 'Section 3 Title', with: 'Innovation Communities'
-      click_button 'Create Homepage'
+      save_page
       visit root_path
       expect(page).to have_content 'Featured Innovations'
       expect(page).to have_content 'Trending Tags'
       expect(page).to have_content 'Innovation Communities'
   	end
 
-  	it 'creates homepage features' do
+  	it 'creates homepage features', js:true do
+      visit admin_homepages_path
+      click_link 'New Homepage'
+      fill_in 'Internal title', with: 'august'
+      fill_in 'Section 1 Title', with: 'Custom title'
+      click_link 'Add Feature'
+      feature_form = find('.has_many_fields', match: :first)
+      within(feature_form) do
+        select '1', from: 'Section'
+        fill_in 'Feature Title', with: 'A Very Cool Innovation'
+        fill_in 'Description', with: "A finalist for the 2024 Shark Tank competition, this practice's impact on veteran health outcomes is..."
+        fill_in 'Call to Action URL', with: '/about'
+        fill_in 'Call to Action Text', with: 'Learn more'
+        # stub image upload
+        # fill_in 'Image alt text', with: "A Charmander pokemon"
+      end
+      save_page
+      visit admin_homepages_path
+      click_link 'Publish'
+      visit root_path
+      expect(page).to have_content('Custom title')
+      expect(page).to have_content('A Very Cool Innovation')
+      "A finalist for the 2024 Shark Tank competition, this practice's impact on veteran health outcomes is..."
+      expect(page).to have_link('Learn more', href: '/about')
+      # expect image
   	end
   end
 
@@ -94,6 +118,10 @@ describe 'Homepage editor', type: :feature do
       expect(page).to have_css('#featured-innovation-1.three-column-layout')
       expect(page).to have_css('#featured-tag-1.two-column-layout')
     end
+  end
+
+  def save_page
+    find('input[type="submit"]', match: :first).click
   end
 
 end
