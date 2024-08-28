@@ -85,10 +85,37 @@ describe 'Homepage editor', type: :feature do
       "A finalist for the 2024 Shark Tank competition, this practice's impact on veteran health outcomes is..."
       expect(page).to have_link('Learn more', href: '/about')
       expect(page).to have_css("img[alt='A Charmander pokemon']")
-  	end
+    end
   end
 
-  describe 'deleting assets' do
+  describe 'deletes' do
+    it 'images and their alt text', js: true  do
+      visit admin_homepages_path
+      click_link 'New Homepage'
+      click_link 'Add Feature'
+      feature_form = find('.has_many_fields', match: :first)
+      within(feature_form) do
+        select '1', from: 'Section'
+        find('input[type="file"]').attach_file(@image_file)
+        fill_in 'Image alt text', with: "A Charmander pokemon"
+      end
+      save_page
+      visit admin_homepages_path
+      click_link 'Publish'
+      visit root_path
+      expect(page).to have_css("img[alt='A Charmander pokemon']")
+      visit admin_homepages_path
+      click_link 'Edit'
+      feature_form = find('.has_many_fields', match: :first)
+      within(feature_form) do
+        check 'Delete image?'
+      end
+      save_page
+      click_link 'Edit Homepage'
+      within(feature_form) do
+        expect(page).not_to have_content('A Charmander pokemon')
+      end
+    end
   end
 
   describe 'page render' do
@@ -113,5 +140,4 @@ describe 'Homepage editor', type: :feature do
   def save_page
     find('input[type="submit"]', match: :first).click
   end
-
 end
