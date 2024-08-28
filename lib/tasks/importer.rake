@@ -340,11 +340,11 @@ def categories
         split_answer = answer.split(/\\/)
         split_answer.each do |ans|
           category = Category.find_or_create_by(name: ans)
-          CategoryPractice.create category: category, practice: @practice unless CategoryPractice.where(category: category, practice: @practice).any?
+          CategoryPractice.create category: category, innovable: @practice unless CategoryPractice.where(category: category, innovable: @practice).any?
         end
       else
         category = Category.find_or_create_by(name: answer)
-        CategoryPractice.create category: category, practice: @practice unless CategoryPractice.where(category: category, practice: @practice).any?
+        CategoryPractice.create category: category, innovable: @practice unless CategoryPractice.where(category: category, innovable: @practice).any?
       end
     end
   end
