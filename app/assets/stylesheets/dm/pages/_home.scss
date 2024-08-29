@@ -102,7 +102,50 @@
     }
   }
 
-  #featured-innovations, #featured-tags, #featured-communities, #feature-nominate-innovation  {
+  .homepage-section, #feature-nominate-innovation {
+    #submit-innovation-title {
+      @include at-media(tablet) {
+        @include u-margin-top(0);
+      }
+    }
+
+    .section-title {
+      @extends .usa-prose-h2;
+      @include at-media(tablet){
+        @include u-margin-bottom(5);
+      }
+      @include at-media(desktop){
+        @include u-margin-bottom(5);
+      }
+    }
+
+    .homepage-feature {
+      @include u-margin-bottom(3);
+
+      .feature-title {
+        @extends .usa-prose-h3;
+      }
+    }
+
+    .two-column-layout {
+      @include grid-col(12);
+      @include at-media(tablet){
+        @include grid-col(6);
+      }
+      @include at-media(desktop){
+        @include grid-col(6);
+      }
+    }
+    .three-column-layout {
+      @include grid-col(12);
+      @include at-media(tablet) {
+        @include grid-col(4);
+      }
+      @include at-media(desktop) {
+        @include grid-col(4);
+      }
+    }
+
     // responsive whitespace
     @include u-margin-bottom(2);
     @include at-media(tablet) {
@@ -112,9 +155,10 @@
     .homepage-featured-image {
       @include u-margin-top(3);
       aspect-ratio: 4 / 3;
-      object-fit: cover;
+      object-fit: cover;  // best-guess crop images that do not match aspect ratio
        @include at-media(tablet) {
         @include u-margin-top(0);
+        width: 100%; // stretch images that smaller than column width
        }
     }
   }

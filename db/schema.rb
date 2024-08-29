@@ -364,6 +364,34 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "homepage_features", force: :cascade do |t|
+    t.bigint "homepage_id"
+    t.string "title"
+    t.string "description"
+    t.string "url"
+    t.string "cta_text"
+    t.string "image_alt_text"
+    t.integer "section_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "featured_image_file_name"
+    t.string "featured_image_content_type"
+    t.bigint "featured_image_file_size"
+    t.datetime "featured_image_updated_at"
+    t.index ["homepage_id"], name: "index_homepage_features_on_homepage_id"
+  end
+
+  create_table "homepages", force: :cascade do |t|
+    t.string "internal_title"
+    t.string "section_title_one"
+    t.string "section_title_two"
+    t.string "section_title_three"
+    t.boolean "published", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "impact_photos", force: :cascade do |t|
     t.string "title"
     t.text "description"
