@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Favorites', type: :feature do
   before do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice1 = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
+    @practice1 = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @user)
     @user_practice = UserPractice.create!(user: @user, practice: @practice1, favorited: true)
   end
 

@@ -16,9 +16,10 @@ on:
         "ci-migration-en",
         "ci-migration-pd",
         "ci-migration-bj",
+        feature/homepage-content
       ]
   pull_request:
-    branches: ["master", "feature/DM-4866-search-results-refresh"]
+    branches: ["master", "feature/homepage-content"]
 jobs:
   build:
     name: rspec

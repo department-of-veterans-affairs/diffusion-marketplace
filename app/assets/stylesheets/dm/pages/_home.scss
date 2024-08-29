@@ -3,26 +3,6 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .dm-homepage {
-  .homepage-featured-topic-image-container,
-  .homepage-featured-innovation-image-container {
-    max-width: 308px;
-
-    img {
-      @include u-height("full");
-      @include u-width("full");
-      object-fit: cover;
-      aspect-ratio: 58 / 39;
-
-      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-        @include u-display("none", !important);
-      }
-    }
-
-    @media screen and (min-width: 1024px) {
-      max-width: unset;
-    }
-  }
-
   .homepage-search {
     @media screen and (max-width: 1023px) {
       margin-top: 1rem;
@@ -88,22 +68,6 @@
     }
   }
 
-  .featured-innovation-content-container {
-    @media screen and (min-width: 1024px) {
-      flex-direction: row-reverse;
-      // needed for Firefox support
-      -webkit-flex-direction: row-reverse;
-    }
-  }
-
-  .nominate-practice-section {
-    .grid-row {
-      @media screen and (min-width: 1024px) {
-        @include u-flex("align-center");
-      }
-    }
-  }
-
   .newsletter-subscription-section {
     form {
       max-width: unset !important;
@@ -135,6 +99,67 @@
         @include u-text-decoration("underline");
         color: color($theme-color-base-ink);
       }
+    }
+  }
+
+  .homepage-section, #feature-nominate-innovation {
+    #submit-innovation-title {
+      @include at-media(tablet) {
+        @include u-margin-top(0);
+      }
+    }
+
+    .section-title {
+      @extends .usa-prose-h2;
+      @include at-media(tablet){
+        @include u-margin-bottom(5);
+      }
+      @include at-media(desktop){
+        @include u-margin-bottom(5);
+      }
+    }
+
+    .homepage-feature {
+      @include u-margin-bottom(3);
+
+      .feature-title {
+        @extends .usa-prose-h3;
+      }
+    }
+
+    .two-column-layout {
+      @include grid-col(12);
+      @include at-media(tablet){
+        @include grid-col(6);
+      }
+      @include at-media(desktop){
+        @include grid-col(6);
+      }
+    }
+    .three-column-layout {
+      @include grid-col(12);
+      @include at-media(tablet) {
+        @include grid-col(4);
+      }
+      @include at-media(desktop) {
+        @include grid-col(4);
+      }
+    }
+
+    // responsive whitespace
+    @include u-margin-bottom(2);
+    @include at-media(tablet) {
+      @include u-margin-bottom(5);
+    }
+
+    .homepage-featured-image {
+      @include u-margin-top(3);
+      aspect-ratio: 4 / 3;
+      object-fit: cover;  // best-guess crop images that do not match aspect ratio
+       @include at-media(tablet) {
+        @include u-margin-top(0);
+        width: 100%; // stretch images that smaller than column width
+       }
     }
   }
 }

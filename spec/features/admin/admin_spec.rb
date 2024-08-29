@@ -32,7 +32,6 @@ describe 'The admin dashboard', type: :feature do
       Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
     ]
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
-    @featured_image = "#{Rails.root}/spec/assets/charmander.png"
   end
 
   after(:all) do
@@ -261,9 +260,6 @@ describe 'The admin dashboard', type: :feature do
       click_link('New Practice')
       expect(page).to have_current_path(new_admin_practice_path)
 
-      expect(page).to have_no_content('Highlighted Innovation Title')
-      expect(page).to have_no_content('Highlighted Innovation Body')
-
       # add extra whitespace to practice name
       fill_in('Innovation name', with: ' The Newest Practice   ')
       fill_in('User email', with: 'practice_owner@va.gov')
@@ -421,58 +417,6 @@ describe 'The admin dashboard', type: :feature do
       click_button('Update Practice')
       click_link('Edit', href: edit_admin_practice_path(@practice))
       expect(page).not_to have_selector('option[selected]')
-    end
-
-    it 'should be able to feature a practice, if one is not already featured' do
-      login_as(@admin, scope: :user, run_callbacks: false)
-      pr_2 = Practice.create!(name: 'Another Test Practice', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
-      pr_3 = Practice.create!(name: 'Another Test Practice 2', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
-
-      visit '/'
-      expect(page).to have_no_content('Featured Innovation')
-      # feature practice
-      visit '/admin'
-      click_link('Practices')
-      expect(page).to have_content('Feature')
-      click_link('Feature', href: highlight_practice_admin_practice_path(@practice))
-      expect(page).to have_content("\"#{@practice.name}\" is now the featured innovation.")
-      expect(find_all('.col-featured > span')[3].text).to eq 'YES'
-      click_link('Feature', href: highlight_practice_admin_practice_path(pr_2))
-      expect(page).to have_content("Only one innovation can be featured at a time.")
-      expect(find_all('.col-featured > span')[1].text).to eq 'NO'
-      click_link('Feature', href: highlight_practice_admin_practice_path(pr_3))
-      expect(page).to have_content("Innovation must be published to be featured.")
-      expect(find_all('.col-featured > span')[0].text).to eq 'NO'
-      visit '/'
-      # Should not show featured section unless featured fields have been completed
-      expect(page).to_not have_content(@practice.name)
-      # add featured content
-      visit '/admin'
-      click_link('Practices')
-      click_link('Edit', href: edit_admin_practice_path(@practice))
-      expect(page).to have_content('FEATURED INNOVATION BODY')
-      expect(page).to have_content('FEATURED INNOVATION ATTACHMENT')
-      fill_in('Featured Innovation Body', with: 'pretty cool practice')
-      # practice should not update unless both featured fields are completed
-      click_button('Update Practice')
-      expect(page).to_not have_content('Innovation was successfully updated.')
-      expect(page).to have_content('ERROR - The following required \'featured\' field was not completed: \'featured innovation attachment\'')
-      fill_in('Featured Innovation Body', with: 'pretty cool practice')
-      find('#practice_highlight_attachment').attach_file(@featured_image)
-      click_button('Update Practice')
-      expect(page).to have_content('Innovation was successfully updated.')
-      visit '/'
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_content('pretty cool practice')
-      # unfeature practice
-      visit '/admin'
-      click_link('Practices')
-      expect(page).to have_content('Unfeature')
-      click_link('Unfeature', href: highlight_practice_admin_practice_path(@practice))
-      expect(find_all('.col-featured > span').first.text).to eq 'NO'
-      expect(page).to have_content("\"#{@practice.name}\" is no longer the featured innovation.")
-      visit '/'
-      expect(page).to have_no_content(@practice.name)
     end
 
     it 'should be able to toggle between retired and active states from actions column' do
