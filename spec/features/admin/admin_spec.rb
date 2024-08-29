@@ -25,7 +25,7 @@ describe 'The admin dashboard', type: :feature do
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
     ]
-    CategoryPractice.create(innovable_id: @practice[:id], category_id: @categories[1][:id])
+    CategoryPractice.create(innovable_id: @practice[:id], category_id: @categories[1][:id], innovable_type: "Practice")
     @departments = [
       Department.create!(name: 'Admissions', short_name: 'admissions'),
       Department.create!(name: 'None', short_name: 'none'),
