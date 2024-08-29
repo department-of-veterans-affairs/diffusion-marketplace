@@ -2,7 +2,6 @@ class HomepageFeature < ApplicationRecord
   belongs_to :homepage
   has_attached_file :featured_image
   validates_attachment_content_type :featured_image, content_type: /\Aimage\/.*\z/, if: -> { featured_image.present? }
-  # validates :section_id, presence: true, allow_nil: true
 
   attr_accessor :delete_image
   before_save :check_image_deletion
@@ -28,7 +27,6 @@ class HomepageFeature < ApplicationRecord
       'two-column-layout'
     end
   end
-
 
   private
 

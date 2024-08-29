@@ -1,5 +1,26 @@
 ActiveAdmin.register Homepage do
-  permit_params :internal_title, :section_title_one, :section_title_two, :section_title_three, :published, homepage_features_attributes: [:id, :title, :description, :url, :cta_text, :featured_image, :featured_image_file_name, :featured_image_content_type, :featured_image_updated_at, :featured_image_file_size, :image_alt_text, :delete_image, :section_id, :homepage_id, :position, :_destroy]
+  permit_params :internal_title,
+                :section_title_one,
+                :section_title_two,
+                :section_title_three,
+                :published,
+                homepage_features_attributes: [
+                  :id,
+                  :title,
+                  :description,
+                  :url, :cta_text,
+                  :featured_image,
+                  :featured_image_file_name,
+                  :featured_image_content_type,
+                  :featured_image_updated_at,
+                  :featured_image_file_size,
+                  :image_alt_text,
+                  :delete_image,
+                  :section_id,
+                  :homepage_id,
+                  :position,
+                  :_destroy
+                ]
 
 
   config.filters = false
@@ -17,7 +38,9 @@ ActiveAdmin.register Homepage do
       message = "\"#{resource.internal_title.to_s}\" unpublished"
       resource.published = false
     else
-      message = "\"#{resource.internal_title.to_s}\" published, \"#{already_published.pluck(:internal_title).join(',')}\" unpublished "
+      message = "\"#{resource.internal_title}\" published, " \
+          "\"#{already_published.pluck(:internal_title).join(',')}\" " \
+          "unpublished"
       already_published.update_all(published: false)
       resource.published = true
     end
@@ -96,34 +119,33 @@ ActiveAdmin.register Homepage do
     end
 
     f.has_many :homepage_features, heading: "Features", new_record: 'Add Feature', allow_destroy: true do |t|
-      # f.has_many :homepage_features, new_record: 'Add Feature', allow_destroy: true, sortable: :position, sortable_start: 1 do |t|
-        t.input :section_id, as: :select, collection: [1,2,3], label: 'Section', hint: "Maximum of 3 features per section"
-        t.input :title, label: 'Feature Title'
-        t.input :description
-        t.input :url, label: 'Call to Action URL', hint: 'e.g. /about or https://va.gov'
-        t.input :cta_text, label: 'Call to Action Text', hint: 'e.g. View Innovation, Register Now'
-        t.input :featured_image,
-          as: :file,
-          hint: (
-            if t.object.featured_image.exists?
-              image_tag(
-                t.object.image_s3_presigned_url,
-                alt: t.object.image_alt_text,
-                style: 'max-width: 400px; display: block;object-fit:cover;aspect-ratio:4/3;'
-              ) +
-              content_tag(:span, "Current image name: #{t.object.featured_image_file_name}")
-            else
-              'Recommended dimensions:'
-            end
-          )
+      t.input :section_id, as: :select, collection: [1,2,3], label: 'Section', hint: "Maximum of 3 features per section"
+      t.input :title, label: 'Feature Title'
+      t.input :description
+      t.input :url, label: 'Call to Action URL', hint: 'e.g. /about or https://va.gov'
+      t.input :cta_text, label: 'Call to Action Text', hint: 'e.g. View Innovation, Register Now'
+      t.input :featured_image,
+        as: :file,
+        hint: (
+          if t.object.featured_image.exists?
+            image_tag(
+              t.object.image_s3_presigned_url,
+              alt: t.object.image_alt_text,
+              style: 'max-width: 400px; display: block;object-fit:cover;aspect-ratio:4/3;'
+            ) +
+            content_tag(:span, "Current image name: #{t.object.featured_image_file_name}")
+          else
+            'Recommended dimensions:'
+          end
+        )
 
-        # Checkbox for deleting the image
-        if t.object.featured_image.exists?
-          t.input :delete_image, as: :boolean, label: 'Delete image?'
-        end
-        t.input :image_alt_text, hint: 'Briefly describe this image for visually impaired users'
-
+      # Checkbox for deleting the image
+      if t.object.featured_image.exists?
+        t.input :delete_image, as: :boolean, label: 'Delete image?'
       end
+      t.input :image_alt_text, hint: 'Briefly describe this image for visually impaired users'
+    end
+
     f.actions
   end
 
