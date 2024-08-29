@@ -8,9 +8,6 @@ describe 'Homepage editor', type: :feature do
   end
 
   describe 'Publishing' do
-  	it 'warns the user about unpublishing the homepage' do
-  	end
-
   	it 'prevents the user from deleting the current homepage' do
       Homepage.create(internal_title: 'august', published: true)
       visit admin_homepages_path
@@ -146,8 +143,8 @@ describe 'Homepage editor', type: :feature do
       3.times {|i| HomepageFeature.create(homepage_id: 1, section_id: 1, title: "Feature #{i + 1}") }
       2.times {|i| HomepageFeature.create(homepage_id: 1, section_id: 2, title: "Feature #{i + 1}") }
       visit root_path
-      expect(page).to have_css('#featured-innovation-1.three-column-layout')
-      expect(page).to have_css('#featured-tag-1.two-column-layout')
+      expect(page).to have_css('#section-1-feature-1.three-column-layout')
+      expect(page).to have_css('#section-2-feature-1.two-column-layout')
     end
   end
 
