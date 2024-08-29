@@ -103,6 +103,12 @@
   }
 
   .homepage-section, #feature-nominate-innovation  {
+    #submit-innovation-title {
+      @include at-media(tablet) {
+        @include u-margin-top(0);
+      }
+    }
+
     .two-column-layout {
       @include grid-col(12);
       @include at-media(tablet){
