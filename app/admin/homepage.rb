@@ -24,7 +24,7 @@ ActiveAdmin.register Homepage do
 
 
   config.filters = false
-  config.sort_order = 'published_asc'
+  config.sort_order = 'published_desc'
 
   # Customizing the action items (buttons) on the show page
   action_item :publish, priority: 0, only: :show do
