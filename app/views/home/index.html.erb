@@ -91,7 +91,7 @@
   <div class="grid-container">
     <section id="homepage-section-1" class="homepage-section">
         <% if @homepage.blank? %>
-          <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Featured Innovations</h2>
+          <h2 class="section-title">Featured Innovations</h2>
           <div class="grid-row grid-gap">
             <div id="section-1-feature-1" class="homepage-feature three-column-layout">
               <%= image_tag("homepage/innovation-CREW.jpg", alt: "Two people preparing vegetables at a cutting board",class: "homepage-featured-image") %>
@@ -119,7 +119,7 @@
             </div>
           </div>
         <% else %>
-          <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5"><%= @homepage&.section_title_one %> </h2>
+          <h2 class="section-title"><%= @homepage&.section_title_one %> </h2>
           <div class="grid-row grid-gap">
             <% column_classes = HomepageFeature.column_size(@section_one_features.count) %>
             <% @section_one_features.each_with_index do |hf, index| %>
@@ -135,7 +135,7 @@
     </section>
     <section id="homepage-section-2" class="homepage-section">
         <% if @homepage.blank? %>
-          <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Trending Tags</h2>
+          <h2 class="section-title">Trending Tags</h2>
           <div class="grid-row grid-gap">
             <div id="section-2-feature-1" class="homepage-feature three-column-layout">
               <%= image_tag("homepage/tag-suicide-prevention.jpg", alt: "VA Secretary Denis McDonough greeting a volunteer at a VA clinic", class: "homepage-featured-image") %>
@@ -163,7 +163,7 @@
             </div>
           </div>
         <% else %>
-        <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5"><%= @homepage&.section_title_two %></h2>
+        <h2 class="section-title"><%= @homepage&.section_title_two %></h2>
           <div class="grid-row grid-gap">
             <% column_classes = HomepageFeature.column_size(@section_two_features.count) %>
             <% @section_two_features.each_with_index do |hf, index| %>
@@ -179,7 +179,7 @@
     </section>
     <section id="homepage-section-3" class="homepage-section">
         <% if @homepage.blank? %>
-        <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Innovation Communities</h2>
+        <h2 class="section-title">Innovation Communities</h2>
         <div class="grid-row grid-gap">
           <div id="section-3-feature-1" class="homepage-feature two-column-layout">
             <%= image_tag("homepage/community-age-friendly.jpg", alt: 'doctor and patient looking at a tablet together', class: "homepage-featured-image") %>
@@ -199,7 +199,7 @@
           </div>
         </div>
         <% else %>
-          <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5"><%= @homepage&.section_title_three %></h2>
+          <h2 class="section-title"><%= @homepage&.section_title_three %></h2>
           <div class="grid-row grid-gap">
             <% column_classes = HomepageFeature.column_size(@section_three_features.count) %>
             <% @section_three_features.each_with_index do |hf, index| %>

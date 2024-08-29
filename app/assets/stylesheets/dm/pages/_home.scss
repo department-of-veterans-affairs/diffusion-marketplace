@@ -109,8 +109,22 @@
       }
     }
 
+    .section-title {
+      @extends .usa-prose-h2;
+      @include at-media(tablet){
+        @include u-margin-bottom(5);
+      }
+      @include at-media(desktop){
+        @include u-margin-bottom(5);
+      }
+    }
+
     .homepage-feature {
       @include u-margin-bottom(3);
+
+      .feature-title {
+        @extends .usa-prose-h3;
+      }
     }
 
     .two-column-layout {
