@@ -473,7 +473,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
       practice = Practice.find_by(name: params[:practice][:name])
       current_categories = CategoryPractice.where(innovable_id: practice[:id]) unless practice.nil?
       if selected_categories.length > 0 && practice.present?
-        selected_categories.map { |cat| CategoryPractice.find_or_create_by!(category_id: cat, innovable_id: practice[:id]) }
+        selected_categories.map { |cat| CategoryPractice.find_or_create_by!(category_id: cat, innovable_id: practice[:id], innovable_type: "Practice") }
       end
 
       if params[:action] == 'update' && current_categories.present?
