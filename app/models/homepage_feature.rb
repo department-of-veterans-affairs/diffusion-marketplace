@@ -6,14 +6,6 @@ class HomepageFeature < ApplicationRecord
   attr_accessor :delete_image
   before_save :check_image_deletion
 
-  def self.ransackable_associations(auth_object = nil)
-    []
-  end
-
-  def self.ransackable_attributes(auth_object = nil)
-    []
-  end
-
   def image_s3_presigned_url(style = nil)
     if featured_image.present?
       object_presigned_url(featured_image, style)
