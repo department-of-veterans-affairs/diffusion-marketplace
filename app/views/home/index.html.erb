@@ -93,7 +93,7 @@
         <% if @homepage.blank? %>
           <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Featured Innovations</h2>
           <div class="grid-row grid-gap">
-            <div id="section-1-feature-1" class="margin-bottom-3 three-column-layout">
+            <div id="section-1-feature-1" class="homepage-feature three-column-layout">
               <%= image_tag("homepage/innovation-CREW.jpg", alt: "Two people preparing vegetables at a cutting board",class: "homepage-featured-image") %>
               <h3 id="section-1-feature-1-title" class="feature-title usa-prose-h3">CREW: Carbohydrate Reduction Empowering Wellness (formerly Therapeutic Carbohydrate Reduction (TCR) Aspire)</h3>
               <p class="usa-prose-body margin-bottom-5">
@@ -101,7 +101,7 @@
               </p>
               <a href="/innovations/therapeutic-carbohydrate-restricted-tcr-aspire" aria-describedby="section-1-feature-1-title" class="usa-link">View Innovation</a>
             </div>
-            <div id="section-1-feature-2" class="margin-bottom-3 three-column-layout">
+            <div id="section-1-feature-2" class="homepage-feature three-column-layout">
               <%= image_tag("homepage/innovation-PRIDE.jpg", alt: "Rainbow flag and trans flag patterned identification tags encircled by a stethoscope", class: "homepage-featured-image") %>
               <h3 id="section-1-feature-2-title" class="feature-title usa-prose-h3">PRIDE In All Who Served</h3>
               <p class="usa-prose-body margin-bottom-5">
@@ -109,7 +109,7 @@
               </p>
               <a href="/innovations/pride-in-all-who-served-reducing-healthcare-disparities-for-lgbt-veterans" aria-describedby="section-1-feature-2-title" class="usa-link">View Innovation</a>
             </div>
-            <div id="section-1-feature-3" class="margin-bottom-3 three-column-layout">
+            <div id="section-1-feature-3" class="homepage-feature three-column-layout">
               <%= image_tag("homepage/innovation-Close-to-Me.jpg", alt: "Doctor and patient discuss cancer test results", class: "homepage-featured-image") %>
               <h3 id="section-1-feature-3-title" class="feature-title usa-prose-h3">Close to Me Cancer Care</h3>
               <p class="usa-prose-body margin-bottom-5">
@@ -123,7 +123,7 @@
           <div class="grid-row grid-gap">
             <% column_classes = HomepageFeature.column_size(@section_one_features.count) %>
             <% @section_one_features.each_with_index do |hf, index| %>
-              <div id="section-1-feature-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
+              <div id="section-1-feature-<%= index + 1 %>" class="homepage-feature <%= column_classes %>">
                 <%= image_tag "#{hf&.image_s3_presigned_url}", alt: hf&.image_alt_text, class: 'homepage-featured-image' if hf.featured_image.exists? %>
                 <%= tag.h3 hf.title, id: "section-1-feature-#{index + 1}-title", class: 'feature-title usa-prose-h3' if hf.title.present? %>
                 <%= tag.p hf.description, class: 'usa-prose-body margin-bottom-5' if hf.description.present? %>
@@ -137,7 +137,7 @@
         <% if @homepage.blank? %>
           <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Trending Tags</h2>
           <div class="grid-row grid-gap">
-            <div id="section-2-feature-1" class="margin-bottom-3 three-column-layout">
+            <div id="section-2-feature-1" class="homepage-feature three-column-layout">
               <%= image_tag("homepage/tag-suicide-prevention.jpg", alt: "VA Secretary Denis McDonough greeting a volunteer at a VA clinic", class: "homepage-featured-image") %>
               <h3 id="section-2-feature-1-title" class="feature-title usa-prose-h3">Suicide Prevention</h3>
               <p class="usa-prose-body margin-bottom-5">
@@ -145,7 +145,7 @@
               </p>
               <a href="/search?category=Suicide%20Prevention" aria-describedby="section-2-feature-1-title" class="usa-link">Learn More</a>
             </div>
-            <div id="section-2-feature-2" class="margin-bottom-3 three-column-layout">
+            <div id="section-2-feature-2" class="homepage-feature three-column-layout">
               <%= image_tag("homepage/tag-homeheatlh.jpg", alt: "a miniature house in glove hands of a medical staff member", class: "homepage-featured-image") %>
               <h3 id="section-2-feature-2-title" class="feature-title usa-prose-h3">Home Health</h3>
               <p class="usa-prose-body margin-bottom-5">
@@ -153,7 +153,7 @@
               </p>
               <a href="/search?category=Home%20Health" aria-describedby="section-2-feature-2-title" class="usa-link">Learn More</a>
             </div>
-            <div id="section-2-feature-3" class="margin-bottom-3 three-column-layout">
+            <div id="section-2-feature-3" class="homepage-feature three-column-layout">
               <%= image_tag("homepage/tag-specialty-care.jpg", alt: "a man attached to a blood pressure monitor", class: "homepage-featured-image") %>
               <h3 id="section-2-feature-3-title" class="feature-title usa-prose-h3">Specialty Care</h3>
               <p class="usa-prose-body margin-bottom-5">
@@ -167,7 +167,7 @@
           <div class="grid-row grid-gap">
             <% column_classes = HomepageFeature.column_size(@section_two_features.count) %>
             <% @section_two_features.each_with_index do |hf, index| %>
-              <div id="section-2-feature-<%= index + 1 %>" class="margin-bottom-3 <%= column_classes %>">
+              <div id="section-2-feature-<%= index + 1 %>" class="homepage-feature <%= column_classes %>">
                 <%= image_tag "#{hf&.image_s3_presigned_url}", alt: hf&.image_alt_text, class: 'homepage-featured-image' if hf.featured_image.exists? %>
                 <%= tag.h3 hf.title, id: "section-2-feature-#{index + 1}-title", class: 'feature-title usa-prose-h3' if hf.title.present? %>
                 <%= tag.p hf.description, class: 'usa-prose-body margin-bottom-5' if hf.description.present? %>
@@ -181,7 +181,7 @@
         <% if @homepage.blank? %>
         <h2 class="usa-prose-h2 tablet:margin-bottom-5 desktop:margin-bottom-5">Innovation Communities</h2>
         <div class="grid-row grid-gap">
-          <div id="section-3-feature-1" class="two-column-layout">
+          <div id="section-3-feature-1" class="homepage-feature two-column-layout">
             <%= image_tag("homepage/community-age-friendly.jpg", alt: 'doctor and patient looking at a tablet together', class: "homepage-featured-image") %>
             <h3 id="section-3-feature-1-title" class="feature-title usa-prose-h3">Age-Friendly</h3>
             <p class="usa-prose-body margin-bottom-5">
@@ -189,7 +189,7 @@
             </p>
             <%= link_to 'View Community', '/communities/age-friendly', class: 'usa-link', 'aria-describedby': 'section-3-feature-1-title' %>
           </div>
-          <div id="section-3-feature-2" class="two-column-layout">
+          <div id="section-3-feature-2" class="homepage-feature two-column-layout">
             <%= image_tag("homepage/community-vr.jpg", alt: "a person wearing a VR headset, weraing a mask, and a Veterans Affairs lanyard", class: "homepage-featured-image") %>
             <h3 id="section-3-feature-2-title" class="feature-title usa-prose-h3">VA Immersive</h3>
             <p class="usa-prose-body margin-bottom-5">
@@ -203,7 +203,7 @@
           <div class="grid-row grid-gap">
             <% column_classes = HomepageFeature.column_size(@section_three_features.count) %>
             <% @section_three_features.each_with_index do |hf, index| %>
-              <div id="section-3-feature-<%= index + 1 %>" class="<%= column_classes %>">
+              <div id="section-3-feature-<%= index + 1 %>" class="homepage-feature <%= column_classes %>">
                 <%= image_tag "#{hf&.image_s3_presigned_url}", alt: hf&.image_alt_text, class: 'homepage-featured-image' if hf.featured_image.exists? %>
                 <%= tag.h3 hf.title, id: "section-3-feature-#{index + 1}-title", class: 'feature-title usa-prose-h3' if hf.title.present? %>
                 <%= tag.p hf.description, class: 'usa-prose-body margin-bottom-5' if hf.description.present? %>

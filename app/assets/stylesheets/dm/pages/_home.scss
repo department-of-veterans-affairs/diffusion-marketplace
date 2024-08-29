@@ -102,11 +102,15 @@
     }
   }
 
-  .homepage-section, #feature-nominate-innovation  {
+  .homepage-section, #feature-nominate-innovation {
     #submit-innovation-title {
       @include at-media(tablet) {
         @include u-margin-top(0);
       }
+    }
+
+    .homepage-feature {
+      @include u-margin-bottom(3);
     }
 
     .two-column-layout {
