@@ -79,6 +79,7 @@ Rails.application.routes.draw do
   end
 
   root 'home#index'
+  get '/homepages/:id/preview', controller: 'home', action: 'preview'
   resources :clinical_resource_hubs, path: :crh, param: :number
   get '/practices' => 'practices#index'
   get '/partners' => 'practice_partners#index'

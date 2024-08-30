@@ -10,9 +10,29 @@ class HomeController < ApplicationController
     @homepage = Homepage.where(published: true)&.first
     if @homepage
       current_features = @homepage&.homepage_features
-      @section_one_features = current_features&.where(section_id: 1).first(3)
-      @section_two_features = current_features&.where(section_id: 2).first(3)
-      @section_three_features = current_features&.where(section_id: 3).first(3)
+      @section_one_features = current_features&.where(section_id: 1)&.first(3)
+      @section_two_features = current_features&.where(section_id: 2)&.first(3)
+      @section_three_features = current_features&.where(section_id: 3)&.first(3)
+    end
+  end
+
+  def preview
+    if current_user&.has_role?(:admin)
+      @@dropdown_categories = nil
+      @dropdown_communities = nil
+      @homepage = nil
+      @homepage = Homepage.find(params[:id]) # <-- param is set by a member action in admin/homepages/ controller
+        # TODO: set a nicer error message & redirect for Homepages that don't exist
+      current_features = @homepage&.homepage_features
+      if current_features
+        @section_one_features = current_features&.where(section_id: 1)&.first(3)
+        @section_two_features = current_features&.where(section_id: 2)&.first(3)
+        @section_three_features = current_features&.where(section_id: 3)&.first(3)
+      end
+      # maybe add some warning banner that this is not published for clarity?
+      render 'index'
+    else
+      redirect_to root_path
     end
   end
 
