@@ -51,6 +51,11 @@ ActiveAdmin.register Homepage do
     redirect_back fallback_location: root_path, notice: message
   end
 
+  member_action :preview, method: :get do
+    homepage_id = resource.id
+    redirect_to "/homepages/#{homepage_id}/preview"
+  end
+
   index do
     id_column
     column :internal_title
@@ -59,6 +64,7 @@ ActiveAdmin.register Homepage do
     actions do |homepage|
       publish_action_str = homepage.published ? "Unpublish" : "Publish"
       item publish_action_str, publish_admin_homepage_path(homepage), method: :post
+      item "Preview", preview_admin_homepage_path(homepage.id), method: :get
     end
   end
 
