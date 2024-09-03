@@ -160,6 +160,7 @@ describe 'Homepage editor', type: :feature do
         click_link('Preview')
       end
       expect(page).to have_current_path('/homepages/2/preview')
+      expect(page).to have_content('This is a preview of unpublished content')
       expect(page).to have_content('Next month homepage')
     end
 
