@@ -149,12 +149,17 @@ describe 'Homepage editor', type: :feature do
   end
 
   describe 'Preview' do
-    it 'lets admins preview homepage' do
+    it 'lets admins preview homepage' do      
       Homepage.create(internal_title: 'current', published: true, section_title_one: 'Old homepage')
       Homepage.create(internal_title: 'next month', published: false, section_title_one: 'Next month homepage')
       visit root_path
       expect(page).to have_content('Old homepage')
-      visit '/homepages/2/preview'
+      visit admin_homepages_path
+      within('#homepage_2') do
+        expect(page).to have_content('Publish')
+        click_link('Preview')
+      end
+      expect(page).to have_current_path('/homepages/2/preview')
       expect(page).to have_content('Next month homepage')
     end
 
