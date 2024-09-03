@@ -29,9 +29,8 @@ class HomeController < ApplicationController
         @section_two_features = current_features&.where(section_id: 2)&.first(3)
         @section_three_features = current_features&.where(section_id: 3)&.first(3)
       end
-      warning = 'This is a preview of unpublished content'
-      flash[:warning] = warning
-      render 'index', warning: warning
+      flash.now[:notice] = "This is a preview of unpublished content"
+      render 'index'
     else
       redirect_to root_path
     end
