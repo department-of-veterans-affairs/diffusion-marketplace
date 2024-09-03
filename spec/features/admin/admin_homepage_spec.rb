@@ -148,6 +148,26 @@ describe 'Homepage editor', type: :feature do
     end
   end
 
+  describe 'Preview' do
+    it 'lets admins preview homepage' do
+      Homepage.create(internal_title: 'current', published: true, section_title_one: 'Old homepage')
+      Homepage.create(internal_title: 'next month', published: false, section_title_one: 'Next month homepage')
+      visit root_path
+      expect(page).to have_content('Old homepage')
+      visit '/homepages/2/preview'
+      expect(page).to have_content('Next month homepage')
+    end
+
+    it 'hides previews from non-admins' do
+      @non_admin = create(:user, email: 'spongebob@va.gov')
+      login_as(@non_admin, scope: :user, run_callbacks: false)
+      Homepage.create(internal_title: 'next month', published: false, section_title_one: 'Next month homepage')
+      visit '/homepages/1/preview'
+      expect(page).to have_current_path(root_path)
+    end
+
+  end
+
   def save_page
     find('input[type="submit"]', match: :first).click
   end
