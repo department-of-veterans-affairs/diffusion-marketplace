@@ -21,8 +21,14 @@ class HomeController < ApplicationController
       @@dropdown_categories = nil
       @dropdown_communities = nil
       @homepage = nil
-      @homepage = Homepage.find(params[:id]) # <-- param is set by a member action in admin/homepages/ controller
-        # TODO: set a nicer error message & redirect for Homepages that don't exist
+      begin
+        @homepage = Homepage.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        warning = "That homepage does not exist"
+        flash[:warning] = warning
+        redirect_to admin_homepages_path, warning: warning
+        return
+      end
       current_features = @homepage&.homepage_features
       if current_features
         @section_one_features = current_features&.where(section_id: 1)&.first(3)
