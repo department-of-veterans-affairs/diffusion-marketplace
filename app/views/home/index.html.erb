@@ -91,8 +91,9 @@
     </form>
   </section>
   <div class="grid-container">
+    <% fallback_content? = @homepage.blank? && (controller.action_name != 'preview') %>
     <section id="homepage-section-1" class="homepage-section">
-        <% if @homepage.blank? && (controller.action_name != 'preview') %>
+        <% if fallback_content? %>
           <h2 class="section-title">Featured Innovations</h2>
           <div class="grid-row grid-gap">
             <div id="section-1-feature-1" class="homepage-feature three-column-layout">
@@ -136,7 +137,7 @@
         <% end %>
     </section>
     <section id="homepage-section-2" class="homepage-section">
-        <% if @homepage.blank? %>
+        <% if fallback_content? %>
           <h2 class="section-title">Trending Tags</h2>
           <div class="grid-row grid-gap">
             <div id="section-2-feature-1" class="homepage-feature three-column-layout">
@@ -180,7 +181,7 @@
         <% end %>
     </section>
     <section id="homepage-section-3" class="homepage-section">
-        <% if @homepage.blank? %>
+        <% if fallback_content? %>
         <h2 class="section-title">Innovation Communities</h2>
         <div class="grid-row grid-gap">
           <div id="section-3-feature-1" class="homepage-feature two-column-layout">
