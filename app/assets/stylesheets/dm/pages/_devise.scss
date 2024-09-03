@@ -5,14 +5,11 @@
   border-radius: 20px;
 
   .login-header {
-    background-image: image-url('login-header.jpg');
-    background-position: center;
-    background-size: cover;
     color: color($theme-color-dm-white);
     border-radius: 20px 20px 0 0;
 
     .login-header-overlay {
-      background-color: rgba(color($theme-color-primary), 0.8);
+      background-color: color($theme-color-primary);
       padding: 2rem 5rem;
       text-align: center;
       border-radius: 20px 20px 0 0;
