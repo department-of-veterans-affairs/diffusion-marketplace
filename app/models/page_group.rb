@@ -2,7 +2,8 @@ class PageGroup < ApplicationRecord
   COMMUNITIES = [
     "VA Immersive",
 		"Suicide Prevention",
-		"Age-Friendly"
+		"Age-Friendly",
+    "VHA IE Fellowships"
   ]
   extend FriendlyId
   friendly_id :name, use: :slugged
