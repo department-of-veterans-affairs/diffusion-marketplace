@@ -27,9 +27,12 @@ ActiveAdmin.register Homepage do
   config.sort_order = 'published_desc'
 
   # Customizing the action items (buttons) on the show page
-  action_item :publish, priority: 0, only: :show do
+  action_item :publish, priority: 1, only: :show do
     publish_action_str = resource.published? ? 'Unpublish' : 'Publish'
     link_to publish_action_str, publish_admin_homepage_path(resource), method: :post
+  end
+  action_item :preview, priority: 0, only: :show do
+    link_to "Preview", preview_admin_homepage_path(resource), method: :get
   end
 
   member_action :publish, priority: 0, method: :post do
@@ -51,6 +54,11 @@ ActiveAdmin.register Homepage do
     redirect_back fallback_location: root_path, notice: message
   end
 
+  member_action :preview, method: :get do
+    homepage_id = resource.id
+    redirect_to "/homepages/#{homepage_id}/preview"
+  end
+
   index do
     id_column
     column :internal_title
@@ -59,6 +67,7 @@ ActiveAdmin.register Homepage do
     actions do |homepage|
       publish_action_str = homepage.published ? "Unpublish" : "Publish"
       item publish_action_str, publish_admin_homepage_path(homepage), method: :post
+      item "Preview", preview_admin_homepage_path(homepage), method: :get
     end
   end
 
