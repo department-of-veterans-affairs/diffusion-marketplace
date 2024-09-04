@@ -32,7 +32,7 @@ ActiveAdmin.register Homepage do
     link_to publish_action_str, publish_admin_homepage_path(resource), method: :post
   end
   action_item :preview, priority: 0, only: :show do
-    link_to "Preview", preview_admin_homepage_path(resource), method: :get
+    link_to "Preview", preview_admin_homepage_path(resource), method: :get unless resource.published?
   end
 
   member_action :publish, priority: 0, method: :post do
@@ -67,7 +67,7 @@ ActiveAdmin.register Homepage do
     actions do |homepage|
       publish_action_str = homepage.published ? "Unpublish" : "Publish"
       item publish_action_str, publish_admin_homepage_path(homepage), method: :post
-      item "Preview", preview_admin_homepage_path(homepage), method: :get
+      item "Preview", preview_admin_homepage_path(homepage), method: :get unless homepage.published?
     end
   end
 
