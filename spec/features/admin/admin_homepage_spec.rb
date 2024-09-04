@@ -39,6 +39,8 @@ describe 'Homepage editor', type: :feature do
       within('#homepage_2') { click_link('Publish') }
       within('#homepage_1') { expect(page).to have_link('Publish') }
       within('#homepage_2') { expect(page).to have_link('Unpublish') }
+      expect(page).to have_content('"september" published')
+      expect(page).to have_content('"august" unpublished')
   	end
   end
 
@@ -104,9 +106,7 @@ describe 'Homepage editor', type: :feature do
       visit admin_homepages_path
       click_link 'Edit'
       feature_form = find('.has_many_fields', match: :first)
-      within(feature_form) do
-        check 'Delete image?'
-      end
+      within(feature_form) {  check 'Delete image?' }
       save_page
       click_link 'Edit Homepage'
       within(feature_form) do
@@ -175,9 +175,7 @@ describe 'Homepage editor', type: :feature do
     it 'published pages do not have a preview' do
       Homepage.create(internal_title: 'current', published: true, section_title_one: 'Old homepage')
       visit admin_homepages_path
-      within("#homepage_1") do
-        expect(page).not_to have_content('Preview')
-      end
+      within("#homepage_1") { expect(page).not_to have_content('Preview') }
       visit '/homepages/1/preview'
       expect(page).to have_current_path(root_path)
       expect(page).not_to have_content_warning
