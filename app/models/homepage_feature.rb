@@ -2,6 +2,12 @@ class HomepageFeature < ApplicationRecord
   belongs_to :homepage
   has_attached_file :featured_image
   validates_attachment_content_type :featured_image, content_type: /\Aimage\/.*\z/, if: -> { featured_image.present? }
+  validates_with InternalUrlValidator,
+                 on: [:create, :update],
+                 if: Proc.new { |feature| feature.url.present? && feature.url.chars.first === '/' }
+  validates_with ExternalUrlValidator,
+                 on: [:create, :update],
+                 if: Proc.new { |feature| feature.url.present? && feature.url.chars.first != '/' }
 
   attr_accessor :delete_image
   before_save :check_image_deletion

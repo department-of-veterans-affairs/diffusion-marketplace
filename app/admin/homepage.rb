@@ -44,7 +44,6 @@ ActiveAdmin.register Homepage do
         already_published_titles = []
         already_published&.each {|h| already_published_titles << (h.internal_title.present? ? h.internal_title : "Homepage #{h.id}") }
         message += ", \"#{already_published_titles.join(',')}\" unpublished"
-        already_published.update_all(published: false)
       end
       resource.published = true
     end
