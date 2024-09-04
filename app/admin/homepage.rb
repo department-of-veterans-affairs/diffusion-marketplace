@@ -36,16 +36,16 @@ ActiveAdmin.register Homepage do
   end
 
   member_action :publish, priority: 0, method: :post do
-    title = resource.internal_title.present? ? resource.internal_title : "Homepage #{resource.id}"
+    title = resource.internal_title? ? resource.internal_title : "Homepage #{resource.id}"
     if resource.published
-      message = "\"#{title.to_s}\" unpublished"
+      message = "\"#{title}\" unpublished"
       resource.published = false
     else
       message = "\"#{title}\" published"
       already_published = Homepage.where(published: true)
       if already_published.present?
         already_published_titles = []
-        already_published&.each {|h| already_published_titles << (h.internal_title.present? ? h.internal_title : "Homepage #{h.id}") }
+        already_published&.each {|h| already_published_titles << (h.internal_title? ? h.internal_title : "Homepage #{h.id}") }
         message += ", \"#{already_published_titles.join(',')}\" unpublished"
       end
       resource.published = true
