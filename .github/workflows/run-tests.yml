@@ -10,16 +10,14 @@ on:
     branches:
       [
         "master",
-        "feature/DM-4866-search-results-refresh",
         "ci-migration",
         "ci-migration-cv",
         "ci-migration-en",
         "ci-migration-pd",
-        "ci-migration-bj",
-        feature/homepage-content
+        "ci-migration-bj"
       ]
   pull_request:
-    branches: ["master", "feature/homepage-content"]
+    branches: ["master"]
 jobs:
   build:
     name: rspec
