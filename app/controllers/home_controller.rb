@@ -10,9 +10,37 @@ class HomeController < ApplicationController
     @homepage = Homepage.where(published: true)&.first
     if @homepage
       current_features = @homepage&.homepage_features
-      @section_one_features = current_features&.where(section_id: 1).first(3)
-      @section_two_features = current_features&.where(section_id: 2).first(3)
-      @section_three_features = current_features&.where(section_id: 3).first(3)
+      @section_one_features = current_features&.where(section_id: 1)&.first(3)
+      @section_two_features = current_features&.where(section_id: 2)&.first(3)
+      @section_three_features = current_features&.where(section_id: 3)&.first(3)
+    end
+  end
+
+  def preview
+    if current_user&.has_role?(:admin)
+      @dropdown_categories, @dropdown_communities, @homepage = nil
+      begin
+        @homepage = Homepage.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        warning = "That homepage does not exist"
+        flash[:warning] = warning
+        redirect_to admin_homepages_path, warning: warning
+        return
+      end
+      if @homepage.published?
+        redirect_to root_path
+        return
+      end
+      current_features = @homepage&.homepage_features
+      if current_features
+        @section_one_features = current_features&.where(section_id: 1)&.first(3)
+        @section_two_features = current_features&.where(section_id: 2)&.first(3)
+        @section_three_features = current_features&.where(section_id: 3)&.first(3)
+      end
+      flash.now[:notice] = "This is a preview of unpublished content"
+      render 'index'
+    else
+      redirect_to root_path
     end
   end
 

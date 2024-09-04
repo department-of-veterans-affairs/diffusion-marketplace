@@ -27,28 +27,36 @@ ActiveAdmin.register Homepage do
   config.sort_order = 'published_desc'
 
   # Customizing the action items (buttons) on the show page
-  action_item :publish, priority: 0, only: :show do
+  action_item :publish, priority: 1, only: :show do
     publish_action_str = resource.published? ? 'Unpublish' : 'Publish'
     link_to publish_action_str, publish_admin_homepage_path(resource), method: :post
   end
+  action_item :preview, priority: 0, only: :show do
+    link_to "Preview", preview_admin_homepage_path(resource), method: :get unless resource.published?
+  end
 
   member_action :publish, priority: 0, method: :post do
-    title = resource.internal_title.present? ? resource.internal_title : "Homepage #{resource.id}"
+    title = resource.internal_title? ? resource.internal_title : "Homepage #{resource.id}"
     if resource.published
-      message = "\"#{title.to_s}\" unpublished"
+      message = "\"#{title}\" unpublished"
       resource.published = false
     else
       message = "\"#{title}\" published"
       already_published = Homepage.where(published: true)
       if already_published.present?
         already_published_titles = []
-        already_published&.each {|h| already_published_titles << (h.internal_title.present? ? h.internal_title : "Homepage #{h.id}") }
+        already_published&.each {|h| already_published_titles << (h.internal_title? ? h.internal_title : "Homepage #{h.id}") }
         message += ", \"#{already_published_titles.join(',')}\" unpublished"
       end
       resource.published = true
     end
     resource.save
     redirect_back fallback_location: root_path, notice: message
+  end
+
+  member_action :preview, method: :get do
+    homepage_id = resource.id
+    redirect_to "/homepages/#{homepage_id}/preview"
   end
 
   index do
@@ -59,6 +67,7 @@ ActiveAdmin.register Homepage do
     actions do |homepage|
       publish_action_str = homepage.published ? "Unpublish" : "Publish"
       item publish_action_str, publish_admin_homepage_path(homepage), method: :post
+      item "Preview", preview_admin_homepage_path(homepage), method: :get unless homepage.published?
     end
   end
 

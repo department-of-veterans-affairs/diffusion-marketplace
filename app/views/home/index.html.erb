@@ -44,6 +44,7 @@
             style="display: none;"
           >
 
+          <% if @dropdown_practices.present? && @dropdown_categories.present? && @dropdown_communities.present? %>
           <div class="dropdown-content margin-4">
             <div class="result-section" data-type="innovation">
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Innovations</h3>
@@ -81,6 +82,7 @@
               <a class="browse-all-link text-bold" href="<%= search_path %>?all_communities=true">Browse all Community Innovations</a>
             </div>
           </div>
+          <% end %>
         </div>
         <button id="dm-homepage-search-button" class="usa-button height-5 margin-right-0" type="submit">
           <span class="usa-search__submit-text">Search</span>
@@ -89,8 +91,9 @@
     </form>
   </section>
   <div class="grid-container">
+    <% fallback_content = @homepage.blank? && (controller.action_name != 'preview') %>
     <section id="homepage-section-1" class="homepage-section">
-        <% if @homepage.blank? %>
+        <% if fallback_content %>
           <h2 class="section-title">Featured Innovations</h2>
           <div class="grid-row grid-gap">
             <div id="section-1-feature-1" class="homepage-feature three-column-layout">
@@ -134,7 +137,7 @@
         <% end %>
     </section>
     <section id="homepage-section-2" class="homepage-section">
-        <% if @homepage.blank? %>
+        <% if fallback_content %>
           <h2 class="section-title">Trending Tags</h2>
           <div class="grid-row grid-gap">
             <div id="section-2-feature-1" class="homepage-feature three-column-layout">
@@ -178,7 +181,7 @@
         <% end %>
     </section>
     <section id="homepage-section-3" class="homepage-section">
-        <% if @homepage.blank? %>
+        <% if fallback_content %>
         <h2 class="section-title">Innovation Communities</h2>
         <div class="grid-row grid-gap">
           <div id="section-3-feature-1" class="homepage-feature two-column-layout">

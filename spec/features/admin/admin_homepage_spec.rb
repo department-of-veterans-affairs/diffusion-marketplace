@@ -39,6 +39,8 @@ describe 'Homepage editor', type: :feature do
       within('#homepage_2') { click_link('Publish') }
       within('#homepage_1') { expect(page).to have_link('Publish') }
       within('#homepage_2') { expect(page).to have_link('Unpublish') }
+      expect(page).to have_content('"september" published')
+      expect(page).to have_content('"august" unpublished')
   	end
   end
 
@@ -104,9 +106,7 @@ describe 'Homepage editor', type: :feature do
       visit admin_homepages_path
       click_link 'Edit'
       feature_form = find('.has_many_fields', match: :first)
-      within(feature_form) do
-        check 'Delete image?'
-      end
+      within(feature_form) {  check 'Delete image?' }
       save_page
       click_link 'Edit Homepage'
       within(feature_form) do
@@ -148,7 +148,46 @@ describe 'Homepage editor', type: :feature do
     end
   end
 
+  describe 'Preview' do
+    it 'lets admins preview homepage' do
+      Homepage.create(internal_title: 'current', published: true, section_title_one: 'Old homepage')
+      Homepage.create(internal_title: 'next month', published: false, section_title_one: 'Next month homepage')
+      visit root_path
+      expect(page).to have_content('Old homepage')
+      visit admin_homepages_path
+      within('#homepage_2') do
+        expect(page).to have_content('Publish')
+        click_link('Preview')
+      end
+      expect(page).to have_current_path('/homepages/2/preview')
+      expect(page).to have_content_warning
+      expect(page).to have_content('Next month homepage')
+    end
+
+    it 'hides previews from non-admins' do
+      @non_admin = create(:user, email: 'spongebob@va.gov')
+      login_as(@non_admin, scope: :user, run_callbacks: false)
+      Homepage.create(internal_title: 'next month', published: false, section_title_one: 'Next month homepage')
+      visit '/homepages/1/preview'
+      expect(page).to have_current_path(root_path)
+    end
+
+    it 'published pages do not have a preview' do
+      Homepage.create(internal_title: 'current', published: true, section_title_one: 'Old homepage')
+      visit admin_homepages_path
+      within("#homepage_1") { expect(page).not_to have_content('Preview') }
+      visit '/homepages/1/preview'
+      expect(page).to have_current_path(root_path)
+      expect(page).not_to have_content_warning
+    end
+
+  end
+
   def save_page
     find('input[type="submit"]', match: :first).click
+  end
+
+  def have_content_warning
+    have_content('This is a preview of unpublished content')
   end
 end

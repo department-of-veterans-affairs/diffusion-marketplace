@@ -217,6 +217,7 @@ module ApplicationHelper
     params["controller"] == "admin" || # all admin pages
     (params["controller"] == "page" && !@page&.published?) || # unpublished PageBuilder pages
     (params["controller"] == "practices" && !["show", "index", "search"].include?(params["action"])) || # practice editor pages
-    (params["controller"] == "practices" && params["action"] == "show" && !@practice.is_public) # internal or unpublished practices
+    (params["controller"] == "practices" && params["action"] == "show" && !@practice.is_public) || # internal or unpublished practices
+    params["controller"] == "home" && params["action"] == "preview" # homepage previews
   end
 end
