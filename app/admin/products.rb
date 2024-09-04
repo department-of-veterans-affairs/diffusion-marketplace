@@ -5,7 +5,8 @@ ActiveAdmin.register Product do
   actions :all, except: [:destroy]
   permit_params :id, :user_email, :create_another
 
-  index do
+  # To do: set up index file export
+  index download_links: false do
     id_column
     column 'Product Name', :name
   end
