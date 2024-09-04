@@ -149,7 +149,7 @@ describe 'Homepage editor', type: :feature do
   end
 
   describe 'Preview' do
-    it 'lets admins preview homepage' do      
+    it 'lets admins preview homepage' do
       Homepage.create(internal_title: 'current', published: true, section_title_one: 'Old homepage')
       Homepage.create(internal_title: 'next month', published: false, section_title_one: 'Next month homepage')
       visit root_path
@@ -160,7 +160,7 @@ describe 'Homepage editor', type: :feature do
         click_link('Preview')
       end
       expect(page).to have_current_path('/homepages/2/preview')
-      expect(page).to have_content('This is a preview of unpublished content')
+      expect(page).to have_content_warning
       expect(page).to have_content('Next month homepage')
     end
 
@@ -172,9 +172,24 @@ describe 'Homepage editor', type: :feature do
       expect(page).to have_current_path(root_path)
     end
 
+    it 'published pages do not have a preview' do
+      Homepage.create(internal_title: 'current', published: true, section_title_one: 'Old homepage')
+      visit admin_homepages_path
+      within("#homepage_1") do
+        expect(page).not_to have_content('Preview')
+      end
+      visit '/homepages/1/preview'
+      expect(page).to have_current_path(root_path)
+      expect(page).not_to have_content_warning
+    end
+
   end
 
   def save_page
     find('input[type="submit"]', match: :first).click
+  end
+
+  def have_content_warning
+    have_content('This is a preview of unpublished content')
   end
 end

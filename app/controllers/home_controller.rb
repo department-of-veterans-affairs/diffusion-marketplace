@@ -18,15 +18,17 @@ class HomeController < ApplicationController
 
   def preview
     if current_user&.has_role?(:admin)
-      @@dropdown_categories = nil
-      @dropdown_communities = nil
-      @homepage = nil
+      @dropdown_categories, @dropdown_communities, @homepage = nil
       begin
         @homepage = Homepage.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         warning = "That homepage does not exist"
         flash[:warning] = warning
         redirect_to admin_homepages_path, warning: warning
+        return
+      end
+      if @homepage.published?
+        redirect_to root_path
         return
       end
       current_features = @homepage&.homepage_features
