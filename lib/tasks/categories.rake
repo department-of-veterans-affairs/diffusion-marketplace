@@ -140,7 +140,7 @@ namespace :categories do
         practice_names.each do |practice_name|
           practice = Practice.find_by(name: practice_name)
           if practice
-            CategoryPractice.find_or_create_by!(practice: practice, category: category)
+            CategoryPractice.find_or_create_by!(innovable: practice, category: category)
           end
         end
       end
