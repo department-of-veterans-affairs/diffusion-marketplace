@@ -9,6 +9,10 @@ ActiveAdmin.register Product do
   index download_links: false do
     id_column
     column 'Product Name', :name
+    column 'Owner email', :user_email
+    column 'Created at', :created_at
+    column 'Updated at', :updated_at
+    actions
   end
 
   filter :name
