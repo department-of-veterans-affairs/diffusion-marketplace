@@ -48,23 +48,20 @@ FactoryBot.define do
           "The Equine-imity Project takes veterans out of the traditional clinical setting and into an alternative healing experience using horses. Our program offers an opportunity for veterans to learn about, and practice, fundamental life skills in a tangible way. ",
           "VHA Innovation Ecosystem (VHA IE) collaborated with SoldierStrong to provide VA medical facilities with a virtual reality (VR) program that helps Veterans experiencing post-traumatic stress (PTS) and post-traumatic stress disorder (PTSD) recover from these challenges."
         ].cycle
-        sequence :featured_image_file_name, [
+        image_file_names = [
           "innovation-voices.jpg",
           "innovation-equine.jpg",
           "innovation-bravemind.jpg"
-        ].cycle
+        ]
+        sequence :featured_image_file_name, image_file_names.cycle
         sequence :image_alt_text, [
           "Two veterans socializing",
           "A person petting a horse",
           "A patient wearing a VR headset"
         ].cycle
-        # TODO: add image files
-        # [
-        #   "innovation-voices.jpg",
-        #   "innovation-equine.jpg",
-        #   "innovation-bravemind.jpg"
-        # ]
-        featured_image { File.new(Rails.root.join('spec', 'assets', 'neutral-placeholder.png')) }
+        sequence :featured_image do |n|
+          File.new(Rails.root.join('spec', 'assets', 'homepage', image_file_names[n-1] ))
+        end
       end
     end
 
@@ -84,23 +81,20 @@ FactoryBot.define do
           "Explore cutting-edge home health innovations, providing Veterans with personalized and accessible care in the comfort of their own homes.",
           "Access the latest innovations in specialty care, dedicated to providing advanced medical treatments and  personalized care tailored to Veterans' unique health needs."
         ].cycle
-        sequence :featured_image_file_name, [
-            "tag-suicide-prevention.jpg",
-            "tag-homeheatlh.jpg",
-            "tag-specialty-care.jpg"
-          ].cycle
+        image_file_names = [
+          "tag-suicide-prevention.jpg",
+          "tag-homeheatlh.jpg",
+          "tag-specialty-care.jpg"
+        ]
+        sequence :featured_image_file_name, image_file_names.cycle
         sequence :image_alt_text, [
           "VA Secretary Denis McDonough greeting a VA clinic volunteer",
           "A tiny house held by a medical professional wearing gloves and a stethoscope",
           "A man wearing a blood pressure monitor"
         ].cycle
-         # TODO: add image files
-        # [
-        #     "tag-suicide-prevention.jpg",
-        #     "tag-homeheatlh.jpg",
-        #     "tag-specialty-care.jpg"
-        # ]
-        featured_image { File.new(Rails.root.join('spec', 'assets', 'neutral-placeholder.png')) }
+        sequence :featured_image do |n|
+          File.new(Rails.root.join('spec', 'assets', 'homepage', image_file_names[n-1] ))
+        end
       end
     end
 
@@ -118,20 +112,18 @@ FactoryBot.define do
           "Reimagining the landscape of healthcare for our aging Veteran population. ",
           "We help improve care delivery and experiences by leveraging immersive technology for falls risk assessment, neurological risk assessment, pain management, anxiety, addiction recovery, physical therapy, recreation therapy, PTSD, employee education, and more."
         ].cycle
-        sequence :featured_image_file_name, [
+        image_file_names = [
           "community-vr.jpg",
           "community-age-friendly.jpg"
-        ].cycle
+        ]
+        sequence :featured_image_file_name, image_file_names.cycle
         sequence :image_alt_text, [
           "A medical professional looks at a tablet with a patient",
           "A person wearing a VR headset and surgical mask"
         ].cycle
-        # TODO: add image files
-        # [
-        #   "community-vr.jpg",
-        #   "community-age-friendly.jpg"
-        # ].cycle
-        featured_image { File.new(Rails.root.join('spec', 'assets', 'neutral-placeholder.png')) }
+        sequence :featured_image do |n|
+          File.new(Rails.root.join('spec', 'assets', 'homepage', image_file_names[n-1] ))
+        end
       end
     end
   end
