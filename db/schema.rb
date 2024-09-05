@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2024_09_10_212507) do
+=======
+ActiveRecord::Schema.define(version: 2024_08_28_211655) do
+>>>>>>> 1c83b9ca (Dm 5108 innovation data model (#1000))
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
