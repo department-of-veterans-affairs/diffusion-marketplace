@@ -10,6 +10,9 @@ class CreateProducts < ActiveRecord::Migration[6.0]
       t.string :origin_story
       t.text :description
       t.text :main_display_image_alt_text
+      t.string :support_network_email
+      t.boolean :private_contact_info
+      t.boolean :published
       t.references :user, null: true, foreign_key: true
 
       t.integer :crop_x
