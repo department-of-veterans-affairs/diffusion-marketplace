@@ -2,7 +2,7 @@ include UserUtils
 
 ActiveAdmin.register Product do
   config.create_another = true
-  actions :all, except: [:destroy]
+  actions :all
   permit_params :id, :user_email, :create_another
 
   # To do: set up index file export
