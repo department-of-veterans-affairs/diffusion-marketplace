@@ -1,4 +1,4 @@
-class Practice < ApplicationRecord
+class Practice < Innovation
   include ActiveModel::Dirty
   include PracticeEditorUtils
   include VaEmail
@@ -172,7 +172,6 @@ class Practice < ApplicationRecord
   validates_uniqueness_of :name, {message: 'Innovation name already exists'}
   validates :user, presence: true, format: valid_va_email
   validates_attachment_content_type :highlight_attachment, content_type: /\Aimage\/.*\z/
-  # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
@@ -231,8 +230,6 @@ class Practice < ApplicationRecord
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
-  has_many :category_practices, -> { order(id: :asc) }, dependent: :destroy, autosave: true
-  has_many :categories, -> { order(id: :asc) }, through: :category_practices
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
   has_many :clinical_location_practices, dependent: :destroy
@@ -264,8 +261,6 @@ class Practice < ApplicationRecord
   has_many :timelines, -> { order(position: :asc) }, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
-  has_many :va_employee_practices, dependent: :destroy
-  has_many :va_employees, -> { order(position: :asc) }, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files, -> { order(position: :asc) }, dependent: :destroy
@@ -274,7 +269,6 @@ class Practice < ApplicationRecord
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_metrics, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_testimonials, -> {order(id: :asc) }, dependent: :destroy
-  has_many :practice_multimedia, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy

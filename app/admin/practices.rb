@@ -458,7 +458,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
 
     def set_categories_view
       @practice_categories = []
-      current_categories = CategoryPractice.where(practice_id: params[:id])
+      current_categories = CategoryPractice.where(innovable_id: params[:id])
       unless current_categories.empty?
         current_categories.map do |cp|
           @practice_categories.push(cp[:category_id])
@@ -471,9 +471,9 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
       selected_categories = params[:practice][:category_ids].drop(1)
       selected_categories.map! { |cat| cat.to_i }
       practice = Practice.find_by(name: params[:practice][:name])
-      current_categories = CategoryPractice.where(practice_id: practice[:id]) unless practice.nil?
+      current_categories = CategoryPractice.where(innovable_id: practice[:id]) unless practice.nil?
       if selected_categories.length > 0 && practice.present?
-        selected_categories.map { |cat| CategoryPractice.find_or_create_by!(category_id: cat, practice_id: practice[:id]) }
+        selected_categories.map { |cat| CategoryPractice.find_or_create_by!(category_id: cat, innovable_id: practice[:id], innovable_type: "Practice") }
       end
 
       if params[:action] == 'update' && current_categories.present?

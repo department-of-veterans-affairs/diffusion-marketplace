@@ -9,10 +9,10 @@ class Category < ApplicationRecord
   acts_as_list
 
   has_many :category_practices, dependent: :destroy
-  has_many :practices, through: :categories
-  has_many :practices, through: :category_practices
+  has_many :innovable_practices, through: :category_practices, source: :innovable, source_type: 'Practice'
+  has_many :innovable_products, through: :category_practices, source: :innovable, source_type: 'Product'
 
-  scope :with_practices,   -> { not_none.joins(:practices).where(practices: {approved: true, published: true, enabled: true} ).order_by_name.uniq }
+  scope :with_practices,   -> { not_none.joins(:innovable_practices).where(practices: {approved: true, published: true, enabled: true} ).order_by_name.uniq }
   scope :order_by_name, -> { order(Arel.sql("lower(categories.name) ASC")) }
   scope :not_none, -> { where.not(name: 'None').where.not(name: 'none') }
   scope :get_category_by_name, -> (cat_name) { where('lower(name) = ?', cat_name.downcase) }
@@ -69,6 +69,6 @@ class Category < ApplicationRecord
 
   def clear_caches
     Rails.cache.delete('categories')
-    practices.each(&:clear_searchable_cache)
+    innovable_practices.each(&:clear_searchable_cache)
   end
 end
