@@ -12,7 +12,8 @@ FactoryBot.define do
     association :user
 
     trait :with_image do
-      main_display_image { Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/jumbotron-img.jpg'), 'image/jpg') }
+      main_display_image { Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/about-page-image.png'), 'image/jpg') }
+      main_display_image_alt_text { "sample image" }
     end
   end
 end
