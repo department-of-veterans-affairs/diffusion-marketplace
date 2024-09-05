@@ -29,6 +29,9 @@ FactoryBot.define do
   factory :homepage_feature do
     sequence(:title) { |n| "Featured #{n}" }
     description { 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget mauris eget nibh consectetur efficitur in quis libero. Nulla ultrices.'}
+    featured_image_file_name { 'neutral-placeholder.png' }
+    sequence(:image_alt_text) { |n| "#{n} placeholder gray square" }
+    featured_image { File.new(Rails.root.join('spec', 'assets', 'neutral-placeholder.png')) }
     url { '/about' }
     cta_text { 'View feature' }
 
