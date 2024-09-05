@@ -1077,6 +1077,7 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
     t.string "shipping_timeline_estimate"
     t.string "origin_story"
     t.text "description"
+    t.text "main_display_image_alt_text"
     t.bigint "user_id"
     t.integer "crop_x"
     t.integer "crop_y"
