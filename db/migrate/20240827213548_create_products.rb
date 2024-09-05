@@ -9,6 +9,7 @@ class CreateProducts < ActiveRecord::Migration[6.0]
       t.string :shipping_timeline_estimate
       t.string :origin_story
       t.text :description
+      t.text :main_display_image_alt_text
       t.references :user, null: true, foreign_key: true
 
       t.integer :crop_x
