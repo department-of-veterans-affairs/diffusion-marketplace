@@ -37,6 +37,10 @@ ActiveAdmin.register Product do
   end
 
   controller do
+    def scoped_collection
+      super.joins(:user)
+    end
+
     def create
       product = Product.new(product_params)
       handle_user_email(product)
