@@ -42,6 +42,7 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:video_files) }
     it { should have_many(:practice_emails) }
     it { should have_many(:practice_editors) }
+    it { should have_many(:practice_multimedia).order(id: :asc).dependent(:destroy) }
   end
 
   describe 'counter_cache' do
@@ -83,12 +84,12 @@ RSpec.describe Practice, type: :model do
       create_list(:diffusion_history, 2, :with_va_facility, practice: practice2)
       create_list(:diffusion_history, 2, :with_va_facility, practice: practice4)
 
-      create(:category_practice, practice: practice1, category: category1)
-      create(:category_practice, practice: practice1, category: category2)
-      create(:category_practice, practice: practice2, category: category3)
-      create(:category_practice, practice: practice3, category: category4)
-      create(:category_practice, practice: practice4, category: category1)
-      create(:category_practice, practice: practice4, category: category3)
+      create(:category_practice, innovable: practice1, category: category1)
+      create(:category_practice, innovable: practice1, category: category2)
+      create(:category_practice, innovable: practice2, category: category3)
+      create(:category_practice, innovable: practice3, category: category4)
+      create(:category_practice, innovable: practice4, category: category1)
+      create(:category_practice, innovable: practice4, category: category3)
     end
 
     describe '.get_by_created_crh' do

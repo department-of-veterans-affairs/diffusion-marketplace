@@ -35,7 +35,7 @@ describe 'Practice editor - introduction', type: :feature do
     Category.create!(name: 'Hidden Cat')
     Category.create!(name: 'Suicide Prevention', parent_category: @parent_cat_4)
     Category.create!(name: 'Age-Friendly', parent_category: @parent_cat_4)
-    CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(innovable: @practice, category: @cat_1, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
     page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays

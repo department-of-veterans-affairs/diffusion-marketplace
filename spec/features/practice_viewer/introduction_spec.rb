@@ -84,11 +84,11 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     @cat_2 = Category.create!(name: 'Environmental Services', parent_category: @parent_cat)
     @cat_3 = Category.create!(name: 'Follow-up Care', parent_category: @parent_cat)
 
-    CategoryPractice.create!(practice: @pr_max, category: @cat_1, created_at: Time.now)
-    CategoryPractice.create!(practice: @pr_max, category: @cat_2, created_at: Time.now)
-    CategoryPractice.create!(practice: @pr_max, category: @cat_3, created_at: Time.now)
+    CategoryPractice.create!(innovable: @pr_max, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(innovable: @pr_max, category: @cat_2, created_at: Time.now)
+    CategoryPractice.create!(innovable: @pr_max, category: @cat_3, created_at: Time.now)
 
-    CategoryPractice.create!(practice: @practice_2, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(innovable: @practice_2, category: @cat_1, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
   end
