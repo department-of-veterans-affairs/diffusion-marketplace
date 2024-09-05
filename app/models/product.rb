@@ -19,4 +19,8 @@ class Product < Innovation
   def self.ransackable_attributes(auth_object = nil)
     ["name", "user_email"]
   end
+
+  def user_email
+    user&.email
+  end
 end
