@@ -6,7 +6,7 @@ ActiveAdmin.register Product do
   permit_params :id, :user_email, :create_another
 
   # To do: set up index file export
-  index download_links: false do
+  index do
     id_column
     column 'Product Name', :name
     column 'Owner email', :user_email
