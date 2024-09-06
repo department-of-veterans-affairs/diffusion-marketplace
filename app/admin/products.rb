@@ -3,7 +3,6 @@ include UserUtils
 ActiveAdmin.register Product do
   config.create_another = true
   actions :all
-  permit_params :id, :user_email, :create_another
 
   # To do: set up index file export
   index do
@@ -22,7 +21,7 @@ ActiveAdmin.register Product do
     f.semantic_errors *f.object.errors.attribute_names# shows errors on :base
     f.inputs  do
       f.input :name, label: 'Product name *Required*'
-      f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
+      f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email', value: f.object.user&.email || ''}
     end
     f.actions
   end
@@ -38,7 +37,7 @@ ActiveAdmin.register Product do
 
   controller do
     def scoped_collection
-      super.joins(:user)
+      super.left_joins(:user)
     end
 
     def create
@@ -73,7 +72,7 @@ ActiveAdmin.register Product do
     def handle_user_email(product)
       email = params[:user_email]
       raise StandardError.new 'There was an error. Email must be a valid @va.gov address.' if email.present? && is_invalid_va_email(email)
-      set_product_user(product, email) if email.present?
+      set_product_user(product, email)
     end
 
     def handle_redirect_after_save(product, action)
@@ -90,7 +89,12 @@ ActiveAdmin.register Product do
     end
 
     def set_product_user(product, email)
-      return if email.blank? || product.user&.email == email
+      if email.blank?
+        product.user = nil
+        return
+      end
+
+      return if product.user_email == email
 
       # create new user if needed
       user = User.find_or_initialize_by(email: email)
@@ -114,6 +118,10 @@ ActiveAdmin.register Product do
 
     def product_params
       params.require(:product).permit(:name)
+    end
+
+    def user_emai_param
+      params.require(:user_email)
     end
   end
 end
