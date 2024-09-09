@@ -36,42 +36,40 @@ ActiveAdmin.register Product do
   end
 
   controller do
+    rescue_from ActiveRecord::RecordInvalid, with: :handle_error_redirect
     def scoped_collection
       super.left_joins(:user)
     end
 
     def create
-      product = Product.new(product_params)
-      handle_user_email(product)
+      ActiveRecord::Base.transaction do
+        product = Product.new(product_params)
+        handle_user_email(product)
 
-      if product.save
+        product.save!
         handle_redirect_after_save(product, "created")
-      else
-        handle_error_redirect(:new)
       end
-    rescue => e
-      handle_error_redirect(:new, e)
     end
 
     def update
-      product = Product.find(params[:id])
-      product.assign_attributes(product_params)
-      handle_user_email(product)
+      ActiveRecord::Base.transaction do
+        @product = Product.find(params[:id])
+        @product.assign_attributes(product_params)
+        handle_user_email(@product)
 
-      if product.save
-        handle_redirect_after_save(product, "updated")
-      else
-        handle_error_redirect(:edit, product.id)
+        @product.save!
+        handle_redirect_after_save(@product, "updated")
       end
-    rescue => e
-      handle_error_redirect(:edit, e, product.id)
     end
 
     private
 
     def handle_user_email(product)
       email = user_email_param
-      raise StandardError.new 'There was an error. Email must be a valid @va.gov address.' if email.present? && is_invalid_va_email(email)
+      if email.present? && is_invalid_va_email(email)
+        product.errors.add(:user_email, 'must be a valid @va.gov address')
+        raise ActiveRecord::RecordInvalid.new(product)
+      end
       set_product_user(product, email)
     end
 
@@ -83,9 +81,12 @@ ActiveAdmin.register Product do
       end
     end
 
-    def handle_error_redirect(action, error = nil, product_id = nil)
-      path = action == :new ? new_admin_product_path : edit_admin_product_path(product_id)
-      redirect_to path, flash: { error: error&.message }
+    def handle_error_redirect(exception)
+      error_messages = exception.record.errors.map do |error|
+        error.options[:message] || "Email #{error.type}"
+      end
+      path = action_name == 'update' ? edit_admin_product_path(@product) : new_admin_product_path
+      redirect_to path, flash: { error: error_messages.join(', ') }
     end
 
     def set_product_user(product, email)
