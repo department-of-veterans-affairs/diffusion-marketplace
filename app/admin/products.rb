@@ -70,7 +70,7 @@ ActiveAdmin.register Product do
     private
 
     def handle_user_email(product)
-      email = params[:user_email]
+      email = user_email_param
       raise StandardError.new 'There was an error. Email must be a valid @va.gov address.' if email.present? && is_invalid_va_email(email)
       set_product_user(product, email)
     end
@@ -120,8 +120,8 @@ ActiveAdmin.register Product do
       params.require(:product).permit(:name)
     end
 
-    def user_emai_param
-      params.require(:user_email)
+    def user_email_param
+      params[:user_email].presence
     end
   end
 end
