@@ -44,7 +44,7 @@ describe 'Practice editor', type: :feature, js: true do
         PracticeEditor.create!(practice: @practice, user: @user, email: @user.email)
         login_and_visit_editors(@user)
         expect(page).to have_content('Editors')
-        expect(page).to have_content('Add editors')
+        expect(page).to have_content('Add Editor')
       end
     end
 
