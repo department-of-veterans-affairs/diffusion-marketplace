@@ -10,7 +10,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     def add_editor
-      click_on 'Send invite'
+      click_on 'Send Invitation'
     end
 
     def fill_in_email_field(email)
