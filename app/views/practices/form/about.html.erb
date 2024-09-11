@@ -16,15 +16,10 @@
       <%= render partial: "practices/shared/step_indicator" %>
       <section class="usa-section padding-top-0 padding-bottom-0 about">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3 margin-top-0">About</h1>
-        <h2 class="text-normal line-height-36 font-sans-lg">
-          This section helps people understand how your innovation started and introduces the original team.
-        </h2>
-        <div class="margin-top-3">
-          <%= render 'pii_phi_alert' %>
-        </div>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Practice About Information</legend>
+            <h2>Origin</h2>
             <div class="margin-bottom-5">
               <div>
                 <%= f.label :origin_story, class: 'usa-label' do %>
@@ -33,8 +28,8 @@
                 <% end %>
                 <%= f.text_area :origin_story, class: 'usa-input practice-input height-15 margin-bottom-5 origin-story-textarea' %>
               </div>
+              <h2>Team Members</h2>
               <div class="margin-top-3 margin-bottom-2">
-                <p class="text-bold margin-bottom-2 line-height-18px">Team members</p>
                 <p class="line-height-26">Add the names of people who are responsible for this innovation.</p>
               </div>
               <div class="grid-col-7">
@@ -106,6 +101,7 @@
               </div>
             </div>
           </fieldset>
+          <h2>Contact</h2>
           <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Innovation Contact</legend>
             <div class="margin-bottom-5">
