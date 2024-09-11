@@ -24,5 +24,6 @@ class CreateProducts < ActiveRecord::Migration[6.0]
     end
 
     add_attachment :products, :main_display_image
+    add_index :products, :name, unique: true
   end
 end
