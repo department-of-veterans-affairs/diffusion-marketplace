@@ -29,8 +29,6 @@ describe 'Editing a practice\'s main display image and main display image alt te
         within('section.dm-image-editor') do
           expect(page).to have_content('Drag file here or choose from folder')
           expect(page).to have_content('Thumbnail')
-          expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_link(href: Constants::FORM_3203_URL)
           expect(page).to have_no_css('.dm-cropper-thumbnail-modified')
           expect(page).to have_no_css('canvas')
           expect(page).to have_no_content('Remove image')
@@ -50,8 +48,6 @@ describe 'Editing a practice\'s main display image and main display image alt te
       it 'should display an image' do
         within('section.dm-image-editor') do
           expect(page).to have_content('Thumbnail')
-          expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_link(href: Constants::FORM_3203_URL)
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_no_css('canvas')
           expect(page).to have_content('Remove image')
@@ -82,8 +78,9 @@ describe 'Editing a practice\'s main display image and main display image alt te
       it 'should display the image and save it' do
         within('section.dm-image-editor') do
           expect(page).to have_content('Thumbnail')
-          expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_link(href: Constants::FORM_3203_URL)
+          # TODO: move this to a test for modal
+          # expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
+          # expect(page).to have_link(href: Constants::FORM_3203_URL)
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_content('Remove image')
           expect(page).to have_content('Edit image')
@@ -162,8 +159,6 @@ describe 'Editing a practice\'s main display image and main display image alt te
         within('section.dm-image-editor') do
           expect(page).to have_content('Drag file here or choose from folder')
           expect(page).to have_content('Thumbnail')
-          expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_link(href: Constants::FORM_3203_URL)
           expect(page).to have_no_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_no_css('.dm-cropper-thumbnail-modified')
           expect(page).to have_no_css('canvas')
@@ -194,8 +189,6 @@ describe 'Editing a practice\'s main display image and main display image alt te
           expect(page).to have_content('Drag file here or choose from folder')
           expect(page).to have_content('Thumbnail')
           expect(page).to have_no_content('Sorry, you cannot upload an image smaller than 768px wide by 432px high.')
-          expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_link(href: Constants::FORM_3203_URL)
           expect(page).to have_no_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_no_css('canvas')
           expect(page).to have_no_content('Remove image')
@@ -219,8 +212,6 @@ describe 'Editing a practice\'s main display image and main display image alt te
         within('section.dm-image-editor') do
           expect(page).to have_no_content('Drag file here or choose from folder')
           expect(page).to have_content('Thumbnail')
-          expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_link(href: Constants::FORM_3203_URL)
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_no_css('canvas')
           expect(page).to have_css('.cropper-container')
@@ -271,8 +262,6 @@ describe 'Editing a practice\'s main display image and main display image alt te
       it 'should crop the image' do
         within('section.dm-image-editor') do
           expect(page).to have_content('Thumbnail')
-          expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_link(href: Constants::FORM_3203_URL)
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_content('Cancel edits')
           expect(page).to have_content('Remove image')
