@@ -1,44 +1,44 @@
 // `usa-button` OVERRIDES
 .usa-button {
-  @include u-bg('primary-vivid');
-  @include u-line-height('sans', 2);
-  @include u-text('no-underline', !important);
-  @include u-text('semibold')
+  @include u-bg("primary-vivid");
+  @include u-line-height("sans", 2);
+  @include u-text("no-underline", !important);
+  @include u-text("semibold");
 }
 
 .usa-button--outline {
-  @include u-bg('transparent');
-  @include u-text('primary-vivid', !important);
+  @include u-bg("transparent");
+  @include u-text("primary-vivid", !important);
   box-shadow: inset 0 0 0 2px color($theme-color-primary-vivid);
 
   &:hover {
-    @include u-text('primary-dark', !important);
+    @include u-text("primary-dark", !important);
   }
 
   &:active {
-    @include u-text('primary-darker', !important);
+    @include u-text("primary-darker", !important);
   }
 }
 
 .usa-button--unstyled {
-  @include u-bg('transparent');
-  @include u-text('underline', !important);
+  @include u-bg("transparent");
+  @include u-text("underline", !important);
 }
 
 .usa-button--secondary {
-  @include u-bg('ink');
+  @include u-bg("ink");
   @include u-text($theme-color-dm-white, !important);
 
   &:hover {
-    @include u-bg('base-darker');
+    @include u-bg("base-darker");
   }
 
   &:active {
-    @include u-bg('base-dark');
+    @include u-bg("base-dark");
   }
 
   &:disabled {
-    @include u-bg('disabled');
+    @include u-bg("disabled");
   }
 }
 
@@ -46,31 +46,31 @@
 .dm-button--inverse-secondary {
   @extend .usa-button;
   @include u-bg($theme-color-dm-white, !important);
-  @include u-text('ink', !important);
+  @include u-text("ink", !important);
 
   &:hover {
-    @include u-bg('base-lightest', !important);
+    @include u-bg("base-lightest", !important);
   }
 
   &:active {
-    @include u-bg('base-lighter', !important);
+    @include u-bg("base-lighter", !important);
   }
 
   &:disabled {
-    @include u-bg('base', !important);
+    @include u-bg("base", !important);
   }
 }
 
 .dm-button--error {
   @extend .usa-button;
-  @include u-bg('error');
+  @include u-bg("error");
 
   &:hover {
-    @include u-bg('error-dark');
+    @include u-bg("error-dark");
   }
 
   &:active {
-    @include u-bg('error-darker');
+    @include u-bg("error-darker");
   }
 }
 
@@ -84,13 +84,13 @@
 
   &:hover {
     @include u-text($transition-btn-palette-hover, !important);
-    @include u-bg('base-lightest', !important);
+    @include u-bg("base-lightest", !important);
     box-shadow: inset 0 0 0 2px color($transition-btn-palette-hover);
   }
 
   &:active {
     @include u-text($transition-btn-palette-active, !important);
-    @include u-bg('primary-lighter', !important);
+    @include u-bg("primary-lighter", !important);
     box-shadow: inset 0 0 0 2px color($transition-btn-palette-active);
   }
 
@@ -100,7 +100,7 @@
   }
 
   &:disabled {
-    @include u-text('disabled', !important);
+    @include u-text("disabled", !important);
     box-shadow: inset 0 0 0 2px color($theme-color-disabled);
   }
 }
@@ -108,21 +108,21 @@
 .dm-button--outline-white {
   @extend .usa-button;
   @extend .usa-button--outline;
-  @include u-text('white', !important);
+  @include u-text("white", !important);
   box-shadow: inset 0 0 0 2px color($theme-color-dm-white);
 
   &:hover {
-    @include u-text('white', !important);
+    @include u-text("white", !important);
     box-shadow: inset 0 0 0 2px color($theme-color-dm-white);
   }
 
   &:active {
-    @include u-text('white', !important);
+    @include u-text("white", !important);
     box-shadow: inset 0 0 0 2px color($theme-color-dm-white);
   }
 
   &:disabled {
-    @include u-text('disabled', !important);
+    @include u-text("disabled", !important);
     box-shadow: inset 0 0 0 2px color($theme-color-disabled);
   }
 }
@@ -135,14 +135,14 @@
 .dm-button--unstyled-warning {
   @extend .usa-button;
   @extend .usa-button--unstyled;
-  @include u-text('error', !important);
+  @include u-text("error", !important);
 
   &:hover {
-    @include u-text('error-dark', !important);
+    @include u-text("error-dark", !important);
   }
 
   &:active {
-    @include u-text('error-darker', !important);
+    @include u-text("error-darker", !important);
   }
 }
 
@@ -179,7 +179,8 @@
   @include u-bg($theme-color-success);
   @include u-text($theme-color-base-ink);
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     @include u-text($theme-color-dm-white);
   }
 
@@ -194,10 +195,11 @@
 
 .dm-modal-close-button {
   @include u-bg($theme-color-dm-white, !important);
-  @include u-text('base-darkest', !important);
+  @include u-text("base-darkest", !important);
 }
 
-@mixin transition-btn-colors { // homepage refresh 2024 colors - delete and update primary palette later
+@mixin transition-btn-colors {
+  // homepage refresh 2024 colors - delete and update primary palette later
   @include u-bg($transition-btn-palette-default);
 
   &:hover {
