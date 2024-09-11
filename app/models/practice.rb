@@ -147,15 +147,18 @@ class Practice < ApplicationRecord
   MATURITY_LEVEL_MAP = {
       emerging: {
           link_text: 'emerging',
-          description: 'This innovation is <b>emerging</b> and worth watching as it is being assessed in early implementations.'.html_safe
+          description: 'This innovation is <b>emerging</b> and worth watching as it is being assessed in early implementations.'.html_safe,
+          radio_button: 'Emerging and worth watching as it is being assessed in early implementations.'
       },
       replicate: {
           link_text: 'replicating',
-          description: 'This innovation is <b>replicating</b> across multiple facilities as its impact continues to be validated.'.html_safe
+          description: 'This innovation is <b>replicating</b> across multiple facilities as its impact continues to be validated.'.html_safe,
+          radio_button: 'Replicating across multiple facilities as its impact continues to be validated.'
       },
       scale: {
           link_text: 'scaling',
-          description: 'This innovation is <b>scaling</b> widely with the support of national stakeholders.'.html_safe
+          description: 'This innovation is <b>scaling</b> widely with the support of national stakeholders.'.html_safe,
+          radio_button: 'Scaling widely with the support of national stakeholders.'
       }
   }
 
