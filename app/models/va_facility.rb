@@ -1,5 +1,6 @@
 class VaFacility < ApplicationRecord
   extend FriendlyId
+  has_paper_trail
   friendly_id :common_name, use: :slugged
   belongs_to :visn
   has_many :diffusion_histories, dependent: :destroy
