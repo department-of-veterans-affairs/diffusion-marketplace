@@ -84,7 +84,7 @@ RSpec.feature "Admin::Products", type: :feature do
     end
   end
 
-  describe "Updating a product" do
+  describe "Editing a product" do
     let!(:product) { create(:product, name: "Old Product", user: create(:user, email: "olduser@va.gov")) }
 
     context "with valid attributes" do
@@ -144,6 +144,50 @@ RSpec.feature "Admin::Products", type: :feature do
 
         expect(product.reload.name).to eq("Old Product")
       end
+    end
+  end
+
+  describe "Retiring and publishing products" do
+    let!(:product) { create(:product, name: "Test Product", user: create(:user, email: "olduser@va.gov")) }
+
+    scenario "publish a product" do
+      visit admin_products_path
+      within find('tr', text: "Test Product") do
+        click_link "Publish"
+      end
+
+      expect(page).to have_content("\"Test Product\" was published")
+      expect(product.reload.published).to be true
+    end
+
+    scenario "unpublish a product" do
+      product.update(published: true)
+
+      visit admin_products_path
+
+      click_link "Unpublish", match: :first
+
+      expect(page).to have_content("\"Test Product\" was unpublished")
+      expect(product.reload.published).to be false
+    end
+
+    scenario "retire a product" do
+      visit admin_products_path
+      click_link "Retire", match: :first
+
+      expect(page).to have_content("\"Test Product\" was retired")
+      expect(product.reload.retired).to be true
+    end
+
+    scenario "activate a retired product" do
+      product.update(retired: true)
+
+      visit admin_products_path
+
+      click_link "Activate", match: :first
+
+      expect(page).to have_content("\"Test Product\" was activated")
+      expect(product.reload.retired).to be false
     end
   end
 end
