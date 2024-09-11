@@ -17,82 +17,6 @@
       <section class="usa-section padding-top-0 padding-bottom-0 about">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3 margin-top-0">About</h1>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
-          <fieldset class="usa-fieldset grid-col-11">
-            <legend class="usa-sr-only">Practice About Information</legend>
-            <div class="margin-bottom-5">
-              <h2>Team Members</h2>
-              <div class="margin-top-3 margin-bottom-2">
-                <p class="line-height-26">Add the names of people who are responsible for this innovation.</p>
-              </div>
-              <div class="grid-col-7">
-                <div id="about_container" class="position-relative">
-                  <ul class="practice-editor-about-ul" id="sortable_va_employees" title="Practice about" aria-label="Practice editor VA employee list">
-                    <%= f.fields_for :va_employees, wrapper: false do |vae| %>
-                      <%
-                        vae_id = vae.object.id || "new_va_employees"
-                      %>
-                      <% if vae_id %>
-                        <% provide :head_tags do %>
-                          <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                            $(document).arrive('<%= "#practice_va_employees_attributes_#{vae.index}_name" %>', function(newElem) {
-                            styleOriginFacility(
-                            $(newElem).closest('li'),
-                            <%= vae_id %>,
-                            '.practice-editor-about-li',
-                            '.practice-editor-about-ul',
-                            '12'
-                            );
-                            $(document).unbindArrive('<%= "#practice_va_employees_attributes_#{vae.index}_name" %>', newElem);
-                            });
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                      <li class="practice-editor-about-li fields" <%= "id=practice_va_employees_attributes_#{vae.index}_li" if vae_id %> data-id="<%= vae_id %>">
-                        <div class="grid-row">
-                          <div class="grid-col-12">
-
-                              <%= vae.label :name, 'Name', class: 'usa-label margin-top-0', alt: 'hello' %>
-                            <div>Type the name of the team member.</div>
-                            <%= vae.text_field :name, class: 'usa-input practice-input va-employee-name-input' %>
-                            <%= vae.label :role, 'Role', class: 'usa-label' %>
-                            <div>Type the job title of the team member. </div>
-                            <%= vae.text_field :role, class: 'usa-input practice-input va-employee-role' %>
-                          </div>
-                          <div class="trash-container grid-col-12">
-                            <%= vae.link_to_remove 'Delete entry', class: "dm-origin-trash dm-button--unstyled-warning float-right" %>
-                          </div>
-                        </div>
-                      </li>
-                    <% end %>
-                  </ul>
-                  <%= f.link_to_add :va_employees, id: 'link_to_add_link_va_employees', class: 'dm-add-another-link add-va-employee-link' do %>
-                    Add another
-                  <% end %>
-                  <% provide :head_tags do %>
-                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                      observePracticeEditorLiArrival(
-                      $(document),
-                      '.practice-editor-about-li',
-                      '.practice-editor-about-ul',
-                      '12'
-                      );
-                      attachTrashListener(
-                      $(document),
-                      '#about_container',
-                      '.practice-editor-about-li'
-                      );
-                      <% unless @practice.va_employees.any? %>
-                        $(document).arrive('#va_employees_fields_blueprint', function(blueprint) {
-                          $('.add-va-employee-link').click();
-                          $(document).unbindArrive('#va_employees_fields_blueprint', blueprint);
-                        });
-                      <% end %>
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          </fieldset>
           <h2>Contact</h2>
           <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Innovation Contact</legend>
@@ -168,6 +92,82 @@
                         $(document).arrive('#practice_emails_fields_blueprint', function(blueprint) {
                           $('.add-practice-email-link').click();
                           $(document).unbindArrive('#practice_emails_fields_blueprint', blueprint);
+                        });
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="usa-fieldset grid-col-11">
+            <legend class="usa-sr-only">Practice About Information</legend>
+            <div class="margin-bottom-5">
+              <h2>Team Members</h2>
+              <div class="margin-top-3 margin-bottom-2">
+                <p class="line-height-26">Add the names of people who are responsible for this innovation.</p>
+              </div>
+              <div class="grid-col-7">
+                <div id="about_container" class="position-relative">
+                  <ul class="practice-editor-about-ul" id="sortable_va_employees" title="Practice about" aria-label="Practice editor VA employee list">
+                    <%= f.fields_for :va_employees, wrapper: false do |vae| %>
+                      <%
+                        vae_id = vae.object.id || "new_va_employees"
+                      %>
+                      <% if vae_id %>
+                        <% provide :head_tags do %>
+                          <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                            $(document).arrive('<%= "#practice_va_employees_attributes_#{vae.index}_name" %>', function(newElem) {
+                            styleOriginFacility(
+                            $(newElem).closest('li'),
+                            <%= vae_id %>,
+                            '.practice-editor-about-li',
+                            '.practice-editor-about-ul',
+                            '12'
+                            );
+                            $(document).unbindArrive('<%= "#practice_va_employees_attributes_#{vae.index}_name" %>', newElem);
+                            });
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                      <li class="practice-editor-about-li fields" <%= "id=practice_va_employees_attributes_#{vae.index}_li" if vae_id %> data-id="<%= vae_id %>">
+                        <div class="grid-row">
+                          <div class="grid-col-12">
+
+                              <%= vae.label :name, 'Name', class: 'usa-label margin-top-0', alt: 'hello' %>
+                            <div>Type the name of the team member.</div>
+                            <%= vae.text_field :name, class: 'usa-input practice-input va-employee-name-input' %>
+                            <%= vae.label :role, 'Role', class: 'usa-label' %>
+                            <div>Type the job title of the team member. </div>
+                            <%= vae.text_field :role, class: 'usa-input practice-input va-employee-role' %>
+                          </div>
+                          <div class="trash-container grid-col-12">
+                            <%= vae.link_to_remove 'Delete entry', class: "dm-origin-trash dm-button--unstyled-warning float-right" %>
+                          </div>
+                        </div>
+                      </li>
+                    <% end %>
+                  </ul>
+                  <%= f.link_to_add :va_employees, id: 'link_to_add_link_va_employees', class: 'dm-add-another-link add-va-employee-link' do %>
+                    Add another
+                  <% end %>
+                  <% provide :head_tags do %>
+                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                      observePracticeEditorLiArrival(
+                      $(document),
+                      '.practice-editor-about-li',
+                      '.practice-editor-about-ul',
+                      '12'
+                      );
+                      attachTrashListener(
+                      $(document),
+                      '#about_container',
+                      '.practice-editor-about-li'
+                      );
+                      <% unless @practice.va_employees.any? %>
+                        $(document).arrive('#va_employees_fields_blueprint', function(blueprint) {
+                          $('.add-va-employee-link').click();
+                          $(document).unbindArrive('#va_employees_fields_blueprint', blueprint);
                         });
                       <% end %>
                     <% end %>
