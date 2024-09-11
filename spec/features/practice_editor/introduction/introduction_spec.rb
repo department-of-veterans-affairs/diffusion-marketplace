@@ -53,7 +53,7 @@ describe 'Practice editor - introduction', type: :feature do
       expect(page).to have_content('Do not enter PII or PHI for any individual, Veteran, or patient. See our Privacy policy.')
       expect(page).to have_content('Innovation Title*')
       expect(page).to have_content('Type the official name of your innovation.')
-      expect(page).to have_content('Summary*')
+      expect(page).to have_content('Mission Summary*')
       expect(page).to have_content('Type a short 1-3 sentence summary of your innovation’s mission to engage the audience and provide initial context.')
       expect(page).to have_content('Date created*')
       expect(page).to have_content('Select the month and year this innovation was created.')
