@@ -939,6 +939,10 @@ li.small-disc:before {
 }
 
 // About
+.practice-editor-about-li label, .main-practice-email-label {
+  font-weight: bold;
+}
+
 .origin-story-textarea {
   resize: none;
 }
