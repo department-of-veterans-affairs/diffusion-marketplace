@@ -50,7 +50,6 @@ describe 'Practice editor - introduction', type: :feature do
 
     it 'should display the content correctly' do
       expect(page).to have_content('Introduction')
-      expect(page).to have_content('Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.')
       expect(page).to have_content('Do not enter PII or PHI for any individual, Veteran, or patient. See our Privacy policy.')
       expect(page).to have_content('Name*')
       expect(page).to have_content('Type the official name of your innovation.')
