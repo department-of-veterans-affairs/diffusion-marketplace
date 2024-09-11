@@ -51,7 +51,7 @@ describe 'Practice editor - introduction', type: :feature do
     it 'should display the content correctly' do
       expect(page).to have_content('Introduction')
       expect(page).to have_content('Do not enter PII or PHI for any individual, Veteran, or patient. See our Privacy policy.')
-      expect(page).to have_content('Name*')
+      expect(page).to have_content('Innovation Title*')
       expect(page).to have_content('Type the official name of your innovation.')
       expect(page).to have_content('Summary*')
       expect(page).to have_content('Type a short 1-3 sentence summary of your innovation’s mission to engage the audience and provide initial context.')
@@ -104,7 +104,7 @@ describe 'Practice editor - introduction', type: :feature do
       expect(page).to have_field('Name', with: @practice.name)
       expect(page).to have_field('Summary', with: @practice.summary)
       # add whitespace to practice name
-      fill_in('Name*', with: '   Edited practice ')
+      fill_in('Innovation Title*', with: '   Edited practice ')
       fill_in('Summary', with: 'Updated summary')
       click_save
       # make sure white space is trimmed from practice name
