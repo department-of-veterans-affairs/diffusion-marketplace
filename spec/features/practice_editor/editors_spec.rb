@@ -10,11 +10,11 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     def add_editor
-      click_on 'Send invite'
+      click_on 'Send Invitation'
     end
 
     def fill_in_email_field(email)
-      fill_in('E-mail the people who can help you edit this innovation page. Only @va.gov emails are allowed.', with: email)
+      fill_in('Provide va.gov email of the individual who can help you edit this Innovation Page.', with: email)
     end
 
     def delete_practice_editor(editor_id)
@@ -31,7 +31,7 @@ describe 'Practice editor', type: :feature, js: true do
       login_and_visit_editors(@admin)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Editors')
-      expect(page).to have_content('E-mail the people who can help you edit this innovation page. Only @va.gov emails are allowed.')
+      expect(page).to have_content('Provide va.gov email of the individual who can help you edit this Innovation Page.')
     end
 
     describe 'Authorization' do
@@ -44,7 +44,7 @@ describe 'Practice editor', type: :feature, js: true do
         PracticeEditor.create!(practice: @practice, user: @user, email: @user.email)
         login_and_visit_editors(@user)
         expect(page).to have_content('Editors')
-        expect(page).to have_content('Add editors')
+        expect(page).to have_content('Add Editor')
       end
     end
 

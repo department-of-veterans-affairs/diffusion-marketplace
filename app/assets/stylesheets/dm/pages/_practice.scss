@@ -932,6 +932,17 @@ li.small-disc:before {
   .practice-editor-entry {
     .fa-trash-alt {
       font-size: 1.5em;
+      // match .usa-button--secondary style
+      color: color($theme-color-base-ink);
+      &:hover {
+        @include u-text('base-darker');
+      }
+      &:active {
+        @include u-text('base-dark');
+      }
+      &:disabled {
+        @include u-text('disabled');
+      }
     }
   }
 
