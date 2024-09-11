@@ -23,7 +23,7 @@ class Product < Innovation
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["name", "user_email"]
+    ["name", "user_email", "published"]
   end
 
   def update_date_published

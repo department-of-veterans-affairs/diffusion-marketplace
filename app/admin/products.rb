@@ -36,6 +36,7 @@ ActiveAdmin.register Product do
 
   filter :name
   filter :user_email, label: "Owner Email"
+  filter :published
 
   form do |f|
     f.semantic_errors *f.object.errors.attribute_names# shows errors on :base
