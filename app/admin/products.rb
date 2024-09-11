@@ -9,6 +9,7 @@ ActiveAdmin.register Product do
     id_column
     column 'Product Name', :name
     column 'Owner Email', :user_email
+    column 'Published', :published
     column 'Date Published', :date_published
     column 'Created At', :created_at
     column 'Last Updated', :updated_at
