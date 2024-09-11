@@ -6,6 +6,8 @@ class Product < Innovation
   validates :name, presence: true
   validates_uniqueness_of :name, {message: 'Product name already exists'}
 
+  after_update :update_date_published
+
   def user_email
     user&.email
   end
@@ -22,5 +24,15 @@ class Product < Innovation
 
   def self.ransackable_attributes(auth_object = nil)
     ["name", "user_email"]
+  end
+
+  def update_date_published
+    if saved_change_to_published?
+      if published
+        update_column(:date_published, Time.current)
+      else
+        update_column(:date_published, nil)
+      end
+    end
   end
 end
