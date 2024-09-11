@@ -206,7 +206,9 @@
   &:active {
     @include u-bg($transition-btn-palette-active);
   }
-  &:visited {
-    @include u-bg($transition-btn-palette-default);
-  }
+}
+
+.dm-button--primary-transition {
+  @extend .usa-button;
+  @include transition-btn-colors;
 }
