@@ -57,7 +57,7 @@ describe 'Practice editor - introduction', type: :feature do
       expect(page).to have_content('Type a short 1-3 sentence summary of your innovation’s mission to engage the audience and provide initial context.')
       expect(page).to have_content('Date created*')
       expect(page).to have_content('Select the month and year this innovation was created.')
-      expect(page).to have_content('Innovation origin*')
+      expect(page).to have_content('Originating Location*')
       expect(page).to have_content('Select the location where this innovation originated')
       expect(page).to have_content('Awards and recognition')
       expect(page).to have_content('Partners')

@@ -83,7 +83,7 @@ describe 'Practice editor', type: :feature do
         expect(page).to have_content('Introduction')
         expect(page).to have_content('Tagline')
         expect(page).to have_content('Date created')
-        expect(page).to have_content('Innovation origin')
+        expect(page).to have_content('Originating Location')
         expect(page).to have_content('Summary')
         expect(page).to have_content('Overview')
         expect(page).to have_content('Problem statement')
@@ -139,7 +139,7 @@ describe 'Practice editor', type: :feature do
       end
 
       it 'should show save errors along with the publication modal when a user attempts to publish a practice that has missing required publish fields' do
-        # to trigger the error, click on the facility radio button for 'Innovation origin', but do not choose a facility
+        # to trigger the error, click on the facility radio button for 'Originating Location', but do not choose a facility
         find('#initiating_facility_type_facility').sibling('label').click
         click_publish_button
         expect(page).to have_selector('#practiceEditorPublicationModal', visible: true)
@@ -168,13 +168,13 @@ describe 'Practice editor', type: :feature do
         @save_button.click
         expect(page).to have_content('Innovation was successfully updated.')
         # all required publish fields are now completed
-        # to trigger the error, click on the facility radio button for 'Innovation origin', but do not choose a facility
+        # to trigger the error, click on the facility radio button for 'Originating Location', but do not choose a facility
         find('#initiating_facility_type_facility').sibling('label').click
         click_publish_button
         expect(page).to have_current_path(practice_introduction_path(@practice))
         expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved or published.')
         expect(page).to_not have_selector('#practiceEditorPublicationModal', visible: true)
-        # choose the VISN radio button for 'Innovation origin', but do not choose a VISn to trigger the error again
+        # choose the VISN radio button for 'Originating Location', but do not choose a VISn to trigger the error again
         find('#initiating_facility_type_visn').sibling('label').click
         click_publish_button
         expect(page).to have_current_path(practice_introduction_path(@practice))
