@@ -242,3 +242,22 @@
   @extend .usa-button;
   @include transition-btn-colors;
 }
+
+.dm-button-unstyled-open-modal {
+  @include u-text('ink');
+  // use separate text-decoration styles for maximum browser compatibility
+  text-decoration-color: color('ink');
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 0.5rem;
+
+  &:hover {
+    text-decoration-color: color('base-lightest');
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-underline-offset: 0.5rem;
+  }
+
+  &:active {
+  }
+}
