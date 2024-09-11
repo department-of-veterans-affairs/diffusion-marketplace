@@ -42,6 +42,7 @@
       <section class="usa-section padding-y-0 introduction">
         <h1 class="margin-top-0">Introduction</h1>
         <%= render 'pii_phi_alert' %>
+        <h2>Executive Summary</h2>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-10">
             <legend class="usa-sr-only">Innovation Information</legend>
