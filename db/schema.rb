@@ -881,10 +881,11 @@ ActiveRecord::Schema.define(version: 2024_09_10_212507) do
 
   create_table "practice_partner_practices", force: :cascade do |t|
     t.bigint "practice_partner_id"
-    t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_partner_practices_on_practice_id"
+    t.string "innovable_type"
+    t.bigint "innovable_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_practice_partner_practices_on_innovable"
     t.index ["practice_partner_id"], name: "index_practice_partner_practices_on_practice_partner_id"
   end
 
@@ -1492,7 +1493,6 @@ ActiveRecord::Schema.define(version: 2024_09_10_212507) do
   add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_origin_facilities", "va_facilities"
   add_foreign_key "practice_partner_practices", "practice_partners"
-  add_foreign_key "practice_partner_practices", "practices"
   add_foreign_key "practice_permissions", "practices"
   add_foreign_key "practice_problem_resources", "practices"
   add_foreign_key "practice_resources", "practices"
