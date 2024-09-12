@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2024_09_10_212507) do
-=======
-ActiveRecord::Schema.define(version: 2024_08_28_211655) do
->>>>>>> 1c83b9ca (Dm 5108 innovation data model (#1000))
+ActiveRecord::Schema.define(version: 2024_09_11_220352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -913,10 +909,11 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
 
   create_table "practice_partner_practices", force: :cascade do |t|
     t.bigint "practice_partner_id"
-    t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_partner_practices_on_practice_id"
+    t.string "innovable_type"
+    t.bigint "innovable_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_practice_partner_practices_on_innovable"
     t.index ["practice_partner_id"], name: "index_practice_partner_practices_on_practice_partner_id"
   end
 
@@ -1105,7 +1102,7 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
     t.text "main_display_image_alt_text"
     t.string "support_network_email"
     t.boolean "private_contact_info"
-    t.boolean "published", default: false
+    t.boolean "published"
     t.bigint "user_id"
     t.integer "crop_x"
     t.integer "crop_y"
@@ -1120,9 +1117,6 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
     t.string "origin"
     t.string "usage"
     t.string "price"
-    t.datetime "date_published"
-    t.boolean "retired", default: false, null: false
-    t.index ["name"], name: "index_products_on_name", unique: true
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
@@ -1503,7 +1497,6 @@ ActiveRecord::Schema.define(version: 2024_08_28_211655) do
   add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_origin_facilities", "va_facilities"
   add_foreign_key "practice_partner_practices", "practice_partners"
-  add_foreign_key "practice_partner_practices", "practices"
   add_foreign_key "practice_permissions", "practices"
   add_foreign_key "practice_problem_resources", "practices"
   add_foreign_key "practice_resources", "practices"
