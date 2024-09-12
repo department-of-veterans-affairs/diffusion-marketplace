@@ -969,6 +969,10 @@ li.small-disc:before {
 
 // adoptions
 #dm-pe-adoptions {
+  .usa-button--outline {
+    @extend .dm-button--outline-secondary;
+  }
+
   .usa-accordion__button[aria-expanded=false].adoptions-edit {
     background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
     background-position-x: 98.6%;
