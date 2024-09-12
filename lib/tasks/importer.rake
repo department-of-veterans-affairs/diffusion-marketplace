@@ -200,7 +200,7 @@ def practice_partners
       practice_partner = PracticePartner.find_by(name: formatted_pp_name)
       # practice_partner = PracticePartner.create!(name: formatted_pp_name, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
 
-      PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any? || practice_partner.blank?
+      PracticePartnerPractice.create practice_partner: practice_partner, innovable: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, innovable: @practice).any? || practice_partner.blank?
       # end
     end
   end
