@@ -40,7 +40,7 @@ describe 'Practice', type: :feature, js: true do
     it 'should allow the user to update the risks and mitigations for the practice' do
       # navigate to the PE Implementation form
       visit_pr_edit
-      expect(page).to have_content('Risk and mitigation')
+      expect(page).to have_content('Risk and Mitigation')
       expect(page).to have_content('Share the difficulties and risks a facility may face during implementation.')
       expect(page).to have_css('#dm-add-button-risk-mitigation')
       expect(page).to have_no_css('#dm-add-link-risk-mitigation')
