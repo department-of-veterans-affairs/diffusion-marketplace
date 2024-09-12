@@ -8,14 +8,36 @@ ActiveAdmin.register Product do
   index do
     id_column
     column 'Product Name', :name
-    column 'Owner email', :user_email
-    column 'Created at', :created_at
-    column 'Updated at', :updated_at
-    actions
+    column 'Owner Email', :user_email
+    column 'Published', :published
+    column 'Date Published', :date_published
+    column 'Created At', :created_at
+    column 'Last Updated', :updated_at
+    actions do |product|
+      product_retired_action_str = product.retired ? "Activate" : "Retire"
+      item product_retired_action_str, retire_product_admin_product_path(product), method: :post
+      product_published_action_str = product.published ? "Unpublish" : "Publish"
+      item product_published_action_str, publish_product_admin_product_path(product), method: :post
+    end
+  end
+
+  member_action :retire_product, method: :post do
+    resource.toggle!(:retired)
+    retired_state = resource.retired ? "retired" : "activated"
+    message = "\"#{resource.name}\" was #{retired_state}"
+    redirect_back fallback_location: root_path, notice: message
+  end
+
+  member_action :publish_product, method: :post do
+    resource.toggle!(:published)
+    published_state = resource.published ? "published" : "unpublished"
+    message = "\"#{resource.name}\" was #{published_state}"
+    redirect_back fallback_location: root_path, notice: message
   end
 
   filter :name
   filter :user_email, label: "Owner Email"
+  filter :published
 
   form do |f|
     f.semantic_errors *f.object.errors.attribute_names# shows errors on :base
@@ -29,9 +51,12 @@ ActiveAdmin.register Product do
   show do
     attributes_table  do
       row :id
-      # row(:name, label: 'Product name') { |product| link_to(product.name, product_path(product)) } - uncomment when product show page is created
+      row(:name, label: 'Product name') # { |product| link_to(product.name, product_path(product)) } - uncomment when product show page is created
       # row('Edit URL') { |product| link_to(product_overview_path(product), product_overview_path(product)) } - uncomment when product editor is created
       row(:user) {|product| link_to(product.user&.email, admin_user_path(product.user)) if product.user.present?}
+      row(:published, label: 'Published')
+      row(:date_published, label: 'Date Published')
+      row(:retired, label: 'Retired')
     end
   end
 
