@@ -31,6 +31,7 @@ namespace :dm do
     Rake::Task['risk_and_mitigation:remove_unpaired_risks_and_mitigation'].execute
     Rake::Task['practice_editors:add_practice_owners_to_practice_editors'].execute
     Rake::Task['practice:update_diffusion_histories_counts'].execute
+    Rake::Task['products:create_or_update_products'].execute
   end
 
   # rails dm:reset_up
