@@ -984,6 +984,12 @@ li.small-disc:before {
     background-position-x: 97.8%;
     border-bottom: 4px color($theme-color-base-lightest) solid;
   }
+
+  .adoption-form {
+    .usa-button {
+      @extend .dm-button--primary-transition;
+    }
+  }
 }
 
 // Cross-section styles
