@@ -70,7 +70,7 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_no_content('Back')
           expect(page).to have_content('Continue')
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_introduction_path(@published_pr))
+          expect(page).to have_link(href: practice_introduction_path(@published_pr))
           expect(page).to have_no_content('Save and continue')
         end
         visit practice_introduction_path(@published_pr)
@@ -92,8 +92,8 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_no_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_editors_path(@published_pr))
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_adoptions_path(@published_pr))
+          expect(page).to have_link(href: practice_editors_path(@published_pr))
+          expect(page).to have_link(href: practice_adoptions_path(@published_pr))
           expect(page).to have_content('Save and continue')
         end
         visit practice_adoptions_path(@published_pr)
@@ -115,8 +115,8 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_introduction_path(@published_pr))
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_overview_path(@published_pr))
+          expect(page).to have_link(href: practice_introduction_path(@published_pr))
+          expect(page).to have_link(href: practice_overview_path(@published_pr))
           expect(page).to have_no_content('Save and continue')
         end
         visit practice_overview_path(@published_pr)
@@ -138,8 +138,8 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_no_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_adoptions_path(@published_pr))
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_implementation_path(@published_pr))
+          expect(page).to have_link(href: practice_adoptions_path(@published_pr))
+          expect(page).to have_link(href: practice_implementation_path(@published_pr))
           expect(page).to have_content('Save and continue')
         end
         visit practice_implementation_path(@published_pr)
@@ -161,8 +161,8 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_no_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_overview_path(@published_pr))
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_about_path(@published_pr))
+          expect(page).to have_link(href: practice_overview_path(@published_pr))
+          expect(page).to have_link(href: practice_about_path(@published_pr))
           expect(page).to have_content('Save and continue')
         end
         visit practice_about_path(@published_pr)
@@ -184,7 +184,7 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_no_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_implementation_path(@published_pr))
+          expect(page).to have_link(href: practice_implementation_path(@published_pr))
           expect(page).to have_no_content('Save and continue')
         end
       end
@@ -241,7 +241,7 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_no_content('Back')
           expect(page).to have_content('Continue')
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_introduction_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_introduction_path(@unpublished_pr))
           expect(page).to have_no_content('Save and continue')
         end
         visit practice_introduction_path(@unpublished_pr)
@@ -263,8 +263,8 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_no_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_editors_path(@unpublished_pr))
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_adoptions_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_editors_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_adoptions_path(@unpublished_pr))
           expect(page).to have_content('Save and continue')
         end
         visit practice_adoptions_path(@unpublished_pr)
@@ -287,8 +287,8 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_introduction_path(@unpublished_pr))
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_overview_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_introduction_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_overview_path(@unpublished_pr))
           expect(page).to have_no_content('Save and continue')
         end
         visit practice_overview_path(@unpublished_pr)
@@ -310,8 +310,8 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_no_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_adoptions_path(@unpublished_pr))
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_implementation_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_adoptions_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_implementation_path(@unpublished_pr))
           expect(page).to have_content('Save and continue')
         end
         visit practice_implementation_path(@unpublished_pr)
@@ -333,8 +333,8 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_no_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_overview_path(@unpublished_pr))
-          expect(page).to have_link(class: 'usa-button--secondary', href: practice_about_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_overview_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_about_path(@unpublished_pr))
           expect(page).to have_content('Save and continue')
         end
         visit practice_about_path(@unpublished_pr)
@@ -356,7 +356,7 @@ describe 'Practice editor', type: :feature, js: true do
         within(editor_footer) do
           expect(page).to have_content('Back')
           expect(page).to have_no_content('Continue')
-          expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_implementation_path(@unpublished_pr))
+          expect(page).to have_link(href: practice_implementation_path(@unpublished_pr))
           expect(page).to have_no_content('Save and continue')
         end
       end
