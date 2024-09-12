@@ -244,8 +244,6 @@ class Practice < Innovation
   has_many :photo_files, dependent: :destroy
   has_many :practice_management_practices, dependent: :destroy
   has_many :practice_managements, through: :practice_management_practices
-  has_many :practice_partner_practices, dependent: :destroy
-  has_many :practice_partners, through: :practice_partner_practices
   has_many :practice_permissions, -> { order(position: :asc) }, dependent: :destroy
   has_many :publications, -> { order(position: :asc) }, dependent: :destroy
   has_many :required_staff_trainings, dependent: :destroy
