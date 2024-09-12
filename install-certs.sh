@@ -21,6 +21,17 @@ CA_CERTS=(
   VA-Internal-S2-ICA1-v1.cer
   VA-Internal-S2-ICA2-v1.cer
   VA-Internal-S2-ICA3-v1.cer
+  VA-Internal-S2-ICA11.cer
+  VA-Internal-S2-ICA12.cer
+  VA-Internal-S2-ICA13.cer
+  VA-Internal-S2-ICA14.cer
+  VA-Internal-S2-ICA15.cer
+  VA-Internal-S2-ICA16.cer
+  VA-Internal-S2-ICA17.cer
+  VA-Internal-S2-ICA18.cer
+  VA-Internal-S2-ICA19.cer
+  VA-Internal-S2-ICA20.cer
+  VA-Internal-S2-ICA21.cer
  )
 ANCHORS=/usr/local/share/ca-certificates
 for CERT in ${CA_CERTS[@]}
