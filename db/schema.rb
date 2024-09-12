@@ -1102,7 +1102,7 @@ ActiveRecord::Schema.define(version: 2024_09_12_210801) do
     t.text "main_display_image_alt_text"
     t.string "support_network_email"
     t.boolean "private_contact_info"
-    t.boolean "published", default: false
+    t.boolean "published"
     t.bigint "user_id"
     t.integer "crop_x"
     t.integer "crop_y"
@@ -1116,9 +1116,6 @@ ActiveRecord::Schema.define(version: 2024_09_12_210801) do
     t.datetime "main_display_image_updated_at"
     t.string "usage"
     t.string "price"
-    t.datetime "date_published"
-    t.boolean "retired", default: false, null: false
-    t.index ["name"], name: "index_products_on_name", unique: true
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
