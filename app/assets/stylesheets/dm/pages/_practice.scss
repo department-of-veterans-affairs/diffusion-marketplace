@@ -986,8 +986,16 @@ li.small-disc:before {
   }
 
   .adoption-form {
-    .usa-button {
-      @extend .dm-button--primary-transition;
+    .button-row {
+      justify-content: space-between;
+
+      .delete-adoption {
+        align-self: end;
+        font-weight: normal;
+      }
+      .save-edits, #adoption_form_submit {
+        @extend .dm-button--primary-transition;
+      }
     }
   }
 }
