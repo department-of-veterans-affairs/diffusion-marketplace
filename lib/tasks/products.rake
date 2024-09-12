@@ -31,8 +31,11 @@ namespace :products do
         end
       end
 
-      product = Product.find_or_initialize_by(id: product_attributes[:id])
+      product = Product.find_or_initialize_by(name: product_attributes[:name])
       product.update!(product_attributes)
+
+      vha_practice_partner = PracticePartner.find_by(slug: "vha-innovators-network")
+      PracticePartnerPractice.create!(innovable: product, practice_partner: vha_practice_partner)
 
       puts "Created Product - #{product.name}"
     end
