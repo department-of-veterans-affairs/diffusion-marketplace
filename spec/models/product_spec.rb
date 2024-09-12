@@ -40,4 +40,19 @@ RSpec.describe Product, type: :model do
         end
     end
   end
+
+  describe "callbacks" do
+    let(:product) { create(:product, published: false) }
+
+    it "sets the date_published when published becomes true" do
+      product.update(published: true)
+      expect(product.date_published).not_to be_nil
+    end
+
+    it "clears the date_published when published becomes false" do
+      product.update(published: true, date_published: Time.current)
+      product.update(published: false)
+      expect(product.date_published).to be_nil
+    end
+  end
 end
