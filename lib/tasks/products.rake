@@ -3,9 +3,9 @@ namespace :products do
 
   task :create_or_update_products => :environment do
     require 'csv'
-
     csv_file_path = 'lib/assets/products.csv'
 
+    # Make sure the csv column names line up with the mapping values before running!!!
     COLUMN_MAPPING = {
       'Name' => :name,
       'Origin' => :origin,
@@ -19,8 +19,16 @@ namespace :products do
       'Description' => :description
     }
 
+    # Check the csv origin column values for changes or additions
+    PRACTICE_PARTNER_MAPPING = {
+      "Spark-Seed-Spread" => "iNet Seed-Spark-Spread Innovation Investment Program",
+      "Greenhouse" => "iNet Greenhouse Initiative",
+      "Technology Transfer Program" => "VA Technology Transfer Program"
+    }
+
     CSV.foreach(csv_file_path, headers: true) do |row|
       product_attributes = row.to_hash.transform_keys { |key| COLUMN_MAPPING[key.strip] }.compact
+      origin = product_attributes.delete(:origin)
 
       product_attributes.each do |key, value|
         if value == "N/A"
@@ -34,7 +42,12 @@ namespace :products do
       product = Product.find_or_initialize_by(name: product_attributes[:name])
       product.update!(product_attributes)
 
-      vha_practice_partner = PracticePartner.find_by(slug: "vha-innovators-network")
+      if PRACTICE_PARTNER_MAPPING[origin]
+        practice_partner = PracticePartner.find_or_initialize_by(name: PRACTICE_PARTNER_MAPPING[origin])
+        PracticePartnerPractice.create!(innovable: product, practice_partner: practice_partner)
+      end
+
+      vha_practice_partner = PracticePartner.find_or_initialize_by(slug: "vha-innovators-network")
       PracticePartnerPractice.create!(innovable: product, practice_partner: vha_practice_partner)
 
       puts "Created Product - #{product.name}"
