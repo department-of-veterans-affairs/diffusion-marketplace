@@ -62,7 +62,7 @@
         </ul>
         <%= f.link_to_add :timelines,
                           id: 'link_to_add_link_timeline',
-                          class: "dm-add-another-link add-practice-timeline-link dm-button--unstyled-primary #{'display-none' unless @practice.timelines.any?}" do %>
+                          class: "dm-add-another-link add-practice-timeline-link #{'display-none' unless @practice.timelines.any?}" do %>
           Add another
         <% end %>
         <%= f.link_to_add :timelines, id: 'link_to_add_button_timeline', class: "usa-button usa-button--outline #{'display-none' if @practice.timelines.any?}" do %>
