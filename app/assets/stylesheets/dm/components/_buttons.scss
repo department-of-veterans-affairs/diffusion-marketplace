@@ -1,22 +1,62 @@
 // `usa-button` OVERRIDES
+@mixin transition-btn-colors {
+  // homepage refresh 2024 colors - delete and update primary palette later
+  @include u-bg($transition-btn-palette-default);
+
+  &:hover {
+    @include u-bg($transition-btn-palette-hover);
+  }
+  &:active {
+    @include u-bg($transition-btn-palette-active);
+  }
+}
+
 .usa-button {
-  @include u-bg("primary-vivid");
+  // @include u-bg("primary-vivid");
+  @include transition-btn-colors;
   @include u-line-height("sans", 2);
   @include u-text("no-underline", !important);
   @include u-text("semibold");
 }
 
 .usa-button--outline {
-  @include u-bg("transparent");
-  @include u-text("primary-vivid", !important);
-  box-shadow: inset 0 0 0 2px color($theme-color-primary-vivid);
+  // @include u-bg("transparent");
+  // @include u-text("primary-vivid", !important);
+  // box-shadow: inset 0 0 0 2px color($theme-color-primary-vivid);
+
+  // &:hover {
+  //   @include u-text("primary-dark", !important);
+  // }
+
+  // &:active {
+  //   @include u-text("primary-darker", !important);
+  // }
+  // TO DO: consolidate instances of .dm-button--outline-secondary with .usa-button--outline
+  background-color: white !important;
+
+  @include u-text($transition-btn-palette-default, !important);
+  box-shadow: inset 0 0 0 2px color($transition-btn-palette-default);
 
   &:hover {
-    @include u-text("primary-dark", !important);
+    @include u-text($transition-btn-palette-hover, !important);
+    @include u-bg("base-lightest", !important);
+    box-shadow: inset 0 0 0 2px color($transition-btn-palette-hover);
   }
 
   &:active {
-    @include u-text("primary-darker", !important);
+    @include u-text($transition-btn-palette-active, !important);
+    @include u-bg("primary-lighter", !important);
+    box-shadow: inset 0 0 0 2px color($transition-btn-palette-active);
+  }
+
+  &:visited {
+    @include u-text($transition-btn-palette-visited-color, !important);
+    box-shadow: inset 0 0 0 2px color($transition-btn-palette-visited-color);
+  }
+
+  &:disabled {
+    @include u-text("disabled", !important);
+    box-shadow: inset 0 0 0 2px color($theme-color-disabled);
   }
 }
 
@@ -136,6 +176,7 @@
   @extend .usa-button;
   @extend .usa-button--unstyled;
   @include u-text("error", !important);
+  font-weight: normal;
 
   &:hover {
     @include u-text("error-dark", !important);
@@ -196,18 +237,6 @@
 .dm-modal-close-button {
   @include u-bg($theme-color-dm-white, !important);
   @include u-text("base-darkest", !important);
-}
-
-@mixin transition-btn-colors {
-  // homepage refresh 2024 colors - delete and update primary palette later
-  @include u-bg($transition-btn-palette-default);
-
-  &:hover {
-    @include u-bg($transition-btn-palette-hover);
-  }
-  &:active {
-    @include u-bg($transition-btn-palette-active);
-  }
 }
 
 .dm-button--primary-transition {

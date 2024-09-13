@@ -19,17 +19,10 @@
       <%= render partial: "practices/shared/step_indicator" %>
       <section class="usa-section padding-top-0 padding-bottom-0 introduction">
         <h1 class="margin-top-0">Overview</h1>
-        <div class="usa-prose-intro">
-          Describe the journey of your innovation from problem identification and the implementation of your solution
-          through to measured results and outcomes.
-        </div>
-        <div class="margin-top-3">
-          <%= render 'pii_phi_alert' %>
-        </div>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Practice Overview</legend>
-            <!-- PROBLEM section -->
+            <h2>Problem</h2>
             <div id="problem_section" class="grid-col-12">
               <div class="margin-bottom-5 margin-top-3">
                 <%= label_tag 'practice_overview_problem', 'Problem statement', class: 'usa-label text-bold display-inline overview-problem-statement-label' %>*
@@ -116,7 +109,7 @@
               </div>
             </div>
 
-            <!-- SOLUTION section -->
+            <h2>Solution</h2>
             <div id="solution_section" class="grid-col-12">
               <div class="margin-bottom-5 margin-top-3">
                 <%= label_tag 'practice_overview_solution', 'Solution statement', class: 'usa-label margin-0 text-bold display-inline overview-solution-statement-label' %>*
@@ -205,7 +198,7 @@
               </div>
             </div>
 
-            <!-- RESULTS section -->
+            <h2>Results</h2>
             <div id="results_section" class="grid-col-12">
               <div class="margin-bottom-5 margin-top-3">
                 <%= label_tag 'practice_overview_results', 'Results statement', class: 'usa-label margin-0 text-bold display-inline overview-results-statement-label' %>*
@@ -348,7 +341,7 @@
                     </li>
                   <% end %>
                 </ul>
-                <%= f.link_to_add :practice_metrics, class: 'dm-add-another-link add-practice-metric-link dm-button--unstyled-primary' do %>
+                <%= f.link_to_add :practice_metrics, class: 'dm-add-another-link add-practice-metric-link' do %>
                   Add another
                 <% end %>
                 <% provide :head_tags do %>
@@ -386,7 +379,7 @@
                   Add any additional images, video, and audio to support your innovation's overview.
                 </p>
               </div>
-              <div class="dm-file-form grid-row grid-gap">
+              <div class="dm-file-form grid-row grid-gap margin-bottom-5">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_multimedia[resource_type]',
                                        'Image',

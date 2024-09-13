@@ -79,7 +79,7 @@
         <% end %>
         </ul>
         <% cur_resources = @practice.practice_resources.where(resource_type_label: resource_type_label, resource_type: resource_type, media_type: media_type) %>
-        <%= f.link_to_add :practice_resources, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " dm-add-another-link dm-button--unstyled-primary #{'display-none' unless cur_resources.any?}" do %>
+        <%= f.link_to_add :practice_resources, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " dm-add-another-link #{'display-none' unless cur_resources.any?}" do %>
           <span class="text-normal">Add another</span>
         <% end %>
         <%= f.link_to_add :practice_resources, id: link_to_add_button_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " usa-button usa-button--outline #{'display-none' if cur_resources.any?}" do %>
