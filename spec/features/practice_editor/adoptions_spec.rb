@@ -237,7 +237,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_selector("#in-progress_adoptions", visible: true)
       find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
       within(:css, "#diffusion_history_#{@practice.diffusion_histories.first.id}") do
-        click_link('Delete')
+        click_link('Delete entry')
       end
       page.accept_alert
       expect(page).to have_content('Adoption was successfully deleted.')
