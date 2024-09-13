@@ -973,17 +973,19 @@ li.small-disc:before {
     @extend .dm-button--outline-secondary;
   }
 
-  .usa-accordion__button[aria-expanded=false].adoptions-edit {
-    background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
-    background-position-x: 98.6%;
-    background-size: 22.5px 20px;
+  .usa-accordion__button {
+    .accordion-row-as-button {
+      justify-content: space-between;
+    }
+    .usa-link {
+      @include u-margin-left(2);
+    }
+
+    &[aria-expanded=false].adoptions-edit, &[aria-expanded=true].adoptions-edit {
+      background-image: none;
+    }
   }
 
-  .usa-accordion__button[aria-expanded=true].adoptions-edit {
-    background-image: asset_url('minus.svg'), linear-gradient(transparent, transparent);
-    background-position-x: 97.8%;
-    border-bottom: 4px color($theme-color-base-lightest) solid;
-  }
 
   .adoption-form {
     .button-row {
