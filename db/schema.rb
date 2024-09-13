@@ -1114,7 +1114,6 @@ ActiveRecord::Schema.define(version: 2024_09_12_210801) do
     t.string "main_display_image_content_type"
     t.bigint "main_display_image_file_size"
     t.datetime "main_display_image_updated_at"
-    t.string "origin"
     t.string "usage"
     t.string "price"
     t.datetime "date_published"
