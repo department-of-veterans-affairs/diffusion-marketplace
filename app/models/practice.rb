@@ -166,8 +166,6 @@ class Practice < Innovation
   validates :user, presence: true, format: valid_va_email
   # validates_attachment_content_type :highlight_attachment, content_type: /\Aimage\/.*\z/
 
-  scope :published,   -> { where(published: true) }
-  scope :unpublished,  -> { where(published: false) }
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
   scope :with_categories_and_adoptions_ct, -> {
     published_enabled_approved
