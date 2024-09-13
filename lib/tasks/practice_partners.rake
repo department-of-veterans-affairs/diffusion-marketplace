@@ -68,7 +68,7 @@ namespace :practice_partners do
   desc "Adds 'None of the above' PracticePartner"
   task :add_none_of_the_above_practice => :environment do
     # This needed to be written as a task because the controller logic expects this particular record
-    # and it was originally created via db migration that needed to be removed.
+    # that was originally created via db migration which needed to be removed.
     PracticePartner.create({name: 'None of the above, or Unsure'})
   end
 end
