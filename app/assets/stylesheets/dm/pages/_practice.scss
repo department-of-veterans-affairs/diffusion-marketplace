@@ -984,6 +984,15 @@ li.small-disc:before {
     &[aria-expanded=false].adoptions-edit, &[aria-expanded=true].adoptions-edit {
       background-image: none;
     }
+
+    &[aria-expanded=false].adoptions-edit {
+      .adoptions-close-link { display: none }
+      .adoptions-edit-link { display: block }
+    }
+    &[aria-expanded=true].adoptions-edit {
+      .adoptions-edit-link { display: none }
+      .adoptions-close-link { display: block }
+    }
   }
 
 
