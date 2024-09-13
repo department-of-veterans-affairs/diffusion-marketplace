@@ -891,7 +891,18 @@ li.small-disc:before {
 }
 
 // Implementation
-#implementation {
+.implementation-main #implementation { // TODO: clean up file SCSS file org to separate editor styles more clearly via nesting
+  .dm-button--unstyled-primary, .dm-button--unstyled-warning {
+    font-weight: normal;
+  }
+  .usa-label {
+    font-weight: bold;
+  }
+
+  a.usa-button--outline:not(.display-none) {
+    @extend .dm-button--outline-secondary; // TODO: remove when we update palettes
+
+  }
   .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
     top: 2rem;
   }
