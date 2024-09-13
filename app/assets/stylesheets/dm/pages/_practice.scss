@@ -969,16 +969,45 @@ li.small-disc:before {
 
 // adoptions
 #dm-pe-adoptions {
-  .usa-accordion__button[aria-expanded=false].adoptions-edit {
-    background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
-    background-position-x: 98.6%;
-    background-size: 22.5px 20px;
+  .usa-button--outline {
+    @extend .dm-button--outline-secondary;
   }
 
-  .usa-accordion__button[aria-expanded=true].adoptions-edit {
-    background-image: asset_url('minus.svg'), linear-gradient(transparent, transparent);
-    background-position-x: 97.8%;
-    border-bottom: 4px color($theme-color-base-lightest) solid;
+  .usa-accordion__button {
+    .accordion-row-as-button {
+      justify-content: space-between;
+    }
+    .usa-link {
+      @include u-margin-left(2);
+    }
+
+    &[aria-expanded=false].adoptions-edit, &[aria-expanded=true].adoptions-edit {
+      background-image: none;
+    }
+
+    &[aria-expanded=false].adoptions-edit {
+      .adoptions-close-link { display: none }
+      .adoptions-edit-link { display: block }
+    }
+    &[aria-expanded=true].adoptions-edit {
+      .adoptions-edit-link { display: none }
+      .adoptions-close-link { display: block }
+    }
+  }
+
+
+  .adoption-form {
+    .button-row {
+      justify-content: space-between;
+
+      .delete-adoption {
+        align-self: end;
+        font-weight: normal;
+      }
+      .save-edits, #adoption_form_submit {
+        @extend .dm-button--primary-transition;
+      }
+    }
   }
 }
 

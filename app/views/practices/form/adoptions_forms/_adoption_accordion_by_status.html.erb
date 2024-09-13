@@ -17,6 +17,7 @@
           <button class="usa-accordion__button text-normal adoptions-edit bg-white child-accordion-button"
                   aria-expanded="false"
                   aria-controls="diffusion_history_<%= a.id %>">
+            <div class="display-flex accordion-row-as-button">
             <span class="line-height-sans-505 display-inline-block text-top">
               <% if facility.present? %>
                 <%= facility.street_address_state %>: <%= facility.official_station_name %> <%= show_common_name(facility.official_station_name, facility.common_name) %>
@@ -26,6 +27,9 @@
               (<%= dhs.start_time.present? ? month_year_date_format(dhs.start_time) : 'TBD' %>
               - <%= dhs.end_time.present? ? month_year_date_format(dhs.end_time) : 'TBD' %>)
             </span>
+            <span class="line-height-sans-505 usa-link adoptions-edit-link">Edit</span>
+            <span class="line-height-sans-505 usa-link adoptions-close-link">Close</span>
+          </div>
           </button>
         </h2>
         <div id="diffusion_history_<%= a.id %>" class="usa-accordion__content usa-prose overflow-visible">
