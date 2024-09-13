@@ -26,7 +26,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should not display the video resource form' do
           expect(page).to have_no_content('Link (paste the full Youtube address)')
-          expect(page).to have_no_content('Write a caption that provides context')
+          expect(page).to have_no_content('Caption')
           expect(page).to have_no_css('#problem_resources_video_form')
           expect(page).to have_no_css('#solution_resources_video_form')
           expect(page).to have_no_css('#results_resources_video_form')
@@ -72,7 +72,7 @@ describe 'Practice editor', type: :feature, js: true do
         within(:css, "##{area}_section") do
           click_video_form area
           expect(page).to have_content('Link (paste the full Youtube address)')
-          expect(page).to have_content('Write a caption that provides context')
+          expect(page).to have_content('Caption')
           add_resource
           expect(page).to have_content('Please enter a valid YouTube url')
           url_field.set(@video_url_2)
