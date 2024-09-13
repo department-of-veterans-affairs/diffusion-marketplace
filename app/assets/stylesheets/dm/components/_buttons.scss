@@ -136,6 +136,7 @@
   @extend .usa-button;
   @extend .usa-button--unstyled;
   @include u-text("error", !important);
+  font-weight: normal;
 
   &:hover {
     @include u-text("error-dark", !important);
