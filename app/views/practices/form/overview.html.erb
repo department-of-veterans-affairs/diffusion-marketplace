@@ -19,13 +19,6 @@
       <%= render partial: "practices/shared/step_indicator" %>
       <section class="usa-section padding-top-0 padding-bottom-0 introduction">
         <h1 class="margin-top-0">Overview</h1>
-        <div class="usa-prose-intro">
-          Describe the journey of your innovation from problem identification and the implementation of your solution
-          through to measured results and outcomes.
-        </div>
-        <div class="margin-top-3">
-          <%= render 'pii_phi_alert' %>
-        </div>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Practice Overview</legend>
