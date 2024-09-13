@@ -34,6 +34,9 @@ ActiveAdmin.register PracticePartner do
       row('Practices') do |partner|
         partner.practices.order(Arel.sql("lower(name) ASC"))
       end
+      row('Products') do |partner|
+        partner.products.order(Arel.sql("lower(name) ASC"))
+      end
       row('Major Practice Partner') { |partner| status_tag partner.is_major? }
     end
     active_admin_comments
