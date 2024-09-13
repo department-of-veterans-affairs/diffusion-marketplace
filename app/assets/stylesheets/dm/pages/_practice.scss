@@ -978,6 +978,11 @@ li.small-disc:before {
 }
 
 // Cross-section styles
+.practice-editor-footer {
+  .dm-return-to-top {
+    font-weight: normal;
+  }
+}
 .input-error {
   border-left-width: 0.25rem !important;
   border-left-color: #b50909 !important;
