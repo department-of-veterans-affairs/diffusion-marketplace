@@ -168,12 +168,11 @@
 }
 
 .dm-button--unstyled-primary {
-  @extend .usa-button;
   @extend .usa-button--unstyled;
+  cursor: pointer;
 }
 
 .dm-button--unstyled-warning {
-  @extend .usa-button;
   @extend .usa-button--unstyled;
   @include u-text("error", !important);
   font-weight: normal;
