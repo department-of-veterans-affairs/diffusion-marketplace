@@ -8,4 +8,9 @@ class Innovation < ApplicationRecord
   has_many :va_employee_practices, as: :innovable, dependent: :destroy
   has_many :va_employees, -> { order(position: :asc) }, through: :va_employee_practices
   has_many :practice_multimedia, -> { order(id: :asc) }, as: :innovable, dependent: :destroy
+  has_many :practice_partner_practices, as: :innovable, dependent: :destroy
+  has_many :practice_partners, through: :practice_partner_practices
+
+  scope :published,   -> { where(published: true) }
+  scope :unpublished,  -> { where(published: false) }
 end
