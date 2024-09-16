@@ -31,7 +31,7 @@ RSpec.describe Product, type: :model do
       end
 
       it 'validates presence of main_display_image_alt_text' do
-          product = build(:product, main_display_image: File.new(Rails.root.join('app/assets/images/jumbotron-img.jpg')))
+          product = build(:product, main_display_image: File.new(Rails.root.join('app/assets/images/va-seal.png')))
           expect(product).not_to be_valid
           expect(product.errors[:main_display_image_alt_text]).to include("can't be blank")
 
