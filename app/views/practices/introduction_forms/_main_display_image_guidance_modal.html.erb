@@ -1,0 +1,29 @@
+<div class="usa-modal usa-modal--lg display-none" id="thumbnail-image-guidance-modal" aria-labelledby="thumbnail-image-guidance-modal-heading"
+    aria-describedby="thumbnail-image-guidance-modal-description">
+    <div class="usa-modal__content">
+        <div class="usa-modal__main">
+            <section class="margin-bottom-3">
+                <h2 class="usa-modal__heading" id="thumbnail-image-guidance-modal-heading margin-bottom-3">
+                    Image Guidance
+                </h2>
+                <div class="usa-prose-body">
+                    <p id="thumbnail-image-guidance-modal-description">
+                        Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png 
+                        file that is at least 768px wide and 432px high and less than 32MB.
+                        If you want to upload an image that features a Veteran you must have
+                        <%= link_to 'Form 3203', Constants::FORM_3203_URL, target: '_blank', class: 'usa-link' %>.
+                        Waivers must be filled out with the 'External to VA' check box selected.
+                        Please avoid using logos or images with text.
+                    </p>
+                </div>
+            </section>
+            <div class="usa-modal__footer">
+                <%= image_tag 'thumbnail-search-result-preview.png', alt: 'Thumbnail in a sample search result' %>
+            </div>
+        </div>
+        <button class="usa-button usa-modal__close dm-modal-close-button" aria-label="Close this window"
+            data-close-modal>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>

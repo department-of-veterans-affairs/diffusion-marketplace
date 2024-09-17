@@ -813,31 +813,50 @@ li.small-disc:before {
  PRACTICE EDITOR
 **********************************/
 // Introduction
-#editor_date_initiated_year {
-  &::-webkit-inner-spin-button {
-    display: none;
+#introduction {
+  #editor_date_initiated_year {
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
   }
-}
 
-.practice-editor-origin-li, .dm-practice-editor-practice-partner-li {
-  .usa-combo-box {
-    max-width: unset !important;
+  .practice-editor-origin-li, .dm-practice-editor-practice-partner-li {
+    .usa-combo-box {
+      max-width: unset !important;
+    }
   }
-}
 
-.dm-practice-editor-practice-partner-li {
-  .usa-combo-box__input {
-    margin-top: -30px !important;
+  .dm-practice-editor-practice-partner-li {
+    .usa-combo-box__input {
+      margin-top: -30px !important;
+    }
   }
-}
-.practice-editor-origin-li {
-  .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
-    top: 0.5rem;
+  .practice-editor-origin-li {
+    .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
+      top: 0.5rem;
+    }
   }
-}
 
-.main-display-image-caption {
-  @include u-text($theme-color-base-dark, !important);
+  .main-display-image-caption {
+    @include u-text($theme-color-base-dark, !important);
+  }
+
+  #open-thumbnail-guidance-modal {
+    .thumbnail-image-guidance-modal-close {
+      // font-size: 1.5em;
+      // match .usa-button--secondary style
+      color: color($theme-color-base-ink);
+      &:hover {
+        @include u-text('base-darker');
+      }
+      &:active {
+        @include u-text('base-dark');
+      }
+      &:disabled {
+        @include u-text('disabled');
+      }
+    }
+  }
 }
 
 // Overview

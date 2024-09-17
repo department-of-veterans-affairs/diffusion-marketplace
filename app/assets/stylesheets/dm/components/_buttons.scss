@@ -239,6 +239,7 @@
 }
 
 .dm-button-unstyled-open-modal {
+  @extend .usa-button--unstyled;
   @include u-text('ink');
   // use separate text-decoration styles for maximum browser compatibility
   text-decoration-color: color('ink');

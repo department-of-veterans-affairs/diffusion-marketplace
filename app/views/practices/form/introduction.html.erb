@@ -28,7 +28,7 @@
     var initiatingFacilityCtr = 0;
   <% end %>
 <% end %>
-
+<%= render partial: 'practices/introduction_forms/main_display_image_guidance_modal' %>
 <%
   origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
   p_partners = @practice.practice_partners
@@ -84,7 +84,7 @@
 
 
             <h2>Thumbnail Image</h2>
-            <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @practice } %>
+            <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @practice, modal_link: true } %>
 
             <div>
               <%= render partial: 'practices/shared/image_alt_text_label', locals: {

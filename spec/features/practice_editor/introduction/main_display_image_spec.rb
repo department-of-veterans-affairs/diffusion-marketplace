@@ -64,6 +64,18 @@ describe 'Editing a practice\'s main display image and main display image alt te
       # make sure the main display image alt text field is empty
       expect(page).to have_field('practice[main_display_image_alt_text]', with: '')
     end
+
+    it 'provides image guidance' do
+      visit practice_introduction_path(@pr_with_thumbnail)
+      within('section.dm-image-editor') do
+        expect(page).to have_link('Thumbnail')
+        find('#open-thumbnail-guidance-modal').click
+      end
+      expect(page).to have_selector(".usa-modal__content", visible: true)
+      expect(page).to have_content("Image Guidance")
+      expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
+      expect(page).to have_link(href: Constants::FORM_3203_URL)
+    end
   end
 
   describe 'Uploading an image' do
@@ -78,9 +90,6 @@ describe 'Editing a practice\'s main display image and main display image alt te
       it 'should display the image and save it' do
         within('section.dm-image-editor') do
           expect(page).to have_content('Thumbnail')
-          # TODO: move this to a test for modal
-          # expect(page).to have_content("Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          # expect(page).to have_link(href: Constants::FORM_3203_URL)
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_content('Remove image')
           expect(page).to have_content('Edit image')
