@@ -52,7 +52,7 @@ ActiveAdmin.register Product do
     attributes_table  do
       row :id
       row(:name, label: 'Product name') # { |product| link_to(product.name, product_path(product)) } - uncomment when product show page is created
-      # row('Edit URL') { |product| link_to(product_overview_path(product), product_overview_path(product)) } - uncomment when product editor is created
+      row('Edit URL') { |product| link_to(product_description_path(product), product_description_path(product)) }
       row(:user) {|product| link_to(product.user&.email, admin_user_path(product.user)) if product.user.present?}
       row(:published, label: 'Published')
       row(:date_published, label: 'Date Published')
