@@ -1,1 +1,97 @@
-hello world
+<div class="grid-container">
+  <div class="grid-row grid-gap">
+    <div id="description" class="grid-col-12 margin-top-4">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-y-0 introduction">
+        <h1 class="margin-top-0">Description</h1>
+        <%= nested_form_for(@product, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-10">
+            <legend class="usa-sr-only">Product Description</legend>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Innovation Title*
+                <% end %>
+                <span>Type the official name of your product.</span>&nbsp;
+              </div>
+              <%= f.text_field :name, class: "usa-input #{ @product.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+
+              <p class="usa-error-message <%= @product.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@product, :name) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :description, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Executive Summary*
+                <% end %>
+                <span>Type the description of your product.</span>&nbsp;
+              </div>
+              <%= f.text_area :description, class: "usa-textarea #{ @product.errors[:description].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input dm-required-field", required: true %>
+
+              <p class="usa-error-message <%= @product.errors[:description].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :description) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :item_number, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Item Number*
+                <% end %>
+                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+              </div>
+              <%= f.text_field :item_number, class: "usa-input #{ @product.errors[:item_number].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+
+              <p class="usa-error-message <%= @product.errors[:item_number].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :item_number) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :vendor, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Vendor*
+                <% end %>
+                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+              </div>
+              <%= f.text_field :vendor, class: "usa-input #{ @product.errors[:vendor].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+
+              <p class="usa-error-message <%= @product.errors[:vendor].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :vendor) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :duns, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  DUNS
+                <% end %>
+                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+              </div>
+              <%= f.text_field :duns, class: "usa-input #{ @product.errors[:duns].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:duns].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :duns) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :shipping_timeline_estimate, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Shipping Timeline Estimate
+                <% end %>
+                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+              </div>
+              <%= f.text_field :shipping_timeline_estimate, class: "usa-input #{ @product.errors[:duns].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:shipping_timeline_estimate].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :shipping_timeline_estimate) %></span>
+              </p>
+            </div>
+            <%= f.hidden_field :submitted_page, value: request.original_url.split('/').last %>
+            <!-- Remove once footer with submit button is implemented -->
+            <div class="margin-top-4">
+              <%= f.submit 'Submit', class: 'usa-button usa-button--primary' %>
+            </div>
+          </fieldset>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</div>
