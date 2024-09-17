@@ -63,6 +63,7 @@
 .usa-button--unstyled {
   @include u-bg('transparent');
   @include u-text('underline', !important);
+  cursor: pointer;
 }
 
 .usa-button--secondary {
@@ -174,7 +175,6 @@
 
 .dm-button--unstyled-warning {
   @extend .usa-button--unstyled;
-  font-weight: normal;
   @include u-text('error', !important);
   font-weight: normal;
 
@@ -236,11 +236,6 @@
 .dm-modal-close-button {
   @include u-bg($theme-color-dm-white, !important);
   @include u-text('base-darkest', !important);
-}
-
-.dm-button--primary-transition {
-  @extend .usa-button;
-  @include transition-btn-colors;
 }
 
 .dm-button-unstyled-open-modal {

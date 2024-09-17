@@ -897,9 +897,6 @@ li.small-disc:before {
 
 // Implementation
 .implementation-main #implementation { // TODO: clean up file SCSS file org to separate editor styles more clearly via nesting
-  .dm-button--unstyled-primary, .dm-button--unstyled-warning {
-    font-weight: normal;
-  }
   .usa-label {
     font-weight: bold;
   }
@@ -969,10 +966,6 @@ li.small-disc:before {
 
 // adoptions
 #dm-pe-adoptions {
-  .usa-button--outline {
-    @extend .dm-button--outline-secondary;
-  }
-
   .usa-accordion__button {
     .accordion-row-as-button {
       justify-content: space-between;
@@ -1002,21 +995,15 @@ li.small-disc:before {
 
       .delete-adoption {
         align-self: end;
-        font-weight: normal;
       }
       .save-edits, #adoption_form_submit {
-        @extend .dm-button--primary-transition;
+        @extend .usa-button;
       }
     }
   }
 }
 
 // Cross-section styles
-.practice-editor-footer {
-  .dm-return-to-top {
-    font-weight: normal;
-  }
-}
 .input-error {
   border-left-width: 0.25rem !important;
   border-left-color: #b50909 !important;
