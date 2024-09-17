@@ -48,7 +48,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_no_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_no_content('Save and Continue')
         end
         click_link('Edit your innovation')
@@ -91,7 +91,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_link(href: practice_editors_path(@published_pr))
           expect(page).to have_link(href: practice_adoptions_path(@published_pr))
           expect(page).to have_content('Save and Continue')
@@ -137,7 +137,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_link(href: practice_adoptions_path(@published_pr))
           expect(page).to have_link(href: practice_implementation_path(@published_pr))
           expect(page).to have_content('Save and Continue')
@@ -160,7 +160,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_link(href: practice_overview_path(@published_pr))
           expect(page).to have_link(href: practice_about_path(@published_pr))
           expect(page).to have_content('Save and Continue')
@@ -183,7 +183,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_link(href: practice_implementation_path(@published_pr))
           expect(page).to have_no_content('Save and Continue')
         end
@@ -219,7 +219,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_no_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_no_content('Save and Continue')
         end
         click_link('Edit your innovation')
@@ -262,7 +262,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_link(href: practice_editors_path(@unpublished_pr))
           expect(page).to have_link(href: practice_adoptions_path(@unpublished_pr))
           expect(page).to have_content('Save and Continue')
@@ -309,7 +309,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_link(href: practice_adoptions_path(@unpublished_pr))
           expect(page).to have_link(href: practice_implementation_path(@unpublished_pr))
           expect(page).to have_content('Save and Continue')
@@ -332,7 +332,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_link(href: practice_overview_path(@unpublished_pr))
           expect(page).to have_link(href: practice_about_path(@unpublished_pr))
           expect(page).to have_content('Save and Continue')
@@ -355,7 +355,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
         within(editor_footer) do
           expect(page).to have_content('Back')
-          expect(page).to have_no_content('Continue')
+          expect(page).not_to have_link('Continue', exact: true)
           expect(page).to have_link(href: practice_implementation_path(@unpublished_pr))
           expect(page).to have_no_content('Save and Continue')
         end
@@ -385,7 +385,7 @@ describe 'Practice editor', type: :feature, js: true do
       it 'should show a close modal for introduction, overview, implementation, about page' do
         # continue editing and save on exit
         visit practice_introduction_path(@unpublished_pr)
-        fill_in('Name', with: 'This is a newly titled practice')
+        fill_in('Innovation Title*', with: 'This is a newly titled practice')
         find('.dm-button--close-icon').click
         expect(page).to have_selector('.usa-modal--lg', visible: true)
         click_button('Continue editing')

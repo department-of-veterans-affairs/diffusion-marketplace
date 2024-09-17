@@ -100,14 +100,14 @@ describe 'Practice editor - introduction', type: :feature do
     end
 
     it 'should allow changing name, summary' do
-      expect(page).to have_field('Name', with: @practice.name)
+      expect(page).to have_field('Innovation Title*', with: @practice.name)
       expect(page).to have_field('Summary', with: @practice.summary)
       # add whitespace to practice name
       fill_in('Innovation Title*', with: '   Edited practice ')
       fill_in('Summary', with: 'Updated summary')
       click_save
       # make sure white space is trimmed from practice name
-      expect(page).to have_field('Name', with: 'Edited practice')
+      expect(page).to have_field('Innovation Title*', with: 'Edited practice')
       visit_practice_show
       expect(page).to have_content('Edited practice')
       expect(page).to have_content('Updated summary')
