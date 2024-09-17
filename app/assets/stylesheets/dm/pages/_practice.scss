@@ -813,31 +813,52 @@ li.small-disc:before {
  PRACTICE EDITOR
 **********************************/
 // Introduction
-#editor_date_initiated_year {
-  &::-webkit-inner-spin-button {
-    display: none;
+#introduction {
+  #editor_date_initiated_year {
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
   }
-}
 
-.practice-editor-origin-li, .dm-practice-editor-practice-partner-li {
-  .usa-combo-box {
-    max-width: unset !important;
+  .practice-editor-origin-li, .dm-practice-editor-practice-partner-li {
+    .usa-combo-box {
+      max-width: unset !important;
+    }
   }
-}
 
-.dm-practice-editor-practice-partner-li {
-  .usa-combo-box__input {
-    margin-top: -30px !important;
+  .dm-practice-editor-practice-partner-li {
+    .usa-combo-box__input {
+      margin-top: -30px !important;
+    }
   }
-}
-.practice-editor-origin-li {
-  .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
-    top: 0.5rem;
+  .practice-editor-origin-li {
+    .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
+      top: 0.5rem;
+    }
   }
-}
 
-.main-display-image-caption {
-  @include u-text($theme-color-base-dark, !important);
+  .main-display-image-caption {
+    @include u-text($theme-color-base-dark, !important);
+  }
+  .usa-form {
+  a#open-thumbnail-guidance-modal {
+    @extend .dm-button-unstyled-open-modal;
+
+    .thumbnail-image-guidance-modal-close {
+      // match .usa-button--secondary style
+      // color: color($theme-color-base-ink);
+      &:hover {
+        @include u-text('base-darker');
+      }
+      &:active {
+        @include u-text('base-dark');
+      }
+      &:disabled {
+        @include u-text('disabled');
+      }
+    }
+  }
+  }
 }
 
 // Overview
@@ -897,9 +918,6 @@ li.small-disc:before {
 
 // Implementation
 .implementation-main #implementation { // TODO: clean up file SCSS file org to separate editor styles more clearly via nesting
-  .dm-button--unstyled-primary, .dm-button--unstyled-warning {
-    font-weight: normal;
-  }
   .usa-label {
     font-weight: bold;
   }
@@ -969,10 +987,6 @@ li.small-disc:before {
 
 // adoptions
 #dm-pe-adoptions {
-  .usa-button--outline {
-    @extend .dm-button--outline-secondary;
-  }
-
   .usa-accordion__button {
     .accordion-row-as-button {
       justify-content: space-between;
@@ -1002,21 +1016,15 @@ li.small-disc:before {
 
       .delete-adoption {
         align-self: end;
-        font-weight: normal;
       }
       .save-edits, #adoption_form_submit {
-        @extend .dm-button--primary-transition;
+        @extend .usa-button;
       }
     }
   }
 }
 
 // Cross-section styles
-.practice-editor-footer {
-  .dm-return-to-top {
-    font-weight: normal;
-  }
-}
 .input-error {
   border-left-width: 0.25rem !important;
   border-left-color: #b50909 !important;
