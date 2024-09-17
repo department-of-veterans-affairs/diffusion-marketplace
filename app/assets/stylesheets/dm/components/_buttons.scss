@@ -238,22 +238,32 @@
   @include u-text('base-darkest', !important);
 }
 
-.dm-button-unstyled-open-modal {
+a.dm-button-unstyled-open-modal {
   @extend .usa-button--unstyled;
   @include u-text('ink');
   // use separate text-decoration styles for maximum browser compatibility
+  color: color('ink');
   text-decoration-color: color('ink');
   text-decoration-line: underline;
-  text-decoration-style: dashed;
+  text-decoration-style: dashed !important;
   text-underline-offset: 0.5rem;
+  font-weight: bold;
 
-  &:hover {
-    text-decoration-color: color('base-lightest');
+  &:hover, &:hover:visited {
     text-decoration-line: underline;
-    text-decoration-style: solid;
+    text-decoration-style: solid !important;
     text-underline-offset: 0.5rem;
   }
 
   &:active {
+    color: color('ink');
+  }
+
+  &:visited {
+    color: color('ink');
+    text-decoration-color: color('ink');
+    text-decoration-line: underline;
+    text-decoration-style: dashed !important;
+    text-underline-offset: 0.5rem;
   }
 }

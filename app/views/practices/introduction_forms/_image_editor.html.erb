@@ -1,19 +1,16 @@
 <section class="dm-image-editor margin-top-3 margin-bottom-5">
     <% if modal_link&.present? %>
-      <label class="usa-label">
         <%= link_to section_title,
             '#thumbnail-image-guidance-modal',
             id: 'open-thumbnail-guidance-modal',
-            class: 'usa-button dm-button-unstyled-open-modal',
+            class: 'dm-button-unstyled-open-modal',
             "aria-controls": 'thumbnail-image-guidance-modal',
             role: 'button',
             data: { "open-modal": ""}
         %>
-        </label>
     <% else %>
       <label class="usa-label text-bold margin-top-0 margin-bottom-1"><%= section_title %></label>
     <% end %>
-
   <div class="dm-cropper-boundary grid-col-12 margin-top-2">
     <label class="dm-cropper-upload-image-label line-height-26" for="practice_main_display_image">
       Choose a photograph to represent the Innovation in Search Results.

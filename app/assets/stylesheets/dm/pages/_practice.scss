@@ -840,12 +840,13 @@ li.small-disc:before {
   .main-display-image-caption {
     @include u-text($theme-color-base-dark, !important);
   }
+  .usa-form {
+  a#open-thumbnail-guidance-modal {
+    @extend .dm-button-unstyled-open-modal;
 
-  #open-thumbnail-guidance-modal {
     .thumbnail-image-guidance-modal-close {
-      // font-size: 1.5em;
       // match .usa-button--secondary style
-      color: color($theme-color-base-ink);
+      // color: color($theme-color-base-ink);
       &:hover {
         @include u-text('base-darker');
       }
@@ -856,6 +857,7 @@ li.small-disc:before {
         @include u-text('disabled');
       }
     }
+  }
   }
 }
 
