@@ -38,7 +38,7 @@
 	description: "Description"
 	} %>
 	<% product_description_fields.each do |field_name, field_label| %>
-	<h3><%= field_label %></h3>
+	<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= field_label %></h3>
 	<p><%= @product.send(field_name.to_sym) %></p>
 	<% end %>
 </section>
