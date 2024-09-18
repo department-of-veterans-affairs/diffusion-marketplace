@@ -156,6 +156,13 @@ module NavigationHelper
       end
     end
 
+    ### PRODUCTS
+    if controller == 'products'
+      if action == 'show'
+        empty_breadcrumbs # TODO: add home breadcrumbs after DM-5001
+      end
+    end
+
     ### VAMC breadcrumbs
     def add_facility_index_breadcrumb
       session[:breadcrumbs] << { 'display': 'Healthcare facility index', 'path': va_facilities_path }
