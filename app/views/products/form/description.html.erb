@@ -21,6 +21,18 @@
             </div>
             <div class="margin-bottom-5 margin-top-3">
               <div>
+                <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Tagline*
+                <% end %>
+                <span>Type a short sentence summarizing the key outcomes of your innovation. This text will display in search results. (72 characters max)</span>&nbsp;
+              </div>
+              <%= f.text_field :tagline, class: "usa-input #{ @product.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+
+              <p class="usa-error-message <%= @product.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@product, :tagline) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
                 <%= f.label :description, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Executive Summary*
                 <% end %>
