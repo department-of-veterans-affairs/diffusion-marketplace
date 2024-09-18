@@ -30,12 +30,11 @@
 <section id="practice-show-product-description" class="grid-container">
 	<h2>Product Description</h2>
 	<% product_description_fields = {
-	tagline: "Executive Summary",
+	description: "Executive Summary",
 	item_number: "Item Number",
 	vendor: "Vendor",
 	duns: "DUNS",
 	shipping_timeline_estimate: "Shipping Timeline Estimate",
-	description: "Description"
 	} %>
 	<% product_description_fields.each do |field_name, field_label| %>
 	<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= field_label %></h3>
