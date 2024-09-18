@@ -1,10 +1,14 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index]
-  before_action :set_product, only: [:description, :update]
-  before_action :check_product_permissions, only: [:update, :description]
+  before_action :set_product, only: [:update, :description, :intrapreneur]
+  before_action :check_product_permissions, only: [:update, :description, :intrapreneur]
 
   def description
     render 'products/form/description'
+  end
+
+  def intrapreneur
+    render 'products/form/intrapreneur'
   end
 
   def update
