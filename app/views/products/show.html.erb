@@ -1,9 +1,9 @@
 <section class="usa-section padding-y-0 margin-bottom-1 margin-top-0">
   <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
-      <div id="practice_show" class="grid-col-12 overview-section practice-section">
+      <div id="practice_show" class="grid-col-12 overview-section practice-section margin-y-3">
         <%= render partial: "shared/messages", locals: {small_text: false} %>
-        <% #render partial: "practices/show/practice_status_banner", locals: { practice: @practice } %>
+        <%= render partial: "products/product_status_banner", locals: { product: @product} %>
       </div>
     </div>
   </div>
