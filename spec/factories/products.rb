@@ -28,7 +28,6 @@ FactoryBot.define do
         )
         # Image
         PracticeMultimedium.create(
-          link_url: "https://www.youtube.com/watch?v=-oazAtTm-lk",
           name: "Dr. Jeffrey Heckman speaks about the collaborative origins of FLOW3 and how it 
           uses three custom-designed features to address issues with artificial limb authorizations.)",
           resource_type: "image",
