@@ -53,15 +53,24 @@
 	<h3>From the Innovator</h3>
 	<p><%= @product.origin_story %></p>
 </section>
-<section id="practice-show-multimedia" class="usa-section grid-container">
-	<h2>Multimedia</h2>
-	<% # @product.practice_multimedia %>
-	<% # video %>
-	<% # image %>
-	<% # file %>
-	<% # link %>
+<% if @product.practice_multimedia.any? %>
+  <section id="practice-show-multimedia" class="margin-bottom-5 grid-container">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-9 grid-col-12">
+      	<h2>Multimedia</h2><span>TO DO: fix partial to fix different heading levels</span>
+        <div class="multimedia-section practice-section">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @product.practice_multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
 
-</section>
+<% # @product.practice_multimedia %>
+<% # video %>
+<% # image %>
+<% # file %>
+	<% # link %>
 <section id="practice-show-order-instructions" class="usa-section grid-container">
 	<h2>Order Product</h2>
 	<ol class="usa-process-list">
