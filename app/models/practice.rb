@@ -292,7 +292,6 @@ class Practice < Innovation
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc{ |attributes| attributes['milestone'].blank? || attributes['timeline'].blank?}
-  accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
   accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['description'].blank? }
