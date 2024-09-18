@@ -19,26 +19,31 @@
 		      <p class="grid-col-12 font-sans-3xs text-base line-height-sans-4 margin-bottom-2">
 		        Last updated <%# timeago(updated_at) %>
 		      </p>
-
-		    <div class="practice-partners-section"><h5 class="text-uppercase display-inline margin-y-0">Partners:</h5>
-		    	<p class="display-inline line-height-26"><%= @product.practice_partners.pluck(:name).join(', ') %></p>
-			</div>
 		</div>
 	</div>
 </section>
 
 <section id="practice-show-product-description" class="grid-container">
 	<h2>Product Description</h2>
-	<% product_description_fields = {
-	description: "Executive Summary",
-	item_number: "Item Number",
-	vendor: "Vendor",
-	duns: "DUNS",
-	shipping_timeline_estimate: "Shipping Timeline Estimate",
-	} %>
-	<% product_description_fields.each do |field_name, field_label| %>
-	<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= field_label %></h3>
-	<p><%= @product.send(field_name.to_sym) %></p>
+	<% product_description_fields = [
+	[:description, "Executive Summary"],
+	[:item_number, "Item Number"],
+	[:vendor, "Vendor"],
+	[:duns, "DUNS"],
+	[:practice_partners, "Partners", @product&.practice_partners.pluck(:name).join(', ')],
+	[:shipping_timeline_estimate, "Shipping Timeline Estimate"]
+	] %>
+	<% product_description_fields.each do |arr| %>
+		<%	field_name = arr[0]
+				field_label = arr[1]
+				options = arr[2]
+		%>
+		<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= field_label %></h3>
+		<% if options.present? %>
+			<p><%= options %></p>
+		<% else %>
+			<p><%= @product.send(field_name.to_sym) %></p>
+		<% end %>
 	<% end %>
 </section>
 <section id="practice-show-intrapreneur" class="grid-container">
