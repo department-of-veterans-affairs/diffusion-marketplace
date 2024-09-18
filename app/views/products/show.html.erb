@@ -1,0 +1,87 @@
+<section class="usa-section padding-y-0 margin-bottom-1 margin-top-0">
+  <div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+      <div id="practice_show" class="grid-col-12 overview-section practice-section">
+        <%= render partial: "shared/messages", locals: {small_text: false} %>
+        <% #render partial: "practices/show/practice_status_banner", locals: { practice: @practice } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pr-view-introduction" class="grid-container margin-bottom-3">
+	<div class="grid-row grid-gap-2">
+		<div class="desktop:grid-col-8 grid-col-12">
+		      <h1 class="margin-top-0 margin-bottom-1 dm-word-break-break-word dm-hyphens-auto">
+		        <p><%= @product.name %></p>
+		      </h1>
+		      <%# innovation last update timestamp %>
+		      <p class="grid-col-12 font-sans-3xs text-base line-height-sans-4 margin-bottom-2">
+		        Last updated <%# timeago(updated_at) %>
+		      </p>
+
+		    <div class="practice-partners-section"><h5 class="text-uppercase display-inline margin-y-0">Partners:</h5>
+		    	<p class="display-inline line-height-26"><%= @product.practice_partners.pluck(:name).join(', ') %></p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="practice-show-product-description" class="usa-section grid-container">
+	<h2>Product Description</h2>
+	<% product_description_fields = {
+	tagline: "Executive Summary",
+	item_number: "Item Number",
+	vendor: "Vendor",
+	duns: "DUNS",
+	shipping_timeline_estimate: "Shipping Timeline Estimate",
+	origin_story: "From the Innovator",
+	description: "Description"
+	} %>
+	<% product_description_fields.each do |field_name, field_label| %>
+	<h3><%= field_label %></h3>
+	<p><%= @product.send(field_name.to_sym) %></p>
+	<% end %>
+</section>
+<section id="practice-show-intrapreneur" class="usa-section grid-container">
+	<h2>Intrapreneur</h2>
+	<h3><%= 'Innovator'.pluralize(@product.va_employee_practices.count) %></h3>
+	<% @product.va_employee_practices.each do |innovator| %>
+		<p><%= innovator.va_employee&.name %></p>
+		<p class="text-italic"><%= innovator.va_employee&.role %></p>
+	<% end %>
+	<h3>From the Innovator</h3>
+	<p><%= @product.origin_story %></p>
+</section>
+<section id="practice-show-multimedia" class="usa-section grid-container">
+	<h2>Multimedia</h2>
+	<% # @product.practice_multimedia %>
+	<% # video %>
+	<% # image %>
+	<% # file %>
+	<% # link %>
+
+</section>
+<section id="practice-show-order-instructions" class="usa-section grid-container">
+	<h2>Order Product</h2>
+	<ol class="usa-process-list">
+	  <li class="usa-process-list__item">
+	    <h4 class="usa-process-list__heading">Order from the Marketplace</h4>
+	    <p class="margin-top-05">
+	      VA employees wishing to order a product should copy and paste the details under the "Order" tab and send it to their usual service-line purchasing agent. If the order is above the purchase card threshold, contact <a class="usa-link" href="mailto:VAIMPSupport@va.gov">VAIMPSupport@va.gov</a>for information on contracting with the vendor. VA employees cannot order directly from the manufacturer unless they are authorized to do so.
+	    </p>
+	  </li>
+	  <li class="usa-process-list__item">
+	    <h4 class="usa-process-list__heading">Obtain a Completed VA Form 1091</h4>
+	    <p>
+	      For first-time purchases from a vendor, contact <a class="usa-link" href="mailto:VAIPMVendorizationRequest@va.gov">VAIPMVendorizationRequest@va.gov</a> to obtain a copy of the completed VA Form 10091 (FSC Vendor File Request Form).
+	    </p>
+	  </li>
+	  <li class="usa-process-list__item">
+	    <h4 class="usa-process-list__heading">Request a Local Vendor Number</h4>
+	    <p>
+	      Follow your local vendorization process to request the assignment of a local vendor number.
+	    </p>
+	  </li>
+	</ol>
+</section>
