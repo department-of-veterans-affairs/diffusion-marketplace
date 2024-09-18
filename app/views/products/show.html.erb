@@ -46,11 +46,13 @@
 	<h2>Intrapreneur</h2>
 	<h3><%= 'Innovator'.pluralize(@product.va_employee_practices.count) %></h3>
 	<% @product.va_employee_practices.each do |innovator| %>
+		<div class="innovators margin-bottom-1">
 		<p><%= innovator.va_employee&.name %></p>
 		<p class="text-italic"><%= innovator.va_employee&.role %></p>
+		</div>
 	<% end %>
 	<h3>From the Innovator</h3>
-	<p><%= @product.origin_story %></p>
+	<div class="origin-story"><%= simple_format(@product.origin_story, wrapper_tag: "p") %></div>
 </section>
 <% if @product.practice_multimedia.any? %>
   <section id="practice-show-multimedia" class="margin-bottom-5 grid-container">
