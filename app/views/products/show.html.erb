@@ -58,18 +58,14 @@
       <div class="desktop:grid-col-9 grid-col-12">
       	<h2>Multimedia</h2><span>TO DO: fix partial to fix different heading levels</span>
         <div class="multimedia-section practice-section">
-          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @product.practice_multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
+        	<% # temporarily skip files while troubleshooting %>
+        	<% multimedia = @product.practice_multimedia.where.not(resource_type: "file") %>
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
         </div>
       </div>
     </div>
   </section>
 <% end %>
-
-<% # @product.practice_multimedia %>
-<% # video %>
-<% # image %>
-<% # file %>
-	<% # link %>
 <section id="practice-show-order-instructions" class="grid-container">
 	<h2>Order Product</h2>
 	<ol class="usa-process-list">
