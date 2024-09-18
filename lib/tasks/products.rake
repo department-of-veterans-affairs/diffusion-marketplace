@@ -16,26 +16,25 @@ namespace :products do
       'DUNS #' => :duns,
       'Shipping Estimate' => :shipping_timeline_estimate,
       'Meet the Intrapreneur' => :origin_story,
-      'Description' => :description
+      'Description' => :description,
+      'Innovators' => :innovators
     }
 
     # Check the csv origin column values for changes or additions
     PRACTICE_PARTNER_MAPPING = {
-      "Spark-Seed-Spread" => "iNet Seed-Spark-Spread Innovation Investment Program",
-      "Greenhouse" => "iNet Greenhouse Initiative",
-      "Technology Transfer Program" => "VA Technology Transfer Program"
+      'Spark-Seed-Spread' => 'iNet Seed-Spark-Spread Innovation Investment Program',
+      'Greenhouse' => 'iNet Greenhouse Initiative',
+      'Technology Transfer Program' => 'VA Technology Transfer Program'
     }
 
     CSV.foreach(csv_file_path, headers: true) do |row|
       product_attributes = row.to_hash.transform_keys { |key| COLUMN_MAPPING[key.strip] }.compact
       origin = product_attributes.delete(:origin)
+      innovators = product_attributes.delete(:innovators)
 
       product_attributes.each do |key, value|
-        if value == "N/A"
+        if value == 'N/A' || value == ''
           product_attributes[key] = nil
-        elsif value.is_a?(String)
-          product_attributes[key] = value.gsub(/""/, "'")
-          product_attributes[key] = product_attributes[key].gsub(/\A\\?\"|\\?\"\z/, '').strip
         end
       end
 
@@ -43,16 +42,36 @@ namespace :products do
       product.update!(product_attributes)
 
       if PRACTICE_PARTNER_MAPPING[origin]
-        practice_partner = PracticePartner.find_or_initialize_by(name: PRACTICE_PARTNER_MAPPING[origin])
-        PracticePartnerPractice.create!(innovable: product, practice_partner: practice_partner)
+        practice_partner = PracticePartner.find_or_create_by!(name: PRACTICE_PARTNER_MAPPING[origin])
+
+        PracticePartnerPractice.find_or_create_by!(
+          innovable: product, practice_partner: practice_partner
+        )
       end
 
-      vha_practice_partner = PracticePartner.find_or_initialize_by(slug: "vha-innovators-network")
-      PracticePartnerPractice.create!(innovable: product, practice_partner: vha_practice_partner)
+      vha_practice_partner = PracticePartner.find_or_create_by!(slug: 'vha-innovators-network')
+      PracticePartnerPractice.find_or_create_by!(
+        innovable: product, practice_partner: vha_practice_partner
+      )
+
+      if innovators
+        innovator_data = innovators.split("\n\n").map do |set|
+          name, role = set.split("\n")
+          { name: name.strip, role: role.strip }
+        end
+
+        innovator_data.each do |innovator_datum|
+          va_employee = VaEmployee.find_or_create_by!(
+            name: innovator_datum[:name], role: innovator_datum[:role]
+          )
+          VaEmployeePractice.find_or_create_by!(va_employee: va_employee, innovable: product)
+        end
+      end
+
 
       puts "Created Product - #{product.name}"
     end
 
-    puts "All Products have been added to the DB!"
+    puts 'All Products have been added to the DB!'
   end
 end
