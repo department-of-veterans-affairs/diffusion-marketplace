@@ -1,4 +1,4 @@
-<section class="usa-section padding-y-0 margin-bottom-1 margin-top-0">
+<section class="padding-y-0 margin-bottom-1 margin-top-0">
   <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
       <div id="practice_show" class="grid-col-12 overview-section practice-section margin-y-3">
@@ -27,7 +27,7 @@
 	</div>
 </section>
 
-<section id="practice-show-product-description" class="usa-section grid-container">
+<section id="practice-show-product-description" class="grid-container">
 	<h2>Product Description</h2>
 	<% product_description_fields = {
 	tagline: "Executive Summary",
@@ -43,7 +43,7 @@
 	<p><%= @product.send(field_name.to_sym) %></p>
 	<% end %>
 </section>
-<section id="practice-show-intrapreneur" class="usa-section grid-container">
+<section id="practice-show-intrapreneur" class="grid-container">
 	<h2>Intrapreneur</h2>
 	<h3><%= 'Innovator'.pluralize(@product.va_employee_practices.count) %></h3>
 	<% @product.va_employee_practices.each do |innovator| %>
@@ -71,7 +71,7 @@
 <% # image %>
 <% # file %>
 	<% # link %>
-<section id="practice-show-order-instructions" class="usa-section grid-container">
+<section id="practice-show-order-instructions" class="grid-container">
 	<h2>Order Product</h2>
 	<ol class="usa-process-list">
 	  <li class="usa-process-list__item">
