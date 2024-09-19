@@ -8,6 +8,9 @@ class Product < Innovation
 
   after_update :update_date_published
 
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   def user_email
     user&.email
   end
