@@ -37,10 +37,10 @@
                         <div class="grid-row">
                           <div class="grid-col-12">
 
-                              <%= vae.label :name, 'Innovator Name', class: 'usa-label margin-top-0', alt: 'hello' %>
+                              <%= vae.label :name, 'Innovator Name*', class: 'usa-label margin-top-0 text-underline', alt: 'hello' %>
                             <div>Type the name of the team member.</div>
                             <%= vae.text_field :name, class: 'usa-input practice-input va-employee-name-input' %>
-                            <%= vae.label :role, 'Innovator Role', class: 'usa-label' %>
+                            <%= vae.label :role, 'Innovator Role*', class: 'usa-label text-underline' %>
                             <div>Type the job title of the team member. </div>
                             <%= vae.text_field :role, class: 'usa-input practice-input va-employee-role' %>
                           </div>
@@ -79,7 +79,7 @@
 
               <div class="padding-top-10">
                 <div>
-                  <%= f.label :origin_stroy, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  <%= f.label :origin_stroy, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2 text-underline' do %>
                     Innovator Quote*
                   <% end %>
                   <span>Type the official name of your product.</span>&nbsp;
