@@ -516,7 +516,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
   end
 
   def is_enabled
-    unless @practice.enabled
+    unless @practice.enabled || current_user&.has_role?(:admin)
       redirect_to(root_path)
     end
   end
