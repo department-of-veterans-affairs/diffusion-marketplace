@@ -1100,7 +1100,9 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
     t.string "price"
     t.datetime "date_published"
     t.boolean "retired", default: false, null: false
+    t.string "slug"
     t.index ["name"], name: "index_products_on_name", unique: true
+    t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
