@@ -6,6 +6,54 @@
         <h1 class="margin-top-0">Description</h1>
         <%= nested_form_for(@product, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-10">
+            <div id="multimedia_section">
+              <div class="margin-top-3">
+                <p class="line-height-18px margin-bottom-2 text-bold">Multimedia</p>
+                <p class="line-height-26">
+                  Add any additional images, video, and audio to support your innovation's overview.
+                </p>
+              </div>
+              <div class="dm-file-form grid-row grid-gap margin-bottom-5">
+                <div class="usa-radio position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'Image',
+                                       false, onclick: "displayResourceForm('multimedia', 'image');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_image"
+                  %>
+                  <%= label_tag 'practice_multimedia_image', 'Image', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_image" %>
+                </div>
+                <div class="usa-radio position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'Video',
+                                       false, onclick: "displayResourceForm('multimedia', 'video');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_video"
+                  %>
+                  <%= label_tag 'practice_multimedia_video', 'Video', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_video" %>
+                </div>
+                <div id="display_multimedia_form" class="display_problem_form grid-col-12">
+                  <%= render partial: "practices/overview_forms/image_form", locals: {area: 'multimedia'} %>
+                  <%= render partial: "practices/overview_forms/video_form", locals: {area: 'multimedia'} %>
+                </div>
+              </div>
+              <div id="display_multimedia_image">
+                <% if @product.practice_multimedia.where(resource_type: 'image').exists? %>
+                  <h5 id="multimedia_image_section_text" class="text-bold margin-bottom-2 margin-top-0 font-sans-3xs text-ls-1 line-height-15px">IMAGES:</h5>
+                  <% @product.practice_multimedia.where(resource_type: 'image').each_with_index do |pr, i| %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                  <% end %>
+                <% end %>
+              </div>
+              <div id="display_multimedia_video">
+                <% if @product.practice_multimedia.where(resource_type: 'video').exists? %>
+                  <h5 id="multimedia_video_section_text" class="text-bold margin-bottom-2 margin-top-0 font-sans-3xs text-ls-1 line-height-15px">VIDEOS:</h5>
+                <% end %>
+                <% @product.practice_multimedia.where(resource_type: 'video').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                <% end %>
+              </div>
+            </div>
           </fieldset>
         <% end %>
       </section>
