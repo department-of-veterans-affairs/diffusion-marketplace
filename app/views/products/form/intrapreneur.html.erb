@@ -82,7 +82,7 @@
                   <%= f.label :origin_stroy, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2 text-underline' do %>
                     Innovator Quote*
                   <% end %>
-                  <span>Type the official name of your product.</span>&nbsp;
+                  <span>Quote provided by the Innovator(s).</span>&nbsp;
                 </div>
                 <%= f.text_area :origin_story, class: "usa-textarea #{ @product.errors[:origin_story].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input dm-required-field", required: true %>
 
