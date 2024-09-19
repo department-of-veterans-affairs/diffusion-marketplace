@@ -66,6 +66,10 @@ ActiveAdmin.register Product do
       super.left_joins(:user)
     end
 
+    def find_resource
+      scoped_collection.friendly.find(params[:id])
+    end
+
     def create
       ActiveRecord::Base.transaction do
         product = Product.new(product_params)
@@ -78,7 +82,7 @@ ActiveAdmin.register Product do
 
     def update
       ActiveRecord::Base.transaction do
-        @product = Product.find(params[:id])
+        @product = Product.friendly.find(params[:id])
         @product.assign_attributes(product_params)
         handle_user_email(@product)
 
