@@ -17,7 +17,7 @@
 		      </h1>
 		      <%# innovation last update timestamp %>
 		      <p class="grid-col-12 font-sans-3xs text-base line-height-sans-4 margin-bottom-2">
-		        Last updated <%# timeago(updated_at) %>
+		        Last updated <%= timeago(@product&.updated_at) %>
 		      </p>
 		</div>
 	</div>
