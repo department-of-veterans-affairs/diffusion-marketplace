@@ -38,6 +38,7 @@
 				field_label = arr[1]
 				options = arr[2]
 		%>
+		<% next if @product.send(field_name.to_sym).blank? %>
 		<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= field_label %></h3>
 		<% if options.present? %>
 			<p><%= options %></p>
