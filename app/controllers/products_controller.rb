@@ -44,21 +44,6 @@ class ProductsController < ApplicationController
     @product = Product.friendly.find(product_id)
   end
 
-  def can_view_product
-    # if practice is not published
-    unless @product.published
-      unauthorized_response if current_user.blank?
-      prevent_product_permissions if current_user.present?
-    end
-  end
-
-  def prevent_product_permissions
-    # if the user is the product owner or the user is an admin or TODO: product editor
-    unless current_user.has_role?(:admin) || @product.user_id == current_user.id #|| is_user_an_editor_for_practice(@practice, current_user)
-      unauthorized_response
-    end
-  end
-
   def product_params
     params.require(:product).permit(
       :name,
