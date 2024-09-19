@@ -18,6 +18,7 @@ describe 'Admin - Practices', type: :feature do
       end
       visit practice_path(@enabled_practice)
       expect(page).to have_content(@enabled_practice.name)
+      expect(page).to have_content('Disabled innovation')
       logout
       visit practice_path(@enabled_practice)
       expect(page).not_to have_content(@enabled_practice.name)
