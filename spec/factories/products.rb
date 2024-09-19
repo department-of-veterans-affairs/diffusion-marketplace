@@ -28,7 +28,7 @@ FactoryBot.define do
         )
         # Image
         PracticeMultimedium.create(
-          name: "Dr. Jeffrey Heckman speaks about the collaborative origins of FLOW3 and how it 
+          name: "Dr. Jeffrey Heckman speaks about the collaborative origins of FLOW3 and how it
           uses three custom-designed features to address issues with artificial limb authorizations.)",
           resource_type: "image",
           innovable: product,
@@ -53,6 +53,17 @@ FactoryBot.define do
           resource_type: "link",
           innovable: product
         )
+      end
+    end
+
+    trait :with_va_employees do
+      after(:create) do |product|
+        create_list(:va_employee, 3).each do |employee|
+          VaEmployeePractice.create(
+            innovable: product,
+            va_employee: employee
+          )
+        end
       end
     end
   end
