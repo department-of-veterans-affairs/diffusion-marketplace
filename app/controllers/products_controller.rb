@@ -60,7 +60,7 @@ class ProductsController < ApplicationController
   end
 
   def check_product_permissions
-    unless current_user.has_role?(:admin) || @product&.user_id == current_user.id
+    unless current_user&.has_role?(:admin) || @product&.user_id == current_user&.id
       unauthorized_response
     end
   end
