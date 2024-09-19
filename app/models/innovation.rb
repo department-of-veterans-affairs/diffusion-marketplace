@@ -11,6 +11,8 @@ class Innovation < ApplicationRecord
   has_many :practice_partner_practices, as: :innovable, dependent: :destroy
   has_many :practice_partners, through: :practice_partner_practices
 
+  accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
+
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
 end
