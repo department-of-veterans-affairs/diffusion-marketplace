@@ -15,6 +15,10 @@ class ProductsController < ApplicationController
     render 'products/show'
   end
 
+  def multimedia
+    render 'products/form/multimedia'
+  end
+
   def update
     submitted_product_data = product_params
     submitted_page = submitted_product_data.delete(:submitted_page)
