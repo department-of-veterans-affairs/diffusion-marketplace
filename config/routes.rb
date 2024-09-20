@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   resources :products, except: :index do
     get '/edit/description', action: 'description', as: 'description'
     get '/edit/intrapreneur', action: 'intrapreneur', as: 'intrapreneur'
+    get '/products/:id', action: 'show'
   end
 
   # old practice routes redirects
