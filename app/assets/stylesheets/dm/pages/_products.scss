@@ -1,0 +1,11 @@
+.products.show-main {
+	#practice-show-intrapreneur {
+		.origin-story p {
+			margin-bottom: 0.5rem;
+		}
+
+	}
+	p {
+		@extend .line-height-26;
+	}
+}

@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index]
-  before_action :set_product, only: [:update, :description, :intrapreneur]
-  before_action :check_product_permissions, only: [:update, :description, :intrapreneur]
+  before_action :set_product, only: [:show, :update, :description, :intrapreneur]
+  before_action :check_product_permissions, only: [:show, :update, :description, :intrapreneur]
 
   def description
     render 'products/form/description'
@@ -9,6 +9,10 @@ class ProductsController < ApplicationController
 
   def intrapreneur
     render 'products/form/intrapreneur'
+  end
+
+  def show
+    render 'products/show'
   end
 
   def update
@@ -56,7 +60,7 @@ class ProductsController < ApplicationController
   end
 
   def check_product_permissions
-    unless current_user.has_role?(:admin) || @product&.user_id == current_user.id
+    unless current_user&.has_role?(:admin) || @product&.user_id == current_user&.id
       unauthorized_response
     end
   end
