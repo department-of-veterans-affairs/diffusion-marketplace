@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_19_013959) do
+ActiveRecord::Schema.define(version: 2024_09_20_234630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -234,15 +234,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.index ["commontable_type", "commontable_id"], name: "index_commontator_threads_on_c_id_and_c_type", unique: true
   end
 
-  create_table "costs", force: :cascade do |t|
-    t.string "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_costs_on_practice_id"
-  end
-
   create_table "department_practices", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "department_id"
@@ -278,15 +269,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "difficulties", force: :cascade do |t|
-    t.string "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_difficulties_on_practice_id"
   end
 
   create_table "diffusion_histories", force: :cascade do |t|
@@ -1098,16 +1080,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
     t.index ["practice_id"], name: "index_publications_on_practice_id"
   end
 
-  create_table "required_staff_trainings", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_required_staff_trainings_on_practice_id"
-  end
-
   create_table "risk_mitigations", force: :cascade do |t|
     t.integer "position"
     t.bigint "practice_id"
@@ -1407,12 +1379,10 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
   add_foreign_key "commontator_comments", "commontator_comments", column: "parent_id", on_update: :restrict, on_delete: :cascade
   add_foreign_key "commontator_comments", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
   add_foreign_key "commontator_subscriptions", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
-  add_foreign_key "costs", "practices"
   add_foreign_key "department_practices", "departments"
   add_foreign_key "department_practices", "practices"
   add_foreign_key "developing_facility_type_practices", "developing_facility_types"
   add_foreign_key "developing_facility_type_practices", "practices"
-  add_foreign_key "difficulties", "practices"
   add_foreign_key "diffusion_histories", "clinical_resource_hubs"
   add_foreign_key "diffusion_histories", "practices"
   add_foreign_key "diffusion_histories", "va_facilities"
@@ -1474,7 +1444,6 @@ ActiveRecord::Schema.define(version: 2024_08_19_013959) do
   add_foreign_key "practice_testimonials", "practices"
   add_foreign_key "practices", "users"
   add_foreign_key "publications", "practices"
-  add_foreign_key "required_staff_trainings", "practices"
   add_foreign_key "risk_mitigations", "practices"
   add_foreign_key "risks", "risk_mitigations"
   add_foreign_key "survey_result_files", "practices"
