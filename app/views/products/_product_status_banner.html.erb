@@ -1,0 +1,26 @@
+<%
+  published = product.published
+  retired = product.retired
+%>
+<% unless published %>
+  <div class="usa-alert usa-alert--warning">
+    <div class="usa-alert__body">
+      <h3 class="usa-alert__heading">This innovation will not be shown in the marketplace because it is:</h3>
+      <% unless published %>
+        <div>
+         Unpublished
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<% if retired %>
+  <div class="usa-alert usa-alert--info margin-bottom-3 margin-top-1">
+    <div class="usa-alert__body">
+      <h4 class="usa-alert__heading">Retired innovation</h4>
+      <div class="usa-alert__text">
+        This innovation is no longer being updated.
+      </div>
+    </div>
+  </div>
+<% end %>
