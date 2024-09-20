@@ -79,10 +79,6 @@ describe 'Importer' do
       expect(flow3.additional_resources.count).to be(1)
       expect(flow3.additional_resources.first.description).to eq('VISN-Wide Corporate Data Warehouse (CDW) Access')
 
-      # Required Staff Training
-      expect(flow3.required_staff_trainings.count).to be(1)
-      expect(flow3.required_staff_trainings.first.title).to eq('Clinical Staff')
-
       # Costs
       expect(flow3.costs.count).to be(2)
       expect(flow3.costs.first.description).to eq('Minimal FTE')

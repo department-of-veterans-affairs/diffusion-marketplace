@@ -116,7 +116,6 @@ namespace :importer do
       risk_mitigations
       additional_staff
       additional_resources
-      required_training_staff
       costs_difficulties
       impact_photos
       domains
@@ -687,23 +686,6 @@ def additional_resources
     next if answer.blank?
 
     AdditionalResource.create(practice: @practice, description: answer) unless AdditionalResource.where(description: answer, practice: @practice).any?
-  end
-end
-
-def required_training_staff
-  puts "==> Importing Practice: #{@name} Required Training Staff".light_blue
-  @practice.required_staff_trainings.each(&:destroy)
-  question_fields = {
-      'Who is required to take the training?': 5
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-
-    answer = @answers[q_index]
-    next if answer.blank?
-
-    RequiredStaffTraining.create(practice: @practice, title: answer) unless RequiredStaffTraining.where(title: answer, practice: @practice).any?
   end
 end
 
