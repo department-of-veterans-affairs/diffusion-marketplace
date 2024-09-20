@@ -566,7 +566,6 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      video_files_attributes: [:id, :title, :description, :url, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                               :attachment_crop_w, :attachment_crop_h, :_destroy],
-                                     difficulties_attributes: [:id, :description, :_destroy],
                                      risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
                                      timelines_attributes: [:id, :description, :milestone, :timeline, :_destroy, :position],
                                      va_employees_attributes: [:id, :name, :role, :_destroy],

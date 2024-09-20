@@ -13,12 +13,10 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:clinical_conditions) }
     it { should have_many(:clinical_location_practices) }
     it { should have_many(:clinical_locations) }
-    it { should have_many(:costs) }
     it { should have_many(:department_practices) }
     it { should have_many(:departments) }
     it { should have_many(:developing_facility_type_practices) }
     it { should have_many(:developing_facility_types) }
-    it { should have_many(:difficulties) }
     it { should have_many(:domain_practices) }
     it { should have_many(:domains) }
     it { should have_many(:financial_files) }
