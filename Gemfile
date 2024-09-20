@@ -8,7 +8,7 @@ gem 'rails', '~> 6.1'
 gem 'pg'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
-gem 'puma', '~> 6.4.2'
+gem 'puma', '~> 6.4.3'
 gem 'terser'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 
