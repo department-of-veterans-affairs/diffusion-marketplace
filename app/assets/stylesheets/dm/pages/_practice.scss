@@ -204,19 +204,11 @@
   }
 }
 
-.add-required-staff-link {
-  margin-top: 24px !important;
-}
-
-.add-additional-staff-link, .add-required-staff-link, .add-practice-resources-link,
+.add-additional-staff-link, .add-practice-resources-link,
 .add-impact-photo-link, .add-practice-creator-link, .add-additional-document-link, .add-publication-link,
 .add-video-file-link, .add-permission-link, .add-resource-link {
   margin-top: 24px !important;
   margin-bottom: 44px;
-}
-
-#required-training-container {
-  display: none;
 }
 
 .milestone-textarea, .risk-description, .mitigation-description,
@@ -289,7 +281,7 @@
   left: 8px !important;
 }
 
-.origin-errors-ul, .complexity-errors-ul, .complexity-errors-ul, .resources-errors-ul,
+.origin-errors-ul, .resources-errors-ul,
 .impact-errors-ul {
   padding-left: 20px;
   margin-top: 5px;
