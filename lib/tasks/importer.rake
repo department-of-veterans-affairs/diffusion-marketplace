@@ -116,8 +116,6 @@ namespace :importer do
       risk_mitigations
       additional_staff
       additional_resources
-      required_training_staff
-      costs_difficulties
       impact_photos
       domains
       practice_permissions
@@ -687,51 +685,6 @@ def additional_resources
     next if answer.blank?
 
     AdditionalResource.create(practice: @practice, description: answer) unless AdditionalResource.where(description: answer, practice: @practice).any?
-  end
-end
-
-def required_training_staff
-  puts "==> Importing Practice: #{@name} Required Training Staff".light_blue
-  @practice.required_staff_trainings.each(&:destroy)
-  question_fields = {
-      'Who is required to take the training?': 5
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-
-    answer = @answers[q_index]
-    next if answer.blank?
-
-    RequiredStaffTraining.create(practice: @practice, title: answer) unless RequiredStaffTraining.where(title: answer, practice: @practice).any?
-  end
-end
-
-def costs_difficulties
-  puts "==> Importing Practice: #{@name} Costs and Difficulties".light_blue
-  @practice.costs.each(&:destroy)
-  @practice.difficulties.each(&:destroy)
-  question_fields = {
-      'List other Costs of Implementation that are unique to your Practice.': 6
-  }
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + 2
-
-    (q_index..end_index).each do |i|
-      next if @answers[i].blank?
-
-      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\/)
-        split_answer.each do |ans|
-          Cost.create practice: @practice, description: @answers[i] unless Cost.where(description: @answers[i], practice: @practice).any?
-          Difficulty.create practice: @practice, description: @answers[i + 3] unless Difficulty.where(description: @answers[i + 3], practice: @practice).any?
-        end
-      else
-        Cost.create practice: @practice, description: @answers[i] unless Cost.where(description: @answers[i], practice: @practice).any?
-        Difficulty.create practice: @practice, description: @answers[i + 3] unless Difficulty.where(description: @answers[i + 3], practice: @practice).any?
-      end
-    end
   end
 end
 

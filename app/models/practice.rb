@@ -231,13 +231,11 @@ class Practice < ApplicationRecord
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
   has_many :clinical_location_practices, dependent: :destroy
-  has_many :clinical_locations, through: :clinical_location_practices
-  has_many :costs, dependent: :destroy
+  has_many :clinical_locations, through: :clinical_location_practices 
   has_many :department_practices, dependent: :destroy
   has_many :departments, through: :department_practices
   has_many :developing_facility_type_practices, dependent: :destroy
   has_many :developing_facility_types, through: :developing_facility_type_practices
-  has_many :difficulties, dependent: :destroy
   has_many :diffusion_histories, dependent: :destroy
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
@@ -253,7 +251,6 @@ class Practice < ApplicationRecord
   has_many :practice_partners, through: :practice_partner_practices
   has_many :practice_permissions, -> { order(position: :asc) }, dependent: :destroy
   has_many :publications, -> { order(position: :asc) }, dependent: :destroy
-  has_many :required_staff_trainings, dependent: :destroy
   has_many :risk_mitigations, -> { order(position: :asc) }, dependent: :destroy
   has_many :survey_result_files, dependent: :destroy
   has_many :timelines, -> { order(position: :asc) }, dependent: :destroy
@@ -301,13 +298,11 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :department_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['value'].blank? }
 
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
-  accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc{ |attributes| attributes['milestone'].blank? || attributes['timeline'].blank?}
   accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
   accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
-  accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :practice_creators, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :practice_permissions, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes|
@@ -319,12 +314,6 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
   accepts_nested_attributes_for :practice_emails, allow_destroy: true, reject_if: proc { |attributes| attributes['address'].blank? }
   accepts_nested_attributes_for :practice_editors, allow_destroy: true, reject_if: proc { |attributes| attributes['email'].blank? }
-  SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
-  COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
-  # also known as "Difficulty"
-  COMPLEXITY_LABELS = ['Little or no complexity', 'Some complexity', 'Significant complexity', 'High or large complexity'].freeze
-  TIME_ESTIMATE_OPTIONS = ['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
-  NUMBER_DEPARTMENTS_OPTIONS = ['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
 
   def committed_user_count
     user_practices.where(committed: true).count
