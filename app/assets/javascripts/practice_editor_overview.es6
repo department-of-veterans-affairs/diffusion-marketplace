@@ -8,6 +8,7 @@
         attachAddResourceListener('problem_resources_link_form', 'display_problem_resources_link', 'problem_resources', 'link');
         attachAddResourceListener('solution_resources_link_form', 'display_solution_resources_link', 'solution_resources', 'link');
         attachAddResourceListener('results_resources_link_form', 'display_results_resources_link', 'results_resources', 'link');
+        attachAddResourceListener('multimedia_link_form', 'display_multimedia_link', 'multimedia', 'link');
 
         //Videos
         attachAddResourceListener('problem_resources_video_form', 'display_problem_resources_video', 'problem_resources', 'video');
@@ -19,6 +20,7 @@
         attachAddResourceListener('problem_resources_file_form', 'display_problem_resources_file', 'problem_resources', 'file');
         attachAddResourceListener('solution_resources_file_form', 'display_solution_resources_file', 'solution_resources', 'file');
         attachAddResourceListener('results_resources_file_form', 'display_results_resources_file', 'results_resources', 'file');
+        attachAddResourceListener('multimedia_file_form', 'display_multimedia_file', 'multimedia', 'file');
 
         //Images
         attachAddResourceListener('problem_resources_image_form', 'display_problem_resources_image', 'problem_resources', 'image');
@@ -114,6 +116,17 @@
             document.getElementById("multimedia_video_form").style.display = 'none';
             document.getElementById('practice_multimedia_video').checked = false;
         });
+
+        $(document).on('click', '#cancel_multimedia_link', function (e) {
+            e.preventDefault();
+            document.getElementById("multimedia_link_form").style.display = 'none';
+            document.getElementById('practice_multimedia_link').checked = false;
+        });
+        $(document).on('click', '#cancel_multimedia_file', function (e) {
+            e.preventDefault();
+            document.getElementById("multimedia_file_form").style.display = 'none';
+            document.getElementById('practice_multimedia_file').checked = false;
+        });
     }
 
     function hideResources() {
@@ -132,6 +145,3 @@ function displayResourceForm(sArea, sType) {
     $(`#display_${sArea}_form div[id*="_form"]`).hide();
     $(`#display_${sArea}_form div[id="${sArea}_${sType}_form"]`).show();
 }
-
-
-

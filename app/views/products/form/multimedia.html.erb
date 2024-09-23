@@ -39,9 +39,29 @@
                   %>
                   <%= label_tag 'practice_multimedia_video', 'Video', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_video" %>
                 </div>
+                <div class="usa-radio position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'Link',
+                                       false, onclick: "displayResourceForm('multimedia', 'link');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_link"
+                  %>
+                  <%= label_tag 'practice_multimedia_link', 'Link', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_link" %>
+                </div>
+                <div class="usa-radio position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'File',
+                                       false, onclick: "displayResourceForm('multimedia', 'file');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_file"
+                  %>
+                  <%= label_tag 'practice_multimedia_file', 'File', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_file" %>
+                </div>
                 <div id="display_multimedia_form" class="display_problem_form grid-col-12">
                   <%= render partial: "practices/overview_forms/image_form", locals: {area: 'multimedia'} %>
                   <%= render partial: "practices/overview_forms/video_form", locals: {area: 'multimedia'} %>
+                  <%= render partial: "practices/overview_forms/link_form", locals: {area: 'multimedia'} %>
+                  <%= render partial: "practices/overview_forms/file_form", locals: {area: 'multimedia'} %>
                 </div>
               </div>
               <div id="display_multimedia_image">
@@ -60,6 +80,27 @@
                   <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
                 <% end %>
               </div>
+              <div id="display_multimedia_link">
+                <% if @product.practice_multimedia.where(resource_type: 'link').exists? %>
+                  <h5 id="multimedia_link_section_text" class="text-bold font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">LINKS:</h5>
+                <% end %>
+                <% @product.practice_multimedia.where(resource_type: 'link').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/link_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                <% end %>
+              </div>
+              <div id="display_multimedia_file">
+                <% if @product.practice_multimedia.where(resource_type: 'file').exists? %>
+                  <h5 id="multimedia_file_section_text" class="text-bold font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">FILES:</h5>
+                <% end %>
+                <% @product.practice_multimedia.where(resource_type: 'file').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/file_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                <% end %>
+              </div>
+            </div>
+            <%= f.hidden_field :submitted_page, value: request.original_url.split('/').last %>
+            <!-- Remove once footer with submit button is implemented -->
+            <div class="margin-top-4">
+              <%= f.submit 'Submit', class: 'usa-button usa-button--primary' %>
             </div>
           </fieldset>
         <% end %>
