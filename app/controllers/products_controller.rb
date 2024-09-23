@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :set_product, only: [:show, :update, :description, :intrapreneur, :multimedia]
-  before_action :check_product_permissions, only: [:show, :update, :description, :intrapreneur]
+  before_action :check_product_permissions, only: [:show, :update, :description, :intrapreneur, :multimedia]
 
   def description
     render 'products/form/description'
@@ -22,9 +22,14 @@ class ProductsController < ApplicationController
   def update
     submitted_product_data = product_params
     submitted_page = submitted_product_data.delete(:submitted_page)
+
+    if params[:practice].present?
+      submitted_product_data = process_multimedia_params(multimedia_params)
+    end
+
     @product.assign_attributes(submitted_product_data)
 
-    if @product.changed? || va_employees_updated
+    if @product.changed? || product_associations_changed?
       unless @product.save
         flash[:error] = @product.errors.map {|error| error.options[:message]}.join(', ')
         redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
@@ -59,8 +64,14 @@ class ProductsController < ApplicationController
       :shipping_timeline_estimate,
       :origin_story,
       :submitted_page,
-      va_employees_attributes: [:id, :name, :role, :_destroy]
-      )
+      va_employees_attributes: [:id, :name, :role, :_destroy],
+    )
+  end
+
+  def multimedia_params
+    params.require(:practice).permit(
+      practice_multimedia_attributes: permitted_dynamic_keys(params[:practice][:practice_multimedia_attributes])
+    )
   end
 
   def check_product_permissions
@@ -69,8 +80,48 @@ class ProductsController < ApplicationController
     end
   end
 
-  def va_employees_updated
-    @product.va_employees.any? { |employee| employee.changed? || employee.marked_for_destruction? } ||
-      @product.va_employees.length != @product.va_employees.reject(&:marked_for_destruction?).length
+  def product_associations_changed?
+  @product.va_employees.any? { |record| record.changed? || record.marked_for_destruction? } ||
+    @product.va_employees.length != @product.va_employees.reject(&:marked_for_destruction?).length ||
+    @product.practice_multimedia.any? { |record| record.changed? || record.marked_for_destruction? } ||
+    @product.practice_multimedia.length != @product.practice_multimedia.reject(&:marked_for_destruction?).length
+end
+
+  def permitted_dynamic_keys(params)
+    return {} unless params
+
+    params.transform_keys! do |key|
+      key.match?(/^\d+$/) ? "#{key}_resource" : key
+    end
+
+    params.keys.index_with do |_key|
+      [
+        :id,
+        :link_url,
+        :attachment_file_name,
+        :description,
+        :position,
+        :resource,
+        :resource_type_label,
+        :resource_type,
+        :media_type,
+        :crop_x,
+        :crop_y,
+        :crop_w,
+        :crop_h,
+        :name,
+        :image_alt_text,
+        :attachment,
+        :_destroy,
+        :value
+      ]
+    end
+  end
+
+  def process_multimedia_params(params)
+    PracticeMultimedium.resource_types.each do |rt|
+      params['practice_multimedia_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+    end
+    params
   end
 end
