@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+  include CropperUtils
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :set_product, only: [:show, :update, :description, :intrapreneur, :multimedia]
   before_action :check_product_permissions, only: [:show, :update, :description, :intrapreneur, :multimedia]
@@ -25,6 +26,7 @@ class ProductsController < ApplicationController
 
     if params[:practice].present?
       submitted_product_data = process_multimedia_params(multimedia_params)
+      handle_multimedia_updates
     end
 
     @product.assign_attributes(submitted_product_data)
@@ -115,6 +117,19 @@ end
         :_destroy,
         :value
       ]
+    end
+  end
+
+  def handle_multimedia_updates
+    multimedia_resources = multimedia_params["practice_multimedia_attributes"]
+    if multimedia_resources
+      multimedia_resources.each do |r|
+        if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
+          r_id = r[1][:id].to_i
+          record = @product.practice_multimedia.find(r_id)
+          reprocess_attachment(record, r[1])
+        end
+      end
     end
   end
 
