@@ -105,6 +105,19 @@ class ProductsController < ApplicationController
       @product.practice_multimedia.length != @product.practice_multimedia.reject(&:marked_for_destruction?).length
   end
 
+  def handle_multimedia_updates
+    multimedia_resources = multimedia_params["practice_multimedia_attributes"]
+    if multimedia_resources
+      multimedia_resources.each do |r|
+        if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
+          r_id = r[1][:id].to_i
+          record = @product.practice_multimedia.find(r_id)
+          reprocess_attachment(record, r[1])
+        end
+      end
+    end
+  end
+
   def process_multimedia_params(params)
     PracticeMultimedium.resource_types.each do |rt|
       params['practice_multimedia_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
