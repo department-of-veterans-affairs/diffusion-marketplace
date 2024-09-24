@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  include CropperUtils
+  include CropperUtils, InnovationControllerMethods
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :set_product, only: [:show, :update, :description, :intrapreneur, :multimedia]
   before_action :check_product_permissions, only: [:show, :update, :description, :intrapreneur, :multimedia]
@@ -83,41 +83,10 @@ class ProductsController < ApplicationController
   end
 
   def product_associations_changed?
-  @product.va_employees.any? { |record| record.changed? || record.marked_for_destruction? } ||
-    @product.va_employees.length != @product.va_employees.reject(&:marked_for_destruction?).length ||
-    @product.practice_multimedia.any? { |record| record.changed? || record.marked_for_destruction? } ||
-    @product.practice_multimedia.length != @product.practice_multimedia.reject(&:marked_for_destruction?).length
-end
-
-  def permitted_dynamic_keys(params)
-    return {} unless params
-
-    params.transform_keys! do |key|
-      key.match?(/^\d+$/) ? "#{key}_resource" : key
-    end
-
-    params.keys.index_with do |_key|
-      [
-        :id,
-        :link_url,
-        :attachment_file_name,
-        :description,
-        :position,
-        :resource,
-        :resource_type_label,
-        :resource_type,
-        :media_type,
-        :crop_x,
-        :crop_y,
-        :crop_w,
-        :crop_h,
-        :name,
-        :image_alt_text,
-        :attachment,
-        :_destroy,
-        :value
-      ]
-    end
+    @product.va_employees.any? { |record| record.changed? || record.marked_for_destruction? } ||
+      @product.va_employees.length != @product.va_employees.reject(&:marked_for_destruction?).length ||
+      @product.practice_multimedia.any? { |record| record.changed? || record.marked_for_destruction? } ||
+      @product.practice_multimedia.length != @product.practice_multimedia.reject(&:marked_for_destruction?).length
   end
 
   def handle_multimedia_updates
