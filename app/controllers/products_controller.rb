@@ -5,6 +5,7 @@ class ProductsController < ApplicationController
   before_action :check_product_permissions, only: [:show, :update, :description, :intrapreneur, :multimedia]
 
   def description
+    @categories = Category.prepared_categories_for_practice_editor(current_user.has_role?(:admin))
     render 'products/form/description'
   end
 
@@ -22,11 +23,14 @@ class ProductsController < ApplicationController
 
   def update
     submitted_product_data = product_params
-    submitted_page = submitted_product_data.delete(:submitted_page)
+    current_endpoint = submitted_product_data.delete(:submitted_page)
 
     if params[:practice].present?
       submitted_product_data = process_multimedia_params(multimedia_params)
       handle_multimedia_updates
+    elsif current_endpoint == 'description'
+      update_category_practices
+      submitted_product_data.delete(:category)
     end
 
     @product.assign_attributes(submitted_product_data)
@@ -34,18 +38,18 @@ class ProductsController < ApplicationController
     if @product.changed? || product_associations_changed?
       unless @product.save
         flash[:error] = @product.errors.map {|error| error.options[:message]}.join(', ')
-        redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
+        redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
         return
       end
     end
 
     # once subsequent editor pages exist render the next page using submitted_page upon successful update
     flash[:success] = 'Product was successfully updated.'
-    redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
+    redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
   rescue => e
     logger.error "Product update failed: #{e.message}"
     flash[:error] = "An unexpected error occurred: #{e.message}"
-    redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
+    redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
   end
 
   private
@@ -67,6 +71,7 @@ class ProductsController < ApplicationController
       :origin_story,
       :submitted_page,
       va_employees_attributes: [:id, :name, :role, :_destroy],
+      category: permitted_dynamic_keys(params[:product][:category])
     )
   end
 
@@ -107,5 +112,21 @@ class ProductsController < ApplicationController
       params['practice_multimedia_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
     params
+  end
+
+  def update_category_practices
+    category_params = product_params[:category]
+
+    category_keys = category_params ? category_params.keys.map { |key| key.gsub("_resource", "") } : []
+    current_category_ids = @product.categories.pluck(:id)
+    product_category_practices = @product.category_practices
+
+    # Add new category practices if not present
+    (category_keys.map(&:to_i) - current_category_ids).each do |category_id|
+      product_category_practices.find_or_create_by(category_id: category_id)
+    end
+
+    # Remove category practices that are not in the submitted category keys
+    product_category_practices.joins(:category).where.not(categories: { id: category_keys }).destroy_all
   end
 end
