@@ -4,11 +4,11 @@ module InnovationControllerMethods
   def permitted_dynamic_keys(params)
     return {} unless params
 
-    updated_params = params.transform_keys do |key|
+    params.transform_keys! do |key|
       key.match?(/^\d+$/) ? "#{key}_resource" : key
     end
 
-    updated_params.keys.index_with do |_key|
+    params.keys.index_with do |_key|
       [
         :id,
         :link_url,
