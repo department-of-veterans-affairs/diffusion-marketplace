@@ -14,6 +14,7 @@ class ProductsController < ApplicationController
   end
 
   def show
+    @search_terms = @product.categories.pluck(:name)
     render 'products/show'
   end
 
