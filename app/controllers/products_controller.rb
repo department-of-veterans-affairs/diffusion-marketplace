@@ -13,13 +13,13 @@ class ProductsController < ApplicationController
     render 'products/form/intrapreneur'
   end
 
-
   def multimedia
     @show_return_to_top = true
     render 'products/form/multimedia'
   end
 
   def show
+    @search_terms = @product.categories.pluck(:name)
     render 'products/show'
   end
 
