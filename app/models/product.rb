@@ -1,4 +1,5 @@
 class Product < Innovation
+  include CropperUtils
   has_attached_file :main_display_image, styles: {thumb: '768x432>'}, :processors => [:cropper]
 
   validates :main_display_image_alt_text, presence: true, if: :main_display_image_present?
@@ -27,6 +28,19 @@ class Product < Innovation
 
     # Remove category practices that are not in the submitted category keys
     product_category_practices.joins(:category).where.not(categories: { id: category_keys }).destroy_all
+  end
+
+  def update_multimedia(multimedia_params)
+    multimedia_resources = multimedia_params["practice_multimedia_attributes"]
+    if multimedia_resources
+      multimedia_resources.each do |r|
+        if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
+          r_id = r[1][:id].to_i
+          record = practice_multimedia.find(r_id)
+          reprocess_attachment(record, r[1])
+        end
+      end
+    end
   end
 
   private
