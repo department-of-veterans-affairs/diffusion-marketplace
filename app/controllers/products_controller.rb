@@ -124,20 +124,4 @@ class ProductsController < ApplicationController
     end
     params
   end
-
-  def update_category_practices
-    category_params = product_params[:category]
-
-    category_keys = category_params ? category_params.keys.map { |key| key.gsub("_resource", "") } : []
-    current_category_ids = @product.categories.pluck(:id)
-    product_category_practices = @product.category_practices
-
-    # Add new category practices if not present
-    (category_keys.map(&:to_i) - current_category_ids).each do |category_id|
-      product_category_practices.find_or_create_by(category_id: category_id)
-    end
-
-    # Remove category practices that are not in the submitted category keys
-    product_category_practices.joins(:category).where.not(categories: { id: category_keys }).destroy_all
-  end
 end
