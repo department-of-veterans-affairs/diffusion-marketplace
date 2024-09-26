@@ -43,6 +43,11 @@ class Product < Innovation
     end
   end
 
+  def main_display_image_s3_presigned_url(style = nil)
+    object_presigned_url(main_display_image, style)
+  end
+
+
   private
 
   def main_display_image_present?
