@@ -191,6 +191,7 @@ GEM
       execjs (~> 2.0)
     base64 (0.2.0)
     bcrypt (3.1.18)
+    bigdecimal (3.1.8)
     bindex (0.8.1)
     bootsnap (1.17.0)
       msgpack (~> 1.2)
@@ -263,8 +264,7 @@ GEM
       devise (>= 4.3.0)
     diff-lcs (1.5.1)
     docile (1.4.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
+    domain_name (0.6.20240107)
     dumb_delegator (0.8.1)
     equalizer (0.0.11)
     erd (0.8.1)
@@ -302,9 +302,10 @@ GEM
       activesupport (>= 5.2)
     hiredis (0.6.3)
     htmlentities (4.3.4)
-    http-cookie (1.0.5)
+    http-cookie (1.0.7)
       domain_name (~> 0.5)
-    httparty (0.21.0)
+    httparty (0.22.0)
+      csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     humanize (2.5.1)
@@ -359,13 +360,15 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
-    mechanize (2.8.5)
+    mechanize (2.12.1)
       addressable (~> 2.8)
+      base64
       domain_name (~> 0.5, >= 0.5.20190701)
       http-cookie (~> 1.0, >= 1.0.3)
       mime-types (~> 3.0)
       net-http-digest_auth (~> 1.4, >= 1.4.1)
       net-http-persistent (>= 2.5.2, < 5.0.dev)
+      nkf
       nokogiri (~> 1.11, >= 1.11.2)
       rubyntlm (~> 0.6, >= 0.6.3)
       webrick (~> 1.7)
@@ -381,14 +384,15 @@ GEM
     mini_portile2 (2.8.7)
     minitest (5.23.1)
     msgpack (1.7.2)
-    multi_xml (0.6.0)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
     naturalsorter (3.0.22)
     neat (1.7.4)
       bourbon (>= 4.0)
       sass (>= 3.3)
     nested_form (0.3.2)
     net-http-digest_auth (1.4.1)
-    net-http-persistent (4.0.1)
+    net-http-persistent (4.0.4)
       connection_pool (~> 2.2)
     net-imap (0.4.10)
       date
@@ -401,6 +405,7 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.3)
+    nkf (0.2.0)
     nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -728,7 +733,8 @@ GEM
     ruby-ntlm (0.0.4)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    rubyntlm (0.6.3)
+    rubyntlm (0.6.5)
+      base64
     rubyzip (2.3.2)
     safely_block (0.3.0)
       errbase (>= 0.1.1)
@@ -793,10 +799,6 @@ GEM
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2022.5)
       tzinfo (>= 1.0.0)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.8.2)
-    unf_ext (0.0.8.2-x64-mingw32)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
     virtus (1.0.5)
@@ -883,7 +885,7 @@ DEPENDENCIES
   listen
   local_time
   lodash-rails
-  mechanize (= 2.8.5)
+  mechanize
   naturalsorter (= 3.0.22)
   nested_form
   net-ldap

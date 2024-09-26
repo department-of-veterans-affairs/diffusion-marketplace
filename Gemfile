@@ -101,7 +101,8 @@ group :development do
   gem 'rubyzip'
   gem 'sprockets'
 
-  ###
+  gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
+  gem 'mechanize'
 end
 
 gem 'ffi'
@@ -119,9 +120,6 @@ gem 'aws-sdk-rds'
 gem 'wt_s3_signer'
 gem 'paperclip', github: 'agilesix/paperclip', branch: 'ruby-3-2-patched'
 gem 'font-awesome-sass', '< 6'
-
-gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
-gem 'mechanize', '2.8.5'
 
 gem 'roo', '~> 2.8.0'
 
