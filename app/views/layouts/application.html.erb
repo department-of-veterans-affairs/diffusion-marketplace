@@ -43,7 +43,8 @@
   <body <% if content_for?(:body_attributes) %>
           <%= yield(:body_attributes) %>
         <% end %> class="<%= yield(:body_classes) %>">
-    <% is_practice_editor = params[:controller] === 'practices' && (NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action]) || params[:action] === 'metrics') %>
+    <% is_practice_editor = params[:controller] === 'practices' && (NavigationHelper::INNOVATION_EDITOR_PAGES.include?(params[:action]) || params[:action] === 'metrics') %>
+    <% is_product_editor = params[:controller] === 'products' && NavigationHelper::INNOVATION_EDITOR_PAGES.include?(params[:action]) %>
     <%= render 'shared/header' unless is_practice_editor %>
     <%= render 'practices/shared/practice_editor_header' if is_practice_editor %>
     <main
@@ -55,8 +56,8 @@
       <% end %>
       <%= yield %>
     </main>
-    <%= render 'shared/footer' unless is_practice_editor %>
-    <%= render 'practices/shared/practice_editor_footer' if is_practice_editor %>
+    <%= render 'shared/footer' unless (is_practice_editor || is_product_editor) %>
+    <%= render 'practices/shared/practice_editor_footer' if (is_practice_editor || is_product_editor) %>
 
     <% if current_user.present? %>
       <%= render partial: 'shared/terms_and_conditions_modal' %>
