@@ -78,7 +78,7 @@ namespace :products do
             end
           end
 
-          # Multimedia
+          # Multimedia - Video
           if video_url
             PracticeMultimedium.find_or_create_by(
               link_url: video_url,
@@ -86,6 +86,27 @@ namespace :products do
               resource_type: "video",
               innovable: product
             )
+          end
+
+          # Multimedia - Images
+          folder_path = Rails.root.join('lib', 'assets', 'product-photos', slug) # Define the folder path
+          if Dir.exist?(folder_path)
+            puts "Folder exists: #{folder_path}"
+            files = (Dir.entries(folder_path) - %w[. ..]).sort # Get all files excluding '.' and '..'
+            files.each do |file|
+              next unless file.downcase.match?(/\.(jpg|jpeg|png)$/) # check it's an image
+              puts file
+              PracticeMultimedium.create(
+                name: "add caption",
+                resource_type: "image",
+                innovable: product,
+                attachment_file_name: file,
+                image_alt_text: "add alt text",
+                attachment: File.new(Rails.root.join(folder_path, file))
+              )
+            end
+          else
+            puts "Image folder does not exist: #{folder_path}"
           end
         end
         puts "Created Product - #{product_name}"
