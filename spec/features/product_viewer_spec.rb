@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'Product show page', type: :feature do
   let!(:product) { create(:product)}
+  let!(:product_with_images) { create(:product, :with_image, :with_multimedia, name: 'Product with Images', published: true) } 
   let!(:user) { create(:user) }
   let!(:admin) { create(:user, :admin)}
 
@@ -20,5 +21,14 @@ describe 'Product show page', type: :feature do
     product.update(published: true)
     visit "/products/#{product.name.parameterize}"
     expect(page).to have_current_path(product_path(product))
+  end
+
+  it 'renders media assets' do
+    visit(product_path(product_with_images))
+    expect(page).to have_css('.product-main-display-image')
+    within('.multimedia-section') do
+      expect(page).to have_css('.practice-editor-impact-photo')
+      expect(page).to have_css('.video-container')
+    end
   end
 end
