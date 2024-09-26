@@ -1,30 +1,47 @@
 <%
-  path_options = {
-    editors: {
-      back: nil,
-      continue: practice_introduction_path(@practice)
-    },
-    introduction: {
-      back: practice_editors_path(@practice),
-      continue: practice_adoptions_path(@practice)
-    },
-    adoptions: {
-      back: practice_introduction_path(@practice),
-      continue: practice_overview_path(@practice)
-    },
-    overview: {
-      back: practice_adoptions_path(@practice),
-      continue: practice_implementation_path(@practice)
-    },
-    implementation: {
-      back: practice_overview_path(@practice),
-      continue: practice_about_path(@practice)
-    },
-    about: {
-      back: practice_implementation_path(@practice),
-      continue: nil
+  if @practice
+    path_options = {
+      editors: {
+        back: nil,
+        continue: practice_introduction_path(@practice)
+      },
+      introduction: {
+        back: practice_editors_path(@practice),
+        continue: practice_adoptions_path(@practice)
+      },
+      adoptions: {
+        back: practice_introduction_path(@practice),
+        continue: practice_overview_path(@practice)
+      },
+      overview: {
+        back: practice_adoptions_path(@practice),
+        continue: practice_implementation_path(@practice)
+      },
+      implementation: {
+        back: practice_overview_path(@practice),
+        continue: practice_about_path(@practice)
+      },
+      about: {
+        back: practice_implementation_path(@practice),
+        continue: nil
+      }
     }
-  }
+  else
+    path_options = {
+      description: {
+        back: nil,
+        continue: product_intrapreneur_path(@product)
+      },
+      intrapreneur: {
+        back: product_description_path(@product),
+        continue: product_multimedia_path(@product)
+      },
+      multimedia: {
+        back: product_intrapreneur_path(@product),
+        continue: nil
+      }
+    }
+  end
 %>
 
 <footer class="practice-editor-footer <%= yield(:footer_classes) %>">
