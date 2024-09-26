@@ -9,6 +9,12 @@ class Product < Innovation
 
   after_update :update_date_published
 
+  PRODUCT_EDITOR_SLUGS =
+      {
+          'description': 'intrapreneur',
+          'intrapreneur': 'multimedia',
+      }
+
   extend FriendlyId
   friendly_id :name, use: :slugged
 
