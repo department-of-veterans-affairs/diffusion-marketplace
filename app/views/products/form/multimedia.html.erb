@@ -1,0 +1,110 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_multimedia_utils', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_overview_image_editor', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_usa_file_input', 'data-turbolinks-track': 'reload' %>
+<% end %>
+<div class="grid-container">
+  <div class="grid-row grid-gap">
+    <div class="grid-col-12 margin-top-4">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-y-0">
+        <h1 class="margin-top-0">Multimedia</h1>
+        <%= nested_form_for(@product, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-10">
+            <div id="multimedia_section">
+              <div class="margin-top-3">
+                <p class="line-height-18px margin-bottom-2 text-bold">Multimedia</p>
+                <p class="line-height-26">
+                  Add any additional images, video, and audio to support your product's overview.
+                </p>
+              </div>
+              <div class="dm-file-form grid-row grid-gap margin-bottom-5">
+                <div class="usa-radio position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'Image',
+                                       false, onclick: "displayResourceForm('multimedia', 'image');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_image"
+                  %>
+                  <%= label_tag 'practice_multimedia_image', 'Image', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_image" %>
+                </div>
+                <div class="usa-radio position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'Video',
+                                       false, onclick: "displayResourceForm('multimedia', 'video');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_video"
+                  %>
+                  <%= label_tag 'practice_multimedia_video', 'Video', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_video" %>
+                </div>
+                <div class="usa-radio position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'Link',
+                                       false, onclick: "displayResourceForm('multimedia', 'link');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_link"
+                  %>
+                  <%= label_tag 'practice_multimedia_link', 'Link', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_link" %>
+                </div>
+                <div class="usa-radio position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'File',
+                                       false, onclick: "displayResourceForm('multimedia', 'file');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_file"
+                  %>
+                  <%= label_tag 'practice_multimedia_file', 'File', class: 'usa-radio__label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_file" %>
+                </div>
+                <div id="display_multimedia_form" class="display_problem_form grid-col-12">
+                  <%= render partial: "practices/overview_forms/image_form", locals: {area: 'multimedia'} %>
+                  <%= render partial: "practices/overview_forms/video_form", locals: {area: 'multimedia'} %>
+                  <%= render partial: "practices/overview_forms/link_form", locals: {area: 'multimedia'} %>
+                  <%= render partial: "practices/overview_forms/file_form", locals: {area: 'multimedia'} %>
+                </div>
+              </div>
+              <div id="display_multimedia_image">
+                <% if @product.practice_multimedia.where(resource_type: 'image').exists? %>
+                  <h5 id="multimedia_image_section_text" class="text-bold margin-bottom-2 margin-top-0 font-sans-3xs text-ls-1 line-height-15px">IMAGES:</h5>
+                  <% @product.practice_multimedia.where(resource_type: 'image').each_with_index do |pr, i| %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                  <% end %>
+                <% end %>
+              </div>
+              <div id="display_multimedia_video">
+                <% if @product.practice_multimedia.where(resource_type: 'video').exists? %>
+                  <h5 id="multimedia_video_section_text" class="text-bold margin-bottom-2 margin-top-0 font-sans-3xs text-ls-1 line-height-15px">VIDEOS:</h5>
+                <% end %>
+                <% @product.practice_multimedia.where(resource_type: 'video').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                <% end %>
+              </div>
+              <div id="display_multimedia_link">
+                <% if @product.practice_multimedia.where(resource_type: 'link').exists? %>
+                  <h5 id="multimedia_link_section_text" class="text-bold font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">LINKS:</h5>
+                <% end %>
+                <% @product.practice_multimedia.where(resource_type: 'link').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/link_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                <% end %>
+              </div>
+              <div id="display_multimedia_file">
+                <% if @product.practice_multimedia.where(resource_type: 'file').exists? %>
+                  <h5 id="multimedia_file_section_text" class="text-bold font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">FILES:</h5>
+                <% end %>
+                <% @product.practice_multimedia.where(resource_type: 'file').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/file_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                <% end %>
+              </div>
+            </div>
+            <%= f.hidden_field :submitted_page, value: request.original_url.split('/').last %>
+            <!-- Remove once footer with submit button is implemented -->
+            <div class="margin-top-4">
+              <%= f.submit 'Submit', class: 'usa-button usa-button--primary' %>
+            </div>
+          </fieldset>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</div>
