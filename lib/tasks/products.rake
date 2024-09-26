@@ -89,21 +89,31 @@ namespace :products do
           end
 
           # Multimedia - Images
-          folder_path = Rails.root.join('lib', 'assets', 'product-photos', slug) # Define the folder path
+          folder_path = Rails.root.join('lib', 'assets', 'product-photos', slug)
           if Dir.exist?(folder_path)
             puts "Folder exists: #{folder_path}"
-            files = (Dir.entries(folder_path) - %w[. ..]).sort # Get all files excluding '.' and '..'
-            files.each do |file|
-              next unless file.downcase.match?(/\.(jpg|jpeg|png)$/) # check it's an image
-              puts file
-              PracticeMultimedium.create(
-                name: "add caption",
-                resource_type: "image",
-                innovable: product,
-                attachment_file_name: file,
-                image_alt_text: "add alt text",
-                attachment: File.new(Rails.root.join(folder_path, file))
-              )
+            filenames = (Dir.entries(folder_path) - %w[. ..]).sort # Get all files excluding '.' and '..'
+            filenames.each do |filename|
+              next unless filename.downcase.match?(/\.(jpg|jpeg|png)$/) # check it's an image
+              file_path = Rails.root.join(folder_path, filename)
+              if filename.split('.')[0][-1] == 0.to_s # use first image as main display image
+                file = File.open(file_path)
+                product.main_display_image = file
+                file.close
+                product.main_display_image_alt_text = "add alt text"
+                product.save!
+                puts filename + " - main_display_image"
+              else
+                PracticeMultimedium.create(
+                  name: "add caption",
+                  resource_type: "image",
+                  innovable: product,
+                  attachment_file_name: filename,
+                  image_alt_text: "add alt text",
+                  attachment: File.new(file_path)
+                )
+                puts filename + " - Multimedia - image"
+              end
             end
           else
             puts "Image folder does not exist: #{folder_path}"
