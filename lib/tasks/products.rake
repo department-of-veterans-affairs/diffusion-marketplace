@@ -17,7 +17,10 @@ namespace :products do
       'Shipping Estimate' => :shipping_timeline_estimate,
       'Meet the Intrapreneur' => :origin_story,
       'Description' => :description,
-      'Innovators' => :innovators
+      'Innovators' => :innovators,
+      'slug' => :slug,
+      'Video URL' => :video_url,
+      'Video Caption' => :video_caption
     }
 
     # Check the csv origin column values for changes or additions
@@ -35,6 +38,10 @@ namespace :products do
           product_attributes = row.to_hash.transform_keys { |key| COLUMN_MAPPING[key.strip] }.compact
           origin = product_attributes.delete(:origin)
           innovators = product_attributes.delete(:innovators)
+          slug = product_attributes.delete(:slug)
+          video_url = product_attributes.delete(:video_url)
+          video_caption = product_attributes.delete(:video_caption)
+
 
           product_attributes.each do |key, value|
             product_attributes[key] = nil if value == 'N/A' || value == ''
@@ -69,6 +76,16 @@ namespace :products do
               va_employee = VaEmployee.find_or_create_by!(name: innovator_datum[:name], role: innovator_datum[:role])
               VaEmployeePractice.find_or_create_by!(va_employee: va_employee, innovable: product)
             end
+          end
+
+          # Multimedia
+          if video_url
+            PracticeMultimedium.find_or_create_by(
+              link_url: video_url,
+              name: video_caption,
+              resource_type: "video",
+              innovable: product
+            )
           end
         end
         puts "Created Product - #{product_name}"
