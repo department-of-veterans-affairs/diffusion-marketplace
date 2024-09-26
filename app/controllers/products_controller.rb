@@ -1,10 +1,11 @@
 class ProductsController < ApplicationController
-  include CropperUtils, InnovationControllerMethods
+  include InnovationControllerMethods
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :set_product, only: [:show, :update, :description, :intrapreneur, :multimedia]
   before_action :check_product_permissions, only: [:show, :update, :description, :intrapreneur, :multimedia]
 
   def description
+    @categories = Category.prepared_categories_for_practice_editor(current_user.has_role?(:admin))
     render 'products/form/description'
   end
 
@@ -22,11 +23,14 @@ class ProductsController < ApplicationController
 
   def update
     submitted_product_data = product_params
-    submitted_page = submitted_product_data.delete(:submitted_page)
+    current_endpoint = submitted_product_data.delete(:submitted_page)
 
     if params[:practice].present?
       submitted_product_data = process_multimedia_params(multimedia_params)
-      handle_multimedia_updates
+      @product.update_multimedia(multimedia_params)
+    elsif current_endpoint == 'description'
+      @product.update_category_practices(product_params[:category])
+      submitted_product_data.delete(:category)
     end
 
     @product.assign_attributes(submitted_product_data)
@@ -34,18 +38,18 @@ class ProductsController < ApplicationController
     if @product.changed? || product_associations_changed?
       unless @product.save
         flash[:error] = @product.errors.map {|error| error.options[:message]}.join(', ')
-        redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
+        redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
         return
       end
     end
 
     # once subsequent editor pages exist render the next page using submitted_page upon successful update
     flash[:success] = 'Product was successfully updated.'
-    redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
+    redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
   rescue => e
     logger.error "Product update failed: #{e.message}"
     flash[:error] = "An unexpected error occurred: #{e.message}"
-    redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
+    redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
   end
 
   private
@@ -67,6 +71,7 @@ class ProductsController < ApplicationController
       :origin_story,
       :submitted_page,
       va_employees_attributes: [:id, :name, :role, :_destroy],
+      category: permitted_dynamic_keys(params[:product][:category])
     )
   end
 
@@ -87,19 +92,6 @@ class ProductsController < ApplicationController
       @product.va_employees.length != @product.va_employees.reject(&:marked_for_destruction?).length ||
       @product.practice_multimedia.any? { |record| record.changed? || record.marked_for_destruction? } ||
       @product.practice_multimedia.length != @product.practice_multimedia.reject(&:marked_for_destruction?).length
-  end
-
-  def handle_multimedia_updates
-    multimedia_resources = multimedia_params["practice_multimedia_attributes"]
-    if multimedia_resources
-      multimedia_resources.each do |r|
-        if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
-          r_id = r[1][:id].to_i
-          record = @product.practice_multimedia.find(r_id)
-          reprocess_attachment(record, r[1])
-        end
-      end
-    end
   end
 
   def process_multimedia_params(params)
