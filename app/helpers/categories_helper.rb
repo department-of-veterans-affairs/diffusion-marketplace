@@ -62,4 +62,24 @@ module CategoriesHelper
       end
     end
   end
+
+  def category_id_for_category(category)
+    parent_category_name = category.parent_category.name.downcase
+    category_id = category.id ? category.id : "#{category.name.split(' ').first.downcase}-#{parent_category_name}"
+  end
+
+  def hyphenated_category_name_for(category)
+    category.name.split(' ').join('-').downcase
+  end
+
+  def category_css_class(category_name, parent_category_name)
+    category_name.include?('All') ? hyphenated_category_name_for(category_name) : parent_category_name
+  end
+
+  def is_category_checked?(category, innovation)
+    parent_category = category.parent_category
+    has_all_categories = parent_category.sub_categories.count == CategoryPractice.where(innovable: innovation).joins(:category).where(categories: { parent_category_id: parent_category.id }).count
+    is_pr_cat = innovation.categories.include?(category)
+    is_pr_cat || has_all_categories
+  end
 end
