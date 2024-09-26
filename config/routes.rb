@@ -58,9 +58,10 @@ Rails.application.routes.draw do
   end
 
   resources :products, except: :index do
+    get '/products/:id', action: 'show'
     get '/edit/description', action: 'description', as: 'description'
     get '/edit/intrapreneur', action: 'intrapreneur', as: 'intrapreneur'
-    get '/products/:id', action: 'show'
+    get '/edit/multimedia', action: 'multimedia', as: 'multimedia'
   end
 
   # old practice routes redirects

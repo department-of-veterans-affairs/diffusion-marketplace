@@ -27,7 +27,7 @@ Rails.application.config.assets.precompile += %w(
                                                   practice_editor_timeline.js
                                                   practice_editor_origin.js
                                                   practice_editor_risk_mitigation.js
-                                                  practice_editor_overview.js
+                                                  practice_multimedia_utils.js
                                                   practice_editor_introduction.js
                                                   practice_editor_implementation.js
                                                   practice_editor_utilities.js
