@@ -1,23 +1,23 @@
 <%
-  parent_category = category.parent_category
-  parent_category_name = parent_category.name.downcase
-  category_name = category.name
-  category_id = category.id.nil? ? "#{category_name.split(' ').first.downcase}-#{parent_category_name}" : category.id
-  hyphenated_category_name = category_name.split(' ').join('-').downcase
-  has_all_categories = parent_category.sub_categories.count === CategoryPractice.where(innovable: @practice).joins(:category).where(categories: { parent_category_id: parent_category.id }).count
-  is_checked = false
-  is_pr_cat = @practice.categories.include?(Category.where(id: category_id).first)
-  is_checked = true if is_pr_cat || has_all_categories
+
+  category_id = category_id_for_category(category)
+  hyphenated_category_name = hyphenated_category_name_for(category)
+  parent_category_name = category.parent_category.name.downcase
+  innovation = @practice || @product
+  innovation_type = innovation.class.to_s.downcase
+  is_checked = is_category_checked?(category, innovation)
 %>
 
 <div class="usa-checkbox">
   <input
-    class="usa-checkbox__input <%= if category_name.include?('All') then hyphenated_category_name else parent_category_name end  %>-checkbox"
+    class="usa-checkbox__input <%= if category.name.include?('All') then hyphenated_category_name else parent_category_name end  %>-checkbox"
     id="cat-<%= category_id %>-input"
     type="checkbox"
-    name="practice[category][<%= category_id %>][value]"
+    name="<%= innovation_type %>[category][<%= category_id %>][value]"
     value="<%= category_id %>"
-    <%= 'checked="true"' if is_checked %>
+    <%= 'checked' if is_checked %>
   >
-  <label class="usa-checkbox__label margin-bottom-2 cat-<%= category_id %>-label" for="cat-<%= category_id %>-input" title="<%= category_name %>"><span><%= category_name.truncate(20) %></span></label>
+  <label class="usa-checkbox__label margin-bottom-2 cat-<%= category_id %>-label" for="cat-<%= category_id %>-input" title="<%= category.name %>">
+    <span><%= category.name.truncate(20) %></span>
+  </label>
 </div>
