@@ -59,6 +59,9 @@ ActiveAdmin.register Category do
       row "Innovations Tagged" do |c|
         c.innovable_practices
       end
+      row "Products Tagged" do |c|
+        c.innovable_products
+      end
     end
   end
 
