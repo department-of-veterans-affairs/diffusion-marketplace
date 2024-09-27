@@ -16,4 +16,8 @@ class Innovation < ApplicationRecord
 
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
+
+  def main_display_image_s3_presigned_url(style = nil)
+    object_presigned_url(main_display_image, style)
+  end
 end
