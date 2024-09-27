@@ -105,10 +105,6 @@ class Practice < Innovation
   # crop the img with custom Paperclip processor located in lib/paperclip_processors/cropper.rb
   has_attached_file :main_display_image, styles: {thumb: '768x432>'}, :processors => [:cropper]
 
-  def main_display_image_s3_presigned_url(style = nil)
-    object_presigned_url(main_display_image, style)
-  end
-
   has_attached_file :origin_picture, styles: {thumb: '200x200#'}
 
   def origin_picture_s3_presigned_url(style = nil)
