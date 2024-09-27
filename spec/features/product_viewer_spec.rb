@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Product show page', type: :feature do
   let!(:product) { create(:product)}
-  let!(:product_with_images) { create(:product, :with_image, :with_multimedia, name: 'Product with Images', published: true) } 
+  let!(:product_with_images) { create(:product, :with_image, :with_multimedia, name: 'Product with Images', published: true) }
   let!(:user) { create(:user) }
   let!(:admin) { create(:user, :admin)}
 
@@ -34,7 +34,7 @@ describe 'Product show page', type: :feature do
     expect(page).to have_content 'Shipping Timeline Estimate'
     product.update(vendor: nil)
     visit product_path(product)
-    expect(page).to have_content 'Vendor'
+    expect(page).to have_no_selector('h3', text: 'Vendor')
   end
 
   it 'renders media assets' do
