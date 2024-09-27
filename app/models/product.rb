@@ -23,20 +23,34 @@ class Product < Innovation
   end
 
   def update_category_practices(category_params)
+    changed = false
+
     category_keys = category_params ? category_params.keys.map { |key| key.gsub("_resource", "") } : []
     current_category_ids = categories.pluck(:id)
     product_category_practices = category_practices
 
     # Add new category practices if not present
-    (category_keys.map(&:to_i) - current_category_ids).each do |category_id|
-      product_category_practices.find_or_create_by(category_id: category_id)
+    missing_category_ids = category_keys.map(&:to_i) - current_category_ids
+    missing_category_ids.delete(0) if missing_category_ids.count
+    if missing_category_ids.any?
+      missing_category_ids.each do |category_id|
+        product_category_practices.create!(category_id: category_id)
+      end
+      changed = true
     end
 
     # Remove category practices that are not in the submitted category keys
-    product_category_practices.joins(:category).where.not(categories: { id: category_keys }).destroy_all
+    practices_to_remove = product_category_practices.joins(:category).where.not(categories: { id: category_keys })
+    if practices_to_remove.any?
+      practices_to_remove.destroy_all
+      changed = true
+    end
+
+    changed
   end
 
   def update_multimedia(multimedia_params)
+    changed = false
     multimedia_resources = multimedia_params["practice_multimedia_attributes"]
     if multimedia_resources
       multimedia_resources.each do |r|
@@ -44,9 +58,11 @@ class Product < Innovation
           r_id = r[1][:id].to_i
           record = practice_multimedia.find(r_id)
           reprocess_attachment(record, r[1])
+          changed = true
         end
       end
     end
+    changed
   end
 
   private
