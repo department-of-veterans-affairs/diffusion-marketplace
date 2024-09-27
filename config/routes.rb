@@ -61,10 +61,7 @@ Rails.application.routes.draw do
     get '/products/:id', action: 'show'
     get '/edit/description', action: 'description', as: 'description'
     get '/edit/intrapreneur', action: 'intrapreneur', as: 'intrapreneur'
-<<<<<<< HEAD
     get '/edit/multimedia', action: 'multimedia', as: 'multimedia'
-=======
->>>>>>> 8d64141a (DM-5078 product editor intrapreneur details (#1034))
   end
 
   # old practice routes redirects
