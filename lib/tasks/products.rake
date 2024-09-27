@@ -30,6 +30,13 @@ namespace :products do
       'Technology Transfer Program' => 'VA Technology Transfer Program'
     }
 
+    # Check the csv origin column values for changes or additions
+    PRACTICE_PARTNER_MAPPING = {
+      "Spark-Seed-Spread" => "iNet Seed-Spark-Spread Innovation Investment Program",
+      "Greenhouse" => "iNet Greenhouse Initiative",
+      "Technology Transfer Program" => "VA Technology Transfer Program"
+    }
+
     CSV.foreach(csv_file_path, headers: true) do |row|
       product_name = row['Name']
 
