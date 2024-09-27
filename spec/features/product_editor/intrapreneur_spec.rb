@@ -51,7 +51,7 @@ describe 'Product editor - intrapreneur details', type: :feature do
           all('.va-employee-role').last.set('New Role')
         end
 
-        click_link "Save and continue"
+        click_link "Save and Continue"
         new_va_employee = product.va_employees.last
         expect(page).to have_content('Product was successfully updated.')
         expect(page).to have_current_path(product_multimedia_path(product))
@@ -65,7 +65,7 @@ describe 'Product editor - intrapreneur details', type: :feature do
 
         fill_in "product_va_employees_attributes_0_name", with: 'Updated Name'
         fill_in "product_va_employees_attributes_0_role", with: 'Updated Role'
-        click_link "Save and continue"
+        click_link "Save and Continue"
         va_employee = product.va_employees.first
         expect(page).to have_content('Product was successfully updated.')
         expect(page).to have_current_path(product_multimedia_path(product))
@@ -80,7 +80,7 @@ describe 'Product editor - intrapreneur details', type: :feature do
         within '#innovators-container' do
           all('a', text: 'Delete entry').last.click
         end
-        click_link "Save and continue"
+        click_link "Save and Continue"
 
         expect(page).to have_content('Product was successfully updated.')
         expect(product.va_employees.count).to eq(2)
@@ -90,7 +90,7 @@ describe 'Product editor - intrapreneur details', type: :feature do
         visit product_intrapreneur_path(product)
 
         fill_in 'product_origin_story', with: 'Updated text'
-        click_link "Save and continue"
+        click_link "Save and Continue"
 
         expect(page).to have_content('Product was successfully updated.')
         expect(page).to have_current_path(product_multimedia_path(product))
