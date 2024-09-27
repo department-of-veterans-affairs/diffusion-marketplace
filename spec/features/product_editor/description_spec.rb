@@ -35,7 +35,7 @@ describe 'Product editor - description', type: :feature do
       expect(page).to have_content('Description')
 
       fill_in 'product_name', with: 'Updated Product Name'
-      click_button 'Submit'
+      click_link 'Save and continue'
 
       expect(page).to have_content('Product was successfully updated.')
       expect(product.reload.name).to eq('Updated Product Name')
@@ -45,7 +45,7 @@ describe 'Product editor - description', type: :feature do
       visit product_description_path(product)
 
       fill_in 'product_name', with: ''
-      click_button 'Submit'
+      click_link 'Save and continue'
       expect(page).to have_current_path(product_description_path(product))
       expect(page).to have_selector("input:invalid")
     end
@@ -55,7 +55,7 @@ describe 'Product editor - description', type: :feature do
       visit product_description_path(new_product)
 
       fill_in 'product_name', with: product.name
-      click_button 'Submit'
+      click_link 'Save and continue'
       expect(page).to have_current_path(product_description_path(new_product))
       expect(page).to have_content('Product name already exists')
     end
@@ -74,7 +74,8 @@ describe 'Product editor - description', type: :feature do
         find('.usa-checkbox__label[title="Test Category 2"]').click
         expect(find("#cat-all-clinical-input", visible: false)).to be_checked
       end
-      click_button 'Submit'
+
+      click_link 'Save and continue'
 
       expect(product.categories).to include(cat1, cat2)
 
@@ -88,7 +89,7 @@ describe 'Product editor - description', type: :feature do
         expect(find("#cat-3-input", visible: false)).to be_checked
         expect(find("#cat-all-clinical-input", visible: false)).to_not be_checked
       end
-      click_button 'Submit'
+      click_link 'Save and continue'
 
       expect(product.categories).to include(cat2)
       expect(product.categories).to_not include(cat1)
