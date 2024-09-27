@@ -23,6 +23,20 @@ describe 'Product show page', type: :feature do
     expect(page).to have_current_path(product_path(product))
   end
 
+  it 'conditionally renders text fields' do
+    login_as(admin, :scope => :user, :run_callbacks => false)
+    visit product_path(product)
+    expect(page).to have_content 'Executive Summary'
+    expect(page).to have_content 'Item Number'
+    expect(page).to have_content 'Vendor'
+    expect(page).to have_content 'DUNS'
+    expect(page).to have_content 'Partners'
+    expect(page).to have_content 'Shipping Timeline Estimate'
+    product.update(vendor: nil)
+    visit product_path(product)
+    expect(page).to have_content 'Vendor'
+  end
+
   it 'renders media assets' do
     visit(product_path(product_with_images))
     expect(page).to have_css('.product-main-display-image')
