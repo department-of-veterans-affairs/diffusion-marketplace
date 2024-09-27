@@ -26,30 +26,24 @@
 <section id="practice-show-product-description" class="grid-container">
 	<h2>Product Description</h2>
 	<% product_description_fields = [
-	[:description, "Executive Summary"],
-	# img_tag(@product.main_display_image_s3_presigned_url(:thumb)
-	[:main_display_image, "Main Product Image", {heading: false}], # replace this with partial to render
-	[:item_number, "Item Number"],
-	[:vendor, "Vendor"],
-	[:duns, "DUNS"],
-	[:practice_partners, "Partners", {heading: true, content: @product&.practice_partners.pluck(:name).join(', ')}],
-	[:shipping_timeline_estimate, "Shipping Timeline Estimate"]
+		[:description, "Executive Summary"],
+		[:main_display_image, "Main Product Image", {heading: false}], # replace this with partial to render
+		[:item_number, "Item Number"],
+		[:vendor, "Vendor"],
+		[:duns, "DUNS"],
+		[:practice_partners, "Partners", {content: @product&.practice_partners.pluck(:name).join(', ')}],
+		[:shipping_timeline_estimate, "Shipping Timeline Estimate"]
 	] %>
 	<% product_description_fields.each do |arr| %>
-		<%	field_name = arr[0]
-				field_label = arr[1]
-				field_options = arr[2]
-		%>
+		<%	field_name, field_label, field_options = arr %>
 		<% if field_options&.present? %>
 			<% if field_name == :main_display_image && @product.main_display_image.exists? %>
 				<%= render partial: 'main_display_image', locals: { product: @product} %>
-			<% else%>
-				<% if field_options.dig(:heading) == true %>
-					<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= field_label %></h3>
-				<% end %>
-				<p><%= field_options[:content] %></p>
+			<% else %>
+				<%= tag.h3 field_label, class: 'font-sans-lg line-height-25px margin-top-2 margin-bottom-1' unless field_options[:heading] == false %>
+				<%= tag.p field_options[:content] %>
 			<% end %>
-		<% else %>
+		<% else # default fields %>
 			<% next if @product.send(field_name.to_sym).blank? %>
 			<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= field_label %></h3>
 			<p><%= @product.send(field_name.to_sym) %></p>
