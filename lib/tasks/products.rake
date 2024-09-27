@@ -90,29 +90,43 @@ namespace :products do
 
           # Multimedia - Images
           folder_path = Rails.root.join('lib', 'assets', 'product-photos', slug)
+
           if Dir.exist?(folder_path)
-            puts "Folder exists: #{folder_path}"
             filenames = (Dir.entries(folder_path) - %w[. ..]).sort # Get all files excluding '.' and '..'
+
+            # Preload existing multimedia for the product to avoid repeated DB calls
+            existing_multimedia = product.practice_multimedia.where(resource_type: 'image').pluck(:attachment_file_name).map(&:downcase)
+            main_image_set = product.main_display_image_file_name&.downcase
+
             filenames.each do |filename|
-              next unless filename.downcase.match?(/\.(jpg|jpeg|png)$/) # check it's an image
+              next unless filename.downcase.match?(/\.(jpg|jpeg|png)$/) # Check if it's an image
+
               file_path = Rails.root.join(folder_path, filename)
-              if filename.split('.')[0][-1] == 0.to_s # use first image as main display image
-                file = File.open(file_path)
-                product.main_display_image = file
-                file.close
-                product.main_display_image_alt_text = "add alt text"
-                product.save!
-                puts filename + " - main_display_image"
+
+              # Check if this is the main image (ends in '0') and hasn't been set yet
+              if filename.split('.')[0][-1] == '0'
+                if main_image_set != filename.downcase
+                  # Only set the main image if it's different from the current one
+                  File.open(file_path) do |file|
+                    product.main_display_image = file
+                    product.main_display_image_alt_text = "add alt text"
+                    product.save!
+                  end
+                  puts "#{filename} - main_display_image added" # Log only when a new image is added
+                end
               else
-                PracticeMultimedium.create(
-                  name: "add caption",
-                  resource_type: "image",
-                  innovable: product,
-                  attachment_file_name: filename,
-                  image_alt_text: "add alt text",
-                  attachment: File.new(file_path)
-                )
-                puts filename + " - Multimedia - image"
+                # Check if the non-main image is already associated with the product
+                unless existing_multimedia.include?(filename.downcase)
+                  pm = PracticeMultimedium.new(
+                    name: "add caption",
+                    resource_type: "image",
+                    innovable: product,
+                    image_alt_text: "add alt text"
+                  )
+                  pm.attachment = File.new(file_path)
+                  pm.save!
+                  puts "#{filename} - Multimedia - image added" # Log only when a new image is added
+                end
               end
             end
           else
