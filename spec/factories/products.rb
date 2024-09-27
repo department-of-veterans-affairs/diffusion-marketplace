@@ -58,10 +58,10 @@ FactoryBot.define do
 
     trait :with_va_employees do
       after(:create) do |product|
-        create_list(:va_employee, 3).each do |va_employee|
+        create_list(:va_employee, 3).each do |va_e|
           VaEmployeePractice.create(
             innovable: product,
-            va_employee: va_employee
+            va_employee: va_e
           )
         end
       end
