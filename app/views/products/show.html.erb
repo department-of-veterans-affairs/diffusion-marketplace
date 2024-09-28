@@ -41,10 +41,10 @@
 			<% product_description_fields = [
 				[:description, "Executive Summary"],
 				[:main_display_image, "Main Product Image", {heading: false}], # replace this with partial to render
+				[:practice_partners, "Partners", {content: @product&.practice_partners.pluck(:name).join(', ')}],
 				[:item_number, "Item Number"],
 				[:vendor, "Vendor", {content: @product.vendor_link.present? ? link_to(@product.vendor, @product.vendor_link, class: ".usa-link .usa-link--external") : @product.vendor }],
 				[:duns, "DUNS"],
-				[:practice_partners, "Partners", {content: @product&.practice_partners.pluck(:name).join(', ')}],
 				[:shipping_timeline_estimate, "Shipping Timeline Estimate"]
 			] %>
 			<% product_description_fields.each do |arr| %>
