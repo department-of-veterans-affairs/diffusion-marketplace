@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe 'Product show page', type: :feature do
   let!(:product) { create(:product)}
-  let!(:product_with_images) { create(:product, :with_image, :with_multimedia, name: 'Product with Images', published: true) }
+  let(:product_with_images) { create(:product, :with_image, :with_multimedia, name: 'Product with Images', published: true) }
+  let(:product_with_tags) { create(:product, :with_tags, published: true) }
   let!(:user) { create(:user) }
   let!(:admin) { create(:user, :admin)}
 
@@ -52,6 +53,14 @@ describe 'Product show page', type: :feature do
     within('.multimedia-section') do
       expect(page).to have_css('.practice-editor-impact-photo')
       expect(page).to have_css('.video-container')
+    end
+  end
+
+  it 'renders associated categories / tags', js: true do
+    visit(product_path(product_with_tags))
+    within('#show-page-siderail') do
+      expect(page).to have_css('.show-page-tag', count: 10)
+      expect(page).to have_content(/See more/i)
     end
   end
 end

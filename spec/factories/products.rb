@@ -67,5 +67,17 @@ FactoryBot.define do
         end
       end
     end
+
+    trait :with_tags do
+        sequence(:name) { |n| "Sample Product with Tags #{n}" }
+        after(:create) do |product|
+        create_list(:category, 11).each do |category|
+          CategoryPractice.create(
+            innovable: product,
+            category: category
+          )
+        end
+      end
+    end
   end
 end

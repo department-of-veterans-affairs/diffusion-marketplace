@@ -191,7 +191,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     end
 
     it 'should take the user to the search page with results that match the category that was clicked on' do
-      all('.usa-tag').first.click
+      all('.show-page-tag').first.click
       expect(page).to have_current_path('/search?category=COVID')
       expect(page).to have_selector('#search-page', visible: true)
       expect(page).to have_content('2 Results')
