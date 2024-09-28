@@ -147,65 +147,7 @@ namespace :products do
         raise ActiveRecord::Rollback
       end
     end
+
     puts 'All Products have been added to the DB!'
-  end
-
-  # Create tags
-  task :add_tags_to_products => :environment do
-
-    EXISTING_TAGS = {
-      "Radiology": "Clinical",
-      "Emergency Care": "Clinical",
-      "Ophthalmology": "Clinical",
-      "Medication Management": "Clinical",
-      "Prosthetic and Sensory Aids": "Clinical",
-      "Rural Health": "Clinical",
-      "Information Technology": "Operational",
-      "Inpatient Care": "Clinical",
-      "Nursing": "Clinical",
-      "Access to Care": "Strategic"
-    }
-    begin
-        ActiveRecord::Base.transaction do
-
-    parent_categories = { "Clinical": 1, "Operational": 2, "Strategic": ""}
-    # parent_categories.each do |k,v|
-    #   cat_id = Category.find_by(name: "#{k}")
-    #   v = cat_id
-    # end
-
-    # print parent_categories
-
-    EXISTING_TAGS.each do |tag_name, parent_cat_name| 
-      Category.find_or_create_by(name: tag_name) do |tag|
-        if tag.parent_category_id.nil?
-          tag.update_attributes(parent_category_id: parent_categories[parent_cat_name])
-          tag.save
-        end
-      end
-    end
-
-    # EXISTING_TAGS.each do |tag_name, parent_cat_name| 
-    #   Category.find_or_create_by(name: tag_name) do |cat|
-    #     if cat.parent_category_id.blank?
-    #       cat.parent_category_id = parent_categories[parent_cat_name]
-    #     end
-    #   end
-    # end
-
-    # QA results
-    # EXISTING_TAGS.each do |tag_name, parent_cat_name| 
-    #   pp Category.find_by(name: tag_name)
-    # end
-
-
-    # EXISTING_TAGS.each do |product_tag| 
-    #   Category.find_or_create_by(name: "Radiology", parent_category_id: cat_id[]) do |cat|
-    #     parent_category_id: cat
-    #   end
-    # end
-  rescue
-  end
-end
   end
 end
