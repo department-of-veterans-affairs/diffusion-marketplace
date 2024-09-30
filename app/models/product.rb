@@ -40,9 +40,9 @@ class Product < Innovation
     end
 
     # Remove category practices that are not in the submitted category keys
-    practices_to_remove = product_category_practices.joins(:category).where.not(categories: { id: category_keys })
-    if practices_to_remove.any?
-      practices_to_remove.destroy_all
+    cat_practices_to_remove = product_category_practices.joins(:category).where.not(categories: { id: category_keys })
+    if cat_practices_to_remove.any?
+      cat_practices_to_remove.destroy_all
       changed = true
     end
 
