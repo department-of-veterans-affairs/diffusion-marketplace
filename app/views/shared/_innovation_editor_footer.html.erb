@@ -44,7 +44,7 @@
   end
 %>
 
-<footer class="practice-editor-footer <%= yield(:footer_classes) %>">
+<footer class="innovation-editor-footer <%= yield(:footer_classes) %>">
   <%# only show return to top on mobile views, practice show page and long practice editor pages (per design 9/21/21) %>
   <div class="grid-container usa-footer__return-to-top<%= params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) ? ' desktop:display-block' : ' tablet:display-none' %>">
     <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to Top</button>
@@ -69,7 +69,7 @@
             back_path = path_options[action_as_sym][:back] || nil
             continue_path = path_options[action_as_sym][:continue] || nil
           %>
-          <%= render partial: 'practices/shared/back_and_continue_buttons', locals: { back_path: back_path, continue_path: continue_path } %>
+          <%= render partial: 'shared/back_and_continue_buttons', locals: { back_path: back_path, continue_path: continue_path } %>
         </div>
       </div>
     </div>
