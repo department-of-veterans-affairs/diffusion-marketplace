@@ -13,12 +13,14 @@ class ProductsController < ApplicationController
     render 'products/form/intrapreneur'
   end
 
-  def show
-    render 'products/show'
-  end
 
   def multimedia
+    @show_return_to_top = true
     render 'products/form/multimedia'
+  end
+
+  def show
+    render 'products/show'
   end
 
   def update
