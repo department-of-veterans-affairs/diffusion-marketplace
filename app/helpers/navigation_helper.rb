@@ -1,5 +1,4 @@
 module NavigationHelper
-  RETURN_TO_TOP_PAGES = ['show', 'metrics', 'introduction', 'overview', 'implementation']
   INNOVATION_EDITOR_PAGES = [
     'introduction',
     'editors',
