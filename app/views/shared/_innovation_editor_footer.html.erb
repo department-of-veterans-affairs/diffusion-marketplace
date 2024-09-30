@@ -46,9 +46,15 @@
 
 <footer class="innovation-editor-footer <%= yield(:footer_classes) %>">
   <%# only show return to top on mobile views, practice show page and long practice editor pages (per design 9/21/21) %>
-  <div class="grid-container usa-footer__return-to-top<%= params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) ? ' desktop:display-block' : ' tablet:display-none' %>">
-    <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to Top</button>
-  </div>
+  <% if @show_return_to_top %>
+    <div class="grid-container usa-footer__return-to-top desktop:display-block">
+      <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to Top</button>
+    </div>
+  <% else %>
+    <div class="grid-container usa-footer__return-to-top tablet:display-none">
+      <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to Top</button>
+    </div>
+  <% end %>
 
   <% if params[:action] === 'metrics' %>
     <div class="bg-base-lighter padding-y-3 padding-left-2 desktop:padding-left-0">
