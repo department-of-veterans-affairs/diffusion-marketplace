@@ -14,7 +14,7 @@ class Category < ApplicationRecord
 
   scope :with_practices,   -> { not_none.joins(:innovable_practices).where(practices: {approved: true, published: true, enabled: true} ).order_by_name.uniq }
   scope :order_by_name, -> { order(Arel.sql("lower(categories.name) ASC")) }
-  scope :not_none, -> { where.not('LOWER(name) = ?', 'none') }
+  scope :not_none, -> { where.not('LOWER(categories.name) = ?', 'none') }
   scope :get_category_by_name, -> (cat_name) { where('lower(name) = ?', cat_name.downcase) }
   scope :get_category_names, -> { not_none.order(:name).pluck(:name) }
 
