@@ -57,7 +57,7 @@
       <%= yield %>
     </main>
     <%= render 'shared/footer' unless (is_practice_editor || is_product_editor) %>
-    <%= render 'practices/shared/practice_editor_footer' if (is_practice_editor || is_product_editor) %>
+    <%= render 'shared/innovation_editor_footer' if (is_practice_editor || is_product_editor) %>
 
     <% if current_user.present? %>
       <%= render partial: 'shared/terms_and_conditions_modal' %>
