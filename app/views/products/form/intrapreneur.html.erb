@@ -91,7 +91,7 @@
                 </p>
               </div>
 
-            <%= f.hidden_field :submitted_page, value: request.original_url.split('/').last %>
+            <%= f.hidden_field :submitted_page, value: params[:action] %>
           </fieldset>
         <% end %>
       </section>
