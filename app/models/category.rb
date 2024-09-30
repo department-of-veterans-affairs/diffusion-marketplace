@@ -16,7 +16,7 @@ class Category < ApplicationRecord
   scope :order_by_name, -> { order(Arel.sql("lower(categories.name) ASC")) }
   scope :not_none, -> { where.not(name: 'None').where.not(name: 'none') }
   scope :get_category_by_name, -> (cat_name) { where('lower(name) = ?', cat_name.downcase) }
-  scope :get_category_names, -> { not_none.pluck(:name) }
+  scope :get_category_names, -> { not_none.order(:name).pluck(:name) }
 
   attr_accessor :related_terms_raw
   attr_accessor :reset_cached_categories

@@ -19,7 +19,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @search_terms = @product.categories.pluck(:name)
+    @search_terms = @product.categories.get_category_names
     render 'products/show'
   end
 
