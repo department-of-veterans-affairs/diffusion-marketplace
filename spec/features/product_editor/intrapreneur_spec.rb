@@ -51,9 +51,11 @@ describe 'Product editor - intrapreneur details', type: :feature do
           all('.va-employee-role').last.set('New Role')
         end
 
-        click_button 'Submit'
+        click_link "Save and Continue"
         new_va_employee = product.va_employees.last
         expect(page).to have_content('Product was successfully updated.')
+        expect(page).to have_current_path(product_multimedia_path(product))
+        visit product_intrapreneur_path(product)
         expect(page).to have_field("product_va_employees_attributes_#{new_va_employee.id - 1}_name", with: new_va_employee.name)
         expect(page).to have_field("product_va_employees_attributes_#{new_va_employee.id - 1}_role", with: new_va_employee.role)
       end
@@ -63,9 +65,11 @@ describe 'Product editor - intrapreneur details', type: :feature do
 
         fill_in "product_va_employees_attributes_0_name", with: 'Updated Name'
         fill_in "product_va_employees_attributes_0_role", with: 'Updated Role'
-        click_button 'Submit'
+        click_link "Save and Continue"
         va_employee = product.va_employees.first
         expect(page).to have_content('Product was successfully updated.')
+        expect(page).to have_current_path(product_multimedia_path(product))
+        visit product_intrapreneur_path(product)
         expect(page).to have_field("product_va_employees_attributes_#{va_employee.id - 1}_name", with: 'Updated Name')
         expect(page).to have_field("product_va_employees_attributes_#{va_employee.id - 1}_role", with: 'Updated Role')
       end
@@ -76,7 +80,7 @@ describe 'Product editor - intrapreneur details', type: :feature do
         within '#innovators-container' do
           all('a', text: 'Delete entry').last.click
         end
-        click_button 'Submit'
+        click_link "Save and Continue"
 
         expect(page).to have_content('Product was successfully updated.')
         expect(product.va_employees.count).to eq(2)
@@ -86,9 +90,11 @@ describe 'Product editor - intrapreneur details', type: :feature do
         visit product_intrapreneur_path(product)
 
         fill_in 'product_origin_story', with: 'Updated text'
-        click_button 'Submit'
+        click_link "Save and Continue"
 
         expect(page).to have_content('Product was successfully updated.')
+        expect(page).to have_current_path(product_multimedia_path(product))
+        visit product_intrapreneur_path(product)
         expect(page).to have_field("product_origin_story", with: 'Updated text')
       end
     end

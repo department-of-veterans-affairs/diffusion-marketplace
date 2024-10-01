@@ -59,6 +59,7 @@ describe 'Product editor - multimedia details', type: :feature do
         click_button 'Add image'
         click_button 'Submit'
         expect(page).to have_content('Product was successfully updated.')
+        visit product_multimedia_path(product)
         expect(page).to have_field("practice[practice_multimedia_attributes][1_image][name]", with: 'Test Image')
         expect(page).to have_selector("img[src*='acceptable_img.jpg']")
       end
@@ -72,6 +73,7 @@ describe 'Product editor - multimedia details', type: :feature do
         click_button 'Add video'
         click_button 'Submit'
         expect(page).to have_content('Product was successfully updated.')
+        visit product_multimedia_path(product)
         expect(page).to have_field("practice[practice_multimedia_attributes][1_video][name]", with: 'Test Video')
         expect(page).to have_field("practice[practice_multimedia_attributes][1_video][link_url]", with: 'https://www.youtube.com/watch?v=example')
       end
@@ -83,6 +85,7 @@ describe 'Product editor - multimedia details', type: :feature do
         click_button 'Submit'
 
         expect(page).to have_content('Product was successfully updated.')
+        visit product_multimedia_path(product)
         expect(page).to have_field("practice[practice_multimedia_attributes][0_image][name]", with: 'Updated Media Name')
       end
 

@@ -42,7 +42,7 @@
       <div class="grid-col-6">
         <ul class="usa-nav__primary usa-accordion">
           <li class="usa-nav__primary-item">
-            <%= link_to 'Edit your innovation', practice_editors_path(@practice), class: "margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link #{'usa-current' if NavigationHelper::PRACTICE_EDITOR_PAGES.include?(params[:action]) }" %>
+            <%= link_to 'Edit your innovation', practice_editors_path(@practice), class: "margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link #{'usa-current' if NavigationHelper::INNOVATION_EDITOR_PAGES.include?(params[:action]) }" %>
           </li>
           <li class="usa-nav__primary-item">
             <a href="#dm-editing-guide-modal" class="margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link" aria-controls="dm-editing-guide-modal" data-open-modal>Editing guide</a>
