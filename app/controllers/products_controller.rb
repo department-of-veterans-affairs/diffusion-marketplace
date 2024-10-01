@@ -50,7 +50,7 @@ class ProductsController < ApplicationController
 
     notice = product_updated ? "Product was successfully updated." : nil
     if params[:next]
-      redirect_to send("product_#{Product::PRODUCT_EDITOR_SLUGS[current_endpoint.to_sym]}_path", @product), notice: notice
+      redirect_to send("product_#{Product::PRODUCT_EDITOR_NEXT_PAGE[current_endpoint.to_sym]}_path", @product), notice: notice
       return
     else
       redirect_to product_path(@product), notice: notice

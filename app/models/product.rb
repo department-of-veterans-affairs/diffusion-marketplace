@@ -9,7 +9,7 @@ class Product < Innovation
 
   after_update :update_date_published
 
-  PRODUCT_EDITOR_SLUGS =
+  PRODUCT_EDITOR_NEXT_PAGE =
     {
       'description': 'intrapreneur',
       'intrapreneur': 'multimedia',
