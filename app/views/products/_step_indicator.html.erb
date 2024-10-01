@@ -1,5 +1,5 @@
 <div class="usa-prose-caption margin-bottom-1 text-base-dark">
-	<%= "#{product.name} last updated on #{product.updated_at.strftime("%-m/%-d/%Y")} at #{product.updated_at}" %>
+	<%= "#{product.name} last updated on #{product.updated_at.strftime("%-m/%-d/%Y")} at #{product.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime("%I:%M %p")} EST" %>
 </div>
 <div class="usa-step-indicator" aria-label="progress">
   <ol class="usa-step-indicator__segments">
