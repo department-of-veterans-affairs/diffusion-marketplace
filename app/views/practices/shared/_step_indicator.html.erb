@@ -17,7 +17,7 @@
 <div class="usa-step-indicator" aria-label="progress">
   <ol class="usa-step-indicator__segments">
     <%
-      page_titles = ['editors', 'introduction', 'adoptions', 'overview', 'implementation', 'about']
+      page_titles = NavigationHelper::PRACTICE_EDITOR_PAGES
       action = params[:action]
     %>
     <% page_titles.each_with_index do |pt, i| %>
