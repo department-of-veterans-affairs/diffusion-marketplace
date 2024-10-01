@@ -7,7 +7,9 @@ class HomeController < ApplicationController
     @dropdown_categories = get_categories_by_popularity
     @dropdown_communities = get_categories_by_popularity(true)
     @dropdown_practices, @practice_names = get_dropdown_practices
-    @homepage = Homepage.where(published: true)&.first
+    @homepage = Rails.cache.fetch("homepage_with_features") do
+      Homepage.current
+    end
     if @homepage
       current_features = @homepage&.homepage_features
       @section_one_features = current_features&.where(section_id: 1)&.first(3)
