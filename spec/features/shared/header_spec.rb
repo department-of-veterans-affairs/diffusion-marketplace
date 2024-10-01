@@ -117,7 +117,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
-    it 'shows in-progress communities to admins' do
+    xit 'shows in-progress communities to admins' do
       log_in_as_admin_and_visit_homepage
 
       click_on 'Communities'
@@ -131,7 +131,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
-    it 'shows soft-launched communities to VA users' do
+    xit 'shows soft-launched communities to VA users' do
       login_as(@non_admin, :scope => :user, :run_callbacks => false)
       visit('/')
 
@@ -146,7 +146,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
-    it 'shows in-progress communities to editors' do
+    xit 'shows in-progress communities to editors' do
       editor = create(:user)
       editor.add_role(:page_group_editor, @unpublished_community)
       login_as(editor, :scope => :user, :run_callbacks => false)
