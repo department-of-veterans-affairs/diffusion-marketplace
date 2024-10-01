@@ -1,6 +1,15 @@
 module NavigationHelper
-  RETURN_TO_TOP_PAGES = ['show', 'metrics', 'introduction', 'overview', 'implementation']
-  PRACTICE_EDITOR_PAGES = ['introduction', 'editors', 'overview', 'implementation', 'adoptions', 'about']
+  INNOVATION_EDITOR_PAGES = [
+    'introduction',
+    'editors',
+    'overview',
+    'implementation',
+    'adoptions',
+    'about',
+    'description',
+    'intrapreneur',
+    'multimedia'
+  ]
 
   def setup_breadcrumb_navigation
     session[:breadcrumbs] = session[:breadcrumbs] || []
