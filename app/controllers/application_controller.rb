@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   before_action :user_accepted_terms?
   before_action :set_visit_props
   before_action :set_visitor_props
-  before_action :set_communities_for_header
+  # before_action :set_communities_for_header
 
 
   def reload_turbolinks
