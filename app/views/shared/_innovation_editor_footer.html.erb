@@ -28,8 +28,12 @@
     }
   else
     path_options = {
-      description: {
+      editors: {
         back: nil,
+        continue: product_description_path(@product)
+      },
+      description: {
+        back: product_editors_path(@product),
         continue: product_intrapreneur_path(@product)
       },
       intrapreneur: {
