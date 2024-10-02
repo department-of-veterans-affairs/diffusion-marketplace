@@ -94,10 +94,24 @@
                 <% end %>
                 <span>Provide the date or date range when your product will be able to be shipped or delivered.</span>&nbsp;
               </div>
-              <%= f.text_field :shipping_timeline_estimate, class: "usa-input #{ @product.errors[:duns].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+              <%= f.text_field :shipping_timeline_estimate, class: "usa-input #{ @product.errors[:shipping_timeline_estimate].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
 
               <p class="usa-error-message <%= @product.errors[:shipping_timeline_estimate].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
                 <span class="font-family-sans"><%= show_errors(@product, :shipping_timeline_estimate) %></span>
+              </p>
+            </div>
+
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :price, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Price
+                <% end %>
+                <span>What is the cost of your product in U.S. dollars?</span>&nbsp;
+              </div>
+              <%= f.text_field :price, class: "usa-input #{ @product.errors[:price].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:price].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :price) %></span>
               </p>
             </div>
 

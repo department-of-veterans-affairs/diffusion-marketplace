@@ -32,7 +32,8 @@
 		[:vendor, "Vendor"],
 		[:duns, "DUNS"],
 		[:practice_partners, "Partners", {content: @product&.practice_partners.pluck(:name).join(', ')}],
-		[:shipping_timeline_estimate, "Shipping Timeline Estimate"]
+		[:shipping_timeline_estimate, "Shipping Timeline Estimate"],
+		[:price, "Price"],
 	] %>
 	<% product_description_fields.each do |arr| %>
 		<%	field_name, field_label, field_options = arr %>

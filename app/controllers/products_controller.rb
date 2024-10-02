@@ -68,6 +68,7 @@ class ProductsController < ApplicationController
       :vendor,
       :duns,
       :shipping_timeline_estimate,
+      :price,
       :origin_story,
       :submitted_page,
       va_employees_attributes: [:id, :name, :role, :_destroy],
