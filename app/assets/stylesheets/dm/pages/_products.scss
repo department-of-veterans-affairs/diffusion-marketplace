@@ -1,4 +1,24 @@
-.products.show-main {
+#main-content.products.show-main {
+	#show-page-siderail { // TO DO: extract this after migrating practices template
+		.desktop-tags {
+			display: none;
+			border: 1px solid color($theme-color-base-lighter);
+			@include u-radius('lg');
+			@include u-padding-x(3);
+			@include u-padding-bottom(2);
+			@include at-media(tablet) {
+	      		display: none;
+	      	}
+	    	@include at-media(desktop) {
+	        	display: block;
+	    	}
+		}
+		.show-page-tag {
+			display: block;
+			width: fit-content;
+		}
+	}
+
 	#practice-show-intrapreneur {
 		.origin-story p {
 			margin-bottom: 0.5rem;

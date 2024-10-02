@@ -28,6 +28,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :adoptions, :about, :implementation]
   before_action :fetch_visns, only: [:show, :search, :introduction]
   before_action :fetch_va_facilities, only: [:show, :search, :metrics, :introduction]
+  before_action :set_return_to_top_flag, only: [:show, :metrics, :introduction, :overview, :implementation]
 
   # GET /practices
   # GET /practices.json
@@ -38,7 +39,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
   # GET /innovations/1
   # GET /practices/1.json
   def show
-    @search_terms = Naturalsorter::Sorter.sort(@practice.categories.get_category_names.sort, true)
+    @search_terms = @practice.categories.get_category_names
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
     diffusion_histories = @practice.diffusion_histories
@@ -707,6 +708,10 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction' && !updated.is_a?(StandardError)
       updated
     end
+  end
+
+  def set_return_to_top_flag
+    @show_return_to_top = true
   end
 end
 

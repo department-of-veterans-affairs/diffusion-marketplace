@@ -13,29 +13,34 @@ class ProductsController < ApplicationController
     render 'products/form/intrapreneur'
   end
 
-  def show
-    render 'products/show'
+  def multimedia
+    @show_return_to_top = true
+    render 'products/form/multimedia'
   end
 
-  def multimedia
-    render 'products/form/multimedia'
+  def show
+    @search_terms = @product.categories.get_category_names
+    render 'products/show'
   end
 
   def update
     submitted_product_data = product_params
     current_endpoint = submitted_product_data.delete(:submitted_page)
 
+    product_updated = false
+
     if params[:practice].present?
       submitted_product_data = process_multimedia_params(multimedia_params)
-      @product.update_multimedia(multimedia_params)
+      product_updated = @product.update_multimedia(multimedia_params)
     elsif current_endpoint == 'description'
-      @product.update_category_practices(product_params[:category])
+      product_updated = @product.update_category_practices(product_params[:category])
       submitted_product_data.delete(:category)
     end
 
     @product.assign_attributes(submitted_product_data)
+    product_updated = (@product.changed? || product_associations_changed?) ? true : product_updated
 
-    if @product.changed? || product_associations_changed?
+    if product_updated
       unless @product.save
         flash[:error] = @product.errors.map {|error| error.options[:message]}.join(', ')
         redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
@@ -43,9 +48,13 @@ class ProductsController < ApplicationController
       end
     end
 
-    # once subsequent editor pages exist render the next page using submitted_page upon successful update
-    flash[:success] = 'Product was successfully updated.'
-    redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
+    notice = product_updated ? "Product was successfully updated." : nil
+    if params[:next]
+      redirect_to send("product_#{Product::PRODUCT_EDITOR_NEXT_PAGE[current_endpoint.to_sym]}_path", @product), notice: notice
+      return
+    else
+      redirect_to product_path(@product), notice: notice
+    end
   rescue => e
     logger.error "Product update failed: #{e.message}"
     flash[:error] = "An unexpected error occurred: #{e.message}"
@@ -66,6 +75,7 @@ class ProductsController < ApplicationController
       :description,
       :item_number,
       :vendor,
+      :vendor_link,
       :duns,
       :shipping_timeline_estimate,
       :price,

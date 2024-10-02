@@ -91,11 +91,7 @@
                 </p>
               </div>
 
-            <%= f.hidden_field :submitted_page, value: request.original_url.split('/').last %>
-
-            <div class="margin-top-4">
-              <%= f.submit 'Submit', class: 'usa-button usa-button--primary' %>
-            </div>
+            <%= f.hidden_field :submitted_page, value: params[:action] %>
           </fieldset>
         <% end %>
       </section>

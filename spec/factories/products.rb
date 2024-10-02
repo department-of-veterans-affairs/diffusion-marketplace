@@ -4,6 +4,7 @@ FactoryBot.define do
     tagline { "This is a sample tagline for a product." }
     item_number { "ITEM12345" }
     vendor { "Sample Vendor" }
+    vendor_link { "https://va.gov"}
     duns { "123456789" }
     shipping_timeline_estimate { "2-3 weeks" }
     origin_story { "This product has an interesting origin story." }
@@ -58,11 +59,20 @@ FactoryBot.define do
 
     trait :with_va_employees do
       after(:create) do |product|
-        create_list(:va_employee, 3).each do |va_employee|
+        create_list(:va_employee, 3).each do |va_e|
           VaEmployeePractice.create(
             innovable: product,
-            va_employee: va_employee
+            va_employee: va_e
           )
+        end
+      end
+    end
+
+    trait :with_tags do
+        sequence(:name) { |n| "Sample Product with Tags #{n}" }
+        after(:create) do |product|
+        create_list(:category, 11).each do |category|
+          create(:category_practice, :for_product, innovable: product, category: category)
         end
       end
     end
