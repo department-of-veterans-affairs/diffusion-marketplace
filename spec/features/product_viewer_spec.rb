@@ -37,6 +37,15 @@ describe 'Product show page', type: :feature do
     expect(page).to have_no_selector('h3', text: 'Vendor')
   end
 
+  it 'conditionally renders linked fields ' do
+    login_as(admin, :scope => :user, :run_callbacks => false)
+    visit product_path(product)
+    expect(page).to have_link(product.vendor)
+    product.update(vendor_link: nil)
+    visit product_path(product)
+    expect(page).not_to have_link(product.vendor)
+  end
+
   it 'renders media assets' do
     visit(product_path(product_with_images))
     expect(page).to have_css('.product-main-display-image')
