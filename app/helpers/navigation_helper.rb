@@ -1,5 +1,5 @@
 module NavigationHelper
-  PRACTICE_EDITOR_PAGES =  ['introduction','editors','overview','implementation','adoptions', 'about']
+  PRACTICE_EDITOR_PAGES =  ['editors', 'introduction', 'adoptions', 'overview', 'implementation', 'about']
   PRODUCT_EDITOR_PAGES = ['editors', 'description','intrapreneur','multimedia']
   INNOVATION_EDITOR_PAGES = PRACTICE_EDITOR_PAGES + PRODUCT_EDITOR_PAGES.uniq
 
