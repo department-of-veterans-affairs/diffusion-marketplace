@@ -13,13 +13,13 @@ class ProductsController < ApplicationController
     render 'products/form/intrapreneur'
   end
 
-
   def multimedia
     @show_return_to_top = true
     render 'products/form/multimedia'
   end
 
   def show
+    @search_terms = @product.categories.get_category_names
     render 'products/show'
   end
 
@@ -75,6 +75,7 @@ class ProductsController < ApplicationController
       :description,
       :item_number,
       :vendor,
+      :vendor_link,
       :duns,
       :shipping_timeline_estimate,
       :origin_story,
