@@ -75,6 +75,7 @@ class ProductsController < ApplicationController
       :description,
       :item_number,
       :vendor,
+      :vendor_link,
       :duns,
       :shipping_timeline_estimate,
       :origin_story,

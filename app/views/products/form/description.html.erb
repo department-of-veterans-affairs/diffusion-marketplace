@@ -76,6 +76,19 @@
             </div>
             <div class="margin-bottom-5 margin-top-3">
               <div>
+                <%= f.label :vendor_link, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Vendor link
+                <% end %>
+                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+              </div>
+              <%= f.text_field :vendor_link, class: "usa-input #{ @product.errors[:vendor_link].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: false %>
+
+              <p class="usa-error-message <%= @product.errors[:vendor].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :vendor) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
                 <%= f.label :duns, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   DUNS
                 <% end %>
