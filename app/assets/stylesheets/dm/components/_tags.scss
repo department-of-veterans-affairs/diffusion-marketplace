@@ -22,7 +22,13 @@
   @include u-padding-y('05');
 }
 
-
+// Product / Editor page tags
+.show-page-tag {
+  @extend .usa-tag;
+  @include transition-btn-colors;
+  @include u-text('uppercase');
+  @include u-text('semibold');
+}
 
 // CUSTOM TAGS
 .dm-tag--big--action-primary {
