@@ -13,6 +13,7 @@ namespace :products do
       'Item Number' => :item_number,
       'Price' => :price,
       'Vendor' => :vendor,
+      'Vendor link' => :vendor_link,
       'DUNS #' => :duns,
       'Shipping Estimate' => :shipping_timeline_estimate,
       'Meet the Intrapreneur' => :origin_story,
