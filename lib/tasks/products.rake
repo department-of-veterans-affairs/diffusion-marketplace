@@ -143,6 +143,37 @@ namespace :products do
         end
         puts "Created Product - #{product_name}"
 
+        # Tags
+        # Find or create all tags: 
+        product_tags = {:Clinical=>
+          ["Radiology",
+           "Patient Comfort",
+           "Ophthalmology",
+           "Medication Management",
+           "Amputee Care",
+           "Nursing",
+           "Physical Therapy",
+           "Diabetes",
+           "Dermatology",
+           "Mobility"],
+         :Operational=>
+          ["Emergency Care",
+           "Prosthetic and Sensory Aids",
+           "Patient Education",
+           "Rural Health",
+           "Information Technology",
+           "Inpatient Care",
+           "Physical Equipment",
+           "Patient Safety",
+           "Access to Care",
+           "Mobility"]
+         }
+
+        product_tags.each do |parent_cat, tags|
+        end
+
+
+
       rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound, ActiveRecord::RecordNotSaved => e
         puts "Failed to process product: #{product_name}, Error: #{e.message}"
         raise ActiveRecord::Rollback
