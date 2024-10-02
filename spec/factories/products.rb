@@ -72,10 +72,7 @@ FactoryBot.define do
         sequence(:name) { |n| "Sample Product with Tags #{n}" }
         after(:create) do |product|
         create_list(:category, 11).each do |category|
-          CategoryPractice.create(
-            innovable: product,
-            category: category
-          )
+          create(:category_practice, :for_product, innovable: product, category: category)
         end
       end
     end
