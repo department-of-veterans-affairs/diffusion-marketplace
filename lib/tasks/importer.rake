@@ -116,7 +116,6 @@ namespace :importer do
       risk_mitigations
       additional_staff
       additional_resources
-      impact_photos
       domains
       practice_permissions
       timelines
@@ -685,42 +684,6 @@ def additional_resources
     next if answer.blank?
 
     AdditionalResource.create(practice: @practice, description: answer) unless AdditionalResource.where(description: answer, practice: @practice).any?
-  end
-end
-
-def impact_photos
-  puts "==> Importing Practice: #{@name} Human Impact Photos".light_blue
-
-  @practice.impact_photos.each(&:destroy)
-
-  question_fields = [[
-                         'Impact Photo 1',
-                         'Please provide a title for Impact Picture 1',
-                         'Please provide a brief paragraph describing the photo and the Impact.'
-                     ], [
-                         'Impact Photo 2',
-                         'Please provide a title for Impact Picture 2',
-                         'Please provide a brief paragraph describing the photo and the Impact.'
-                     ], [
-                         'Impact Photo 3',
-                         'Please provide a title for Impact Picture 3',
-                         'Please provide a brief paragraph describing the photo and the Impact.'
-                     ]]
-  question_fields.each_with_index do |fields, index|
-    description_indices = @questions.each_index.select { |i| @questions[i] == fields[2] }
-    next if @answers[@questions.index(fields[0])].blank?
-
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(fields[0])]}"
-    image_file = File.new(image_path)
-    title = @answers[@questions.index(fields[1])]
-    description = @answers[description_indices[index]]
-
-    ImpactPhoto.create(practice: @practice, title: title, description: description, attachment: ActionDispatch::Http::UploadedFile.new(
-        filename: File.basename(image_file),
-        tempfile: image_file,
-        # detect the image's mime type with MIME if you can't provide it yourself.
-        type: MIME::Types.type_for(image_path).first.content_type
-    ))
   end
 end
 
