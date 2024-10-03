@@ -17,6 +17,24 @@
 
 <div class="grid-container grid-row">
 	<div id="show-page-siderail" class="grid-col-12 tablet:grid-col-3">
+		  <div class="margin-bottom-4">
+		    <nav aria-label="Side navigation,">
+				  <ul class="usa-sidenav">
+				    <li class="usa-sidenav__item">
+				      <a href="javascript:void(0);" class="usa-current">Product Description</a>
+				    </li>
+				    <li class="usa-sidenav__item">
+				      <a href="javascript:void(0);">Intrapreneur</a>
+				    </li>
+				    <li class="usa-sidenav__item">
+				      <a href="javascript:void(0);">Multimedia</a>
+				    </li>
+				    <li class="usa-sidenav__item">
+				      <a href="javascript:void(0);">Order Product</a>
+				    </li>
+				  </ul>
+				</nav>
+		  </div>
 		<% if @search_terms.any? %>
 	        <%= render partial: 'practices/show/desktop_partials/search_terms', locals: { search_terms: @search_terms } %>
 	  <% end %>
