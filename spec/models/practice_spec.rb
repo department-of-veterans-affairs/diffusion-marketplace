@@ -20,7 +20,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:domain_practices) }
     it { should have_many(:domains) }
     it { should have_many(:financial_files) }
-    it { should have_many(:impact_photos) }
     it { should have_many(:job_position_practices) }
     it { should have_many(:job_positions) }
     it { should have_many(:photo_files) }
