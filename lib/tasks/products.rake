@@ -170,6 +170,10 @@ namespace :products do
          }
 
         product_tags.each do |parent_cat, tags|
+          parent_id = Category.find_by(name: parent_cat.to_s).id
+          tags.each do |tag|
+            Category.find_or_create_by(name: tag, parent_category_id: parent_id)
+          end
         end
 
 
