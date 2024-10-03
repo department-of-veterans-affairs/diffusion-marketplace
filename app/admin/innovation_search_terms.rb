@@ -1,7 +1,8 @@
 include ActiveAdminHelpers
 
 ActiveAdmin.register_page 'Innovation Search Terms' do
-  menu label: proc {I18n.t('active_admin.innovation_search_terms')}
+  menu false
+  # menu label: proc {I18n.t('active_admin.innovation_search_terms')}
 
   controller do
     helper_method :set_date_values

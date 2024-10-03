@@ -1,6 +1,7 @@
 include ActiveAdminHelpers
 
 ActiveAdmin.register_page "Adoptions" do
+  menu false
   controller do
     helper_method :adoption_facility_name
     helper_method :adoption_date
