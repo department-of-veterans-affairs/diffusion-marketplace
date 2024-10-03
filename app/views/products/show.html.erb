@@ -43,13 +43,13 @@
 		<section id="pr-view-introduction" class="grid-container margin-bottom-3">
 			<div class="grid-row grid-gap-2">
 				<div class="desktop:grid-col-8 grid-col-12">
-				      <h1 class="margin-top-0 margin-bottom-1 dm-word-break-break-word dm-hyphens-auto">
-				      	<%= @product.name %>
-				      </h1>
-				      <%# innovation last update timestamp %>
+							<%# innovation last update timestamp %>
 				      <p class="grid-col-12 font-sans-3xs text-base line-height-sans-4 margin-bottom-2">
 				        Last updated <%= timeago(@product&.updated_at) %>
 				      </p>
+				      <h1 class="margin-top-0 margin-bottom-1 dm-word-break-break-word dm-hyphens-auto">
+				      	<%= @product.name %>
+				      </h1>
 				</div>
 			</div>
 		</section>
