@@ -230,7 +230,6 @@ class Practice < Innovation
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
   has_many :financial_files, dependent: :destroy
-  has_many :impact_photos, -> { order(position: :asc) }, dependent: :destroy
   has_many :implementation_timeline_files, dependent: :destroy
   has_many :job_position_practices, dependent: :destroy
   has_many :job_positions, through: :job_position_practices
@@ -266,12 +265,6 @@ class Practice < Innovation
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
-  accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
-    reject = attributes['description'].blank?
-    ip_reject = false
-    ip_reject = attributes['attachment'].blank? if attributes['id'].blank?
-    reject || ip_reject
-  }
   accepts_nested_attributes_for :practice_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['resource'] && attributes['resource'].blank? }
   accepts_nested_attributes_for :practice_testimonials, allow_destroy: true
   accepts_nested_attributes_for :practice_problem_resources, allow_destroy: true
