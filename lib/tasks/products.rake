@@ -142,42 +142,6 @@ namespace :products do
           end
         end
         puts "Created Product - #{product_name}"
-
-        # Tags
-        # Find or create all tags: 
-        product_tags = {:Clinical=>
-          ["Radiology",
-           "Patient Comfort",
-           "Ophthalmology",
-           "Medication Management",
-           "Amputee Care",
-           "Nursing",
-           "Physical Therapy",
-           "Diabetes",
-           "Dermatology",
-           "Mobility"],
-         :Operational=>
-          ["Emergency Care",
-           "Prosthetic and Sensory Aids",
-           "Patient Education",
-           "Rural Health",
-           "Information Technology",
-           "Inpatient Care",
-           "Physical Equipment",
-           "Patient Safety",
-           "Access to Care",
-           "Mobility"]
-         }
-
-        product_tags.each do |parent_cat, tags|
-          parent_id = Category.find_by(name: parent_cat.to_s).id
-          tags.each do |tag|
-            Category.find_or_create_by(name: tag, parent_category_id: parent_id)
-          end
-        end
-
-
-
       rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound, ActiveRecord::RecordNotSaved => e
         puts "Failed to process product: #{product_name}, Error: #{e.message}"
         raise ActiveRecord::Rollback
@@ -185,5 +149,63 @@ namespace :products do
     end
 
     puts 'All Products have been added to the DB!'
+
+    # Tags
+      ## Find or create all tags
+      product_tags = {:Clinical=>
+        ["Radiology",
+         "Patient Comfort",
+         "Ophthalmology",
+         "Medication Management",
+         "Amputee Care",
+         "Nursing",
+         "Physical Therapy",
+         "Diabetes",
+         "Dermatology",
+         "Mobility"],
+       :Operational=>
+        ["Emergency Care",
+         "Prosthetic and Sensory Aids",
+         "Patient Education",
+         "Rural Health",
+         "Information Technology",
+         "Inpatient Care",
+         "Physical Equipment",
+         "Patient Safety",
+         "Access to Care",
+         "Mobility"]
+       }
+
+      product_tags.each do |parent_cat, tags|
+        parent_id = Category.find_by(name: parent_cat.to_s).id
+        tags.each do |tag|
+          Category.find_or_create_by(name: tag, parent_category_id: parent_id)
+        end
+      end
+
+    ## Assign tags to their Products
+    PRODUCT_TAG_MAPPING = {
+      "atlas-knee-supporter" => ["Radiology", "Patient Comfort"],
+      "cart-sweeper-attachment" => ["Emergency Care"],
+      "dropease" => ["Ophthalmology", "Medication Management"],
+      "prosthetic-sock-management-tool-psmt" => ["Amputee Care", "Prosthetic and Sensory Aids", "Patient Education"],
+      "rapid-on-demand-connection-information-technology-rocit" => ["Rural Health", "Information Technology"],
+      "the-belongings-buddy" => ["Inpatient Care", "Nursing"],
+      "wareologie-portable-parallel-bars" => ["Physical Therapy", "Physical Equipment", "Patient Safety", "Access to Care"],
+      "xanderglasses" => ["Physical Equipment", "Access to Care"],
+      "hinged-bathtub-bench" => ["Mobility", "Patient Safety"],
+      "self-leveling-walker-slw" => ["Mobility", "Patient Safety"],
+      "habit-camera" => ["Diabetes", "Dermatology", "Mobility"],
+      "thermal-fuse-cover" => ["Patient Safety"]
+    }
+
+    PRODUCT_TAG_MAPPING.each do |product_slug, tags|
+      product_id = Product.find_by(slug: product_slug).id
+      tags.each do |tag|
+        cat_id = Category.find_by(name: tag).id
+        CategoryPractice.create(innovable_type: "Product", innovable_id: product_id, category_id: cat_id )
+        puts "Tagged to #{product_slug} with #{tag}"
+      end
+    end
   end
 end
