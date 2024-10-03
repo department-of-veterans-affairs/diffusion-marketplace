@@ -45,7 +45,8 @@
 				[:item_number, "Item Number"],
 				[:vendor, "Vendor", {content: @product.vendor_link.present? ? link_to(@product.vendor, @product.vendor_link, class: ".usa-link .usa-link--external") : @product.vendor }],
 				[:duns, "DUNS"],
-				[:shipping_timeline_estimate, "Shipping Timeline Estimate"]
+        [:shipping_timeline_estimate, "Shipping Timeline Estimate"],
+		    [:price, "Price"]
 			] %>
 			<% product_description_fields.each do |arr| %>
 				<%	field_name, field_label, field_options = arr %>

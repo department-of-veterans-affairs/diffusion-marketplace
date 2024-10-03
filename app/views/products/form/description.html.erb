@@ -14,9 +14,9 @@
             <div class="margin-bottom-5 margin-top-3">
               <div>
                 <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
-                  Innovation Title*
+                  Product Title*
                 <% end %>
-                <span>Type the official name of your product.</span>&nbsp;
+                <span>What should your product be called?</span>&nbsp;
               </div>
               <%= f.text_field :name, class: "usa-input #{ @product.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
 
@@ -28,7 +28,7 @@
                 <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Tagline*
                 <% end %>
-                <span>Type a short sentence summarizing the key outcomes of your innovation. This text will display in search results. (72 characters max)</span>&nbsp;
+                <span>How would you summarize the key outcomes of your product in the shortest sentence possible? Note that this will only be leveraged on the search results page.</span>&nbsp;
               </div>
               <%= f.text_field :tagline, class: "usa-input #{ @product.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
 
@@ -40,7 +40,7 @@
                 <%= f.label :description, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Executive Summary*
                 <% end %>
-                <span>Type the description of your product.</span>&nbsp;
+                <span>Provide a short summary of your product’s mission. Include relevant information about the product's features, material, size, and more.</span>&nbsp;
               </div>
               <%= f.text_area :description, class: "usa-textarea #{ @product.errors[:description].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input dm-required-field", required: true %>
 
@@ -53,7 +53,7 @@
                 <%= f.label :item_number, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Item Number*
                 <% end %>
-                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+                <span>Provide the item number to help individuals identify and purchase your product.</span>&nbsp;
               </div>
               <%= f.text_field :item_number, class: "usa-input #{ @product.errors[:item_number].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
 
@@ -66,7 +66,7 @@
                 <%= f.label :vendor, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Vendor*
                 <% end %>
-                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+                <span>Provide the name of the person or business that sells your product.</span>&nbsp;
               </div>
               <%= f.text_field :vendor, class: "usa-input #{ @product.errors[:vendor].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
 
@@ -92,7 +92,7 @@
                 <%= f.label :duns, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   DUNS
                 <% end %>
-                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+                <span>The DUNS (Data Universal Numbering System) number is a unique nine-digit number that identifies your product as a business entity. What’s yours?</span>&nbsp;
               </div>
               <%= f.text_field :duns, class: "usa-input #{ @product.errors[:duns].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
 
@@ -105,12 +105,26 @@
                 <%= f.label :shipping_timeline_estimate, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Shipping Timeline Estimate
                 <% end %>
-                <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
+                <span>Provide the date or date range when your product will be able to be shipped or delivered.</span>&nbsp;
               </div>
-              <%= f.text_field :shipping_timeline_estimate, class: "usa-input #{ @product.errors[:duns].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+              <%= f.text_field :shipping_timeline_estimate, class: "usa-input #{ @product.errors[:shipping_timeline_estimate].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
 
               <p class="usa-error-message <%= @product.errors[:shipping_timeline_estimate].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
                 <span class="font-family-sans"><%= show_errors(@product, :shipping_timeline_estimate) %></span>
+              </p>
+            </div>
+
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :price, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Price
+                <% end %>
+                <span>What is the cost of your product in U.S. dollars?</span>&nbsp;
+              </div>
+              <%= f.text_field :price, class: "usa-input #{ @product.errors[:price].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:price].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :price) %></span>
               </p>
             </div>
 
