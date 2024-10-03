@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_20_234630) do
+ActiveRecord::Schema.define(version: 2024_10_03_184529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -372,27 +372,6 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
     t.boolean "published", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "impact_photos", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.integer "attachment_original_w"
-    t.integer "attachment_original_h"
-    t.integer "attachment_crop_x"
-    t.integer "attachment_crop_y"
-    t.integer "attachment_crop_w"
-    t.integer "attachment_crop_h"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.boolean "is_main_display_image", default: false
-    t.index ["practice_id"], name: "index_impact_photos_on_practice_id"
   end
 
   create_table "implementation_timeline_files", force: :cascade do |t|
@@ -1390,7 +1369,6 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
   add_foreign_key "domain_practices", "domains"
   add_foreign_key "domain_practices", "practices"
   add_foreign_key "financial_files", "practices"
-  add_foreign_key "impact_photos", "practices"
   add_foreign_key "implementation_timeline_files", "practices"
   add_foreign_key "job_position_practices", "job_positions"
   add_foreign_key "job_position_practices", "practices"
