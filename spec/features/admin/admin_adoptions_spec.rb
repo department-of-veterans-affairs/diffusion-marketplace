@@ -24,9 +24,7 @@ describe 'Admin Adoptions Tab', type: :feature do
   end
 
   it 'should show all adoptions and adoption counts for practices that have at least one adoption' do
-    visit '/admin'
-    click_link 'Adoptions'
-
+    go_to_adoptions
     expect(page).to have_selector("input[value='Download All']")
     expect(page).to have_selector('.panel', count: 2)
     expect(page).to have_content('CURRENT MONTH')
@@ -39,9 +37,7 @@ describe 'Admin Adoptions Tab', type: :feature do
   end
 
   it 'should show the total adoptions for all practices and adoptions made within a 3-month interval(current month, one month ago, two months ago)' do
-    visit '/admin'
-    click_link 'Adoptions'
-
+    go_to_adoptions
     expect(page).to have_content('All adoptions')
     within(:css, '.all-adoptions-columns') do
       current_month_el = all(".all-adoptions-current-month").last
@@ -57,12 +53,15 @@ describe 'Admin Adoptions Tab', type: :feature do
   end
 
   it 'should allow an admin to download adoption data as a .xlsx file' do
-    visit '/admin'
-    click_link 'Adoptions'
-    export_button = find(:css, "input[value='Download All']")
+    go_to_adoptions
+    export_button  find(:css, "input[value='Download All']")
     export_button.click
 
     # should not navigate away from metrics page
     expect(page).to have_current_path(admin_adoptions_path)
+  end
+
+  def go_to_adoptions
+    visit admin_adoptions_path
   end
 end

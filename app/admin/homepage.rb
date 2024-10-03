@@ -1,4 +1,5 @@
 ActiveAdmin.register Homepage do
+  menu label: "Homepage Editor"
   permit_params :internal_title,
                 :section_title_one,
                 :section_title_two,
