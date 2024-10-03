@@ -109,6 +109,7 @@ namespace :importer do
       ancillary_services
       clinical_locations
       departments
+      practice_multimedia
       video_files
       additional_documents
       publications
@@ -525,6 +526,48 @@ def domains
       answer = answer.split('-')[0].squish
       department = Domain.find_by(name: answer)
       DomainPractice.create domain: department, practice: @practice unless DomainPractice.where(domain: department, practice: @practice).any?
+    end
+  end
+end
+
+def practice_multimedia
+  question_fields = [[
+                         'Impact Photo 1',
+                         'Please provide a title for Impact Picture 1',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ], [
+                         'Impact Photo 2',
+                         'Please provide a title for Impact Picture 2',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ], [
+                         'Impact Photo 3',
+                         'Please provide a title for Impact Picture 3',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ]]
+  question_fields.each_with_index do |fields, index|
+    description_indices = @questions.each_index.select { |i| @questions[i] == fields[2] }
+    next if @answers[@questions.index(fields[0])].blank?
+
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(fields[0])]}"
+    image_file = File.new(image_path)
+    title = @answers[@questions.index(fields[1])]
+    # Maybe map this to the Results section later?
+    # description = @answers[description_indices[index]]
+
+    prac_multimedia = PracticeMultimedium.new(
+      practice: @practice,
+      resource_type: "image",
+      name: title
+    )
+
+    if image_file.present? && File.exist?(image_file.path)
+      prac_multimedia.attachment = image_file
+    end
+
+    if prac_multimedia.save
+      puts "==> Importing Practice: #{@name} Human Practice Multimedia".light_blue
+    else
+      puts "==> Failed Importing Practice: #{@name} Human Practice Multimedia".yellow
     end
   end
 end
