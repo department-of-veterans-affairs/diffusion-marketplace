@@ -259,7 +259,6 @@ class Practice < ApplicationRecord
   has_many :va_employees, -> { order(position: :asc) }, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
-  has_many :video_files, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_creators, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_awards, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
@@ -289,8 +288,6 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_solution_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_results_resources, allow_destroy: true
   accepts_nested_attributes_for :department_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['value'].blank? }
-
-  accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc{ |attributes| attributes['milestone'].blank? || attributes['timeline'].blank?}
   accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
