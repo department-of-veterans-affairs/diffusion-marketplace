@@ -97,11 +97,11 @@
 		  <section id="practice-show-multimedia" class="margin-bottom-5 grid-container">
 		    <div class="grid-row grid-gap-2">
 		      <div class="desktop:grid-col-9 grid-col-12">
-		      	<h2>Multimedia</h2><span>TO DO: fix partial to fix different heading levels</span>
+		      	<h2>Images and Video</h2>
 		        <div class="multimedia-section practice-section">
 		        	<% # temporarily skip files while troubleshooting %>
 		        	<% multimedia = @product.practice_multimedia.where.not(resource_type: "file") %>
-		          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
+		          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: multimedia, statement: '', title: '', s_area: 'multimedia'} %>
 		        </div>
 		      </div>
 		    </div>
