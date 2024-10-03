@@ -109,8 +109,8 @@ namespace :importer do
       ancillary_services
       clinical_locations
       departments
-      practice_multimedia
-      video_files
+      practice_multimedia_images
+      practice_multimedia_video_files
       additional_documents
       publications
       implementation_timeline
@@ -530,7 +530,7 @@ def domains
   end
 end
 
-def practice_multimedia
+def practice_multimedia_images
   question_fields = [[
                          'Impact Photo 1',
                          'Please provide a title for Impact Picture 1',
@@ -572,7 +572,7 @@ def practice_multimedia
   end
 end
 
-def video_files
+def practice_multimedia_video_files
   puts "==> Importing Practice: #{@name} Video Files".light_blue
   question_fields = [
       'Do you have a short video that provides an explanation, summary, or testimonial about your practice? (Please paste YouTube url or other link)',
