@@ -1328,21 +1328,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  create_table "video_files", force: :cascade do |t|
-    t.string "title"
-    t.integer "position"
-    t.string "url"
-    t.text "description"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_video_files_on_practice_id"
-  end
-
   create_table "visn_liaisons", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -1469,6 +1454,5 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
   add_foreign_key "va_facilities", "visns"
   add_foreign_key "va_secretary_priority_practices", "practices"
   add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
-  add_foreign_key "video_files", "practices"
   add_foreign_key "visn_liaisons", "visns"
 end
