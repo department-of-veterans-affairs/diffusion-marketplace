@@ -72,5 +72,21 @@ class Ahoy::Event < ApplicationRecord
     where(name: page_search).where("properties->>'search_term' = ?", term).by_date_range(start_date, end_date)
   }
 
+  # Products
+  scope :product_views, -> { where(name: 'Product show').exclude_duplicates }
+  scope :product_views_for_single_product, -> (product_id) { product_views.where_props(product_id: product_id) }
+  scope :product_views_for_single_product_by_date_range, -> (product_id, start_date, end_date) {
+    product_views.where_props(product_id: product_id).by_date_range(start_date, end_date)
+  }
+  scope :product_views_for_multiple_products, -> (product_ids) {
+    product_views.where("properties->>'product_id' IN (?)", product_ids.map(&:to_s))
+  }
+  scope :product_views_for_multiple_products_by_date_range, -> (product_ids, start_date, end_date) {
+    product_views.where(
+      "properties->>'product_id' IN (?)", product_ids.map(&:to_s)
+    ).by_date_range(start_date, end_date)
+  }
+
+
   store_accessor :properties, :search_term
 end

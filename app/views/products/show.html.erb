@@ -1,10 +1,9 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <% #TO DO: create separate tracking for productsrender partial: 'practices/show/ahoy_event_tracking', formats: [:js] if current_user.present? %>
+    <%= render partial: 'products/ahoy_event_tracking', formats: [:js] if current_user.present? %>
   <% end %>
 <% end %>
-
 <section class="padding-y-0 margin-bottom-1 margin-top-0">
   <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
