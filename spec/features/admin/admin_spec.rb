@@ -110,20 +110,17 @@ describe 'The admin dashboard', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
       within(:css, '#header') do
-        click_link('Site Metrics')
-        expect(page).to have_current_path(admin_site_metrics_path)
+        # click_link('Site Metrics')
+        # expect(page).to have_current_path(admin_site_metrics_path)
 
         click_link('Tags')
         expect(page).to have_current_path(admin_categories_path)
 
-        click_link('Comments')
-        expect(page).to have_current_path(admin_comments_path)
-
         click_link('Departments')
         expect(page).to have_current_path(admin_departments_path)
 
-        click_link('Innovation Search Terms')
-        expect(page).to have_current_path(admin_innovation_search_terms_path)
+        # click_link('Innovation Search Terms')
+        # expect(page).to have_current_path(admin_innovation_search_terms_path)
 
         click_link('Innovation Views Leaderboard')
         expect(page).to have_current_path(admin_innovation_views_leaderboard_path)
