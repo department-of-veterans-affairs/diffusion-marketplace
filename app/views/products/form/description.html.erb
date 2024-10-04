@@ -155,7 +155,9 @@
               <% end %>
             </div>
 
-            <%= f.hidden_field :submitted_page, value: params[:action] %>
+            <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @product } %>
+
+            <%= hidden_field_tag :submitted_page, params[:action] %>
           </fieldset>
         <% end %>
       </section>
