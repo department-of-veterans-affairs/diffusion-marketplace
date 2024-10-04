@@ -155,7 +155,7 @@
               <% end %>
             </div>
 
-            <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @product } %>
+            <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @product, modal_link: true } %>
 
             <%= hidden_field_tag :submitted_page, params[:action] %>
           </fieldset>
