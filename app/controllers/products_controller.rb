@@ -13,49 +13,30 @@ class ProductsController < ApplicationController
     render 'products/form/intrapreneur'
   end
 
-  def multimedia
-    @show_return_to_top = true
-    render 'products/form/multimedia'
+  def show
+    render 'products/show'
   end
 
-  def show
-    @search_terms = @product.categories.get_category_names
-    render 'products/show'
+  def multimedia
+    render 'products/form/multimedia'
   end
 
   def update
     submitted_page = navigation_params[:submitted_page]
+    binding.pry
     service = SaveProductService.new(
       product: @product,
       product_params: params[:product].nil? ? {} : product_params,
       multimedia_params: params[:practice].nil? ? {} : multimedia_params
     )
 
-    product_updated = false
-
-    if params[:practice].present?
-      submitted_product_data = process_multimedia_params(multimedia_params)
-      product_updated = @product.update_multimedia(multimedia_params)
-    elsif current_endpoint == 'description'
-      product_updated = @product.update_category_practices(product_params[:category])
-      submitted_product_data.delete(:category)
-    end
-
-    @product.assign_attributes(submitted_product_data)
-    product_updated = (@product.changed? || product_associations_changed?) ? true : product_updated
-
-    if product_updated
-      unless @product.save
-        flash[:error] = @product.errors.map {|error| error.options[:message]}.join(', ')
-        redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
-        return
-      end
-    end
-
-    notice = product_updated ? "Product was successfully updated." : nil
-    if params[:next]
-      redirect_to send("product_#{Product::PRODUCT_EDITOR_NEXT_PAGE[current_endpoint.to_sym]}_path", @product), notice: notice
-      return
+    if service.call
+      notice = service.product_updated ? "Product was successfully updated." : nil
+      next_page = params[:next] ? "#{Product::PRODUCT_EDITOR_SLUGS[submitted_page.to_sym]}_" : nil
+      redirect_to send("product_#{next_page}path", @product), notice: notice
+    elsif service.errors.any?
+      flash[:error] = service.errors.join(', ')
+      redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
     else
       next_page = params[:next] ? "#{Product::PRODUCT_EDITOR_SLUGS[submitted_page.to_sym]}_" : nil
       redirect_to send("product_#{next_page}path", @product)
@@ -80,10 +61,8 @@ class ProductsController < ApplicationController
       :description,
       :item_number,
       :vendor,
-      :vendor_link,
       :duns,
       :shipping_timeline_estimate,
-      :price,
       :origin_story,
       :main_display_image,
       :crop_x,
