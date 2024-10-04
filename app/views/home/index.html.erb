@@ -136,6 +136,18 @@
           </div>
         <% end %>
     </section>
+    <section id="ipm-section" class="">
+      <div class="grid-row grid-gap">
+        <%= image_tag("homepage/section-ipm.png", alt: "a doctor and medical staff speaking in a busy hallway", class: "margin-bottom-3 grid-col-12 tablet:grid-col-6 desktop:grid-col-6") %>
+        <div class="margin-bottom-3 grid-col-12 tablet:grid-col-6 desktop:grid-col-6">
+          <h2 id="ipm-section-title" class="usa-prose-h2 margin-bottom-3 tablet:margin-bottom-5 desktop:margin-bottom-5">Intrapreneurial Products</h2>
+          <p class="usa-prose-body margin-bottom-5">
+            The VA Intrapreneurial Product Marketplace highlights frontline VA employee innovators and their products available for purchase to put back in the hands of who they were designed with and for, Veterans.
+          </p>
+          <%= link_to 'Learn more', '/intrapreneurial-product-marketplace', class: 'usa-link', 'aria-describedby': 'ipm-section-title', data: { turbolinks: false } %>
+        </div>
+      </div>
+    </section>
     <section id="homepage-section-2" class="homepage-section">
         <% if fallback_content %>
           <h2 class="section-title">Trending Tags</h2>
