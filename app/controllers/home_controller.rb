@@ -7,7 +7,7 @@ class HomeController < ApplicationController
     @dropdown_categories = get_categories_by_popularity
     @dropdown_communities = get_categories_by_popularity(true)
     @dropdown_practices, @practice_names = get_dropdown_practices
-    @dropdown_products = get_dropdown_products
+    @dropdown_products, @product_names = get_dropdown_products
     @homepage = Homepage.where(published: true)&.first
     if @homepage
       current_features = @homepage&.homepage_features
@@ -152,7 +152,7 @@ class HomeController < ApplicationController
       {name: name, id: id, slug: slug }
     end
 
-    return products_hash
+    return products_hash, product_names
   end
 
   def get_diffusion_histories(is_public_practice)
