@@ -154,8 +154,6 @@ namespace :products do
         puts "Failed to process product: #{product_name}, Error: #{e.message}"
         raise ActiveRecord::Rollback
       end
-<<<<<<< HEAD
-=======
 
       product = Product.find_or_initialize_by(name: product_attributes[:name])
       product.update!(product_attributes)
@@ -169,7 +167,6 @@ namespace :products do
       PracticePartnerPractice.create!(innovable: product, practice_partner: vha_practice_partner)
 
       puts "Created Product - #{product.name}"
->>>>>>> cb27a87b (Dm 5123 poly practice partners (#1023))
     end
 
     puts 'All Products have been added to the DB!'
