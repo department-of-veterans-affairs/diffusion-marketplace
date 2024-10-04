@@ -11,6 +11,9 @@ function setupSearchDropdown() {
     const allCommunities = JSON.parse($('.homepage-search').attr('data-communities') || '[]');
     const mostPopularCommunities = allCommunities.slice(0, 3);
 
+    const allProducts = JSON.parse($('.homepage-search').attr('data-products') || '[]');
+    const mostRecentProducts = allProducts.slice(0, 3);
+
     searchInput.focus(function() {
         dropdown.show();
         searchInput.attr('aria-expanded', 'true');
@@ -21,7 +24,8 @@ function setupSearchDropdown() {
         let filteredCategories = searchTerm ? allCategories.filter(category => category.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCategories;
         let filteredInnovations = searchTerm ? allInnovations.filter(innovation => innovation.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostRecentInnovations;
         let filteredCommunities = searchTerm ? allCommunities.filter(community => community.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCommunities;
-        updateDropdown(filteredCategories, filteredInnovations, filteredCommunities);
+        let filteredProducts = searchTerm ? allProducts.filter(product => product.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostRecentProducts;
+        updateDropdown(filteredCategories, filteredInnovations, filteredCommunities, filteredProducts);
     });
 
     $(document).keydown(function(e) {
@@ -56,8 +60,8 @@ function setupSearchDropdown() {
     });
 }
 
-function updateDropdown(categories, innovations, communities) {
-  $('#category-list, #practice-list, #community-list').empty();
+function updateDropdown(categories, innovations, communities, products) {
+  $('#category-list, #practice-list, #community-list, #product-list').empty();
 
   categories.forEach(function(category) {
       let link = $('<a></a>')
@@ -93,6 +97,18 @@ function updateDropdown(categories, innovations, communities) {
           .append(link);
 
       $('#community-list').append(listItem);
+  });
+
+  products.forEach(function(product) {
+      let link = $('<a></a>')
+          .attr('href', `/products/${product.slug}`)
+          .text(product.name);
+      let listItem = $('<li></li>')
+          .addClass('search-result')
+          .attr('data-product-id', product.id)
+          .append(link);
+
+      $('#product-list').append(listItem);
   });
 }
 
@@ -149,5 +165,6 @@ addEventListener('turbolinks:load', function () {
     setupClickTracking('#practice-list', "Dropdown Practice Link Clicked", 'data-practice-id');
     setupClickTracking('#category-list', "Category selected", 'data-category_id');
     setupClickTracking('#community-list', "Category selected", 'data-category_id');
+    setupClickTracking('#product-list', "Dropdown Product Link Clicked", 'data-product_id');
   }
 });

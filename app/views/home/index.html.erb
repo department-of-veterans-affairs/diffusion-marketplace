@@ -45,7 +45,7 @@
             style="display: none;"
           >
 
-          <% if @dropdown_practices.present? && @dropdown_categories.present? && @dropdown_communities.present? %>
+          <% if @dropdown_practices.present? && @dropdown_categories.present? && @dropdown_communities.present? && @dropdown_products.present? %>
           <div class="dropdown-content margin-4">
             <div class="result-section" data-type="innovation">
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Innovations</h3>
@@ -86,12 +86,12 @@
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Products</h3>
               <ul id="product-list" class="usa-list usa-list--unstyled padding-bottom-1 padding-top-1 display-block">
                 <% @dropdown_products[0..2].each do |product| %>
-                  <li class="search-result" data-category_id=<%= product[:id] %>>
-                    <a href=<%= "/products/#{URI.encode_www_form_component(product[:name])}" %>><%= product[:name] %></a>
+                  <li class="search-result" data-product-id=<%= product[:id]%>>
+                    <a href=<%= "/products/#{product[:slug]}" %>><%= product[:name] %></a>
                   </li>
                 <% end %>
               </ul>
-              <a class="browse-all-link text-bold" href="<%= search_path %>?all_communities=true">Browse all Products</a>
+              <a class="browse-all-link text-bold" href="/intrapreneurial-product-marketplace">Browse all Products</a>
             </div>
           </div>
           <% end %>
