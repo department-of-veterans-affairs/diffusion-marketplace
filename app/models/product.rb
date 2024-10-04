@@ -1,8 +1,7 @@
 class Product < Innovation
-  include CropperUtils
   has_attached_file :main_display_image, styles: {thumb: '768x432>'}, :processors => [:cropper]
 
-  validates :main_display_image_alt_text, presence: true, if: :main_display_image_present?
+  # validates :main_display_image_alt_text, presence: true, if: :main_display_image_present?
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates :name, presence: true
   validates_uniqueness_of :name, {message: 'Product name already exists'}
@@ -18,25 +17,17 @@ class Product < Innovation
   extend FriendlyId
   friendly_id :name, use: :slugged
 
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+
   def user_email
     user&.email
   end
 
-  def update_category_practices(category_params)
-    changed = false
-
-    category_keys = category_params ? category_params.keys.map { |key| key.gsub("_resource", "") } : []
-    current_category_ids = categories.pluck(:id)
-    product_category_practices = category_practices
-
-    # Add new category practices if not present
-    missing_category_ids = category_keys.map(&:to_i) - current_category_ids
-    missing_category_ids.delete(0) if missing_category_ids.count
-    if missing_category_ids.any?
-      missing_category_ids.each do |category_id|
-        product_category_practices.create!(category_id: category_id)
-      end
-      changed = true
+  def remove_main_display_image(params)
+    if params[:delete_main_display_image].present? && params[:delete_main_display_image] == 'true'
+      self.update!(main_display_image: nil, main_display_image_alt_text: nil)
+    else
+      false
     end
 
     # Remove category practices that are not in the submitted category keys
