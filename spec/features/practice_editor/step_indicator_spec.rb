@@ -29,7 +29,7 @@ describe 'Practice editor', type: :feature, js: true do
 
     it 'should display the step indicator on each page' do
       session_date = "#{@end_time.strftime("%-m/%-d/%Y")}"
-      session_time = "#{@end_time.strftime("%I:%M %p")}"
+      session_time = "#{@end_time.in_time_zone('Eastern Time (US & Canada)').strftime("%I:%M %p")}"
       last_updated_txt = "#{@practice.name} last updated on #{session_date} at #{session_time} EST by #{@admin.first_name} #{@admin.last_name}"
 
       # editors
