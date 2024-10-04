@@ -179,7 +179,9 @@ namespace :products do
       product_tags.each do |parent_cat, tags|
         parent_id = Category.find_by(name: parent_cat.to_s).id
         tags.each do |tag|
-          Category.find_or_create_by(name: tag, parent_category_id: parent_id)
+          cat = Category.find_or_initialize_by(name: tag)
+          cat.parent_category_id = parent_id
+          cat.save
         end
       end
 
@@ -204,7 +206,7 @@ namespace :products do
       tags.each do |tag|
         cat_id = Category.find_by(name: tag).id
         CategoryPractice.create(innovable_type: "Product", innovable_id: product_id, category_id: cat_id )
-        puts "Tagged to #{product_slug} with #{tag}"
+        puts "Tagged #{product_slug} with #{tag}"
       end
     end
   end
