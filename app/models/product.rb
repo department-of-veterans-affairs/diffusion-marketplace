@@ -23,39 +23,6 @@ class Product < Innovation
     user&.email
   end
 
-  def remove_main_display_image(params)
-    if params[:delete_main_display_image].present? && params[:delete_main_display_image] == 'true'
-      self.update!(main_display_image: nil, main_display_image_alt_text: nil)
-    else
-      false
-    end
-
-    # Remove category practices that are not in the submitted category keys
-    cat_practices_to_remove = product_category_practices.joins(:category).where.not(categories: { id: category_keys })
-    if cat_practices_to_remove.any?
-      cat_practices_to_remove.destroy_all
-      changed = true
-    end
-
-    changed
-  end
-
-  def update_multimedia(multimedia_params)
-    changed = false
-    multimedia_resources = multimedia_params["practice_multimedia_attributes"]
-    if multimedia_resources
-      multimedia_resources.each do |r|
-        if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
-          r_id = r[1][:id].to_i
-          record = practice_multimedia.find(r_id)
-          reprocess_attachment(record, r[1])
-          changed = true
-        end
-      end
-    end
-    changed
-  end
-
   private
 
   def main_display_image_present?

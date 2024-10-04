@@ -46,7 +46,7 @@ class SaveProductService
     end
 
     if @product_params[:delete_main_display_image] == 'true'
-      @product.remove_main_display_image(@product_params)
+      remove_main_display_image(@product_params)
       @product_updated = true
       @product_params.delete(:delete_main_display_image)
     end
@@ -120,6 +120,14 @@ class SaveProductService
       end
     end
     changed
+  end
+
+  def remove_main_display_image(params)
+    if params[:delete_main_display_image].present? && params[:delete_main_display_image] == 'true'
+      @product.update!(main_display_image: nil, main_display_image_alt_text: nil)
+    else
+      false
+    end
   end
 
   def collect_errors
