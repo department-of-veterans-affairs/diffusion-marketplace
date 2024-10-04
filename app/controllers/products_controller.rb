@@ -34,8 +34,8 @@ class ProductsController < ApplicationController
 
     if service.call
       notice = service.product_updated ? "Product was successfully updated." : nil
-      next_page = params[:next] ? "#{Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page.to_sym]}_" : nil
-      redirect_to send("product_#{next_page}path", @product), notice: notice
+      next_page = params[:next] ? "#{Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page.to_sym]}" : "multimedia"
+      redirect_to send("product_#{next_page}_path", @product), notice: notice
     elsif service.errors.any?
       flash[:error] = service.errors.join(', ')
       redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
