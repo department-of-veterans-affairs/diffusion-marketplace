@@ -147,8 +147,6 @@ namespace :products do
         puts "Failed to process product: #{product_name}, Error: #{e.message}"
         raise ActiveRecord::Rollback
       end
-
-      puts "Created Product - #{product.name}"
     end
 
     puts 'All Products have been added to the DB!'
