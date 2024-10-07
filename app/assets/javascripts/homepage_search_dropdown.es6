@@ -127,10 +127,10 @@ function setupClickTracking(listSelector, eventName, dataAttribute) {
 
       let properties = { from_homepage: true};
       switch(dataAttribute) {
-        case 'data-practice-id';
+        case 'data-practice-id':
           properties['practice_name'] = name;
           break;
-        case 'data-product-id';
+        case 'data-product-id':
           properties['product_name'] = name;
           break;
         default: // tags and communities-as-tags

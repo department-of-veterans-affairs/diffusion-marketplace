@@ -112,13 +112,13 @@ describe 'Homepage', type: :feature do
         find('#dm-homepage-search-field').click
 
         expect(page).to have_content('Recent VA-only practice!')
-        expect(page).to have_content('The Second Best Practice Ever!')
+        expect(page).to have_content('The Third Best Practice Ever!')
     end
 
     it 'lists popular categories' do
       within '#category-list' do
         expect(page).to have_content('COVID')
-        expect(page).to have_content('Telehealth')
+        expect(page).to have_content('Nutrition & Food')
       end
     end
 
@@ -173,7 +173,7 @@ describe 'Homepage', type: :feature do
     end
 
     it 'lets a user navigate results with arrow keys' do
-      page.send_keys :down, :down, :down, :down, :down # navigate to first category
+      7.times { page.send_keys :down} # navigate to first category
       page.send_keys :enter # select category
       expect(page).to have_current_path('/search?category=COVID')
       expect(page).to have_content("2 Results: TAG: COVID")
@@ -234,7 +234,7 @@ describe 'Homepage', type: :feature do
       event = wait_for_ahoy_js(@product_2.name)
 
       expect(event.name).to eq("Dropdown Product Link Clicked")
-      # expect(event.properties["product_name"]).to eq(@product_2.name) # TODO: fix ahoy event
+      expect(event.properties["product_name"]).to eq(@product_2.name)
       expect(event.properties["from_homepage"]).to be_truthy
     end
 
