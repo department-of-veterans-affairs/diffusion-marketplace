@@ -1,15 +1,7 @@
 module NavigationHelper
-  INNOVATION_EDITOR_PAGES = [
-    'introduction',
-    'editors',
-    'overview',
-    'implementation',
-    'adoptions',
-    'about',
-    'description',
-    'intrapreneur',
-    'multimedia'
-  ]
+  PRACTICE_EDITOR_PAGES =  ['editors', 'introduction', 'adoptions', 'overview', 'implementation', 'about']
+  PRODUCT_EDITOR_PAGES = ['editors', 'description','intrapreneur','multimedia']
+  INNOVATION_EDITOR_PAGES = PRACTICE_EDITOR_PAGES + PRODUCT_EDITOR_PAGES.uniq
 
   def setup_breadcrumb_navigation
     session[:breadcrumbs] = session[:breadcrumbs] || []

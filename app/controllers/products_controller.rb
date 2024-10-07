@@ -1,8 +1,13 @@
 class ProductsController < ApplicationController
   include InnovationControllerMethods
   before_action :authenticate_user!, except: [:show, :search, :index]
-  before_action :set_product, only: [:show, :update, :description, :intrapreneur, :multimedia]
-  before_action :check_product_permissions, only: [:show, :update, :description, :intrapreneur, :multimedia]
+  before_action :set_product, only: [:show, :update, :editors, :description, :intrapreneur, :multimedia]
+  before_action :check_product_permissions, only: [:show, :update, :editors, :description, :intrapreneur, :multimedia]
+  before_action :set_return_to_top_flag, only: [:show, :editors, :description, :intrapreneur, :multimedia]
+
+  def editors
+    render 'products/form/editors'
+  end
 
   def description
     @categories = Category.prepared_categories_for_practice_editor(current_user.has_role?(:admin))
@@ -90,6 +95,10 @@ class ProductsController < ApplicationController
     params.require(:practice).permit(
       practice_multimedia_attributes: permitted_dynamic_keys(params[:practice][:practice_multimedia_attributes])
     )
+  end
+
+  def set_return_to_top_flag
+    @show_return_to_top = true
   end
 
   def check_product_permissions
