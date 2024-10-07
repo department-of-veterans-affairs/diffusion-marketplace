@@ -18,6 +18,8 @@ describe 'Homepage', type: :feature do
     @product_1 = create(:product, published: true)
     @product_2 = create(:product , published: true)
     @product_3 = create(:product, published: true)
+    @ipm = create(:page_group, name: "Intrapreneurial Product Marketplace")
+    @ipm_homepage = create(:page, page_group: @ipm, slug: "home", title: "Intrapreneurial Product Marketplace" )
 
     create(:practice_origin_facility, practice: @practice, facility_type: 0, va_facility_id: 1)
 
@@ -240,7 +242,7 @@ describe 'Homepage', type: :feature do
       event = wait_for_ahoy_js('Browse all Products')
 
       expect(event.name).to eq("Dropdown Browse-all Link Clicked")
-      expect(event.properties["type"]).to eq("products")
+      expect(event.properties["type"]).to eq("product")
     end
   end
 

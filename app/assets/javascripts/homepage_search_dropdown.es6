@@ -126,7 +126,17 @@ function setupClickTracking(listSelector, eventName, dataAttribute) {
       const id = e.target.closest('.search-result').getAttribute(dataAttribute);
 
       let properties = { from_homepage: true};
-      properties[dataAttribute === 'data-practice-id' ? 'practice_name' : 'category_name'] = name;
+      switch(dataAttribute) {
+        case 'data-practice-id';
+          properties['practice_name'] = name;
+          break;
+        case 'data-product-id';
+          properties['product_name'] = name;
+          break;
+        default: // tags and communities-as-tags
+          properties['category_name'] = name;
+      }
+
       properties[dataAttribute.slice(5)] = parseInt(id); // Removes 'data-' and uses the rest as the key
 
       ahoy.track(eventName, properties);
