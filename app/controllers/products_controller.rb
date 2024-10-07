@@ -18,52 +18,40 @@ class ProductsController < ApplicationController
     render 'products/form/intrapreneur'
   end
 
-  def multimedia
-    @show_return_to_top = true
-    render 'products/form/multimedia'
-  end
-
   def show
     @search_terms = @product.categories.get_category_names
     render 'products/show'
   end
 
+  def multimedia
+    @show_return_to_top = true
+    render 'products/form/multimedia'
+  end
+
   def update
-    submitted_product_data = product_params
-    current_endpoint = submitted_product_data.delete(:submitted_page)
+    submitted_page = navigation_params[:submitted_page]
 
-    product_updated = false
+    service = SaveProductService.new(
+      product: @product,
+      product_params: params[:product].nil? ? {} : product_params,
+      multimedia_params: params[:practice].nil? ? {} : multimedia_params
+    )
 
-    if params[:practice].present?
-      submitted_product_data = process_multimedia_params(multimedia_params)
-      product_updated = @product.update_multimedia(multimedia_params)
-    elsif current_endpoint == 'description'
-      product_updated = @product.update_category_practices(product_params[:category])
-      submitted_product_data.delete(:category)
-    end
-
-    @product.assign_attributes(submitted_product_data)
-    product_updated = (@product.changed? || product_associations_changed?) ? true : product_updated
-
-    if product_updated
-      unless @product.save
-        flash[:error] = @product.errors.map {|error| error.options[:message]}.join(', ')
-        redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
-        return
-      end
-    end
-
-    notice = product_updated ? "Product was successfully updated." : nil
-    if params[:next]
-      redirect_to send("product_#{Product::PRODUCT_EDITOR_NEXT_PAGE[current_endpoint.to_sym]}_path", @product), notice: notice
-      return
+    if service.call
+      notice = service.product_updated ? "Product was successfully updated." : nil
+      next_page = params[:next] ? "#{Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page.to_sym]}" : "multimedia"
+      redirect_to send("product_#{next_page}_path", @product), notice: notice
+    elsif service.errors.any?
+      flash[:error] = service.errors.join(', ')
+      redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
     else
-      redirect_to product_path(@product), notice: notice
+      next_page = params[:next] ? "#{Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page.to_sym]}_" : nil
+      redirect_to send("product_#{next_page}path", @product)
     end
   rescue => e
     logger.error "Product update failed: #{e.message}"
     flash[:error] = "An unexpected error occurred: #{e.message}"
-    redirect_to send("product_#{current_endpoint}_path", @product) || admin_product_path(@product)
+    redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
   end
 
   private
@@ -85,9 +73,14 @@ class ProductsController < ApplicationController
       :shipping_timeline_estimate,
       :price,
       :origin_story,
-      :submitted_page,
+      :main_display_image,
+      :crop_x,
+      :crop_y,
+      :crop_w,
+      :crop_h,
+      :delete_main_display_image,
       va_employees_attributes: [:id, :name, :role, :_destroy],
-      category: permitted_dynamic_keys(params[:product][:category])
+      category: permitted_dynamic_keys(params[:product][:category]),
     )
   end
 
@@ -95,6 +88,10 @@ class ProductsController < ApplicationController
     params.require(:practice).permit(
       practice_multimedia_attributes: permitted_dynamic_keys(params[:practice][:practice_multimedia_attributes])
     )
+  end
+
+  def navigation_params
+    params.permit(:submitted_page, :next)
   end
 
   def set_return_to_top_flag
@@ -105,19 +102,5 @@ class ProductsController < ApplicationController
     unless @product.published? || current_user&.has_role?(:admin) || @product&.user_id == current_user&.id
       unauthorized_response
     end
-  end
-
-  def product_associations_changed?
-    @product.va_employees.any? { |record| record.changed? || record.marked_for_destruction? } ||
-      @product.va_employees.length != @product.va_employees.reject(&:marked_for_destruction?).length ||
-      @product.practice_multimedia.any? { |record| record.changed? || record.marked_for_destruction? } ||
-      @product.practice_multimedia.length != @product.practice_multimedia.reject(&:marked_for_destruction?).length
-  end
-
-  def process_multimedia_params(params)
-    PracticeMultimedium.resource_types.each do |rt|
-      params['practice_multimedia_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
-    end
-    params
   end
 end
