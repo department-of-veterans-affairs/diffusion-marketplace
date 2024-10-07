@@ -76,6 +76,7 @@ class ProductsController < ApplicationController
       :price,
       :origin_story,
       :main_display_image,
+      :main_display_image_alt_text,
       :crop_x,
       :crop_y,
       :crop_w,
