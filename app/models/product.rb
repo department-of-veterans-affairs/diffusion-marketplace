@@ -11,6 +11,7 @@ class Product < Innovation
 
   PRODUCT_EDITOR_NEXT_PAGE =
     {
+      'editors': 'description',
       'description': 'intrapreneur',
       'intrapreneur': 'multimedia',
     }
