@@ -17,8 +17,6 @@ class Product < Innovation
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-
   def user_email
     user&.email
   end

@@ -18,6 +18,7 @@ class Innovation < ApplicationRecord
   scope :unpublished,  -> { where(published: false) }
 
   attr_accessor :delete_main_display_image
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
   def main_display_image_s3_presigned_url(style = nil)
     object_presigned_url(main_display_image, style)

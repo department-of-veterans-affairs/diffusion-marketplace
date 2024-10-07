@@ -25,7 +25,6 @@ class Practice < Innovation
   attr_accessor :last_month_commits
   attr_accessor :two_months_ago_commits
   attr_accessor :three_months_ago_commits
-  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department, :practice_award, :category
 
   def self.cached_json_practices(is_guest_user)
