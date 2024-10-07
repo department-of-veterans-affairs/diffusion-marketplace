@@ -92,7 +92,7 @@
                 </p>
               </div>
 
-            <%= f.hidden_field :submitted_page, value: params[:action] %>
+            <%= hidden_field_tag :submitted_page, params[:action] %>
           </fieldset>
         <% end %>
       </section>
