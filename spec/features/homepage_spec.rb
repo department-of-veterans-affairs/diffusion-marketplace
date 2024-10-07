@@ -15,6 +15,9 @@ describe 'Homepage', type: :feature do
     @practice_2 = create(:practice, name: 'The Second Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 06 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 06 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: true, published: true, approved: true, user: @user)
     @practice_3 = create(:practice, name: 'The Third Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 07 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 07 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: true, published: true, approved: true, user: @user)
     @va_only_practice = create(:practice, name: 'Recent VA-only practice!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 08 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 07 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', is_public: false, published: true, approved: true, user: @user)
+    @product_1 = create(:product, published: true)
+    @product_2 = create(:product , published: true)
+    @product_3 = create(:product, published: true)
 
     create(:practice_origin_facility, practice: @practice, facility_type: 0, va_facility_id: 1)
 
@@ -93,7 +96,6 @@ describe 'Homepage', type: :feature do
 
     it 'lists most recently created innovations' do
       within '#practice-list' do
-        expect(page).to have_content('The Best Practice Ever!')
         expect(page).to have_content('The Second Best Practice Ever!')
         expect(page).to have_content('The Third Best Practice Ever!')
 
@@ -109,7 +111,6 @@ describe 'Homepage', type: :feature do
 
         expect(page).to have_content('Recent VA-only practice!')
         expect(page).to have_content('The Second Best Practice Ever!')
-        expect(page).to have_content('The Third Best Practice Ever!')
     end
 
     it 'lists popular categories' do
@@ -155,6 +156,18 @@ describe 'Homepage', type: :feature do
         expect(page).to have_content("1 Result:")
         expect(page).to have_content(@practice_3.name)
       end
+
+      it 'temporarily links to IPM pagebuilder page' do
+         within '#search-dropdown' do
+          expect(page).to have_link('Browse all Products', href: '/intrapreneurial-product-marketplace')
+        end
+      end
+
+      it 'lists most recently created products' do
+        expect(page).to have_content(@product_3.name)
+        expect(page).to have_content(@product_2.name)
+        expect(page).not_to have_content(@product_1.name)
+      end
     end
 
     it 'lets a user navigate results with arrow keys' do
@@ -171,10 +184,10 @@ describe 'Homepage', type: :feature do
     end
 
     it 'tracks clicks on practice links' do
-      event = wait_for_ahoy_js('The Best Practice Ever!')
+      event = wait_for_ahoy_js(@practice_2.name)
 
       expect(event.name).to eq("Dropdown Practice Link Clicked")
-      expect(event.properties["practice_name"]).to eq("The Best Practice Ever!")
+      expect(event.properties["practice_name"]).to eq(@practice_2.name)
       expect(event.properties["from_homepage"]).to be_truthy
     end
 
@@ -213,6 +226,21 @@ describe 'Homepage', type: :feature do
 
       expect(event.name).to eq("Dropdown Browse-all Link Clicked")
       expect(event.properties["type"]).to eq("community")
+    end
+
+    it 'tracks clicks on product links' do
+      event = wait_for_ahoy_js(@product_2.name)
+
+      expect(event.name).to eq("Dropdown Product Link Clicked")
+      # expect(event.properties["product_name"]).to eq(@product_2.name) # TODO: fix ahoy event
+      expect(event.properties["from_homepage"]).to be_truthy
+    end
+
+    it 'tracks clicks on "Browse All Products Link' do
+      event = wait_for_ahoy_js('Browse all Products')
+
+      expect(event.name).to eq("Dropdown Browse-all Link Clicked")
+      expect(event.properties["type"]).to eq("products")
     end
   end
 

@@ -146,7 +146,7 @@ class HomeController < ApplicationController
 
   def get_dropdown_products
     product_names = []
-    dropdown_products = Product.where(published: true, retired: false)
+    dropdown_products = Product.where(published: true, retired: false).order("created_at DESC")
     products_hash = dropdown_products.pluck(:id, :name, :slug).map do |id, name, slug|
       product_names << name
       {name: name, id: id, slug: slug }

@@ -3,16 +3,16 @@ function setupSearchDropdown() {
     const dropdown = $('#search-dropdown');
 
     const allCategories = JSON.parse($('.homepage-search').attr('data-categories') || '[]');
-    const mostPopularCategories = allCategories.slice(0, 3);
+    const mostPopularCategories = allCategories.slice(0, 2);
 
     const allInnovations = JSON.parse($('.homepage-search').attr('data-innovations') || '[]');
-    const mostRecentInnovations = allInnovations.slice(0, 3);
+    const mostRecentInnovations = allInnovations.slice(0, 2);
 
     const allCommunities = JSON.parse($('.homepage-search').attr('data-communities') || '[]');
-    const mostPopularCommunities = allCommunities.slice(0, 3);
+    const mostPopularCommunities = allCommunities.slice(0, 2);
 
     const allProducts = JSON.parse($('.homepage-search').attr('data-products') || '[]');
-    const mostRecentProducts = allProducts.slice(0, 3);
+    const mostRecentProducts = allProducts.slice(0, 2);
 
     searchInput.focus(function() {
         dropdown.show();
@@ -21,10 +21,10 @@ function setupSearchDropdown() {
 
     searchInput.on('input', function() {
         let searchTerm = searchInput.val().toLowerCase();
-        let filteredCategories = searchTerm ? allCategories.filter(category => category.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCategories;
-        let filteredInnovations = searchTerm ? allInnovations.filter(innovation => innovation.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostRecentInnovations;
-        let filteredCommunities = searchTerm ? allCommunities.filter(community => community.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCommunities;
-        let filteredProducts = searchTerm ? allProducts.filter(product => product.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostRecentProducts;
+        let filteredCategories = searchTerm ? allCategories.filter(category => category.name.toLowerCase().includes(searchTerm)).slice(0,2) : mostPopularCategories;
+        let filteredInnovations = searchTerm ? allInnovations.filter(innovation => innovation.name.toLowerCase().includes(searchTerm)).slice(0,2) : mostRecentInnovations;
+        let filteredCommunities = searchTerm ? allCommunities.filter(community => community.name.toLowerCase().includes(searchTerm)).slice(0,2) : mostPopularCommunities;
+        let filteredProducts = searchTerm ? allProducts.filter(product => product.name.toLowerCase().includes(searchTerm)).slice(0,2) : mostRecentProducts;
         updateDropdown(filteredCategories, filteredInnovations, filteredCommunities, filteredProducts);
     });
 

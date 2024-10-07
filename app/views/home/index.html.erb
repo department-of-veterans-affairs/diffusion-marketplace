@@ -50,7 +50,7 @@
             <div class="result-section" data-type="innovation">
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Innovations</h3>
               <ul id="practice-list" class="usa-list usa-list--unstyled padding-bottom-1 padding-top-1 display-block">
-                <% @dropdown_practices[0..2].each do |practice| %>
+                <% @dropdown_practices[0..1].each do |practice| %>
                   <li class="search-result" data-practice-id=<%= practice[:id] %>>
                     <a href="/innovations/<%= practice[:slug] %>"><%= practice[:name] %></a>
                   </li>
@@ -62,7 +62,7 @@
             <div class="result-section" data-type="category">
               <h3 class="search-header usa-prose-h3 margin-bottom-0" aria-label="Tags">Tags</h3>
               <ul id="category-list" class="usa-list usa-list--unstyled padding-bottom-1 padding-top-1 display-block">
-                <% @dropdown_categories[0..2].each do |category| %>
+                <% @dropdown_categories[0..1].each do |category| %>
                   <li class="search-result" data-category_id=<%= category[:id] %>>
                     <a href=<%= "/search?category=#{URI.encode_www_form_component(category[:name])}" %>><%= category[:name] %></a>
                   </li>
@@ -74,7 +74,7 @@
             <div class="result-section" data-type="community">
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Communities</h3>
               <ul id="community-list" class="usa-list usa-list--unstyled padding-bottom-1 padding-top-1 display-block">
-                <% @dropdown_communities[0..2].each do |community| %>
+                <% @dropdown_communities[0..1].each do |community| %>
                   <li class="search-result" data-category_id=<%= community[:id] %>>
                     <a href=<%= "/search?category=#{URI.encode_www_form_component(community[:name])}" %>><%= community[:name] %></a>
                   </li>
@@ -85,7 +85,7 @@
             <div class="result-section" data-type="product">
               <h3 class="search-header usa-prose-h3 margin-bottom-0">Products</h3>
               <ul id="product-list" class="usa-list usa-list--unstyled padding-bottom-1 padding-top-1 display-block">
-                <% @dropdown_products[0..2].each do |product| %>
+                <% @dropdown_products[0..1].each do |product| %>
                   <li class="search-result" data-product-id=<%= product[:id]%>>
                     <a href=<%= "/products/#{product[:slug]}" %>><%= product[:name] %></a>
                   </li>
