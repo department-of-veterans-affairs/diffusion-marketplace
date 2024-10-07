@@ -159,6 +159,18 @@
 
             <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @product, modal_link: true } %>
 
+            <div>
+              <%= render partial: 'practices/shared/image_alt_text_label',
+                locals: {
+                  practice_field: "practice_main_display_image_alt_text",
+                  label_classes: 'margin-top-0 text-bold',
+                  form_field: "practice_main_display_image_alt_text"
+                }
+              %>
+              <%= f.text_area :main_display_image_alt_text,
+                                 class: "usa-textarea main-display-image-alt-text" %>
+            </div>
+
             <%= hidden_field_tag :submitted_page, params[:action] %>
           </fieldset>
         <% end %>
