@@ -2,10 +2,12 @@
   <%= javascript_include_tag '_allCategories', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
+
 <div class="grid-container">
   <div class="grid-row grid-gap">
     <div id="description" class="grid-col-12 margin-top-4">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <%= render partial: "products/step_indicator", locals: {product: @product} %>
       <section class="usa-section padding-y-0 introduction">
         <h1 class="margin-top-0">Product Description</h1>
         <%= nested_form_for(@product, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>

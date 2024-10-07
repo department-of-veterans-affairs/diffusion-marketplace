@@ -59,6 +59,7 @@ Rails.application.routes.draw do
 
   resources :products, except: :index do
     get '/products/:id', action: 'show'
+    get 'edit/editors', action: 'editors', as: 'editors'
     get '/edit/description', action: 'description', as: 'description'
     get '/edit/intrapreneur', action: 'intrapreneur', as: 'intrapreneur'
     get '/edit/multimedia', action: 'multimedia', as: 'multimedia'
