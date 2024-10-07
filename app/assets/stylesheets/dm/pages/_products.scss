@@ -1,5 +1,10 @@
 #main-content.products.show-main {
 	#show-page-siderail { // TO DO: extract this after migrating practices template
+		#show-page-siderail-sticky {
+			position: sticky;
+			top: 4rem;
+		}
+
 		.desktop-tags {
 			display: none;
 			border: 1px solid color($theme-color-base-lighter);
@@ -13,6 +18,7 @@
 	        	display: block;
 	    	}
 		}
+
 		.show-page-tag {
 			display: block;
 			width: fit-content;

@@ -17,27 +17,27 @@
 
 <div class="grid-container grid-row">
 	<div id="show-page-siderail" class="grid-col-12 tablet:grid-col-3">
-		  <div class="margin-bottom-4">
-		    <nav id="product-show-sidenav" aria-label="Side navigation,">
-				  <ul class="usa-sidenav">
-				    <li class="usa-sidenav__item">
-				      <a href="#product-description" class="usa-current scroll-to" data-target="#product-description" data-turbolinks="false" class="usa-current">Product Description</a>
-				    </li>
-				    <li class="usa-sidenav__item">
-				      <a href="#intrapreneur" class="scroll-to" data-target="#intrapreneur" data-turbolinks="false">Intrapreneur</a>
-				    </li>
-				    <li class="usa-sidenav__item">
-				      <a href="#multimedia" class="scroll-to" data-target="#multimedia" data-turbolinks="false">Multimedia</a>
-				    </li>
-				    <li class="usa-sidenav__item">
-				      <a href="#order" class="scroll-to" data-target="#order" data-turbolinks="false">Order Product</a>
-				    </li>
-				  </ul>
-				</nav>
-		  </div>
-		<% if @search_terms.any? %>
-	        <%= render partial: 'practices/show/desktop_partials/search_terms', locals: { search_terms: @search_terms } %>
-	  <% end %>
+		<div id="show-page-siderail-sticky">
+	    <nav id="product-show-sidenav" class="margin-bottom-4" aria-label="Side navigation,">
+			  <ul class="usa-sidenav">
+			    <li class="usa-sidenav__item">
+			      <a href="#product-description" class="usa-current scroll-to" data-target="#product-description" data-turbolinks="false" class="usa-current">Product Description</a>
+			    </li>
+			    <li class="usa-sidenav__item">
+			      <a href="#intrapreneur" class="scroll-to" data-target="#intrapreneur" data-turbolinks="false">Intrapreneur</a>
+			    </li>
+			    <li class="usa-sidenav__item">
+			      <a href="#multimedia" class="scroll-to" data-target="#multimedia" data-turbolinks="false">Multimedia</a>
+			    </li>
+			    <li class="usa-sidenav__item">
+			      <a href="#order" class="scroll-to" data-target="#order" data-turbolinks="false">Order Product</a>
+			    </li>
+			  </ul>
+			</nav>
+			<% if @search_terms.any? %>
+		        <%= render partial: 'practices/show/desktop_partials/search_terms', locals: { search_terms: @search_terms } %>
+		  <% end %>
+		</div>
 	</div>
 	<div class="grid-col-12 tablet:grid-col-9">
 		<section id="pr-view-introduction" class="grid-container margin-bottom-3">
