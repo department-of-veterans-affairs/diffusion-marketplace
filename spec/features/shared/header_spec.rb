@@ -106,7 +106,19 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   end
 
   describe 'Communities dropdown' do
-    it 'shows published communities to all users' do
+    it 'shows hard-coded communities to all users' do
+      click_on 'Communities'
+      within('#communities-dropdown') do
+        expect(page).to have_content('VA Immersive')
+        expect(page).to have_content('Suicide Prevention')
+        expect(page).to have_content('Age-Friendly')
+        expect(page).to have_link(href: '/communities/suicide-prevention')
+        expect(page).to have_link(href: '/communities/age-friendly')
+        expect(page).to have_link(href: '/communities/va-immersive')
+      end
+    end
+
+    xit 'shows published communities to all users' do
       click_on 'Communities'
       within('#communities-dropdown') do
         expect(page).to have_content('VA Immersive')
