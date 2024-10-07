@@ -6,11 +6,16 @@
   let $cancelEditBtn;
   let $deleteInput;
   let $imgsContainer;
-  let fileUploadHtml = `<input class="dm-cropper-upload-image usa-file-input" accept="image/*" type="file" name="practice[main_display_image]" id="practice_main_display_image">`;
 
   function _clearUpload({ target }) {
     let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find($imgsContainer)
     $imgImgsContainer.empty();
+
+    let modelType = $(target).closest('.dm-cropper-boundary').data('model-type');
+
+    // Dynamically set the correct input HTML based on the model type
+    let fileUploadHtml = `<input class="dm-cropper-upload-image usa-file-input" accept="image/*" type="file" name="${modelType}[main_display_image]" id="${modelType}_main_display_image">`;
+
     let fileUploadExists = $('.usa-file-input').length > 0;
 
     if (fileUploadExists) {

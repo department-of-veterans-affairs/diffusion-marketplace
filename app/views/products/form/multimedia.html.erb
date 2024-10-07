@@ -98,7 +98,7 @@
                 <% end %>
               </div>
             </div>
-            <%= f.hidden_field :submitted_page, value: params[:action] %>
+            <%= hidden_field_tag :submitted_page, params[:action] %>
             <!-- Remove once footer with submit button is implemented -->
             <div class="margin-top-4">
               <%= f.submit 'Submit', class: 'usa-button usa-button--primary' %>
