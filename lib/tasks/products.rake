@@ -38,13 +38,6 @@ namespace :products do
       "Technology Transfer Program" => "VA Technology Transfer Program"
     }
 
-    # Check the csv origin column values for changes or additions
-    PRACTICE_PARTNER_MAPPING = {
-      "Spark-Seed-Spread" => "iNet Seed-Spark-Spread Innovation Investment Program",
-      "Greenhouse" => "iNet Greenhouse Initiative",
-      "Technology Transfer Program" => "VA Technology Transfer Program"
-    }
-
     CSV.foreach(csv_file_path, headers: true) do |row|
       product_name = row['Name']
 
@@ -154,17 +147,6 @@ namespace :products do
         puts "Failed to process product: #{product_name}, Error: #{e.message}"
         raise ActiveRecord::Rollback
       end
-
-      product = Product.find_or_initialize_by(name: product_attributes[:name])
-      product.update!(product_attributes)
-
-      if PRACTICE_PARTNER_MAPPING[origin]
-        practice_partner = PracticePartner.find_or_initialize_by(name: PRACTICE_PARTNER_MAPPING[origin])
-        PracticePartnerPractice.create!(innovable: product, practice_partner: practice_partner)
-      end
-
-      vha_practice_partner = PracticePartner.find_or_initialize_by(slug: "vha-innovators-network")
-      PracticePartnerPractice.create!(innovable: product, practice_partner: vha_practice_partner)
 
       puts "Created Product - #{product.name}"
     end
