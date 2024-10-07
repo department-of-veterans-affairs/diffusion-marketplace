@@ -18,19 +18,19 @@
 <div class="grid-container grid-row">
 	<div id="show-page-siderail" class="grid-col-12 tablet:grid-col-3">
 		  <div class="margin-bottom-4">
-		    <nav aria-label="Side navigation,">
+		    <nav id="product-show-sidenav" aria-label="Side navigation,">
 				  <ul class="usa-sidenav">
 				    <li class="usa-sidenav__item">
-				      <a href="javascript:void(0);" class="usa-current">Product Description</a>
+				      <a href="#product-description" class="scroll-to" data-target="#product-description" data-turbolinks="false" class="usa-current">Product Description</a>
 				    </li>
 				    <li class="usa-sidenav__item">
-				      <a href="javascript:void(0);">Intrapreneur</a>
+				      <a href="#intrapreneur" class="scroll-to" data-target="#intrapreneur" data-turbolinks="false">Intrapreneur</a>
 				    </li>
 				    <li class="usa-sidenav__item">
-				      <a href="javascript:void(0);">Multimedia</a>
+				      <a href="#multimedia" class="scroll-to" data-target="#multimedia" data-turbolinks="false">Multimedia</a>
 				    </li>
 				    <li class="usa-sidenav__item">
-				      <a href="javascript:void(0);">Order Product</a>
+				      <a href="#order" class="scroll-to" data-target="#order" data-turbolinks="false">Order Product</a>
 				    </li>
 				  </ul>
 				</nav>
@@ -54,7 +54,7 @@
 			</div>
 		</section>
 		<section id="practice-show-product-description" class="grid-container">
-			<h2>Product Description</h2>
+			<h2 id="product-description">Product Description</h2>
 			<% product_description_fields = [
 				[:description, "Executive Summary"],
 				[:main_display_image, "Main Product Image", {heading: false}], # replace this with partial to render
@@ -82,7 +82,7 @@
 			<% end %>
 		</section>
 		<section id="practice-show-intrapreneur" class="grid-container">
-			<h2>Intrapreneur</h2>
+			<h2 id="intrapreneur">Intrapreneur</h2>
 			<h3><%= 'Innovator'.pluralize(@product.va_employee_practices.count) %></h3>
 			<% @product.va_employee_practices.each do |innovator| %>
 				<div class="innovators margin-bottom-1">
@@ -97,7 +97,7 @@
 		  <section id="practice-show-multimedia" class="margin-bottom-5 grid-container">
 		    <div class="grid-row grid-gap-2">
 		      <div class="desktop:grid-col-9 grid-col-12">
-		      	<h2>Images and Video</h2>
+		      	<h2 id="multimedia">Images and Video</h2>
 		        <div class="multimedia-section practice-section">
 		        	<% # temporarily skip files while troubleshooting %>
 		        	<% multimedia = @product.practice_multimedia.where.not(resource_type: "file") %>
@@ -108,7 +108,7 @@
 		  </section>
 		<% end %>
 		<section id="practice-show-order-instructions" class="grid-container">
-			<h2>Order Product</h2>
+			<h2 id="order">Order Product</h2>
 			<ol class="usa-process-list">
 			  <li class="usa-process-list__item">
 			    <h4 class="usa-process-list__heading">Order from the Marketplace</h4>
