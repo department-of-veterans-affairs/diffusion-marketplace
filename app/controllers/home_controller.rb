@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_action :fetch_va_facilities, only: [:index, :diffusion_map]
+  before_action :fetch_va_facilities, only: [:diffusion_map]
   include CategoriesHelper
 
 
