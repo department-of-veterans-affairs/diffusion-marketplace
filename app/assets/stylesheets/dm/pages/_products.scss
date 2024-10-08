@@ -5,6 +5,28 @@
 			top: 4rem;
 		}
 
+		#product-show-sidenav {
+			ul.usa-sidenav  {
+				border-left: 1px solid color($theme-color-base-lighter);
+				border-bottom: none;
+			}
+			.usa-sidenav__item {
+				border: none;
+				a, a:hover, a:focus, a:active, a:visited {
+					color: color($theme-link-color);
+					font-weight: 700;
+
+					&.usa-current {
+						color: color($theme-color-base-ink) !important;
+					}
+
+					&.usa-current::after {
+						background-color: color($theme-color-base-ink);
+					}
+				}
+			}
+		}
+
 		.desktop-tags {
 			display: none;
 			border: 1px solid color($theme-color-base-lighter);
