@@ -15,7 +15,7 @@
 
     function highlightSidebarSectionWhenInView() {
         let sections = {};
-        const sideNavHeaders = $('.nav-header');
+        const sideNavHeaders = $('.sidenav-header');
         sideNavHeaders.each(function() {
             const headerSelector = `#${this.id}`;
             sections[headerSelector] = `.sidebar-${this.id}`;
