@@ -1,4 +1,5 @@
 class Homepage < ApplicationRecord
+  has_paper_trail
   has_many :homepage_features, dependent: :destroy
   accepts_nested_attributes_for :homepage_features, allow_destroy: true
 
