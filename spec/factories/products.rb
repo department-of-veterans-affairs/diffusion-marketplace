@@ -68,6 +68,14 @@ FactoryBot.define do
       end
     end
 
+    trait :with_partners do
+      after(:create) do |product|
+        create_list(:practice_partner, 2, :for_products) do |partner|
+          create(:practice_partner_practice, innovable: product, practice_partner: partner)
+        end
+      end
+    end
+
     trait :with_tags do
         sequence(:name) { |n| "Sample Product with Tags #{n}" }
         after(:create) do |product|

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Product show page', type: :feature do
-  let!(:product) { create(:product)}
+  let!(:product) { create(:product, :with_partners)}
   let(:product_with_images) { create(:product, :with_image, :with_multimedia, name: 'Product with Images', published: true) }
   let(:product_with_tags) { create(:product, :with_tags, published: true) }
   let!(:user) { create(:user) }
@@ -31,7 +31,7 @@ describe 'Product show page', type: :feature do
     expect(page).to have_content 'Item Number'
     expect(page).to have_content 'Vendor'
     expect(page).to have_content 'DUNS'
-    # expect(page).to have_content 'Partners' # TODO: add Partners to factory
+    expect(page).to have_content 'Partners'
     expect(page).to have_content 'Shipping Timeline Estimate'
     product.update(vendor: nil)
     visit product_path(product)
