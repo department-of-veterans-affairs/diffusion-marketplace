@@ -65,6 +65,8 @@ jobs:
           node-version: 20
       - name: Install PostgreSQL
         run: sudo apt-get -yqq install libpq-dev
+      - name: Install ImageMagick
+        run: sudo apt-get install imagemagick
       - name: Precompile assets
         run: RAILS_ENV=test bundle exec rails assets:precompile
       - name: Run bundle install
