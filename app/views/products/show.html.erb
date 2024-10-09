@@ -42,7 +42,7 @@
 				[:main_display_image, "Main Product Image", {heading: false}], # replace this with partial to render
 				[:practice_partners, "Partners", {content: @product&.practice_partners.pluck(:name).join(', ')}],
 				[:item_number, "Item Number"],
-				[:vendor, "Vendor", {content: @product.vendor_link.present? ? link_to(@product.vendor, @product.vendor_link, class: ".usa-link .usa-link--external") : @product.vendor }],
+				[:vendor, "Vendor", {content: (@product.vendor_link.present? && @product.vendor.present?) ? link_to(@product.vendor, @product.vendor_link, class: ".usa-link .usa-link--external") : @product.vendor }],
 				[:duns, "DUNS"],
         [:shipping_timeline_estimate, "Shipping Timeline Estimate"],
 		    [:price, "Price"]
@@ -53,6 +53,7 @@
 					<% if field_name == :main_display_image && @product.main_display_image.exists? %>
 						<%= render partial: 'main_display_image', locals: { product: @product} %>
 					<% else %>
+						<% next if field_options[:content].blank? && @product.send(field_name.to_sym).blank? %>
 						<%= tag.h3 field_label, class: 'font-sans-lg line-height-25px margin-top-2 margin-bottom-1' unless field_options[:heading] == false %>
 						<%= tag.p field_options[:content] %>
 					<% end %>
