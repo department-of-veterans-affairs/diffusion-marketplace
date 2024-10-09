@@ -1,13 +1,21 @@
 class SaveProductService
-  include CropperUtils
-  attr_reader :product, :multimedia_params, :product_params, :errors, :product_updated
+  include CropperUtils, UserUtils
+  attr_reader :product,
+              :multimedia_params,
+              :product_params,
+              :errors,
+              :product_updated,
+              :added_editor,
+              :editor_removed
 
-  def initialize(product:, product_params:, multimedia_params: nil)
+  def initialize(product:, product_params:, multimedia_params:)
     @product = product
     @multimedia_params = multimedia_params
     @product_params = product_params
     @errors = []
     @product_updated = false
+    @editor_added = false
+    @editor_removed = false
   end
 
   def call
@@ -23,18 +31,14 @@ class SaveProductService
       if @product.changed? || product_associations_changed? || @product_updated
         unless @product.save
           collect_errors
-          raise ActiveRecord::Rollback
         end
-        @product_updated = true
+
+        send_editor_invitation if @added_editor
+        @product_updated
       else
-        @product_updated = false
+        false
       end
     end
-
-    @product_updated
-  rescue StandardError => e
-    @errors << e.message
-    false
   end
 
   private
@@ -49,6 +53,16 @@ class SaveProductService
       remove_main_display_image(@product_params)
       @product_updated = true
       @product_params.delete(:delete_main_display_image)
+    end
+
+    if @product_params[:add_editor].present?
+      @product_updated = add_editor(@product_params[:add_editor]) || @product_updated
+      @product_params.delete(:add_editor)
+    end
+
+    if @product_params[:delete_editor].present?
+      @product_updated = delete_editor(@product_params[:delete_editor]) || @product_updated
+      @product_params.delete(:delete_editor)
     end
   end
 
@@ -77,7 +91,9 @@ class SaveProductService
     @product.va_employees.any? { |record| record.changed? || record.marked_for_destruction? } ||
       @product.va_employees.length != product.va_employees.reject(&:marked_for_destruction?).length ||
       @product.practice_multimedia.any? { |record| record.changed? || record.marked_for_destruction? } ||
-      @product.practice_multimedia.length != product.practice_multimedia.reject(&:marked_for_destruction?).length
+      @product.practice_multimedia.length != product.practice_multimedia.reject(&:marked_for_destruction?).length ||
+      @product.practice_editors.any? { |record| record.changed? || record.marked_for_destruction? } ||
+      @product.practice_editors.length != product.practice_editors.reject(&:marked_for_destruction?).length
   end
 
   def update_category_practices(category_params)
@@ -130,7 +146,59 @@ class SaveProductService
     end
   end
 
+  def add_editor(editor_email)
+    email = editor_email.downcase
+    user = User.find_by(email: email)
+
+    unless user
+      @errors << "No user found with the email \"#{email}\""
+      return false
+    end
+
+    if @product.practice_editors.exists?(user: user)
+      @errors << "A user with the email \"#{user.email}\" is already an editor for this product"
+      return false
+    end
+
+    practice_editor = @product.practice_editors.build(user: user, email: user.email)
+    if practice_editor.valid?
+      @added_editor = practice_editor
+      true
+    else
+      @errors.concat(practice_editor.errors.full_messages)
+      false
+    end
+  end
+
+  def delete_editor(editor_id)
+    editor = @product.practice_editors.find_by(id: editor_id)
+
+    if editor.nil?
+      @errors << "Editor has already been removed"
+      return false
+    end
+
+    if @product.practice_editors.count <= 1
+      @errors << "At least one editor is required"
+      return false
+    end
+
+    if @product.practice_editors.destroy(editor)
+      @editor_removed = true
+      true
+    else
+      @errors << editor.errors.full_messages.to_sentence
+      false
+    end
+  end
+
   def collect_errors
     @errors.concat(@product.errors.full_messages)
+  end
+
+  def send_editor_invitation
+    if ((Rails.env.production? && ENV['PROD_SERVERNAME'] == 'PROD') || Rails.env.test?)
+      PracticeEditorMailer.invite_to_edit(@product, @added_editor.user).deliver
+    end
   end
 end
