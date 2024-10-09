@@ -6,7 +6,7 @@
   <%
     session_end_datetime = session.session_end_time
     session_date = "#{session_end_datetime.strftime("%-m/%-d/%Y")}"
-    session_time = "#{session_end_datetime.strftime("%I:%M %p")} "
+    session_time = "#{session_end_datetime.in_time_zone('Eastern Time (US & Canada)').strftime("%I:%M %p")} EST"
     session_user = session.user
     last_updated_text = "#{@practice.name} last updated on #{session_date} at #{session_time} by #{is_full_name_present(session_user) ? user_full_name(session_user) : session_user.email}"
   %>
@@ -17,7 +17,7 @@
 <div class="usa-step-indicator" aria-label="progress">
   <ol class="usa-step-indicator__segments">
     <%
-      page_titles = ['editors', 'introduction', 'adoptions', 'overview', 'implementation', 'about']
+      page_titles = NavigationHelper::PRACTICE_EDITOR_PAGES
       action = params[:action]
     %>
     <% page_titles.each_with_index do |pt, i| %>

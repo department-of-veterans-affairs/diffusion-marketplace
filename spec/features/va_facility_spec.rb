@@ -141,7 +141,7 @@ describe 'VA facility pages', type: :feature do
       end
 
       pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false, user: user)
-      CategoryPractice.create!(practice: pr_1, category: cat_4)
+      CategoryPractice.create!(innovable: pr_1, category: cat_4)
 
       @facility_4 = VaFacility.create!(
         visn: @visn,
@@ -160,11 +160,11 @@ describe 'VA facility pages', type: :feature do
       @practices.each_with_index do |pr, index|
         PracticeOriginFacility.create!(practice: pr, facility_type: 0, va_facility: @facility_1)
         if pr.name == 'Different practice'
-          CategoryPractice.create!(practice: pr, category: cat_3)
+          CategoryPractice.create!(innovable: pr, category: cat_3)
         elsif index < 3
-          CategoryPractice.create!(practice: pr, category: cat_1)
+          CategoryPractice.create!(innovable: pr, category: cat_1)
         elsif index >= 3
-          CategoryPractice.create!(practice: pr, category: cat_2)
+          CategoryPractice.create!(innovable: pr, category: cat_2)
           PracticeOriginFacility.create!(practice: pr, facility_type: 0, va_facility: @facility_4)
         end
       end
