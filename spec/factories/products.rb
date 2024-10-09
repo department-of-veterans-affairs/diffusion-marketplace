@@ -7,6 +7,7 @@ FactoryBot.define do
     vendor_link { "https://va.gov"}
     duns { "123456789" }
     shipping_timeline_estimate { "2-3 weeks" }
+    price { "$1000 and $100 shipping" }
     origin_story { "This product has an interesting origin story." }
     description { "This is a sample product description." }
 

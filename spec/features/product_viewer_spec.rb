@@ -33,6 +33,7 @@ describe 'Product show page', type: :feature do
     expect(page).to have_content 'DUNS'
     expect(page).to have_content 'Partners'
     expect(page).to have_content 'Shipping Timeline Estimate'
+    expect(page).to have_content 'Price'
     product.update(vendor: nil)
     visit product_path(product)
     expect(page).to have_no_selector('h3', text: 'Vendor')
