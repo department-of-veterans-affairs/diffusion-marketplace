@@ -333,6 +333,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
   # /practices/slug/editors
   def editors
+    @practice_editors = PracticeEditor.where(innovable: @practice).order(created_at: :asc)
     render 'practices/form/editors'
   end
 
