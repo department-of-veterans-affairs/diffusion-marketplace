@@ -7,6 +7,7 @@ FactoryBot.define do
     vendor_link { "https://va.gov"}
     duns { "123456789" }
     shipping_timeline_estimate { "2-3 weeks" }
+    price { "$1000 and $100 shipping" }
     origin_story { "This product has an interesting origin story." }
     description { "This is a sample product description." }
 
@@ -64,6 +65,14 @@ FactoryBot.define do
             innovable: product,
             va_employee: va_e
           )
+        end
+      end
+    end
+
+    trait :with_partners do
+      after(:create) do |product|
+        create_list(:practice_partner, 2, :for_products) do |partner|
+          create(:practice_partner_practice, innovable: product, practice_partner: partner)
         end
       end
     end

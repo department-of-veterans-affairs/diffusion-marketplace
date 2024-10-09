@@ -12,5 +12,9 @@ FactoryBot.define do
     end
 
     is_major { true }
+
+    trait :for_products do
+      sequence :name, ["VHA Innovators Network", "VA Technology Transfer Program", "iNet Seed-Spark-Spread Innovation Investment Program"].cycle
+    end
   end
 end
