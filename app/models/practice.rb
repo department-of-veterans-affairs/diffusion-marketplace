@@ -258,7 +258,6 @@ class Practice < Innovation
   has_many :practice_emails, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_editor_sessions, -> {order(id: :asc) }, dependent: :destroy
-  has_many :practice_editors, -> {order(created_at: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
