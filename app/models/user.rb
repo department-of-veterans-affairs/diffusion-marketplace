@@ -113,7 +113,7 @@ class User < ApplicationRecord
   end
 
   def user_role
-    roles.collect(&:name).join(', ')
+    roles.pluck(:name).join(', ')
   end
 
   def full_name
