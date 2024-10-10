@@ -78,7 +78,7 @@ class User < ApplicationRecord
 
   def created_practices
     # returns a list of Practices a user has created or can edit
-    editor_practices = PracticeEditor.where(user: self).collect { |pe| pe.practice }
+    editor_practices = PracticeEditor.where(user: self, innovable_type: 'Practice').collect { |pe| pe.innovable }
     created_practices = Practice.where(user_id: id)
     all_created_practices = (editor_practices + created_practices).uniq
     all_created_practices = all_created_practices.sort_by{ |a| a.retired ? 1 : 0 }
