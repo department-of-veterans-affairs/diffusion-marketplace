@@ -170,7 +170,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
             format.json { render json: @practice, status: :ok }
           end
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
-          practice_editor = PracticeEditor.find_by(practice: @practice, user: current_user)
+          practice_editor = PracticeEditor.find_by(innovable: @practice, user: current_user)
           if practice_editor.present? && Time.current - practice_editor.created_at > 2
             practice_editor.update(last_edited_at: DateTime.current)
           end
@@ -333,6 +333,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
   # /practices/slug/editors
   def editors
+    @practice_editors = PracticeEditor.where(innovable: @practice).order(created_at: :asc)
     render 'practices/form/editors'
   end
 

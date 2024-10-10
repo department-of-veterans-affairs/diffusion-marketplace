@@ -3,14 +3,16 @@ class PracticeEditorMailer < ApplicationMailer
   layout 'mailer'
   MAILER_RETURN = "marketplace@va.gov"
 
-  def invite_to_edit_practice_email(practice, user)
-    practice_user_editor_text = "You have been added to the list of practice editors for the #{practice.name} Diffusion Marketplace Page!"
-    practice_editor_text = "You are invited to edit the #{practice.name} Diffusion Marketplace Page!"
+  def invite_to_edit(resource, user)
+    resource_name = resource.is_a?(Practice) ? "practice" : "product"
+    editor_text = "You are invited to edit the #{resource.name} Diffusion Marketplace Page!"
+    user_editor_text = "You have been added to the list of #{resource_name} editors for the #{resource.name} Diffusion Marketplace Page!"
+
     mail(
-        to: user.email,
-        subject: practice.user === user ? practice_user_editor_text : practice_editor_text
+      to: user.email,
+      subject: resource.user == user ? user_editor_text : editor_text
     ) do |format|
-      format.html { render "practice_editor_mailer/invite_to_edit_practice_email".html_safe, locals: { practice: practice } }
+      format.html { render "#{resource_name}_editor_mailer/invite_to_edit_#{resource_name}_email".html_safe, locals: { resource_name.to_sym => resource } }
     end
   end
 

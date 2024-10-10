@@ -62,6 +62,58 @@ RSpec.describe SaveProductService do
       end
     end
 
+    context "when adding an editor" do
+      let(:product_params) { { add_editor: user.email } }
+
+      before do
+        allow(PracticeEditorMailer).to receive_message_chain(:invite_to_edit, :deliver)
+      end
+
+      it "successfully adds an editor" do
+        expect { subject.call }.to change { product.practice_editors.count }.by(1)
+        expect(product.practice_editors.last.user).to eq(user)
+        expect(PracticeEditorMailer).to have_received(:invite_to_edit).with(product, instance_of(User)).once
+      end
+
+      it "does not add a duplicate editor" do
+        product.practice_editors.create(user: user, email: user.email)
+
+        expect { subject.call }.not_to change { product.practice_editors.count }
+        expect(subject.errors).to include("A user with the email \"#{user.email}\" is already an editor for this product")
+      end
+
+      it "fails when no matching user exists" do
+        non_existent_email = "nonexistent@va.gov"
+        updated_product_params = product_params.merge(add_editor: non_existent_email)
+        service_with_invalid_email = described_class.new(
+          product: product,
+          product_params: updated_product_params,
+          multimedia_params: {}
+        )
+
+        expect(service_with_invalid_email.call).to be false
+        expect(service_with_invalid_email.errors).to include("No user found with the email \"#{non_existent_email}\"")
+      end
+    end
+
+    context "when removing an editor" do
+      let!(:practice_editor) { product.practice_editors.create(user: user, email: user.email) }
+      let!(:user2) { create(:user) }
+      let!(:practice_editor2) { product.practice_editors.create(user: user2, email: user2.email) }
+      let(:product_params) { { delete_editor: practice_editor.id } }
+
+      it "successfully removes the editor" do
+        expect { subject.call }.to change { product.practice_editors.count }.by(-1)
+      end
+
+      it "fails when the editor does not exist" do
+        invalid_params = { delete_editor: 999 }
+        service_with_invalid_id = described_class.new(product: product, product_params: invalid_params, multimedia_params: {})
+        expect(service_with_invalid_id.call).to be false
+        expect(service_with_invalid_id.errors).to include("Editor has already been removed")
+      end
+    end
+
     context "when no changes are submitted" do
       it "does not update the product and returns false" do
         service = @service_class = described_class.new(
@@ -75,15 +127,14 @@ RSpec.describe SaveProductService do
       end
     end
 
-    context "when an exception is raised" do
-      before do
-        allow(product).to receive(:save).and_raise(StandardError, "Something went wrong")
-      end
+    context "when an exception is raised during save" do
+      let(:product_params) { { name: nil } }
+      let(:multimedia_params) { {} }
 
       it "returns false and adds the error message" do
         result = subject.call
         expect(result).to be false
-        expect(subject.errors).to include("Something went wrong")
+        expect(subject.errors).to include("Name can't be blank") # Adjust to match actual validation message
       end
     end
   end

@@ -64,6 +64,10 @@ namespace :products do
             user_changed = true
           end
 
+          if product.user.present? && product.practice_editors.where(user: product.user).empty?
+            PracticeEditor.create!(innovable: product, user: product.user, email: product.user.email)
+          end
+
           product.save! if product.changed? || user_changed
 
           if PRACTICE_PARTNER_MAPPING[origin]

@@ -1,11 +1,12 @@
 class ProductsController < ApplicationController
-  include InnovationControllerMethods
+  include InnovationControllerMethods, UsersHelper
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :set_product, only: [:show, :update, :editors, :description, :intrapreneur, :multimedia]
   before_action :check_product_permissions, only: [:show, :update, :editors, :description, :intrapreneur, :multimedia]
   before_action :set_return_to_top_flag, only: [:show, :editors, :description, :intrapreneur, :multimedia]
 
   def editors
+    @editors = PracticeEditor.where(innovable: @product).order(created_at: :asc)
     render 'products/form/editors'
   end
 
@@ -36,22 +37,23 @@ class ProductsController < ApplicationController
       product_params: params[:product].nil? ? {} : product_params,
       multimedia_params: params[:practice].nil? ? {} : multimedia_params
     )
-
-    if service.call
-      notice = service.product_updated ? "Product was successfully updated." : nil
-      next_page = params[:next] ? "#{Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page.to_sym]}" : "multimedia"
+    service.call
+    if service.errors.empty?
+      notice =  if service.added_editor
+                  "Editor was added to the list. Product was successfully updated."
+                elsif service.editor_removed
+                  "Editor was removed from the list. Product was successfully updated."
+                elsif service.product_updated
+                  "Product was successfully updated."
+                else
+                  nil
+                end
+      next_page = params[:next] ? Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page.to_sym] : submitted_page
       redirect_to send("product_#{next_page}_path", @product), notice: notice
-    elsif service.errors.any?
-      flash[:error] = service.errors.join(', ')
-      redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
     else
-      next_page = params[:next] ? "#{Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page.to_sym]}_" : nil
-      redirect_to send("product_#{next_page}path", @product)
+      flash[:error] = service.errors.any? ? service.errors.join(', ') : "An unexpected error occurred."
+      redirect_back(fallback_location: admin_product_path(@product))
     end
-  rescue => e
-    logger.error "Product update failed: #{e.message}"
-    flash[:error] = "An unexpected error occurred: #{e.message}"
-    redirect_to send("product_#{submitted_page}_path", @product) || admin_product_path(@product)
   end
 
   private
@@ -79,6 +81,8 @@ class ProductsController < ApplicationController
       :crop_w,
       :crop_h,
       :delete_main_display_image,
+      :add_editor,
+      :delete_editor,
       va_employees_attributes: [:id, :name, :role, :_destroy],
       category: permitted_dynamic_keys(params[:product][:category]),
     )
