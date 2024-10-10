@@ -35,10 +35,10 @@ describe 'Recommended for you page', type: :feature do
     @user_practice2 = UserPractice.create!(practice: @practice2, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 8.days)
     @user_practice3 = UserPractice.create!(practice: @practice3, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 6.days)
     @user_practice4 = UserPractice.create!(practice: @practice4, user: @user2, favorited: true, time_favorited: nil)
-    PracticeEditor.create!(practice: @practice, user: @user2, email: @user2.email)
-    PracticeEditor.create!(practice: @practice2, user: @user2, email: @user2.email)
-    PracticeEditor.create!(practice: @practice3, user: @user2, email: @user2.email)
-    PracticeEditor.create!(practice: @practice4, user: @user2, email: @user2.email)
+    PracticeEditor.create!(innovable: @practice, user: @user2, email: @user2.email)
+    PracticeEditor.create!(innovable: @practice2, user: @user2, email: @user2.email)
+    PracticeEditor.create!(innovable: @practice3, user: @user2, email: @user2.email)
+    PracticeEditor.create!(innovable: @practice4, user: @user2, email: @user2.email)
   end
 
   def login_and_visit_recommended_path(user)
