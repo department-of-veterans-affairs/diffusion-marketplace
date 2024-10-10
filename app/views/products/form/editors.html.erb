@@ -8,6 +8,14 @@
       <%= render partial: "products/step_indicator", locals: {product: innovation} %>
       <section class="usa-section padding-top-0 padding-bottom-0 editors">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3 margin-top-0">Editors</h1>
+        <div class="grid-col-11 padding-y-3 line-height-26">
+          Product owner: <a target="_blank"
+                  href="mailto:<%= @product.user %>"
+                  class="usa-link usa-link--external line-height-26"
+                  rel="noopener noreferrer">
+                <%= @product.user %>
+              </a>
+        </div>
         <% @editors.each do |pe| %>
           <%
             user = pe.user
