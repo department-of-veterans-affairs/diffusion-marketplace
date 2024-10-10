@@ -82,8 +82,12 @@
     .subscribe-button-container {
       @include u-text("left");
 
-      button {
+      .dm-button--outline-white  {
         width: 166px !important;
+        &:hover {
+          background-color: white;
+          color: color($transition-btn-palette-default) !important;
+        }
       }
     }
   }
