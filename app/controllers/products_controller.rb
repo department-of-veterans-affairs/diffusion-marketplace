@@ -37,8 +37,8 @@ class ProductsController < ApplicationController
       product_params: params[:product].nil? ? {} : product_params,
       multimedia_params: params[:practice].nil? ? {} : multimedia_params
     )
-
-    if service.call
+    service.call
+    if service.errors.empty?
       notice =  if service.added_editor
                   "Editor was added to the list. Product was successfully updated."
                 elsif service.editor_removed

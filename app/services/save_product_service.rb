@@ -22,21 +22,21 @@ class SaveProductService
     ActiveRecord::Base.transaction do
       handle_product_params if @product_params.present?
       handle_multimedia_params if @multimedia_params.present?
-
       merged_params = @product_params.merge(@multimedia_params)
       @product.assign_attributes(merged_params)
 
       handle_main_display_image_cropping if main_display_image_cropping_params_present?(merged_params)
 
-      if @product.changed? || product_associations_changed? || @product_updated
+      if @product.changed? || product_associations_changed?
+        @product_updated = true
+      end
+
+      if @product_updated
         unless @product.save
           collect_errors
         end
 
         send_editor_invitation if @added_editor
-        @product_updated
-      else
-        false
       end
     end
   end
