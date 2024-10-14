@@ -174,7 +174,7 @@ class SaveProductService
     editor = @product.practice_editors.find_by(id: editor_id)
 
     if editor.nil?
-      @errors << "Editor has already been removed"
+      @errors << "User is not an editor for this practice"
       return false
     end
 
