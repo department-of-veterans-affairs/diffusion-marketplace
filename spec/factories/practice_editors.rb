@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :practice_editor do
-    association :practice
+    association :innovable
     association :user
 
     after(:build) do |practice_editor|
