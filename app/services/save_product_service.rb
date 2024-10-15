@@ -19,6 +19,7 @@ class SaveProductService
   end
 
   def call
+    success = false
     ActiveRecord::Base.transaction do
       handle_product_params if @product_params.present?
       handle_multimedia_params if @multimedia_params.present?
@@ -27,18 +28,21 @@ class SaveProductService
 
       handle_main_display_image_cropping if main_display_image_cropping_params_present?(merged_params)
 
-      if @product.changed? || product_associations_changed?
+      if (@product.changed? || product_associations_changed?) && @errors.empty?
         @product_updated = true
       end
 
       if @product_updated
         unless @product.save
           collect_errors
+          raise ActiveRecord::Rollback if @errors.any?
         end
 
         send_editor_invitation if @added_editor
+        success = true
       end
     end
+    success
   end
 
   private
@@ -104,18 +108,38 @@ class SaveProductService
     product_category_practices = @product.category_practices
 
     missing_category_ids = category_keys.map(&:to_i) - current_category_ids
-    missing_category_ids.delete(0) if missing_category_ids.count
+    missing_category_ids.delete(0) if missing_category_ids.count > 0
+
     if missing_category_ids.any?
       missing_category_ids.each do |category_id|
-        product_category_practices.create!(category_id: category_id)
+        category = Category.find_by(id: category_id)
+        if category
+          begin
+            product_category_practices.create!(category: category)
+            changed = true
+          rescue ActiveRecord::RecordInvalid => e
+            @errors << "Failed to add category '#{category.name}': #{e.message}"
+            return false
+          end
+        else
+          @errors << "Category with ID #{category_id} not found."
+          return false
+        end
       end
-      changed = true
     end
 
-    practices_to_remove = product_category_practices.joins(:category).where.not(categories: { id: category_keys })
-    if practices_to_remove.any?
-      practices_to_remove.destroy_all
-      changed = true
+    cat_practices_to_remove = product_category_practices.joins(:category).where.not(categories: { id: category_keys })
+    if cat_practices_to_remove.any?
+      cat_practices_to_remove.each do |cat_practice|
+        category = cat_practice.category
+        begin
+          cat_practice.destroy!
+          changed = true
+        rescue ActiveRecord::RecordNotDestroyed => e
+          @errors << "Failed to remove category '#{category.name}': #{e.message}"
+          return false
+        end
+      end
     end
 
     changed
@@ -126,12 +150,16 @@ class SaveProductService
     multimedia_resources = multimedia_params["practice_multimedia_attributes"]
 
     if multimedia_resources
-      multimedia_resources.each do |r|
-        if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
-          r_id = r[1][:id].to_i
-          record = @product.practice_multimedia.find(r_id)
-          reprocess_attachment(record, r[1])
-          changed = true
+      multimedia_resources.each do |_, attributes|
+        if is_cropping?(attributes) && attributes[:_destroy] == 'false' && attributes[:id].present?
+          begin
+            record = @product.practice_multimedia.find(attributes[:id].to_i)
+            reprocess_attachment(record, attributes)
+            changed = true
+          rescue ActiveRecord::RecordNotFound
+            @errors << "There was an error processing a resource"
+            return false
+          end
         end
       end
     end
@@ -140,7 +168,7 @@ class SaveProductService
 
   def remove_main_display_image(params)
     if params[:delete_main_display_image].present? && params[:delete_main_display_image] == 'true'
-      @product.update!(main_display_image: nil, main_display_image_alt_text: nil)
+      @product.main_display_image = nil
     else
       false
     end
