@@ -14,7 +14,8 @@ FactoryBot.define do
 
     trait :with_image do
       main_display_image { File.new(Rails.root.join('spec', 'assets', 'acceptable_img.jpg')) }
-      main_display_image_alt_text { "sample image" }
+      main_display_image_caption { "sample image caption" }
+      main_display_image_alt_text { "sample image alt text" }
     end
 
     trait :with_multimedia do
