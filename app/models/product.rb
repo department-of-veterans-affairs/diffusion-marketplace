@@ -8,6 +8,8 @@ class Product < Innovation
 
   after_update :update_date_published
 
+  attr_accessor :add_editor, :delete_editor
+
   PRODUCT_EDITOR_NEXT_PAGE =
     {
       'editors': 'description',

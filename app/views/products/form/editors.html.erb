@@ -1,10 +1,73 @@
+<% innovation = @practice || @product %>
+
+<%# TODO: separate into partial to be shared when able to refactor editor management for practices %>
 <div class="grid-container">
   <div class="grid-row grid-gap">
     <div id="description" class="grid-col-12 margin-top-4">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <%= render partial: "products/step_indicator", locals: {product: @product} %>
-      <section class="usa-section padding-y-0 introduction">
-        <h1 class="margin-top-0">Editors</h1>
+      <%= render partial: "products/step_indicator", locals: {product: innovation} %>
+      <section class="usa-section padding-top-0 padding-bottom-0 editors">
+        <h1 class="font-sans-2xl line-height-46px margin-bottom-3 margin-top-0">Editors</h1>
+        <div class="grid-col-11 padding-y-3 line-height-26">
+          Product owner: <a target="_blank"
+                  href="mailto:<%= @product.user %>"
+                  class="usa-link usa-link--external line-height-26"
+                  rel="noopener noreferrer">
+                <%= @product.user %>
+              </a>
+        </div>
+        <% @editors.each do |pe| %>
+          <%
+            user = pe.user
+            email = user.email
+          %>
+          <div class="grid-row flex-align-center border-bottom-1px <%= 'border-top-1px' if @editors.first === pe %> practice-editor-entry">
+            <div class="grid-col-11 padding-y-3 line-height-26">
+              <p class="text-bold <%= 'display-none' unless is_full_name_present(user) %>"><%= user_full_name(user) %></p>
+              <a target="_blank"
+                  href="mailto:<%= email %>"
+                  class="usa-link usa-link--external line-height-26"
+                  rel="noopener noreferrer">
+                <%= email %>
+              </a>
+              <%
+                last_edited = pe.last_edited_at
+              %>
+              <% if last_edited.present? %>
+                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Last edited on', status: last_edited } %>
+              <% else %>
+                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Added to the team on', status: pe.created_at } %>
+              <% end %>
+            </div>
+            <div class="grid-col-1 display-flex flex-justify-center">
+              <%= link_to '', product_path(innovation,
+                    product: { delete_editor: pe.id },
+                    submitted_page: params[:action]),
+                    data: { confirm: "Are you sure you want to remove #{user.email} from the editors list?" },
+                    method: 'put',
+                    class: 'fas fa-trash-alt fa-2x text-middle',
+                    id: "delete-practice-editor-#{pe.id}",
+                    'aria-label': "Remove #{user.email} from practice editors"
+              %>
+            </div>
+          </div>
+        <% end %>
+        <%= nested_form_for(innovation, html: {style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-12">
+            <legend class="usa-sr-only">Product Editors</legend>
+            <div class="grid-col-12">
+              <h2 class="line-height-37px font-sans-xl margin-bottom-3 margin-top-10">Add Editor</h2>
+              <div class="editor-input-container">
+                <%= f.label :add_editor, 'Provide va.gov email of the individual who can help you edit this Innovation Page.', class: 'usa-label editor-label margin-top-0' %>
+                <%= f.text_field :add_editor, class: 'usa-input editor-input', type: 'email', pattern: '.+@va.gov', required: true %>
+              </div>
+            </div>
+            <%= hidden_field_tag :submitted_page, params[:action] %>
+          </fieldset>
+          <div>
+            <%= f.submit "Send Invitation", class: 'usa-button dm-button--outline-secondary margin-top-2 invite-practice-editor-button' %>
+          </div>
+        <% end %>
       </section>
     </div>
   </div>

@@ -10,6 +10,7 @@ class Innovation < ApplicationRecord
   has_many :practice_multimedia, -> { order(id: :asc) }, as: :innovable, dependent: :destroy
   has_many :practice_partner_practices, as: :innovable, dependent: :destroy
   has_many :practice_partners, through: :practice_partner_practices
+  has_many :practice_editors, -> { order(id: :asc) }, as: :innovable, dependent: :destroy
 
   accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :practice_multimedia, allow_destroy: true

@@ -541,7 +541,7 @@ describe 'Practice editor - introduction', type: :feature do
 
       it 'does not show Communities categories for non-admin' do
         editor = User.create!(email: 'some.guy@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        PracticeEditor.create!(user: editor, practice: @practice, email: editor.email)
+        PracticeEditor.create!(user: editor, innovable: @practice, email: editor.email)
 
         login_as(editor, :scope => :user, :run_callbacks => false)
         visit_practice_edit
