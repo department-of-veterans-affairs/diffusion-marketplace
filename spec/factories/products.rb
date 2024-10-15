@@ -39,7 +39,7 @@ FactoryBot.define do
           image_alt_text: "a prescription bottle and pills",
           attachment: File.new(Rails.root.join('spec', 'assets', 'acceptable_img.jpg'))
         )
-        # File - TODO: Fix up file partial to work with polymorphic relationship
+        # File
         PracticeMultimedium.create(
           name: "Implementation guide",
           description: "Tips on about implementing this practice at your facility",

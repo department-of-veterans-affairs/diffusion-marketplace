@@ -61,27 +61,10 @@
 <% if resources.file.any? %>
   <h4 class="line-height-18px margin-bottom-1 margin-top-3">Files</h4>
   <ul class="overview-files-ul margin-0 padding-left-0">
-  <% grouped_resources['file'].each do |pr| %>
-    <div class="margin-bottom-1">
-      <% if pr.name.present? %>
-        <div class="margin-top-1 width-full line-height-26">
-          <li class="small-disc">
-            <%= pr.description %> 
-            <%= 
-              link_to pr.name || pr.attachment&.original_filename,
-              download_practice_practice_resource_url(
-                practice_id: pr.practice_id, 
-                id: pr.id,
-                resource_type: pr.class.to_s
-              ),
-              target: '_blank',
-              class: 'usa-link usa-link--external' 
-            %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-  </ul>
+    <%= render partial: 'practices/show/implementation/resource_file_attachment', locals: {
+        file_attachments: grouped_resources['file']
+    }
+    %>
 <% end %>
 
 <% if resources.link.any? %>
