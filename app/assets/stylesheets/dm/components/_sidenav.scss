@@ -1,6 +1,7 @@
 // `usa-sidenav` OVERRIDES
 .usa-sidenav__item {
-  .usa-current, a:hover {
+  .usa-current,
+  a:hover {
     color: color($theme-link-color) !important;
   }
 }
