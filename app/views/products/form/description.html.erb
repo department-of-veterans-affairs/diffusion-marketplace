@@ -21,7 +21,7 @@
                 <% end %>
                 <span>What should your product be called?</span>&nbsp;
               </div>
-              <%= f.text_field :name, class: "usa-input #{ @product.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+              <%= f.text_field :name, class: "usa-input #{ @product.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field" %>
 
               <p class="usa-error-message <%= @product.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@product, :name) %></span>
               </p>
@@ -33,7 +33,7 @@
                 <% end %>
                 <span>How would you summarize the key outcomes of your product in the shortest sentence possible? Note that this will only be leveraged on the search results page.</span>&nbsp;
               </div>
-              <%= f.text_field :tagline, class: "usa-input #{ @product.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+              <%= f.text_field :tagline, class: "usa-input #{ @product.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field" %>
 
               <p class="usa-error-message <%= @product.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@product, :tagline) %></span>
               </p>
@@ -45,7 +45,7 @@
                 <% end %>
                 <span>Provide a short summary of your product’s mission. Include relevant information about the product's features, material, size, and more.</span>&nbsp;
               </div>
-              <%= f.text_area :description, class: "usa-textarea #{ @product.errors[:description].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input dm-required-field", required: true %>
+              <%= f.text_area :description, class: "usa-textarea #{ @product.errors[:description].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input dm-required-field" %>
 
               <p class="usa-error-message <%= @product.errors[:description].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
                 <span class="font-family-sans"><%= show_errors(@product, :description) %></span>
@@ -58,7 +58,7 @@
                 <% end %>
                 <span>Provide the item number to help individuals identify and purchase your product.</span>&nbsp;
               </div>
-              <%= f.text_field :item_number, class: "usa-input #{ @product.errors[:item_number].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+              <%= f.text_field :item_number, class: "usa-input #{ @product.errors[:item_number].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field" %>
 
               <p class="usa-error-message <%= @product.errors[:item_number].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
                 <span class="font-family-sans"><%= show_errors(@product, :item_number) %></span>
@@ -71,7 +71,7 @@
                 <% end %>
                 <span>Provide the name of the person or business that sells your product.</span>&nbsp;
               </div>
-              <%= f.text_field :vendor, class: "usa-input #{ @product.errors[:vendor].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+              <%= f.text_field :vendor, class: "usa-input #{ @product.errors[:vendor].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field" %>
 
               <p class="usa-error-message <%= @product.errors[:vendor].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
                 <span class="font-family-sans"><%= show_errors(@product, :vendor) %></span>
@@ -84,7 +84,7 @@
                 <% end %>
                 <span>Et harum quidem rerum facilis est et expedita distinctio.</span>&nbsp;
               </div>
-              <%= f.text_field :vendor_link, class: "usa-input #{ @product.errors[:vendor_link].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: false %>
+              <%= f.text_field :vendor_link, class: "usa-input #{ @product.errors[:vendor_link].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field" %>
 
               <p class="usa-error-message <%= @product.errors[:vendor].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
                 <span class="font-family-sans"><%= show_errors(@product, :vendor) %></span>
