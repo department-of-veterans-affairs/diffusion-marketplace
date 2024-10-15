@@ -1,3 +1,7 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <% innovation = @practice || @product %>
 
 <%# TODO: separate into partial to be shared when able to refactor editor management for practices %>

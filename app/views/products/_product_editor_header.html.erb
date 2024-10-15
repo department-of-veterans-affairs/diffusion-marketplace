@@ -1,0 +1,50 @@
+<%
+  is_editors_or_adoptions =  params[:action] === 'editors' || params[:action] === 'adoptions'
+  save_btn_pgs = NavigationHelper::PRODUCT_EDITOR_PAGES
+  has_save_btn = save_btn_pgs.include?(params[:action])
+  save_btn_text = @product.published ? 'Save and publish' : 'Save as draft'
+  save_btn_classes = @product.published ? 'dm-button--success margin-right-0' : 'dm-button--inverse-secondary margin-right-2'
+%>
+<%= render partial: 'practices/shared/editing_guide_modal' %>
+
+<a class="usa-skipnav" href="#main-content">Skip to main content</a>
+<div class="usa-overlay"></div>
+<header class="usa-header usa-header--extended bg-ink" id="dm-practice-editor-header">
+    <div class="usa-navbar margin-0">
+      <div class="grid-row flex-align-center">
+        <div class="usa-logo grid-col-6 margin-0" id="extended-logo">
+          <img
+            class="width-6 height-6 dm-header--va-seal display-inline-block text-middle"
+            src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"
+          />
+          <div class="margin-0 margin-left-1 text-white line-height-sans-1 display-inline-block text-middle">
+            <p class="text-bold font-sans-sm desktop-lg:font-sans-lg margin-bottom-1">Diffusion Marketplace</p>
+            <p class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</p>
+          </div>
+        </div>  
+      </div>
+    </div>
+    <nav aria-label="Primary navigation" class="grid-row">
+      <div class="grid-col-6">
+        <ul class="">
+          <li class="usa-nav__primary-item">
+            <a href="#dm-editing-guide-modal" class="margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link" aria-controls="dm-editing-guide-modal" data-open-modal>Editing guide</a>
+          </li>
+        </ul>
+      </div>
+      <div class="grid-col-6 text-right">
+        <% if has_save_btn %>
+          <button type="submit" class="usa-button <%= save_btn_classes %>" id="practice-editor-save-button">
+            <%= save_btn_text %>
+          </button>
+        <% end %>
+        <% if !@product.published && save_btn_pgs.include?(params[:action]) %>
+            <%= link_to 'Save and publish', product_path(@product),
+                        class: 'usa-button dm-button--success margin-right-0',
+                        id: 'publish-practice-button'
+                        # add data or action
+                        %>
+        <% end %>
+      </div>
+    </nav>
+</header>

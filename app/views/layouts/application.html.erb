@@ -45,8 +45,9 @@
         <% end %> class="<%= yield(:body_classes) %>">
     <% is_practice_editor = params[:controller] === 'practices' && (NavigationHelper::INNOVATION_EDITOR_PAGES.include?(params[:action]) || params[:action] === 'metrics') %>
     <% is_product_editor = params[:controller] === 'products' && NavigationHelper::INNOVATION_EDITOR_PAGES.include?(params[:action]) %>
-    <%= render 'shared/header' unless is_practice_editor %>
+    <%= render 'shared/header' unless is_practice_editor || is_product_editor %>
     <%= render 'practices/shared/practice_editor_header' if is_practice_editor %>
+    <%= render 'products/product_editor_header' if is_product_editor %>
     <main
       id="main-content"
       class="<%= params[:controller] %> <%= params[:action] %>-main <%= yield(:main_classes) %><%= ' additional-return-to-top-padding' if @show_return_to_top %>"
