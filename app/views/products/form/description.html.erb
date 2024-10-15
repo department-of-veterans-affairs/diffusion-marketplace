@@ -164,8 +164,9 @@
 
               <div>
                   <%= f.label :main_display_image_caption, class: 'usa-label text-bold display-block margin-top-0' do %>
-                    Caption*
+                    Image Caption*
                   <% end %>
+                  <span>What caption would you like to accompany your thumbnail image?</span>
                 </div>
                 <%= f.text_field :main_display_image_caption, class: "usa-input #{ @product.errors[:main_display_image_caption].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field  margin-bottom-2" %>
 
