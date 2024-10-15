@@ -2,3 +2,8 @@
 	 alt="<%= product&.main_display_image_alt_text %>"[]
 	 class="product-main-display-image margin-top-2"
 />
+<% if product.main_display_image_caption? %>
+	<p class="show-page-image-caption font-sans-xs line-height-26 margin-top-1 width-full">
+		<%= product.main_display_image_caption %>
+	</p>
+<% end %>
