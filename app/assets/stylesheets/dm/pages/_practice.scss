@@ -801,7 +801,8 @@ li.small-disc:before {
  PRACTICE EDITOR
 **********************************/
 // Introduction
-#introduction {
+#introduction,
+#description {
   #editor_date_initiated_year {
     &::-webkit-inner-spin-button {
       display: none;
