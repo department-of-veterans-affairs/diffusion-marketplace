@@ -94,6 +94,51 @@ describe 'Product editor - description', type: :feature do
       expect(product.categories).to include(cat2)
       expect(product.categories).to_not include(cat1)
     end
+
+    context 'when managing the thumbnail image' do
+      it 'uploads and displays the thumbnail image' do
+        visit product_description_path(product)
+        attach_file 'product_main_display_image', Rails.root.join('spec/assets/acceptable_img.jpg')
+        fill_in 'product_main_display_image_caption', with: 'Caption text'
+        fill_in 'product_main_display_image_alt_text', with: 'Alt Text'
+        click_link 'Save and Continue'
+
+        expect(page).to have_content('Product was successfully updated.')
+        visit product_description_path(product)
+        expect(page).to have_css("img[src*='acceptable_img.jpg']")
+      end
+
+      it 'updates the caption and alt text for the thumbnail image' do
+        product.update!(main_display_image_alt_text: "Test", main_display_image_caption: "Other Test")
+        visit product_description_path(product)
+
+        attach_file 'product_main_display_image', Rails.root.join('spec/assets/acceptable_img.jpg')
+
+        fill_in 'product_main_display_image_caption', with: 'Updated Caption'
+        fill_in 'product_main_display_image_alt_text', with: 'Updated Alt Text'
+        click_link 'Save and Continue'
+
+        expect(page).to have_content('Product was successfully updated.')
+        product.reload
+        expect(product.main_display_image_caption).to eq('Updated Caption')
+        expect(product.main_display_image_alt_text).to eq('Updated Alt Text')
+      end
+
+      it 'removes the thumbnail image' do
+        product.update!(main_display_image_alt_text: "Test", main_display_image_caption: "Other Test")
+        product.update(main_display_image: fixture_file_upload('spec/assets/acceptable_img.jpg', 'image/jpg'))
+
+        visit product_description_path(product)
+        find('label', text: 'Remove image').click
+        click_link 'Save and Continue'
+
+        expect(page).to have_content('Product was successfully updated.')
+        visit product_description_path(product)
+
+        product.reload
+        expect(product.main_display_image.exists?).to be false
+      end
+    end
   end
 
   describe 'when not logged in' do

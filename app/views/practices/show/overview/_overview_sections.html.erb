@@ -36,8 +36,7 @@
         <% name = pr.name %>
         <% if name.present? %>
           <div class="margin-top-1">
-            <h5 class="text-uppercase display-inline margin-y-0">Above:</h5>
-            <p class="display-inline line-height-26"><%= name %></p>
+            <p class="show-page-image-caption text-base line-height-26"><%= name %></p>
           </div>
         <% end %>
       </div>
@@ -52,8 +51,7 @@
       <%= youtube_embed(pr.link_url) %>
       <% if pr.name.present? %>
         <div class="margin-top-1 width-full">
-          <h5 class="text-uppercase display-inline margin-y-0">Above:</h5>
-          <p class="display-inline line-height-26"><%= pr.name %></p>
+          <p class="show-page-image-caption text-base line-height-26"><%= pr.name %></p>
         </div>
       <% end %>
     </div>

@@ -1,9 +1,10 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag '_allCategories', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-
+<%= render partial: 'practices/introduction_forms/main_display_image_guidance_modal' %>
 <div class="grid-container">
   <div class="grid-row grid-gap">
     <div id="description" class="grid-col-12 margin-top-4">
@@ -157,8 +158,34 @@
               <% end %>
             </div>
 
-            <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @product, modal_link: true } %>
+            <h3>Thumbnail Image</h3>
+            <fieldset class="usa-fieldset border border-base-light padding-2 margin-top-3 margin-bottom-4">
+              <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @product, modal_link: true } %>
 
+              <div>
+                  <%= f.label :main_display_image_caption, class: 'usa-label text-bold display-block margin-top-0' do %>
+                    Image Caption*
+                  <% end %>
+                  <span>What caption would you like to accompany your thumbnail image?</span>
+                </div>
+                <%= f.text_field :main_display_image_caption, class: "usa-input #{ @product.errors[:main_display_image_caption].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field  margin-bottom-2" %>
+
+                <p class="usa-error-message <%= @product.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                  <span class="font-family-sans"><%= show_errors(@product, :tagline) %></span>
+                </p>
+
+              <div>
+                <%= render partial: 'practices/shared/image_alt_text_label',
+                  locals: {
+                    practice_field: "practice_main_display_image_alt_text",
+                    label_classes: 'margin-top-0 text-bold',
+                    form_field: "practice_main_display_image_alt_text"
+                  }
+                %>
+                <%= f.text_area :main_display_image_alt_text,
+                                  class: "usa-textarea main-display-image-alt-text" %>
+              </div>
+            </fieldset>
             <%= hidden_field_tag :submitted_page, params[:action] %>
           </fieldset>
         <% end %>
