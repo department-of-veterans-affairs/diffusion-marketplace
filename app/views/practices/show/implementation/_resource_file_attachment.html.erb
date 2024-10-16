@@ -11,16 +11,16 @@
           <li class="small-disc">
             <%= s_description %>
             <%=
-              if fa.innovable_type == "Practice"
+              if fa.is_a?(PracticeResource)
                 link_to s_name || fa.attachment&.original_filename,
                 download_practice_practice_resource_url(
-                  practice_id: fa.innovable_id,
+                  practice_id: fa.practice_id,
                   id: fa.id,
                   resource_type: fa.class.to_s,
                 ),
                 target: '_blank',
                 class: 'usa-link usa-link--external'
-              elsif fa.innovable_type == "Product"
+              elsif fa.is_a?(PracticeMultimedium) && fa.innovable_type == "Product"
                 link_to s_name || fa.attachment&.original_filename,
                 download_product_product_multimedium_url(
                   product_id: fa.innovable_id,
