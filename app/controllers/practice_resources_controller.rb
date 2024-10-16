@@ -58,7 +58,7 @@ class PracticeResourcesController < ApplicationController
   end
 
   def check_user_practice_permissions
-    current_user.has_role?(:admin) || @practice.user_id == current_user.id || is_user_an_editor_for_practice(@practice, current_user)
+    current_user.has_role?(:admin) || @practice.user_id == current_user.id || is_user_an_editor_for_innovation(@practice, current_user)
   end
 
   def practice_published_approved_enabled?

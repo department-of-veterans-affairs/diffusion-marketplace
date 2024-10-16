@@ -1,7 +1,7 @@
 class PracticesController < ApplicationController # rubocop:disable Metrics/ClassLength
   include CropperUtils,
           PracticesHelper,
-          PracticeEditorUtils,
+          InnovationEditorUtils,
           EditorSessionUtils,
           PracticeEditorSessionsHelper,
           PracticeUtils,
@@ -624,7 +624,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
   def prevent_practice_permissions
     # if the user is the practice owner or the user is an admin or approver/practice_editor
-    unless current_user.has_role?(:admin) || @practice.user_id == current_user.id || is_user_an_editor_for_practice(@practice, current_user)
+    unless current_user.has_role?(:admin) || @practice.user_id == current_user.id || is_user_an_editor_for_innovation(@practice, current_user)
       unauthorized_response
     end
   end

@@ -1,6 +1,6 @@
 class Practice < Innovation
   include ActiveModel::Dirty
-  include PracticeEditorUtils
+  include InnovationEditorUtils
   include VaEmail
   include ExtraSpaceRemover
   extend PracticeUtils
@@ -326,7 +326,7 @@ class Practice < Innovation
   end
 
   def create_practice_editor_for_practice
-    PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
+    PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_innovation(self, self.user)
   end
 
   def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
