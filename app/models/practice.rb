@@ -240,7 +240,6 @@ class Practice < ApplicationRecord
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
   has_many :financial_files, dependent: :destroy
-  has_many :impact_photos, -> { order(position: :asc) }, dependent: :destroy
   has_many :implementation_timeline_files, dependent: :destroy
   has_many :job_position_practices, dependent: :destroy
   has_many :job_positions, through: :job_position_practices
@@ -260,7 +259,6 @@ class Practice < ApplicationRecord
   has_many :va_employees, -> { order(position: :asc) }, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
-  has_many :video_files, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_creators, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_awards, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
@@ -283,12 +281,6 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['practice_partner_id'].blank? }
-  accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
-    reject = attributes['description'].blank?
-    ip_reject = false
-    ip_reject = attributes['attachment'].blank? if attributes['id'].blank?
-    reject || ip_reject
-  }
   accepts_nested_attributes_for :practice_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['resource'] && attributes['resource'].blank? }
   accepts_nested_attributes_for :practice_multimedia, allow_destroy: true
   accepts_nested_attributes_for :practice_testimonials, allow_destroy: true
@@ -296,8 +288,6 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_solution_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_results_resources, allow_destroy: true
   accepts_nested_attributes_for :department_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['value'].blank? }
-
-  accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc{ |attributes| attributes['milestone'].blank? || attributes['timeline'].blank?}
   accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
