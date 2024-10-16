@@ -2,6 +2,8 @@
   <%= javascript_include_tag '_allCategories', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'product_editor_partners', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render partial: 'practices/introduction_forms/main_display_image_guidance_modal' %>
@@ -16,7 +18,7 @@
           <fieldset class="usa-fieldset grid-col-10">
             <legend class="usa-sr-only">Product Description</legend>
             <div class="margin-bottom-5 margin-top-3">
-              <div> 
+              <div>
                 <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Product Title*
                 <% end %>
@@ -186,6 +188,47 @@
                                   class: "usa-textarea main-display-image-alt-text" %>
               </div>
             </fieldset>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-1">
+                  Partners
+                </p>
+                <p class="margin-bottom-2 grid-col-8">
+                  Type or select from the dropdown any of the following partners your innovation is associated with.
+                </p>
+                <fieldset class="usa-fieldset grid-col-8">
+                  <legend class="usa-sr-only">Partners</legend>
+                  <div id="dm-practice-partner-container" class="position-relative">
+                    <ul class="dm-practice-editor-practice-partner-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
+                      <%= f.fields_for :practice_partner_practices, @ordered_practice_partners, wrapper: false do |ppp| %>
+                        <%
+                          ppp_id = ppp.object&.id || 'new_practice_partner_practices'
+                          ppp_partner_id = ppp.object&.practice_partner_id
+                          ppp_index = ppp.index
+                        %>
+                        <li class="dm-practice-editor-practice-partner-li fields margin-bottom-2" role="option" data-id="<%= ppp_id %>" data-index="<%= ppp_index %>" data-partner-id="<%= ppp_partner_id %>">
+                          <div class="grid-row">
+                            <div class="usa-combo-box grid-col-12 practice-partner-combo-box" data-default-value="<%= ppp_partner_id %>">
+                              <%= ppp.label :practice_partner_id, class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12 usa-sr-only' %>
+                              <%= ppp.select :practice_partner_id, @cached_practice_partners.collect { |mp| [mp.name, mp.id] }, name: "product[practice_partner_practices_attributes][#{ppp_index}][practice_partner_id]", class: 'usa-input desktop:grid-col-12 margin-top-0' %>
+                            </div>
+                            <div class="grid-col-12 trash-container">
+                              <%= f.link_to_remove 'Delete entry', class: "dm-origin-trash dm-button--unstyled-warning float-right" %>
+                            </div>
+                          </div>
+                        </li>
+                      <% end %>
+                    </ul>
+                    <%= f.link_to_add :practice_partner_practices,
+                                      id: 'link_to_add_link_practice_partner_practices',
+                                      class: "dm-add-another-link dm-add-practice-partner-practice-link" do %>
+                      Add another
+                    <% end %>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
             <%= hidden_field_tag :submitted_page, params[:action] %>
           </fieldset>
         <% end %>
