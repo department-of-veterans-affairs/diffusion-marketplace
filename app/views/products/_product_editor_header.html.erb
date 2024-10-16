@@ -3,36 +3,35 @@
   save_btn_pgs = NavigationHelper::PRODUCT_EDITOR_PAGES
   has_save_btn = save_btn_pgs.include?(params[:action])
   save_btn_text = @product.published ? 'Save and publish' : 'Save as draft'
-  save_btn_classes = @product.published ? 'dm-button--success margin-right-0' : 'dm-button--inverse-secondary margin-right-2'
+  save_btn_classes = @product.published ? 'dm-button--success' : 'dm-button--inverse-secondary'
 %>
 <%= render partial: 'practices/shared/editing_guide_modal' %>
 
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
 <div class="usa-overlay"></div>
-<header class="usa-header usa-header--extended bg-ink" id="dm-practice-editor-header">
-    <div class="usa-navbar margin-0">
-      <div class="grid-row flex-align-center">
-        <div class="usa-logo grid-col-6 margin-0" id="extended-logo">
-          <img
-            class="width-6 height-6 dm-header--va-seal display-inline-block text-middle"
-            src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"
-          />
-          <div class="margin-0 margin-left-1 text-white line-height-sans-1 display-inline-block text-middle">
-            <p class="text-bold font-sans-sm desktop-lg:font-sans-lg margin-bottom-1">Diffusion Marketplace</p>
-            <p class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</p>
-          </div>
-        </div>  
-      </div>
+<header class="bg-ink padding-y-2 padding-x-2" id="dm-product-editor-header">
+  <div class="grid-container">
+    <div class="grid-row flex-align-center">
+      <div class="usa-logo grid-col-6 margin-0" id="extended-logo">
+        <img
+          class="width-6 height-6 dm-header--va-seal display-inline-block text-middle"
+          src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"
+        />
+        <div class="display-inline-block margin-0 margin-left-1 text-white line-height-sans-1 text-middle">
+          <p class="text-bold font-sans-sm desktop-lg:font-sans-lg margin-bottom-1">Diffusion Marketplace</p>
+          <p class="font-sans-3xs text-normal desktop-lg:font-sans-sm desktop-lg:text-light">Department of Veterans Affairs</p>
+        </div>
+      </div>  
     </div>
-    <nav aria-label="Primary navigation" class="grid-row">
+    <nav aria-label="Primary navigation" class="grid-row margin-top-2">
       <div class="grid-col-6">
-        <ul class="">
-          <li class="usa-nav__primary-item">
-            <a href="#dm-editing-guide-modal" class="margin-right-3 margin-y-2px desktop-lg:margin-y-0 usa-nav__link" aria-controls="dm-editing-guide-modal" data-open-modal>Editing guide</a>
+        <ul class="display-inline-flex">
+          <li class="usa-nav__primary-item border-top-0">
+            <a href="#dm-editing-guide-modal" class="text-bold text-no-underline font-sans-xs margin-right-3 margin-y-2px usa-nav__link usa-current" aria-controls="dm-editing-guide-modal" data-open-modal>Editing guide</a>
           </li>
         </ul>
       </div>
-      <div class="grid-col-6 text-right">
+      <div class="grid-col-12 tablet:grid-col-6 desktop:grid-col-6 text-right">
         <% if has_save_btn %>
           <button type="submit" class="usa-button <%= save_btn_classes %>" id="practice-editor-save-button">
             <%= save_btn_text %>
@@ -47,4 +46,5 @@
         <% end %>
       </div>
     </nav>
+  </div>
 </header>
