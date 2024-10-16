@@ -48,7 +48,8 @@ class ProductsController < ApplicationController
                 else
                   nil
                 end
-      next_page = params[:next] ? Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page.to_sym] : submitted_page
+
+      next_page = params[:next] ? Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page] : submitted_page
       redirect_to send("product_#{next_page}_path", @product), notice: notice
     else
       flash[:error] = service.errors.any? ? service.errors.join(', ') : "An unexpected error occurred."
@@ -76,6 +77,8 @@ class ProductsController < ApplicationController
       :price,
       :origin_story,
       :main_display_image,
+      :main_display_image_caption,
+      :main_display_image_alt_text,
       :crop_x,
       :crop_y,
       :crop_w,

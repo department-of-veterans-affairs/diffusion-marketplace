@@ -1,10 +1,9 @@
 class Product < Innovation
   has_attached_file :main_display_image, styles: {thumb: '768x432>'}, :processors => [:cropper]
 
-  # validates :main_display_image_alt_text, presence: true, if: :main_display_image_present?
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates :name, presence: true
-  validates_uniqueness_of :name, {message: 'Product name already exists'}
+  validates :name, uniqueness: {message: 'Product name already exists'}
 
   after_update :update_date_published
 
@@ -12,9 +11,9 @@ class Product < Innovation
 
   PRODUCT_EDITOR_NEXT_PAGE =
     {
-      'editors': 'description',
-      'description': 'intrapreneur',
-      'intrapreneur': 'multimedia',
+      'editors' => 'description',
+      'description' => 'intrapreneur',
+      'intrapreneur' => 'multimedia',
     }
 
   extend FriendlyId
@@ -22,6 +21,10 @@ class Product < Innovation
 
   def user_email
     user&.email
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["name", "user_email", "published"]
   end
 
   private
@@ -34,16 +37,13 @@ class Product < Innovation
     Arel.sql("users.email")
   end
 
-  def self.ransackable_attributes(auth_object = nil)
-    ["name", "user_email", "published"]
-  end
 
   def update_date_published
     if saved_change_to_published?
       if published
-        update_column(:date_published, Time.current)
+        update(date_published: Time.current)
       else
-        update_column(:date_published, nil)
+        update(date_published: nil)
       end
     end
   end

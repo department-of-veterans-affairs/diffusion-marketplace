@@ -51,6 +51,7 @@ describe 'Product show page', type: :feature do
   it 'renders media assets' do
     visit(product_path(product_with_images))
     expect(page).to have_css('.product-main-display-image')
+    expect(page).to have_content('sample image caption')
     within('.multimedia-section') do
       expect(page).to have_css('.practice-editor-impact-photo')
       expect(page).to have_css('.video-container')
