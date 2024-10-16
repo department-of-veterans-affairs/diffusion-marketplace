@@ -63,6 +63,12 @@ Rails.application.routes.draw do
     get '/edit/description', action: 'description', as: 'description'
     get '/edit/intrapreneur', action: 'intrapreneur', as: 'intrapreneur'
     get '/edit/multimedia', action: 'multimedia', as: 'multimedia'
+
+    resources :product_multimedia do
+      member do
+        get 'download', to: 'product_multimedia#download', as: :download
+      end
+    end
   end
 
   # old practice routes redirects
