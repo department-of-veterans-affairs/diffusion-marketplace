@@ -131,12 +131,72 @@ describe 'Product editor - description', type: :feature do
         visit product_description_path(product)
         find('label', text: 'Remove image').click
         click_link 'Save and Continue'
-
         expect(page).to have_content('Product was successfully updated.')
-        visit product_description_path(product)
 
         product.reload
         expect(product.main_display_image.exists?).to be false
+      end
+    end
+
+    context 'when managing practice partners' do
+      let!(:pp_a) { create(:practice_partner, name: "Diffusion of Excellence") }
+      let!(:pp_b) { create(:practice_partner, name: "Health Services Research & Development")}
+
+      it 'allows a practice partner to be added' do
+        visit product_description_path(product)
+        find('#link_to_add_link_practice_partner_practices').click
+        within(all('.dm-practice-editor-practice-partner-li').last) do
+          find('.usa-combo-box__input').click
+          find('.usa-combo-box__input').set("Diffusion of Excellence")
+          all('.usa-combo-box__list-option').first.click
+        end
+
+        click_link 'Save and Continue'
+        expect(page).to have_content('Product was successfully updated.')
+        visit product_description_path(product)
+        expect(find(:css, '#product_practice_partner_practices_attributes_0_practice_partner_id').value).to eq(pp_a.name)
+      end
+
+      it 'allows a practice partner to be changed' do
+        visit product_description_path(product)
+        within(all('.dm-practice-editor-practice-partner-li').last) do
+          find('.usa-combo-box__input').click
+          find('.usa-combo-box__input').set("Health Services Research & Development")
+          all('.usa-combo-box__list-option').first.click
+        end
+
+        click_link 'Save and Continue'
+        expect(page).to have_content('Product was successfully updated.')
+        visit product_description_path(product)
+        expect(find(:css, '#product_practice_partner_practices_attributes_0_practice_partner_id').value).to eq(pp_b.name)
+      end
+
+      it "allows a practice partner to be removed" do
+        product.practice_partner_practices.create(practice_partner: pp_a)
+        product.practice_partner_practices.create(practice_partner: pp_b)
+
+        visit product_description_path(product)
+        within(all('.dm-practice-editor-practice-partner-li')[0]) do
+          click_link('Delete entry')
+        end
+
+        click_link 'Save and Continue'
+        expect(page).to have_content('Product was successfully updated.')
+        visit product_description_path(product)
+        expect(find(:css, '#product_practice_partner_practices_attributes_0_practice_partner_id').value).to eq("Health Services Research & Development")
+      end
+
+      it "allows all practice partners to be removed" do
+        product.practice_partner_practices.create(practice_partner: pp_a)
+
+        visit product_description_path(product)
+        within(all('.dm-practice-editor-practice-partner-li').last) do
+          find('button[aria-label="Clear the select contents"]').click
+        end
+
+        click_link 'Save and Continue'
+        expect(page).to have_content('Product was successfully updated.')
+        expect(product.practice_partners).to be_empty
       end
     end
   end
