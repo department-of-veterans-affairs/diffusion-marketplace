@@ -801,23 +801,16 @@ li.small-disc:before {
  PRACTICE EDITOR
 **********************************/
 // Introduction
-#introduction,
-#description {
+#introduction {
   #editor_date_initiated_year {
     &::-webkit-inner-spin-button {
       display: none;
     }
   }
 
-  .practice-editor-origin-li, .dm-practice-editor-practice-partner-li {
+  .practice-editor-origin-li {
     .usa-combo-box {
       max-width: unset !important;
-    }
-  }
-
-  .dm-practice-editor-practice-partner-li {
-    .usa-combo-box__input {
-      margin-top: -30px !important;
     }
   }
   .practice-editor-origin-li {
