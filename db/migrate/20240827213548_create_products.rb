@@ -8,11 +8,18 @@ class CreateProducts < ActiveRecord::Migration[6.0]
       t.string :duns
       t.string :shipping_timeline_estimate
       t.string :origin_story
+      t.string :usage
+      t.string :price
       t.text :description
+      t.text :main_display_image_caption_text
       t.text :main_display_image_alt_text
       t.string :support_network_email
+      t.string :slug, null: false
+      t.string :vendor_link
       t.boolean :private_contact_info
-      t.boolean :published
+      t.boolean :published, default: false
+      t.boolean :retired, default: false
+      t.datetime :date_published
       t.references :user, null: true, foreign_key: true
 
       t.integer :crop_x
@@ -25,5 +32,6 @@ class CreateProducts < ActiveRecord::Migration[6.0]
 
     add_attachment :products, :main_display_image
     add_index :products, :name, unique: true
+    add_index :products, :slug, unique: true
   end
 end
