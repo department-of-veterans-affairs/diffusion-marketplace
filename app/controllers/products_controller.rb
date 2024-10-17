@@ -12,6 +12,8 @@ class ProductsController < ApplicationController
 
   def description
     @categories = Category.prepared_categories_for_practice_editor(current_user.has_role?(:admin))
+    @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
+    @ordered_practice_partners = PracticePartnerPractice.where(innovable_id: @product.id, innovable_type: "Product").order_by_id
     render 'products/form/description'
   end
 
@@ -31,7 +33,6 @@ class ProductsController < ApplicationController
 
   def update
     submitted_page = navigation_params[:submitted_page]
-
     service = SaveProductService.new(
       product: @product,
       product_params: params[:product].nil? ? {} : product_params,
@@ -87,6 +88,7 @@ class ProductsController < ApplicationController
       :add_editor,
       :delete_editor,
       va_employees_attributes: [:id, :name, :role, :_destroy],
+      practice_partner_practices_attributes:  [:id, :practice_partner_id, :_destroy],
       category: permitted_dynamic_keys(params[:product][:category]),
     )
   end

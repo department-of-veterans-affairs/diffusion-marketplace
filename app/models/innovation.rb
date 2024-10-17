@@ -14,6 +14,7 @@ class Innovation < ApplicationRecord
 
   accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :practice_multimedia, allow_destroy: true
+  accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['practice_partner_id'].blank? }
 
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
