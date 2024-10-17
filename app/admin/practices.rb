@@ -1,6 +1,6 @@
 include ApplicationHelper
 include ActiveAdminHelpers
-include PracticeEditorUtils
+include InnovationEditorUtils
 include UserUtils
 include ActiveAdminUtils
 
@@ -334,7 +334,7 @@ ActiveAdmin.register Practice do # rubocop:disable Metrics/BlockLength
 
         set_practice_user(practice) if email.present?
         practice.user = nil unless email.present?
-        if practice.user.present? && !is_user_an_editor_for_practice(practice, practice.user)
+        if practice.user.present? && !is_user_an_editor_for_innovation(practice, practice.user)
           PracticeEditor.create_and_invite(practice, practice.user)
         end
         respond_to do |format|
