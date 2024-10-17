@@ -68,6 +68,11 @@ class SaveProductService
       @product_updated = delete_editor(@product_params[:delete_editor]) || @product_updated
       @product_params.delete(:delete_editor)
     end
+
+    if @product_params[:practice_partner_practices_attributes].present?
+      @product_updated = update_practice_partners(@product_params[:practice_partner_practices_attributes])
+      @product_params.delete(:practice_partner_practices_attributes)
+    end
   end
 
   def handle_multimedia_params
@@ -218,6 +223,39 @@ class SaveProductService
       @errors << editor.errors.full_messages.to_sentence
       false
     end
+  end
+
+  def update_practice_partners(partners_params)
+    changed = false
+
+    incoming_partner_ids = partners_params.values.map { |attrs| attrs[:practice_partner_id].to_i }
+    existing_partner_ids = @product.practice_partner_practices.pluck(:practice_partner_id)
+
+    # Destroy associations not included in incoming data
+    (existing_partner_ids - incoming_partner_ids).each do |partner_id|
+      @product.practice_partner_practices.find_by(practice_partner_id: partner_id)&.destroy!
+      changed = true
+    end
+
+    partners_params.each do |_, attributes|
+      partner_id = attributes[:practice_partner_id].to_i
+      if attributes[:_destroy] == '1'
+        # Handle deletion if marked for destruction
+        if existing_partner_ids.include?(partner_id)
+          @product.practice_partner_practices.find_by(practice_partner_id: partner_id)&.destroy!
+          changed = true
+        end
+      elsif existing_partner_ids.exclude?(partner_id) && partner_id != 0
+        # Handle addition if not already associated
+        @product.practice_partner_practices.create!(practice_partner_id: partner_id)
+        changed = true
+      end
+    end
+
+    changed
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed => e
+    @errors << e.message
+    false
   end
 
   def collect_errors
