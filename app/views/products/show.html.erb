@@ -100,9 +100,7 @@
 		      <div class="desktop:grid-col-9 grid-col-12">
 		      	<h2 id="multimedia" class="sidenav-header">Images and Video</h2>
 		        <div class="multimedia-section practice-section">
-		        	<% # temporarily skip files while troubleshooting %>
-		        	<% multimedia = @product.practice_multimedia.where.not(resource_type: "file") %>
-		          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: multimedia, statement: '', title: '', s_area: 'multimedia'} %>
+		          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @product.practice_multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
 		        </div>
 		      </div>
 		    </div>
