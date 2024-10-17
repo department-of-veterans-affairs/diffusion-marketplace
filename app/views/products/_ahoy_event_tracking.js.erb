@@ -1,0 +1,51 @@
+var PRODUCT_SHOW_KEY = 'product-show';
+
+function saveProductShow(visit) {
+  sessionStorage.setItem(PRODUCT_SHOW_KEY, JSON.stringify(visit));
+}
+
+function shouldTrackProductShow(currentVisit) {
+  var prevVisit = JSON.parse(sessionStorage.getItem(PRODUCT_SHOW_KEY));
+
+  if (prevVisit) {
+    var prevVisitTime = prevVisit.timestamp;
+    var currentVisitTime = currentVisit.timestamp;
+    var isSameVisit = (currentVisitTime - prevVisitTime) <= 1000;
+    var isSameProduct = currentVisit["product_id"] === prevVisit["product_id"];
+    var isSameUser = currentVisit.userId === prevVisit.userId
+
+    // make sure we aren't logging the same exact practice show (difference between visits is <= 1000ms) by same user for the same request
+    // this occurs because of turbolinks reloading the page
+    return !(isSameVisit && isSameProduct && isSameUser);
+  } else {
+    return true;
+  }
+}
+
+function trackProductShow(visit) {
+  saveProductShow(visit);
+  // remove the timestamp and userId key/value from the prevVisit object
+  delete visit.timestamp;
+  delete visit.userId;
+  ahoy.track('Product show', visit);
+}
+
+function ahoyEventTrackingFns() {
+  var action = "<%= params[:action] %>";
+  var controller = "<%= params[:controller] %>";
+
+  // only track on the show action
+  if (action === 'show' && controller === 'products') {
+    var userId = <%= current_user.id %>;
+    var productId = <%= @product.id %>;
+    // only track if there is a current user and practice
+    if (userId && productId) {
+      var productShowProps = { "product_id": productId, timestamp: Date.now(), userId: userId };
+      if (shouldTrackProductShow(productShowProps)) {
+        trackProductShow(productShowProps);
+      }
+    }
+  }
+}
+
+ahoyEventTrackingFns();

@@ -56,7 +56,7 @@ describe 'Breadcrumbs', type: :feature do
     dh_1 = DiffusionHistory.create!(practice: @user_practice, va_facility: fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
     login_as(@user, :scope => :user, :run_callbacks => false)
-    PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
+    PracticePartnerPractice.create!(practice_partner: @pp, innovable: @user_practice)
     visit '/'
   end
 

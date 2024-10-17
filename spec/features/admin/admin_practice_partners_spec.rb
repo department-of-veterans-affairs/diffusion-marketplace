@@ -91,7 +91,7 @@ describe 'Admin Practice Partners Tab', type: :feature do
 
     it 'Should be reset if a practice is deleted from an existing practice partner' do
       # make sure the practice is present with the partner
-      PracticePartnerPractice.create!(practice_partner: @practice_partner, practice: @practice)
+      PracticePartnerPractice.create!(practice_partner: @practice_partner, innovable: @practice)
       add_practice_partners_to_cache
       expect(page).to have_content(@practice.name)
       visit '/search'

@@ -25,14 +25,14 @@ describe 'Homepage', type: :feature do
     @cat_2 = create(:category, name: 'Telehealth', parent_category: @parent_cat)
     @cat_3 = create(:category, name: 'VA Immersive', parent_category: @parent_cat_b)
 
-    create(:category_practice, practice: @practice, category: @cat_1)
-    create(:category_practice, practice: @practice_2, category: @cat_2)
-    create(:category_practice, practice: @practice_3, category: @cat_1)
-    create(:category_practice, practice: @practice_3, category: @cat_3)
+    create(:category_practice, innovable: @practice, category: @cat_1)
+    create(:category_practice, innovable: @practice_2, category: @cat_2)
+    create(:category_practice, innovable: @practice_3, category: @cat_1)
+    create(:category_practice, innovable: @practice_3, category: @cat_3)
 
     ampersand_practice = create(:practice, name: 'Coaching & More', slug: 'coaching-and-more', is_public: true, approved: true, published: true, tagline: "HAPPEN tagline", date_initiated: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', created_at: 'Sun, 04 Feb 1992 00:00:00 UTC +00:00', support_network_email: 'contact-happen@happen.com', user: @user)
     ampersand_category = create(:category, name: 'Nutrition & Food', parent_category: @parent_cat)
-    create(:category_practice, practice: ampersand_practice, category: ampersand_category)
+    create(:category_practice, innovable: ampersand_practice, category: ampersand_category)
 
     visit '/'
   end

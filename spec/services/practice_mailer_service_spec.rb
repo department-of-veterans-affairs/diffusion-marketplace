@@ -15,9 +15,9 @@ RSpec.describe PracticeMailerService do
     let!(:unpublished_practice) { create(:practice, name: "Innovation C", user: user, published: false, updated_at: 1.day.ago) }
 
     before do
-      create(:practice_editor, user: user2, practice: practice_a)
-      create(:practice_editor, user: user, practice: practice_b)
-      create(:practice_editor, user: user3, practice: unpublished_practice)
+      create(:practice_editor, user: user2, innovable: practice_a)
+      create(:practice_editor, user: user, innovable: practice_b)
+      create(:practice_editor, user: user3, innovable: unpublished_practice)
 
       ActionMailer::Base.deliveries.clear
       Sidekiq::Testing.inline!
