@@ -33,13 +33,14 @@ class PracticeMailerService
       practice_ids_to_update << practice.id
     end
 
-    editor_practices = PracticeEditor.joins(:user, :practice).where(practice_id: practices.ids)
+    editor_practices = PracticeEditor.where(innovable_type: 'Practice', innovable_id: practices.ids)
+                                    .includes(:user, innovable: :practice_editors)
     editor_practices.each_with_object(user_practices) do |editor, hash|
-      next unless editor.user.present? && editor.practice.published?
+      next unless editor.user.present? && editor.innovable.published?
       hash[editor.user] ||= Set.new
-      hash[editor.user] << editor.practice
-      practice_names << editor.practice.name
-      practice_ids_to_update << editor.practice.id
+      hash[editor.user] << editor.innovable
+      practice_names << editor.innovable.name
+      practice_ids_to_update << editor.innovable.id
     end
 
     if Rails.env.production? && ENV['PROD_SERVERNAME'] != 'PROD'

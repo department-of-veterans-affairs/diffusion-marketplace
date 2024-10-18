@@ -54,7 +54,7 @@
         dm-email-practice', 'aria-label': "side nav email #{main_email}", data: {practice_id: @practice.id} %>
       </div>
     <% end %>
-    <% if (current_user.present?) && (current_user.has_role?(:admin) || @practice.user_id == current_user.id || is_user_an_editor_for_practice(@practice, current_user)) %>
+    <% if (current_user.present?) && (current_user.has_role?(:admin) || @practice.user_id == current_user.id || is_user_an_editor_for_innovation(@practice, current_user)) %>
       <div class="text-center">
         <%= link_to practice_editors_path(@practice), id: 'edit-link-in-nav', class: 'usa-button usa-button--secondary width-full' do %>
           <i class="fas fa-edit margin-right-1"></i>Edit innovation
@@ -74,7 +74,7 @@
 </div>
 
 <!-- Overview-Problem-->
-<section id="overview" class="margin-bottom-5 grid-container nav-header">
+<section id="overview" class="margin-bottom-5 grid-container sidenav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12 padding-top-6">
@@ -150,7 +150,7 @@
 
 <!-- Implementation section -->
 <% if implementation_data_present %>
-  <section id="implementation" class="grid-container nav-header">
+  <section id="implementation" class="grid-container sidenav-header">
     <div class="grid-row grid-gap-2">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
       <div class="desktop:grid-col-9 grid-col-12 padding-top-10">

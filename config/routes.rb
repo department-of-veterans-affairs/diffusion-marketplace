@@ -57,6 +57,21 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :products, except: :index do
+    get '/products/:id', action: 'show'
+    get 'edit/editors', action: 'editors', as: 'editors'
+    get '/edit/description', action: 'description', as: 'description'
+    get '/edit/intrapreneur', action: 'intrapreneur', as: 'intrapreneur'
+    get '/edit/multimedia', action: 'multimedia', as: 'multimedia'
+    get '/edit', to: 'products#editors'
+
+    resources :product_multimedia do
+      member do
+        get 'download', to: 'product_multimedia#download', as: :download
+      end
+    end
+  end
+
   # old practice routes redirects
   get '/practices/:id', to: redirect('/innovations/%{id}', status: 302)
   get '/practices/:id/edit/metrics', to: redirect('/innovations/%{id}/edit/metrics', status: 302)

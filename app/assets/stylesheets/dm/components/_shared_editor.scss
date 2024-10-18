@@ -1,0 +1,18 @@
+/*********************************
+ PRACTICE + PRODUCT EDITOR - Shared components
+**********************************/
+
+// Partners selection
+#product-editor-page-description, .practice-editor-page #introduction {
+  .practice-editor-origin-li, .dm-practice-editor-practice-partner-li {
+    .usa-combo-box {
+      max-width: unset !important;
+    }
+  }
+
+  .dm-practice-editor-practice-partner-li {
+    .usa-combo-box__input {
+      margin-top: -30px !important;
+    }
+  }
+}

@@ -210,7 +210,7 @@ class SavePracticeService
     elsif category_params.blank? && @current_endpoint == 'introduction'
       practice_category_practices.each do |pcp|
         pcp.destroy
-        if CategoryPractice.where(category: pcp.category).where('practice_id != ?', @practice.id).blank? && pcp.category.parent_category.name != "Communities"
+        if CategoryPractice.where(category: pcp.category).where('innovable_id != ?', @practice.id).blank? && pcp.category.parent_category.name != "Communities"
           pcp.category.destroy
         end
       end
@@ -367,7 +367,7 @@ class SavePracticeService
     else
       email_param = editors.values.first.values.first.downcase
       user = User.find_by(email: email_param)
-      practice_editor = PracticeEditor.find_by(practice: @practice, user: user)
+      practice_editor = PracticeEditor.find_by(innovable: @practice, user: user)
 
       # if the user tries to save with a blank email field, raise an error
       raise StandardError.new "error. Email field cannot be blank" if email_param.blank?

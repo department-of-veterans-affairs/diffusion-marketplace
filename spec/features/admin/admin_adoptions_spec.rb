@@ -54,7 +54,7 @@ describe 'Admin Adoptions Tab', type: :feature do
 
   it 'should allow an admin to download adoption data as a .xlsx file' do
     go_to_adoptions
-    export_button  find(:css, "input[value='Download All']")
+    export_button = find(:css, "input[value='Download All']")
     export_button.click
 
     # should not navigate away from metrics page

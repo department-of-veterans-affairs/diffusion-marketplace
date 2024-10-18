@@ -22,8 +22,8 @@ describe 'Practice editor - introduction', type: :feature do
     @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002', is_major: true)
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE', is_major: true)
     @pr_partner_3 = PracticePartner.create!(name: 'Awesome Practice Partner', short_name: 'APP', description: 'Hello world')
-    PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
-    PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_2, created_at: Time.now)
+    PracticePartnerPractice.create!(innovable: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
+    PracticePartnerPractice.create!(innovable: @practice, practice_partner: @pr_partner_2, created_at: Time.now)
     @parent_cat_1 = Category.create!(name: 'Strategic')
     @parent_cat_2 = Category.create!(name: 'Operational')
     @parent_cat_3 = Category.create!(name: 'Clinical')
@@ -35,7 +35,7 @@ describe 'Practice editor - introduction', type: :feature do
     Category.create!(name: 'Hidden Cat')
     Category.create!(name: 'Suicide Prevention', parent_category: @parent_cat_4)
     Category.create!(name: 'Age-Friendly', parent_category: @parent_cat_4)
-    CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(innovable: @practice, category: @cat_1, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
     page.driver.browser.manage.window.resize_to(1200, 600) # need to set this otherwise mobile version of editor displays
@@ -541,7 +541,7 @@ describe 'Practice editor - introduction', type: :feature do
 
       it 'does not show Communities categories for non-admin' do
         editor = User.create!(email: 'some.guy@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        PracticeEditor.create!(user: editor, practice: @practice, email: editor.email)
+        PracticeEditor.create!(user: editor, innovable: @practice, email: editor.email)
 
         login_as(editor, :scope => :user, :run_callbacks => false)
         visit_practice_edit

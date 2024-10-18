@@ -1,7 +1,7 @@
 class PracticeEditor < ApplicationRecord
   include VaEmail
 
-  belongs_to :practice
+  belongs_to :innovable, polymorphic: true
   belongs_to :user
 
   attr_accessor :email
@@ -15,14 +15,14 @@ class PracticeEditor < ApplicationRecord
 
   def self.create_and_invite(practice, user)
     # Email param ensures the user associated with the practice editor has a valid va.gov email address
-    self.create!(practice: practice, user: user, email: user.email)
+    self.create!(innovable: practice, user: user, email: user.email)
     if (Rails.env.production? && ENV['PROD_SERVERNAME'] == 'PROD') || Rails.env.test?
-      PracticeEditorMailer.invite_to_edit_practice_email(practice, user).deliver
+      PracticeEditorMailer.invite_to_edit(practice, user).deliver
     end
   end
 
   def ensure_practice_has_at_least_one_practice_editor
-    if self.practice.practice_editors.count == 1
+    if self.innovable.practice_editors.count == 1
       errors.add(:base, 'At least one editor is required')
       throw :abort
     end

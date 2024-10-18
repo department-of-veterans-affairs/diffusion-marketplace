@@ -15,17 +15,16 @@
       <%= render partial: "practices/shared/step_indicator" %>
       <section class="usa-section padding-top-0 padding-bottom-0 editors">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3 margin-top-0">Editors</h1>
-        <% practice_editors = PracticeEditor.where(practice: @practice).order(created_at: :asc) %>
-        <% practice_editors.each do |pe| %>
+        <% @practice_editors.each do |pe| %>
           <%
             user = pe.user
             email = user.email
           %>
-          <div class="grid-row flex-align-center border-bottom-1px <%= 'border-top-1px' if practice_editors.first === pe %> practice-editor-entry">
+          <div class="grid-row flex-align-center border-bottom-1px <%= 'border-top-1px' if @practice_editors.first === pe %> practice-editor-entry">
             <div class="grid-col-11 padding-y-3 line-height-26">
               <p class="text-bold <%= 'display-none' unless is_full_name_present(user) %>"><%= user_full_name(user) %></p>
-              <a target="_blank" 
-                  href="mailto:<%= email %>" 
+              <a target="_blank"
+                  href="mailto:<%= email %>"
                   class="usa-link usa-link--external line-height-26"
                   rel="noopener noreferrer">
                 <%= email %>

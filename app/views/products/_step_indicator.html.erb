@@ -1,0 +1,27 @@
+<div class="usa-prose-caption margin-bottom-1 text-base-dark">
+	<%= "#{product.name} last updated on #{product.updated_at.strftime("%-m/%-d/%Y")} at #{product.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime("%I:%M %p")} EST" %>
+</div>
+<div class="usa-step-indicator" aria-label="progress">
+  <ol class="usa-step-indicator__segments">
+    <%
+      page_titles = NavigationHelper::PRODUCT_EDITOR_PAGES
+      action = params[:action]
+    %>
+    <% page_titles.each_with_index do |pt, i| %>
+      <% 
+        current_page_index = page_titles.index(action)
+        status = ''
+        if current_page_index > i
+          status = '--complete'
+        elsif current_page_index === i
+          status = '--current'
+        end
+      %>
+      <li class="usa-step-indicator__segment usa-step-indicator__segment<%= status %>">
+        <span class="usa-step-indicator__segment-label">
+          <%= link_to pt.capitalize, eval("product_#{pt}_path(product)") %>
+        </span>
+      </li>
+    <% end %>
+  </ol>
+</div>
