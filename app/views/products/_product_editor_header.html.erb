@@ -1,5 +1,4 @@
 <%
-  save_btn_pgs = NavigationHelper::PRODUCT_EDITOR_PAGES
   save_btn_text = @product.published ? 'Save and publish' : 'Save as draft'
   save_btn_classes = @product.published ? 'dm-button--success' : 'dm-button--inverse-secondary'
 %>
@@ -34,11 +33,9 @@
           <%= save_btn_text %>
         </button>
         <% if !@product.published %>
-            <%= link_to 'Save and publish', product_path(@product),
-                        class: 'usa-button dm-button--success margin-right-0',
-                        id: 'publish-practice-button'
-                        # TODO: add form action here
-                        %>
+          <button type="submit" class="usa-button dm-button--success" id="practice-editor-publish-button">
+          Publish
+        </button>
         <% end %>
       </div>
     </nav>
