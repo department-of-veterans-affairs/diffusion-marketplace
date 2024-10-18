@@ -42,7 +42,7 @@ describe 'Product show page', type: :feature do
   it 'conditionally renders linked fields ' do
     login_as(admin, :scope => :user, :run_callbacks => false)
     visit product_path(product)
-    expect(page).to have_link(product.vendor)
+    expect(page).to have_link(product.vendor, class: 'usa-link--external')
     product.update(vendor_link: nil)
     visit product_path(product)
     expect(page).not_to have_link(product.vendor)
