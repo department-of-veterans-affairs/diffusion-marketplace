@@ -65,4 +65,13 @@ describe 'Product show page', type: :feature do
       expect(page).to have_content(/See more/i)
     end
   end
+
+  it 'renders static template content with properly styled external links' do
+    login_as(admin, :scope => :user, :run_callbacks => false)
+    visit product_path(product)
+    order_instructions = page.find('#practice-show-order-instructions')
+    link_count = order_instructions.all('a').count
+    styled_links_count = order_instructions.all('a.usa-link.usa-link--external').count
+    expect(link_count).to eq styled_links_count
+  end
 end
