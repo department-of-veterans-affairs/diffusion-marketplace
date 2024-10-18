@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     get '/edit/description', action: 'description', as: 'description'
     get '/edit/intrapreneur', action: 'intrapreneur', as: 'intrapreneur'
     get '/edit/multimedia', action: 'multimedia', as: 'multimedia'
+    get '/edit', to: 'products#editors'
 
     resources :product_multimedia do
       member do

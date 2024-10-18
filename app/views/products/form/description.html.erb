@@ -1,9 +1,13 @@
 <% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_allCategories', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'product_editor_partners', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'products/publication_validation', formats: [:js] %>
+  <% end %>
 <% end %>
 
 <%= render partial: 'practices/introduction_forms/main_display_image_guidance_modal' %>

@@ -33,6 +33,7 @@ class ProductsController < ApplicationController
 
   def update
     submitted_page = navigation_params[:submitted_page]
+    publish = navigation_params[:publish_product]
     service = SaveProductService.new(
       product: @product,
       product_params: params[:product].nil? ? {} : product_params,
@@ -49,15 +50,19 @@ class ProductsController < ApplicationController
                 else
                   nil
                 end
-
-      next_page = params[:next] ? Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page] : submitted_page
-      redirect_to send("product_#{next_page}_path", @product), notice: notice
+      if publish
+        notice = "Product was successfully published."
+        @product.update(published: true)
+        redirect_to product_path(@product), notice: notice
+      else
+        next_page = params[:next] ? Product::PRODUCT_EDITOR_NEXT_PAGE[submitted_page] : submitted_page
+        redirect_to send("product_#{next_page}_path", @product), notice: notice
+      end
     else
       flash[:error] = service.errors.any? ? service.errors.join(', ') : "An unexpected error occurred."
       redirect_back(fallback_location: admin_product_path(@product))
     end
   end
-
   private
 
   def set_product
@@ -85,6 +90,7 @@ class ProductsController < ApplicationController
       :crop_w,
       :crop_h,
       :delete_main_display_image,
+      :published,
       :add_editor,
       :delete_editor,
       va_employees_attributes: [:id, :name, :role, :_destroy],
@@ -100,7 +106,7 @@ class ProductsController < ApplicationController
   end
 
   def navigation_params
-    params.permit(:submitted_page, :next)
+    params.permit(:submitted_page, :next, :publish_product)
   end
 
   def set_return_to_top_flag
