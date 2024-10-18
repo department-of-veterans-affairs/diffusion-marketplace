@@ -1,3 +1,10 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'products/publication_validation', formats: [:js] %>
+  <% end %>
+<% end %>
+
 <div class="grid-container">
   <div class="grid-row grid-gap">
     <div id="product-editor-page-intrapreneur" class="grid-col-12 margin-top-4">
