@@ -11,10 +11,10 @@ class CreateProducts < ActiveRecord::Migration[6.0]
       t.string :usage
       t.string :price
       t.text :description
-      t.text :main_display_image_caption_text
+      t.text :main_display_image_caption
       t.text :main_display_image_alt_text
       t.string :support_network_email
-      t.string :slug, null: false
+      t.string :slug
       t.string :vendor_link
       t.boolean :private_contact_info
       t.boolean :published, default: false
