@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_10_210000) do
+ActiveRecord::Schema.define(version: 2024_10_07_232231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1081,11 +1081,18 @@ ActiveRecord::Schema.define(version: 2024_10_10_210000) do
     t.string "duns"
     t.string "shipping_timeline_estimate"
     t.string "origin_story"
+    t.string "usage"
+    t.string "price"
     t.text "description"
+    t.text "main_display_image_caption"
     t.text "main_display_image_alt_text"
     t.string "support_network_email"
+    t.string "slug"
+    t.string "vendor_link"
     t.boolean "private_contact_info"
     t.boolean "published", default: false
+    t.boolean "retired", default: false
+    t.datetime "date_published"
     t.bigint "user_id"
     t.integer "crop_x"
     t.integer "crop_y"
@@ -1097,13 +1104,6 @@ ActiveRecord::Schema.define(version: 2024_10_10_210000) do
     t.string "main_display_image_content_type"
     t.bigint "main_display_image_file_size"
     t.datetime "main_display_image_updated_at"
-    t.string "usage"
-    t.string "price"
-    t.datetime "date_published"
-    t.boolean "retired", default: false, null: false
-    t.string "slug"
-    t.string "vendor_link"
-    t.text "main_display_image_caption"
     t.index ["name"], name: "index_products_on_name", unique: true
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["user_id"], name: "index_products_on_user_id"
