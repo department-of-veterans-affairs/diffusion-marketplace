@@ -30,6 +30,19 @@ describe 'Product editor - description', type: :feature do
       expect(page).to have_field('product_name', with: product.name)
     end
 
+    it 'can publish product' do
+      product.update(published: false)
+      visit product_description_path(product)
+      expect(page).to have_content('Save as draft')
+      expect(page).to have_content('Publish')
+      click_button('Publish')
+      expect(page).to have_current_path(product_path(product))
+      expect(page).to have_content('Product was successfully published.')
+      visit product_description_path(product)
+      expect(page).not_to have_content('Save as draft')
+      expect(page).to have_content('Save and publish')
+    end
+
     it 'allows access to the description page and updates the product successfully' do
       visit product_description_path(product)
       expect(page).to have_content('Description')
