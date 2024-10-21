@@ -72,11 +72,16 @@ ActiveAdmin.register Product do
 
     def create
       ActiveRecord::Base.transaction do
-        product = Product.new(product_params)
-        handle_user_email(product)
+        @product = Product.new(product_params)
+        handle_user_email(user_email_param)
 
-        product.save!
-        handle_redirect_after_save(product, "created")
+        if @product.save
+          add_user_as_editor
+          handle_redirect_after_save(@product, "created")
+        else
+          flash[:error] = @product.errors.map(&:message).join(', ')
+          redirect_to new_admin_product_path
+        end
       end
     end
 
@@ -84,22 +89,26 @@ ActiveAdmin.register Product do
       ActiveRecord::Base.transaction do
         @product = Product.friendly.find(params[:id])
         @product.assign_attributes(product_params)
-        handle_user_email(@product)
+        handle_user_email(user_email_param)
 
-        @product.save!
-        handle_redirect_after_save(@product, "updated")
+        if @product.save
+          add_user_as_editor
+          handle_redirect_after_save(@product, "updated")
+        else
+          flash[:error] = @product.errors.map(&:message).join(', ')
+          redirect_to edit_admin_product_path(@product)
+        end
       end
     end
 
     private
 
-    def handle_user_email(product)
-      email = user_email_param
+    def handle_user_email(email)
       if email.present? && is_invalid_va_email(email)
-        product.errors.add(:user_email, 'must be a valid @va.gov address')
-        raise ActiveRecord::RecordInvalid.new(product)
+        @product.errors.add(:user_email, 'must be a valid @va.gov address')
+        raise ActiveRecord::RecordInvalid.new(@product)
       end
-      set_product_user(product, email)
+      set_product_user(email)
     end
 
     def handle_redirect_after_save(product, action)
@@ -118,23 +127,21 @@ ActiveAdmin.register Product do
       redirect_to path, flash: { error: error_messages.join(', ') }
     end
 
-    def set_product_user(product, email)
+    def set_product_user(email)
       if email.blank?
-        product.user = nil
+        @product.user = nil
         return
       end
 
-      return if product.user_email == email
+      return if @product.user_email == email
 
-      # create new user if needed
-      user = User.find_or_initialize_by(email: email)
-      skip_validations_and_save_user(user) if user.new_record?
-      product.user = user
-
-      # un-comment and update for Product once the editor workflow is created:
-        # if product.user.present? && !is_user_an_editor_for_innovation(product, product.user)
-        #   ProductEditor.create_and_invite(product, product.user)
-        # end
+      user = User.find_by(email: email)
+      if user.nil?
+        @product.errors.add(:user_email, 'does not match any registered users')
+        raise ActiveRecord::RecordInvalid.new(@product)
+      else
+        @product.user = user
+      end
 
       # Uncomment and update for Product when show page / commontator functionality enabled:
         # if the practice user is updated, remove the previous product user from the
@@ -144,6 +151,12 @@ ActiveAdmin.register Product do
         #     product.commontator_thread.unsubscribe(previous_product_user)
         # end
         # product.commontator_thread.subscribe(user)
+    end
+
+    def add_user_as_editor
+      if @product.user.present? && !is_user_an_editor_for_innovation(@product, @product.user)
+        PracticeEditor.create_and_invite(@product, @product.user)
+      end
     end
 
     def product_params

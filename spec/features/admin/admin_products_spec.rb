@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.feature "Admin::Products", type: :feature do
   let(:admin_user) { create(:user, :admin) }
+  let(:product_user) { create(:user) }
 
   before do
     login_as(admin_user, scope: :user)
@@ -9,24 +10,26 @@ RSpec.feature "Admin::Products", type: :feature do
 
   describe "Creating a product" do
     context "with valid attributes" do
-      scenario "creates a product successfully" do
+      scenario "creates a product successfully and adds user as editor" do
         visit new_admin_product_path
-
+        user_email = product_user.email
         fill_in "Product name *Required*", with: "Test Product"
-        fill_in "User email", with: "testuser@va.gov"
+        fill_in "User email", with: "#{user_email}"
 
         click_button "Create Product"
 
         expect(page).to have_content("Product was successfully created")
         expect(page).to have_content("Test Product")
-        expect(page).to have_content("testuser@va.gov")
+        expect(page).to have_content(user_email)
+        expect(PracticeEditor.last.user).to eq(product_user)
+        expect(PracticeEditor.last.innovable.name).to eq("Test Product")
       end
 
       scenario "creates a product and adds another" do
         visit new_admin_product_path
 
         fill_in "Product name *Required*", with: "First Product"
-        fill_in "User email", with: "user@va.gov"
+        fill_in "User email", with: product_user.email
         check "create_another"
 
         click_button "Create Product"
@@ -35,25 +38,10 @@ RSpec.feature "Admin::Products", type: :feature do
         expect(current_path).to eq(new_admin_product_path)
         expect(page).not_to have_field("Product name *Required*", with: "First Product")
       end
-
-      scenario "automatically creates a new user if email does not exist" do
-        visit new_admin_product_path
-
-        fill_in "Product name *Required*", with: "Product with New User"
-        fill_in "User email", with: "newuser@va.gov"
-
-        click_button "Create Product"
-
-        expect(page).to have_content("Product was successfully created")
-        expect(page).to have_content("Product with New User")
-        expect(page).to have_content("newuser@va.gov")
-
-        expect(User.find_by(email: "newuser@va.gov")).not_to be_nil
-      end
     end
 
     context "with invalid attributes" do
-      scenario "tries to create a product with an invalid email" do
+      scenario "tries to create a product with a non-VA email" do
         visit new_admin_product_path
 
         fill_in "Product name *Required*", with: "Invalid Email Product"
@@ -67,12 +55,26 @@ RSpec.feature "Admin::Products", type: :feature do
         expect(Product.find_by(name: "Invalid Email Product")).to be_nil
       end
 
+      scenario "tries to create a product with an invalid email" do
+        visit new_admin_product_path
+
+        fill_in "Product name *Required*", with: "Invalid Email Product"
+        fill_in "User email", with: "invalidemail@va.gov"
+
+        click_button "Create Product"
+
+        expect(page).to have_content("Email does not match any registered users")
+        expect(current_path).to eq(new_admin_product_path)
+
+        expect(Product.find_by(name: "Invalid Email Product")).to be_nil
+      end
+
       scenario "tries to create a product with a taken name" do
         create(:product, name: "Taken Product")
 
         visit new_admin_product_path
         fill_in "Product name *Required*", with: "Taken Product"
-        fill_in "User email", with: "user@va.gov"
+        fill_in "User email", with: product_user.email
 
         click_button "Create Product"
 
@@ -92,13 +94,13 @@ RSpec.feature "Admin::Products", type: :feature do
         visit edit_admin_product_path(product)
 
         fill_in "Product name *Required*", with: "Updated Product"
-        fill_in "User email", with: "newuser@va.gov"
+        fill_in "User email", with: product_user.email
 
         click_button "Update Product"
 
         expect(page).to have_content("Product was successfully updated")
         expect(page).to have_content("Updated Product")
-        expect(page).to have_content("newuser@va.gov")
+        expect(page).to have_content(product_user.email)
       end
 
       scenario "allows the user_email to be blank and sets the product's user to nil" do
@@ -135,7 +137,7 @@ RSpec.feature "Admin::Products", type: :feature do
 
         visit edit_admin_product_path(product)
         fill_in "Product name *Required*", with: "Taken Product"
-        fill_in "User email", with: "newuser@va.gov"
+        fill_in "User email", with: ""
 
         click_button "Update Product"
 
