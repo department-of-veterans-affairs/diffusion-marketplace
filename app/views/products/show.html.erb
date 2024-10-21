@@ -60,7 +60,7 @@
 				[:main_display_image, "Main Product Image", {heading: false}], # replace this with partial to render
 				[:practice_partners, "Partners", {content: @product&.practice_partners.pluck(:name).join(', ')}],
 				[:item_number, "Item Number"],
-				[:vendor, "Vendor", {content: (@product.vendor_link.present? && @product.vendor.present?) ? link_to(@product.vendor, @product.vendor_link, class: ".usa-link .usa-link--external") : @product.vendor }],
+				[:vendor, "Vendor", {content: (@product.vendor_link.present? && @product.vendor.present?) ? link_to(@product.vendor, @product.vendor_link, class: "usa-link usa-link--external", target: '_blank') : @product.vendor }],
 				[:duns, "DUNS"],
         [:shipping_timeline_estimate, "Shipping Timeline Estimate"],
 		    [:price, "Price"]
@@ -110,21 +110,45 @@
 			<h2 id="order" class="sidenav-header">Order Product</h2>
 			<ol class="usa-process-list">
 			  <li class="usa-process-list__item">
-			    <h4 class="usa-process-list__heading">Order from the Marketplace</h4>
+			    <h4 class="usa-process-list__heading">Order This Product</h4>
 			    <p class="margin-top-05">
-			      VA employees wishing to order a product should copy and paste the details under the "Order" tab and send it to their usual service-line purchasing agent. If the order is above the purchase card threshold, contact <a class="usa-link" href="mailto:VAIMPSupport@va.gov">VAIMPSupport@va.gov</a>for information on contracting with the vendor. VA employees cannot order directly from the manufacturer unless they are authorized to do so.
+			      VA employees should adhere to the standard ordering process within their service. Direct orders to manufacturers by VA are not permitted unless explicitly authorized.
 			    </p>
 			  </li>
 			  <li class="usa-process-list__item">
-			    <h4 class="usa-process-list__heading">Obtain a Completed VA Form 1091</h4>
+			    <h4 class="usa-process-list__heading">New Vendor for Your Site</h4>
 			    <p>
-			      For first-time purchases from a vendor, contact <a class="usa-link" href="mailto:VAIPMVendorizationRequest@va.gov">VAIPMVendorizationRequest@va.gov</a> to obtain a copy of the completed VA Form 10091 (FSC Vendor File Request Form).
+			      First time purchasing from this vendor? Let us help! To obtain a copy of a completed VA Form 10091 (VA Form 10091, FSC VENDOR FILE REQUEST FORM), please contact <a class="usa-link usa-link--external" href="mailto:VAIPMVendorizationRequest@va.gov">VAIPMVendorizationRequest@va.gov</a>.
 			    </p>
 			  </li>
 			  <li class="usa-process-list__item">
-			    <h4 class="usa-process-list__heading">Request a Local Vendor Number</h4>
+			    <h4 class="usa-process-list__heading">Vendorization Complete</h4>
 			    <p>
 			      Follow your local vendorization process to request the assignment of a local vendor number.
+			    </p>
+			  </li>
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">Gather Product Information</h4>
+			    <p>
+			      At the top of this page, locate and copy the following product details:
+			    </p>
+			    <ul>
+			    	<li>Item Number</li>
+						<li>Item Price</li>
+						<li>Vendor</li>
+						<li>DUNS Number</li>
+			    </ul>
+			  </li>
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">Submit Your Order</h4>
+			    <p>
+			      Paste the copied product details into an email and send it to your service-line purchasing agent utilizing your normal purchasing process.
+			    </p>
+			  </li>
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">For Orders Above Purchase Card Limit</h4>
+			    <p>
+			      If your order exceeds the purchase card limit, email <a class="usa-link usa-link--external" href="mailto:VAIPMSupport@va.gov">VAIPMSupport@va.gov</a> for assistance with vendor contracting.
 			    </p>
 			  </li>
 			</ol>
