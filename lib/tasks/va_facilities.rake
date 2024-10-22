@@ -165,23 +165,57 @@ namespace :va_facilities do
   task :delete_non_current_va_facilities => :environment do
     current_date = Date.today.strftime("%Y-%m-%d")
     file_path = "#{Rails.root}/lib/assets/non_current_facility_ids_#{current_date}.json"
+    output_file = "#{Rails.root}/lib/assets/deleted_and_non_deleted_facilities_#{current_date}.json"
 
     if File.exist?(file_path)
       non_current_facilities = JSON.parse(File.read(file_path))
+      deleted_facilities = {}
+      non_deleted_facilities = {}
       deletion_count = 0
 
-      non_current_facilities.each_value do |id|
+      non_current_facilities.each do |name, id|
         facility = VaFacility.find_by(id: id)
 
-        if facility && facility.diffusion_histories.empty? && facility.practice_origin_facilities.empty?
-          name = facility.official_station_name
-          facility.delete
-          puts "Deleted facility: #{name}"
-          deletion_count += 1
+        if facility
+          if facility.diffusion_histories.empty? && facility.practice_origin_facilities.empty?
+            # facility has no associated practices, proceed with deletion
+            facility.delete
+            deleted_facilities[name] = id
+            puts "Deleted facility: #{name}"
+            deletion_count += 1
+          else
+            # facility has associated practices, don't delete
+
+            # get practice names linked via diffusion_histories
+            diffusion_histories_practice_names = facility.diffusion_histories.includes(:practice).map do |history|
+              history.practice.name if history.practice.present?
+            end.compact
+
+            # get practice names linked via practice_origin_facilities
+            origin_facilities_practice_names = facility.practice_origin_facilities.includes(:practice).map do |origin_facility|
+              origin_facility.practice.name if origin_facility.practice.present?
+            end.compact
+
+            non_deleted_facilities[name] = {
+              id: id,
+              diffusion_histories_count: diffusion_histories_practice_names.count,
+              linked_innovations_via_diffusion_histories: diffusion_histories_practice_names,
+              origin_facilities_count: origin_facilities_practice_names.count,
+              linked_innovations_via_origin_facilities: origin_facilities_practice_names
+            }
+          end
         end
       end
 
+      File.open(output_file, "w") do |file|
+        file.write({
+          deleted_facilities: deleted_facilities,
+          non_deleted_facilities: non_deleted_facilities
+        }.to_json)
+      end
+
       puts "#{deletion_count} non-current facilities have been deleted."
+      puts "Results saved to #{output_file}."
     else
       puts "No file found with non-current facility IDs for today: #{file_path}"
     end
