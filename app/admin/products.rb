@@ -63,7 +63,7 @@ ActiveAdmin.register Product do
   controller do
     rescue_from ActiveRecord::RecordInvalid, with: :handle_error_redirect
     def scoped_collection
-      super.left_joins(:user)
+      super.left_joins(:user).includes(:user)
     end
 
     def find_resource
