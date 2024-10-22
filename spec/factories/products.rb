@@ -86,5 +86,13 @@ FactoryBot.define do
         end
       end
     end
+
+    trait :with_editors do
+      after(:create) do |product|
+        create_list(:user, 2) do |user|
+          create(:practice_editor, innovable: product, user: user)
+        end
+      end
+    end
   end
 end

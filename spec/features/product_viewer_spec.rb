@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 describe 'Product show page', type: :feature do
+  let!(:product_owner) { create(:user)}
+  let!(:user) { create(:user) }
+  let!(:admin) { create(:user, :admin)}
   let!(:product) { create(:product, :with_partners)}
   let(:product_with_images) { create(:product, :with_image, :with_multimedia, name: 'Product with Images', published: true) }
   let(:product_with_tags) { create(:product, :with_tags, published: true) }
-  let!(:user) { create(:user) }
-  let!(:admin) { create(:user, :admin)}
+  let(:product_with_editors) { create(:product, :with_editors, user: product_owner)}
 
   it 'hides unpublished pages' do
     visit product_path(product)
@@ -73,5 +75,30 @@ describe 'Product show page', type: :feature do
     link_count = order_instructions.all('a').count
     styled_links_count = order_instructions.all('a.usa-link.usa-link--external').count
     expect(link_count).to eq styled_links_count
+  end
+
+  it 'links to editor for users with appropriate permissions' do
+    product = product_with_editors
+    product_editor = product.practice_editors.first.user
+    # as public user
+    product.update(published: true)
+    visit(product_path(product))
+    expect(page).not_to have_content('Edit product')
+    # admin
+    login_as(admin, :scope => :user, :run_callbacks => false)
+    visit(product_path(product))
+    expect(page).to have_content('Edit product')
+    # product owner
+    logout
+    login_as(product_owner, :scope => :user, :run_callbacks => false)
+    visit(product_path(product))
+    expect(page).to have_content('Edit product')
+    # product editor
+    logout
+    login_as(product_editor, :scope => :user, :run_callbacks => false)
+    visit(product_path(product))
+    expect(page).to have_content('Edit product')
+    click_link('#show-product-edit-btn')
+    expect(page).to have_current_path(product_editors_path(product))
   end
 end
