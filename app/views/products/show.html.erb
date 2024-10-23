@@ -37,7 +37,7 @@
 			<% if @search_terms.any? %>
 		        <%= render partial: 'practices/show/desktop_partials/search_terms', locals: { search_terms: @search_terms } %>
 		  <% end %>
-		  <% if current_user.present? && (current_user&.has_role?(:admin) || current_user == @product.owner || is_user_an_editor_for_innovation(@product, current_user))  %>
+		  <% if @can_edit_product  %>
 		  	<%= link_to '<i class="fas fa-edit margin-right-1"></i>'.html_safe + 'Edit product', product_editors_path(@product), class: 'usa-button usa-button--secondary margin-top-4 width-full', id: '#show-product-edit-btn' %>
 		  <% end %>
 		</div>

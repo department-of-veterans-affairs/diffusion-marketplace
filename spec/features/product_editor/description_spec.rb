@@ -4,6 +4,8 @@ describe 'Product editor - description', type: :feature do
   let!(:product) { create(:product)}
   let!(:user) { create(:user) }
   let!(:admin) { create(:user, :admin)}
+  let!(:product_with_users) { create(:product, :with_editors)}
+  let!(:product_editor) { product_with_users.practice_editors.first.user }
 
   before do
     login_as(current_user, :scope => :user, :run_callbacks => false)
@@ -211,6 +213,26 @@ describe 'Product editor - description', type: :feature do
         expect(page).to have_content('Product was successfully updated.')
         expect(product.practice_partners).to be_empty
       end
+    end
+  end
+
+  describe 'when logged in as product owner' do
+    let(:current_user) { user }
+    
+    it 'allows access' do
+      product.update(user: user)
+      visit product_description_path(product)
+      expect(page).to have_current_path(product_description_path(product))
+    end
+  end
+
+  describe 'when logged in as product_editor' do
+    let(:current_user) { product_editor }
+    let(:product) { product_with_users }
+
+    it 'allows access' do
+      visit product_description_path(product)
+      expect(page).to have_current_path(product_description_path(product))
     end
   end
 
