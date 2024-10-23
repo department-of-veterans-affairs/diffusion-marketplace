@@ -23,6 +23,7 @@ class ProductsController < ApplicationController
 
   def show
     @search_terms = @product.categories.get_category_names
+    @can_edit_product = can_edit
     render 'products/show'
   end
 
@@ -114,8 +115,12 @@ class ProductsController < ApplicationController
   end
 
   def check_product_permissions
-    unless @product.published? || current_user&.has_role?(:admin) || @product&.user_id == current_user&.id
+    unless @product.published? || can_edit
       unauthorized_response
     end
+  end
+
+  def can_edit
+    current_user.present? && (current_user&.has_role?(:admin) || current_user == @product.owner || is_user_an_editor_for_innovation(@product, current_user))
   end
 end

@@ -23,6 +23,10 @@ class Product < Innovation
     user&.email
   end
 
+  def owner
+    user
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     ["name", "user_email", "published"]
   end

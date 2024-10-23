@@ -35,7 +35,7 @@ describe 'Product editor - Editors', type: :feature do
 
         it 'adds the editor and shows a confirmation message' do
           visit product_editors_path(product)
-          fill_in 'Provide va.gov email of the individual who can help you edit this Innovation Page.', with: user.email
+          fill_in 'Provide va.gov email of the individual who can help you edit this page.', with: user.email
           click_button 'Send Invitation'
 
           expect(PracticeEditorMailer).to have_received(:invite_to_edit).with(product, anything)
@@ -51,7 +51,7 @@ describe 'Product editor - Editors', type: :feature do
 
         it 'displays an error message' do
           visit product_editors_path(product)
-          fill_in 'Provide va.gov email of the individual who can help you edit this Innovation Page.', with: user.email
+          fill_in 'Provide va.gov email of the individual who can help you edit this page.', with: user.email
           click_button 'Send Invitation'
 
           expect(page).to have_content("A user with the email \"#{user.email}\" is already an editor for this product")

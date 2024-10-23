@@ -37,12 +37,15 @@
 			<% if @search_terms.any? %>
 		        <%= render partial: 'practices/show/desktop_partials/search_terms', locals: { search_terms: @search_terms } %>
 		  <% end %>
+		  <% if @can_edit_product  %>
+		  	<%= link_to '<i class="fas fa-edit margin-right-1"></i>'.html_safe + 'Edit product', product_editors_path(@product), class: 'usa-button usa-button--secondary margin-top-4 width-full', id: '#show-product-edit-btn' %>
+		  <% end %>
 		</div>
 	</div>
 	<div class="grid-col-12 tablet:grid-col-9">
 		<section id="pr-view-introduction" class="grid-container margin-bottom-3">
 			<div class="grid-row grid-gap-2">
-				<div class="desktop:grid-col-8 grid-col-12">
+				<div class="grid-col-12">
 							<%# innovation last update timestamp %>
 				      <p class="grid-col-12 font-sans-3xs text-base line-height-sans-4 margin-bottom-2">
 				        Last updated <%= timeago(@product&.updated_at) %>
