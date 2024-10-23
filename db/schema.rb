@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_20_234630) do
+ActiveRecord::Schema.define(version: 2024_10_07_232231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -140,11 +140,12 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
 
   create_table "category_practices", force: :cascade do |t|
     t.bigint "category_id"
-    t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "innovable_type"
+    t.bigint "innovable_id"
     t.index ["category_id"], name: "index_category_practices_on_category_id"
-    t.index ["practice_id"], name: "index_category_practices_on_practice_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_category_practices_on_innovable"
   end
 
   create_table "clinical_condition_practices", force: :cascade do |t|
@@ -812,12 +813,13 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
   end
 
   create_table "practice_editors", force: :cascade do |t|
-    t.bigint "practice_id"
     t.bigint "user_id"
     t.datetime "last_edited_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_editors_on_practice_id"
+    t.string "innovable_type"
+    t.bigint "innovable_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_practice_editors_on_innovable"
     t.index ["user_id"], name: "index_practice_editors_on_user_id"
   end
 
@@ -857,7 +859,6 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
   end
 
   create_table "practice_multimedia", force: :cascade do |t|
-    t.bigint "practice_id"
     t.string "link_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -870,7 +871,9 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
     t.integer "position"
     t.integer "resource_type", default: 0
     t.text "image_alt_text"
-    t.index ["practice_id"], name: "index_practice_multimedia_on_practice_id"
+    t.string "innovable_type"
+    t.bigint "innovable_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_practice_multimedia_on_innovable"
   end
 
   create_table "practice_origin_facilities", force: :cascade do |t|
@@ -889,10 +892,11 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
 
   create_table "practice_partner_practices", force: :cascade do |t|
     t.bigint "practice_partner_id"
-    t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_partner_practices_on_practice_id"
+    t.string "innovable_type"
+    t.bigint "innovable_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_practice_partner_practices_on_innovable"
     t.index ["practice_partner_id"], name: "index_practice_partner_practices_on_practice_partner_id"
   end
 
@@ -1069,6 +1073,42 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.string "tagline"
+    t.string "item_number"
+    t.string "vendor"
+    t.string "duns"
+    t.string "shipping_timeline_estimate"
+    t.string "origin_story"
+    t.string "usage"
+    t.string "price"
+    t.text "description"
+    t.text "main_display_image_caption"
+    t.text "main_display_image_alt_text"
+    t.string "support_network_email"
+    t.string "slug"
+    t.string "vendor_link"
+    t.boolean "private_contact_info"
+    t.boolean "published", default: false
+    t.boolean "retired", default: false
+    t.datetime "date_published"
+    t.bigint "user_id"
+    t.integer "crop_x"
+    t.integer "crop_y"
+    t.integer "crop_w"
+    t.integer "crop_h"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "main_display_image_file_name"
+    t.string "main_display_image_content_type"
+    t.bigint "main_display_image_file_size"
+    t.datetime "main_display_image_updated_at"
+    t.index ["name"], name: "index_products_on_name", unique: true
+    t.index ["slug"], name: "index_products_on_slug", unique: true
+    t.index ["user_id"], name: "index_products_on_user_id"
+  end
+
   create_table "publications", force: :cascade do |t|
     t.string "title"
     t.string "link"
@@ -1199,11 +1239,12 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
 
   create_table "va_employee_practices", force: :cascade do |t|
     t.integer "position"
-    t.bigint "practice_id"
     t.bigint "va_employee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_va_employee_practices_on_practice_id"
+    t.string "innovable_type"
+    t.bigint "innovable_id"
+    t.index ["innovable_type", "innovable_id"], name: "index_va_employee_practices_on_innovable"
     t.index ["va_employee_id"], name: "index_va_employee_practices_on_va_employee_id"
   end
 
@@ -1370,7 +1411,6 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
   add_foreign_key "ancillary_service_practices", "ancillary_services"
   add_foreign_key "ancillary_service_practices", "practices"
   add_foreign_key "category_practices", "categories"
-  add_foreign_key "category_practices", "practices"
   add_foreign_key "clinical_condition_practices", "clinical_conditions"
   add_foreign_key "clinical_condition_practices", "practices"
   add_foreign_key "clinical_location_practices", "clinical_locations"
@@ -1424,18 +1464,15 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
   add_foreign_key "practice_editor_sessions", "practices"
-  add_foreign_key "practice_editors", "practices"
   add_foreign_key "practice_editors", "users"
   add_foreign_key "practice_emails", "practices"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_metrics", "practices"
-  add_foreign_key "practice_multimedia", "practices"
   add_foreign_key "practice_origin_facilities", "clinical_resource_hubs"
   add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_origin_facilities", "va_facilities"
   add_foreign_key "practice_partner_practices", "practice_partners"
-  add_foreign_key "practice_partner_practices", "practices"
   add_foreign_key "practice_permissions", "practices"
   add_foreign_key "practice_problem_resources", "practices"
   add_foreign_key "practice_resources", "practices"
@@ -1443,13 +1480,13 @@ ActiveRecord::Schema.define(version: 2024_09_20_234630) do
   add_foreign_key "practice_solution_resources", "practices"
   add_foreign_key "practice_testimonials", "practices"
   add_foreign_key "practices", "users"
+  add_foreign_key "products", "users"
   add_foreign_key "publications", "practices"
   add_foreign_key "risk_mitigations", "practices"
   add_foreign_key "risks", "risk_mitigations"
   add_foreign_key "survey_result_files", "practices"
   add_foreign_key "timelines", "practices"
   add_foreign_key "user_practices", "practices"
-  add_foreign_key "va_employee_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"
   add_foreign_key "va_facilities", "visns"
   add_foreign_key "va_secretary_priority_practices", "practices"

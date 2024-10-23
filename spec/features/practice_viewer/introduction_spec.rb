@@ -77,18 +77,18 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     PracticeAward.create!(practice: @pr_max, name: 'Another great award that this innovation can show off', created_at: Time.now)
     @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002', is_major: true)
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
-    PracticePartnerPractice.create!(practice: @pr_max, practice_partner: @pr_partner_1, created_at: Time.now)
-    PracticePartnerPractice.create!(practice: @pr_max, practice_partner: @pr_partner_2, created_at: Time.now)
+    PracticePartnerPractice.create!(innovable: @pr_max, practice_partner: @pr_partner_1, created_at: Time.now)
+    PracticePartnerPractice.create!(innovable: @pr_max, practice_partner: @pr_partner_2, created_at: Time.now)
     @parent_cat = Category.create!(name: 'First Parent Category')
     @cat_1 = Category.create!(name: 'COVID', parent_category: @parent_cat)
     @cat_2 = Category.create!(name: 'Environmental Services', parent_category: @parent_cat)
     @cat_3 = Category.create!(name: 'Follow-up Care', parent_category: @parent_cat)
 
-    CategoryPractice.create!(practice: @pr_max, category: @cat_1, created_at: Time.now)
-    CategoryPractice.create!(practice: @pr_max, category: @cat_2, created_at: Time.now)
-    CategoryPractice.create!(practice: @pr_max, category: @cat_3, created_at: Time.now)
+    CategoryPractice.create!(innovable: @pr_max, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(innovable: @pr_max, category: @cat_2, created_at: Time.now)
+    CategoryPractice.create!(innovable: @pr_max, category: @cat_3, created_at: Time.now)
 
-    CategoryPractice.create!(practice: @practice_2, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(innovable: @practice_2, category: @cat_1, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
   end
@@ -191,7 +191,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     end
 
     it 'should take the user to the search page with results that match the category that was clicked on' do
-      all('.usa-tag').first.click
+      all('.show-page-tag').first.click
       expect(page).to have_current_path('/search?category=COVID')
       expect(page).to have_selector('#search-page', visible: true)
       expect(page).to have_content('2 Results')

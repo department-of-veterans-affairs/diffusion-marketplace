@@ -4,6 +4,8 @@ RSpec.describe Category, type: :model do
   describe 'associations' do
     it { should belong_to(:parent_category).optional  }
     it { should have_many(:sub_categories) }
+    it { should have_many(:innovable_practices)}
+    it { should have_many(:innovable_products)}
   end
 
   describe '.prepared_categories_for_practice_editor' do

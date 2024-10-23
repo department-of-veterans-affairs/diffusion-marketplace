@@ -1,5 +1,14 @@
 class PracticesController < ApplicationController # rubocop:disable Metrics/ClassLength
-  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper, UsersHelper
+  include CropperUtils,
+          PracticesHelper,
+          InnovationEditorUtils,
+          EditorSessionUtils,
+          PracticeEditorSessionsHelper,
+          PracticeUtils,
+          ThreeColumnDataHelper,
+          UsersHelper,
+          InnovationControllerMethods
+
   prepend_before_action :skip_timeout, only: [:session_time_remaining]
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :favorite, :instructions, :overview, :impact, :resources,
                                       :documentation, :departments, :timeline, :risk_and_mitigation, :checklist, :publication_validation,
@@ -19,6 +28,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :adoptions, :about, :implementation]
   before_action :fetch_visns, only: [:show, :search, :introduction]
   before_action :fetch_va_facilities, only: [:show, :search, :metrics, :introduction]
+  before_action :set_return_to_top_flag, only: [:show, :metrics, :introduction, :overview, :implementation]
 
   # GET /practices
   # GET /practices.json
@@ -29,7 +39,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
   # GET /innovations/1
   # GET /practices/1.json
   def show
-    @search_terms = Naturalsorter::Sorter.sort(@practice.categories.get_category_names.sort, true)
+    @search_terms = @practice.categories.get_category_names
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
     diffusion_histories = @practice.diffusion_histories
@@ -160,7 +170,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
             format.json { render json: @practice, status: :ok }
           end
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
-          practice_editor = PracticeEditor.find_by(practice: @practice, user: current_user)
+          practice_editor = PracticeEditor.find_by(innovable: @practice, user: current_user)
           if practice_editor.present? && Time.current - practice_editor.created_at > 2
             practice_editor.update(last_edited_at: DateTime.current)
           end
@@ -323,6 +333,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
   # /practices/slug/editors
   def editors
+    @practice_editors = PracticeEditor.where(innovable: @practice).order(created_at: :asc)
     render 'practices/form/editors'
   end
 
@@ -331,7 +342,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
     @va_facilities_and_crhs = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
     @categories = Category.prepared_categories_for_practice_editor(current_user.has_role?(:admin))
     @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
-    @ordered_practice_partners = PracticePartnerPractice.where(practice_id: @practice.id).order_by_id
+    @ordered_practice_partners = PracticePartnerPractice.where(innovable_id: @practice.id).order_by_id
     @ordered_practice_origin_facilities = PracticeOriginFacility.where(practice_id: @practice.id).order_by_id
     render 'practices/form/introduction'
   end
@@ -595,37 +606,6 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
     )
   end
 
-  def permitted_dynamic_keys(params)
-    return {} unless params
-
-    params.transform_keys! do |key|
-      key.match?(/^\d+$/) ? "#{key}_resource" : key
-    end
-
-    params.keys.index_with do |_key|
-      [
-        :id,
-        :link_url,
-        :attachment_file_name,
-        :description,
-        :position,
-        :resource,
-        :resource_type_label,
-        :resource_type,
-        :media_type,
-        :crop_x,
-        :crop_y,
-        :crop_w,
-        :crop_h,
-        :name,
-        :image_alt_text,
-        :attachment,
-        :_destroy,
-        :value
-      ]
-    end
-  end
-
   def can_view_practice
     # if practice is not published
     unless @practice.published && @practice.approved
@@ -644,7 +624,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
   def prevent_practice_permissions
     # if the user is the practice owner or the user is an admin or approver/practice_editor
-    unless current_user.has_role?(:admin) || @practice.user_id == current_user.id || is_user_an_editor_for_practice(@practice, current_user)
+    unless current_user.has_role?(:admin) || @practice.user_id == current_user.id || is_user_an_editor_for_innovation(@practice, current_user)
       unauthorized_response
     end
   end
@@ -730,6 +710,10 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
       updated
     end
   end
+
+  def set_return_to_top_flag
+    @show_return_to_top = true
+  end
 end
 
 def clear_origin_facilities
@@ -771,5 +755,3 @@ def set_initiating_fac_params(params)
     end
   end
 end
-
-

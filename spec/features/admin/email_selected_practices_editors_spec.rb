@@ -51,7 +51,7 @@ describe 'Admin email all editors button', type: :feature do
     visit admin_practices_path
 
     [recently_updated_practice, older_practice, unemailed_practice].each do |practice|
-      create(:practice_editor, user: editors.first, practice: practice)
+      create(:practice_editor, user: editors.first, innovable: practice)
     end
 
     page.driver.browser.manage.window.resize_to(1920, 1080)
@@ -62,8 +62,8 @@ describe 'Admin email all editors button', type: :feature do
   end
 
   it 'sends an email to all editors of unfiltered and published practices' do
-    create(:practice_editor, user: editors.second, practice: recently_updated_practice)
-    create(:practice_editor, user: user, practice: recently_updated_practice)
+    create(:practice_editor, user: editors.second, innovable: recently_updated_practice)
+    create(:practice_editor, user: user, innovable: recently_updated_practice)
 
     filter_practices_and_send_email
 

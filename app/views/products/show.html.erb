@@ -1,0 +1,163 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'products/ahoy_event_tracking', formats: [:js] if current_user.present? %>
+  <% end %>
+<% end %>
+<section class="padding-y-0 margin-bottom-1 margin-top-0">
+  <div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+      <div id="practice_show" class="grid-col-12 overview-section practice-section margin-y-3">
+        <%= render partial: "shared/messages", locals: {small_text: false} %>
+        <%= render partial: "products/product_status_banner", locals: { product: @product} %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="grid-container grid-row">
+	<div id="show-page-siderail" class="grid-col-12 tablet:grid-col-3">
+		<div id="show-page-siderail-sticky">
+	    <nav id="product-show-sidenav" class="margin-bottom-4" aria-label="Side navigation,">
+			  <ul class="usa-sidenav">
+			    <li class="usa-sidenav__item">
+			      <a href="#product-description" class="sidebar-product-description usa-current scroll-to" data-target="#product-description" data-turbolinks="false" class="usa-current">Product Description</a>
+			    </li>
+			    <li class="usa-sidenav__item">
+			      <a href="#intrapreneur" class="sidebar-intrapreneur scroll-to" data-target="#intrapreneur" data-turbolinks="false">Intrapreneur</a>
+			    </li>
+			    <li class="usa-sidenav__item">
+			      <a href="#multimedia" class="sidebar-multimedia scroll-to" data-target="#multimedia" data-turbolinks="false">Multimedia</a>
+			    </li>
+			    <li class="usa-sidenav__item">
+			      <a href="#order" class="sidebar-order scroll-to" data-target="#order" data-turbolinks="false">Order Product</a>
+			    </li>
+			  </ul>
+			</nav>
+			<% if @search_terms.any? %>
+		        <%= render partial: 'practices/show/desktop_partials/search_terms', locals: { search_terms: @search_terms } %>
+		  <% end %>
+		  <% if @can_edit_product  %>
+		  	<%= link_to '<i class="fas fa-edit margin-right-1"></i>'.html_safe + 'Edit product', product_editors_path(@product), class: 'usa-button usa-button--secondary margin-top-4 width-full', id: '#show-product-edit-btn' %>
+		  <% end %>
+		</div>
+	</div>
+	<div class="grid-col-12 tablet:grid-col-9">
+		<section id="pr-view-introduction" class="grid-container margin-bottom-3">
+			<div class="grid-row grid-gap-2">
+				<div class="grid-col-12">
+							<%# innovation last update timestamp %>
+				      <p class="grid-col-12 font-sans-3xs text-base line-height-sans-4 margin-bottom-2">
+				        Last updated <%= timeago(@product&.updated_at) %>
+				      </p>
+				      <h1 class="margin-top-0 margin-bottom-1 dm-word-break-break-word dm-hyphens-auto">
+				      	<%= @product.name %>
+				      </h1>
+				</div>
+			</div>
+		</section>
+		<section id="practice-show-product-description" class="grid-container">
+			<h2 id="product-description" class="sidenav-header">Product Description</h2>
+			<% product_description_fields = [
+				[:description, "Executive Summary"],
+				[:main_display_image, "Main Product Image", {heading: false}], # replace this with partial to render
+				[:practice_partners, "Partners", {content: @product&.practice_partners.pluck(:name).join(', ')}],
+				[:item_number, "Item Number"],
+				[:vendor, "Vendor", {content: (@product.vendor_link.present? && @product.vendor.present?) ? link_to(@product.vendor, @product.vendor_link, class: "usa-link usa-link--external", target: '_blank') : @product.vendor }],
+				[:duns, "DUNS"],
+        [:shipping_timeline_estimate, "Shipping Timeline Estimate"],
+		    [:price, "Price"]
+			] %>
+			<% product_description_fields.each do |arr| %>
+				<%	field_name, field_label, field_options = arr %>
+				<% if field_options&.present? %>
+					<% if field_name == :main_display_image && @product.main_display_image.exists? %>
+						<%= render partial: 'main_display_image', locals: { product: @product} %>
+					<% else %>
+						<% next if field_options[:content].blank? && @product.send(field_name.to_sym).blank? %>
+						<%= tag.h3 field_label, class: 'font-sans-lg line-height-25px margin-top-2 margin-bottom-1' unless field_options[:heading] == false %>
+						<%= tag.p field_options[:content] %>
+					<% end %>
+				<% else # default fields %>
+					<% next if @product.send(field_name.to_sym).blank? %>
+					<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= field_label %></h3>
+					<p><%= @product.send(field_name.to_sym) %></p>
+				<% end %>
+			<% end %>
+		</section>
+		<section id="practice-show-intrapreneur" class="grid-container">
+			<h2 id="intrapreneur" class="sidenav-header">Intrapreneur</h2>
+			<h3><%= 'Innovator'.pluralize(@product.va_employee_practices.count) %></h3>
+			<% @product.va_employee_practices.each do |innovator| %>
+				<div class="innovators margin-bottom-1">
+				<p><%= innovator.va_employee&.name %></p>
+				<p class="text-italic"><%= innovator.va_employee&.role %></p>
+				</div>
+			<% end %>
+			<h3>From the Innovator</h3>
+			<div class="origin-story"><%= simple_format(@product.origin_story, wrapper_tag: "p") %></div>
+		</section>
+		<% if @product.practice_multimedia.any? %>
+		  <section id="practice-show-multimedia" class="margin-bottom-5 grid-container">
+		    <div class="grid-row grid-gap-2">
+		      <div class="desktop:grid-col-9 grid-col-12">
+		      	<h2 id="multimedia" class="sidenav-header">Images and Video</h2>
+		        <div class="multimedia-section practice-section">
+		          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @product.practice_multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
+		        </div>
+		      </div>
+		    </div>
+		  </section>
+		<% end %>
+		<section id="practice-show-order-instructions" class="grid-container">
+			<h2 id="order" class="sidenav-header">Order Product</h2>
+			<ol class="usa-process-list">
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">Order This Product</h4>
+			    <p class="margin-top-05">
+			      VA employees should adhere to the standard ordering process within their service. Direct orders to manufacturers by VA are not permitted unless explicitly authorized.
+			    </p>
+			  </li>
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">New Vendor for Your Site</h4>
+			    <p>
+			      First time purchasing from this vendor? Let us help! To obtain a copy of a completed VA Form 10091 (VA Form 10091, FSC VENDOR FILE REQUEST FORM), please contact <a class="usa-link usa-link--external" href="mailto:VAIPMVendorizationRequest@va.gov">VAIPMVendorizationRequest@va.gov</a>.
+			    </p>
+			  </li>
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">Vendorization Complete</h4>
+			    <p>
+			      Follow your local vendorization process to request the assignment of a local vendor number.
+			    </p>
+			  </li>
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">Gather Product Information</h4>
+			    <p>
+			      At the top of this page, locate and copy the following product details:
+			    </p>
+			    <ul>
+			    	<li>Item Number</li>
+						<li>Item Price</li>
+						<li>Vendor</li>
+						<li>DUNS Number</li>
+			    </ul>
+			  </li>
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">Submit Your Order</h4>
+			    <p>
+			      Paste the copied product details into an email and send it to your service-line purchasing agent utilizing your normal purchasing process.
+			    </p>
+			  </li>
+			  <li class="usa-process-list__item">
+			    <h4 class="usa-process-list__heading">For Orders Above Purchase Card Limit</h4>
+			    <p>
+			      If your order exceeds the purchase card limit, email <a class="usa-link usa-link--external" href="mailto:VAIPMSupport@va.gov">VAIPMSupport@va.gov</a> for assistance with vendor contracting.
+			    </p>
+			  </li>
+			</ol>
+		</section>
+		<% if @search_terms.present? %>
+	  <%= render partial: 'practices/show/mobile_partials/search_terms', locals: { search_terms: @search_terms } %>
+	<% end %>
+	</div>
+</div>

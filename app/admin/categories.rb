@@ -57,7 +57,10 @@ ActiveAdmin.register Category do
       end
       row :related_terms
       row "Innovations Tagged" do |c|
-        c.practices
+        c.innovable_practices
+      end
+      row "Products Tagged" do |c|
+        c.innovable_products
       end
     end
   end

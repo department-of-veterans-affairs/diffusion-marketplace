@@ -11,9 +11,10 @@
     <% else %>
       <label class="usa-label text-bold margin-top-0 margin-bottom-1"><%= section_title %></label>
     <% end %>
-  <div class="dm-cropper-boundary grid-col-12 margin-top-2">
+  <div class="dm-cropper-boundary grid-col-12 margin-top-2" data-model-type="<%= practice.class.name.downcase %>">
     <label class="dm-cropper-upload-image-label line-height-26" for="practice_main_display_image">
-      Choose a photograph to represent the Innovation in Search Results.
+      <% resource_for_label_text = practice.is_a?(Practice) ? "Innovation" : "Product" %>
+      <%= "Choose a photograph to represent the #{resource_for_label_text} in Search Results." %>
     </label>
     <div class="dm-image-error-text margin-bottom-2 usa-alert usa-alert--error usa-alert--slim display-none">
       <p class="usa-alert__body"></p>

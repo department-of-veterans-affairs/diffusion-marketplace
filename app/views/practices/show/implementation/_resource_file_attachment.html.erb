@@ -9,16 +9,27 @@
         %>
         <div class="margin-top-1 width-full line-height-26">
           <li class="small-disc">
-            <%= s_description %> 
-            <%= 
-              link_to s_name || fa.attachment&.original_filename,
-              download_practice_practice_resource_url(
-                practice_id: fa.practice_id, 
-                id: fa.id,
-                resource_type: fa.class.to_s,
-              ),
-              target: '_blank',
-              class: 'usa-link usa-link--external' 
+            <%= s_description %>
+            <%=
+              if fa.is_a?(PracticeMultimedium) && fa.innovable_type == "Product"
+                link_to s_name || fa.attachment&.original_filename,
+                download_product_product_multimedium_url(
+                  product_id: fa.innovable_id,
+                  id: fa.id,
+                  resource_type: fa.class.to_s,
+                ),
+                target: '_blank',
+                class: 'usa-link usa-link--external'
+              else
+                link_to s_name || fa.attachment&.original_filename,
+                download_practice_practice_resource_url(
+                  practice_id: fa.practice_id,
+                  id: fa.id,
+                  resource_type: fa.class.to_s,
+                ),
+                target: '_blank',
+                class: 'usa-link usa-link--external'
+              end
             %>
         </div>
       <% end %>

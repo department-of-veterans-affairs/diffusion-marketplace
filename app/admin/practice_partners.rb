@@ -34,6 +34,9 @@ ActiveAdmin.register PracticePartner do
       row('Practices') do |partner|
         partner.practices.order(Arel.sql("lower(name) ASC"))
       end
+      row('Products') do |partner|
+        partner.products.order(Arel.sql("lower(name) ASC"))
+      end
       row('Major Practice Partner') { |partner| status_tag partner.is_major? }
     end
     active_admin_comments
@@ -49,6 +52,7 @@ ActiveAdmin.register PracticePartner do
       f.input :icon
       f.input :slug
       f.input :practices, as: :select, multiple: true, include_blank: 'None', collection: Practice.published.order(Arel.sql("lower(name) ASC")).map { |p| ["#{p.name.capitalize}", p.id]}
+      f.input :products, as: :select, multiple: true, include_blank: 'None', collection: Product.published.order(Arel.sql("lower(name) ASC")).map { |p| ["#{p.name.capitalize}", p.id]}
       f.input :is_major, label: 'Major practice partner?'
     end
     f.actions
@@ -61,7 +65,7 @@ ActiveAdmin.register PracticePartner do
 
   controller do
     before_action :set_selected_practices, only: :edit
-    after_action :update_partner_practices, only: [:create, :update]
+    after_action :update_partner_innovations, only: [:create, :update]
 
     def find_resource
       scoped_collection.friendly.find(params[:id])
@@ -120,23 +124,35 @@ ActiveAdmin.register PracticePartner do
       create_or_update_practice_partner
     end
 
-    def update_partner_practices
-      practice_ids = params[:practice_partner][:practice_ids]
-      # if the 'None' option is selected, remove the first two practice partner ids -- first one is the hidden input, and the second is for the blank option. If not, just remove the first id for the hidden input
-      selected_practices = practice_ids === ['', ''] ? practice_ids.drop(2) : practice_ids.drop(1)
-      selected_practices.map! { |p| p.to_i }
-      practice_partner = PracticePartner.find_by(name: params[:practice_partner][:name])
-      current_partner_practices = PracticePartnerPractice.where(practice_partner_id: practice_partner[:id]) unless practice_partner.nil?
+    def update_partner_innovations
+      %w[practice product].each do |type|
+        ids_param = params[:practice_partner]["#{type}_ids"]
+        # if the 'None' option is selected, remove the first two practice partner ids -- first one is the hidden input, and the second is for the blank option. If not, just remove the first id for the hidden input
+        selected_ids = ids_param == ['', ''] ? ids_param.drop(2) : ids_param.drop(1)
+        selected_ids.map!(&:to_i)
 
-      if selected_practices.length > 0 && practice_partner.present?
-        selected_practices.map { |p| PracticePartnerPractice.find_or_create_by!(practice_id: p, practice_partner_id: practice_partner[:id]) }
-      end
+        practice_partner = PracticePartner.find_by(name: params[:practice_partner][:name])
+        current_partner_records = PracticePartnerPractice.where(
+          practice_partner_id: practice_partner[:id],
+          innovable_type: type.capitalize
+        ) if practice_partner.present?
 
-      if params[:action] === 'update' && current_partner_practices.present?
-        if selected_practices.empty?
-          current_partner_practices.map { |p| p.destroy! }
-        else
-          current_partner_practices.map { |p| p.destroy! unless selected_practices.include? p.practice_id }
+        if selected_ids.any? && practice_partner.present?
+          selected_ids.each do |id|
+            PracticePartnerPractice.find_or_create_by!(
+              innovable_id: id,
+              practice_partner_id: practice_partner[:id],
+              innovable_type: type.capitalize
+            )
+          end
+        end
+
+        if params[:action] == 'update' && current_partner_records.present?
+          if selected_ids.empty?
+            current_partner_records.map(&:destroy!)
+          else
+            current_partner_records.each { |record| record.destroy! unless selected_ids.include?(record.innovable_id) }
+          end
         end
       end
     end

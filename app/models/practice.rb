@@ -1,6 +1,6 @@
-class Practice < ApplicationRecord
+class Practice < Innovation
   include ActiveModel::Dirty
-  include PracticeEditorUtils
+  include InnovationEditorUtils
   include VaEmail
   include ExtraSpaceRemover
   extend PracticeUtils
@@ -25,8 +25,6 @@ class Practice < ApplicationRecord
   attr_accessor :last_month_commits
   attr_accessor :two_months_ago_commits
   attr_accessor :three_months_ago_commits
-  attr_accessor :delete_main_display_image
-  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department, :practice_award, :category
 
   def self.cached_json_practices(is_guest_user)
@@ -105,10 +103,6 @@ class Practice < ApplicationRecord
   # crop the img with custom Paperclip processor located in lib/paperclip_processors/cropper.rb
   has_attached_file :main_display_image, styles: {thumb: '768x432>'}, :processors => [:cropper]
 
-  def main_display_image_s3_presigned_url(style = nil)
-    object_presigned_url(main_display_image, style)
-  end
-
   has_attached_file :origin_picture, styles: {thumb: '200x200#'}
 
   def origin_picture_s3_presigned_url(style = nil)
@@ -167,10 +161,8 @@ class Practice < ApplicationRecord
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
   validates_uniqueness_of :name, {message: 'Innovation name already exists'}
   validates :user, presence: true, format: valid_va_email
-  # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
+  # validates_attachment_content_type :highlight_attachment, content_type: /\Aimage\/.*\z/
 
-  scope :published,   -> { where(published: true) }
-  scope :unpublished,  -> { where(published: false) }
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
   scope :with_categories_and_adoptions_ct, -> {
     published_enabled_approved
@@ -226,12 +218,10 @@ class Practice < ApplicationRecord
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
-  has_many :category_practices, -> { order(id: :asc) }, dependent: :destroy, autosave: true
-  has_many :categories, -> { order(id: :asc) }, through: :category_practices
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
   has_many :clinical_location_practices, dependent: :destroy
-  has_many :clinical_locations, through: :clinical_location_practices 
+  has_many :clinical_locations, through: :clinical_location_practices
   has_many :department_practices, dependent: :destroy
   has_many :departments, through: :department_practices
   has_many :developing_facility_type_practices, dependent: :destroy
@@ -247,8 +237,6 @@ class Practice < ApplicationRecord
   has_many :photo_files, dependent: :destroy
   has_many :practice_management_practices, dependent: :destroy
   has_many :practice_managements, through: :practice_management_practices
-  has_many :practice_partner_practices, dependent: :destroy
-  has_many :practice_partners, through: :practice_partner_practices
   has_many :practice_permissions, -> { order(position: :asc) }, dependent: :destroy
   has_many :publications, -> { order(position: :asc) }, dependent: :destroy
   has_many :risk_mitigations, -> { order(position: :asc) }, dependent: :destroy
@@ -256,8 +244,6 @@ class Practice < ApplicationRecord
   has_many :timelines, -> { order(position: :asc) }, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
-  has_many :va_employee_practices, dependent: :destroy
-  has_many :va_employees, -> { order(position: :asc) }, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files, -> { order(position: :asc) }, dependent: :destroy
@@ -266,14 +252,12 @@ class Practice < ApplicationRecord
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_metrics, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_testimonials, -> {order(id: :asc) }, dependent: :destroy
-  has_many :practice_multimedia, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_emails, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_editor_sessions, -> {order(id: :asc) }, dependent: :destroy
-  has_many :practice_editors, -> {order(created_at: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
@@ -282,7 +266,6 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
-  accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['practice_partner_id'].blank? }
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['description'].blank?
     ip_reject = false
@@ -290,7 +273,6 @@ class Practice < ApplicationRecord
     reject || ip_reject
   }
   accepts_nested_attributes_for :practice_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['resource'] && attributes['resource'].blank? }
-  accepts_nested_attributes_for :practice_multimedia, allow_destroy: true
   accepts_nested_attributes_for :practice_testimonials, allow_destroy: true
   accepts_nested_attributes_for :practice_problem_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_solution_resources, allow_destroy: true
@@ -300,7 +282,6 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc{ |attributes| attributes['milestone'].blank? || attributes['timeline'].blank?}
-  accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
   accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :practice_creators, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
@@ -344,7 +325,7 @@ class Practice < ApplicationRecord
   end
 
   def create_practice_editor_for_practice
-    PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
+    PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_innovation(self, self.user)
   end
 
   def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)

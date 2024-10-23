@@ -32,7 +32,7 @@ describe 'Practice editor', type: :feature, js: true do
       image_alt_text: 'results image alt text'
     )
     PracticeMultimedium.create(
-      practice: @pr_with_resources,
+      innovable: @pr_with_resources,
       name: 'existing multimedia image',
       attachment: File.new(@img_path_1),
       resource_type: 0,

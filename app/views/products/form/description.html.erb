@@ -1,0 +1,242 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_allCategories', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_practice_editor_header', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'product_editor_partners', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'products/publication_validation', formats: [:js] %>
+  <% end %>
+<% end %>
+
+<%= render partial: 'practices/introduction_forms/main_display_image_guidance_modal' %>
+<div class="grid-container">
+  <div class="grid-row grid-gap">
+    <div id="product-editor-page-description" class="grid-col-12 margin-top-4">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <%= render partial: "products/step_indicator", locals: {product: @product} %>
+      <section class="usa-section padding-y-0 introduction">
+        <h1 class="margin-top-0">Product Description</h1>
+        <%= nested_form_for(@product, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-10">
+            <legend class="usa-sr-only">Product Description</legend>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Product Title*
+                <% end %>
+                <span>What should your product be called?</span>&nbsp;
+              </div>
+              <%= f.text_field :name, class: "usa-input #{ @product.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
+
+              <p class="usa-error-message <%= @product.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@product, :name) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Tagline*
+                <% end %>
+                <span>How would you summarize the key outcomes of your product in the shortest sentence possible? Note that this will only be leveraged on the search results page.</span>&nbsp;
+              </div>
+              <%= f.text_field :tagline, class: "usa-input #{ @product.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field" %>
+
+              <p class="usa-error-message <%= @product.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@product, :tagline) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :description, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Executive Summary*
+                <% end %>
+                <span>Provide a short summary of your product’s mission. Include relevant information about the product's features, material, size, and more.</span>&nbsp;
+              </div>
+              <%= f.text_area :description, class: "usa-textarea #{ @product.errors[:description].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:description].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :description) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :item_number, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Item Number
+                <% end %>
+                <span>Provide the item number to help individuals identify and purchase your product.</span>&nbsp;
+              </div>
+              <%= f.text_field :item_number, class: "usa-input #{ @product.errors[:item_number].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:item_number].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :item_number) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :vendor, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Vendor
+                <% end %>
+                <span>Provide the name of the person or business that sells your product.</span>&nbsp;
+              </div>
+              <%= f.text_field :vendor, class: "usa-input #{ @product.errors[:vendor].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:vendor].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :vendor) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :vendor_link, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Vendor Link
+                <% end %>
+                <span>Enter a complete URL e.g. https://www.va.gov/</span>&nbsp;
+              </div>
+              <%= f.text_field :vendor_link, class: "usa-input #{ @product.errors[:vendor_link].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:vendor].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :vendor) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :duns, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  DUNS
+                <% end %>
+                <span>The DUNS (Data Universal Numbering System) number is a unique nine-digit number that identifies your product as a business entity. What’s yours?</span>&nbsp;
+              </div>
+              <%= f.text_field :duns, class: "usa-input #{ @product.errors[:duns].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:duns].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :duns) %></span>
+              </p>
+            </div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :shipping_timeline_estimate, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Shipping Timeline Estimate
+                <% end %>
+                <span>Provide the date or date range when your product will be able to be shipped or delivered.</span>&nbsp;
+              </div>
+              <%= f.text_field :shipping_timeline_estimate, class: "usa-input #{ @product.errors[:shipping_timeline_estimate].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:shipping_timeline_estimate].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :shipping_timeline_estimate) %></span>
+              </p>
+            </div>
+
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :price, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Price
+                <% end %>
+                <span>What is the cost of your product in U.S. dollars?</span>&nbsp;
+              </div>
+              <%= f.text_field :price, class: "usa-input #{ @product.errors[:price].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
+
+              <p class="usa-error-message <%= @product.errors[:price].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                <span class="font-family-sans"><%= show_errors(@product, :price) %></span>
+              </p>
+            </div>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-1">
+                <p class="text-bold margin-bottom-2">
+                <a href="#parent-category-modal" class="dotted parent-category-modal cursor-pointer margin-bottom-2" aria-controls="parent-category-modal" data-open-modal>
+                  <span class="usa-sr-only">Open parent tag definitions modal</span>
+                  Tags
+                </a>
+                  <%= render partial: 'shared/parent_category_modal' %>
+                </p>
+                <span>Select the tags most relevant to your innovation (suggested: up to 10).</span>
+              </div>
+              <% @categories.each do |parent_category, categories| %>
+                <% sliced_categories = split_data_into_three_columns(categories) %>
+                <% if sliced_categories.flatten.any? %>
+                  <div class="dm-<%= parent_category.name.downcase %>-category-columns-container">
+                    <div class="grid-row">
+                      <p class="text-bold line-height-26 margin-bottom-05 grid-col-12 display-none desktop:display-block desktop:margin-top-1"><%= parent_category.name %></p>
+                      <% sliced_categories.each_with_index do |sc, i| %>
+                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sc, parent_category: parent_category, column: i } unless i === 3 %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+
+            <h3>Thumbnail Image</h3>
+            <fieldset class="usa-fieldset border border-base-light padding-2 margin-top-3 margin-bottom-4">
+              <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @product, modal_link: true } %>
+
+              <div>
+                  <%= f.label :main_display_image_caption, class: 'usa-label text-bold display-block margin-top-0' do %>
+                    Image Caption*
+                  <% end %>
+                  <span>What caption would you like to accompany your thumbnail image?</span>
+                </div>
+                <%= f.text_field :main_display_image_caption, class: "usa-input #{ @product.errors[:main_display_image_caption].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field  margin-bottom-2" %>
+
+                <p class="usa-error-message <%= @product.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;
+                  <span class="font-family-sans"><%= show_errors(@product, :tagline) %></span>
+                </p>
+
+              <div>
+                <%= render partial: 'practices/shared/image_alt_text_label',
+                  locals: {
+                    practice_field: "practice_main_display_image_alt_text",
+                    label_classes: 'margin-top-0 text-bold',
+                    form_field: "practice_main_display_image_alt_text"
+                  }
+                %>
+                <%= f.text_area :main_display_image_alt_text,
+                                  class: "usa-textarea main-display-image-alt-text" %>
+              </div>
+            </fieldset>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-1">
+                  Partners
+                </p>
+                <p class="margin-bottom-2 grid-col-8">
+                  Type or select from the dropdown any of the following partners your innovation is associated with.
+                </p>
+                <fieldset class="usa-fieldset grid-col-8">
+                  <legend class="usa-sr-only">Partners</legend>
+                  <div id="dm-practice-partner-container" class="position-relative">
+                    <ul class="dm-practice-editor-practice-partner-ul add-list-reset" role="listbox" aria-label="Practice editor practice partner list">
+                      <%= f.fields_for :practice_partner_practices, @ordered_practice_partners, wrapper: false do |ppp| %>
+                        <%
+                          ppp_id = ppp.object&.id || 'new_practice_partner_practices'
+                          ppp_partner_id = ppp.object&.practice_partner_id
+                          ppp_index = ppp.index
+                        %>
+                        <li class="dm-practice-editor-practice-partner-li fields margin-bottom-2" role="option" data-id="<%= ppp_id %>" data-index="<%= ppp_index %>" data-partner-id="<%= ppp_partner_id %>">
+                          <div class="grid-row">
+                            <div class="usa-combo-box grid-col-12 practice-partner-combo-box" data-default-value="<%= ppp_partner_id %>">
+                              <%= ppp.label :practice_partner_id, class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12 usa-sr-only' %>
+                              <%= ppp.select :practice_partner_id, @cached_practice_partners.collect { |mp| [mp.name, mp.id] }, name: "product[practice_partner_practices_attributes][#{ppp_index}][practice_partner_id]", class: 'usa-input desktop:grid-col-12 margin-top-0' %>
+                            </div>
+                            <div class="grid-col-12 trash-container">
+                              <%= f.link_to_remove 'Delete entry', class: "dm-origin-trash dm-button--unstyled-warning float-right" %>
+                            </div>
+                          </div>
+                        </li>
+                      <% end %>
+                    </ul>
+                    <%= f.link_to_add :practice_partner_practices,
+                                      id: 'link_to_add_link_practice_partner_practices',
+                                      class: "dm-add-another-link dm-add-practice-partner-practice-link" do %>
+                      Add another
+                    <% end %>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <%= hidden_field_tag :submitted_page, params[:action] %>
+          </fieldset>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</div>

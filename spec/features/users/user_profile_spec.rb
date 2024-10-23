@@ -92,7 +92,7 @@ describe 'The user index', type: :feature do
     it 'should have created practices' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: @user)
     @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', user: @user2)
-    @user_pr1_editor = PracticeEditor.create!(practice: @practice1, user: @user, email: @user.email)
+    @user_pr1_editor = PracticeEditor.create!(innovable: @practice1, user: @user, email: @user.email)
 
     login_as(@user, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
@@ -114,7 +114,7 @@ describe 'The user index', type: :feature do
     end
 
     # add user as just an editor of practice2
-    PracticeEditor.create!(practice: @practice2, user: @user, email: @user.email)
+    PracticeEditor.create!(innovable: @practice2, user: @user, email: @user.email)
     visit "/users/#{@user.id}"
 
     within(:css, '.dm-created-practices') do

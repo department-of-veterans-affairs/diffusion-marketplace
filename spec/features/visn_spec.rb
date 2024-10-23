@@ -127,8 +127,8 @@ describe 'VISN pages', type: :feature do
 
     @cat_1 = Category.create!(name: 'COVID')
     @cat_2 = Category.create!(name: 'Test Cat')
-    CategoryPractice.create!(practice: @practice_3, category: @cat_1, created_at: Time.now)
-    CategoryPractice.create!(practice: @practice_4, category: @cat_2, created_at: Time.now)
+    CategoryPractice.create!(innovable: @practice_3, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(innovable: @practice_4, category: @cat_2, created_at: Time.now)
 
     ClinicalResourceHub.create!(visn: @visn, official_station_name: "VISN 1 Clinical Resource Hub (Remote)")
     clinical_resource_hub = ClinicalResourceHub.create!(visn: @visn_2, official_station_name: "VISN 2 Clinical Resource Hub (Remote)")
