@@ -152,14 +152,20 @@ namespace :va_facilities do
       end
 
       non_current_facilities = VaFacility.where.not(id: current_facility_ids).pluck(:official_station_name, :id).to_h
-      current_date = Date.today.strftime("%Y-%m-%d")
-      filename = "#{Rails.root}/lib/assets/non_current_facility_ids_#{current_date}.json"
+      if non_current_facilities.present?
+        current_date = Date.today.strftime("%Y-%m-%d")
+        filename = "#{Rails.root}/lib/assets/non_current_facility_ids_#{current_date}.json"
 
-      File.open(filename, "w") do |file|
-        file.write(non_current_facilities.to_json)
+        File.open(filename, "w") do |file|
+          file.write(non_current_facilities.to_json)
+        end
+
+        non_current_facilities_message = "#{non_current_facilities.count} Non-current facility names and IDs saved to #{filename}."
+      else
+        non_current_facilities_message = "No non-current facilities were found"
       end
     puts "All VA facilities have been created or updated in the DB!"
-    puts "Non-current facility names and IDs saved to #{filename}."
+    puts non_current_facilities_message
   end
 
   task :delete_non_current_va_facilities => :environment do
@@ -179,7 +185,7 @@ namespace :va_facilities do
         if facility
           if facility.diffusion_histories.empty? && facility.practice_origin_facilities.empty?
             # facility has no associated practices, proceed with deletion
-            facility.delete
+            facility.destroy
             deleted_facilities[name] = id
             puts "Deleted facility: #{name}"
             deletion_count += 1
@@ -207,17 +213,26 @@ namespace :va_facilities do
         end
       end
 
-      File.open(output_file, "w") do |file|
-        file.write({
-          deleted_facilities: deleted_facilities,
-          non_deleted_facilities: non_deleted_facilities
-        }.to_json)
-      end
+      if deleted_facilities.any? || non_deleted_facilities.any?
+        File.open(output_file, "w") do |file|
+          file.write({
+            deleted_facilities: deleted_facilities,
+            non_deleted_facilities: non_deleted_facilities
+          }.to_json)
+        end
 
-      puts "#{deletion_count} non-current facilities have been deleted."
-      puts "Results saved to #{output_file}."
+        puts "#{deletion_count} non-current facilities have been deleted."
+        puts "Results saved to #{output_file}."
+      else
+        puts "No non-current facilities were deleted or skipped, no output file created."
+      end
     else
-      puts "No file found with non-current facility IDs for today: #{file_path}"
+      puts "
+            No file found with non-current facility IDs for today's date.\n
+            Run thecreate_or_update_va_facilities task to generate a file containing the IDs of
+            facilities that are not present in the imported facilities data.\n
+            If none are found no file will be generated.
+          "
     end
   end
 
