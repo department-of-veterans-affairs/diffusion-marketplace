@@ -221,6 +221,48 @@ namespace :va_facilities do
     end
   end
 
+  task :facilities_import_check => :environment do
+    file = File.read("#{Rails.root}/lib/assets/va_facilities.json")
+    va_facilities = JSON.parse(file)
+    current_date = Date.today.strftime("%Y-%m-%d")
+    output_file = "#{Rails.root}/lib/assets/potential_facility_duplicates_#{current_date}.json"
+
+    import_station_names = va_facilities.map { |vaf| vaf["Official Station Name"] }
+    va_facilities_db = VaFacility.where(official_station_name: import_station_names).index_by(&:official_station_name)
+
+    mismatches = []
+
+    va_facilities.each do |vaf|
+      potential_match = va_facilities_db[vaf["Official Station Name"]]
+
+      if potential_match && potential_match.visn.number == vaf["VISN"].to_i && potential_match.station_number != vaf["Station Number"].to_s
+        mismatch_data = {
+          db_id: potential_match.id,
+          db_station_number: potential_match.station_number,
+          db_official_station_name: potential_match.official_station_name,
+          new_official_station_name: vaf["Official Station Name"],
+          new_station_number: vaf["Station Number"]
+        }
+
+        mismatches << mismatch_data
+
+        puts "Potential duplicate found:"
+        puts "DB Record -> ID: #{mismatch_data[:db_id]}, Station Number: #{mismatch_data[:db_station_number]}, Official Station Name: #{mismatch_data[:db_official_station_name]}"
+        puts "New Record -> Official Station Name: #{mismatch_data[:new_official_station_name]}, Station Number: #{mismatch_data[:new_station_number]}"
+      end
+    end
+
+    if mismatches.any?
+      File.open(output_file, "w") do |file|
+        file.write(mismatches.to_json)
+      end
+
+      puts "#{mismatches.count} potential facility duplicates found and saved to output file: #{output_file}."
+    else
+      puts "No potential facility duplicates found, no output file created."
+    end
+  end
+
   desc 'Fix bad data in the va_facilities table'
   task :fix_data_va_facilities => :environment do
     facilities = VaFacility.all
