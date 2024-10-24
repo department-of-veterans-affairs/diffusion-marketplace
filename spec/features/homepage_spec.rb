@@ -37,8 +37,20 @@ describe 'Homepage', type: :feature do
     visit '/'
   end
 
-  it 'links to the Shark Tank page' do
-    expect(page).to have_link(href: '/competitions/shark-tank')
+  describe 'static content sections' do
+    it 'invites users to submit innovations' do
+      within('#main-content') do
+        expect(page).to have_content('Submit Innovations')
+        expect(page).to have_link('Nominate', href: nominate_an_innovation_path)
+      end
+    end
+
+    it 'features Intrapreneurial Products' do
+       within('#main-content') do
+        expect(page).to have_content('Intrapreneurial Products')
+        expect(page).to have_link('Learn More', href: '/intrapreneurial-product-marketplace')
+      end
+    end
   end
 
   describe 'search section' do
@@ -51,13 +63,6 @@ describe 'Homepage', type: :feature do
 
       expect(page).to have_content('1 Result:')
       expect(page).to have_content(@practice.name)
-    end
-  end
-
-  it 'invites users to submit innovations' do
-    within('#main-content') do
-      expect(page).to have_content('Submit Innovations')
-      expect(page).to have_link('Nominate', href: nominate_an_innovation_path)
     end
   end
 
