@@ -10,6 +10,7 @@ on:
     branches:
       [
         "master",
+        "DM-5074-ipm-homepage-updates",
         "ci-migration",
         "ci-migration-cv",
         "ci-migration-en",
@@ -17,7 +18,7 @@ on:
         "ci-migration-bj",
       ]
   pull_request:
-    branches: ["master"]
+    branches: ["master", "DM-5074-ipm-homepage-updates"]
 jobs:
   build:
     name: rspec
