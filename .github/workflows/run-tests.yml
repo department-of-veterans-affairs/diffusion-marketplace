@@ -10,7 +10,6 @@ on:
     branches:
       [
         "master",
-        "feature/dm-5105-ipm-integration",
         "ci-migration",
         "ci-migration-cv",
         "ci-migration-en",
@@ -18,7 +17,7 @@ on:
         "ci-migration-bj",
       ]
   pull_request:
-    branches: ["master", "feature/dm-5105-ipm-integration"]
+    branches: ["master"]
 jobs:
   build:
     name: rspec
