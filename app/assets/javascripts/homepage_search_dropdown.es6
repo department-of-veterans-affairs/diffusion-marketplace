@@ -175,6 +175,6 @@ addEventListener('turbolinks:load', function () {
     setupClickTracking('#practice-list', "Dropdown Practice Link Clicked", 'data-practice-id');
     setupClickTracking('#category-list', "Category selected", 'data-category_id');
     setupClickTracking('#community-list', "Category selected", 'data-category_id');
-    setupClickTracking('#product-list', "Dropdown Product Link Clicked", 'data-product_id');
+    setupClickTracking('#product-list', "Dropdown Product Link Clicked", 'data-product-id');
   }
 });
