@@ -89,61 +89,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def recommended_for_you
-    @user = current_user || nil
-    if current_user.present?
-      @pagy_type = params.keys.first.to_s
-
-      # If a favorited practice has a nil value for the time_favorited attribute, place it at the end of the favorite_practices array
-      no_time_favorite_practices = UserPractice.where(user: @user, favorited: true, time_favorited: nil).map { |up| up.practice }
-      favorite_practices = UserPractice.where(user: @user, favorited: true).where.not(time_favorited: nil).order('time_favorited DESC').map { |up| up.practice }
-      favorite_practices.concat(no_time_favorite_practices)
-
-      # Create the pagy instance
-      @pagy_favorite_practices, @paginated_favorite_practices = pagy_array(
-          favorite_practices,
-          # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
-          page_param: 'favorite',
-          items: 3,
-          link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorite].nil? ? 2 : params[:favorite].to_i + 1}-link dm-button--outline-secondary margin-bottom-10 margin-top-105 width-15'"
-      )
-
-      created_practices = @user.created_practices
-      @pagy_created_practices, @paginated_created_practices = pagy_array(
-          created_practices,
-          # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
-          page_param: 'created',
-          items: 3,
-          link_extra: "data-remote='true' class='paginated-created-practices-page-#{params[:created].nil? ? 2 : params[:created].to_i + 1}-link dm-button--outline-secondary margin-bottom-10 margin-top-105 width-15'"
-      )
-
-
-      # Practices based on the user's location
-      @practices = Practice.published_enabled_approved.includes(:practice_origin_facilities)
-      @facilities_data = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_station_name
-      @offices_data = origin_data_json
-      @user_location_practices = []
-
-      @practices.each do |p|
-        if p.facility? && p.practice_origin_facilities.any?
-          p.practice_origin_facilities.each do |pof|
-            origin_facility = @facilities_data.find { |f| f.id === pof.va_facility_id } || nil
-            @user_location_practices << p if origin_facility.present? && origin_facility.official_station_name === @user.location
-          end
-        end
-        # TODO: In the future, if user-locations are recorded as VISNs or Offices, we need to add them here. As of 11/7/2020, we are only using facilities.
-      end
-      @user_location_practices
-    else
-      redirect_to root_path
-    end
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
   private
 
   # We only want users to view their own profile and not see other users' profiles with the other users' user id

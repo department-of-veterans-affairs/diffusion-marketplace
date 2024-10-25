@@ -278,11 +278,6 @@ module NavigationHelper
         add_profile_breadcrumb
         session[:breadcrumbs] << { 'display': 'Edit', 'path': edit_profile_path } if current_user.present?
       end
-
-      if action == 'recommended_for_you'
-        empty_breadcrumbs
-        session[:breadcrumbs] << { 'display': 'Recommended for you', 'path': recommended_for_you_path } if current_user.present?
-      end
     end
 
     # remove breadcrumbs from 'Nominate a practice' page
