@@ -90,6 +90,11 @@
             <% end %>
           </ul>
         </li>
+        <li class="usa-nav__primary-item border-base-light">
+          <a class="margin-y-2px desktop:margin-y-0 usa-nav__link <%= 'usa-current' if request.fullpath == '/intrapreneurial-product-marketplace' %>" href="/intrapreneurial-product-marketplace">
+            <span class="text-normal desktop:text-semibold">Products</span>
+          </a>
+        </li>
       </ul>
       <div class="usa-nav__secondary desktop:display-none">
         <%= render partial: 'shared/header_user_login_nav', locals: { accordion_id: 'dm-user-mobile-profile-options' } %>

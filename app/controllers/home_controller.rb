@@ -7,6 +7,7 @@ class HomeController < ApplicationController
     @dropdown_categories = get_categories_by_popularity
     @dropdown_communities = get_categories_by_popularity(true)
     @dropdown_practices, @practice_names = get_dropdown_practices
+    @dropdown_products, @product_names = get_dropdown_products
     @homepage = Homepage.where(published: true)&.first
     if @homepage
       current_features = @homepage&.homepage_features
@@ -141,6 +142,17 @@ class HomeController < ApplicationController
     scope = scope.where(is_public: true) if !current_user
     scope = scope.order("created_at DESC")
     scope
+  end
+
+  def get_dropdown_products
+    product_names = []
+    dropdown_products = Product.where(published: true, retired: false).order("created_at DESC")
+    products_hash = dropdown_products.pluck(:id, :name, :slug).map do |id, name, slug|
+      product_names << name
+      {name: name, id: id, slug: slug }
+    end
+
+    return products_hash, product_names
   end
 
   def get_diffusion_histories(is_public_practice)

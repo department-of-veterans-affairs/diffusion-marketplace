@@ -46,7 +46,9 @@
 
     #category-list,
     #practice-list,
-    #community-list {
+    #community-list,
+    #product-list
+     {
       a {
         text-decoration: none;
         color: color($theme-color-base-ink);
@@ -106,8 +108,8 @@
     }
   }
 
-  .homepage-section, #feature-nominate-innovation {
-    #submit-innovation-title {
+  .homepage-section, #feature-nominate-innovation, #ipm-section {
+    #submit-innovation-title, #ipm-section-title {
       @include at-media(tablet) {
         @include u-margin-top(0);
       }
