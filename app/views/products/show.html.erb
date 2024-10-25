@@ -86,16 +86,25 @@
 			<% end %>
 		</section>
 		<section id="practice-show-intrapreneur" class="grid-container">
-			<h2 id="intrapreneur" class="sidenav-header">Intrapreneur</h2>
-			<h3><%= 'Innovator'.pluralize(@product.va_employee_practices.count) %></h3>
-			<% @product.va_employee_practices.each do |innovator| %>
-				<div class="innovators margin-bottom-1">
-				<p><%= innovator.va_employee&.name %></p>
-				<p class="text-italic"><%= innovator.va_employee&.role %></p>
-				</div>
+			<% 	innovators = @product.va_employees
+					from_the_innovator = @product.origin_story
+			%>
+			<% unless innovators.blank? && from_the_innovator.blank? %>
+				<h2 id="intrapreneur" class="sidenav-header">Intrapreneur</h2>
+				<% unless innovators.blank? %>
+					<h3><%= 'Innovator'.pluralize(innovators.count) %></h3>
+					<% innovators.each do |innovator| %>
+						<div class="innovators margin-bottom-1">
+						<p><%= innovator&.name %></p>
+						<p class="text-italic"><%= innovator&.role %></p>
+						</div>
+					<% end %>
+				<% end %>
+				<% unless from_the_innovator.blank? %>
+					<h3>From the Innovator</h3>
+					<div class="origin-story"><%= simple_format(@product.origin_story, wrapper_tag: "p") %></div>
+				<% end %>
 			<% end %>
-			<h3>From the Innovator</h3>
-			<div class="origin-story"><%= simple_format(@product.origin_story, wrapper_tag: "p") %></div>
 		</section>
 		<% if @product.practice_multimedia.any? %>
 		  <section id="practice-show-multimedia" class="margin-bottom-5 grid-container">

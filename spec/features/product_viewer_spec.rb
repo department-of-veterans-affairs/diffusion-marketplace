@@ -8,6 +8,7 @@ describe 'Product show page', type: :feature do
   let(:product_with_images) { create(:product, :with_image, :with_multimedia, name: 'Product with Images', published: true) }
   let(:product_with_tags) { create(:product, :with_tags, published: true) }
   let(:product_with_editors) { create(:product, :with_editors, user: product_owner)}
+  let(:product_with_innovators) { create(:product, :with_va_employees, published: true) }
 
   it 'hides unpublished pages' do
     visit product_path(product)
@@ -39,6 +40,23 @@ describe 'Product show page', type: :feature do
     product.update(vendor: nil)
     visit product_path(product)
     expect(page).to have_no_selector('h3', text: 'Vendor')
+  end
+
+  it 'conditionally hides the Intrapreneur section' do
+    visit product_path(:product_with_innovators)
+    within('#practice-show-intrapreneur') do
+      expect(page).to have_css('.sidenav-header', text: 'Intrapreneur')
+      expect(page).to have_content('Innovator')
+      expect(page).to have_content('From the Innovator')
+    end
+
+    product.update(origin_story: nil, published: true)
+    visit product_path(product)
+    within('#practice-show-intrapreneur') do
+      expect(page).not_to have_css('.sidenav-header', text: 'Intrapreneur')
+      expect(page).not_to have_content('Innovator')
+      expect(page).not_to have_content('From the Innovator')
+    end
   end
 
   it 'conditionally renders linked fields ' do
