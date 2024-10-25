@@ -3,13 +3,16 @@ function setupSearchDropdown() {
     const dropdown = $('#search-dropdown');
 
     const allCategories = JSON.parse($('.homepage-search').attr('data-categories') || '[]');
-    const mostPopularCategories = allCategories.slice(0, 3);
+    const mostPopularCategories = allCategories.slice(0, 2);
 
     const allInnovations = JSON.parse($('.homepage-search').attr('data-innovations') || '[]');
-    const mostRecentInnovations = allInnovations.slice(0, 3);
+    const mostRecentInnovations = allInnovations.slice(0, 2);
 
     const allCommunities = JSON.parse($('.homepage-search').attr('data-communities') || '[]');
-    const mostPopularCommunities = allCommunities.slice(0, 3);
+    const mostPopularCommunities = allCommunities.slice(0, 2);
+
+    const allProducts = JSON.parse($('.homepage-search').attr('data-products') || '[]');
+    const mostRecentProducts = allProducts.slice(0, 2);
 
     searchInput.focus(function() {
         dropdown.show();
@@ -18,10 +21,11 @@ function setupSearchDropdown() {
 
     searchInput.on('input', function() {
         let searchTerm = searchInput.val().toLowerCase();
-        let filteredCategories = searchTerm ? allCategories.filter(category => category.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCategories;
-        let filteredInnovations = searchTerm ? allInnovations.filter(innovation => innovation.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostRecentInnovations;
-        let filteredCommunities = searchTerm ? allCommunities.filter(community => community.name.toLowerCase().includes(searchTerm)).slice(0,3) : mostPopularCommunities;
-        updateDropdown(filteredCategories, filteredInnovations, filteredCommunities);
+        let filteredCategories = searchTerm ? allCategories.filter(category => category.name.toLowerCase().includes(searchTerm)).slice(0,2) : mostPopularCategories;
+        let filteredInnovations = searchTerm ? allInnovations.filter(innovation => innovation.name.toLowerCase().includes(searchTerm)).slice(0,2) : mostRecentInnovations;
+        let filteredCommunities = searchTerm ? allCommunities.filter(community => community.name.toLowerCase().includes(searchTerm)).slice(0,2) : mostPopularCommunities;
+        let filteredProducts = searchTerm ? allProducts.filter(product => product.name.toLowerCase().includes(searchTerm)).slice(0,2) : mostRecentProducts;
+        updateDropdown(filteredCategories, filteredInnovations, filteredCommunities, filteredProducts);
     });
 
     $(document).keydown(function(e) {
@@ -56,8 +60,8 @@ function setupSearchDropdown() {
     });
 }
 
-function updateDropdown(categories, innovations, communities) {
-  $('#category-list, #practice-list, #community-list').empty();
+function updateDropdown(categories, innovations, communities, products) {
+  $('#category-list, #practice-list, #community-list, #product-list').empty();
 
   categories.forEach(function(category) {
       let link = $('<a></a>')
@@ -94,6 +98,18 @@ function updateDropdown(categories, innovations, communities) {
 
       $('#community-list').append(listItem);
   });
+
+  products.forEach(function(product) {
+      let link = $('<a></a>')
+          .attr('href', `/products/${product.slug}`)
+          .text(product.name);
+      let listItem = $('<li></li>')
+          .addClass('search-result')
+          .attr('data-product-id', product.id)
+          .append(link);
+
+      $('#product-list').append(listItem);
+  });
 }
 
 function setupClickTracking(listSelector, eventName, dataAttribute) {
@@ -110,7 +126,17 @@ function setupClickTracking(listSelector, eventName, dataAttribute) {
       const id = e.target.closest('.search-result').getAttribute(dataAttribute);
 
       let properties = { from_homepage: true};
-      properties[dataAttribute === 'data-practice-id' ? 'practice_name' : 'category_name'] = name;
+      switch(dataAttribute) {
+        case 'data-practice-id':
+          properties['practice_name'] = name;
+          break;
+        case 'data-product-id':
+          properties['product_name'] = name;
+          break;
+        default: // tags and communities-as-tags
+          properties['category_name'] = name;
+      }
+
       properties[dataAttribute.slice(5)] = parseInt(id); // Removes 'data-' and uses the rest as the key
 
       ahoy.track(eventName, properties);
@@ -149,5 +175,6 @@ addEventListener('turbolinks:load', function () {
     setupClickTracking('#practice-list', "Dropdown Practice Link Clicked", 'data-practice-id');
     setupClickTracking('#category-list', "Category selected", 'data-category_id');
     setupClickTracking('#community-list', "Category selected", 'data-category_id');
+    setupClickTracking('#product-list', "Dropdown Product Link Clicked", 'data-product-id');
   }
 });
