@@ -101,7 +101,7 @@ function updateDropdown(categories, innovations, communities, products) {
 
   products.forEach(function(product) {
       let link = $('<a></a>')
-          .attr('href', `/products/${product.slug}`)
+          .attr('href', `/products/${encodeURIComponent(product.slug)}`)
           .text(product.name);
       let listItem = $('<li></li>')
           .addClass('search-result')
