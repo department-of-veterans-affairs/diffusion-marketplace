@@ -43,7 +43,7 @@ describe 'Product show page', type: :feature do
   end
 
   it 'conditionally hides the Intrapreneur section' do
-    visit product_path(:product_with_innovators)
+    visit product_path(product_with_innovators)
     within('#practice-show-intrapreneur') do
       expect(page).to have_css('.sidenav-header', text: 'Intrapreneur')
       expect(page).to have_content('Innovator')
