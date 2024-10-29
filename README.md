@@ -34,13 +34,13 @@
 | `rails practice_partners:add_new_practice_partners` | Adds new practice partners to the DB based on a spreadsheet provided in March 2022
 #### Ruby version
 
-- `ruby 3.2.3`
+- `ruby 3.2.5`
 
 - `rails ~> 6.1`
 
 #### System dependencies
 
-- `ruby 3.2.3`
+- `ruby 3.2.5`
   - Linux-based install `rvm` (Ruby Version Manager) http://rvm.io/
   - `ruby -v`
 - `bundler`
