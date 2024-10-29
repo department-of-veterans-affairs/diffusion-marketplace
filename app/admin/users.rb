@@ -1,5 +1,11 @@
 ActiveAdmin.register User do
-  permit_params :email, :password, :password_confirmation, :disabled, :skip_va_validation, role_ids: []
+  permit_params :email,
+                :password,
+                :password_confirmation,
+                :disabled,
+                :skip_va_validation,
+                :granted_public_bio,
+                role_ids: []
   actions :all, except: [:destroy]
 
   scope :enabled
@@ -13,6 +19,7 @@ ActiveAdmin.register User do
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
+    column :granted_public_bio
     actions
   end
 
@@ -29,6 +36,7 @@ ActiveAdmin.register User do
       row :visn
       row :created_at
       row :confirmed_at
+      row :granted_public_bio
       row "Admin" do |user|
         user.has_role?(:admin)
       end
@@ -59,6 +67,7 @@ ActiveAdmin.register User do
       # given page_group's edit form:
       f.input :roles, as: :check_boxes, collection: Role.where(name: ['admin'])
       f.input :disabled
+      f.input :granted_public_bio
     end
     f.actions
   end
