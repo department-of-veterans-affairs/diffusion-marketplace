@@ -20,9 +20,6 @@ Rails.application.routes.draw do
   patch '/close_edit_session', action: 'close_edit_session', controller: 'practices', as: 'close_edit_session'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
-  # Permanent redirects
-  get '/innovations/save-a-trip-to-primary-care-tool', to: redirect('/innovations/patient-facing-materials-for-care-coordination-in-va-primary-care', status: 301) # remove 10/25/
-
   resources :practices, path: 'innovations', except: :index do
     get '/edit/metrics', action: 'metrics', as: 'metrics'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
@@ -98,10 +95,6 @@ Rails.application.routes.draw do
   resources :clinical_resource_hubs, path: :crh, param: :number
   get '/practices' => 'practices#index'
   get '/partners' => 'practice_partners#index'
-  # Adding this for the View Toolkit button on practice page. Though we don't have any uploaded yet so I'm not using it.
-  get 'practices/view_toolkit' => 'practices#view_toolkit'
-  # Ditto for "Planning Checklist"
-  get 'practices/planning_checklist' => 'practices#planning_checklist'
   get '/search' => 'practices#search'
 
   get '/users/:id' => 'users#show'
@@ -110,8 +103,6 @@ Rails.application.routes.draw do
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
 
-  # redirect users to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL
-  get '/nominate-a-practice', to: redirect('/nominate-an-innovation', status: 302)
   get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_an_innovation'
   post '/nominate-an-innovation', controller: 'nominate_practices', action: 'email'
   get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'
