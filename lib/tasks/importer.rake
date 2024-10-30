@@ -555,7 +555,7 @@ def practice_multimedia_images
 
     # @practice.update(overview_results: description) # reuse old Impact descriptions
     prac_multimedium = PracticeMultimedium.new(
-      practice: @practice,
+      innovable: @practice,
       resource_type: "image",
       name: title
     )
@@ -587,7 +587,7 @@ def practice_multimedia_video_files
   title_answer = @answers[title_and_description_q_index]
   description_answer = @answers[title_and_description_q_index + 1]
 
-  prac_multimedium = PracticeMultimedium.new(practice: @practice, resource_type: "video", name: description_answer, link_url: url_answer)
+  prac_multimedium = PracticeMultimedium.new(innovable: @practice, resource_type: "video", name: description_answer, link_url: url_answer)
   if prac_multimedium.save
       puts "==> Importing  PracticeMultimedia for: #{@practice.id} - #{@practice.name}".light_blue
   else
