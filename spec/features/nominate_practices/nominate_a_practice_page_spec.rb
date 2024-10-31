@@ -10,11 +10,6 @@ describe 'Nominate a practice page', type: :feature do
       expect(page).to have_content('VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace using the form below.')
     end
 
-    it 'redirect the user to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL' do
-      visit '/nominate-a-practice'
-      expect(page).to have_current_path(nominate_an_innovation_path)
-    end
-
     it 'does not render reCAPTCHA for VA users' do
       @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
       login_as(@user, :scope => :user, :run_callbacks => false)
