@@ -553,11 +553,10 @@ def practice_multimedia_images
     title = @answers[@questions.index(fields[1])]
     description = @answers[description_indices[index]]
 
-    # @practice.update(overview_results: description) # reuse old Impact descriptions
     prac_multimedium = PracticeMultimedium.new(
       innovable: @practice,
       resource_type: "image",
-      name: title
+      name: description
     )
 
     if image_file.present? && File.exist?(image_file.path)
