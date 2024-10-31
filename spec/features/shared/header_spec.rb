@@ -119,63 +119,6 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/communities/va-immersive')
       end
     end
-
-    xit 'shows published communities to all users' do
-      click_on 'Communities'
-      within('#communities-dropdown') do
-        expect(page).to have_content('VA Immersive')
-        expect(page).not_to have_content('Suicide Prevention')
-        expect(page).not_to have_content('Age-Friendly - Preview')
-        expect(page).not_to have_link(href: '/communities/suicide-prevention')
-        expect(page).not_to have_link(href: '/communities/age-friendly')
-      end
-    end
-
-    xit 'shows in-progress communities to admins' do
-      log_in_as_admin_and_visit_homepage
-
-      click_on 'Communities'
-      within('#communities-dropdown') do
-      expect(page).to have_content('VA Immersive')
-        expect(page).to have_content('Suicide Prevention')
-        expect(page).to have_content('Age-Friendly - Preview')
-        expect(page).to have_link(href: '/communities/va-immersive')
-        expect(page).to have_link(href: '/communities/suicide-prevention')
-        expect(page).to have_link(href: '/communities/age-friendly')
-      end
-    end
-
-    xit 'shows soft-launched communities to VA users' do
-      login_as(@non_admin, :scope => :user, :run_callbacks => false)
-      visit('/')
-
-      click_on 'Communities'
-      within('#communities-dropdown') do
-        expect(page).to have_content('VA Immersive')
-        expect(page).to have_content('Suicide Prevention')
-        expect(page).not_to have_content('Admin Preview')
-        expect(page).to have_link(href: '/communities/va-immersive')
-        expect(page).to have_link(href: '/communities/suicide-prevention')
-        expect(page).not_to have_link(href: '/communities/age-friendly')
-      end
-    end
-
-    xit 'shows in-progress communities to editors' do
-      editor = create(:user)
-      editor.add_role(:page_group_editor, @unpublished_community)
-      login_as(editor, :scope => :user, :run_callbacks => false)
-      visit('/')
-
-      click_on 'Communities'
-      within('#communities-dropdown') do
-      expect(page).to have_content('VA Immersive')
-        expect(page).to have_content('Suicide Prevention')
-        expect(page).to have_content('Age-Friendly - Preview')
-        expect(page).to have_link(href: '/communities/va-immersive')
-        expect(page).to have_link(href: '/communities/suicide-prevention')
-        expect(page).to have_link(href: '/communities/age-friendly')
-      end
-    end
   end
 
   describe 'header search' do
