@@ -39,7 +39,6 @@ Capybara/CurrentPathExpectation:
     - 'spec/features/practice_partners_spec.rb'
     - 'spec/features/register_spec.rb'
     - 'spec/features/terms_and_conditions_spec.rb'
-    - 'spec/features/users/recommended_for_you_spec.rb'
     - 'spec/features/users/user_profile_spec.rb'
 
 # Offense count: 337
