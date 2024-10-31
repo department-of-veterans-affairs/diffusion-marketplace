@@ -45,7 +45,7 @@
   - `ruby -v`
 - `bundler`
   - `gem install bundler`
-- `node 20.11.1`
+- `node 22`
   - https://nodejs.org/en/
   - `node -v`
 - `postgresql` https://www.postgresql.org/download/
