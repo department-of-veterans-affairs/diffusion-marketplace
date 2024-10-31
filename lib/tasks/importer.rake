@@ -565,9 +565,9 @@ def practice_multimedia_images
     end
 
     if prac_multimedium.save
-      puts "==> Importing Practice: #{@name} Human Practice Multimedia".light_blue
+      puts "==> Importing Practice: #{@name} Human Practice Multimedia Image".light_blue
     else
-      puts "==> Failed Importing Practice: #{@name} Human Practice Multimedia".yellow
+      puts "==> Failed Importing Practice: #{@name} Human Practice Multimedia Image".yellow
     end
   end
 end
@@ -589,9 +589,9 @@ def practice_multimedia_video_files
 
   prac_multimedium = PracticeMultimedium.new(innovable: @practice, resource_type: "video", name: description_answer, link_url: url_answer)
   if prac_multimedium.save
-      puts "==> Importing  PracticeMultimedia for: #{@practice.id} - #{@practice.name}".light_blue
+      puts "==> Importing  PracticeMultimedia Video for: #{@practice.id} - #{@practice.name}".light_blue
   else
-    puts "Could not create PracticeMultimedia for: #{@practice.id} - #{@practice.name}".yellow
+    puts "Could not create PracticeMultimedia Video for: #{@practice.id} - #{@practice.name}".yellow
     puts "#{prac_multimedium.errors}"
   end
 end
