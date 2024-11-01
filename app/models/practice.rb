@@ -215,7 +215,6 @@ class Practice < Innovation
 
   has_many :additional_documents, -> { order(position: :asc) }, dependent: :destroy
   has_many :additional_resources, -> { order(position: :asc) }, dependent: :destroy
-  has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
   has_many :clinical_condition_practices, dependent: :destroy
@@ -259,7 +258,6 @@ class Practice < Innovation
   accepts_nested_attributes_for :department_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['value'].blank? }
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc{ |attributes| attributes['milestone'].blank? || attributes['timeline'].blank?}
-  accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
   accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['title'].blank?

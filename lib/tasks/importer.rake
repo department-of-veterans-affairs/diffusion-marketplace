@@ -110,7 +110,6 @@ namespace :importer do
       publications
       implementation_timeline
       risk_mitigations
-      additional_staff
       additional_resources
       domains
       timelines
@@ -555,25 +554,6 @@ def risk_mitigations
         mitigation = Mitigation.create risk_mitigation: rm, description: a
       end
     end
-  end
-end
-
-def additional_staff
-  puts "==> Importing Practice: #{@name} Additional Staff".light_blue
-  @practice.additional_staffs.each(&:destroy)
-  question_fields = [
-      {'What job titles are required to implement this Practice?': 5},
-      {'For the job titles listed, how many hours are required per week?': 5},
-      {'For the job titles listed, what is the duration of the job? Please indicate the number of weeks or type in "Permanent"': 5}
-  ]
-
-  (0..4).each do |i|
-    title = @answers[@questions.index(question_fields[0].keys[0].to_s) + i]
-    hours_per_week = @answers[@questions.index(question_fields[1].keys[0].to_s) + i]
-    duration_in_weeks = @answers[@questions.index(question_fields[2].keys[0].to_s) + i]
-    next if title.blank?
-
-    AdditionalStaff.create(practice: @practice, title: title, hours_per_week: hours_per_week, duration_in_weeks: duration_in_weeks) unless AdditionalStaff.where(title: title, hours_per_week: hours_per_week, duration_in_weeks: duration_in_weeks, practice: @practice).any?
   end
 end
 
