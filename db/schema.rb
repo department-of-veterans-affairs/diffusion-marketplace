@@ -166,24 +166,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "clinical_location_practices", force: :cascade do |t|
-    t.bigint "clinical_location_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["clinical_location_id"], name: "index_clinical_location_practices_on_clinical_location_id"
-    t.index ["practice_id"], name: "index_clinical_location_practices_on_practice_id"
-  end
-
-  create_table "clinical_locations", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "clinical_resource_hubs", force: :cascade do |t|
     t.bigint "visn_id"
     t.string "official_station_name"
@@ -1291,8 +1273,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   add_foreign_key "category_practices", "categories"
   add_foreign_key "clinical_condition_practices", "clinical_conditions"
   add_foreign_key "clinical_condition_practices", "practices"
-  add_foreign_key "clinical_location_practices", "clinical_locations"
-  add_foreign_key "clinical_location_practices", "practices"
   add_foreign_key "clinical_resource_hubs", "visns"
   add_foreign_key "commontator_comments", "commontator_comments", column: "parent_id", on_update: :restrict, on_delete: :cascade
   add_foreign_key "commontator_comments", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade

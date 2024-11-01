@@ -11,8 +11,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:categories) }
     it { should have_many(:clinical_condition_practices) }
     it { should have_many(:clinical_conditions) }
-    it { should have_many(:clinical_location_practices) }
-    it { should have_many(:clinical_locations) }
     it { should have_many(:department_practices) }
     it { should have_many(:departments) }
     it { should have_many(:developing_facility_type_practices) }

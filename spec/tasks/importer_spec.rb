@@ -49,10 +49,6 @@ describe 'Importer' do
       expect(flow3.ancillary_services.count).to be(1)
       expect(flow3.ancillary_services.first.name).to eq('Rehabilitation & Prosthetics')
 
-      # Clinical Locations
-      expect(flow3.clinical_locations.count).to be(3)
-      expect(flow3.clinical_locations.find_by(name: 'Community Based Outpatient Clinic (CBOC)')).to be_truthy
-
       # Departments
       expect(flow3.departments.count).to be(4)
       expect(flow3.departments.find_by(name: 'Discharge Planning')).to be_truthy
