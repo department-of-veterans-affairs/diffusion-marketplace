@@ -102,7 +102,6 @@ namespace :importer do
       # developing_facility_types
       categories
       clinical_conditions
-      job_positions
       ancillary_services
       clinical_locations
       departments
@@ -318,34 +317,6 @@ def clinical_conditions
     end
   end
 
-end
-
-def job_positions
-  puts "==> Importing Practice: #{@name} Job Positions".light_blue
-  @practice.job_position_practices.each(&:destroy)
-  question_fields = {
-      "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value - 1
-    (q_index..end_index).each do |i|
-      answer = @answers[i]
-      next if answer.blank?
-
-      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\/)
-        split_answer.each do |ans|
-          job_position = JobPosition.find_or_create_by(name: ans)
-          JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
-        end
-      else
-        job_position = JobPosition.find_or_create_by(name: answer)
-        JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
-      end
-    end
-  end
 end
 
 def ancillary_services

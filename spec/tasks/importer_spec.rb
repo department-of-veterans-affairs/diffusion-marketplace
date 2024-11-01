@@ -41,10 +41,6 @@ describe 'Importer' do
       expect(flow3.clinical_conditions.count).to be(4)
       expect(flow3.clinical_conditions.first.name).to eq('prosthetic devices')
 
-      # Job Positions
-      expect(flow3.job_positions.count).to be(1)
-      expect(flow3.job_positions.first.name).to eq('Clinic based physician')
-
       # Ancillary Services
       expect(flow3.ancillary_services.count).to be(1)
       expect(flow3.ancillary_services.first.name).to eq('Rehabilitation & Prosthetics')

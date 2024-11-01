@@ -375,36 +375,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.index ["practice_id"], name: "index_implementation_timeline_files_on_practice_id"
   end
 
-  create_table "job_position_categories", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.integer "parent_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "job_position_practices", force: :cascade do |t|
-    t.bigint "job_position_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["job_position_id"], name: "index_job_position_practices_on_job_position_id"
-    t.index ["practice_id"], name: "index_job_position_practices_on_practice_id"
-  end
-
-  create_table "job_positions", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.bigint "job_position_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["job_position_category_id"], name: "index_job_positions_on_job_position_category_id"
-  end
-
   create_table "milestones", force: :cascade do |t|
     t.string "description"
     t.integer "position"
@@ -1308,9 +1278,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   add_foreign_key "domain_practices", "domains"
   add_foreign_key "domain_practices", "practices"
   add_foreign_key "implementation_timeline_files", "practices"
-  add_foreign_key "job_position_practices", "job_positions"
-  add_foreign_key "job_position_practices", "practices"
-  add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "page_accordion_components", "page_components"
