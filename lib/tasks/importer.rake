@@ -100,7 +100,6 @@ namespace :importer do
       practice_partners
       va_employees
       # developing_facility_types
-      # va_secretary_priorities
       categories
       clinical_conditions
       job_positions
@@ -238,33 +237,6 @@ end
 #       else
 #         developing_facility = DevelopingFacilityType.find_by(name: answer) || DevelopingFacilityType.create(name: answer)
 #         DevelopingFacilityTypePractice.create developing_facility_type: developing_facility, practice: @practice unless DevelopingFacilityTypePractice.where(developing_facility_type: developing_facility, practice: @practice).any?
-#       end
-#     end
-#   end
-# end
-
-# def va_secretary_priorities
-#   puts "==> Importing Practice: #{@name} VA Secretary Priorities"
-#   question_fields = {
-#     "Which of the VA Secretary’s Priorities does this practice Address? (Please select all that apply.)": 7
-#   }
-#
-#   question_fields.each do |key, value|
-#     q_index = @questions.index(key.to_s)
-#     end_index = q_index + value - 1
-#     (q_index..end_index).each do |i|
-#       answer = @answers[i]
-#       next if answer.blank?
-#
-#       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-#         split_answer = answer.split(/\\/)
-#         split_answer.each do |ans|
-#           secretary_priority = VaSecretaryPriority.find_or_create_by(name: ans)
-#           VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
-#         end
-#       else
-#         secretary_priority = VaSecretaryPriority.find_or_create_by(name: answer)
-#         VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
 #       end
 #     end
 #   end

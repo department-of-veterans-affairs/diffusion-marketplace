@@ -33,8 +33,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:users) }
     it { should have_many(:va_employee_practices) }
     it { should have_many(:va_employees) }
-    it { should have_many(:va_secretary_priority_practices) }
-    it { should have_many(:va_secretary_priorities) }
     it { should have_many(:practice_emails) }
     it { should have_many(:practice_editors) }
     it { should have_many(:practice_multimedia).order(id: :asc).dependent(:destroy) }

@@ -30,15 +30,6 @@ _partners = [
     PracticePartner.find_or_create_by!(name: 'Office of Veterans Access to Care', short_name: 'OVAC', description: 'The purpose of OVAC is to grow and sustain the Veterans Health Administration (VHA) as the most accessible health care system in the U.S. by providing oversight and accountability for improvement solutions. OVAC continues the VA mission to offer Veterans timely and quality access to care.', icon: 'fas fa-certificate', color: '#0076D6'),
 ]
 
-_va_secretary_priorities = [
-    VaSecretaryPriority.find_or_create_by!(name: 'Giving Veterans choice', short_name: 'giving_veterans_choice', description: 'Giving verterans choice'),
-    VaSecretaryPriority.find_or_create_by!(name: 'Modernizing the VA', short_name: 'modernizing_the_va', description: 'Modernization the VA'),
-    VaSecretaryPriority.find_or_create_by!(name: 'Improving the timeliness of services', short_name: 'improving_timeliness', description: 'Improving the timeliness of services'),
-    VaSecretaryPriority.find_or_create_by!(name: 'Focusing resources based on importance', short_name: 'focusing_resources', description: 'Focusing resources based on importance'),
-    VaSecretaryPriority.find_or_create_by!(name: 'Preventing suicide', short_name: 'preventing_suicide', description: 'Preventing suicide'),
-]
-
-
 _domains = [
     Domain.find_or_create_by!(name: 'Veteran', description: 'Enables an improvement in satisfaction or customer experience for Veterans'),
     Domain.find_or_create_by!(name: 'Clinical', description: 'Produces an improvement in health outcomes'),
