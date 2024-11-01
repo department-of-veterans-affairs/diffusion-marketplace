@@ -579,7 +579,6 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
                                      va_employees_attributes: [:id, :name, :role, :_destroy],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
                                      additional_resources_attributes: [:id, :_destroy, :name, :position, :description],
-                                     practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
                                      publications_attributes: [:id, :_destroy, :title, :link, :position],
                                      additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
                                      practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
