@@ -201,6 +201,7 @@ class User < ApplicationRecord
   end
 
   def self.validate_users_by_emails(emails)
+    emails = emails.map(&:downcase) # VA emails with different capitalization are equivalent
     users = where(email: emails)
     existing_emails = users.pluck(:email)
     non_existent_emails = emails - existing_emails
