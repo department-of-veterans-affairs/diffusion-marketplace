@@ -84,9 +84,6 @@ describe 'Importer' do
       expect(flow3.domains.first.name).to eq('Veteran')
       expect(flow3.domains.last.name).to eq('Operational')
 
-      # Practice Permissions
-      expect(flow3.practice_permissions.count).to be(0)
-
       # Timelines
       expect(flow3.timelines.count).to be(4)
       expect(flow3.timelines.first.milestone).to eq('Assemble the team and choose a Practice Champion')

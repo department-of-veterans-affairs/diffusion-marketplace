@@ -115,7 +115,6 @@ namespace :importer do
       additional_staff
       additional_resources
       domains
-      practice_permissions
       timelines
     end
     puts "*********** Completed Importing Practices! ***********".green
@@ -672,23 +671,6 @@ def file_uploads
         # detect the image's mime type with MIME if you can't provide it yourself.
         type: MIME::Types.type_for(image_path).first.content_type
     ))
-  end
-end
-
-def practice_permissions
-  puts "==> Importing Practice: #{@name} Practice Permissions".light_blue
-  question_fields = {
-      "Are any permissions required for this practice? (e.g. \"Letters of Understanding,\" \"Proof of Funding,\" \"Written Permission from Department Heads,\" etc). Please list.": 4
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value
-
-    (q_index..end_index).each do |i|
-      next if @answers[i].blank?
-      PracticePermission.find_or_create_by!(description: @answers[i], practice: @practice)
-    end
   end
 end
 

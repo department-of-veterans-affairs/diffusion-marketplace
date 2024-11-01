@@ -845,16 +845,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.index ["slug"], name: "index_practice_partners_on_slug", unique: true
   end
 
-  create_table "practice_permissions", force: :cascade do |t|
-    t.integer "position"
-    t.string "description"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "name"
-    t.index ["practice_id"], name: "index_practice_permissions_on_practice_id"
-  end
-
   create_table "practice_problem_resources", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "link_url"
@@ -1355,7 +1345,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_origin_facilities", "va_facilities"
   add_foreign_key "practice_partner_practices", "practice_partners"
-  add_foreign_key "practice_permissions", "practices"
   add_foreign_key "practice_problem_resources", "practices"
   add_foreign_key "practice_resources", "practices"
   add_foreign_key "practice_results_resources", "practices"
