@@ -109,14 +109,14 @@ namespace :importer do
       ancillary_services
       clinical_locations
       departments
-      video_files
+      practice_multimedia_images
+      practice_multimedia_video_files
       additional_documents
       publications
       implementation_timeline
       risk_mitigations
       additional_staff
       additional_resources
-      impact_photos
       domains
       practice_permissions
       timelines
@@ -530,27 +530,69 @@ def domains
   end
 end
 
-def video_files
+def practice_multimedia_images
+  question_fields = [[
+                         'Impact Photo 1',
+                         'Please provide a title for Impact Picture 1',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ], [
+                         'Impact Photo 2',
+                         'Please provide a title for Impact Picture 2',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ], [
+                         'Impact Photo 3',
+                         'Please provide a title for Impact Picture 3',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ]]
+  question_fields.each_with_index do |fields, index|
+    description_indices = @questions.each_index.select { |i| @questions[i] == fields[2] }
+    next if @answers[@questions.index(fields[0])].blank?
+
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(fields[0])]}"
+    image_file = File.new(image_path)
+    title = @answers[@questions.index(fields[1])]
+    description = @answers[description_indices[index]]
+
+    prac_multimedium = PracticeMultimedium.new(
+      innovable: @practice,
+      resource_type: "image",
+      name: description
+    )
+
+    if image_file.present? && File.exist?(image_file.path)
+      prac_multimedium.attachment = image_file
+    end
+
+    if prac_multimedium.save
+      puts "==> Importing Practice: #{@name} Human Practice Multimedia Image".light_blue
+    else
+      puts "==> Failed Importing Practice: #{@name} Human Practice Multimedia Image".yellow
+    end
+  end
+end
+
+def practice_multimedia_video_files
   puts "==> Importing Practice: #{@name} Video Files".light_blue
-  @practice.video_files.each(&:destroy)
   question_fields = [
       'Do you have a short video that provides an explanation, summary, or testimonial about your practice? (Please paste YouTube url or other link)',
       'Enter title and description for video'
   ]
 
-  # question_fields.each do |key, value|
   url_q_index = @questions.index(question_fields[0])
-
   url_answer = @answers[url_q_index]
-  # next if answer.blank?
   return if url_answer.blank?
 
   title_and_description_q_index = @questions.index(question_fields[1].to_s)
   title_answer = @answers[title_and_description_q_index]
   description_answer = @answers[title_and_description_q_index + 1]
 
-  VideoFile.create(practice: @practice, url: url_answer, title: title_answer, description: description_answer) unless VideoFile.where(url: url_answer, practice: @practice).any?
-  # end
+  prac_multimedium = PracticeMultimedium.new(innovable: @practice, resource_type: "video", name: description_answer, link_url: url_answer)
+  if prac_multimedium.save
+      puts "==> Importing  PracticeMultimedia Video for: #{@practice.id} - #{@practice.name}".light_blue
+  else
+    puts "Could not create PracticeMultimedia Video for: #{@practice.id} - #{@practice.name}".yellow
+    puts "#{prac_multimedium.errors}"
+  end
 end
 
 def additional_documents
@@ -685,42 +727,6 @@ def additional_resources
     next if answer.blank?
 
     AdditionalResource.create(practice: @practice, description: answer) unless AdditionalResource.where(description: answer, practice: @practice).any?
-  end
-end
-
-def impact_photos
-  puts "==> Importing Practice: #{@name} Human Impact Photos".light_blue
-
-  @practice.impact_photos.each(&:destroy)
-
-  question_fields = [[
-                         'Impact Photo 1',
-                         'Please provide a title for Impact Picture 1',
-                         'Please provide a brief paragraph describing the photo and the Impact.'
-                     ], [
-                         'Impact Photo 2',
-                         'Please provide a title for Impact Picture 2',
-                         'Please provide a brief paragraph describing the photo and the Impact.'
-                     ], [
-                         'Impact Photo 3',
-                         'Please provide a title for Impact Picture 3',
-                         'Please provide a brief paragraph describing the photo and the Impact.'
-                     ]]
-  question_fields.each_with_index do |fields, index|
-    description_indices = @questions.each_index.select { |i| @questions[i] == fields[2] }
-    next if @answers[@questions.index(fields[0])].blank?
-
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(fields[0])]}"
-    image_file = File.new(image_path)
-    title = @answers[@questions.index(fields[1])]
-    description = @answers[description_indices[index]]
-
-    ImpactPhoto.create(practice: @practice, title: title, description: description, attachment: ActionDispatch::Http::UploadedFile.new(
-        filename: File.basename(image_file),
-        tempfile: image_file,
-        # detect the image's mime type with MIME if you can't provide it yourself.
-        type: MIME::Types.type_for(image_path).first.content_type
-    ))
   end
 end
 

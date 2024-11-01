@@ -23,8 +23,6 @@
 | `rails inet_partner_practices:assign_inet_partner` | Assigns the iNET practice partner to practices that have iNET as a partner  |
 | `rails practice_origin_facilities:move_practice_initiating_facility` | Moves practice initiating facilities to the practice_origin_facilities table  |
 | `rails port_milestones_to_timelines:port_milestones_to_timelines` | Ports data from Milestone table description field to Timelines.milestone field.  |
-| `rails practice_multimedia:transfer_practice_impact_photos` | Ports data from ImpactPhotos table PracticeMultimedia table.  |
-| `rails practice_multimedia:transfer_practice_videos` | Ports data from VideoFile table to PracticeMultimedia table.  |
 | `rails documentation:port_additional_documents_to_practice_resources ` | Ports additional documents to practice_resources
 | `rails documentation:port_publications_to_practice_resources` | Ports publications (links) to practice_resources
 | `rails risk_and_mitigation:remove_unpaired_risks_and_mitigation` | Removes risks without a corresponding mitigation AND removes mitigations without a corresponding risk.
@@ -157,8 +155,6 @@ This will run:
 7. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
 10. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
 12. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
-13. `rails practice_multimedia:transfer_practice_impact_photos` - moves practice impact photos to practice multimedia
-14. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
 15. `rails practice_editors:add_practice_owners_to_practice_editors` - Adds each practice owner to the practice editors list of their corresponding practice
 16. `rails va_facilities:fix_data_va_facilities` - updates bad data in the va_facilities table (complexity field: 'fy17_parent_station_complextity_level')
 17. `rails practice_partners:apply_is_major_flag_to_partners` - Creates/updates certain flagship practice partners and applies the 'is_major' flag to them

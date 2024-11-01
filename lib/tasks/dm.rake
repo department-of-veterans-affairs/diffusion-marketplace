@@ -24,8 +24,6 @@ namespace :dm do
     Rake::Task['categories:add_communities_cats'].execute
     Rake::Task['practice_origin_facilities:move_practice_initiating_facility'].execute
     Rake::Task['milestones:port_milestones_to_timelines'].execute
-    Rake::Task['practice_multimedia:transfer_practice_impact_photos'].execute
-    Rake::Task['practice_multimedia:transfer_practice_videos'].execute
     Rake::Task['documentation:port_additional_documents_to_practice_resources'].execute
     Rake::Task['documentation:port_publications_to_practice_resources'].execute
     Rake::Task['risk_and_mitigation:remove_unpaired_risks_and_mitigation'].execute
