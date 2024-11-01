@@ -251,7 +251,6 @@ class Practice < Innovation
   has_many :practice_awards, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_metrics, -> {order(id: :asc) }, dependent: :destroy
-  has_many :practice_testimonials, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
@@ -273,7 +272,6 @@ class Practice < Innovation
     reject || ip_reject
   }
   accepts_nested_attributes_for :practice_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['resource'] && attributes['resource'].blank? }
-  accepts_nested_attributes_for :practice_testimonials, allow_destroy: true
   accepts_nested_attributes_for :practice_problem_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_solution_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_results_resources, allow_destroy: true
