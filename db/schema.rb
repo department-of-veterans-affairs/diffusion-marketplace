@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2024_11_01_010951) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -779,24 +780,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.index ["practice_id"], name: "index_practice_emails_on_practice_id"
   end
 
-  create_table "practice_management_practices", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.bigint "practice_management_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_management_practices_on_practice_id"
-    t.index ["practice_management_id"], name: "index_practice_management_practices_on_practice_management_id"
-  end
-
-  create_table "practice_managements", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "practice_metrics", force: :cascade do |t|
     t.string "description"
     t.bigint "practice_id"
@@ -1385,8 +1368,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   add_foreign_key "practice_editor_sessions", "practices"
   add_foreign_key "practice_editors", "users"
   add_foreign_key "practice_emails", "practices"
-  add_foreign_key "practice_management_practices", "practice_managements"
-  add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_metrics", "practices"
   add_foreign_key "practice_origin_facilities", "clinical_resource_hubs"
   add_foreign_key "practice_origin_facilities", "practices"

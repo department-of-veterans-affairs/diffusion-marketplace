@@ -197,23 +197,6 @@ _developing_facilities = [
     DevelopingFacilityType.find_or_create_by!(name: 'Office of Mental Health', short_name: 'office_of_mental_health'),
 ]
 
-
-_area_of_affects = [
-    PracticeManagement.find_or_create_by!(name: 'Wait time to be seen'),
-    PracticeManagement.find_or_create_by!(name: 'Doctor to patient time'),
-    PracticeManagement.find_or_create_by!(name: 'Throughput'),
-    PracticeManagement.find_or_create_by!(name: 'Discharge process'),
-    PracticeManagement.find_or_create_by!(name: 'Discharge planning'),
-    PracticeManagement.find_or_create_by!(name: 'Patient satisfaction'),
-    PracticeManagement.find_or_create_by!(name: 'Provider/Staff retention'),
-    PracticeManagement.find_or_create_by!(name: 'Provider/Staff satisfaction'),
-    PracticeManagement.find_or_create_by!(name: 'Efficiency'),
-    PracticeManagement.find_or_create_by!(name: 'Cost avoidance'),
-    PracticeManagement.find_or_create_by!(name: 'Management'),
-    PracticeManagement.find_or_create_by!(name: 'None')
-]
-
-
 _departments = [
     Department.find_or_create_by!(name: 'Admissions', short_name: 'admissions'),
     Department.find_or_create_by!(name: 'Anesthetics', short_name: 'anesthetics'),
