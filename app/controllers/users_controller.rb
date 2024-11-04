@@ -127,6 +127,32 @@ class UsersController < ApplicationController
 
   def user_params
     return params.require(:user).permit(:avatar, :bio) if session[:user_type] === 'ntlm'
-    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio, :location, :accepted_term, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h)
+    params.require(:user).permit( :accepted_term,
+                                  :alt_first_name,
+                                  :alt_job_title,
+                                  :alt_last_name,
+                                  :avatar,
+                                  :bio,
+                                  :credentials,
+                                  :crop_h,
+                                  :crop_w,
+                                  :crop_x,
+                                  :crop_y,
+                                  :delete_avatar,
+                                  :email,
+                                  :first_name,
+                                  :fellowship,
+                                  :job_title,
+                                  :last_name,
+                                  :location,
+                                  :password,
+                                  :password_confirmation,
+                                  :phone_number,
+                                  :project,
+                                  :skip_va_validation,
+                                  :skip_password_validation,
+                                  :visn,
+                                  :work
+                                )
   end
 end
