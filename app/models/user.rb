@@ -47,6 +47,9 @@ class User < ApplicationRecord
 
   validates_attachment_content_type :avatar, content_type: %r{\Aimage/.*\z}
 
+  after_update :refresh_public_bio_cache, if: :saved_change_to_granted_public_bio?
+  after_destroy :refresh_public_bio_cache_if_granted_public_bio
+
   scope :enabled, -> {where(disabled: false)}
   scope :disabled, -> {where(disabled: true)}
   scope :admins, -> {includes(:roles).where(roles: { name: 'admin' })}
@@ -223,5 +226,13 @@ class User < ApplicationRecord
     msg = "Response Code: #{ ldap.get_operation_result.code }, Message: #{ ldap.get_operation_result.message }"
 
     raise msg unless ldap.get_operation_result.code == 0
+  end
+
+  def refresh_public_bio_cache
+    Rails.cache.write("users_with_public_bio", User.where(granted_public_bio: true).to_a)
+  end
+
+  def refresh_public_bio_cache_if_granted_public_bio
+    refresh_public_bio_cache if granted_public_bio?
   end
 end
