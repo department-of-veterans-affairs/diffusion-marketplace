@@ -69,7 +69,6 @@ class SavePracticeService
       updated = @practice.update(@practice_params)
       rescue_method(:update_department_practices)
       rescue_method(:remove_attachments)
-      rescue_method(:manipulate_avatars)
       rescue_method(:remove_main_display_image)
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
