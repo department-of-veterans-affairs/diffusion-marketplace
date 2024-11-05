@@ -569,6 +569,22 @@ describe 'Practice editor - introduction', type: :feature do
       end
     end
   end
+
+  context 'as a non-admin editor' do
+    before do
+      @editor = FactoryBot.create(:user)
+      PracticeEditor.create!(innovable: @practice, user: @editor, email: @editor.email)
+      login_as(@editor, :scope => :user, :run_callbacks => false)
+      visit_practice_edit
+    end
+
+    it 'disables Community categories' do
+      within('.dm-communities-category-columns-container') do
+        expect(page).to have_css('.communities-checkbox[disabled]', visible: false)
+        expect(page).to have_content('Contact marketplace@va.gov to get involved with a Community')
+      end
+    end
+  end
 end
 
 def click_save

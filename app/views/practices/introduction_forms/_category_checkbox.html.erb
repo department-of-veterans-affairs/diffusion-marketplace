@@ -1,11 +1,11 @@
 <%
-
   category_id = category_id_for_category(category)
   hyphenated_category_name = hyphenated_category_name_for(category)
   parent_category_name = category.parent_category.name.downcase
   innovation = @practice || @product
   innovation_type = innovation.class.to_s.downcase
   is_checked = is_category_checked?(category, innovation)
+  is_disabled = parent_category_name == 'communities' && !@user_can_edit_communities
 %>
 
 <div class="usa-checkbox">
@@ -16,6 +16,7 @@
     name="<%= innovation_type %>[category][<%= category_id %>][value]"
     value="<%= category_id %>"
     <%= 'checked' if is_checked %>
+    <%= 'disabled' if is_disabled %>
   >
   <label class="usa-checkbox__label margin-bottom-2 cat-<%= category_id %>-label" for="cat-<%= category_id %>-input" title="<%= category.name %>">
     <span><%= category.name.truncate(20) %></span>
