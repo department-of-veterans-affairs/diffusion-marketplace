@@ -141,7 +141,6 @@ class UsersController < ApplicationController
                                   :delete_avatar,
                                   :email,
                                   :first_name,
-                                  :fellowship,
                                   :job_title,
                                   :last_name,
                                   :location,
