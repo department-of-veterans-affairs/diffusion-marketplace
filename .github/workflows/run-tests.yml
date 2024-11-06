@@ -32,7 +32,7 @@ jobs:
       GOOGLE_API_KEY: ${{ secrets.GOOGLE_TEST_API_KEY }}
     services:
       postgres:
-        image: postgres:12-alpine
+        image: postgres:13-alpine
         ports: ["5432:5432"]
         options: >-
           --health-cmd pg_isready
