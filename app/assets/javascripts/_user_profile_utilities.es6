@@ -8,20 +8,19 @@
   // let $cancelEditBtn;
 
   function _toggleDeleteBtn({ visible, target }) {
-    let $imgDeleteBtn = $(target).closest('.dm-cropper-boundary').find($deleteBtn);
+    let imgDeleteBtn = $(target).closest('.dm-cropper-boundary').find($deleteBtn);
     let hideDeleteBtn = $(target).closest('.dm-cropper-boundary').find($imgsContainer).hasClass('dm-resource-image');
 
     if (visible && !hideDeleteBtn) {
-      $imgDeleteBtn.removeClass('hidden');
+      imgDeleteBtn.removeClass('hidden');
     } else {
-      $imgDeleteBtn.addClass('hidden');
+      imgDeleteBtn.addClass('hidden');
     }
   }
 
   function _clearUpload({ target }) {
     let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find($imgsContainer)
     let area = $(target).closest('.dm-cropper-boundary').data('area')
-    let type = $(target).closest('.dm-cropper-boundary').data('type')
 
     $imgImgsContainer.empty()
     $(target)
@@ -88,7 +87,6 @@
     $deleteBtn.click((event) => {
       _clearUpload({ target: event.target })
       _toggleDeleteBtn({ visible: false, target: event.target });
-      $imgDeleteBtn.removeClass('hidden');
       // _toggleEditBtn({ visible: false, target: event.target });
       // _toggleCropperBtnView({ visible: false, target: event.target });
       // _setCropBoxValues({ isCrop: false, target: event.target });
