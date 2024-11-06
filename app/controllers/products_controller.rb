@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
   end
 
   def description
-    @categories = Category.prepared_categories_for_practice_editor(current_user.has_role?(:admin))
+    @categories = Category.prepared_categories_for_practice_editor
     @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
     @ordered_practice_partners = PracticePartnerPractice.where(innovable_id: @product.id, innovable_type: "Product").order_by_id
     render 'products/form/description'

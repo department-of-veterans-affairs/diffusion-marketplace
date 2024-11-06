@@ -52,7 +52,7 @@ class Category < ApplicationRecord
     ["description", "name", "related_terms"]
   end
 
-  def self.prepared_categories_for_practice_editor()
+  def self.prepared_categories_for_practice_editor
     get_parent_categories.each_with_object({}) do |parent_category, hash|
       categories = parent_category.sub_categories.order_by_name.to_a
 
