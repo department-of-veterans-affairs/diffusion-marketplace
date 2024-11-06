@@ -29,7 +29,7 @@ class Category < ApplicationRecord
     strip_attributes([self.name])
   end
 
-  def self.get_parent_categories()
+  def self.get_parent_categories
     Category.order_by_name.select do |cat|
       cat.sub_categories.any?
     end
