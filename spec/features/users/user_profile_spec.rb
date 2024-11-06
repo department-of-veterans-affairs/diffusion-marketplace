@@ -75,6 +75,40 @@ describe 'The user index', type: :feature do
     expect(sb.bio).to eq('Lives in a pineapple')
   end
 
+  it 'should allow a user to update their public-bio info' do
+    @user.update!(granted_public_bio: true)
+    login_as(@user, scope: :user, run_callbacks: false)
+    visit '/edit-profile'
+
+    fill_in('user[alt_first_name]', with: 'Alt first name')
+    fill_in('user[alt_last_name]', with: 'Alt last name')
+    fill_in('Title (Public Bio)', with: 'public bio title text')
+    fill_in('Work (Public Bio)', with: 'public bio work text')
+    fill_in('Credentials (Public Bio)', with: 'public bio credentials text')
+    fill_in('Project (Public Bio)', with: 'project text')
+    click_button('Save changes')
+
+    sb = User.find(@user.id)
+    expect(sb.alt_first_name).to eq('Alt first name')
+    expect(sb.alt_last_name).to eq('Alt last name')
+    expect(sb.alt_job_title).to eq('public bio title text')
+    expect(sb.work).to eq('public bio work text')
+    expect(sb.credentials).to eq('public bio credentials text')
+    expect(sb.project).to eq('project text')
+  end
+
+  it 'should not show public-bio related fields if user not granted access' do
+    login_as(@user, scope: :user, run_callbacks: false)
+    visit '/edit-profile'
+
+    expect(page).not_to have_selector("input[value='#{@user.alt_first_name}']")
+    expect(page).not_to have_selector("input[value='#{@user.alt_last_name}']")
+    expect(page).not_to have_selector("input[value='#{@user.alt_job_title}']")
+    expect(page).not_to have_selector("input[value='#{@user.credentials}']")
+    expect(page).not_to have_selector("input[value='#{@user.work}']")
+    expect(page).not_to have_selector("input[value='#{@user.project}']")
+  end
+
   it 'should have a favorited practice' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: @user)
     @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', user: @user2)

@@ -102,7 +102,7 @@
               <% user_type = session[:user_type] %>
               <div class="usa-form edit-profile-form">
                 <div class="grid-row width-full">
-                  <div class="field grid-col-9">
+                  <div class="field margin-top-3 grid-col-9">
                     <%= f.label :first_name, class: 'margin-top-2 margin-bottom-2' %><br/>
                     <%= f.text_field :first_name, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: user_type === 'ntlm' %>
                   </div>
@@ -135,13 +135,77 @@
                     <%= f.text_field :job_title, class: 'usa-input usa-input__disabled bg-base-lightest border-base-light text-base disabled', disabled: user_type === 'ntlm' %>
                   </div>
                 </div>
-              </div>
-              <div class="field margin-top-3 grid-col-9">
-                <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
-                  <span>Bio</span>&nbsp;<span class="text-base-light profile-bio-character-count" id="user_<%= @user.id %>_profile_bio_character_count">(0/50 characters)</span>
-                  <p>Tell other users about yourself and your professional background.</p>
+
+                <%# Public Bio (Fellow)-specific fields %>
+                <% is_fellow = (@user.granted_public_bio == true) %>
+                <% if is_fellow %>
+                  <div class="grid-row width-full">
+                    <div class="field margin-top-3 grid-col-9">
+                      <%= f.label :alt_first_name, 'First name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.text_field :alt_first_name,
+                        value: @user.alt_first_name.present? ? @user.alt_first_name : @user.first_name,
+                        autofocus: true,
+                        class: "usa-input border-base-light"
+                      %>
+                    </div>
+                  </div>
+
+                  <div class="grid-row width-full">
+                    <div class="field margin-top-3 grid-col-9">
+                      <%= f.label :alt_last_name, 'Last name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.text_field :alt_last_name,
+                        value: @user.alt_last_name.present? ? @user.alt_last_name : @user.last_name,
+                        autofocus: true,
+                        class: "usa-input border-base-light"
+                      %>
+                    </div>
+                  </div>
+
+                  <div class="grid-row width-full">
+                    <div class="field margin-top-3 grid-col-9">
+                      <%= f.label :alt_job_title, 'Title (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.text_field :alt_job_title,
+                        value: @user.alt_job_title.present? ? @user.alt_job_title : @user.job_title,
+                        autofocus: true,
+                        class: "usa-input border-base-light"
+                      %>
+                    </div>
+                  </div>
                 <% end %>
-                <%= f.text_area :bio, class: 'usa-input height-200px profile-bio' %>
+
+                <div class="field margin-top-3 grid-col-9">
+                  <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
+                    <span>Bio</span>&nbsp;<span class="text-base-light profile-bio-character-count" id="user_<%= @user.id %>_profile_bio_character_count">(0/50 characters)</span>
+                    <p>Tell other users about yourself and your professional background.</p>
+                  <% end %>
+                  <%= f.text_area :bio, class: 'usa-input height-200px profile-bio border-base-light' %>
+                </div>
+
+                <% if is_fellow %>
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :credentials, 'Credentials (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                    <%= f.text_area :credentials,
+                      autofocus: true,
+                      class: "usa-input height-15 border-base-light"
+                    %>
+                  </div>
+
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :work, 'Work (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                    <%= f.text_area :work,
+                      autofocus: true,
+                      class: "usa-input height-15 border-base-light"
+                    %>
+                  </div>
+
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :project, 'Project (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                    <%= f.text_field :project,
+                      autofocus: true,
+                      class: "usa-input border-base-light"
+                    %>
+                  </div>
+                <% end %>
               </div>
             <% end %>
           </div>
@@ -150,9 +214,9 @@
   </section>
 </div>
 
-<%# <script type="text/javascript"> 
+<%# <script type="text/javascript">
   document.getElementById("toggle-photo").onclick = function(event) {
     event.preventDefault();
     document.getElementById("photo-file-upload").setAttribute("aria-hidden", 'false');
-  } 
+  }
 </script>  %>
