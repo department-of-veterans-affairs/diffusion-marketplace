@@ -97,6 +97,28 @@ describe 'The user index', type: :feature do
     expect(sb.project).to eq('project text')
   end
 
+  it 'should allow a user to add, change, and remove their avatar photo' do
+    @user.update!(granted_public_bio: true)
+    login_as(@user, scope: :user, run_callbacks: false)
+    visit '/edit-profile'
+
+    # Initial upload of avatar
+    attach_file('user[avatar]', Rails.root.join('app/assets/images/va-seal.png'), visible: false)
+    click_button('Save changes')
+
+    # Reload user and verify the avatar was saved
+    user = User.find(@user.id)
+    expect(user.avatar.present?).to be true
+
+    # Change avatar
+    attach_file('user[avatar]', Rails.root.join('app/assets/images/dm-footer-logo.png'), visible: false)
+    click_button('Save changes')
+
+    # Reload user and verify the new avatar was saved
+    user.reload
+    expect(user.avatar.present?).to be true
+  end
+
   it 'should not show public-bio related fields if user not granted access' do
     login_as(@user, scope: :user, run_callbacks: false)
     visit '/edit-profile'
