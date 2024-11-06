@@ -6,6 +6,8 @@
 .avatar-profile-photo {
   min-width: 100%;
   height: 14rem !important;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
 }
 
 .avatar-profile-photo-container {
