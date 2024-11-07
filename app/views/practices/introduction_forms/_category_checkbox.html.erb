@@ -16,7 +16,7 @@
     name="<%= innovation_type %>[category][<%= category_id %>][value]"
     value="<%= category_id %>"
     <%= 'checked' if is_checked %>
-    <%= 'disabled' if is_disabled %>
+    <%= 'readonly' if is_disabled %>
   >
   <label class="usa-checkbox__label margin-bottom-2 cat-<%= category_id %>-label" for="cat-<%= category_id %>-input" title="<%= category.name %>">
     <span><%= category.name.truncate(20) %></span>

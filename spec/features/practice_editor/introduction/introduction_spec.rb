@@ -34,7 +34,7 @@ describe 'Practice editor - introduction', type: :feature do
     Category.create!(name: 'Pulmonary Care', parent_category: @parent_cat_3)
     Category.create!(name: 'Hidden Cat')
     Category.create!(name: 'Suicide Prevention', parent_category: @parent_cat_4)
-    Category.create!(name: 'Age-Friendly', parent_category: @parent_cat_4)
+    @community_category = Category.create!(name: 'Age-Friendly', parent_category: @parent_cat_4)
     CategoryPractice.create!(innovable: @practice, category: @cat_1, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
@@ -574,15 +574,21 @@ describe 'Practice editor - introduction', type: :feature do
     before do
       @editor = FactoryBot.create(:user)
       PracticeEditor.create!(innovable: @practice, user: @editor, email: @editor.email)
+      CategoryPractice.create!(innovable: @practice, category: @community_category, created_at: Time.now)
       login_as(@editor, :scope => :user, :run_callbacks => false)
       visit_practice_edit
     end
 
-    it 'disables Community categories' do
+    it 'disables Community categories and retains checked Communities' do
       within('.dm-communities-category-columns-container') do
-        expect(page).to have_css('.communities-checkbox[disabled]', visible: false)
+        expect(page).to have_css('.communities-checkbox[readonly][checked]', visible: false)
         expect(page).to have_content('Contact marketplace@va.gov to get involved with a Community')
       end
+      label_class = ".cat-#{@cat_1.id}-label"
+      find(label_class).click
+      click_save
+      visit_practice_edit
+      expect(page).to have_css('.communities-checkbox[readonly][checked]', visible: false)
     end
   end
 end
