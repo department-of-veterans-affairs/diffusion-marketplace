@@ -47,14 +47,15 @@ RSpec.describe User, type: :model do
   end
 
   describe ".validate_users_by_emails" do
-    let(:emails) { ['existing@example.com', 'nonexisting@example.com'] }
-    let!(:user) { create(:user, email: 'existing@example.com') }
+    let(:emails) { ['existing@va.gov', 'nonexisting@va.gov', 'CaseInsensitive@va.gov'] }
+    let!(:user) { create(:user, email: 'existing@va.gov') }
+    let!(:case_insensitive_user) { create(:user, email: 'caseinsensitive@va.gov') }
 
     it "returns users with existing emails and lists non-existing emails" do
       users, non_existent_emails = User.validate_users_by_emails(emails)
 
-      expect(users).to contain_exactly(user)
-      expect(non_existent_emails).to contain_exactly('nonexisting@example.com')
+      expect(users).to contain_exactly(user, case_insensitive_user)
+      expect(non_existent_emails).to contain_exactly('nonexisting@va.gov')
     end
   end
 end
