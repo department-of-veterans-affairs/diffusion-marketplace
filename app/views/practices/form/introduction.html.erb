@@ -536,6 +536,7 @@
                       <% sliced_categories.each_with_index do |sc, i| %>
                         <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sc, parent_category: parent_category, column: i } unless i === 3 %>
                       <% end %>
+                      <span class="text-base"><%= "Contact marketplace@va.gov to get involved with a Community" if !@user_can_edit_communities && (parent_category.name.downcase == 'communities') %></span>
                     </div>
                   </div>
                 <% end %>
