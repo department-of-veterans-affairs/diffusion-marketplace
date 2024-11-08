@@ -340,7 +340,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
   # /practices/slug/introduction
   def introduction
     @va_facilities_and_crhs = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
-    @categories = Category.prepared_categories_for_practice_editor
+    @categories = Category.includes([:parent_category]).prepared_categories_for_practice_editor
     @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
     @ordered_practice_partners = PracticePartnerPractice.where(innovable_id: @practice.id).order_by_id
     @ordered_practice_origin_facilities = PracticeOriginFacility.where(practice_id: @practice.id).order_by_id

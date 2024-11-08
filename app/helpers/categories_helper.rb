@@ -78,8 +78,8 @@ module CategoriesHelper
 
   def is_category_checked?(category, innovation)
     parent_category = category.parent_category
-    has_all_categories = parent_category.sub_categories.count == CategoryPractice.where(innovable: innovation).joins(:category).where(categories: { parent_category_id: parent_category.id }).count
-    is_pr_cat = innovation.categories.include?(category)
+    has_all_categories = parent_category.sub_categories.count == CategoryPractice.includes([:category]).where(innovable: innovation).joins(:category).where(categories: { parent_category_id: parent_category.id }).count
+    is_pr_cat = innovation.categories.includes([:category]).include?(category)
     is_pr_cat || has_all_categories
   end
 end

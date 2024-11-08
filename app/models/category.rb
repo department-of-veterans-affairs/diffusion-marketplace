@@ -30,7 +30,7 @@ class Category < ApplicationRecord
   end
 
   def self.get_parent_categories
-    Category.order_by_name.select do |cat|
+    Category.includes([:sub_categories]).order_by_name.select do |cat|
       cat.sub_categories.any?
     end
   end
