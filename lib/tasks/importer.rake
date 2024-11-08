@@ -104,7 +104,6 @@ namespace :importer do
       # practice_managements
       categories
       clinical_conditions
-      financial_files
       job_positions
       ancillary_services
       clinical_locations
@@ -376,26 +375,6 @@ def clinical_conditions
     end
   end
 
-end
-
-def financial_files
-  puts "==> Importing Practice: #{@name} Financial Files".light_blue
-  @practice.financial_files.each(&:destroy)
-  question_fields = {
-      "Please upload applicable financial information such as a formal business case/return on investment (ROI).": 1
-  }
-  question_fields.each do |key, value|
-    next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
-    image_file = File.new(image_path)
-
-    FinancialFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-        filename: File.basename(image_file),
-        tempfile: image_file,
-        # detect the image's mime type with MIME if you can't provide it yourself.
-        type: MIME::Types.type_for(image_path).first.content_type
-    )
-  end
 end
 
 def job_positions

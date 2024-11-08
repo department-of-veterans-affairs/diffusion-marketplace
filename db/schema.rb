@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2024_11_01_005744) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -312,20 +311,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_005744) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "financial_files", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_financial_files_on_practice_id"
   end
 
   create_table "form_spams", force: :cascade do |t|
@@ -1383,7 +1368,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_005744) do
   add_foreign_key "diffusion_history_statuses", "diffusion_histories"
   add_foreign_key "domain_practices", "domains"
   add_foreign_key "domain_practices", "practices"
-  add_foreign_key "financial_files", "practices"
   add_foreign_key "implementation_timeline_files", "practices"
   add_foreign_key "job_position_practices", "job_positions"
   add_foreign_key "job_position_practices", "practices"

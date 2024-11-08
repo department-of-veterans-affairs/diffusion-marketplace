@@ -229,7 +229,6 @@ class Practice < Innovation
   has_many :diffusion_histories, dependent: :destroy
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
-  has_many :financial_files, dependent: :destroy
   has_many :implementation_timeline_files, dependent: :destroy
   has_many :job_position_practices, dependent: :destroy
   has_many :job_positions, through: :job_position_practices
