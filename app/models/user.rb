@@ -20,7 +20,6 @@ class User < ApplicationRecord
   has_many :user_practices
   has_many :practices, through: :user_practices
 
-  has_many :practice_creators
   has_many :practice_editors, dependent: :destroy
 
   has_many :practice_editor_sessions

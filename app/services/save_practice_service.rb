@@ -6,14 +6,12 @@ class SavePracticeService
   def initialize(params)
     @practice = params[:practice]
     @practice_params = params[:practice_params]
-    @avatars = ['practice_creators']
     @attachments = ['additional_documents']
     @resources = ['problem_resources', 'solution_resources', 'results_resources', 'multimedia']
     @current_endpoint = params[:current_endpoint]
     @error_messages = {
         update_department_practices: 'error updating departments',
         remove_attachments: 'error removing attachments',
-        manipulate_avatars: 'error updating avatars',
         remove_main_display_image: 'error removing practice thumbnail',
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
@@ -71,7 +69,6 @@ class SavePracticeService
       updated = @practice.update(@practice_params)
       rescue_method(:update_department_practices)
       rescue_method(:remove_attachments)
-      rescue_method(:manipulate_avatars)
       rescue_method(:remove_main_display_image)
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
@@ -226,30 +223,6 @@ class SavePracticeService
           if e['delete_attachment'] == 'true'
             record = @practice.send(attachment).find(e[:id])
             record.update(attachment: nil)
-          end
-        end
-      end
-    end
-  end
-
-  def manipulate_avatars
-    @avatars.each do |avatar|
-      attribute = ("#{avatar}_attributes").to_sym
-
-      if @practice_params[attribute].present?
-        @practice_params[attribute].each do |key, e|
-          if e[:_destroy] == 'false' && e[:id].present?
-            record = @practice.send(avatar).find(e[:id])
-
-            # Remove avatar
-            if e['delete_avatar'] == 'true'
-              record.update(avatar: nil)
-            end
-
-            # Crop avatar
-            if is_cropping?(e)
-              reprocess_avatar(record, e)
-            end
           end
         end
       end
