@@ -49,6 +49,10 @@ gem 'local_time'
 gem 'rails-timeago'
 
 gem 'sidekiq'
+
+# activesupport dependencies removed in Ruby 3.4
+gem 'mutex_m'
+gem 'drb'
 gem 'observer'
 
 group :development, :test do
