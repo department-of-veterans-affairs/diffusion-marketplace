@@ -849,7 +849,9 @@ DEPENDENCIES
   aws-sdk-s3
   axe-matchers
   babel-transpiler
+  base64
   bcrypt (~> 3.1.13)
+  bigdecimal
   bootsnap
   brakeman (= 5.0.2)
   bullet

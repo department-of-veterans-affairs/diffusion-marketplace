@@ -54,6 +54,8 @@ gem 'sidekiq'
 gem 'mutex_m'
 gem 'drb'
 gem 'observer'
+gem 'base64'
+gem 'bigdecimal'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
