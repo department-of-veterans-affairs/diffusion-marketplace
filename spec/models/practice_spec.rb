@@ -22,8 +22,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:job_position_practices) }
     it { should have_many(:job_positions) }
     it { should have_many(:photo_files) }
-    it { should have_many(:practice_management_practices) }
-    it { should have_many(:practice_managements) }
     it { should have_many(:publications) }
     it { should have_many(:risk_mitigations) }
     it { should have_many(:practice_partner_practices) }

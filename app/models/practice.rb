@@ -233,8 +233,6 @@ class Practice < Innovation
   has_many :job_position_practices, dependent: :destroy
   has_many :job_positions, through: :job_position_practices
   has_many :photo_files, dependent: :destroy
-  has_many :practice_management_practices, dependent: :destroy
-  has_many :practice_managements, through: :practice_management_practices
   has_many :practice_permissions, -> { order(position: :asc) }, dependent: :destroy
   has_many :publications, -> { order(position: :asc) }, dependent: :destroy
   has_many :risk_mitigations, -> { order(position: :asc) }, dependent: :destroy
