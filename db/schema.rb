@@ -1241,24 +1241,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.index ["visn_id"], name: "index_va_facilities_on_visn_id"
   end
 
-  create_table "va_secretary_priorities", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "va_secretary_priority_practices", force: :cascade do |t|
-    t.bigint "va_secretary_priority_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_va_secretary_priority_practices_on_practice_id"
-    t.index ["va_secretary_priority_id"], name: "idx_priority_practices_priority_id"
-  end
-
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.bigint "item_id", null: false
@@ -1388,7 +1370,5 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   add_foreign_key "user_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"
   add_foreign_key "va_facilities", "visns"
-  add_foreign_key "va_secretary_priority_practices", "practices"
-  add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
   add_foreign_key "visn_liaisons", "visns"
 end
