@@ -409,6 +409,7 @@ GEM
     nokogiri (1.16.7)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    observer (0.1.2)
     opentelemetry-api (1.0.2)
     opentelemetry-common (0.19.6)
       opentelemetry-api (~> 1.0)
@@ -888,6 +889,7 @@ DEPENDENCIES
   nested_form
   net-ldap
   ntlm-sso!
+  observer
   opentelemetry-exporter-otlp
   opentelemetry-instrumentation-all
   opentelemetry-sdk
