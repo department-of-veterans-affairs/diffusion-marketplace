@@ -50,6 +50,13 @@ gem 'rails-timeago'
 
 gem 'sidekiq'
 
+# activesupport dependencies removed in Ruby 3.4
+gem 'mutex_m'
+gem 'drb'
+gem 'observer'
+gem 'base64'
+gem 'bigdecimal'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
