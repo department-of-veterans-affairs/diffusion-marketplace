@@ -1,0 +1,59 @@
+<div class="grid-container margin-top-10">
+  <div class="grid-row grid-gap">
+    <div class="grid-col-3 margin-right-5">
+      <% if @user.avatar.present? %>
+        <%= image_tag @user.avatar_s3_presigned_url(:thumb), alt: "user avatar for #{@user.full_name}", class: 'avatar-profile-photo' %>
+      <% else %>
+        <div class="profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder">
+          <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
+        </div>
+      <% end %>
+    </div>
+
+    <div>
+      <!-- User Name, Job Title, Project -->
+      <h2 class="margin-top-0"><%= @user.bio_page_name %></h2>
+      <% job_title = @user.alt_job_title || @user.job_title %>
+      <% if job_title.present? %>
+        <p class="margin-top-2"><%= job_title %></p>
+      <% end %>
+      <% if @user.project.present? %>
+        <p class="margin-top-2"><%= @user.project %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="grid-row grid-gap">
+    <!-- Work -->
+    <% if @user.work.present? %>
+      <div class="margin-top-5">
+        <h3 class="font-sans-md text-bold">Work</h3>
+        <ul class="usa-list usa-list--unstyled">
+          <% @user.work.split(",").each do |work_item| %>
+            <li><%= work_item %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <!-- About -->
+    <% if @user.bio.present? %>
+      <div class="margin-top-4">
+        <h3 class="font-sans-md text-bold">About</h3>
+        <div class="line-height-sans-3">
+          <p><%= simple_format(@user.bio) %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Credentials -->
+    <% if @user.credentials.present? %>
+      <div class="margin-top-4">
+        <h3 class="font-sans-md text-bold">Credentials</h3>
+        <div class="line-height-sans-3">
+          <p><%= @user.credentials %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
