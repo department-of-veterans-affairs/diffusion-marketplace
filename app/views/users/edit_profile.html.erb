@@ -173,6 +173,18 @@
 
                   <div class="grid-row width-full">
                     <div class="field margin-top-3 grid-col-9">
+                      <%= f.label :accolades, 'Honors, degress (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <p>e.g. LCSW, M.A.</p>
+                      <%= f.text_field :accolades,
+                        value: @user.accolades,
+                        autofocus: true,
+                        class: "usa-input border-base-light"
+                      %>
+                    </div>
+                  </div>
+
+                  <div class="grid-row width-full">
+                    <div class="field margin-top-3 grid-col-9">
                       <%= f.label :alt_job_title, 'Title (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
                       <%= f.text_field :alt_job_title,
                         value: @user.alt_job_title.present? ? @user.alt_job_title : @user.job_title,
