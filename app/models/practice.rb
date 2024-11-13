@@ -220,8 +220,6 @@ class Practice < Innovation
   has_many :ancillary_services, through: :ancillary_service_practices
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
-  has_many :clinical_location_practices, dependent: :destroy
-  has_many :clinical_locations, through: :clinical_location_practices
   has_many :department_practices, dependent: :destroy
   has_many :departments, through: :department_practices
   has_many :developing_facility_type_practices, dependent: :destroy

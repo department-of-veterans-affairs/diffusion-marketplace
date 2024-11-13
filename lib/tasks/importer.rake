@@ -103,7 +103,6 @@ namespace :importer do
       categories
       clinical_conditions
       ancillary_services
-      clinical_locations
       departments
       practice_multimedia_images
       practice_multimedia_video_files
@@ -342,34 +341,6 @@ def ancillary_services
       else
         ancillary_service = AncillaryService.find_or_create_by(name: answer)
         AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
-      end
-    end
-  end
-end
-
-def clinical_locations
-  puts "==> Importing Practice: #{@name} Clinical Locations".light_blue
-  @practice.clinical_location_practices.each(&:destroy)
-  question_fields = {
-      'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value - 1
-    (q_index..end_index).each do |i|
-      answer = @answers[i]
-      next if answer.blank?
-
-      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\/)
-        split_answer.each do |ans|
-          clinical_location = ClinicalLocation.find_or_create_by(name: ans)
-          ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
-        end
-      else
-        clinical_location = ClinicalLocation.find_or_create_by(name: answer)
-        ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
       end
     end
   end
