@@ -206,6 +206,7 @@
                 <% if is_fellow %>
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :credentials, 'Credentials (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                    <p>Enter as a comma-separated list, entries will list vertically on bio page</p>
                     <%= f.text_area :credentials,
                       autofocus: true,
                       class: "usa-input height-15 border-base-light"
