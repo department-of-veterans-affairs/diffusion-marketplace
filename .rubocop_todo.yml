@@ -944,7 +944,6 @@ Rails/I18nLocaleTexts:
 Rails/InverseOf:
   Exclude:
     - 'app/models/category.rb'
-    - 'app/models/job_position_category.rb'
     - 'app/models/page.rb'
     - 'app/models/practice.rb'
 

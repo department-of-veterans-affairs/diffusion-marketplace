@@ -110,22 +110,6 @@ _community_impacts = [
     Category.find_or_create_by!(name: 'QUERI', short_name: 'queri', description: 'QUERI', parent_category: impact_categories[2]),
 ]
 
-
-_job_positions = [
-    JobPosition.find_or_create_by!(name: 'Clinic based nurse', short_name: 'clinic_based_nurse', description: 'Clinic based nurse'),
-    JobPosition.find_or_create_by!(name: 'Clinic based physician', short_name: 'clinic_based_physician', description: 'Clinic based physician'),
-    JobPosition.find_or_create_by!(name: 'Hospital based nurse', short_name: 'hospital_based_nurse', description: 'Hospital based nurse'),
-    JobPosition.find_or_create_by!(name: 'Hospital based physician', short_name: 'hospital_based_physician', description: 'Hospital based physician'),
-    JobPosition.find_or_create_by!(name: 'Nursing Assistant', short_name: 'nursing_assistant', description: 'Nursing Assistant'),
-    JobPosition.find_or_create_by!(name: 'Pharmacist', short_name: 'pharmacist', description: 'Pharmacist'),
-    JobPosition.find_or_create_by!(name: 'Pharmacy Tech', short_name: 'pharmacy_tech', description: 'Pharmacy Tech'),
-    JobPosition.find_or_create_by!(name: 'Researcher', short_name: 'researcher', description: 'Researcher'),
-    JobPosition.find_or_create_by!(name: 'Prosthetist', short_name: 'prosthetist', description: 'Prosthetist'),
-    JobPosition.find_or_create_by!(name: 'Purchasing Agent', short_name: 'purchasing_agent', description: 'Purchasing Agent'),
-    JobPosition.find_or_create_by!(name: 'Dentist', short_name: 'dentist', description: 'Dentist'),
-]
-
-
 _clinical_conditions = [
     ClinicalCondition.find_or_create_by!(name: 'Back Pain', short_name: 'back_pain', description: 'Back pain'),
     ClinicalCondition.find_or_create_by!(name: 'Chronic Obstructive Pulmonary Disease (COPD)', short_name: 'copd', description: 'Chronic Obstructive Pulmonary Disease (COPD)'),
