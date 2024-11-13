@@ -581,7 +581,6 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
                                      additional_resources_attributes: [:id, :_destroy, :name, :position, :description],
                                      publications_attributes: [:id, :_destroy, :title, :link, :position],
                                      additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
-                                     practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
                                      department: permitted_dynamic_keys(params[:practice][:department]),
                                      category: permitted_dynamic_keys(params[:practice][:category]),
                                      practice_award: permitted_dynamic_keys(params[:practice][:practice_award]),
