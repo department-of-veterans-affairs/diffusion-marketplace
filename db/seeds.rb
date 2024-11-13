@@ -163,21 +163,6 @@ _ancillary_services = [
     AncillaryService.find_or_create_by!(name: 'Pharmacy', short_name: 'pharmacy', description: 'Pharmacy'),
 ]
 
-
-_clinical_locations = [
-    ClinicalLocation.find_or_create_by!(name: 'Alcohol and Other Drug Abuse (AODA) treatment center', short_name: 'aoda', description: 'Alcohol and Other Drug Abuse (AODA) treatment center'),
-    ClinicalLocation.find_or_create_by!(name: 'Assisted Living Facility', short_name: 'assisted_living_facility', description: 'Assisted Living Facility'),
-    ClinicalLocation.find_or_create_by!(name: 'Community Based Outpatient Clinic (CBOC)', short_name: 'cboc', description: 'Community Based Outpatient Clinic (CBOC)'),
-    ClinicalLocation.find_or_create_by!(name: 'Community Living Centers (CLC)', short_name: 'clc', description: 'Community Living Centers (CLC)'),
-    ClinicalLocation.find_or_create_by!(name: 'Home Health', short_name: 'home_health', description: 'Home Health'),
-    ClinicalLocation.find_or_create_by!(name: 'Hospice Center', short_name: 'hospice_center', description: 'Hospice Center'),
-    ClinicalLocation.find_or_create_by!(name: 'Inpatient Hospital', short_name: 'inpatient_hospital', description: 'Inpatient Hospital'),
-    ClinicalLocation.find_or_create_by!(name: 'Outpatient Surgery Center', short_name: 'outpatient_surgery_center', description: 'Outpatient Surgery Center'),
-    ClinicalLocation.find_or_create_by!(name: 'Pain Clinic', short_name: 'pain_clinic', description: 'Pain Clinic'),
-    ClinicalLocation.find_or_create_by!(name: 'Skilled Nursing Facility (SNF)', short_name: 'snf', description: 'Skilled Nursing Facility (SNF)'),
-]
-
-
 _developing_facilities = [
     DevelopingFacilityType.find_or_create_by!(name: 'CBOC', short_name: 'cboc'),
     DevelopingFacilityType.find_or_create_by!(name: 'VA Medical Center', short_name: 'va_medical_center'),
