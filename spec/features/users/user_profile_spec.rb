@@ -86,6 +86,7 @@ describe 'The user index', type: :feature do
     fill_in('Work (Public Bio)', with: 'public bio work text')
     fill_in('Credentials (Public Bio)', with: 'public bio credentials text')
     fill_in('Project (Public Bio)', with: 'project text')
+    fill_in('Honors, degress (Public Bio)', with: 'LCSW, M.A.')
     click_button('Save changes')
 
     sb = User.find(@user.id)
@@ -95,6 +96,7 @@ describe 'The user index', type: :feature do
     expect(sb.work).to eq('public bio work text')
     expect(sb.credentials).to eq('public bio credentials text')
     expect(sb.project).to eq('project text')
+    expect(sb.accolades).to eq('LCSW, M.A.')
   end
 
   it 'should allow a user to add, change, and remove their avatar photo' do
@@ -129,6 +131,7 @@ describe 'The user index', type: :feature do
     expect(page).not_to have_selector("input[value='#{@user.credentials}']")
     expect(page).not_to have_selector("input[value='#{@user.work}']")
     expect(page).not_to have_selector("input[value='#{@user.project}']")
+    expect(page).not_to have_selector("input[value='#{@user.accolades}']")
   end
 
   it 'should have a favorited practice' do
