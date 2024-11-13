@@ -54,19 +54,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.index ["practice_id"], name: "index_additional_resources_on_practice_id"
   end
 
-  create_table "additional_staffs", force: :cascade do |t|
-    t.string "title"
-    t.string "hours_per_week"
-    t.string "duration_in_weeks"
-    t.boolean "permanent"
-    t.text "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_additional_staffs_on_practice_id"
-  end
-
   create_table "ahoy_events", force: :cascade do |t|
     t.bigint "visit_id"
     t.bigint "user_id"
@@ -1237,7 +1224,6 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
 
   add_foreign_key "additional_documents", "practices"
   add_foreign_key "additional_resources", "practices"
-  add_foreign_key "additional_staffs", "practices"
   add_foreign_key "ancillary_service_practices", "ancillary_services"
   add_foreign_key "ancillary_service_practices", "practices"
   add_foreign_key "category_practices", "categories"

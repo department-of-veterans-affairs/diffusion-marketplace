@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Practice, type: :model do
   describe 'associations' do
     it { should have_many(:additional_documents) }
-    it { should have_many(:additional_staffs) }
     it { should have_many(:additional_resources) }
     it { should have_many(:ancillary_service_practices) }
     it { should have_many(:ancillary_services) }

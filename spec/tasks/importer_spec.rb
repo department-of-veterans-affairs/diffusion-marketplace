@@ -60,13 +60,6 @@ describe 'Importer' do
       expect(flow3.risk_mitigations.first.mitigations.first.description).to include('Support Practice Champions with a pre-implementati')
       expect(flow3.risk_mitigations.first.mitigations.last.description).to include('Empower and support Practice Champions with offici')
 
-      # Additional Staffs
-      expect(flow3.additional_staffs.count).to be(5)
-      manager = flow3.additional_staffs.find_by(title: 'Implementation manager ')
-      expect(manager).to be_truthy
-      expect(manager.hours_per_week).to eq('3 hours per week for 1 month total')
-      expect(manager.duration_in_weeks).to eq('Permanent')
-
       # Additional Resources
       expect(flow3.additional_resources.count).to be(1)
       expect(flow3.additional_resources.first.description).to eq('VISN-Wide Corporate Data Warehouse (CDW) Access')
