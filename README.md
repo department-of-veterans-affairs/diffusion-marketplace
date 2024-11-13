@@ -17,7 +17,6 @@
 | `rails surveymonkey:download_response_files` (DEPRECATED) | Rake task to download files from our SurveyMonkey practice submission form. **Do not use this anymore. Ever.**  |
 | `rails visns:create_visns_and_transfer_data` | Creates new VISN records based on the data from the "practice_origin_lookup.json" file
 | `rails va_facilities:create_or_update_va_facilities` | Creates or updates VA facility records based on the data from the "va_facilities.json" file
-| `rails visns:create_visn_liaisons_and_transfer_data` | Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
 | `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
 | `rails milestones:milestones_transfer` | Transfers all of the original timeline entry milestones to the new milestone model  |
 | `rails inet_partner_practices:assign_inet_partner` | Assigns the iNET practice partner to practices that have iNET as a partner  |
@@ -151,7 +150,6 @@ This will run:
 2. `rails importer:import_answers` - imports the initial practice data the Diffusion Marketplace team collected via Survey Monkey, images and all~
 4. `rails visns:create_visns_and_transfer_data` - Creates new VISN records based on the data from the "practice_origin_lookup.json" file
 5. `rails va_facilities:create_or_update_va_facilities` - Creates or updates VA facility records based on the data from the "va_facilities.json" file
-6. `rails visns:create_visn_liaisons_and_transfer_data` - Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
 7. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
 10. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
 12. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
