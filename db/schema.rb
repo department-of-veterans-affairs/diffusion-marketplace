@@ -1122,6 +1122,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.text "work"
     t.text "project"
     t.string "alt_job_title"
+    t.string "accolades"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["granted_public_bio"], name: "index_users_on_granted_public_bio"

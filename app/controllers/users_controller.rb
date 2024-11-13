@@ -128,6 +128,7 @@ class UsersController < ApplicationController
   def user_params
     return params.require(:user).permit(:avatar, :bio) if session[:user_type] === 'ntlm'
     params.require(:user).permit( :accepted_term,
+                                  :accolades,
                                   :alt_first_name,
                                   :alt_job_title,
                                   :alt_last_name,
