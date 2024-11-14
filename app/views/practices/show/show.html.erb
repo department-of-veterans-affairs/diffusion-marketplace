@@ -82,13 +82,13 @@
       <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">Overview</h2>
       <div class="metric-section practice-section">
         <section id="overview_problem" class="margin-bottom-5">
-          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'Problem', s_area: 'problem'} %>
         </section>
         <section id="overview_solution" class="margin-bottom-5">
-          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement: @practice.overview_solution, title: 'The solution', s_area: 'solution'} %>
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement: @practice.overview_solution, title: 'Solution', s_area: 'solution'} %>
         </section>
         <section id="overview_results">
-          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement: @practice.overview_results, title: 'The results', s_area: 'results'} %>
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement: @practice.overview_results, title: 'Results', s_area: 'results'} %>
         </section>
       </div>
     </div>
