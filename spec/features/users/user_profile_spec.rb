@@ -141,13 +141,13 @@ describe 'The user index', type: :feature do
 
     @user.update!(
       granted_public_bio: true,
-      first_name: 'Jay', last_name: 'test',
-      alt_last_name: 'Gorman'
+      first_name: 'John', last_name: 'test',
+      alt_last_name: 'Goodman'
     )
     visit '/edit-profile'
     click_link 'Public Bio Page'
 
-    expected_path = '/bios/1-Jay-Gorman'
+    expected_path = '/bios/1-John-Goodman'
     expect(page).to have_current_path(expected_path, ignore_query: true)
   end
 
