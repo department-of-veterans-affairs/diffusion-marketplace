@@ -138,17 +138,18 @@ describe 'The user index', type: :feature do
     login_as(@user, scope: :user, run_callbacks: false)
     visit '/edit-profile'
     expect(page).not_to have_content('Public Bio Page')
+    expect(page).not_to have_content('View Public Profile')
 
     @user.update!(
       granted_public_bio: true,
       first_name: 'John', last_name: 'test',
       alt_last_name: 'Goodman'
     )
-    visit '/edit-profile'
-    click_link 'Public Bio Page'
 
+    visit '/edit-profile'
     expected_path = '/bios/1-John-Goodman'
-    expect(page).to have_current_path(expected_path, ignore_query: true)
+    expect(page).to have_link('Public Bio Page', href: expected_path)
+    expect(page).to have_link('View Public Profile', href: expected_path)
   end
 
   it 'should have a favorited practice' do
