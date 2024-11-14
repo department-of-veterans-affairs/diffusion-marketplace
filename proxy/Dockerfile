@@ -3,6 +3,22 @@
 # Note: Comment out the next line to run docker locally
 FROM 124858472090.dkr.ecr.us-gov-west-1.amazonaws.com/diffusion-marketplace:centos9
 MAINTAINER Agile Six Applications, Inc. <contact@agile6.com>
+
+
+ENV nginxversion="1.27.1-1" \
+    elversion="9"
+    
+# Update repositories and install necessary packages
+RUN dnf remove -y nginx nginx-core && \
+    dnf update -y && \
+    update-ca-trust && \
+    dnf install -y wget openssl sed gettext pcre2 && \
+    dnf -y autoremove && \
+    dnf clean all && \
+    wget http://nginx.org/packages/mainline/centos/9/x86_64/RPMS/nginx-$nginxversion.el$elversion.ngx.x86_64.rpm &&\
+    rpm -iv nginx-$nginxversion.el$elversion.ngx.x86_64.rpm
+
+
 # establish where Nginx should look for files
 ENV RAILS_ROOT /home/nginx/app
 ENV PROXY_ROOT /home/nginx/www
