@@ -134,6 +134,23 @@ describe 'The user index', type: :feature do
     expect(page).not_to have_selector("input[value='#{@user.accolades}']")
   end
 
+  it 'should link to the public bio page if granted' do
+    login_as(@user, scope: :user, run_callbacks: false)
+    visit '/edit-profile'
+    expect(page).not_to have_content('Public Bio Page')
+
+    @user.update!(
+      granted_public_bio: true,
+      first_name: 'Jay', last_name: 'test',
+      alt_last_name: 'Gorman'
+    )
+    visit '/edit-profile'
+    click_link 'Public Bio Page'
+
+    expected_path = '/bios/1-Jay-Gorman'
+    expect(page).to have_current_path(expected_path, ignore_query: true)
+  end
+
   it 'should have a favorited practice' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: @user)
     @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', user: @user2)
