@@ -58,4 +58,64 @@ RSpec.describe User, type: :model do
       expect(non_existent_emails).to contain_exactly('nonexisting@va.gov')
     end
   end
+
+  describe '#preferred_full_name' do
+    context 'when both alt_first_name and alt_last_name are present' do
+      it 'returns the full name using the alt names' do
+        user = User.new(alt_first_name: 'Jay', alt_last_name: 'Smith', first_name: 'James', last_name: 'Doe')
+        expect(user.preferred_full_name).to eq('Jay Smith')
+      end
+    end
+
+    context 'when only alt_first_name is present' do
+      it 'returns the full name using alt_first_name and last_name' do
+        user = User.new(alt_first_name: 'Jay', first_name: 'James', last_name: 'Doe')
+        expect(user.preferred_full_name).to eq('Jay Doe')
+      end
+    end
+
+    context 'when only alt_last_name is present' do
+      it 'returns the full name using first_name and alt_last_name' do
+        user = User.new(first_name: 'James', alt_last_name: 'Smith')
+        expect(user.preferred_full_name).to eq('James Smith')
+      end
+    end
+
+    context 'when neither alt names nor primary names are present' do
+      it 'returns "User"' do
+        user = User.new
+        expect(user.preferred_full_name).to eq('User')
+      end
+    end
+
+    context 'when only first_name and last_name are present' do
+      it 'returns the full name using first_name and last_name' do
+        user = User.new(first_name: 'James', last_name: 'Doe')
+        expect(user.preferred_full_name).to eq('James Doe')
+      end
+    end
+  end
+
+  describe '#bio_page_name' do
+    context 'when accolades are present' do
+      it 'returns the preferred full name with accolades' do
+        user = User.new(alt_first_name: 'Jay', last_name: 'Doe', accolades: 'Ph.D.')
+        expect(user.bio_page_name).to eq('Jay Doe, Ph.D.')
+      end
+    end
+
+    context 'when accolades are not present' do
+      it 'returns only the preferred full name' do
+        user = User.new(first_name: 'James', last_name: 'Doe')
+        expect(user.bio_page_name).to eq('James Doe')
+      end
+    end
+
+    context 'when preferred full name returns "User"' do
+      it 'returns "User" without accolades' do
+        user = User.new(accolades: 'Ph.D.')
+        expect(user.bio_page_name).to eq('User, Ph.D.')
+      end
+    end
+  end
 end
