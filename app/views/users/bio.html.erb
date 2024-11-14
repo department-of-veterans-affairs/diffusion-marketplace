@@ -26,7 +26,7 @@
   <div class="grid-row grid-gap">
     <!-- Work -->
     <% if @user.work.present? %>
-      <div class="margin-top-5">
+      <div class="grid-col-12 margin-top-5">
         <h3 class="font-sans-md text-bold">Work</h3>
         <ul class="usa-list usa-list--unstyled">
           <% @user.work.split(",").each do |work_item| %>
@@ -38,17 +38,17 @@
 
     <!-- About -->
     <% if @user.bio.present? %>
-      <div class="margin-top-4">
+      <div class="grid-col-12 margin-top-4">
         <h3 class="font-sans-md text-bold">About</h3>
-        <div class="line-height-sans-3">
-          <p><%= simple_format(@user.bio) %></p>
+        <div class="line-height-sans-3 usa-prose">
+          <%= simple_format(@user.bio) %>
         </div>
       </div>
     <% end %>
 
     <!-- Credentials -->
     <% if @user.credentials.present? %>
-      <div class="margin-top-4">
+      <div class="grid-col-12 margin-top-4">
         <h3 class="font-sans-md text-bold">Credentials</h3>
         <div class="line-height-sans-3">
           <p><%= @user.credentials %></p>
