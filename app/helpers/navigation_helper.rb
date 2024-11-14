@@ -316,5 +316,10 @@ module NavigationHelper
     if controller === 'errors'
       empty_breadcrumbs
     end
+
+    # remove breadcrumbs from bios pages
+    if controller == 'users' && action == 'bio'
+      empty_breadcrumbs
+    end
   end
 end
