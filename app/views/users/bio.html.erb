@@ -10,7 +10,7 @@
       <% end %>
     </div>
 
-    <div>
+    <div class="grid-col">
       <!-- User Name, Job Title, Project -->
       <h2 class="margin-top-0"><%= @user.bio_page_name %></h2>
       <% job_title = @user.alt_job_title || @user.job_title %>
@@ -40,7 +40,7 @@
     <% if @user.bio.present? %>
       <div class="grid-col-12 margin-top-4">
         <h3 class="font-sans-md text-bold">About</h3>
-        <div class="line-height-sans-3 usa-prose">
+        <div class="line-height-sans-3">
           <%= simple_format(@user.bio) %>
         </div>
       </div>
