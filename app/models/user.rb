@@ -124,6 +124,19 @@ class User < ApplicationRecord
     "#{first_name}#{' ' if last_name && first_name}#{last_name}"
   end
 
+  def preferred_full_name
+    first = alt_first_name.presence || first_name
+    last = alt_last_name.presence || last_name
+
+    return 'User' if first.blank? && last.blank?
+
+    "#{first}#{' ' if first && last}#{last}"
+  end
+
+  def bio_page_name
+    "#{preferred_full_name}#{', ' if accolades}#{accolades}"
+  end
+
   def favorite_practices
     user_practices.select(&:favorited).map(&:practice)
   end
@@ -209,6 +222,10 @@ class User < ApplicationRecord
     non_existent_emails = emails - existing_emails
 
     [users, non_existent_emails]
+  end
+
+  def name_slug
+    "#{first_name.downcase}-#{last_name.downcase}"
   end
 
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
