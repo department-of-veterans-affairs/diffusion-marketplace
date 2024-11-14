@@ -34,6 +34,15 @@
               <div class="actions margin-bottom-4-important display-inline-block">
                 <%= f.submit "Save changes", class: 'usa-button usa-button-primary' %>
               </div>
+              <% if @user.granted_public_bio %>
+                <div class="display-inline-block margin-right-1">
+                  <%= link_to user_bio_path(@user) do %>
+                    <button class="usa-button usa-button--outline margin-right-0">
+                      View Public Profile
+                    </button>
+                  <% end %>
+                </div>
+              <% end %>
               <% if @user.errors.any? %>
               <div class="usa-alert usa-alert--error" >
                 <div class="usa-alert__body">

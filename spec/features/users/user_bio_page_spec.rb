@@ -10,17 +10,17 @@ RSpec.feature 'User Public Bio Page', type: :feature do
   context 'when all profile elements are present with alternate names and job title' do
     let(:user) do
       create(:user,
-        first_name: 'John',
+        first_name: 'Johnathan',
         last_name: 'Doe',
         accolades: 'LCSW, M.A.',
-        alt_first_name: 'Jay',
-        alt_last_name: 'Gorman',
+        alt_first_name: 'John',
+        alt_last_name: 'Goodman',
         job_title: 'Doctor',
         alt_job_title: '2024 Entrepreneur in Residence Fellow',
-        project: 'Veterans Socials: Expanding Social Support in the Community',
-        work: 'Veterans Socials: Expanding Social Support in the Community, Peer Specialist Veterans Connect Over Coffee',
-        bio: 'Dr. Jay Gorman is a clinical research psychologist in the VISN 1 New England Mental Illness Research, Education, and Clinical (MIRREC) Center and Director of the Social Reintegration Research Program at the VA Bedford Healthcare System',
-        credentials: 'MIRREC Clinical Research Investigator, Director, Social Reintegration Research Program, VA Bedford Healthcare System',
+        project: 'Fake Project: Faking projects for test data',
+        work: 'Fake Project: Faking projects for test data, Fake work text',
+        bio: 'Dr. John Goodman is a fake doctor and this text is for testing purposes',
+        credentials: 'fake credentials text for testing purposes',
         avatar: Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/va-seal.png'), 'image/png'),
         granted_public_bio: true
       )
@@ -28,16 +28,15 @@ RSpec.feature 'User Public Bio Page', type: :feature do
 
     scenario 'displays all sections with full data, preferring alt names and job title' do
       expect(page).to have_css('img.avatar-profile-photo')
-      expect(page).to have_content('Jay Gorman, LCSW, M.A.')
+      expect(page).to have_content('John Goodman, LCSW, M.A.')
       expect(page).to have_content('2024 Entrepreneur in Residence Fellow')
-      expect(page).to have_content('Veterans Socials: Expanding Social Support in the Community')
+      expect(page).to have_content('Fake Project: Faking projects for test data')
       expect(page).to have_content('Work')
-      expect(page).to have_content('Veterans Socials: Expanding Social Support in the Community')
-      expect(page).to have_content('Peer Specialist Veterans Connect Over Coffee')
+      expect(page).to have_content('Fake work text')
       expect(page).to have_content('About')
-      expect(page).to have_content('Dr. Jay Gorman is a clinical research psychologist in the VISN 1 New England Mental Illness Research, Education, and Clinical (MIRREC) Center and Director of the Social Reintegration Research Program at the VA Bedford Healthcare System')
+      expect(page).to have_content('Dr. John Goodman is a fake doctor and this text is for testing purposes')
       expect(page).to have_content('Credentials')
-      expect(page).to have_content('MIRREC Clinical Research Investigator, Director, Social Reintegration Research Program, VA Bedford Healthcare System')
+      expect(page).to have_content('fake credentials text for testing purposes')
     end
   end
 

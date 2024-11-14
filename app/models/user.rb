@@ -137,6 +137,10 @@ class User < ApplicationRecord
     "#{preferred_full_name}#{', ' if accolades}#{accolades}"
   end
 
+  def to_param
+    "#{id}-#{preferred_full_name.gsub(' ', '-')}"
+  end
+
   def favorite_practices
     user_practices.select(&:favorited).map(&:practice)
   end
