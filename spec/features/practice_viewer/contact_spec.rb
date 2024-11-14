@@ -285,11 +285,11 @@ describe 'Contact section', type: :feature, js: true do
     it 'hides contact info from public users' do
       visit practice_path(practice_with_private_contact)
       expect(page).not_to have_content('Email user1@va.gov with questions about this innovation.')
-      expect(page).not_to have_content('Email innovation')
+      expect(page).not_to have_content('Contact Team')
       login_as(user1, :scope => :user, :run_callbacks => false)
       visit practice_path(practice)
       expect(page).to have_content('Email user3@va.gov with questions about this innovation.')
-      expect(page).to have_content('Email innovation')
+      expect(page).to have_content('Contact Team')
     end
   end
 
