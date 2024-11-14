@@ -25,6 +25,14 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  def bio
+    @user = User.find_by(id: params[:id].to_i)
+
+    if @user.nil? || !@user.granted_public_bio
+      redirect_to root_path, alert: 'Bio page unavailable'
+    end
+  end
+
   def update_profile
     redirect_to root_path unless current_user.present?
     @user = current_user
@@ -126,7 +134,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    return params.require(:user).permit(:avatar, :bio) if session[:user_type] === 'ntlm'
     params.require(:user).permit( :accepted_term,
                                   :accolades,
                                   :alt_first_name,

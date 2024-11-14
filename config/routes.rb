@@ -85,6 +85,8 @@ Rails.application.routes.draw do
     patch :re_enable
   end
 
+  get '/bios/:id', to: 'users#bio', as: :user_bio
+
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.has_role?(:admin) } do
     mount Sidekiq::Web => '/sidekiq'
