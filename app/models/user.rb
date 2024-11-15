@@ -16,12 +16,9 @@ class User < ApplicationRecord
   rolify unique: true
 
   has_many :visits, class_name: 'Ahoy::Visit'
-
   has_many :user_practices
   has_many :practices, through: :user_practices
-
   has_many :practice_editors, dependent: :destroy
-
   has_many :practice_editor_sessions
 
   # This allows users to post comments with the use of the Commontator gem
@@ -44,6 +41,7 @@ class User < ApplicationRecord
   validate :password_complexity
   validate :password_uniqueness
   validate :va_email
+  validate :validate_work_links, if: :work_changed?
 
   validates_attachment_content_type :avatar, content_type: %r{\Aimage/.*\z}
 
@@ -232,6 +230,16 @@ class User < ApplicationRecord
     "#{first_name.downcase}-#{last_name.downcase}"
   end
 
+  def work
+    stored_work = read_attribute(:work)
+
+    if stored_work.is_a?(Hash)
+      stored_work.values
+    else
+      stored_work || []
+    end
+  end
+
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
 
   protected
@@ -255,5 +263,28 @@ class User < ApplicationRecord
 
   def refresh_public_bio_cache_if_granted_public_bio
     refresh_public_bio_cache if granted_public_bio?
+  end
+
+  def validate_work_links
+    return unless work.present?
+    domain_pattern = /\.(com|org|net|gov|edu|io|co|us|uk|biz|info|me)\b/i
+
+    work.each do |entry|
+      next if entry["link"].blank?
+
+      link = entry["link"].strip
+      link = "https://#{link}" unless link.match?(/\Ahttps?:\/\//i)
+
+      begin
+        uri = URI.parse(link)
+        if (uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)) && uri.host&.match?(domain_pattern)
+          entry["link"] = link
+        else
+          errors.add(:work, "contains an invalid URL in the link field: #{entry['link']}")
+        end
+      rescue URI::InvalidURIError
+        errors.add(:work, "contains an invalid URL in the link field: #{entry['link']}")
+      end
+    end
   end
 end
