@@ -1,361 +1,135 @@
-(($) => {
-  const $document = $(document);
-  let $deleteBtn;
-  let $imgsContainer;
-  let $placeholderImg;
-  let workIndex = 0;
-  // let $editBtn;
-  // let $saveEditBtn;
-  // let $cancelEditBtn;
+class ProfileEditor {
+  constructor() {
+    this.$document = $(document);
+    this.$deleteBtn = $('.dm-cropper-delete-image');
+    this.$imgsContainer = $('.dm-cropper-images-container');
+    this.$placeholderImg = $('.cropper-image-placeholder');
+    this.workIndex = 0;
 
-  function _toggleDeleteBtn({ visible, target }) {
-    let imgDeleteBtn = $(target).closest('.dm-cropper-boundary').find($deleteBtn);
-    let hideDeleteBtn = $(target).closest('.dm-cropper-boundary').find($imgsContainer).hasClass('dm-resource-image');
+    this.initialize();
+  }
 
-    if (visible && !hideDeleteBtn) {
+  initialize() {
+    this.setEventListeners();
+    this.initializeWorkEntries();
+    this.repositionAddWorkEntryButton();
+  }
+
+  setEventListeners() {
+    this.$document.on('turbolinks:load', () => this.loadProfileFunctions());
+    $('.dm-cropper-upload-image').on('change', (event) => this.handleImageUpload(event));
+    this.$deleteBtn.on('click', (event) => this.clearUpload(event));
+    $('#work_links').on('click', '.remove-work-entry', (event) => this.removeWorkEntryField(event)); // Use arrow function here
+    $("#add_work_entry").on("click", (e) => this.addWorkEntryField(e));
+  }
+
+  loadProfileFunctions() {
+    this.initializeWorkEntries();
+    this.attachWorkEntryEventListeners();
+  }
+
+  handleImageUpload(event) {
+    const uploadedImg = event.target.files[0];
+    const imgSizeMb = uploadedImg.size * 0.000001; // Convert bytes to MB
+    if (imgSizeMb <= 32) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imgHtml = `<img src="${e.target.result}" class="avatar-profile-photo" alt=""/>`;
+        this.$imgsContainer.empty().append(imgHtml);
+        $('.dm-image-error-text').addClass('hidden');
+        this.toggleDeleteBtn(true, event.target);
+        this.$placeholderImg.addClass('display-none');
+      };
+      reader.readAsDataURL(uploadedImg);
+    } else {
+      this.$imgsContainer.empty();
+      $('.dm-image-error-text').removeClass('hidden').find('p').text('Image exceeds 32MB limit.');
+      this.clearUpload(event.target);
+    }
+  }
+
+  clearUpload(event) {
+    event.preventDefault();
+
+    this.$imgsContainer.empty();
+    const $fileInput = $(".dm-cropper-upload-image");
+
+    const $newFileInput = $fileInput.clone().val("");
+    $fileInput.replaceWith($newFileInput);
+    $newFileInput.on('change', (event) => this.handleImageUpload(event));
+    this.$placeholderImg.removeClass('display-none');
+    this.toggleDeleteBtn(false);
+  }
+
+  toggleDeleteBtn(visible, target) {
+    const imgDeleteBtn = $(target).closest('.dm-cropper-boundary').find(this.$deleteBtn);
+    if (visible) {
       imgDeleteBtn.removeClass('hidden');
     } else {
       imgDeleteBtn.addClass('hidden');
     }
   }
 
-  function _clearUpload({ target }) {
-    let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find($imgsContainer)
-    let area = $(target).closest('.dm-cropper-boundary').data('area')
+  addWorkEntryField(e) {
+    if (e) e.preventDefault();
+    const newWorkEntryHtml = `
+      <div class="work-entry margin-bottom-2" data-index="${this.workIndex}">
+        <label for="user_work_${this.workIndex}_text" class="usa-label">Text</label>
+        <input type="text" name="user[work][${this.workIndex}][text]" id="user_work_${this.workIndex}_text" class="usa-input margin-bottom-1" placeholder="e.g., Project Name">
 
-    $imgImgsContainer.empty()
-    $(target)
-      .closest('.dm-cropper-boundary').find(".usa-file-input")
-      .replaceWith(`
-        <input  class="dm-cropper-upload-image usa-hint usa-file-input ${area}-image-attachment" type="file" accept=".jpg,.jpeg,.png" />
-      `)
-    $('.dm-cropper-upload-image').on('change', (event) => {
-      _attachAvatarImg({ uploadedImg: event.target.files[0], target: event.target });
-    })
-    $placeholderImg.removeClass('display-none')
-  }
-
-  function _attachAvatarImg({ uploadedImg, target }) {
-    let imgSizeMb = uploadedImg.size * 0.000001; // convert bytes to MB
-    let $errorText = $('.dm-image-error-text');
-    let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find($imgsContainer);
-
-    if (imgSizeMb <= 32) {
-      let reader = new FileReader();
-
-      reader.onload = function(event) {
-        let imgOrgElement = `<img src="${event.target.result}" class="avatar-profile-photo" alt=""/>`;
-        $imgImgsContainer.empty();
-        $imgImgsContainer.append(imgOrgElement);
-        $errorText.addClass('hidden');
-        _successfulImageLoad({ target });
-
-        $(target).closest('.dm-cropper-boundary').find('.dm-cropper-delete-image input[type="checkbox"]').prop('checked', false);
-      };
-
-      reader.readAsDataURL(uploadedImg);
-    } else {
-      $imgImgsContainer.empty();
-      $errorText.removeClass('hidden');
-      $errorText.find('p').text('Sorry, you cannot upload an image larger than 32MB.');
-      _failedImageLoad({ target });
-    }
-  }
-
-  function _failedImageLoad({ target }) {
-    _toggleDeleteBtn({ visible: false, target });
-    _clearUpload({ target });
-    // _toggleEditBtn({ visible: false, target })
-    // _setCropBoxValues({ isCrop: false, target });
-    // _toggleCropperBtnView({ visible: false, target });
-  }
-
-  function _successfulImageLoad({ target }) {
-    // _toggleEditBtn({ visible: true, target })
-    _toggleDeleteBtn({ visible: true, target });
-    // _setCropBoxValues({ isCrop: false, target });
-    // _toggleCropperBtnView({ visible: false, target });
-  }
-
-  function _attachUploadEventListener() {
-    $('.dm-cropper-upload-image').on('change', (event) => {
-      _attachAvatarImg({ uploadedImg: event.target.files[0], target: event.target });
-      $placeholderImg.addClass('display-none');
-    })
-  }
-
-  function _attachDeleteEventListener() {
-    $deleteBtn.click((event) => {
-      _clearUpload({ target: event.target })
-      _toggleDeleteBtn({ visible: false, target: event.target });
-      // _toggleEditBtn({ visible: false, target: event.target });
-      // _toggleCropperBtnView({ visible: false, target: event.target });
-      // _setCropBoxValues({ isCrop: false, target: event.target });
-    });
-  }
-
-  // Photo editing logic, taken from overview_image_editor file, needs adjusting to get working properly:
-
-  // function _attachEditEventListener() {
-  //   $editBtn.click((event)  => {
-  //     event.preventDefault();
-  //     _toggleCropper({ visible: true, target: event.target });
-  //     // _toggleDeleteBtn({ visible: false, target: event.target });
-  //     _toggleImageView({ isCrop: true, target: event.target });
-  //     // _toggleCropperBtnView({ visible: true, target: event.target });
-  //     // _toggleEditBtn({ visible: false, target: event.target });
-  //   });
-  // }
-
-  // function _attachSaveEditEventListener() {
-  //   $saveEditBtn.click((event) => {
-  //     _setCropBoxValues({ isCrop: true, target: event.target });
-  //   });
-  // }
-
-  // function _attachCancelEditEventListener() {
-  //   $cancelEditBtn.click((event) => {
-  //     _toggleImageView({ isCrop: false, target: event.target })
-  //     _toggleDeleteBtn({ visible: true, target: event.target });
-  //     // _toggleCropper({ visible: false, target: event.target });
-  //     // _toggleCropperBtnView({ visible: false, target: event.target });
-  //     // _toggleEditBtn({ visible: true, target: event.target });
-  //     // _setCropBoxValues({ isCrop: false, target: event.target });
-  //   });
-  // }
-
-  // function _toggleCropperBtnView({ visible, target}) {
-  //   let $imgSaveEditBtn = $(target).closest('.dm-cropper-boundary').find($saveEditBtn)
-  //   let $imgCancelEditBtn = $(target).closest('.dm-cropper-boundary').find($cancelEditBtn)
-
-  //   if (visible) {
-  //     $imgSaveEditBtn.removeClass('hidden');
-  //     $imgCancelEditBtn.removeClass('hidden');
-  //   } else {
-  //     $imgSaveEditBtn.addClass('hidden');
-  //     $imgCancelEditBtn.addClass('hidden');
-  //   }
-  // }
-
-  // function _createModifiedImage({ target }) {
-  //   let $image = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original');
-  //   let setAsCanvas = $(target).closest('.dm-cropper-boundary').find($imgsContainer).hasClass('dm-resource-image');
-  //   if ($image && $image.data('cropper')) {
-  //     // Generate the cropped image as a canvas
-  //     $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original').addClass('hidden')
-  //     let croppedCanvas = $image.data('cropper').getCroppedCanvas({ width: 310 })
-  //     if (setAsCanvas) {
-  //       croppedCanvas.classList.add('dm-cropper-thumbnail-modified')
-  //       $(target).closest('.dm-cropper-boundary').find($imgsContainer).append(croppedCanvas)
-  //     } else {
-  //       let url = croppedCanvas.toDataURL();
-  //       let image = new Image();
-  //       image.src = url;
-  //       image.classList.add('dm-cropper-thumbnail-modified')
-  //       $(target).closest('.dm-cropper-boundary').find($imgsContainer).append(image)
-  //     }
-
-  //     // Optionally, toggle other UI elements (e.g., hide Save/Cancel, show Edit)
-  //     _toggleCropperBtnView({ visible: false, target });
-  //     _toggleEditBtn({ visible: true, target });
-  //     _toggleDeleteBtn({ visible: true, target });
-  //   }
-  // }
-
-
-  // function _toggleImageView({ isCrop, target }) {
-  //   let $originalImage = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original');
-  //   let $modifiedCanvas = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-modified');
-
-  //   if (isCrop && $originalImage) {
-  //     $originalImage.removeClass('hidden');
-  //     $modifiedCanvas.addClass('hidden')
-  //   } else {
-  //     if ($modifiedCanvas.length > 0) {
-  //       $originalImage.addClass('hidden');
-  //       $modifiedCanvas.removeClass('hidden')
-  //     } else {
-  //       $originalImage.removeClass('hidden');
-  //     }
-  //   }
-  // }
-
-  // function _toggleCropper({ visible, target }) {
-  //   let $image = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original');
-
-  //   if (visible) {
-  //     let cropOptions = {
-  //         checkCrossOrigin: false,
-  //         checkOrientation: true,
-  //         viewMode: 2,
-  //         minContainerWidth: 100,
-  //         aspectRatio: 1
-  //     }
-
-  //     // create Cropper instance
-  //     $image.cropper(cropOptions);
-  //   } else {
-  //     if ($image.data('cropper')) {
-  //       $image.data('cropper').destroy();
-  //     }
-  //   }
-  // }
-
-  // function _toggleEditBtn({ visible, target }) {
-  //   let $imgEditBtn = $(target).closest('.dm-cropper-boundary').find($editBtn)
-
-  //   if (visible) {
-  //     $imgEditBtn.removeClass('hidden');
-  //   } else {
-  //     $imgEditBtn.addClass('hidden');
-  //   }
-  // }
-
-  // function _setCropBoxValues({ isCrop, target }) {
-  //   let $image = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original');
-
-  //   if (isCrop && $image.data('cropper')) {
-  //     let cropValues = $image.data('cropper').getData(true);
-  //     $(target).closest('.dm-cropper-boundary').find(".crop_x").val(cropValues.x);
-  //     $(target).closest('.dm-cropper-boundary').find(".crop_y").val(cropValues.y);
-  //     $(target).closest('.dm-cropper-boundary').find(".crop_w").val(cropValues.width);
-  //     $(target).closest('.dm-cropper-boundary').find(".crop_h").val(cropValues.height);
-
-  //     _createModifiedImage({ target })
-  //     _toggleCropper({ visible: false, target });
-  //     _toggleCropperBtnView({ visible: false, target });
-  //     _toggleEditBtn({ visible: true, target });
-  //     _toggleDeleteBtn({ visible: true, target });
-  //     _toggleImageView({ isCrop: false, target });
-  //   } else {
-  //     $(target).closest('.dm-cropper-boundary').find(".crop_x").val(null);
-  //     $(target).closest('.dm-cropper-boundary').find(".crop_y").val(null);
-  //     $(target).closest('.dm-cropper-boundary').find(".crop_w").val(null);
-  //     $(target).closest('.dm-cropper-boundary').find(".crop_h").val(null);
-  //   }
-  // }
-
-  function attachImgActionsEventListeners() {
-    _attachUploadEventListener();
-    _attachDeleteEventListener();
-    // _attachEditEventListener();
-    // _attachSaveEditEventListener();
-    // _attachCancelEditEventListener();
-  }
-
-  function setImageVars() {
-    $deleteBtn = $('.dm-cropper-delete-image');
-    $imgsContainer = $('.dm-cropper-images-container');
-    $placeholderImg = $('.cropper-image-placeholder');
-    // $editBtn = $('.dm-cropper-edit-mode');
-    // $cancelEditBtn = $('.dm-cropper-cancel-edit');
-    // $saveEditBtn = $('.dm-cropper-save-edit');
-  }
-
-  function attachNewFieldEventListeners() {
-    $document.arrive('.dm-cropper-boundary', (newElem) => {
-      setImageVars();
-      _attachUploadEventListener();
-      // _attachSaveEditEventListener();
-      // _attachCancelEditEventListener();
-    })
-  }
-
-  function addWorkEntryField(text = '', link = '') {
-    const newWorkEntry = `
-      <div class="work-entry margin-bottom-2" data-index="${workIndex}">
-        <label for="user_work_${workIndex}_text" class="usa-label">Text</label>
-        <input type="text" name="user[work][${workIndex}][text]" id="user_work_${workIndex}_text" class="usa-input margin-bottom-1" placeholder="e.g., Project Name" value="${text}">
-
-        <label for="user_work_${workIndex}_link" class="usa-label">Link</label>
-        <input type="text" name="user[work][${workIndex}][link]" id="user_work_${workIndex}_link" class="usa-input margin-bottom-1" placeholder="e.g., https://example.com" value="${link}">
+        <label for="user_work_${this.workIndex}_link" class="usa-label">Link</label>
+        <input type="text" name="user[work][${this.workIndex}][link]" id="user_work_${this.workIndex}_link" class="usa-input margin-bottom-1" placeholder="e.g., https://example.com">
 
         <button type="button" class="remove-work-entry usa-button usa-button--unstyled">Remove</button>
       </div>
     `;
+    $("#work_links").append(newWorkEntryHtml);
+    $(`#user_work_${this.workIndex}_link`).on('input', (event) => this.validateLinkInput(event));
 
-    $("#work_links").append(newWorkEntry);
-    $(`#user_work_${workIndex}_link`).on('input', validateLinkInput);
-
-    workIndex++;
-    if ( workIndex > 1 ) {
-      repositionAddButton();
-    }
+    this.workIndex++;
+    this.repositionAddWorkEntryButton();
   }
 
-  function removeWorkEntryField(event) {
+  removeWorkEntryField(event) {
     event.preventDefault();
     $(event.target).closest(".work-entry").remove();
-
     if ($("#work_links .work-entry").length === 0) {
-      addWorkEntryField();
+      this.addWorkEntryField();
     }
-
-    repositionAddButton();
+    this.repositionAddWorkEntryButton();
   }
 
-  function repositionAddButton() {
+  repositionAddWorkEntryButton() {
     let addButton = $("#add_work_entry");
-
     if (addButton.length === 0) {
       addButton = $('<button type="button" id="add_work_entry" class="margin-left-1 usa-button usa-button--unstyled">Add Another Work Link</button>');
-      addButton.on("click", function(e) {
-        e.preventDefault();
-        console.log("2")
-        addWorkEntryField();
-      });
+      addButton.on("click", (e) => this.addWorkEntryField(e));
     }
-
-    const lastRemoveButton = $("#work_links .work-entry").last().find(".remove-work-entry");
-
-    lastRemoveButton.after(addButton);
+    $("#work_links .work-entry").last().find(".remove-work-entry").after(addButton);
   }
 
-
-  function attachWorkEntryEventListeners() {
-    $("#work_links").on("click", ".remove-work-entry", removeWorkEntryField);
-    let addButton = $("#add_work_entry");
-    addButton.on("click", function(e) {
-      e.preventDefault();
-      addWorkEntryField();
-    });
-  }
-
-  function initializeWorkEntries() {
-    const workLinksContainer = $("#work_links");
-
-    if (workLinksContainer.length && workLinksContainer.children(".work-entry").length === 0) {
-      addWorkEntryField();
-    }
-
-    workLinksContainer.find('input[name*="[link]"]').each(function() {
-      $(this).on('input', validateLinkInput);
-    });
-  }
-
-  function isValidURL(string) {
+  isValidURL(string) {
     const pattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.(com|org|net|gov|edu|io|co|us|uk|biz|info|me)(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?$/i;
     return pattern.test(string);
   }
 
-  function validateLinkInput(event) {
+  validateLinkInput(event) {
     const linkInput = event.target;
-    if (isValidURL(linkInput.value)) {
-      linkInput.setCustomValidity('');
+    linkInput.setCustomValidity(this.isValidURL(linkInput.value) ? '' : 'Please enter a valid URL, e.g., https://example.com');
+  }
+
+  initializeWorkEntries() {
+    const existingEntries = $("#work_links .work-entry").length;
+    this.workIndex = existingEntries; // Start from the correct index
+
+    if (existingEntries === 0) {
+      this.addWorkEntryField();
     } else {
-      linkInput.setCustomValidity('Please enter a valid URL, e.g., https://example.com');
+      $('#work_links').find('input[name*="[link]"]').each((i, el) => {
+        $(el).on('input', (event) => this.validateLinkInput(event));
+      });
     }
   }
+}
 
-  function loadProfileFunctions() {
-    setImageVars();
-    attachImgActionsEventListeners();
-    attachNewFieldEventListeners();
-    workIndex = $("#work_links .work-entry").length;
-    initializeWorkEntries();
-    attachWorkEntryEventListeners();
-    repositionAddButton();
-  }
-
-  $document.on('turbolinks:load', loadProfileFunctions);
-})(window.jQuery);
+$(document).on('turbolinks:load', () => new ProfileEditor());
