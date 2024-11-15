@@ -46,11 +46,11 @@
     <%
       main_email = @practice.support_network_email
       practice_emails = @practice.practice_emails
-      cc_emails = practice_emails.map(&:address).join(', ')
+      cc_emails = [practice_emails.map(&:address), "marketplace@va.gov"].join(', ')
     %>
     <% unless @practice.private_contact_info? && is_user_a_guest? %>
       <div class="text-center margin-bottom-1">
-        <%= mail_to main_email, 'Email innovation', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button  width-full display-flex flex-align-center flex-justify-center
+        <%= mail_to main_email, 'Contact Team', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button  width-full display-flex flex-align-center flex-justify-center
         dm-email-practice', 'aria-label': "side nav email #{main_email}", data: {practice_id: @practice.id} %>
       </div>
     <% end %>
@@ -66,7 +66,7 @@
 
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex flex-justify-center">
   <% unless @practice.private_contact_info? && is_user_a_guest? %>
-    <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-full usa-button  display-flex flex-align-center flex-justify-center margin-right-2', 'aria-label': "Mobile nav email #{main_email}"  %>
+    <%= mail_to main_email, 'Contact Team', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-full usa-button  display-flex flex-align-center flex-justify-center', 'aria-label': "Mobile nav email #{main_email}"  %>
   <% end %>
   <% if (current_user.present?) && (current_user.has_role?(:admin) || @practice.user_id == current_user.id) %>
     <%= link_to 'Edit', practice_editors_path(@practice), id: 'edit-link-in-mobile-nav', class: 'width-full usa-button usa-button--secondary margin-right-0' %>
@@ -82,13 +82,13 @@
       <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">Overview</h2>
       <div class="metric-section practice-section">
         <section id="overview_problem" class="margin-bottom-5">
-          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'Problem', s_area: 'problem'} %>
         </section>
         <section id="overview_solution" class="margin-bottom-5">
-          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement: @practice.overview_solution, title: 'The solution', s_area: 'solution'} %>
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement: @practice.overview_solution, title: 'Solution', s_area: 'solution'} %>
         </section>
         <section id="overview_results">
-          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement: @practice.overview_results, title: 'The results', s_area: 'results'} %>
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement: @practice.overview_results, title: 'Results', s_area: 'results'} %>
         </section>
       </div>
     </div>

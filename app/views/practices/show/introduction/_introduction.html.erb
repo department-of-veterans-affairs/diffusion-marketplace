@@ -15,13 +15,13 @@
     <%= render partial: 'practices/show/mobile_partials/main_display_image_container' %>
     <%# practice name %>
     <div class="desktop:grid-col-8 grid-col-12">
-      <h1 class="margin-top-0 margin-bottom-1 dm-word-break-break-word dm-hyphens-auto">
-        <%= @practice.name %>
-      </h1>
       <%# innovation last update timestamp %>
       <p class="grid-col-12 font-sans-3xs text-base line-height-sans-4 margin-bottom-2">
         Last updated <%= timeago(updated_at) %>
       </p>
+      <h1 class="margin-top-0 margin-bottom-1 dm-word-break-break-word dm-hyphens-auto">
+        <%= @practice.name %>
+      </h1>
       <%# practice actions %>
       <%# bookmark %>
       <% if current_user.present? %>
