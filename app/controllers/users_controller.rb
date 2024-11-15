@@ -36,14 +36,22 @@ class UsersController < ApplicationController
   def update_profile
     redirect_to root_path unless current_user.present?
     @user = current_user
-    if @user.update(user_params)
+
+    filtered_work = if user_params[:work_deleted] == "true"
+                      {}
+                    else
+                      sanitize_work_links(user_params[:work])
+                    end
+
+    updated_params = user_params.to_h
+    updated_params[:work] = filtered_work
+
+    if @user.update(updated_params.except(:work_deleted))
       if params[:user][:delete_avatar].present? && params[:user][:delete_avatar] == 'true'
         @user.update(avatar: nil)
       end
 
-      if is_cropping?(params[:user])
-        reprocess_avatar(@user, params[:user])
-      end
+      reprocess_avatar(@user, params[:user]) if is_cropping?(params[:user])
 
       flash[:success] = 'You successfully updated your profile.'
       redirect_to edit_profile_path
@@ -159,7 +167,27 @@ class UsersController < ApplicationController
                                   :skip_va_validation,
                                   :skip_password_validation,
                                   :visn,
-                                  :work
+                                  :work_deleted,
+                                  work: [:text, :link]
                                 )
+  end
+
+  def sanitize_work_links(work_entries)
+    domain_pattern = /\.(com|org|net|gov|edu|io|co|us|uk|biz|info|me)\b/i
+
+    if work_entries
+      work_entries.each do |entry, values|
+        link = values['link'].strip
+        link = "https://#{link}" unless link.match?(/\Ahttps?:\/\//i)
+
+        uri = URI.parse(link) rescue nil
+        if uri&.host&.match?(domain_pattern) && (uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS))
+          values['link'] = ERB::Util.html_escape(link)
+        else
+          values['link'] = nil # Set to nil or handle invalid links as needed
+        end
+      end
+    end
+    work_entries
   end
 end
