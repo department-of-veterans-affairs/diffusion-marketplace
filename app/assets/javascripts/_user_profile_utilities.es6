@@ -3,6 +3,7 @@
   let $deleteBtn;
   let $imgsContainer;
   let $placeholderImg;
+  let workIndex = 0;
   // let $editBtn;
   // let $saveEditBtn;
   // let $cancelEditBtn;
@@ -260,11 +261,101 @@
     })
   }
 
-  function loadCropperFunctions() {
+  function addWorkEntryField(text = '', link = '') {
+    const newWorkEntry = `
+      <div class="work-entry margin-bottom-2" data-index="${workIndex}">
+        <label for="user_work_${workIndex}_text" class="usa-label">Text</label>
+        <input type="text" name="user[work][${workIndex}][text]" id="user_work_${workIndex}_text" class="usa-input margin-bottom-1" placeholder="e.g., Project Name" value="${text}">
+
+        <label for="user_work_${workIndex}_link" class="usa-label">Link</label>
+        <input type="text" name="user[work][${workIndex}][link]" id="user_work_${workIndex}_link" class="usa-input margin-bottom-1" placeholder="e.g., https://example.com" value="${link}">
+
+        <button type="button" class="remove-work-entry usa-button usa-button--unstyled">Remove</button>
+      </div>
+    `;
+
+    $("#work_links").append(newWorkEntry);
+    $(`#user_work_${workIndex}_link`).on('input', validateLinkInput);
+
+    workIndex++;
+    if ( workIndex > 1 ) {
+      repositionAddButton();
+    }
+  }
+
+  function removeWorkEntryField(event) {
+    event.preventDefault();
+    $(event.target).closest(".work-entry").remove();
+
+    if ($("#work_links .work-entry").length === 0) {
+      addWorkEntryField();
+    }
+
+    repositionAddButton();
+  }
+
+  function repositionAddButton() {
+    let addButton = $("#add_work_entry");
+
+    if (addButton.length === 0) {
+      addButton = $('<button type="button" id="add_work_entry" class="margin-left-1 usa-button usa-button--unstyled">Add Another Work Link</button>');
+      addButton.on("click", function(e) {
+        e.preventDefault();
+        console.log("2")
+        addWorkEntryField();
+      });
+    }
+
+    const lastRemoveButton = $("#work_links .work-entry").last().find(".remove-work-entry");
+
+    lastRemoveButton.after(addButton);
+  }
+
+
+  function attachWorkEntryEventListeners() {
+    $("#work_links").on("click", ".remove-work-entry", removeWorkEntryField);
+    let addButton = $("#add_work_entry");
+    addButton.on("click", function(e) {
+      e.preventDefault();
+      addWorkEntryField();
+    });
+  }
+
+  function initializeWorkEntries() {
+    const workLinksContainer = $("#work_links");
+
+    if (workLinksContainer.length && workLinksContainer.children(".work-entry").length === 0) {
+      addWorkEntryField();
+    }
+
+    workLinksContainer.find('input[name*="[link]"]').each(function() {
+      $(this).on('input', validateLinkInput);
+    });
+  }
+
+  function isValidURL(string) {
+    const pattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.(com|org|net|gov|edu|io|co|us|uk|biz|info|me)(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?$/i;
+    return pattern.test(string);
+  }
+
+  function validateLinkInput(event) {
+    const linkInput = event.target;
+    if (isValidURL(linkInput.value)) {
+      linkInput.setCustomValidity('');
+    } else {
+      linkInput.setCustomValidity('Please enter a valid URL, e.g., https://example.com');
+    }
+  }
+
+  function loadProfileFunctions() {
     setImageVars();
     attachImgActionsEventListeners();
     attachNewFieldEventListeners();
-}
+    workIndex = $("#work_links .work-entry").length;
+    initializeWorkEntries();
+    attachWorkEntryEventListeners();
+    repositionAddButton();
+  }
 
-  $document.on('turbolinks:load', loadCropperFunctions);
+  $document.on('turbolinks:load', loadProfileFunctions);
 })(window.jQuery);
