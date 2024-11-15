@@ -66,7 +66,7 @@
 
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex flex-justify-center">
   <% unless @practice.private_contact_info? && is_user_a_guest? %>
-    <%= mail_to main_email, 'Contact Team', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-full usa-button  display-flex flex-align-center flex-justify-center margin-right-2', 'aria-label': "Mobile nav email #{main_email}"  %>
+    <%= mail_to main_email, 'Contact Team', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-full usa-button  display-flex flex-align-center flex-justify-center', 'aria-label': "Mobile nav email #{main_email}"  %>
   <% end %>
   <% if (current_user.present?) && (current_user.has_role?(:admin) || @practice.user_id == current_user.id) %>
     <%= link_to 'Edit', practice_editors_path(@practice), id: 'edit-link-in-mobile-nav', class: 'width-full usa-button usa-button--secondary margin-right-0' %>
