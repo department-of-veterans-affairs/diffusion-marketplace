@@ -51,8 +51,6 @@ class UsersController < ApplicationController
         @user.update(avatar: nil)
       end
 
-      reprocess_avatar(@user, params[:user]) if is_cropping?(params[:user])
-
       flash[:success] = 'You successfully updated your profile.'
       redirect_to edit_profile_path
     else
@@ -150,10 +148,6 @@ class UsersController < ApplicationController
                                   :avatar,
                                   :bio,
                                   :credentials,
-                                  :crop_h,
-                                  :crop_w,
-                                  :crop_x,
-                                  :crop_y,
                                   :delete_avatar,
                                   :email,
                                   :first_name,
