@@ -46,7 +46,7 @@
     <%
       main_email = @practice.support_network_email
       practice_emails = @practice.practice_emails
-      cc_emails = practice_emails.map(&:address).join(', ')
+      cc_emails = [practice_emails.map(&:address), "marketplace@va.gov"].join(', ')
     %>
     <% unless @practice.private_contact_info? && is_user_a_guest? %>
       <div class="text-center margin-bottom-1">
