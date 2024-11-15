@@ -29,8 +29,12 @@
       <div class="grid-col-12 margin-top-5">
         <h3 class="font-sans-md text-bold">Work</h3>
         <ul class="usa-list usa-list--unstyled">
-          <% @user.work.split(",").each do |work_item| %>
-            <li><%= work_item %></li>
+          <% @user.work.each do |work_item| %>
+            <li>
+              <a href="<%= work_item['link'] %>" target="_blank" rel="noopener noreferrer">
+                <%= work_item['text'] || work_item['link'] %>
+              </a>
+            </li>
           <% end %>
         </ul>
       </div>
