@@ -116,7 +116,6 @@
                   <% end %>
                 </div>
               </div>
-            </div>
 
               <% user_type = session[:user_type] %>
               <div class="usa-form edit-profile-form">
@@ -223,11 +222,26 @@
                   </div>
 
                   <div class="field margin-top-3 grid-col-9">
-                    <%= f.label :work, 'Work (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
-                    <%= f.text_area :work,
-                      autofocus: true,
-                      class: "usa-input height-15 border-base-light"
-                    %>
+                    <%= f.label :work, 'Work (Public Bio)', class: 'margin-top-2 margin-bottom-2' %>
+                    <%= hidden_field_tag "user[work_deleted]", "false", id: "work_deleted" %>
+
+                    <div id="work_links">
+                      <% (@user.work || []).each_with_index do |work_entry, index| %>
+                        <div class="work-entry margin-bottom-2">
+                          <%= label_tag "user[work][#{index}][text]", "Text", class: "usa-label" %>
+                          <%= text_field_tag "user[work][#{index}][text]", work_entry["text"], class: "usa-input margin-bottom-1" %>
+
+                          <%= label_tag "user[work][#{index}][link]", "Link", class: "usa-label" %>
+                          <%= text_field_tag "user[work][#{index}][link]", work_entry["link"], class: "usa-input margin-bottom-1" %>
+
+                          <button type="button" class="remove-work-entry usa-button usa-button--unstyled">Remove</button>
+
+                          <% if index == @user.work.count - 1 %>
+                            <button type="button" id="add_work_entry" class="margin-left-2 usa-button usa-button--unstyled">Add Another Work Link</button>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
                   </div>
 
                   <div class="field margin-top-3 grid-col-9">
