@@ -32,7 +32,7 @@
           <% @user.work.each do |work_item| %>
             <li>
               <a href="<%= work_item['link'] %>" target="_blank" rel="noopener noreferrer">
-                <%= work_item['text'] || work_item['link'] %>
+                <%= work_item['text'].present? ? work_item['text'] :  work_item['link'] %>
               </a>
             </li>
           <% end %>
