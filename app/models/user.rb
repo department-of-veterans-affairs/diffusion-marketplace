@@ -278,7 +278,7 @@ class User < ApplicationRecord
       begin
         uri = URI.parse(link)
         if (uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)) && uri.host&.match?(domain_pattern)
-          entry["link"] = link
+          entry["link"] = ERB::Util.html_escape(link)
         else
           errors.add(:work, "contains an invalid URL in the link field: #{entry['link']}")
         end
