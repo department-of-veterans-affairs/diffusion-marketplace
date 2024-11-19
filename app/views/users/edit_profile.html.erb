@@ -32,7 +32,7 @@
                 <% end %>
               </div>
               <div class="actions margin-bottom-4-important display-inline-block">
-                <%= f.submit "Save changes", class: 'usa-button usa-button-primary' %>
+                <%= f.submit "Save changes", class: 'usa-button usa-button-primary', id: 'edit-profile-submit', data: { disable_with: false } %>
               </div>
               <% if @user.granted_public_bio %>
                 <div class="display-inline-block margin-right-1">
