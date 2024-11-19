@@ -21,7 +21,7 @@ class ProfileEditor {
     $('.dm-cropper-upload-image').on('change', (event) => this.handleImageUpload(event));
     this.$deleteBtn.on('click', (event) => this.clearUpload(event));
     $('#work_links').on('click', '.remove-work-entry', (event) => this.removeWorkEntryField(event)); // Use arrow function here
-    $("#add_work_entry").on("click", (e) => this.addWorkEntryField(e));
+    $("#add-work-entry").on("click", (e) => this.addWorkEntryField(e));
   }
 
   loadProfileFunctions() {
@@ -163,9 +163,9 @@ class ProfileEditor {
   }
 
   repositionAddWorkEntryButton() {
-    let addButton = $("#add_work_entry");
+    let addButton = $("#add-work-entry");
     if (addButton.length === 0) {
-      addButton = $('<button type="button" id="add_work_entry" class="margin-left-1 usa-button usa-button--unstyled">Add Another Work Link</button>');
+      addButton = $('<button type="button" id="add-work-entry" class="margin-left-1 usa-button usa-button--unstyled">Add Another Work Link</button>');
       addButton.on("click", (e) => this.addWorkEntryField(e));
     }
     $("#work_links .work-entry").last().find(".remove-work-entry").after(addButton);
