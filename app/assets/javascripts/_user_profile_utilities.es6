@@ -17,6 +17,7 @@ class ProfileEditor {
 
   setEventListeners() {
     this.$document.on('turbolinks:load', () => this.loadProfileFunctions());
+    $('form').on('submit', (event) => this.validateAllWorkFields(event));
     $('.dm-cropper-upload-image').on('change', (event) => this.handleImageUpload(event));
     this.$deleteBtn.on('click', (event) => this.clearUpload(event));
     $('#work_links').on('click', '.remove-work-entry', (event) => this.removeWorkEntryField(event)); // Use arrow function here
@@ -26,6 +27,69 @@ class ProfileEditor {
   loadProfileFunctions() {
     this.initializeWorkEntries();
     this.attachWorkEntryEventListeners();
+  };
+
+  validateAllWorkFields(event) {
+    let isValid = true;
+
+    $('#work_links .work-entry').each((index, entry) => {
+      const textInput = $(entry).find('input[name*="[text]"]')[0];
+      const linkInput = $(entry).find('input[name*="[link]"]')[0];
+
+      if (
+        textInput && textInput.value.trim() === '' &&
+        linkInput && linkInput.value.trim() === ''
+      ) {
+        return;
+      }
+
+      if (textInput) {
+        this.validateTextInput({ target: textInput });
+        if (!textInput.checkValidity()) {
+          textInput.reportValidity();
+          isValid = false;
+        }
+        $(textInput).on('input', () => {
+          textInput.setCustomValidity('');
+          linkInput.setCustomValidity('');
+        });
+      }
+
+      if (linkInput) {
+        this.validateLinkInput({ target: linkInput });
+        if (!linkInput.checkValidity()) {
+          linkInput.reportValidity();
+          isValid = false;
+        }
+        $(linkInput).on('input', () => {
+          textInput.setCustomValidity('');
+          linkInput.setCustomValidity('');
+        });
+      }
+    });
+
+    if (!isValid) {
+      event.preventDefault();
+    }
+  }
+
+  validateTextInput(event) {
+    const textInput = event.target;
+    textInput.setCustomValidity(textInput.value.trim() === '' ? 'Required' : '');
+  }
+
+  validateLinkInput(event) {
+    const linkInput = event.target;
+    if (linkInput.value.trim() === '') {
+      linkInput.setCustomValidity('Required')
+    } else {
+      linkInput.setCustomValidity(this.isValidURL(linkInput.value) ? '' : 'Please enter a valid URL, e.g., https://example.com');
+    }
+  }
+
+  isValidURL(string) {
+    const pattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.(com|org|net|gov|edu|io|co|us|uk|biz|info|me)(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?$/i;
+    return pattern.test(string);
   }
 
   handleImageUpload(event) {
@@ -84,7 +148,6 @@ class ProfileEditor {
       </div>
     `;
     $("#work_links").append(newWorkEntryHtml);
-    $(`#user_work_${this.workIndex}_link`).on('input', (event) => this.validateLinkInput(event));
 
     this.workIndex++;
     this.repositionAddWorkEntryButton();
@@ -108,26 +171,12 @@ class ProfileEditor {
     $("#work_links .work-entry").last().find(".remove-work-entry").after(addButton);
   }
 
-  isValidURL(string) {
-    const pattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.(com|org|net|gov|edu|io|co|us|uk|biz|info|me)(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?$/i;
-    return pattern.test(string);
-  }
-
-  validateLinkInput(event) {
-    const linkInput = event.target;
-    linkInput.setCustomValidity(this.isValidURL(linkInput.value) ? '' : 'Please enter a valid URL, e.g., https://example.com');
-  }
-
   initializeWorkEntries() {
     const existingEntries = $("#work_links .work-entry").length;
     this.workIndex = existingEntries; // Start from the correct index
 
     if (existingEntries === 0) {
       this.addWorkEntryField();
-    } else {
-      $('#work_links').find('input[name*="[link]"]').each((i, el) => {
-        $(el).on('input', (event) => this.validateLinkInput(event));
-      });
     }
   }
 }
