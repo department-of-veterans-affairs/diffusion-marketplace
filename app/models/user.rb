@@ -37,6 +37,7 @@ class User < ApplicationRecord
 
   USER_ROLES = %w[admin page_group_editor].freeze
 
+  before_validation :clean_work_entries
   validate :valid_email
   validate :password_complexity
   validate :password_uniqueness
@@ -263,6 +264,12 @@ class User < ApplicationRecord
 
   def refresh_public_bio_cache_if_granted_public_bio
     refresh_public_bio_cache if granted_public_bio?
+  end
+
+  def clean_work_entries
+    return unless work.is_a?(Array)
+
+    self.work = work.reject { |entry| entry["text"].blank? && entry["link"].blank? }
   end
 
   def validate_work_links
