@@ -14,7 +14,6 @@ $(document).ready(function(){
         }
         let duration = encodeURIComponent($("#metrics_duration").val());
         let newUrl = `${curUrl}?duration=${duration}`;
-        debugger
         window.location.href = newUrl;
     });
 
