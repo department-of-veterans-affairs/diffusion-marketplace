@@ -118,4 +118,50 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'work link validation callback' do
+    let(:user) { User.create(email: 'test@example.com', password: 'Password123', work: initial_work) }
+
+    context 'when work contains valid URLs' do
+      let(:initial_work) { [{ "text" => "Project 1", "link" => "https://example.com" }] }
+
+      it 'does not add any errors' do
+        user.work = [{ "text" => "Updated Project", "link" => "https://updated.com" }]
+        user.save
+        expect(user.errors[:work]).to be_empty
+      end
+    end
+
+    context 'when work contains a URL without http or https' do
+      let(:initial_work) { [] }
+
+      it 'prepends http to the URL and does not add errors' do
+        user.work = [{ "text" => "Project 1", "link" => "example.com" }]
+        user.save
+        expect(user.work.first["link"]).to eq("https://example.com")
+        expect(user.errors[:work]).to be_empty
+      end
+    end
+
+    context 'when work contains an invalid URL' do
+      let(:initial_work) { [] }
+
+      it 'adds an error to the work field' do
+        user.work = [{ "text" => "Project 1", "link" => "invalid-url" }]
+        user.save
+
+        expect(user.errors[:work]).to include("contains an invalid URL in the link field: invalid-url")
+      end
+    end
+
+    context 'when work is updated with a blank link' do
+      let(:initial_work) { [{ "text" => "Project 1", "link" => "https://example.com" }] }
+
+      it 'does not add any errors' do
+        user.work = [{ "text" => "Updated Project", "link" => "" }]
+        user.save
+        expect(user.errors[:work]).to be_empty
+      end
+    end
+  end
 end
