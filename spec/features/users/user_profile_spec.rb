@@ -83,7 +83,6 @@ describe 'The user index', type: :feature do
     fill_in('user[alt_first_name]', with: 'Alt first name')
     fill_in('user[alt_last_name]', with: 'Alt last name')
     fill_in('Title (Public Bio)', with: 'public bio title text')
-    fill_in('Work (Public Bio)', with: 'public bio work text')
     fill_in('Credentials (Public Bio)', with: 'public bio credentials text')
     fill_in('Project (Public Bio)', with: 'project text')
     fill_in('Honors, degress (Public Bio)', with: 'LCSW, M.A.')
@@ -93,7 +92,6 @@ describe 'The user index', type: :feature do
     expect(sb.alt_first_name).to eq('Alt first name')
     expect(sb.alt_last_name).to eq('Alt last name')
     expect(sb.alt_job_title).to eq('public bio title text')
-    expect(sb.work).to eq('public bio work text')
     expect(sb.credentials).to eq('public bio credentials text')
     expect(sb.project).to eq('project text')
     expect(sb.accolades).to eq('LCSW, M.A.')
@@ -166,7 +164,7 @@ describe 'The user index', type: :feature do
     end
   end
 
-    it 'should have created practices' do
+  it 'should have created practices' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: @user)
     @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', user: @user2)
     @user_pr1_editor = PracticeEditor.create!(innovable: @practice1, user: @user, email: @user.email)
@@ -198,6 +196,78 @@ describe 'The user index', type: :feature do
       expect(page).to have_selector('.dm-practice-card', count: 2)
       expect(page).to have_content('A public practice')
       expect(page).to have_content('The Best Innovation Ever!')
+    end
+  end
+
+  describe 'work links' do
+    before do
+      @user.update!(granted_public_bio: true)
+      login_as(@user, scope: :user, run_callbacks: false)
+      visit '/edit-profile'
+    end
+
+    it 'adds a new work entry' do
+      fill_in 'user[work][0][text]', with: 'First Project'
+      fill_in 'user[work][0][link]', with: 'https://firstproject.com'
+      click_button 'Add Another Work Link'
+      expect(page).to have_selector('.work-entry', count: 2)
+      fill_in 'user[work][1][text]', with: 'Second Project'
+      fill_in 'user[work][1][link]', with: 'https://secondproject.com'
+
+      click_button 'Save changes'
+      expect(page).to have_content('You successfully updated your profile.')
+
+      visit "/bios/#{@user.id}"
+      within('.usa-list--unstyled') do
+        expect(page).to have_link('First Project', href: 'https://firstproject.com')
+        expect(page).to have_link('Second Project', href: 'https://secondproject.com')
+      end
+    end
+
+    it 'adds multiple work entries' do
+      click_button 'Add Another Work Link'
+      fill_in 'user[work][0][text]', with: 'Project One'
+      fill_in 'user[work][0][link]', with: 'https://projectone.com'
+
+      click_button 'Add Another Work Link'
+      fill_in 'user[work][1][text]', with: 'Project Two'
+      fill_in 'user[work][1][link]', with: 'https://projecttwo.com'
+
+      click_button 'Save changes'
+
+      visit "/bios/#{@user.id}"
+      within('.usa-list--unstyled') do
+        expect(page).to have_link('Project One', href: 'https://projectone.com')
+        expect(page).to have_link('Project Two', href: 'https://projecttwo.com')
+      end
+    end
+
+    it 'removes a work entry' do
+      @user.update!(work: {0=>{'text'=> "test link text", 'link' => 'https://projecttwo.com'}})
+
+      visit '/edit-profile'
+      within('.work-entry') do
+        click_button 'Remove'
+      end
+      expect(page).to have_button('Add Another Work Link')
+      click_button 'Save changes'
+      visit "/bios/#{@user.id}"
+
+      expect(page).not_to have_content('Temporary Project')
+      expect(page).not_to have_link(href: 'https://temp.com')
+    end
+
+    it 'validates the URL format for work entries with front-end validation' do
+      click_button 'Add Another Work Link'
+
+      fill_in 'user[work][0][text]', with: 'Invalid Project'
+      fill_in 'user[work][0][link]', with: 'invalid-link'
+
+      fill_in 'user[work][0][link]', with: 'invalid-link'
+
+      expect(page).to have_selector("input[name='user[work][0][link]']:invalid")
+      click_button 'Save changes'
+      expect(page.current_path).to eq('/edit-profile')
     end
   end
 end

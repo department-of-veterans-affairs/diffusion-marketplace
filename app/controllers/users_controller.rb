@@ -36,13 +36,13 @@ class UsersController < ApplicationController
   def update_profile
     redirect_to root_path unless current_user.present?
     @user = current_user
-    if @user.update(user_params)
+
+    updated_params = user_params.to_h
+    updated_params[:work] = {} if user_params[:work_deleted] == "true"
+
+    if @user.update(updated_params.except(:work_deleted))
       if params[:user][:delete_avatar].present? && params[:user][:delete_avatar] == 'true'
         @user.update(avatar: nil)
-      end
-
-      if is_cropping?(params[:user])
-        reprocess_avatar(@user, params[:user])
       end
 
       flash[:success] = 'You successfully updated your profile.'
@@ -142,10 +142,6 @@ class UsersController < ApplicationController
                                   :avatar,
                                   :bio,
                                   :credentials,
-                                  :crop_h,
-                                  :crop_w,
-                                  :crop_x,
-                                  :crop_y,
                                   :delete_avatar,
                                   :email,
                                   :first_name,
@@ -159,7 +155,8 @@ class UsersController < ApplicationController
                                   :skip_va_validation,
                                   :skip_password_validation,
                                   :visn,
-                                  :work
+                                  :work_deleted,
+                                  work: [:text, :link]
                                 )
   end
 end

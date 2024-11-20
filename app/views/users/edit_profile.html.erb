@@ -32,7 +32,7 @@
                 <% end %>
               </div>
               <div class="actions margin-bottom-4-important display-inline-block">
-                <%= f.submit "Save changes", class: 'usa-button usa-button-primary' %>
+                <%= f.submit "Save changes", class: 'usa-button usa-button-primary', id: 'edit-profile-submit', data: { disable_with: false } %>
               </div>
               <% if @user.granted_public_bio %>
                 <div class="display-inline-block margin-right-1">
@@ -116,7 +116,6 @@
                   <% end %>
                 </div>
               </div>
-            </div>
 
               <% user_type = session[:user_type] %>
               <div class="usa-form edit-profile-form">
@@ -204,7 +203,7 @@
                   </div>
                 <% end %>
 
-                <div class="field margin-top-3 grid-col-9">
+                <div class="field margin-y-3 grid-col-9">
                   <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
                     <span>Bio</span>&nbsp;<span class="text-base-light profile-bio-character-count" id="user_<%= @user.id %>_profile_bio_character_count">(0/50 characters)</span>
                     <p>Tell other users about yourself and your professional background.</p>
@@ -213,7 +212,7 @@
                 </div>
 
                 <% if is_fellow %>
-                  <div class="field margin-top-3 grid-col-9">
+                  <div class="field margin-y-3 grid-col-9">
                     <%= f.label :credentials, 'Credentials (Public Bio)', class: 'margin-y-2' %><br/>
                     <p>Enter as a comma-separated list, entries will list vertically on bio page</p>
                     <%= f.text_area :credentials,
@@ -222,12 +221,27 @@
                     %>
                   </div>
 
-                  <div class="field margin-top-3 grid-col-9">
-                    <%= f.label :work, 'Work (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
-                    <%= f.text_area :work,
-                      autofocus: true,
-                      class: "usa-input height-15 border-base-light"
-                    %>
+                  <div class="field margin-top-2 grid-col-9">
+                    <%= f.label :work, 'Work (Public Bio)', class: 'margin-top-1' %>
+                    <%= hidden_field_tag "user[work_deleted]", "false", id: "work_deleted" %>
+
+                    <div id="work_links">
+                      <% (@user.work || []).each_with_index do |work_entry, index| %>
+                        <div class="work-entry margin-bottom-2 <%= 'margin-top-neg-2' if index.zero? %>">
+                          <%= label_tag "user[work][#{index}][text]", "Text", class: "usa-label" %>
+                          <%= text_field_tag "user[work][#{index}][text]", work_entry["text"], class: "usa-input margin-bottom-1", placeholder: "e.g., Project Name" %>
+
+                          <%= label_tag "user[work][#{index}][link]", "Link", class: "usa-label" %>
+                          <%= text_field_tag "user[work][#{index}][link]", work_entry["link"], class: "usa-input margin-bottom-1", placeholder:"e.g., https://example.com" %>
+
+                          <button type="button" class="remove-work-entry usa-button usa-button--unstyled">Remove</button>
+
+                          <% if index == @user.work.count - 1 %>
+                            <button type="button" id="add-work-entry" class="margin-left-2 usa-button usa-button--unstyled">Add Another Work Link</button>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
                   </div>
 
                   <div class="field margin-top-3 grid-col-9">
