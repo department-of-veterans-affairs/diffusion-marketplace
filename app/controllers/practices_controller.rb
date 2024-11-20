@@ -345,6 +345,7 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
     @ordered_practice_partners = PracticePartnerPractice.where(innovable_id: @practice.id).order_by_id
     @ordered_practice_origin_facilities = PracticeOriginFacility.where(practice_id: @practice.id).order_by_id
     @user_can_edit_communities = current_user.has_role?(:admin)
+    @origin_data = JSON.parse(File.read(Rails.root.join('lib', 'assets', 'practice_origin_lookup.json')))
     render 'practices/form/introduction'
   end
 
