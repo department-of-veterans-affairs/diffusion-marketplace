@@ -1075,7 +1075,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.boolean "granted_public_bio", default: false
     t.string "alt_first_name"
     t.string "alt_last_name"
-    t.text "credentials"
+    t.text "fellowship"
     t.json "work"
     t.text "project"
     t.string "alt_job_title"
