@@ -63,7 +63,6 @@ describe 'The user index', type: :feature do
     fill_in('Last name', with: 'Squarepants')
     fill_in('Work phone number', with: '8675309')
     fill_in('Job title', with: 'fry cook')
-    fill_in('Bio', with: 'Lives in a pineapple')
 
     click_button('Save changes')
 
@@ -72,7 +71,6 @@ describe 'The user index', type: :feature do
     expect(sb.last_name).to eq('Squarepants')
     expect(sb.phone_number).to eq('8675309')
     expect(sb.job_title).to eq('fry cook')
-    expect(sb.bio).to eq('Lives in a pineapple')
   end
 
   it 'should allow a user to update their public-bio info' do

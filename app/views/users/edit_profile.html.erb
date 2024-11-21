@@ -198,17 +198,15 @@
                       %>
                     </div>
                   </div>
-                <% end %>
 
-                <div class="field margin-y-3 grid-col-9">
-                  <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
-                    <span>Bio</span>&nbsp;
-                    <p>Tell other users about yourself and your professional background.</p>
-                  <% end %>
-                  <%= f.text_area :bio, class: 'usa-input height-200px profile-bio border-base-light' %>
-                </div>
+                  <div class="field margin-y-3 grid-col-9">
+                    <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
+                      <span>Bio</span>&nbsp;
+                      <p>Tell other users about yourself and your professional background.</p>
+                    <% end %>
+                    <%= f.text_area :bio, class: 'usa-input height-200px profile-bio border-base-light' %>
+                  </div>
 
-                <% if is_fellow %>
                   <div class="field margin-y-3 grid-col-9">
                     <%= f.label :alt_job_title, 'Job Title (Public Bio)', class: 'margin-y-2' %><br/>
                     <p>Enter as a comma-separated list, entries will list vertically on bio page</p>
