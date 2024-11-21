@@ -159,7 +159,7 @@
                 <% if is_fellow %>
                   <div class="grid-row width-full">
                     <div class="field margin-top-3 grid-col-9">
-                      <%= f.label :alt_first_name, 'First name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.label :alt_first_name, 'First Name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
                       <%= f.text_field :alt_first_name,
                         value: @user.alt_first_name.present? ? @user.alt_first_name : @user.first_name,
                         autofocus: true,
@@ -170,7 +170,7 @@
 
                   <div class="grid-row width-full">
                     <div class="field margin-top-3 grid-col-9">
-                      <%= f.label :alt_last_name, 'Last name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.label :alt_last_name, 'Last Name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
                       <%= f.text_field :alt_last_name,
                         value: @user.alt_last_name.present? ? @user.alt_last_name : @user.last_name,
                         autofocus: true,
@@ -193,9 +193,9 @@
 
                   <div class="grid-row width-full">
                     <div class="field margin-top-3 grid-col-9">
-                      <%= f.label :alt_job_title, 'Title (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
-                      <%= f.text_field :alt_job_title,
-                        value: @user.alt_job_title.present? ? @user.alt_job_title : @user.job_title,
+                      <%= f.label :fellowship, 'Fellowship (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.text_field :fellowship,
+                        value: @user.fellowship.present? ? @user.fellowship : @user.job_title,
                         autofocus: true,
                         class: "usa-input border-base-light"
                       %>
@@ -213,9 +213,9 @@
 
                 <% if is_fellow %>
                   <div class="field margin-y-3 grid-col-9">
-                    <%= f.label :credentials, 'Credentials (Public Bio)', class: 'margin-y-2' %><br/>
+                    <%= f.label :alt_job_title, 'Job Title (Public Bio)', class: 'margin-y-2' %><br/>
                     <p>Enter as a comma-separated list, entries will list vertically on bio page</p>
-                    <%= f.text_area :credentials,
+                    <%= f.text_area :alt_job_title,
                       autofocus: true,
                       class: "usa-input height-15 border-base-light"
                     %>
