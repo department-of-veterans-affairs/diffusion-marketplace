@@ -13,12 +13,21 @@
     <div class="grid-col">
       <!-- User Name, Job Title, Project -->
       <h2 class="margin-top-0"><%= @user.bio_page_name %></h2>
-      <% job_title = @user.alt_job_title || @user.job_title %>
-      <% if job_title.present? %>
-        <p class="margin-top-2"><%= job_title %></p>
+      <% if @user.fellowship.present? %>
+        <p class="margin-top-2"><%= @user.fellowship %></p>
       <% end %>
+
       <% if @user.project.present? %>
-        <p class="margin-top-2"><%= @user.project %></p>
+        <p class="margin-top-4"><%= @user.project %></p>
+      <% end %>
+
+      <!-- Credentials -->
+      <% if @user.alt_job_title.present? %>
+        <div class="margin-top-4">
+          <div class="line-height-sans-3">
+            <p><%= @user.alt_job_title %></p>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
@@ -46,16 +55,6 @@
         <h3 class="font-sans-md text-bold">About</h3>
         <div class="line-height-sans-3">
           <%= simple_format(@user.bio) %>
-        </div>
-      </div>
-    <% end %>
-
-    <!-- Credentials -->
-    <% if @user.credentials.present? %>
-      <div class="grid-col-12 margin-top-4">
-        <h3 class="font-sans-md text-bold">Credentials</h3>
-        <div class="line-height-sans-3">
-          <p><%= @user.credentials %></p>
         </div>
       </div>
     <% end %>
