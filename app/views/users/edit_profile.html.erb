@@ -1,7 +1,4 @@
 <% provide :head_tags do %>
-  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <%= render partial: 'edit_profile', formats: [:js] %>
-  <% end %>
   <%= javascript_include_tag '_user_profile_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
@@ -205,7 +202,7 @@
 
                 <div class="field margin-y-3 grid-col-9">
                   <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
-                    <span>Bio</span>&nbsp;<span class="text-base-light profile-bio-character-count" id="user_<%= @user.id %>_profile_bio_character_count">(0/50 characters)</span>
+                    <span>Bio</span>&nbsp;
                     <p>Tell other users about yourself and your professional background.</p>
                   <% end %>
                   <%= f.text_area :bio, class: 'usa-input height-200px profile-bio border-base-light' %>
