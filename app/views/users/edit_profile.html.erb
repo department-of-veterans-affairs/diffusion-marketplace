@@ -1,7 +1,4 @@
 <% provide :head_tags do %>
-  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <%= render partial: 'edit_profile', formats: [:js] %>
-  <% end %>
   <%= javascript_include_tag '_user_profile_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
@@ -159,7 +156,7 @@
                 <% if is_fellow %>
                   <div class="grid-row width-full">
                     <div class="field margin-top-3 grid-col-9">
-                      <%= f.label :alt_first_name, 'First name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.label :alt_first_name, 'First Name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
                       <%= f.text_field :alt_first_name,
                         value: @user.alt_first_name.present? ? @user.alt_first_name : @user.first_name,
                         autofocus: true,
@@ -170,7 +167,7 @@
 
                   <div class="grid-row width-full">
                     <div class="field margin-top-3 grid-col-9">
-                      <%= f.label :alt_last_name, 'Last name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.label :alt_last_name, 'Last Name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
                       <%= f.text_field :alt_last_name,
                         value: @user.alt_last_name.present? ? @user.alt_last_name : @user.last_name,
                         autofocus: true,
@@ -193,29 +190,34 @@
 
                   <div class="grid-row width-full">
                     <div class="field margin-top-3 grid-col-9">
-                      <%= f.label :alt_job_title, 'Title (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
-                      <%= f.text_field :alt_job_title,
-                        value: @user.alt_job_title.present? ? @user.alt_job_title : @user.job_title,
+                      <%= f.label :fellowship, 'Fellowship (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.text_field :fellowship,
+                        value: @user.fellowship.present? ? @user.fellowship : @user.job_title,
                         autofocus: true,
                         class: "usa-input border-base-light"
                       %>
                     </div>
                   </div>
-                <% end %>
 
-                <div class="field margin-y-3 grid-col-9">
-                  <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
-                    <span>Bio</span>&nbsp;<span class="text-base-light profile-bio-character-count" id="user_<%= @user.id %>_profile_bio_character_count">(0/50 characters)</span>
-                    <p>Tell other users about yourself and your professional background.</p>
-                  <% end %>
-                  <%= f.text_area :bio, class: 'usa-input height-200px profile-bio border-base-light' %>
-                </div>
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :project, 'Project (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                    <%= f.text_field :project,
+                      autofocus: true,
+                      class: "usa-input border-base-light"
+                    %>
+                  </div>
 
-                <% if is_fellow %>
                   <div class="field margin-y-3 grid-col-9">
-                    <%= f.label :credentials, 'Credentials (Public Bio)', class: 'margin-y-2' %><br/>
-                    <p>Enter as a comma-separated list, entries will list vertically on bio page</p>
-                    <%= f.text_area :credentials,
+                    <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
+                      <span>Bio</span>&nbsp;
+                      <p>Tell other users about yourself and your professional background.</p>
+                    <% end %>
+                    <%= f.text_area :bio, class: 'usa-input height-200px profile-bio border-base-light' %>
+                  </div>
+
+                  <div class="field margin-y-3 grid-col-9">
+                    <%= f.label :alt_job_title, 'Job Title (Public Bio)', class: 'margin-y-2' %><br/>
+                    <%= f.text_area :alt_job_title,
                       autofocus: true,
                       class: "usa-input height-15 border-base-light"
                     %>
@@ -242,14 +244,6 @@
                         </div>
                       <% end %>
                     </div>
-                  </div>
-
-                  <div class="field margin-top-3 grid-col-9">
-                    <%= f.label :project, 'Project (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
-                    <%= f.text_field :project,
-                      autofocus: true,
-                      class: "usa-input border-base-light"
-                    %>
                   </div>
                 <% end %>
               </div>
