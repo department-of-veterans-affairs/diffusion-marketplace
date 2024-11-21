@@ -199,6 +199,14 @@
                     </div>
                   </div>
 
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :project, 'Project (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                    <%= f.text_field :project,
+                      autofocus: true,
+                      class: "usa-input border-base-light"
+                    %>
+                  </div>
+
                   <div class="field margin-y-3 grid-col-9">
                     <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
                       <span>Bio</span>&nbsp;
@@ -209,7 +217,6 @@
 
                   <div class="field margin-y-3 grid-col-9">
                     <%= f.label :alt_job_title, 'Job Title (Public Bio)', class: 'margin-y-2' %><br/>
-                    <p>Enter as a comma-separated list, entries will list vertically on bio page</p>
                     <%= f.text_area :alt_job_title,
                       autofocus: true,
                       class: "usa-input height-15 border-base-light"
@@ -237,14 +244,6 @@
                         </div>
                       <% end %>
                     </div>
-                  </div>
-
-                  <div class="field margin-top-3 grid-col-9">
-                    <%= f.label :project, 'Project (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
-                    <%= f.text_field :project,
-                      autofocus: true,
-                      class: "usa-input border-base-light"
-                    %>
                   </div>
                 <% end %>
               </div>
