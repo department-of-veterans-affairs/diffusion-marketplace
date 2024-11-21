@@ -82,8 +82,8 @@ describe 'The user index', type: :feature do
 
     fill_in('user[alt_first_name]', with: 'Alt first name')
     fill_in('user[alt_last_name]', with: 'Alt last name')
-    fill_in('Title (Public Bio)', with: 'public bio title text')
-    fill_in('Credentials (Public Bio)', with: 'public bio credentials text')
+    fill_in('Fellowship (Public Bio)', with: 'public bio title text')
+    fill_in('Job Title (Public Bio)', with: 'public bio credentials text')
     fill_in('Project (Public Bio)', with: 'project text')
     fill_in('Honors, degress (Public Bio)', with: 'LCSW, M.A.')
     click_button('Save changes')
@@ -91,8 +91,8 @@ describe 'The user index', type: :feature do
     sb = User.find(@user.id)
     expect(sb.alt_first_name).to eq('Alt first name')
     expect(sb.alt_last_name).to eq('Alt last name')
-    expect(sb.alt_job_title).to eq('public bio title text')
-    expect(sb.credentials).to eq('public bio credentials text')
+    expect(sb.fellowship).to eq('public bio title text')
+    expect(sb.alt_job_title).to eq('public bio credentials text')
     expect(sb.project).to eq('project text')
     expect(sb.accolades).to eq('LCSW, M.A.')
   end
@@ -126,7 +126,7 @@ describe 'The user index', type: :feature do
     expect(page).not_to have_selector("input[value='#{@user.alt_first_name}']")
     expect(page).not_to have_selector("input[value='#{@user.alt_last_name}']")
     expect(page).not_to have_selector("input[value='#{@user.alt_job_title}']")
-    expect(page).not_to have_selector("input[value='#{@user.credentials}']")
+    expect(page).not_to have_selector("input[value='#{@user.fellowship}']")
     expect(page).not_to have_selector("input[value='#{@user.work}']")
     expect(page).not_to have_selector("input[value='#{@user.project}']")
     expect(page).not_to have_selector("input[value='#{@user.accolades}']")
@@ -263,11 +263,12 @@ describe 'The user index', type: :feature do
       fill_in 'user[work][0][text]', with: 'Invalid Project'
       fill_in 'user[work][0][link]', with: 'invalid-link'
 
-      fill_in 'user[work][0][link]', with: 'invalid-link'
-
-      expect(page).to have_selector("input[name='user[work][0][link]']:invalid")
       click_button 'Save changes'
       expect(page.current_path).to eq('/edit-profile')
+      expect(page).to have_selector("input[name='user[work][0][link]']:invalid")
+      fill_in 'user[work][0][link]', with: 'invalid-link.com'
+      click_button 'Save changes'
+      expect(page).not_to have_selector("input[name='user[work][0][link]']:invalid")
     end
   end
 end

@@ -16,11 +16,11 @@ RSpec.feature 'User Public Bio Page', type: :feature do
         alt_first_name: 'John',
         alt_last_name: 'Goodman',
         job_title: 'Doctor',
-        alt_job_title: '2024 Entrepreneur in Residence Fellow',
+        fellowship: '2024 Entrepreneur in Residence Fellow',
         project: 'Fake Project: Faking projects for test data',
         work: {0=>{'text'=> "Project One", 'link' => 'https://projectone.com'}, 1=>{'text'=> "Project Two", 'link' => 'https://projecttwo.com'}},
         bio: 'Dr. John Goodman is a fake doctor and this text is for testing purposes',
-        credentials: 'fake credentials text for testing purposes',
+        alt_job_title: 'fake credentials text for testing purposes',
         avatar: Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/va-seal.png'), 'image/png'),
         granted_public_bio: true
       )
@@ -36,7 +36,6 @@ RSpec.feature 'User Public Bio Page', type: :feature do
       expect(page).to have_link('Project Two', href: 'https://projecttwo.com')
       expect(page).to have_content('About')
       expect(page).to have_content('Dr. John Goodman is a fake doctor and this text is for testing purposes')
-      expect(page).to have_content('Credentials')
       expect(page).to have_content('fake credentials text for testing purposes')
     end
   end
@@ -49,11 +48,11 @@ RSpec.feature 'User Public Bio Page', type: :feature do
         job_title: nil,
         alt_first_name: nil,
         alt_last_name: nil,
+        fellowship: nil,
         alt_job_title: nil,
         project: nil,
         work: nil,
         bio: 'Research scientist focusing on artificial intelligence.',
-        credentials: nil,
         avatar: nil,
         granted_public_bio: true
       )
