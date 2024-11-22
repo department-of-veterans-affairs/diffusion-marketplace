@@ -87,7 +87,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         click_on 'Your profile'
         click_on 'Profile'
         expect(page).to have_selector('.profile-h1 ', visible: true)
-        expect(page).to have_current_path('/users/1')
+        expect(page).to have_current_path("/users/#{@admin.id}-#{@admin.first_name}-#{@admin.last_name}")
       end
     end
 
