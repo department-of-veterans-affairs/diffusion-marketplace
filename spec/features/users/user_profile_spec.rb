@@ -27,7 +27,7 @@ describe 'The user index', type: :feature do
   it 'should have edit profile button for logged in user' do
     login_as(@user, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
-    expect(page).to have_selector('.edit-profile-link')
+    expect(page).to have_content('Edit profile')
   end
 
   it 'if not logged in, should be redirected to landing page when accessing account edit' do

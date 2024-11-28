@@ -38,17 +38,6 @@
   position: relative;
 }
 
-.edit-profile-link {
-  @extend .usa-link;
-  text-decoration: none !important;
-
-  .edit-profile-icon {
-    &:after {
-      text-decoration: none;
-    }
-  }
-}
-
 .cancel-edit-profile-link {
   &:hover {
     text-decoration: none !important;
