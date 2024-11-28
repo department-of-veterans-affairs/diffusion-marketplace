@@ -36,7 +36,9 @@ ActiveAdmin.register User do
       row :visn
       row :created_at
       row :confirmed_at
-      row :granted_public_bio
+      row :granted_public_bio do |user|
+        user.granted_public_bio ? link_to('Public Bio Page', user_bio_path(user)) : false
+      end
       row "Admin" do |user|
         user.has_role?(:admin)
       end
