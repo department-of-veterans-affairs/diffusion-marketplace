@@ -147,6 +147,8 @@ RSpec.configure do |config|
   end
 end
 
+Selenium::WebDriver.logger.ignore(:clear_local_storage, :clear_session_storage) # Silence deprecation warnings until upstream Capybara version is updated https://github.com/teamcapybara/capybara/issues/2779
+
 # Capybara.javascript_driver = :webkit
 # Capybara.default_driver = :sniffybara
 # Capybara.default_driver = :selenium_chrome # Uncomment to debug feature tests
