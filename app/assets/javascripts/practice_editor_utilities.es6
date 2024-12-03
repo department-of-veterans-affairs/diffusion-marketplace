@@ -256,7 +256,8 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         // hide file upload so user can't upload a new file once added it is added to save queue
         if (sType === 'file') {
             let $uploadInputLabel = $(`#${container}`).find('.dm-file-upload-label')
-            $(`<div>File: ${fileName}</div>`).insertAfter($uploadInputLabel)
+            let escapedFileName = _.escape(fileName);
+            $(`<div>File: ${escapedFileName}</div>`).insertAfter($uploadInputLabel)
             $uploadInputLabel.remove();
             $(`#${container}`).find('.usa-file-input').addClass('display-none');
         }

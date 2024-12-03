@@ -16,12 +16,9 @@ class User < ApplicationRecord
   rolify unique: true
 
   has_many :visits, class_name: 'Ahoy::Visit'
-
   has_many :user_practices
   has_many :practices, through: :user_practices
-
   has_many :practice_editors, dependent: :destroy
-
   has_many :practice_editor_sessions
 
   # This allows users to post comments with the use of the Commontator gem
@@ -40,12 +37,17 @@ class User < ApplicationRecord
 
   USER_ROLES = %w[admin page_group_editor].freeze
 
+  before_validation :clean_work_entries
   validate :valid_email
   validate :password_complexity
   validate :password_uniqueness
   validate :va_email
+  validate :validate_work_links, if: :work_changed?
 
   validates_attachment_content_type :avatar, content_type: %r{\Aimage/.*\z}
+
+  after_update :refresh_public_bio_cache, if: :saved_change_to_granted_public_bio?
+  after_destroy :refresh_public_bio_cache_if_granted_public_bio
 
   scope :enabled, -> {where(disabled: false)}
   scope :disabled, -> {where(disabled: true)}
@@ -119,6 +121,23 @@ class User < ApplicationRecord
     return 'User' unless last_name || first_name
 
     "#{first_name}#{' ' if last_name && first_name}#{last_name}"
+  end
+
+  def preferred_full_name
+    first = alt_first_name.presence || first_name
+    last = alt_last_name.presence || last_name
+
+    return 'User' if first.blank? && last.blank?
+
+    "#{first}#{' ' if first && last}#{last}"
+  end
+
+  def bio_page_name
+    "#{preferred_full_name}#{', ' if accolades}#{accolades}"
+  end
+
+  def to_param
+    "#{id}-#{preferred_full_name.gsub(' ', '-')}"
   end
 
   def favorite_practices
@@ -208,6 +227,20 @@ class User < ApplicationRecord
     [users, non_existent_emails]
   end
 
+  def name_slug
+    "#{first_name.downcase}-#{last_name.downcase}"
+  end
+
+  def work
+    stored_work = read_attribute(:work)
+
+    if stored_work.is_a?(Hash)
+      stored_work.values
+    else
+      stored_work || []
+    end
+  end
+
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
 
   protected
@@ -223,5 +256,42 @@ class User < ApplicationRecord
     msg = "Response Code: #{ ldap.get_operation_result.code }, Message: #{ ldap.get_operation_result.message }"
 
     raise msg unless ldap.get_operation_result.code == 0
+  end
+
+  def refresh_public_bio_cache
+    Rails.cache.write("users_with_public_bio", User.where(granted_public_bio: true).to_a)
+  end
+
+  def refresh_public_bio_cache_if_granted_public_bio
+    refresh_public_bio_cache if granted_public_bio?
+  end
+
+  def clean_work_entries
+    return unless work.is_a?(Array)
+
+    self.work = work.reject { |entry| entry["text"].blank? && entry["link"].blank? }
+  end
+
+  def validate_work_links
+    return unless work.present?
+    domain_pattern = /\.(com|org|net|gov|edu|io|co|us|uk|biz|info|me)\b/i
+
+    work.each do |entry|
+      next if entry["link"].blank?
+
+      link = entry["link"].strip
+      link = "https://#{link}" unless link.match?(/\Ahttps?:\/\//i)
+
+      begin
+        uri = URI.parse(link)
+        if (uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)) && uri.host&.match?(domain_pattern)
+          entry["link"] = ERB::Util.html_escape(link)
+        else
+          errors.add(:work, "contains an invalid URL in the link field: #{entry['link']}")
+        end
+      rescue URI::InvalidURIError
+        errors.add(:work, "contains an invalid URL in the link field: #{entry['link']}")
+      end
+    end
   end
 end
