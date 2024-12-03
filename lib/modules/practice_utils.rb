@@ -39,7 +39,6 @@ module PracticeUtils
     duration
   end
 
-
   def fetch_bookmarks_by_practice(practice_id, duration = "30")
     practice = Practice.find(practice_id)
     bookmarked = practice.user_practices.where(favorited: true)
