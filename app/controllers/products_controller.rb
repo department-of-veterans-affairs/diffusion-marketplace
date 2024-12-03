@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   before_action :set_return_to_top_flag, only: [:show, :editors, :description, :intrapreneur, :multimedia]
 
   def editors
-    @editors = PracticeEditor.where(innovable: @product).order(created_at: :asc)
+    @editors = PracticeEditor.where(innovable: @product).includes(:user).order(created_at: :asc)
     render 'products/form/editors'
   end
 

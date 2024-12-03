@@ -25,16 +25,24 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  def bio
+    @user = User.find_by(id: params[:id].to_i)
+
+    if @user.nil? || !@user.granted_public_bio
+      redirect_to root_path, alert: 'Bio page unavailable'
+    end
+  end
+
   def update_profile
     redirect_to root_path unless current_user.present?
     @user = current_user
-    if @user.update(user_params)
+
+    updated_params = user_params.to_h
+    updated_params[:work] = {} if user_params[:work_deleted] == "true"
+
+    if @user.update(updated_params.except(:work_deleted))
       if params[:user][:delete_avatar].present? && params[:user][:delete_avatar] == 'true'
         @user.update(avatar: nil)
-      end
-
-      if is_cropping?(params[:user])
-        reprocess_avatar(@user, params[:user])
       end
 
       flash[:success] = 'You successfully updated your profile.'
@@ -126,7 +134,29 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    return params.require(:user).permit(:avatar, :bio) if session[:user_type] === 'ntlm'
-    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio, :location, :accepted_term, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h)
+    params.require(:user).permit( :accepted_term,
+                                  :accolades,
+                                  :alt_first_name,
+                                  :alt_job_title,
+                                  :alt_last_name,
+                                  :avatar,
+                                  :bio,
+                                  :delete_avatar,
+                                  :email,
+                                  :first_name,
+                                  :fellowship,
+                                  :job_title,
+                                  :last_name,
+                                  :location,
+                                  :password,
+                                  :password_confirmation,
+                                  :phone_number,
+                                  :project,
+                                  :skip_va_validation,
+                                  :skip_password_validation,
+                                  :visn,
+                                  :work_deleted,
+                                  work: [:text, :link]
+                                )
   end
 end

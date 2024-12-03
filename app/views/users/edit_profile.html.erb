@@ -1,7 +1,5 @@
 <% provide :head_tags do %>
-  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <%= render partial: 'edit_profile', formats: [:js] %>
-  <% end %>
+  <%= javascript_include_tag '_user_profile_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <div class="margin-top-0">
@@ -31,8 +29,17 @@
                 <% end %>
               </div>
               <div class="actions margin-bottom-4-important display-inline-block">
-                <%= f.submit "Save changes", class: 'usa-button usa-button-primary' %>
+                <%= f.submit "Save changes", class: 'usa-button usa-button-primary', id: 'edit-profile-submit', data: { disable_with: false } %>
               </div>
+              <% if @user.granted_public_bio %>
+                <div class="display-inline-block margin-right-1">
+                  <%= link_to user_bio_path(@user) do %>
+                    <button class="usa-button usa-button--outline margin-right-0">
+                      View Public Profile
+                    </button>
+                  <% end %>
+                </div>
+              <% end %>
               <% if @user.errors.any? %>
               <div class="usa-alert usa-alert--error" >
                 <div class="usa-alert__body">
@@ -48,61 +55,69 @@
                 </div>
               </div>
               <% end %>
+              <!-- Profile Image and Actions -->
+              <% avatar_exists = @user.avatar.present? && @user.avatar.exists? %>
               <div class="grid-container padding-0">
                 <div class="grid-row margin-bottom-3 dm-cropper-boundary">
                   <div class="grid-col-4 margin-right-1 profile-image-left-col-setter">
                     <div class="dm-cropper-images-container avatar-profile-photo-container" data-type="user">
-                      <% if @user.avatar.present? && @user.avatar.exists? %>
-                          <%= image_tag @user.avatar_s3_presigned_url(:thumb), alt: "user avatar for #{@user.full_name}", class: 'dm-cropper-thumbnail-modified avatar-profile-photo'%>
+                      <% if avatar_exists %>
+                        <%= image_tag @user.avatar_s3_presigned_url(:thumb), alt: "user avatar for #{@user.full_name}", class: 'avatar-profile-photo' %>
                       <% end %>
                     </div>
-                    <div class="display-none <%= @user.avatar.present? && @user.avatar.exists? ? 'profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder hidden' : 'profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder' %>">
-                        <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
-                      </div>
+                    <div class="profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder <%= 'display-none' if avatar_exists %>">
+                      <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
+                    </div>
                   </div>
-                  <div class="grid-col-fill profile-image-right-col-setter display-none">
-                    <p>Photo</p>
-                    <div class="text-base margin-y-1">
-                      <p class="line-height-sans-505">
-                        Upload a photo that clearly shows your face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.
-                      </p>
-                    </div>
-                    <div class="margin-bottom-2 dm-image-editor-text hidden">
-                      <p>
-                        Please click "Save edits" and then "Save changes" to save and exit editor.
-                      </p>
-                    </div>
 
-                  <div class="display-none grid-row flex-align-start display-none">
-                    <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
-                      <%= f.hidden_field attribute, :id => attribute, :value => nil %>
-                    <% end %>
-                    <div class="grid-col-fill">
-                      <a class="usa-button dm-cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
-                      <a class="usa-button usa-button--outline dm-cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
-                      <a class="<%= @user.avatar.present? && @user.avatar.exists? ? "usa-button usa-button--outline dm-cropper-edit-mode" : "usa-button usa-button--outline dm-cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
-                      <div>
-                        <%= f.label :avatar,
-                          @user.avatar.present? && @user.avatar.exists? ? 'Upload new photo' : 'Upload photo',
-                          class: @user.avatar.present? && @user.avatar.exists? ? 'dm-cropper-upload-image-label user-avatar-upload-label' : 'dm-cropper-upload-image-label usa-button usa-button--outline'
-                        %>
-                        <%= f.file_field :avatar, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
+                  <% if @user.granted_public_bio %>
+                    <div class="grid-col-fill profile-image-right-col-setter">
+                      <p>Photo</p>
+                      <div class="text-base margin-y-1">
+                        <p class="line-height-sans-505">
+                          Upload a photo that clearly shows your face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.
+                        </p>
                       </div>
-                      <div class="dm-cropper-delete-image">
-                        <%= f.label :delete_avatar, 'Remove photo', class: @user.avatar.present? && @user.avatar.exists? ? 'display-inline-block text-secondary dm-cropper-delete-image-label' : 'display-inline-block text-secondary dm-cropper-delete-image-label hidden'%>
-                        <%= f.check_box :delete_avatar, { class: @user.avatar.present? && @user.avatar.exists? ? 'usa-checkbox__input dm-cropper-delete-image' : 'usa-checkbox__input dm-cropper-delete-image hidden'}, 'true', 'false' %>
+
+                      <div class="margin-bottom-2 dm-image-editor-text hidden">
+                        <p>Please click "Save edits" and then "Save changes" to save and exit editor.</p>
+                      </div>
+
+                      <!-- Image Editing Buttons -->
+                      <div class="grid-row flex-align-start">
+                        <!--
+                        <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+                          <%= f.hidden_field attribute, id: attribute, value: nil %>
+                        <% end %>
+                        -->
+                        <div class="grid-col-fill">
+                        <!--
+                          <a class="usa-button dm-cropper-save-edit display-none" aria-expanded="false">Save edits</a>
+                          <a class="usa-button usa-button--outline dm-cropper-cancel-edit display-none" aria-expanded="false">Cancel edits</a>
+                          <a class="<%= avatar_exists ? 'usa-button usa-button--outline dm-cropper-edit-mode' : 'usa-button usa-button--outline dm-cropper-edit-mode hidden' %>" aria-controls="photo-crop" aria-expanded="false">Edit photo</a>
+                        -->
+                          <!-- Upload Photo -->
+                          <div>
+                            <%= f.label :avatar, avatar_exists ? 'Upload new photo' : 'Upload photo', class: 'dm-cropper-upload-image-label usa-button usa-button--outline' %>
+                            <%= f.file_field :avatar, class: "dm-cropper-upload-image hidden-upload cropper-upload-image", accept: 'image/*' %>
+                          </div>
+
+                          <!-- Delete Photo -->
+                          <div class="dm-cropper-delete-image <%= 'hidden' unless avatar_exists %>">
+                            <%= f.label :delete_avatar, 'Remove photo', class: "display-inline-block text-secondary dm-cropper-delete-image-label" %>
+                            <%= f.check_box :delete_avatar, { class: avatar_exists ? 'usa-checkbox__input dm-cropper-delete-image' : 'usa-checkbox__input dm-cropper-delete-image hidden' }, 'true', 'false' %>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  </div>
+                  <% end %>
                 </div>
               </div>
-            </div>
 
               <% user_type = session[:user_type] %>
               <div class="usa-form edit-profile-form">
                 <div class="grid-row width-full">
-                  <div class="field grid-col-9">
+                  <div class="field margin-top-3 grid-col-9">
                     <%= f.label :first_name, class: 'margin-top-2 margin-bottom-2' %><br/>
                     <%= f.text_field :first_name, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: user_type === 'ntlm' %>
                   </div>
@@ -135,13 +150,102 @@
                     <%= f.text_field :job_title, class: 'usa-input usa-input__disabled bg-base-lightest border-base-light text-base disabled', disabled: user_type === 'ntlm' %>
                   </div>
                 </div>
-              </div>
-              <div class="field margin-top-3 grid-col-9">
-                <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
-                  <span>Bio</span>&nbsp;<span class="text-base-light profile-bio-character-count" id="user_<%= @user.id %>_profile_bio_character_count">(0/50 characters)</span>
-                  <p>Tell other users about yourself and your professional background.</p>
+
+                <%# Public Bio (Fellow)-specific fields %>
+                <% is_fellow = (@user.granted_public_bio == true) %>
+                <% if is_fellow %>
+                  <div class="grid-row width-full">
+                    <div class="field margin-top-3 grid-col-9">
+                      <%= f.label :alt_first_name, 'First Name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.text_field :alt_first_name,
+                        value: @user.alt_first_name.present? ? @user.alt_first_name : @user.first_name,
+                        autofocus: true,
+                        class: "usa-input border-base-light"
+                      %>
+                    </div>
+                  </div>
+
+                  <div class="grid-row width-full">
+                    <div class="field margin-top-3 grid-col-9">
+                      <%= f.label :alt_last_name, 'Last Name (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.text_field :alt_last_name,
+                        value: @user.alt_last_name.present? ? @user.alt_last_name : @user.last_name,
+                        autofocus: true,
+                        class: "usa-input border-base-light"
+                      %>
+                    </div>
+                  </div>
+
+                  <div class="grid-row width-full">
+                    <div class="field margin-top-3 grid-col-9">
+                      <%= f.label :accolades, 'Honors, degress (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <p>e.g. LCSW, M.A.</p>
+                      <%= f.text_field :accolades,
+                        value: @user.accolades,
+                        autofocus: true,
+                        class: "usa-input border-base-light"
+                      %>
+                    </div>
+                  </div>
+
+                  <div class="grid-row width-full">
+                    <div class="field margin-top-3 grid-col-9">
+                      <%= f.label :fellowship, 'Fellowship (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                      <%= f.text_field :fellowship,
+                        value: @user.fellowship.present? ? @user.fellowship : @user.job_title,
+                        autofocus: true,
+                        class: "usa-input border-base-light"
+                      %>
+                    </div>
+                  </div>
+
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :project, 'Project (Public Bio)', class: 'margin-top-2 margin-bottom-2' %><br/>
+                    <%= f.text_field :project,
+                      autofocus: true,
+                      class: "usa-input border-base-light"
+                    %>
+                  </div>
+
+                  <div class="field margin-y-3 grid-col-9">
+                    <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
+                      <span>Bio</span>&nbsp;
+                      <p>Tell other users about yourself and your professional background.</p>
+                    <% end %>
+                    <%= f.text_area :bio, class: 'usa-input height-200px profile-bio border-base-light' %>
+                  </div>
+
+                  <div class="field margin-y-3 grid-col-9">
+                    <%= f.label :alt_job_title, 'Job Title (Public Bio)', class: 'margin-y-2' %><br/>
+                    <%= f.text_area :alt_job_title,
+                      autofocus: true,
+                      class: "usa-input height-15 border-base-light"
+                    %>
+                  </div>
+
+                  <div class="field margin-top-2 grid-col-9">
+                    <%= f.label :work, 'Work (Public Bio)', class: 'margin-top-1' %>
+                    <%= hidden_field_tag "user[work_deleted]", "false", id: "work_deleted" %>
+
+                    <div id="work_links">
+                      <% (@user.work || []).each_with_index do |work_entry, index| %>
+                        <div class="work-entry margin-bottom-2 <%= 'margin-top-neg-2' if index.zero? %>">
+                          <%= label_tag "user[work][#{index}][text]", "Text", class: "usa-label" %>
+                          <%= text_field_tag "user[work][#{index}][text]", work_entry["text"], class: "usa-input margin-bottom-1", placeholder: "e.g., Project Name" %>
+
+                          <%= label_tag "user[work][#{index}][link]", "Link", class: "usa-label" %>
+                          <%= text_field_tag "user[work][#{index}][link]", work_entry["link"], class: "usa-input margin-bottom-1", placeholder:"e.g., https://example.com" %>
+
+                          <button type="button" class="remove-work-entry usa-button usa-button--unstyled">Remove</button>
+
+                          <% if index == @user.work.count - 1 %>
+                            <button type="button" id="add-work-entry" class="margin-left-2 usa-button usa-button--unstyled">Add Another Work Link</button>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
                 <% end %>
-                <%= f.text_area :bio, class: 'usa-input height-200px profile-bio' %>
               </div>
             <% end %>
           </div>
@@ -150,9 +254,9 @@
   </section>
 </div>
 
-<%# <script type="text/javascript"> 
+<%# <script type="text/javascript">
   document.getElementById("toggle-photo").onclick = function(event) {
     event.preventDefault();
     document.getElementById("photo-file-upload").setAttribute("aria-hidden", 'false');
-  } 
+  }
 </script>  %>
