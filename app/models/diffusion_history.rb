@@ -20,9 +20,16 @@ class DiffusionHistory < ApplicationRecord
   scope :get_clinical_resource_hubs, -> { includes(:clinical_resource_hub).pluck("clinical_resource_hubs.official_station_name") }
   scope :get_with_practice, -> (practice) { joins(:practice).where(practice: practice) }
   scope :with_practice_and_facilities, ->(practice) {
-  get_with_practice(practice)
-    .joins(:va_facility)
-    .select('diffusion_histories.id, diffusion_histories.created_at, va_facilities.station_number') # Select specific columns
+    get_with_practice(practice)
+      .joins(
+        "LEFT OUTER JOIN va_facilities ON va_facilities.id = diffusion_histories.va_facility_id
+        LEFT OUTER JOIN clinical_resource_hubs ON clinical_resource_hubs.id = diffusion_histories.clinical_resource_hub_id"
+      )
+      .select(
+        'diffusion_histories.id,
+        diffusion_histories.created_at,
+        va_facilities.station_number AS station_number'
+      )
   }
   scope :exclude_va_facilities, -> { where(va_facility_id: nil) }
   scope :exclude_clinical_resource_hubs, -> { where(clinical_resource_hub_id: nil) }
