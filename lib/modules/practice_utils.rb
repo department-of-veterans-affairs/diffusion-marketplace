@@ -66,6 +66,11 @@ module PracticeUtils
     page_views
   end
 
+  def fetch_page_views_for_practice_over_duration(practice_id, duration = "30")
+    start_date = Time.now - duration.to_i.days
+    Ahoy::Event.practice_views_for_single_practice_by_date_range(practice_id, start_date, Time.now)
+  end
+
   def fetch_unique_visitors_by_practice_count(practice_id, duration = "30")
     sql = "select distinct user_id from ahoy_events where name = 'Practice show' and properties = $1"
     param1 = "{\"practice_id\": #{practice_id}}"
@@ -167,6 +172,35 @@ module PracticeUtils
       end
     end
     match_counter
+  end
+
+  def calculate_adoption_metrics(adoptions)
+    {
+      successful: adoptions.get_by_successful_status.size,
+      in_progress: adoptions.get_by_in_progress_status.size,
+      unsuccessful: adoptions.get_by_unsuccessful_status.size
+    }
+  end
+
+  def calculate_facility_metrics(facilities, facility_ids)
+    {
+      rural: get_adoption_facility_details_for_practice(facilities, facility_ids, "rurality", "R"),
+      urban: get_adoption_facility_details_for_practice(facilities, facility_ids, "rurality", "U"),
+      high_complexity_1a: get_adoption_facility_details_for_practice(facilities, facility_ids, "fy17_parent_station_complexity_level", "1a-High Complexity"),
+      high_complexity_1b: get_adoption_facility_details_for_practice(facilities, facility_ids, "fy17_parent_station_complexity_level", "1b-High Complexity"),
+      high_complexity_1c: get_adoption_facility_details_for_practice(facilities, facility_ids, "fy17_parent_station_complexity_level", "1c-High Complexity"),
+      medium_complexity_2: get_adoption_facility_details_for_practice(facilities, facility_ids, "fy17_parent_station_complexity_level", "2 -Medium Complexity"),
+      low_complexity_3: get_adoption_facility_details_for_practice(facilities, facility_ids, "fy17_parent_station_complexity_level", "3 -Low Complexity")
+    }
+  end
+
+  def calculate_page_view_metrics(page_views, duration)
+    grouped_page_views = page_views.group_by { |pv| pv.time.to_date }
+    dates = (duration.to_i.days.ago.to_date..Date.today).map(&:to_s)
+    views = dates.map { |date| grouped_page_views[Date.parse(date)]&.count || 0 }
+    unique_visitors = dates.map { |date| grouped_page_views[Date.parse(date)]&.map(&:user_id)&.uniq&.count || 0 }
+
+    { dates: dates, views: views, unique_visitors: unique_visitors }
   end
 
   def fetch_page_views_leader_board(duration = "30")
