@@ -19,6 +19,14 @@ class DiffusionHistory < ApplicationRecord
   scope :get_va_facilities, -> { includes(:va_facility).pluck("va_facilities.station_number") }
   scope :get_clinical_resource_hubs, -> { includes(:clinical_resource_hub).pluck("clinical_resource_hubs.official_station_name") }
   scope :get_with_practice, -> (practice) { joins(:practice).where(practice: practice) }
+  scope :with_practice_and_facilities, ->(practice) {
+  get_with_practice(practice)
+    .joins(:va_facility)
+    .select('diffusion_histories.id, diffusion_histories.created_at, va_facilities.station_number') # Select specific columns
+  }
   scope :exclude_va_facilities, -> { where(va_facility_id: nil) }
   scope :exclude_clinical_resource_hubs, -> { where(clinical_resource_hub_id: nil) }
+  scope :in_date_range, ->(start_date, end_date = Time.now) {
+    where(created_at: start_date..end_date)
+  }
 end
