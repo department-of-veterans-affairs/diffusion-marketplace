@@ -304,8 +304,8 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
 
     # Facility metrics
-    facility_station_numbers_for_practice_30 = adoptions_past_30_days.map {|dh| dh.station_number}
-    facility_station_numbers_for_practice_at = adoptions_all_time.map {|dh| dh.station_number}
+    facility_station_numbers_for_practice_30 = adoptions_past_30_days.map {|dh| dh.station_number if dh.station_number.present?}
+    facility_station_numbers_for_practice_at = adoptions_all_time.map {|dh| dh.station_number if dh.station_number.present?}
     facility_metrics_30 = calculate_facility_metrics(@va_facilities, facility_station_numbers_for_practice_30)
     facility_metrics_at = calculate_facility_metrics(@va_facilities, facility_station_numbers_for_practice_at)
 
