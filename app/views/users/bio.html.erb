@@ -8,6 +8,11 @@
           <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
         </div>
       <% end %>
+      <% if current_user.present? && current_user == @user %>
+        <%= link_to 'Edit profile', edit_profile_path, class: 'usa-button usa-button--outline display-inline-block margin-top-2' %>
+      <% elsif current_user.present? && current_user.has_role?(:admin) %>
+        <%= link_to 'Edit profile', admin_edit_user_profile_path(@user), class: 'usa-button usa-button--outline display-inline-block margin-top-2' %>
+      <% end %>
     </div>
 
     <div class="grid-col">
