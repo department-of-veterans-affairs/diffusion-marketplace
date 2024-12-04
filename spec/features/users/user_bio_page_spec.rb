@@ -1,13 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature 'User Public Bio Page', type: :feature do
-  let(:user) { create(:user) }
-
-  before do
-    visit user_bio_path(user.id)
-  end
-
-  context 'when all profile elements are present with alternate names and job title' do
+  describe 'user public bio is granted and all data is present' do
     let(:user) do
       create(:user,
         first_name: 'Johnathan',
@@ -26,7 +20,8 @@ RSpec.feature 'User Public Bio Page', type: :feature do
       )
     end
 
-    scenario 'displays all sections with full data, preferring alt names and job title' do
+    it 'displays all sections with full data, preferring alt names and job title' do
+      visit user_bio_path(user.id)
       expect(page).to have_css('img.avatar-profile-photo')
       expect(page).to have_content('John Goodman, LCSW, M.A.')
       expect(page).to have_content('2024 Entrepreneur in Residence Fellow')
@@ -40,7 +35,7 @@ RSpec.feature 'User Public Bio Page', type: :feature do
     end
   end
 
-  context 'when optional elements are missing, but basic info is present' do
+  describe 'optional bio data elements are missing, but basic info is present' do
     let(:user) do
       create(:user,
         first_name: 'Jane',
@@ -58,7 +53,8 @@ RSpec.feature 'User Public Bio Page', type: :feature do
       )
     end
 
-    scenario 'displays only the available information' do
+    it 'displays only the available information' do
+      visit user_bio_path(user.id)
       expect(page).to have_content('Jane Doe')
       expect(page).to have_content('About')
       expect(page).to have_content('Research scientist focusing on artificial intelligence.')
@@ -68,12 +64,41 @@ RSpec.feature 'User Public Bio Page', type: :feature do
     end
   end
 
-  context 'when the user does not have granted_public_bio permission' do
+  describe 'when the user does not have granted_public_bio permission' do
     let(:user) { create(:user, granted_public_bio: false, first_name: 'NoAccess', last_name: 'User') }
 
-    scenario 'redirects to the home page with an alert' do
+    it 'redirects to the home page with an alert' do
+      visit user_bio_path(user.id)
       expect(page).to have_current_path(root_path)
       expect(page).to have_content('Bio page unavailable')
+    end
+  end
+
+  describe 'when user is granted public bio' do
+    let(:user_a) { create(:user, granted_public_bio: true, first_name: 'John', last_name: 'Goodman') }
+    let(:user_b) { create(:user, granted_public_bio: true, first_name: 'Other', last_name: 'User') }
+    let(:admin) { create(:user, :admin) }
+
+    it 'links to edit profile page when logged in as the user' do
+      login_as(user_a, scope: :user, run_callbacks: false)
+      visit user_bio_path(user_a.id)
+      expected_link_path = '/edit-profile'
+      expect(page).to have_link('Edit profile', href: expected_link_path)
+    end
+
+    it "links to the given user's edit profile page when logged in as admin" do
+      login_as(admin, scope: :user, run_callbacks: false)
+      visit user_bio_path(user_a.id)
+      expected_link_path = "/users/#{user_a.id}-John-Goodman/edit-profile"
+      expect(page).to have_link('Edit profile', href: expected_link_path)
+    end
+
+    it "does not link to the given user's edit profile page when logged in as a non admin who isn't the user" do
+      login_as(user_b, scope: :user, run_callbacks: false)
+      visit user_bio_path(user_a.id)
+      expected_link_path = "/users/#{user_a.id}-John-Goodman/edit-profile"
+      expect(page).not_to have_link('Edit profile', href: expected_link_path)
+      expect(page).not_to have_content('Edit profile')
     end
   end
 end
