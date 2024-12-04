@@ -4,10 +4,12 @@
 class UsersController < ApplicationController
   require 'will_paginate/array'
   include CropperUtils
+  before_action :authenticate_user!, only: [:update, :edit_profile, :update_profile, :delete_photo, :destroy, :re_enable, :index]
   before_action :is_set_user, only: [:show]
-  before_action :set_user, only: %i[show edit update destroy re_enable set_password]
+  before_action :set_user, only: %i[show destroy re_enable set_password]
+  before_action :set_user_for_editing, only: [:edit_profile, :update_profile, :delete_photo]
+  before_action :require_user_or_admin, only: [:update, :edit_profile, :update_profile]
   before_action :require_admin, only: %i[index update destroy re_enable]
-  before_action :require_user_or_admin, only: %i[update]
   before_action :final_admin, only: :update
 
   def index
@@ -21,8 +23,6 @@ class UsersController < ApplicationController
   end
 
   def edit_profile
-    redirect_to root_path unless current_user.present?
-    @user = current_user
   end
 
   def bio
@@ -35,7 +35,6 @@ class UsersController < ApplicationController
 
   def update_profile
     redirect_to root_path unless current_user.present?
-    @user = current_user
 
     updated_params = user_params.to_h
     updated_params[:work] = {} if user_params[:work_deleted] == "true"
@@ -45,8 +44,13 @@ class UsersController < ApplicationController
         @user.update(avatar: nil)
       end
 
-      flash[:success] = 'You successfully updated your profile.'
-      redirect_to edit_profile_path
+      if current_user == @user
+        flash[:success] = 'You successfully updated your profile.'
+        redirect_to edit_profile_path
+      else
+        flash[:success] = 'You successfully updated this user profile.'
+        redirect_to admin_edit_user_profile_path(@user)
+      end
     else
       @user.avatar = nil if @user.errors.messages.include?(:avatar)
       render 'edit_profile'
@@ -118,7 +122,7 @@ class UsersController < ApplicationController
   # This is to cover any sort of User self-editing in the future (such as profile infomation)
   def require_user_or_admin
     unless current_user.present? && (current_user == @user || current_user.has_role?(:admin))
-      redirect_to users_path
+      redirect_to root_path
     end
   end
 
@@ -131,6 +135,14 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id] || params[:user_id])
+  end
+
+  def set_user_for_editing
+    if current_user.has_role?(:admin) && params[:id].present?
+      @user = User.find(params[:id])
+    else
+      @user = current_user
+    end
   end
 
   def user_params

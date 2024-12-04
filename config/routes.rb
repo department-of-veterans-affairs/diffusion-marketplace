@@ -104,6 +104,8 @@ Rails.application.routes.draw do
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
 
+  get '/users/:id/edit-profile' => 'users#edit_profile', as: :admin_edit_user_profile
+
   get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_an_innovation'
   post '/nominate-an-innovation', controller: 'nominate_practices', action: 'email'
   get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'

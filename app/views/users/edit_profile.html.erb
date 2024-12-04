@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="login-body">
-            <%= form_for(@user, url: edit_profile_path, html: {method: :post, class: 'margin-top-2'}) do |f| %>
+            <%= form_for(@user, url: edit_profile_path(id: @user.id), html: {method: :post, class: 'margin-top-2'}) do |f| %>
               <div class="display-inline-block margin-right-1">
                 <%= link_to "/users/#{@user.id}", class: 'cancel-edit-profile-link' do %>
                   <button class="usa-button usa-button--base cancel-edit-profile-button margin-right-0">
