@@ -103,6 +103,7 @@ class ProfileEditor {
         $('.dm-image-error-text').addClass('hidden');
         this.toggleDeleteBtn(true, event.target);
         this.$placeholderImg.addClass('display-none');
+        $('input[name="user[delete_avatar]"]').prop("checked", true).val("false");
       };
       reader.readAsDataURL(uploadedImg);
     } else {
@@ -122,11 +123,12 @@ class ProfileEditor {
     $fileInput.replaceWith($newFileInput);
     $newFileInput.on('change', (event) => this.handleImageUpload(event));
     this.$placeholderImg.removeClass('display-none');
+    $('input[name="user[delete_avatar]"]').prop("checked", true).val("true");
     this.toggleDeleteBtn(false);
   }
 
-  toggleDeleteBtn(visible, target) {
-    const imgDeleteBtn = $(target).closest('.dm-cropper-boundary').find(this.$deleteBtn);
+  toggleDeleteBtn(visible) {
+    const imgDeleteBtn = this.$deleteBtn;
     if (visible) {
       imgDeleteBtn.removeClass('hidden');
     } else {
