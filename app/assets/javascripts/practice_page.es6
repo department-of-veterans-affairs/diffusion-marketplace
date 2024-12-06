@@ -56,14 +56,11 @@
         const moreText = 'See more';
         const lessText = 'See less';
         let t = $(element).text();
-        let firstHalf = `${t.slice(
-          0,
-          showChar
-        )}<span>${ellipsesText} </span><button type="button" class="dm-button--unstyled-primary more-link">${moreText}</button>`;
-        let secondHalf = `<span style="display:none;">${t.slice(
-          showChar,
-          t.length
-        )} <button type="button" class="dm-button--unstyled-primary less-link">${lessText}</button></span>`;
+        let firstHalf = `${_.escape(t.slice(0, showChar))}<span>${ellipsesText} </span>
+            <button type="button" class="dm-button--unstyled-primary more-link">${moreText}</button>`;
+        let secondHalf = `<span style="display:none;">${_.escape(t.slice(showChar, t.length))}
+            <button type="button" class="dm-button--unstyled-primary less-link">${lessText}</button></span>`;
+
         if (t.length < showChar) return;
 
         $(element).html(firstHalf + secondHalf);
