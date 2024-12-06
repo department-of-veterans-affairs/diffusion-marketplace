@@ -114,7 +114,10 @@
                     </div>
                     <div class="text-right">
                       <button class="usa-button usa-button--outline margin-0 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-                      <%= link_to 'Submit Report', "/innovations/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button  report-abuse-submit', data: { confirm: 'Are you sure you want to report this comment?', turbolinks: 'false' } %>
+                      <%= link_to 'Submit Report',
+                          Rails.application.routes.url_helpers.report_practice_comment_path(practice_id: @practice.id, id: comment.id) ,
+                          class: 'usa-button report-abuse-submit',
+                          data: { confirm: 'Are you sure you want to report this comment?', turbolinks: 'false' } %>
                     </div>
                   </div>
                 </div>
