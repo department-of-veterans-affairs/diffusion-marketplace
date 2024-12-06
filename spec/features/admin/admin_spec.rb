@@ -57,7 +57,7 @@ describe 'The admin dashboard', type: :feature do
     it 'if not logged in, should be redirected to sign_in page' do
       visit '/admin'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_current_path(new_user_session_path)
     end
 
@@ -65,7 +65,7 @@ describe 'The admin dashboard', type: :feature do
       login_as(@user, scope: :user, run_callbacks: false)
       visit '/admin'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_current_path(root_path)
       expect(page).to have_content('Unauthorized access!')
     end
@@ -76,7 +76,7 @@ describe 'The admin dashboard', type: :feature do
       login_as(@user, scope: :user, run_callbacks: false)
       visit '/admin'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_current_path(editor_root_path)
     end
 
@@ -84,7 +84,7 @@ describe 'The admin dashboard', type: :feature do
       login_as(@admin, scope: :user, run_callbacks: false)
       visit '/admin/site_metrics'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
 
       expect(page).to have_link('General', href: '#general')
       expect(page).to have_link('Innovation Engagement', href: '#innovation-engagement')
@@ -107,7 +107,7 @@ describe 'The admin dashboard', type: :feature do
       login_as(@admin, scope: :user, run_callbacks: false)
       visit '/admin/site_metrics'
 
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
 
       within(:css, '#header') do
         # click_link('Site Metrics')

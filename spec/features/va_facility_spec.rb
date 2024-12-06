@@ -57,7 +57,7 @@ describe 'VA facility pages', type: :feature do
     it 'should be there' do
       visit '/facilities'
       expect(page).to have_selector('.dm-loading-spinner', visible: false)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       expect(page).to have_css('#dm-va-facilities-directory-table')
       expect(page).to have_current_path(va_facilities_path)
       expect(page).to have_content("Facilities")

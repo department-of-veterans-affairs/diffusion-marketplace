@@ -17,7 +17,7 @@ describe 'Practice editor', type: :feature, js: true do
         it 'should allow admin level users to edit a practice' do
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_path(@practice)
-            expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_axe_clean.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
         end
 
@@ -25,7 +25,7 @@ describe 'Practice editor', type: :feature, js: true do
             login_as(@approver, :scope => :user, :run_callbacks => false)
             @user_practice.update(approved: true, published: true)
             visit practice_path(@user_practice)
-            expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_axe_clean.according_to :wcag2a, :section508
             expect(page).to have_link(href: "/innovations/#{@user_practice.slug}/edit/editors")
         end
 
@@ -35,14 +35,14 @@ describe 'Practice editor', type: :feature, js: true do
 
             login_as(@user_2, :scope => :user, :run_callbacks => false)
             visit practice_introduction_path(@practice)
-            expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_axe_clean.according_to :wcag2a, :section508
             expect(page).to have_content('Introduction')
         end
 
         it 'should not allow the following user types to edit a practice: non-admins, non-practice owners, and non-practice editors' do
             login_as(@user, :scope => :user, :run_callbacks => false)
             visit practice_path(@practice)
-            expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_axe_clean.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
             expect(page).to_not have_link(href: "/innovations/#{@practice.slug}/edit/instructions")
         end

@@ -69,7 +69,7 @@ describe 'Terms and conditions', type: :feature do
         it 'Should display the terms and conditions page' do
             visit '/about'
             click_link 'Terms and conditions'
-            expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_axe_clean.according_to :wcag2a, :section508
             expect(page).to have_content('Terms and conditions')
             expect(current_path).to eq('/terms-and-conditions')
             expect(page).to have_content('VA systems are intended to be used by authorized users')

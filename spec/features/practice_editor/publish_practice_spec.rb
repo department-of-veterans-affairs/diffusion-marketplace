@@ -28,7 +28,7 @@ describe 'Practice editor', type: :feature do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit practice_introduction_path(@practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       @save_button = find('#practice-editor-save-button')
     end
 

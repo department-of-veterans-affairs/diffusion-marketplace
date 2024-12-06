@@ -2,7 +2,8 @@ require 'devise'
 require 'capybara'
 require 'simplecov'
 require 'rspec/retry'
-require 'axe/rspec'
+require 'axe-capybara'
+require 'axe-rspec'
 require "rack_session_access/capybara"
 require 'selenium-webdriver'
 

@@ -110,7 +110,7 @@ describe 'Breadcrumbs', type: :feature do
       fill_in('dm-navbar-search-desktop-field', with: 'the best')
       find('#dm-navbar-search-desktop-button').click
       expect(page).to have_content('The Best')
-      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to be_axe_clean.according_to :wcag2a, :section508
       find("a[href='#{practice_path(@user_practice)}']").click
       expect(page).to have_css("#pr-view-introduction", visible: true)
       within(:css, '#breadcrumbs') do

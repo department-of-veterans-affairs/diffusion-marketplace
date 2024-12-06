@@ -13,9 +13,9 @@ describe 'Practice editor', type: :feature, js: true do
     describe 'view and editor' do
       it 'should be accessible' do
         visit practice_path(@practice)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to be_axe_clean.according_to :wcag2a, :section508
         visit practice_overview_path(@practice)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to be_axe_clean.according_to :wcag2a, :section508
       end
 
       it 'should be able to change the problem, solution, results, statements' do
