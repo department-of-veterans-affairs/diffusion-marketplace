@@ -246,10 +246,10 @@ module NavigationHelper
         if @page.is_visible?
           session[:heading] = @page.title
           session[:description] = @page.description
-          if @page.image.present?
-            session[:page_image] = @page.image_s3_presigned_url(:thumb)
-            session[:page_image_alt_text] = @page.image_alt_text
-          end
+          # if @page.image.present?
+          #   session[:page_image] = @page.image_s3_presigned_url(:thumb)
+          #   session[:page_image_alt_text] = @page.image_alt_text
+          # end
         end
       end
     end
