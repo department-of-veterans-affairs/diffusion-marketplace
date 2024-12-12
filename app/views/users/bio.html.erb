@@ -59,7 +59,7 @@
       <div class="grid-col-12 margin-top-4">
         <h3 class="font-sans-md text-bold">About</h3>
         <div class="line-height-sans-3">
-          <%= simple_format(@user.bio) %>
+          <%= @user.bio.split(/\r?\n\r?\n/).map { |paragraph| simple_format(paragraph.strip, {}, sanitize: true) }.join("<br>").html_safe %>
         </div>
       </div>
     <% end %>
