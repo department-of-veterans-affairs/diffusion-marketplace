@@ -18,11 +18,9 @@ class Page < ApplicationRecord
                           case_sensitive: false
 
   validates :slug, format: { with: Regexp.new('\A' + SLUG_FORMAT.source + '\z'), message: "invalid characters in URL" }
-  validates_attachment :image,
-                       content_type: {
-                         content_type: %w[image/jpg image/jpeg image/png],
-                         message: "must be one of the following types: jpg, jpeg, or png"
-                       }
+  validates_attachment_content_type :image,
+    content_type: ["image/jpg", "image/jpeg", "image/png"],
+    message: "must be one of the following types: jpg, jpeg, or png"
   validates :image_alt_text,
             presence: { message: "can't be blank if Page image is present" },
             if: Proc.new { |page| page.image.present? }
