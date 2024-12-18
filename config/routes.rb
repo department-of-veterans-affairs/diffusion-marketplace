@@ -85,6 +85,8 @@ Rails.application.routes.draw do
     patch :re_enable
   end
 
+  get '/bios/:id', to: 'users#bio', as: :user_bio
+
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.has_role?(:admin) } do
     mount Sidekiq::Web => '/sidekiq'
@@ -101,6 +103,8 @@ Rails.application.routes.draw do
   get '/edit-profile' => 'users#edit_profile'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
+
+  get '/users/:id/edit-profile' => 'users#edit_profile', as: :admin_edit_user_profile
 
   get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_an_innovation'
   post '/nominate-an-innovation', controller: 'nominate_practices', action: 'email'

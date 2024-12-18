@@ -30,15 +30,6 @@ _partners = [
     PracticePartner.find_or_create_by!(name: 'Office of Veterans Access to Care', short_name: 'OVAC', description: 'The purpose of OVAC is to grow and sustain the Veterans Health Administration (VHA) as the most accessible health care system in the U.S. by providing oversight and accountability for improvement solutions. OVAC continues the VA mission to offer Veterans timely and quality access to care.', icon: 'fas fa-certificate', color: '#0076D6'),
 ]
 
-_va_secretary_priorities = [
-    VaSecretaryPriority.find_or_create_by!(name: 'Giving Veterans choice', short_name: 'giving_veterans_choice', description: 'Giving verterans choice'),
-    VaSecretaryPriority.find_or_create_by!(name: 'Modernizing the VA', short_name: 'modernizing_the_va', description: 'Modernization the VA'),
-    VaSecretaryPriority.find_or_create_by!(name: 'Improving the timeliness of services', short_name: 'improving_timeliness', description: 'Improving the timeliness of services'),
-    VaSecretaryPriority.find_or_create_by!(name: 'Focusing resources based on importance', short_name: 'focusing_resources', description: 'Focusing resources based on importance'),
-    VaSecretaryPriority.find_or_create_by!(name: 'Preventing suicide', short_name: 'preventing_suicide', description: 'Preventing suicide'),
-]
-
-
 _domains = [
     Domain.find_or_create_by!(name: 'Veteran', description: 'Enables an improvement in satisfaction or customer experience for Veterans'),
     Domain.find_or_create_by!(name: 'Clinical', description: 'Produces an improvement in health outcomes'),
@@ -119,22 +110,6 @@ _community_impacts = [
     Category.find_or_create_by!(name: 'QUERI', short_name: 'queri', description: 'QUERI', parent_category: impact_categories[2]),
 ]
 
-
-_job_positions = [
-    JobPosition.find_or_create_by!(name: 'Clinic based nurse', short_name: 'clinic_based_nurse', description: 'Clinic based nurse'),
-    JobPosition.find_or_create_by!(name: 'Clinic based physician', short_name: 'clinic_based_physician', description: 'Clinic based physician'),
-    JobPosition.find_or_create_by!(name: 'Hospital based nurse', short_name: 'hospital_based_nurse', description: 'Hospital based nurse'),
-    JobPosition.find_or_create_by!(name: 'Hospital based physician', short_name: 'hospital_based_physician', description: 'Hospital based physician'),
-    JobPosition.find_or_create_by!(name: 'Nursing Assistant', short_name: 'nursing_assistant', description: 'Nursing Assistant'),
-    JobPosition.find_or_create_by!(name: 'Pharmacist', short_name: 'pharmacist', description: 'Pharmacist'),
-    JobPosition.find_or_create_by!(name: 'Pharmacy Tech', short_name: 'pharmacy_tech', description: 'Pharmacy Tech'),
-    JobPosition.find_or_create_by!(name: 'Researcher', short_name: 'researcher', description: 'Researcher'),
-    JobPosition.find_or_create_by!(name: 'Prosthetist', short_name: 'prosthetist', description: 'Prosthetist'),
-    JobPosition.find_or_create_by!(name: 'Purchasing Agent', short_name: 'purchasing_agent', description: 'Purchasing Agent'),
-    JobPosition.find_or_create_by!(name: 'Dentist', short_name: 'dentist', description: 'Dentist'),
-]
-
-
 _clinical_conditions = [
     ClinicalCondition.find_or_create_by!(name: 'Back Pain', short_name: 'back_pain', description: 'Back pain'),
     ClinicalCondition.find_or_create_by!(name: 'Chronic Obstructive Pulmonary Disease (COPD)', short_name: 'copd', description: 'Chronic Obstructive Pulmonary Disease (COPD)'),
@@ -172,21 +147,6 @@ _ancillary_services = [
     AncillaryService.find_or_create_by!(name: 'Pharmacy', short_name: 'pharmacy', description: 'Pharmacy'),
 ]
 
-
-_clinical_locations = [
-    ClinicalLocation.find_or_create_by!(name: 'Alcohol and Other Drug Abuse (AODA) treatment center', short_name: 'aoda', description: 'Alcohol and Other Drug Abuse (AODA) treatment center'),
-    ClinicalLocation.find_or_create_by!(name: 'Assisted Living Facility', short_name: 'assisted_living_facility', description: 'Assisted Living Facility'),
-    ClinicalLocation.find_or_create_by!(name: 'Community Based Outpatient Clinic (CBOC)', short_name: 'cboc', description: 'Community Based Outpatient Clinic (CBOC)'),
-    ClinicalLocation.find_or_create_by!(name: 'Community Living Centers (CLC)', short_name: 'clc', description: 'Community Living Centers (CLC)'),
-    ClinicalLocation.find_or_create_by!(name: 'Home Health', short_name: 'home_health', description: 'Home Health'),
-    ClinicalLocation.find_or_create_by!(name: 'Hospice Center', short_name: 'hospice_center', description: 'Hospice Center'),
-    ClinicalLocation.find_or_create_by!(name: 'Inpatient Hospital', short_name: 'inpatient_hospital', description: 'Inpatient Hospital'),
-    ClinicalLocation.find_or_create_by!(name: 'Outpatient Surgery Center', short_name: 'outpatient_surgery_center', description: 'Outpatient Surgery Center'),
-    ClinicalLocation.find_or_create_by!(name: 'Pain Clinic', short_name: 'pain_clinic', description: 'Pain Clinic'),
-    ClinicalLocation.find_or_create_by!(name: 'Skilled Nursing Facility (SNF)', short_name: 'snf', description: 'Skilled Nursing Facility (SNF)'),
-]
-
-
 _developing_facilities = [
     DevelopingFacilityType.find_or_create_by!(name: 'CBOC', short_name: 'cboc'),
     DevelopingFacilityType.find_or_create_by!(name: 'VA Medical Center', short_name: 'va_medical_center'),
@@ -196,23 +156,6 @@ _developing_facilities = [
     DevelopingFacilityType.find_or_create_by!(name: 'Community Living Center (CLC)', short_name: 'clc'),
     DevelopingFacilityType.find_or_create_by!(name: 'Office of Mental Health', short_name: 'office_of_mental_health'),
 ]
-
-
-_area_of_affects = [
-    PracticeManagement.find_or_create_by!(name: 'Wait time to be seen'),
-    PracticeManagement.find_or_create_by!(name: 'Doctor to patient time'),
-    PracticeManagement.find_or_create_by!(name: 'Throughput'),
-    PracticeManagement.find_or_create_by!(name: 'Discharge process'),
-    PracticeManagement.find_or_create_by!(name: 'Discharge planning'),
-    PracticeManagement.find_or_create_by!(name: 'Patient satisfaction'),
-    PracticeManagement.find_or_create_by!(name: 'Provider/Staff retention'),
-    PracticeManagement.find_or_create_by!(name: 'Provider/Staff satisfaction'),
-    PracticeManagement.find_or_create_by!(name: 'Efficiency'),
-    PracticeManagement.find_or_create_by!(name: 'Cost avoidance'),
-    PracticeManagement.find_or_create_by!(name: 'Management'),
-    PracticeManagement.find_or_create_by!(name: 'None')
-]
-
 
 _departments = [
     Department.find_or_create_by!(name: 'Admissions', short_name: 'admissions'),

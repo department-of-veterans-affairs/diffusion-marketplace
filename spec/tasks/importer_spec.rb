@@ -41,17 +41,9 @@ describe 'Importer' do
       expect(flow3.clinical_conditions.count).to be(4)
       expect(flow3.clinical_conditions.first.name).to eq('prosthetic devices')
 
-      # Job Positions
-      expect(flow3.job_positions.count).to be(1)
-      expect(flow3.job_positions.first.name).to eq('Clinic based physician')
-
       # Ancillary Services
       expect(flow3.ancillary_services.count).to be(1)
       expect(flow3.ancillary_services.first.name).to eq('Rehabilitation & Prosthetics')
-
-      # Clinical Locations
-      expect(flow3.clinical_locations.count).to be(3)
-      expect(flow3.clinical_locations.find_by(name: 'Community Based Outpatient Clinic (CBOC)')).to be_truthy
 
       # Departments
       expect(flow3.departments.count).to be(4)
@@ -68,13 +60,6 @@ describe 'Importer' do
       expect(flow3.risk_mitigations.first.mitigations.first.description).to include('Support Practice Champions with a pre-implementati')
       expect(flow3.risk_mitigations.first.mitigations.last.description).to include('Empower and support Practice Champions with offici')
 
-      # Additional Staffs
-      expect(flow3.additional_staffs.count).to be(5)
-      manager = flow3.additional_staffs.find_by(title: 'Implementation manager ')
-      expect(manager).to be_truthy
-      expect(manager.hours_per_week).to eq('3 hours per week for 1 month total')
-      expect(manager.duration_in_weeks).to eq('Permanent')
-
       # Additional Resources
       expect(flow3.additional_resources.count).to be(1)
       expect(flow3.additional_resources.first.description).to eq('VISN-Wide Corporate Data Warehouse (CDW) Access')
@@ -83,9 +68,6 @@ describe 'Importer' do
       expect(flow3.domains.count).to be(2)
       expect(flow3.domains.first.name).to eq('Veteran')
       expect(flow3.domains.last.name).to eq('Operational')
-
-      # Practice Permissions
-      expect(flow3.practice_permissions.count).to be(0)
 
       # Timelines
       expect(flow3.timelines.count).to be(4)

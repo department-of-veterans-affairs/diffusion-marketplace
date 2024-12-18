@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_07_232231) do
+ActiveRecord::Schema.define(version: 2024_11_01_010951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -52,19 +52,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.index ["practice_id"], name: "index_additional_resources_on_practice_id"
-  end
-
-  create_table "additional_staffs", force: :cascade do |t|
-    t.string "title"
-    t.string "hours_per_week"
-    t.string "duration_in_weeks"
-    t.boolean "permanent"
-    t.text "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_additional_staffs_on_practice_id"
   end
 
   create_table "ahoy_events", force: :cascade do |t|
@@ -158,24 +145,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
   end
 
   create_table "clinical_conditions", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "clinical_location_practices", force: :cascade do |t|
-    t.bigint "clinical_location_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["clinical_location_id"], name: "index_clinical_location_practices_on_clinical_location_id"
-    t.index ["practice_id"], name: "index_clinical_location_practices_on_practice_id"
-  end
-
-  create_table "clinical_locations", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
     t.text "description"
@@ -314,20 +283,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "financial_files", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.integer "position"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_financial_files_on_practice_id"
-  end
-
   create_table "form_spams", force: :cascade do |t|
     t.string "form"
     t.string "original_url"
@@ -387,36 +342,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.bigint "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["practice_id"], name: "index_implementation_timeline_files_on_practice_id"
-  end
-
-  create_table "job_position_categories", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.integer "parent_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "job_position_practices", force: :cascade do |t|
-    t.bigint "job_position_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["job_position_id"], name: "index_job_position_practices_on_job_position_id"
-    t.index ["practice_id"], name: "index_job_position_practices_on_practice_id"
-  end
-
-  create_table "job_positions", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.bigint "job_position_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["job_position_category_id"], name: "index_job_positions_on_job_position_category_id"
   end
 
   create_table "milestones", force: :cascade do |t|
@@ -764,22 +689,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.index ["practice_id"], name: "index_practice_awards_on_practice_id"
   end
 
-  create_table "practice_creators", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.bigint "user_id"
-    t.string "role"
-    t.string "name"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "avatar_file_name"
-    t.string "avatar_content_type"
-    t.bigint "avatar_file_size"
-    t.datetime "avatar_updated_at"
-    t.index ["practice_id"], name: "index_practice_creators_on_practice_id"
-    t.index ["user_id"], name: "index_practice_creators_on_user_id"
-  end
-
   create_table "practice_editor_sessions", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "practice_id"
@@ -808,24 +717,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["practice_id"], name: "index_practice_emails_on_practice_id"
-  end
-
-  create_table "practice_management_practices", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.bigint "practice_management_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_management_practices_on_practice_id"
-    t.index ["practice_management_id"], name: "index_practice_management_practices_on_practice_management_id"
-  end
-
-  create_table "practice_managements", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "practice_metrics", force: :cascade do |t|
@@ -891,16 +782,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.string "slug"
     t.boolean "is_major", default: false
     t.index ["slug"], name: "index_practice_partners_on_slug", unique: true
-  end
-
-  create_table "practice_permissions", force: :cascade do |t|
-    t.integer "position"
-    t.string "description"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "name"
-    t.index ["practice_id"], name: "index_practice_permissions_on_practice_id"
   end
 
   create_table "practice_problem_resources", force: :cascade do |t|
@@ -971,16 +852,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.integer "resource_type", default: 0
     t.text "image_alt_text"
     t.index ["practice_id"], name: "index_practice_solution_resources_on_practice_id"
-  end
-
-  create_table "practice_testimonials", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "testimonial"
-    t.string "author"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "position"
-    t.index ["practice_id"], name: "index_practice_testimonials_on_practice_id"
   end
 
   create_table "practices", force: :cascade do |t|
@@ -1201,8 +1072,17 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.string "location"
     t.string "facility"
     t.boolean "accepted_terms", default: false
+    t.boolean "granted_public_bio", default: false
+    t.string "alt_first_name"
+    t.string "alt_last_name"
+    t.text "fellowship"
+    t.json "work"
+    t.text "project"
+    t.string "alt_job_title"
+    t.string "accolades"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["granted_public_bio"], name: "index_users_on_granted_public_bio"
     t.index ["password_changed_at"], name: "index_users_on_password_changed_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
@@ -1299,24 +1179,6 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
     t.index ["visn_id"], name: "index_va_facilities_on_visn_id"
   end
 
-  create_table "va_secretary_priorities", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "va_secretary_priority_practices", force: :cascade do |t|
-    t.bigint "va_secretary_priority_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_va_secretary_priority_practices_on_practice_id"
-    t.index ["va_secretary_priority_id"], name: "idx_priority_practices_priority_id"
-  end
-
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.bigint "item_id", null: false
@@ -1371,14 +1233,11 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
 
   add_foreign_key "additional_documents", "practices"
   add_foreign_key "additional_resources", "practices"
-  add_foreign_key "additional_staffs", "practices"
   add_foreign_key "ancillary_service_practices", "ancillary_services"
   add_foreign_key "ancillary_service_practices", "practices"
   add_foreign_key "category_practices", "categories"
   add_foreign_key "clinical_condition_practices", "clinical_conditions"
   add_foreign_key "clinical_condition_practices", "practices"
-  add_foreign_key "clinical_location_practices", "clinical_locations"
-  add_foreign_key "clinical_location_practices", "practices"
   add_foreign_key "clinical_resource_hubs", "visns"
   add_foreign_key "commontator_comments", "commontator_comments", column: "parent_id", on_update: :restrict, on_delete: :cascade
   add_foreign_key "commontator_comments", "commontator_threads", column: "thread_id", on_update: :cascade, on_delete: :cascade
@@ -1393,11 +1252,7 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
   add_foreign_key "diffusion_history_statuses", "diffusion_histories"
   add_foreign_key "domain_practices", "domains"
   add_foreign_key "domain_practices", "practices"
-  add_foreign_key "financial_files", "practices"
   add_foreign_key "implementation_timeline_files", "practices"
-  add_foreign_key "job_position_practices", "job_positions"
-  add_foreign_key "job_position_practices", "practices"
-  add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "page_accordion_components", "page_components"
@@ -1424,24 +1279,18 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
   add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_awards", "practices"
-  add_foreign_key "practice_creators", "practices"
-  add_foreign_key "practice_creators", "users"
   add_foreign_key "practice_editor_sessions", "practices"
   add_foreign_key "practice_editors", "users"
   add_foreign_key "practice_emails", "practices"
-  add_foreign_key "practice_management_practices", "practice_managements"
-  add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_metrics", "practices"
   add_foreign_key "practice_origin_facilities", "clinical_resource_hubs"
   add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_origin_facilities", "va_facilities"
   add_foreign_key "practice_partner_practices", "practice_partners"
-  add_foreign_key "practice_permissions", "practices"
   add_foreign_key "practice_problem_resources", "practices"
   add_foreign_key "practice_resources", "practices"
   add_foreign_key "practice_results_resources", "practices"
   add_foreign_key "practice_solution_resources", "practices"
-  add_foreign_key "practice_testimonials", "practices"
   add_foreign_key "practices", "users"
   add_foreign_key "products", "users"
   add_foreign_key "publications", "practices"
@@ -1452,7 +1301,5 @@ ActiveRecord::Schema.define(version: 2024_10_07_232231) do
   add_foreign_key "user_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"
   add_foreign_key "va_facilities", "visns"
-  add_foreign_key "va_secretary_priority_practices", "practices"
-  add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
   add_foreign_key "visn_liaisons", "visns"
 end

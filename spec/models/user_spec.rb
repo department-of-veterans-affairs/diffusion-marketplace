@@ -47,14 +47,121 @@ RSpec.describe User, type: :model do
   end
 
   describe ".validate_users_by_emails" do
-    let(:emails) { ['existing@example.com', 'nonexisting@example.com'] }
-    let!(:user) { create(:user, email: 'existing@example.com') }
+    let(:emails) { ['existing@va.gov', 'nonexisting@va.gov', 'CaseInsensitive@va.gov'] }
+    let!(:user) { create(:user, email: 'existing@va.gov') }
+    let!(:case_insensitive_user) { create(:user, email: 'caseinsensitive@va.gov') }
 
     it "returns users with existing emails and lists non-existing emails" do
       users, non_existent_emails = User.validate_users_by_emails(emails)
 
-      expect(users).to contain_exactly(user)
-      expect(non_existent_emails).to contain_exactly('nonexisting@example.com')
+      expect(users).to contain_exactly(user, case_insensitive_user)
+      expect(non_existent_emails).to contain_exactly('nonexisting@va.gov')
+    end
+  end
+
+  describe '#preferred_full_name' do
+    context 'when both alt_first_name and alt_last_name are present' do
+      it 'returns the full name using the alt names' do
+        user = User.new(alt_first_name: 'Jay', alt_last_name: 'Smith', first_name: 'James', last_name: 'Doe')
+        expect(user.preferred_full_name).to eq('Jay Smith')
+      end
+    end
+
+    context 'when only alt_first_name is present' do
+      it 'returns the full name using alt_first_name and last_name' do
+        user = User.new(alt_first_name: 'Jay', first_name: 'James', last_name: 'Doe')
+        expect(user.preferred_full_name).to eq('Jay Doe')
+      end
+    end
+
+    context 'when only alt_last_name is present' do
+      it 'returns the full name using first_name and alt_last_name' do
+        user = User.new(first_name: 'James', alt_last_name: 'Smith')
+        expect(user.preferred_full_name).to eq('James Smith')
+      end
+    end
+
+    context 'when neither alt names nor primary names are present' do
+      it 'returns "User"' do
+        user = User.new
+        expect(user.preferred_full_name).to eq('User')
+      end
+    end
+
+    context 'when only first_name and last_name are present' do
+      it 'returns the full name using first_name and last_name' do
+        user = User.new(first_name: 'James', last_name: 'Doe')
+        expect(user.preferred_full_name).to eq('James Doe')
+      end
+    end
+  end
+
+  describe '#bio_page_name' do
+    context 'when accolades are present' do
+      it 'returns the preferred full name with accolades' do
+        user = User.new(alt_first_name: 'Jay', last_name: 'Doe', accolades: 'Ph.D.')
+        expect(user.bio_page_name).to eq('Jay Doe, Ph.D.')
+      end
+    end
+
+    context 'when accolades are not present' do
+      it 'returns only the preferred full name' do
+        user = User.new(first_name: 'James', last_name: 'Doe')
+        expect(user.bio_page_name).to eq('James Doe')
+      end
+    end
+
+    context 'when preferred full name returns "User"' do
+      it 'returns "User" without accolades' do
+        user = User.new(accolades: 'Ph.D.')
+        expect(user.bio_page_name).to eq('User, Ph.D.')
+      end
+    end
+  end
+
+  describe 'work link validation callback' do
+    let(:user) { User.create(email: 'test@example.com', password: 'Password123', work: initial_work) }
+
+    context 'when work contains valid URLs' do
+      let(:initial_work) { [{ "text" => "Project 1", "link" => "https://example.com" }] }
+
+      it 'does not add any errors' do
+        user.work = [{ "text" => "Updated Project", "link" => "https://updated.com" }]
+        user.save
+        expect(user.errors[:work]).to be_empty
+      end
+    end
+
+    context 'when work contains a URL without http or https' do
+      let(:initial_work) { [] }
+
+      it 'prepends http to the URL and does not add errors' do
+        user.work = [{ "text" => "Project 1", "link" => "example.com" }]
+        user.save
+        expect(user.work.first["link"]).to eq("https://example.com")
+        expect(user.errors[:work]).to be_empty
+      end
+    end
+
+    context 'when work contains an invalid URL' do
+      let(:initial_work) { [] }
+
+      it 'adds an error to the work field' do
+        user.work = [{ "text" => "Project 1", "link" => "invalid-url" }]
+        user.save
+
+        expect(user.errors[:work]).to include("contains an invalid URL in the link field: invalid-url")
+      end
+    end
+
+    context 'when work is updated with a blank link' do
+      let(:initial_work) { [{ "text" => "Project 1", "link" => "https://example.com" }] }
+
+      it 'does not add any errors' do
+        user.work = [{ "text" => "Updated Project", "link" => "" }]
+        user.save
+        expect(user.errors[:work]).to be_empty
+      end
     end
   end
 end

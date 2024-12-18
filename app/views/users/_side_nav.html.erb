@@ -5,6 +5,9 @@
         <%= link_to('Profile', edit_profile_path,
                     class: "#{'usa-current' if current_page?(edit_profile_path)}"
             ) %>
+        <% if @user.granted_public_bio %>
+          <%= link_to('Public Bio Page', user_bio_path(@user)) %>
+        <% end %>
       </li>
       <% if session[:user_type] === 'guest' %>
         <li class="usa-sidenav__item">

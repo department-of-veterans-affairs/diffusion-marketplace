@@ -29,9 +29,9 @@ class Category < ApplicationRecord
     strip_attributes([self.name])
   end
 
-  def self.get_parent_categories(is_admin=false)
+  def self.get_parent_categories
     Category.order_by_name.select do |cat|
-      cat.sub_categories.any? && !(is_admin == false && cat.name == "Communities")
+      cat.sub_categories.any?
     end
   end
 
@@ -52,8 +52,8 @@ class Category < ApplicationRecord
     ["description", "name", "related_terms"]
   end
 
-  def self.prepared_categories_for_practice_editor(is_admin)
-    get_parent_categories(is_admin).each_with_object({}) do |parent_category, hash|
+  def self.prepared_categories_for_practice_editor
+    get_parent_categories.each_with_object({}) do |parent_category, hash|
       categories = parent_category.sub_categories.order_by_name.to_a
 
       if categories.any? && parent_category.name != "Communities"

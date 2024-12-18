@@ -6,12 +6,12 @@ class ProductsController < ApplicationController
   before_action :set_return_to_top_flag, only: [:show, :editors, :description, :intrapreneur, :multimedia]
 
   def editors
-    @editors = PracticeEditor.where(innovable: @product).order(created_at: :asc)
+    @editors = PracticeEditor.where(innovable: @product).includes(:user).order(created_at: :asc)
     render 'products/form/editors'
   end
 
   def description
-    @categories = Category.prepared_categories_for_practice_editor(current_user.has_role?(:admin))
+    @categories = Category.prepared_categories_for_practice_editor
     @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
     @ordered_practice_partners = PracticePartnerPractice.where(innovable_id: @product.id, innovable_type: "Product").order_by_id
     render 'products/form/description'

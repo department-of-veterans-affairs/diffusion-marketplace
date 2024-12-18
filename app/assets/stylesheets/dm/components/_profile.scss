@@ -6,6 +6,8 @@
 .avatar-profile-photo {
   min-width: 100%;
   height: 14rem !important;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
 }
 
 .avatar-profile-photo-container {
@@ -34,17 +36,6 @@
   height: 226px !important;
   width: 226px !important;
   position: relative;
-}
-
-.edit-profile-link {
-  @extend .usa-link;
-  text-decoration: none !important;
-
-  .edit-profile-icon {
-    &:after {
-      text-decoration: none;
-    }
-  }
 }
 
 .cancel-edit-profile-link {

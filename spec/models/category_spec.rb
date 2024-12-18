@@ -18,7 +18,7 @@ RSpec.describe Category, type: :model do
       end
 
       it 'prepares categories adding special categories for non-community categories' do
-        result = described_class.prepared_categories_for_practice_editor(true)
+        result = described_class.prepared_categories_for_practice_editor
 
         expect(result.keys).to include(parent_category, community_category)
         expect(result[parent_category].first.name).to eq("All #{parent_category.name.downcase}")
@@ -29,10 +29,10 @@ RSpec.describe Category, type: :model do
 
     context 'when user is not an admin' do
       it 'handles the logic based on role correctly' do
-        allow(described_class).to receive(:get_parent_categories).with(false).and_return([parent_category])
-        result = described_class.prepared_categories_for_practice_editor(false)
+        allow(described_class).to receive(:get_parent_categories).and_return([parent_category, community_category])
+        result = described_class.prepared_categories_for_practice_editor
 
-        expect(result.keys).to contain_exactly(parent_category)
+        expect(result.keys).to contain_exactly(parent_category, community_category)
       end
     end
   end
@@ -40,19 +40,10 @@ RSpec.describe Category, type: :model do
   describe '.get_parent_categories' do
     let!(:normal_category) { create(:category, :with_sub_categories) }
     let!(:community_category) { create(:category, :community, :with_sub_categories) }
-    let(:other_category) { create(:category, :is_other, :with_sub_categories) }
     let(:empty_category) { create(:category) }
 
-    context 'when user is an admin' do
-      it 'includes all categories except those marked as other' do
-        expect(described_class.get_parent_categories(true)).to contain_exactly(normal_category, community_category)
-      end
-    end
-
-    context 'when user is not an admin' do
-      it 'excludes categories marked as other and the Communities category' do
-        expect(described_class.get_parent_categories(false)).to contain_exactly(normal_category)
-      end
+    it 'includes all valid categories' do
+      expect(described_class.get_parent_categories).to contain_exactly(normal_category, community_category)
     end
   end
 

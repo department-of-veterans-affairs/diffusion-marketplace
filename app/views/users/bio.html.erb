@@ -1,0 +1,67 @@
+<div class="grid-container margin-top-10">
+  <div class="grid-row grid-gap">
+    <div class="grid-col-3 margin-right-5">
+      <% if @user.avatar.present? %>
+        <%= image_tag @user.avatar_s3_presigned_url(:thumb), alt: "user avatar for #{@user.full_name}", class: 'avatar-profile-photo' %>
+      <% else %>
+        <div class="profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder">
+          <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
+        </div>
+      <% end %>
+      <% if current_user.present? && current_user == @user %>
+        <%= link_to 'Edit profile', edit_profile_path, class: 'usa-button usa-button--outline display-inline-block margin-top-2' %>
+      <% elsif current_user.present? && current_user.has_role?(:admin) %>
+        <%= link_to 'Edit profile', admin_edit_user_profile_path(@user), class: 'usa-button usa-button--outline display-inline-block margin-top-2' %>
+      <% end %>
+    </div>
+
+    <div class="grid-col">
+      <!-- User Name, Job Title, Project -->
+      <h2 class="margin-top-0"><%= @user.bio_page_name %></h2>
+      <% if @user.fellowship.present? %>
+        <p class="margin-top-2"><%= @user.fellowship %></p>
+      <% end %>
+
+      <% if @user.project.present? %>
+        <p class="margin-top-4"><%= @user.project %></p>
+      <% end %>
+
+      <!-- Credentials -->
+      <% if @user.alt_job_title.present? %>
+        <div class="margin-top-4">
+          <div class="line-height-sans-3">
+            <p><%= @user.alt_job_title %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="grid-row grid-gap">
+    <!-- Work -->
+    <% if @user.work.present? %>
+      <div class="grid-col-12 margin-top-5">
+        <h3 class="font-sans-md text-bold">Work</h3>
+        <ul class="usa-list usa-list--unstyled">
+          <% @user.work.each do |work_item| %>
+            <li>
+              <a href="<%= work_item['link'] %>" target="_blank" rel="noopener noreferrer">
+                <%= work_item['text'].present? ? work_item['text'] :  work_item['link'] %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <!-- About -->
+    <% if @user.bio.present? %>
+      <div class="grid-col-12 margin-top-4">
+        <h3 class="font-sans-md text-bold">About</h3>
+        <div class="line-height-sans-3">
+          <%= @user.bio.split(/\r?\n\r?\n/).map { |paragraph| simple_format(paragraph.strip, {}, sanitize: true) }.join("<br>").html_safe %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

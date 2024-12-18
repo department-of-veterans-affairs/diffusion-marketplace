@@ -215,13 +215,10 @@ class Practice < Innovation
 
   has_many :additional_documents, -> { order(position: :asc) }, dependent: :destroy
   has_many :additional_resources, -> { order(position: :asc) }, dependent: :destroy
-  has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
-  has_many :clinical_location_practices, dependent: :destroy
-  has_many :clinical_locations, through: :clinical_location_practices
   has_many :department_practices, dependent: :destroy
   has_many :departments, through: :department_practices
   has_many :developing_facility_type_practices, dependent: :destroy
@@ -229,27 +226,17 @@ class Practice < Innovation
   has_many :diffusion_histories, dependent: :destroy
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
-  has_many :financial_files, dependent: :destroy
   has_many :implementation_timeline_files, dependent: :destroy
-  has_many :job_position_practices, dependent: :destroy
-  has_many :job_positions, through: :job_position_practices
   has_many :photo_files, dependent: :destroy
-  has_many :practice_management_practices, dependent: :destroy
-  has_many :practice_managements, through: :practice_management_practices
-  has_many :practice_permissions, -> { order(position: :asc) }, dependent: :destroy
   has_many :publications, -> { order(position: :asc) }, dependent: :destroy
   has_many :risk_mitigations, -> { order(position: :asc) }, dependent: :destroy
   has_many :survey_result_files, dependent: :destroy
   has_many :timelines, -> { order(position: :asc) }, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
-  has_many :va_secretary_priority_practices, dependent: :destroy
-  has_many :va_secretary_priorities, through: :va_secretary_priority_practices
-  has_many :practice_creators, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_awards, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_metrics, -> {order(id: :asc) }, dependent: :destroy
-  has_many :practice_testimonials, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
@@ -265,17 +252,13 @@ class Practice < Innovation
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
   accepts_nested_attributes_for :practice_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['resource'] && attributes['resource'].blank? }
-  accepts_nested_attributes_for :practice_testimonials, allow_destroy: true
   accepts_nested_attributes_for :practice_problem_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_solution_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_results_resources, allow_destroy: true
   accepts_nested_attributes_for :department_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['value'].blank? }
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc{ |attributes| attributes['milestone'].blank? || attributes['timeline'].blank?}
-  accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
   accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
-  accepts_nested_attributes_for :practice_creators, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
-  accepts_nested_attributes_for :practice_permissions, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['title'].blank?
     ad_reject = false

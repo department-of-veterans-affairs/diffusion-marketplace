@@ -261,68 +261,76 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
 
   def metrics
     @duration = params[:duration] || "30"
-    @page_views_leader_board_30_days = fetch_page_views_leader_board
-    @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
-    @page_views_for_practice_count = fetch_page_view_for_practice_count(@practice.id, @duration)
-    @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
-    @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
-    if @duration === '30'
-      @adoptions_by_practice = fetch_adoption_counts_by_practice_last_30_days(@practice)
-    else
-      @adoptions_by_practice = fetch_adoption_counts_by_practice_all_time(@practice)
-    end
-
-    @adoptions_total_30 = fetch_adoption_counts_by_practice_last_30_days(@practice)
-    @adoptions_total_at = fetch_adoption_counts_by_practice_all_time(@practice)
-
-    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'Completed')
-    @adoptions_successful_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'Completed')
-    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'In progress')
-    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'In progress')
-    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice_and_status_last_30_days(@practice, 'Unsuccessful')
-    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice_and_status_all_time(@practice,  'Unsuccessful')
-
-    @facility_ids_for_practice_30 = fetch_adoption_facilities_for_practice_last_30_days(@practice)
-    @rural_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "R")
-    @urban_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "U")
-    @a_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1a-High Complexity")
-    @b_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1b-High Complexity")
-    @c_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1c-High Complexity")
-    @medium_complexity_2_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "2 -Medium Complexity")
-    @low_complexity_3_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "3 -Low Complexity")
-
-    @facility_ids_for_practice_at = fetch_adoption_facilities_for_practice_all_time(@practice)
-    @rural_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "R")
-    @urban_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "U")
-    @a_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1a-High Complexity")
-    @b_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1b-High Complexity")
-    @c_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1c-High Complexity")
-    @medium_complexity_2_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "2 -Medium Complexity")
-    @low_complexity_3_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "3 -Low Complexity")
-
-    # Charts.....
-    @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
-    @page_views_for_practice = fetch_page_views_for_practice(@practice.id, @duration)
 
     if @duration != "30"
-      @duration = get_practice_all_time_duration(@practice.id)
+      @duration = get_practice_all_time_duration(@practice.id).to_s
     end
+
+    @page_views_leader_board_30_days = fetch_page_views_leader_board
+    @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
+    page_views = fetch_page_views_for_practice_over_duration(@practice.id, @duration)
+    @page_views_for_practice_count = page_views.size
+    @unique_visitors_for_practice_count = page_views
+                        .select(:user_id)
+                        .distinct
+                        .count
+
+    @bookmarks_by_practice_count = fetch_bookmarks_by_practice(@practice.id, @duration)
+
+    adoptions_all_time = DiffusionHistory.with_practice_and_facilities(@practice)
+    @adoptions_total_at = adoptions_all_time.size
+
+    adoptions_past_30_days = adoptions_all_time.in_date_range(30.days.ago.beginning_of_day)
+    @adoptions_total_30 = adoptions_past_30_days.size
+
+    if @duration === '30'
+      @adoptions_by_practice = @adoptions_total_30
+    else
+      @adoptions_by_practice = @adoptions_total_at
+    end
+
+    # Adoptions Metrics
+    adoption_metrics_30 = calculate_adoption_metrics(adoptions_past_30_days)
+    adoption_metrics_at = calculate_adoption_metrics(adoptions_all_time)
+
+    @adoptions_successful_total_30 = adoption_metrics_30[:successful]
+    @adoptions_successful_total_at = adoption_metrics_at[:successful]
+
+    @adoptions_in_progress_total_30 = adoption_metrics_30[:in_progress]
+    @adoptions_in_progress_total_at = adoption_metrics_at[:in_progress]
+
+    @adoptions_unsuccessful_total_30 = adoption_metrics_30[:unsuccessful]
+    @adoptions_unsuccessful_total_at = adoption_metrics_at[:unsuccessful]
+
+
+    # Facility metrics
+    facility_station_numbers_for_practice_30 = adoptions_past_30_days.map {|dh| dh.station_number if dh.station_number.present?}
+    facility_station_numbers_for_practice_at = adoptions_all_time.map {|dh| dh.station_number if dh.station_number.present?}
+    facility_metrics_30 = calculate_facility_metrics(@va_facilities, facility_station_numbers_for_practice_30)
+    facility_metrics_at = calculate_facility_metrics(@va_facilities, facility_station_numbers_for_practice_at)
+
+    @rural_facility_30 = facility_metrics_30[:rural]
+    @urban_facility_30 = facility_metrics_30[:urban]
+    @a_high_complexity_30 = facility_metrics_30[:high_complexity_1a]
+    @b_high_complexity_30 = facility_metrics_30[:high_complexity_1b]
+    @c_high_complexity_30 = facility_metrics_30[:high_complexity_1c]
+    @medium_complexity_2_30 = facility_metrics_30[:medium_complexity_2]
+    @low_complexity_3_30 = facility_metrics_30[:low_complexity_3]
+
+    @rural_facility_at = facility_metrics_at[:rural]
+    @urban_facility_at = facility_metrics_at[:urban]
+    @a_high_complexity_at = facility_metrics_at[:high_complexity_1a]
+    @b_high_complexity_at = facility_metrics_at[:high_complexity_1b]
+    @c_high_complexity_at = facility_metrics_at[:high_complexity_1c]
+    @medium_complexity_2_at = facility_metrics_at[:medium_complexity_2]
+    @low_complexity_3_at = facility_metrics_at[:low_complexity_3]
+
+    # Google line chart
     @month_names = "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    @cur_duration = @duration.to_i
-    @dates = ((@cur_duration.days.ago.to_date .. 0.days.ago.to_date).to_a).map(&:to_s)
-    @views = []
-    @visitors = []
-      @dates.each do |date|
-        objCtr = 0
-        @page_views_for_practice.each do |obj|
-          objCtr += 1 if obj[:created_at].to_s == date.to_s
-        end
-        @views << objCtr
-      end
-    @unique_visitors = []
-    @dates.each do |date|
-      @unique_visitors << fetch_unique_visitors_by_practice_and_date(@practice.id, date)
-    end
+    page_view_metrics = calculate_page_view_metrics(page_views, @duration)
+    @dates = page_view_metrics[:dates]
+    @views = page_view_metrics[:views]
+    @unique_visitors = page_view_metrics[:unique_visitors]
 
     render 'practices/form/metrics'
   end
@@ -340,10 +348,12 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
   # /practices/slug/introduction
   def introduction
     @va_facilities_and_crhs = VaFacility.cached_va_facilities.get_relevant_attributes.order_by_state_and_station_name + ClinicalResourceHub.cached_clinical_resource_hubs.sort_by_visn_number
-    @categories = Category.prepared_categories_for_practice_editor(current_user.has_role?(:admin))
+    @categories = Category.prepared_categories_for_practice_editor
     @cached_practice_partners = Naturalsorter::Sorter.sort_by_method(PracticePartner.cached_practice_partners, 'name', true, true)
     @ordered_practice_partners = PracticePartnerPractice.where(innovable_id: @practice.id).order_by_id
     @ordered_practice_origin_facilities = PracticeOriginFacility.where(practice_id: @practice.id).order_by_id
+    @user_can_edit_communities = current_user.has_role?(:admin)
+    @origin_data = JSON.parse(File.read(Rails.root.join('lib', 'assets', 'practice_origin_lookup.json')))
     render 'practices/form/introduction'
   end
 
@@ -576,12 +586,9 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
                                      risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
                                      timelines_attributes: [:id, :description, :milestone, :timeline, :_destroy, :position],
                                      va_employees_attributes: [:id, :name, :role, :_destroy],
-                                     additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
                                      additional_resources_attributes: [:id, :_destroy, :name, :position, :description],
-                                     practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
                                      publications_attributes: [:id, :_destroy, :title, :link, :position],
                                      additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
-                                     practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
                                      department: permitted_dynamic_keys(params[:practice][:department]),
                                      category: permitted_dynamic_keys(params[:practice][:category]),
                                      practice_award: permitted_dynamic_keys(params[:practice][:practice_award]),
@@ -590,7 +597,6 @@ class PracticesController < ApplicationController # rubocop:disable Metrics/Clas
                                      practice_solution_resources_attributes: permitted_dynamic_keys(params[:practice][:practice_solution_resources_attributes]),
                                      practice_results_resources_attributes: permitted_dynamic_keys(params[:practice][:practice_results_resources_attributes]),
                                      practice_multimedia_attributes: permitted_dynamic_keys(params[:practice][:practice_multimedia_attributes]),
-                                     practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
                                      categories_attributes: [:id, :_destroy, :name, :parent_category_id],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :va_facility_id, :clinical_resource_hub_id, :facility_type_and_id],

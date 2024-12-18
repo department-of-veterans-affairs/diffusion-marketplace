@@ -29,16 +29,6 @@ RSpec.describe SavePracticeService do
       end
     end
 
-    context 'while manipulate_avatars' do
-      it 'returns a StandardError' do
-        allow(@save_practice).to receive(:manipulate_avatars).and_raise(StandardError.new('Error!!!'))
-
-        result = @save_practice.save_practice
-        expect(result.is_a?(StandardError)).to eq true
-        expect(result.message).to eq 'error updating avatars'
-      end
-    end
-
     context 'while remove_main_display_image' do
       it 'returns a StandardError' do
         allow(@save_practice).to receive(:remove_main_display_image).and_raise(StandardError.new('Error!!!'))
@@ -73,25 +63,6 @@ RSpec.describe SavePracticeService do
           crop_y: 10,
           crop_w: 50,
           crop_h: 10
-        }
-        save_practice = SavePracticeService.new({ practice: @practice, practice_params: practice_params})
-
-        result = save_practice.save_practice
-        expect(result).to eq true
-      end
-    end
-
-    context 'while cropping avatar' do
-      it 'returns true' do
-        va_employee = VaEmployee.create(name: 'va employee', role: 'doctor')
-        VaEmployeePractice.create(va_employee: va_employee, innovable: @practice)
-        practice_params = {
-          va_employees_attributes: {
-            '0': {
-              id: va_employee.id,
-              _destroy: 'false'
-            }
-          }
         }
         save_practice = SavePracticeService.new({ practice: @practice, practice_params: practice_params})
 

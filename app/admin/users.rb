@@ -1,5 +1,11 @@
 ActiveAdmin.register User do
-  permit_params :email, :password, :password_confirmation, :disabled, :skip_va_validation, role_ids: []
+  permit_params :email,
+                :password,
+                :password_confirmation,
+                :disabled,
+                :skip_va_validation,
+                :granted_public_bio,
+                role_ids: []
   actions :all, except: [:destroy]
 
   scope :enabled
@@ -13,6 +19,7 @@ ActiveAdmin.register User do
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
+    column :granted_public_bio
     actions
   end
 
@@ -29,6 +36,9 @@ ActiveAdmin.register User do
       row :visn
       row :created_at
       row :confirmed_at
+      row :granted_public_bio do |user|
+        user.granted_public_bio ? link_to('Public Bio Page', user_bio_path(user)) : false
+      end
       row "Admin" do |user|
         user.has_role?(:admin)
       end
@@ -53,12 +63,13 @@ ActiveAdmin.register User do
     f.inputs do
       f.input :email
       f.input :skip_va_validation
-      f.input :password
-      f.input :password_confirmation
+      f.input :password, input_html: { autocomplete: 'new-password' }
+      f.input :password_confirmation, input_html: { autocomplete: 'new-password' }
       # instance-scoped editor roles should be left out of the collection as they are managed in the
       # given page_group's edit form:
       f.input :roles, as: :check_boxes, collection: Role.where(name: ['admin'])
       f.input :disabled
+      f.input :granted_public_bio
     end
     f.actions
   end

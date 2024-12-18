@@ -72,7 +72,7 @@ ActiveAdmin.register Category do
       f.input :description, as: :string
       f.input :parent_category_id,
               as: :select, multiple: false,
-              include_blank: false, collection: Category.get_parent_categories(true),
+              include_blank: false, collection: Category.get_parent_categories,
               input_html: { value: object[:parent_category_id] }, wrapper_html: { class: object.sub_categories.any? ? 'display-none' : '' },
               label: "Parent Tag"
         # ensures input is displayed as comma separated list

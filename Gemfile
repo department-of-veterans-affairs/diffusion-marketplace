@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.2.5'
+ruby '3.3.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1'
@@ -49,6 +49,13 @@ gem 'local_time'
 gem 'rails-timeago'
 
 gem 'sidekiq'
+
+# activesupport dependencies removed in Ruby 3.4
+gem 'mutex_m'
+gem 'drb'
+gem 'observer'
+gem 'base64'
+gem 'bigdecimal'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

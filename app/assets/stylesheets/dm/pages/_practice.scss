@@ -841,6 +841,14 @@ li.small-disc:before {
     }
   }
   }
+
+  .dm-communities-category-columns-container {
+    .usa-checkbox__input[readonly], .usa-checkbox__input[readonly] + label {
+      cursor: not-allowed;
+      pointer-events: none;
+      color: #c9c9c9;
+    }
+  }
 }
 
 // Overview

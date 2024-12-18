@@ -12,7 +12,7 @@ $(document).ready(function(){
             var pos1 = curUrl.lastIndexOf("?duration");
             curUrl = curUrl.substring(0, pos1);
         }
-        let duration = $( "#metrics_duration" ).val();
+        let duration = encodeURIComponent($("#metrics_duration").val());
         let newUrl = `${curUrl}?duration=${duration}`;
         window.location.href = newUrl;
     });

@@ -15,7 +15,7 @@
     <%= render partial: 'practices/publication_validation', formats: [:js] %>
     var facilityData = <%= raw @va_facilities.to_json %>;
     var officeData = '<%= raw fetch_offices %>';
-    var originData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json")).to_json %>;
+    var originData = <%= @origin_data.to_json.html_safe %>;
     var visnData = '<%= raw @visns.to_json %>';
     var selectedFacility = "<%= @practice.facility? && @practice.initiating_facility || false %>"
     var selectedFacilityType = "<%= @practice.initiating_facility_type %>"
@@ -29,10 +29,7 @@
   <% end %>
 <% end %>
 <%= render partial: 'practices/introduction_forms/main_display_image_guidance_modal' %>
-<%
-  origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
-  p_partners = @practice.practice_partners
-%>
+<% p_partners = @practice.practice_partners %>
 
 <div class="grid-container practice-editor-page">
   <div class="grid-row grid-gap">
@@ -278,7 +275,7 @@
                   <%= label_tag 'editor_department_select', 'Administration', class: 'usa-label margin-top-0 margin-bottom-1
                 grid-col-12' %>
                   <%= select_tag('practice[initiating_department_office_id]',
-                                 options_for_select(origin_data['departments'].collect { |d| [d['name'], d['id']] }), id:
+                                 options_for_select(@origin_data['departments'].collect { |d| [d['name'], d['id']] }), id:
                                      'editor_department_select', class: 'height-5 usa-select margin-top-0', include_blank: '-Select-') %>
                 </div>
                 <div class="margin-bottom-3 grid-row">
@@ -536,6 +533,7 @@
                       <% sliced_categories.each_with_index do |sc, i| %>
                         <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sc, parent_category: parent_category, column: i } unless i === 3 %>
                       <% end %>
+                      <span class="text-base"><%= "Contact marketplace@va.gov to get involved with a Community" if !@user_can_edit_communities && (parent_category.name.downcase == 'communities') %></span>
                     </div>
                   </div>
                 <% end %>

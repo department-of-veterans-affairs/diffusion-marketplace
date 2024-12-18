@@ -16,8 +16,8 @@
     breadcrumbs.pop
   end
 
-  page_image = session[:page_image]
-  alt_text = session[:page_image_alt_text]
+  page_image = @page.present? && @page.image.present? ? @page.image_s3_presigned_url(:thumb) : nil
+  alt_text = @page.present? && @page.image_alt_text.present? ? @page.image_alt_text : nil
 %>
 
 <% if @page_group&.is_community? && @page.is_subnav_page # only shown on mobile width %>

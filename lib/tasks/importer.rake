@@ -100,14 +100,9 @@ namespace :importer do
       practice_partners
       va_employees
       # developing_facility_types
-      # va_secretary_priorities
-      # practice_managements
       categories
       clinical_conditions
-      financial_files
-      job_positions
       ancillary_services
-      clinical_locations
       departments
       practice_multimedia_images
       practice_multimedia_video_files
@@ -115,10 +110,8 @@ namespace :importer do
       publications
       implementation_timeline
       risk_mitigations
-      additional_staff
       additional_resources
       domains
-      practice_permissions
       timelines
     end
     puts "*********** Completed Importing Practices! ***********".green
@@ -245,60 +238,6 @@ end
 #   end
 # end
 
-# def va_secretary_priorities
-#   puts "==> Importing Practice: #{@name} VA Secretary Priorities"
-#   question_fields = {
-#     "Which of the VA Secretary’s Priorities does this practice Address? (Please select all that apply.)": 7
-#   }
-#
-#   question_fields.each do |key, value|
-#     q_index = @questions.index(key.to_s)
-#     end_index = q_index + value - 1
-#     (q_index..end_index).each do |i|
-#       answer = @answers[i]
-#       next if answer.blank?
-#
-#       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-#         split_answer = answer.split(/\\/)
-#         split_answer.each do |ans|
-#           secretary_priority = VaSecretaryPriority.find_or_create_by(name: ans)
-#           VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
-#         end
-#       else
-#         secretary_priority = VaSecretaryPriority.find_or_create_by(name: answer)
-#         VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
-#       end
-#     end
-#   end
-# end
-
-# def practice_managements
-#   puts "==> Importing Practice: #{@name} Practice Managements"
-#   question_fields = {
-#     "Which of the following areas does this practice affect? (Please select all that apply.)": 13
-#   }
-#
-#   question_fields.each do |key, value|
-#     q_index = @questions.index(key.to_s)
-#     end_index = q_index + value - 1
-#     (q_index..end_index).each do |i|
-#       answer = @answers[i]
-#       next if answer.blank?
-#
-#       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-#         split_answer = answer.split(/\\/)
-#         split_answer.each do |ans|
-#           practice_management = PracticeManagement.find_or_create_by(name: answer)
-#           PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
-#         end
-#       else
-#         practice_management = PracticeManagement.find_or_create_by(name: answer)
-#         PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
-#       end
-#     end
-#   end
-# end
-
 def categories
   puts "==> Importing Practice: #{@name} Categories".light_blue
   @practice.category_practices.each(&:destroy)
@@ -378,54 +317,6 @@ def clinical_conditions
 
 end
 
-def financial_files
-  puts "==> Importing Practice: #{@name} Financial Files".light_blue
-  @practice.financial_files.each(&:destroy)
-  question_fields = {
-      "Please upload applicable financial information such as a formal business case/return on investment (ROI).": 1
-  }
-  question_fields.each do |key, value|
-    next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
-    image_file = File.new(image_path)
-
-    FinancialFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-        filename: File.basename(image_file),
-        tempfile: image_file,
-        # detect the image's mime type with MIME if you can't provide it yourself.
-        type: MIME::Types.type_for(image_path).first.content_type
-    )
-  end
-end
-
-def job_positions
-  puts "==> Importing Practice: #{@name} Job Positions".light_blue
-  @practice.job_position_practices.each(&:destroy)
-  question_fields = {
-      "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value - 1
-    (q_index..end_index).each do |i|
-      answer = @answers[i]
-      next if answer.blank?
-
-      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\/)
-        split_answer.each do |ans|
-          job_position = JobPosition.find_or_create_by(name: ans)
-          JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
-        end
-      else
-        job_position = JobPosition.find_or_create_by(name: answer)
-        JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
-      end
-    end
-  end
-end
-
 def ancillary_services
   puts "==> Importing Practice: #{@name} Ancillary Services".light_blue
   @practice.ancillary_service_practices.each(&:destroy)
@@ -449,34 +340,6 @@ def ancillary_services
       else
         ancillary_service = AncillaryService.find_or_create_by(name: answer)
         AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
-      end
-    end
-  end
-end
-
-def clinical_locations
-  puts "==> Importing Practice: #{@name} Clinical Locations".light_blue
-  @practice.clinical_location_practices.each(&:destroy)
-  question_fields = {
-      'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value - 1
-    (q_index..end_index).each do |i|
-      answer = @answers[i]
-      next if answer.blank?
-
-      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\/)
-        split_answer.each do |ans|
-          clinical_location = ClinicalLocation.find_or_create_by(name: ans)
-          ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
-        end
-      else
-        clinical_location = ClinicalLocation.find_or_create_by(name: answer)
-        ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
       end
     end
   end
@@ -694,25 +557,6 @@ def risk_mitigations
   end
 end
 
-def additional_staff
-  puts "==> Importing Practice: #{@name} Additional Staff".light_blue
-  @practice.additional_staffs.each(&:destroy)
-  question_fields = [
-      {'What job titles are required to implement this Practice?': 5},
-      {'For the job titles listed, how many hours are required per week?': 5},
-      {'For the job titles listed, what is the duration of the job? Please indicate the number of weeks or type in "Permanent"': 5}
-  ]
-
-  (0..4).each do |i|
-    title = @answers[@questions.index(question_fields[0].keys[0].to_s) + i]
-    hours_per_week = @answers[@questions.index(question_fields[1].keys[0].to_s) + i]
-    duration_in_weeks = @answers[@questions.index(question_fields[2].keys[0].to_s) + i]
-    next if title.blank?
-
-    AdditionalStaff.create(practice: @practice, title: title, hours_per_week: hours_per_week, duration_in_weeks: duration_in_weeks) unless AdditionalStaff.where(title: title, hours_per_week: hours_per_week, duration_in_weeks: duration_in_weeks, practice: @practice).any?
-  end
-end
-
 def additional_resources
   puts "==> Importing Practice: #{@name} Additional Resources".light_blue
   @practice.additional_resources.each(&:destroy)
@@ -749,23 +593,6 @@ def file_uploads
         # detect the image's mime type with MIME if you can't provide it yourself.
         type: MIME::Types.type_for(image_path).first.content_type
     ))
-  end
-end
-
-def practice_permissions
-  puts "==> Importing Practice: #{@name} Practice Permissions".light_blue
-  question_fields = {
-      "Are any permissions required for this practice? (e.g. \"Letters of Understanding,\" \"Proof of Funding,\" \"Written Permission from Department Heads,\" etc). Please list.": 4
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value
-
-    (q_index..end_index).each do |i|
-      next if @answers[i].blank?
-      PracticePermission.find_or_create_by!(description: @answers[i], practice: @practice)
-    end
   end
 end
 
