@@ -9,6 +9,7 @@ Rails.application.configure do
   # and recreated between test runs. Don't rely on the data there!
   config.cache_classes = false
   # config.action_view.cache_template_loading = true
+  config.enable_reloading = true
 
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
