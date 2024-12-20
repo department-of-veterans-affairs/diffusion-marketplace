@@ -10,15 +10,11 @@ on:
     branches:
       [
         "master",
-        "DM-5074-ipm-homepage-updates",
-        "ci-migration",
-        "ci-migration-cv",
-        "ci-migration-en",
-        "ci-migration-pd",
-        "ci-migration-bj",
+        "rails-7",
+        "ci-migration"
       ]
   pull_request:
-    branches: ["master", "DM-5074-ipm-homepage-updates"]
+    branches: ["master", "rails-7"]
 jobs:
   build:
     name: rspec
