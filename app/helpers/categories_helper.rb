@@ -6,7 +6,7 @@ module CategoriesHelper
                 'LEFT JOIN ahoy_events ' \
                 'ON categories.id = CAST(ahoy_events.properties ->> \'category_id\' AS INTEGER) ' \
                 'AND ahoy_events.name = \'Category selected\' ' \
-                'AND ahoy_events.time > \'' + time_limit.to_s(:db) + '\'')
+                'AND ahoy_events.time > \'' + time_limit.to_fs(:db) + '\'')
               .joins('LEFT JOIN categories as parent_categories ON categories.parent_category_id = parent_categories.id')
               .where.not(parent_category_id: nil)
 
