@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '3.3.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
