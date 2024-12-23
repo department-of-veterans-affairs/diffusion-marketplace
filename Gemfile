@@ -9,6 +9,11 @@ gem 'pg'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
 gem 'puma', '~> 6.4.3'
+
+# Required for Rails asset pipeline and precompilation in Rails 7+
+gem 'sprockets'
+gem 'sprockets-rails'
+
 gem 'terser'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 
@@ -106,7 +111,6 @@ group :development do
   gem 'erd'
 
   gem 'rubyzip'
-  gem 'sprockets'
 
   gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
   gem 'mechanize'
