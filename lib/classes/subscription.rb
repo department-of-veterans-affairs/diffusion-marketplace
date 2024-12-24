@@ -1,3 +1,4 @@
+require "commontator"
 module Commontator
   class Subscription < ActiveRecord::Base
     belongs_to :subscriber, :polymorphic => true

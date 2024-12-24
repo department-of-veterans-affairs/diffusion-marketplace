@@ -1,3 +1,4 @@
+require "commontator"
 class Commontator::Thread < ActiveRecord::Base
   belongs_to :closer, polymorphic: true, optional: true
   belongs_to :commontable, polymorphic: true, optional: true, inverse_of: :commontator_thread
