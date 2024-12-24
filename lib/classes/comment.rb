@@ -1,3 +1,5 @@
+require "commontator"
+require 'acts_as_votable'
 class Commontator::Comment < ActiveRecord::Base
   belongs_to :creator, polymorphic: true
   belongs_to :editor, polymorphic: true, optional: true
