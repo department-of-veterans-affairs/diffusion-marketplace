@@ -941,6 +941,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen
   sprockets
+  sprockets-rails
   survey_monkey_api!
   terser
   tinymce-rails (>= 6.7.3)
