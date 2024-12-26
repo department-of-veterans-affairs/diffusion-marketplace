@@ -152,8 +152,10 @@ class Commontator::Thread < ActiveRecord::Base
     ).tap do |nested_comments|
       next unless is_votable?
 
-      ActiveRecord::Associations::Preloader.new.preload(
-        nested_comments.flatten, :votes_for, ActsAsVotable::Vote.where(voter: user)
+      ActiveRecord::Associations::Preloader.new(
+        records: nested_comments.flatten,
+        associations: :votes_for,
+        scope: ActsAsVotable::Vote.where(voter: user)
       )
     end
   end
