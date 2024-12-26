@@ -148,7 +148,7 @@ gem "nested_form"
 gem 'colorize'
 gem 'humanize'
 gem 'paper_trail'
-gem 'commontator', '~> 7.0.1'
+gem 'commontator', '~> 6.3.1'
 gem 'acts_as_votable'
 gem 'json', '~> 2.3.0'
 
