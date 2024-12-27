@@ -7,12 +7,7 @@
 name: "CI"
 on:
   push:
-    branches:
-      [
-        "master",
-        "rails-7",
-        "ci-migration"
-      ]
+    branches: ["master", "rails-7", "ci-migration"]
   pull_request:
     branches: ["master", "rails-7"]
 jobs:
@@ -26,6 +21,7 @@ jobs:
       HOSTNAME: "http://localhost:3200"
       GOOGLE_TEST_API_KEY: ${{ secrets.GOOGLE_TEST_API_KEY }}
       GOOGLE_API_KEY: ${{ secrets.GOOGLE_TEST_API_KEY }}
+      DISABLE_SPRING: "1"
     services:
       postgres:
         image: postgres:13-alpine
