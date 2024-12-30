@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_27_235705) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_30_214658) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -1171,8 +1171,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_27_235705) do
     t.string "sunday"
     t.text "hours_note"
     t.string "slug"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "hidden", default: false, null: false
     t.index ["station_number"], name: "index_va_facilities_on_station_number", unique: true
     t.index ["visn_id"], name: "index_va_facilities_on_visn_id"
@@ -1211,8 +1211,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_27_235705) do
     t.decimal "latitude", precision: 11, scale: 8
     t.decimal "longitude", precision: 11, scale: 8
     t.string "phone_number"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["number"], name: "index_visns_on_number", unique: true
   end
 
