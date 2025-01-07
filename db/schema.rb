@@ -1053,7 +1053,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_30_214658) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at", precision: nil
-    t.datetime "created_at", precision: nil, null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "job_title"
     t.string "first_name"
