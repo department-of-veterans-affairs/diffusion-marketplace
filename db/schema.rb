@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_11_01_010951) do
-
+ActiveRecord::Schema[7.0].define(version: 2024_12_30_214658) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -23,8 +22,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "resource_id"
     t.string "author_type"
     t.bigint "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
@@ -35,12 +34,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "position"
     t.text "description"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.index ["practice_id"], name: "index_additional_documents_on_practice_id"
   end
 
@@ -48,8 +47,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.text "description"
     t.integer "position"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.index ["practice_id"], name: "index_additional_resources_on_practice_id"
   end
@@ -59,7 +58,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "user_id"
     t.string "name"
     t.jsonb "properties"
-    t.datetime "time"
+    t.datetime "time", precision: nil
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["properties"], name: "index_ahoy_events_on_properties", opclass: :jsonb_path_ops, using: :gin
     t.index ["user_id"], name: "index_ahoy_events_on_user_id"
@@ -91,7 +90,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "app_version"
     t.string "os_version"
     t.string "platform"
-    t.datetime "started_at"
+    t.datetime "started_at", precision: nil
     t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
   end
@@ -99,8 +98,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   create_table "ancillary_service_practices", force: :cascade do |t|
     t.bigint "ancillary_service_id"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["ancillary_service_id"], name: "index_ancillary_service_practices_on_ancillary_service_id"
     t.index ["practice_id"], name: "index_ancillary_service_practices_on_practice_id"
   end
@@ -110,8 +109,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "short_name"
     t.text "description"
     t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "categories", force: :cascade do |t|
@@ -120,15 +119,15 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.text "description"
     t.integer "position"
     t.integer "parent_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "related_terms", default: [], array: true
   end
 
   create_table "category_practices", force: :cascade do |t|
     t.bigint "category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "innovable_type"
     t.bigint "innovable_id"
     t.index ["category_id"], name: "index_category_practices_on_category_id"
@@ -138,8 +137,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   create_table "clinical_condition_practices", force: :cascade do |t|
     t.bigint "clinical_condition_id"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["clinical_condition_id"], name: "index_clinical_condition_practices_on_clinical_condition_id"
     t.index ["practice_id"], name: "index_clinical_condition_practices_on_practice_id"
   end
@@ -149,15 +148,15 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "short_name"
     t.text "description"
     t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "clinical_resource_hubs", force: :cascade do |t|
     t.bigint "visn_id"
     t.string "official_station_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["visn_id"], name: "index_clinical_resource_hubs_on_visn_id"
   end
 
@@ -168,11 +167,11 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "editor_type"
     t.bigint "editor_id"
     t.text "body", null: false
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.integer "cached_votes_up", default: 0
     t.integer "cached_votes_down", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "parent_id"
     t.index ["cached_votes_down"], name: "index_commontator_comments_on_cached_votes_down"
     t.index ["cached_votes_up"], name: "index_commontator_comments_on_cached_votes_up"
@@ -186,8 +185,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "thread_id", null: false
     t.string "subscriber_type", null: false
     t.bigint "subscriber_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["subscriber_id", "subscriber_type", "thread_id"], name: "index_commontator_subscriptions_on_s_id_and_s_type_and_t_id", unique: true
     t.index ["thread_id"], name: "index_commontator_subscriptions_on_thread_id"
   end
@@ -197,9 +196,9 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "commontable_id"
     t.string "closer_type"
     t.bigint "closer_id"
-    t.datetime "closed_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "closed_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["closer_type", "closer_id"], name: "index_commontator_threads_on_closer_type_and_closer_id"
     t.index ["commontable_type", "commontable_id"], name: "index_commontator_threads_on_c_id_and_c_type", unique: true
   end
@@ -208,8 +207,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "practice_id"
     t.bigint "department_id"
     t.boolean "is_primary", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["department_id"], name: "index_department_practices_on_department_id"
     t.index ["practice_id"], name: "index_department_practices_on_practice_id"
   end
@@ -219,15 +218,15 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "short_name"
     t.text "description"
     t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "developing_facility_type_practices", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "developing_facility_type_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["developing_facility_type_id"], name: "idx_developing_facility_practice_id"
     t.index ["practice_id"], name: "index_developing_facility_type_practices_on_practice_id"
   end
@@ -237,15 +236,15 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "short_name"
     t.integer "position"
     t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "diffusion_histories", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "facility_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "va_facility_id"
     t.bigint "clinical_resource_hub_id"
     t.index ["clinical_resource_hub_id"], name: "index_diffusion_histories_on_clinical_resource_hub_id"
@@ -256,10 +255,10 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   create_table "diffusion_history_statuses", force: :cascade do |t|
     t.bigint "diffusion_history_id"
     t.string "status"
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "start_time", precision: nil
+    t.datetime "end_time", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "unsuccessful_reasons", default: [], array: true
     t.text "unsuccessful_reasons_other"
     t.index ["diffusion_history_id"], name: "index_diffusion_history_statuses_on_diffusion_history_id"
@@ -268,8 +267,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   create_table "domain_practices", force: :cascade do |t|
     t.bigint "domain_id"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["domain_id"], name: "index_domain_practices_on_domain_id"
     t.index ["practice_id"], name: "index_domain_practices_on_practice_id"
   end
@@ -279,16 +278,16 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "short_name"
     t.text "description"
     t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "form_spams", force: :cascade do |t|
     t.string "form"
     t.string "original_url"
     t.string "ip_address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -296,7 +295,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
     t.string "scope"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
@@ -311,12 +310,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "image_alt_text"
     t.integer "section_id"
     t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "featured_image_file_name"
     t.string "featured_image_content_type"
     t.bigint "featured_image_file_size"
-    t.datetime "featured_image_updated_at"
+    t.datetime "featured_image_updated_at", precision: nil
     t.index ["homepage_id"], name: "index_homepage_features_on_homepage_id"
   end
 
@@ -326,8 +325,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "section_title_two"
     t.string "section_title_three"
     t.boolean "published", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "implementation_timeline_files", force: :cascade do |t|
@@ -335,12 +334,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "position"
     t.text "description"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.index ["practice_id"], name: "index_implementation_timeline_files_on_practice_id"
   end
 
@@ -348,8 +347,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "description"
     t.integer "position"
     t.bigint "timeline_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["timeline_id"], name: "index_milestones_on_timeline_id"
   end
 
@@ -365,7 +364,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "password_archivable_type", null: false
     t.integer "password_archivable_id", null: false
     t.string "password_salt"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["password_archivable_type", "password_archivable_id"], name: "index_password_archivable"
   end
 
@@ -373,8 +372,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_component_id"
     t.string "title"
     t.string "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "has_border", default: false
     t.index ["page_component_id"], name: "index_page_accordion_components_on_page_component_id"
   end
@@ -383,8 +382,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_component_id"
     t.text "text"
     t.text "citation"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["page_component_id"], name: "index_page_block_quote_components_on_page_component_id"
   end
 
@@ -392,8 +391,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_id"
     t.integer "position"
     t.string "component_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.uuid "component_id", null: false
     t.index ["component_id"], name: "index_page_components_on_component_id"
     t.index ["page_id"], name: "index_page_components_on_page_id"
@@ -405,8 +404,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.text "cta_text"
     t.string "button_text"
     t.string "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "has_background_color", default: false
     t.index ["page_component_id"], name: "index_page_cta_components_on_page_component_id"
   end
@@ -415,12 +414,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_component_id"
     t.string "display_name"
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.index ["page_component_id"], name: "index_page_downloadable_file_components_on_page_component_id"
   end
 
@@ -429,8 +428,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "title"
     t.string "url"
     t.string "text"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.date "start_date"
     t.date "end_date"
     t.string "location"
@@ -444,8 +443,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "name"
     t.string "description"
     t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["slug"], name: "index_page_groups_on_slug", unique: true
   end
 
@@ -453,8 +452,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_component_id"
     t.string "subtopic_title"
     t.string "subtopic_description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "url"
     t.index ["page_component_id"], name: "index_page_header2_components_on_page_component_id"
   end
@@ -464,8 +463,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "alignment"
     t.string "title"
     t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "url"
     t.index ["page_component_id"], name: "index_page_header3_components_on_page_component_id"
   end
@@ -474,16 +473,16 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_component_id"
     t.string "text"
     t.string "heading_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["page_component_id"], name: "index_page_header_components_on_page_component_id"
   end
 
   create_table "page_hr_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "html_tag"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["page_component_id"], name: "index_page_hr_components_on_page_component_id"
   end
 
@@ -491,12 +490,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_component_id"
     t.text "alt_text"
     t.string "alignment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "page_image_file_name"
     t.string "page_image_content_type"
     t.bigint "page_image_file_size"
-    t.datetime "page_image_updated_at"
+    t.datetime "page_image_updated_at", precision: nil
     t.string "url"
     t.index ["page_component_id"], name: "index_page_image_components_on_page_component_id"
   end
@@ -510,8 +509,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.boolean "display_successful_adoptions", default: false
     t.boolean "display_in_progress_adoptions", default: false
     t.boolean "display_unsuccessful_adoptions", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "description_text_alignment"
     t.index ["page_component_id"], name: "index_page_map_components_on_page_component_id"
   end
@@ -527,7 +526,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "image_file_name"
     t.string "image_content_type"
     t.bigint "image_file_size"
-    t.datetime "image_updated_at"
+    t.datetime "image_updated_at", precision: nil
     t.string "url_link_text"
     t.index ["page_component_id"], name: "index_page_news_components_on_page_component_id"
   end
@@ -541,27 +540,27 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "text_alignment"
     t.text "image_alt_text"
     t.boolean "flipped_ratio", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "image_file_name"
     t.string "image_content_type"
     t.bigint "image_file_size"
-    t.datetime "image_updated_at"
+    t.datetime "image_updated_at", precision: nil
     t.index ["page_component_id"], name: "index_page_one_to_one_image_components_on_page_component_id"
   end
 
   create_table "page_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["page_component_id"], name: "index_page_paragraph_components_on_page_component_id"
   end
 
   create_table "page_practice_list_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "practices", default: [], array: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "page_publication_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -570,12 +569,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "authors"
     t.string "url"
     t.string "published_in"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.integer "published_on_month"
     t.integer "published_on_day"
     t.integer "published_on_year"
@@ -587,8 +586,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_component_id"
     t.string "button_text"
     t.string "url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["page_component_id"], name: "index_page_simple_button_components_on_page_component_id"
   end
 
@@ -597,8 +596,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "title"
     t.string "description"
     t.string "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "card", default: false
     t.index ["page_component_id"], name: "index_page_subpage_hyperlink_components_on_page_component_id"
   end
@@ -612,8 +611,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "title3"
     t.text "text3"
     t.boolean "has_background_color", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["page_component_id"], name: "index_page_triple_paragraph_components_on_page_component_id"
   end
 
@@ -626,12 +625,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "text_alignment"
     t.text "image_alt_text"
     t.boolean "flipped_ratio", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "image_file_name"
     t.string "image_content_type"
     t.bigint "image_file_size"
-    t.datetime "image_updated_at"
+    t.datetime "image_updated_at", precision: nil
     t.index ["page_component_id"], name: "index_page_two_to_one_image_components_on_page_component_id"
   end
 
@@ -639,8 +638,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "page_component_id"
     t.string "url"
     t.string "caption"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["page_component_id"], name: "index_page_you_tube_player_components_on_page_component_id"
   end
 
@@ -649,9 +648,9 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "title"
     t.string "description"
     t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "published"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "published", precision: nil
     t.boolean "ever_published", default: false, null: false
     t.boolean "is_visible", default: true, null: false
     t.integer "template_type", default: 0
@@ -660,7 +659,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "image_file_name"
     t.string "image_content_type"
     t.bigint "image_file_size"
-    t.datetime "image_updated_at"
+    t.datetime "image_updated_at", precision: nil
     t.boolean "is_public", default: false
     t.integer "position"
     t.string "short_name"
@@ -672,39 +671,39 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "position"
     t.text "description"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.index ["practice_id"], name: "index_photo_files_on_practice_id"
   end
 
   create_table "practice_awards", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["practice_id"], name: "index_practice_awards_on_practice_id"
   end
 
   create_table "practice_editor_sessions", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "practice_id"
-    t.datetime "session_start_time"
-    t.datetime "session_end_time"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "session_start_time", precision: nil
+    t.datetime "session_end_time", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["practice_id"], name: "index_practice_editor_sessions_on_practice_id"
     t.index ["user_id"], name: "index_practice_editor_sessions_on_user_id"
   end
 
   create_table "practice_editors", force: :cascade do |t|
     t.bigint "user_id"
-    t.datetime "last_edited_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "last_edited_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "innovable_type"
     t.bigint "innovable_id"
     t.index ["innovable_type", "innovable_id"], name: "index_practice_editors_on_innovable"
@@ -714,8 +713,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   create_table "practice_emails", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["practice_id"], name: "index_practice_emails_on_practice_id"
   end
 
@@ -723,19 +722,19 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "description"
     t.bigint "practice_id"
     t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["practice_id"], name: "index_practice_metrics_on_practice_id"
   end
 
   create_table "practice_multimedia", force: :cascade do |t|
     t.string "link_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.string "name"
     t.string "description"
     t.integer "position"
@@ -751,8 +750,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "facility_id"
     t.integer "facility_type", default: 0
     t.integer "initiating_department_office_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "va_facility_id"
     t.bigint "clinical_resource_hub_id"
     t.index ["clinical_resource_hub_id"], name: "index_practice_origin_facilities_on_clinical_resource_hub_id"
@@ -762,8 +761,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
 
   create_table "practice_partner_practices", force: :cascade do |t|
     t.bigint "practice_partner_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "innovable_type"
     t.bigint "innovable_id"
     t.index ["innovable_type", "innovable_id"], name: "index_practice_partner_practices_on_innovable"
@@ -777,8 +776,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "position"
     t.string "color"
     t.string "icon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "slug"
     t.boolean "is_major", default: false
     t.index ["slug"], name: "index_practice_partners_on_slug", unique: true
@@ -787,12 +786,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   create_table "practice_problem_resources", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "link_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.string "name"
     t.string "description"
     t.integer "position"
@@ -811,24 +810,24 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "media_type"
     t.integer "resource_type_label"
     t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.index ["practice_id"], name: "index_practice_resources_on_practice_id"
   end
 
   create_table "practice_results_resources", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "link_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.string "name"
     t.string "description"
     t.integer "position"
@@ -840,12 +839,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   create_table "practice_solution_resources", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "link_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.string "name"
     t.string "description"
     t.integer "position"
@@ -867,7 +866,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "number_adopted", default: 0
     t.integer "number_failed", default: 0
     t.string "support_network_email"
-    t.datetime "date_initiated"
+    t.datetime "date_initiated", precision: nil
     t.string "tagline"
     t.string "summary"
     t.string "origin_title"
@@ -887,16 +886,16 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "origin_picture_crop_h"
     t.integer "number_departments", default: 0
     t.string "process"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "main_display_image_file_name"
     t.string "main_display_image_content_type"
     t.bigint "main_display_image_file_size"
-    t.datetime "main_display_image_updated_at"
+    t.datetime "main_display_image_updated_at", precision: nil
     t.string "origin_picture_file_name"
     t.string "origin_picture_content_type"
     t.bigint "origin_picture_file_size"
-    t.datetime "origin_picture_updated_at"
+    t.datetime "origin_picture_updated_at", precision: nil
     t.bigint "user_id"
     t.boolean "published", default: false
     t.boolean "approved", default: false
@@ -909,15 +908,15 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "date_published"
-    t.datetime "practice_pages_updated"
+    t.datetime "date_published", precision: nil
+    t.datetime "practice_pages_updated", precision: nil
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
     t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
     t.text "main_display_image_alt_text"
     t.integer "diffusion_histories_count", default: 0
-    t.datetime "last_email_date"
+    t.datetime "last_email_date", precision: nil
     t.boolean "private_contact_info", default: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
@@ -942,18 +941,18 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.boolean "private_contact_info"
     t.boolean "published", default: false
     t.boolean "retired", default: false
-    t.datetime "date_published"
+    t.datetime "date_published", precision: nil
     t.bigint "user_id"
     t.integer "crop_x"
     t.integer "crop_y"
     t.integer "crop_w"
     t.integer "crop_h"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "main_display_image_file_name"
     t.string "main_display_image_content_type"
     t.bigint "main_display_image_file_size"
-    t.datetime "main_display_image_updated_at"
+    t.datetime "main_display_image_updated_at", precision: nil
     t.index ["name"], name: "index_products_on_name", unique: true
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["user_id"], name: "index_products_on_user_id"
@@ -965,16 +964,16 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "position"
     t.text "description"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["practice_id"], name: "index_publications_on_practice_id"
   end
 
   create_table "risk_mitigations", force: :cascade do |t|
     t.integer "position"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["practice_id"], name: "index_risk_mitigations_on_practice_id"
   end
 
@@ -989,8 +988,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "name"
     t.string "resource_type"
     t.bigint "resource_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
@@ -1000,12 +999,12 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.integer "position"
     t.text "description"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "attachment_file_name"
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.datetime "attachment_updated_at", precision: nil
     t.index ["practice_id"], name: "index_survey_result_files_on_practice_id"
   end
 
@@ -1015,8 +1014,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "timeline"
     t.integer "position"
     t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["practice_id"], name: "index_timelines_on_practice_id"
   end
 
@@ -1024,13 +1023,13 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.bigint "user_id"
     t.bigint "practice_id"
     t.boolean "committed"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "favorited", default: false
     t.boolean "verified_implementer", default: false
     t.boolean "team_member", default: false
-    t.datetime "time_favorited"
-    t.datetime "time_committed"
+    t.datetime "time_favorited", precision: nil
+    t.datetime "time_committed", precision: nil
     t.boolean "other", default: false
     t.index ["practice_id"], name: "index_user_practices_on_practice_id"
     t.index ["user_id"], name: "index_user_practices_on_user_id"
@@ -1040,35 +1039,35 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: nil
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "job_title"
     t.string "first_name"
     t.string "last_name"
     t.string "phone_number"
     t.integer "visn"
-    t.datetime "password_changed_at"
+    t.datetime "password_changed_at", precision: nil
     t.boolean "skip_va_validation", default: false, null: false
     t.boolean "disabled", default: false, null: false
     t.text "bio"
     t.string "avatar_file_name"
     t.string "avatar_content_type"
     t.bigint "avatar_file_size"
-    t.datetime "avatar_updated_at"
+    t.datetime "avatar_updated_at", precision: nil
     t.string "location"
     t.string "facility"
     t.boolean "accepted_terms", default: false
@@ -1099,8 +1098,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
   create_table "va_employee_practices", force: :cascade do |t|
     t.integer "position"
     t.bigint "va_employee_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "innovable_type"
     t.bigint "innovable_id"
     t.index ["innovable_type", "innovable_id"], name: "index_va_employee_practices_on_innovable"
@@ -1111,8 +1110,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "name"
     t.string "role"
     t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "va_facilities", force: :cascade do |t|
@@ -1185,7 +1184,7 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
@@ -1196,8 +1195,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.string "email"
     t.boolean "primary", default: false
     t.bigint "visn_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["email"], name: "index_visn_liaisons_on_email", unique: true
     t.index ["visn_id"], name: "index_visn_liaisons_on_visn_id"
   end
@@ -1225,8 +1224,8 @@ ActiveRecord::Schema.define(version: 2024_11_01_010951) do
     t.boolean "vote_flag"
     t.string "vote_scope"
     t.integer "vote_weight"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope"
     t.index ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope"
   end

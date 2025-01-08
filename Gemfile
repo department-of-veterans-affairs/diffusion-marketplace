@@ -3,12 +3,17 @@ source 'https://rubygems.org'
 ruby '3.3.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
 gem 'puma', '~> 6.4.3'
+
+# Required for Rails asset pipeline and precompilation in Rails 7+
+gem 'sprockets'
+gem 'sprockets-rails'
+
 gem 'terser'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 
@@ -94,7 +99,7 @@ group :development do
   gem 'listen'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen'
   gem 'rails-erd'
   gem 'letter_opener'
   gem 'bullet'
@@ -106,7 +111,6 @@ group :development do
   gem 'erd'
 
   gem 'rubyzip'
-  gem 'sprockets'
 
   gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
   gem 'mechanize'
