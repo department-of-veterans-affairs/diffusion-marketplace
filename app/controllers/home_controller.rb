@@ -64,8 +64,8 @@ class HomeController < ApplicationController
 
       {
         visns: Visn.cached_visns.select(:id, :number),
-        diffusion_history_practices: is_guest ? Practice.public_facing.select(:id, :name).get_with_va_facility_diffusion_histories :
-                              Practice.select(:id, :name).get_with_va_facility_diffusion_histories,
+        diffusion_history_practices: is_guest ? Practice.includes([:practice_origin_facilities]).public_facing.select(:id, :name).get_with_va_facility_diffusion_histories :
+                              Practice.includes([:practice_origin_facilities]).select(:id, :name).get_with_va_facility_diffusion_histories,
         diffusion_histories: diffusion_histories,
         successful_ct: diffusion_histories.get_by_successful_status.size,
         in_progress_ct: diffusion_histories.get_by_in_progress_status.size,
