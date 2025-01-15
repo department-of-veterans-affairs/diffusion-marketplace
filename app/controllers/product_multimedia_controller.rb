@@ -32,7 +32,7 @@ class ProductMultimediaController < ApplicationController
 
   def handle_enabled_practice
     if @product.is_public || current_user
-      redirect_to @product_resource.attachment_s3_presigned_url
+      redirect_to @product_resource.attachment_s3_presigned_url, allow_other_host: true
     else
       unauthorized_response
     end
@@ -40,7 +40,7 @@ class ProductMultimediaController < ApplicationController
 
   def handle_user_with_unpublished_product
     if check_user_product_permissions
-      redirect_to @product_resource.attachment_s3_presigned_url
+      redirect_to @product_resource.attachment_s3_presigned_url, allow_other_host: true
     else
       unauthorized_response
     end
