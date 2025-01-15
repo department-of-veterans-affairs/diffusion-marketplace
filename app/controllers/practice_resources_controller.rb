@@ -43,7 +43,7 @@ class PracticeResourcesController < ApplicationController
 
   def handle_enabled_practice
     if @practice.is_public || current_user
-      redirect_to @practice_resource.attachment_s3_presigned_url
+      redirect_to @practice_resource.attachment_s3_presigned_url, allow_other_host: true
     else
       unauthorized_response
     end
@@ -51,7 +51,7 @@ class PracticeResourcesController < ApplicationController
 
   def handle_user_with_disabled_practice
     if check_user_practice_permissions
-      redirect_to @practice_resource.attachment_s3_presigned_url
+      redirect_to @practice_resource.attachment_s3_presigned_url, allow_other_host: true
     else
       unauthorized_response
     end
