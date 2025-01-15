@@ -6,6 +6,6 @@ class CommentMailer < ApplicationMailer
         @comment = Commontator::Comment.find(options[:id])
         subject = "A comment has been reported"
 
-        mail(to: 'marketplace@va.gov;dm@agile6.com', subject: subject)
+        mail(to: 'marketplace@va.gov', subject: subject)
     end
 end
