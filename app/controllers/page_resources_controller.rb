@@ -30,7 +30,7 @@ class PageResourcesController < ApplicationController
 
   def handle_published_page
     if @page.is_public || current_user
-      redirect_to @page_resource.attachment_s3_presigned_url
+      redirect_to @page_resource.attachment_s3_presigned_url, allow_other_host: true
     else
       unauthorized_response
     end
@@ -38,7 +38,7 @@ class PageResourcesController < ApplicationController
 
   def handle_user_with_unpublished_practice
     if current_user&.has_role?(:admin)
-      redirect_to @page_resource.attachment_s3_presigned_url
+      redirect_to @page_resource.attachment_s3_presigned_url, allow_other_host: true
     else
       unauthorized_response
     end
