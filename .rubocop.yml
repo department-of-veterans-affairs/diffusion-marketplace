@@ -15,11 +15,16 @@ require:
   - rubocop-rspec
   - rubocop-performance
   - rubocop-rails
+  - rubocop-capybara
+  - rubocop-factory_bot
 
 AllCops:
   TargetRubyVersion: 3.2
   NewCops: enable
-
+Capybara:
+  Enabled: true
+FactoryBot:
+  Enabled: true
 Gemspec:
   Enabled: true
 Layout:
