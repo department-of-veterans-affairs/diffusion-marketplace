@@ -357,6 +357,7 @@ GEM
     local_time (2.1.0)
     lodash-rails (4.17.21)
       railties (>= 3.1)
+    logger (1.6.1)
     loofah (2.23.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -761,8 +762,9 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.18.1)
+    selenium-webdriver (4.27.0)
       base64 (~> 0.2)
+      logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -822,7 +824,7 @@ GEM
       railties (>= 6.0.0)
     webrick (1.8.2)
     webrobots (0.1.2)
-    websocket (1.2.10)
+    websocket (1.2.11)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
