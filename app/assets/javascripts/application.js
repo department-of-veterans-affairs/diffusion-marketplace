@@ -56,6 +56,5 @@
 //= require visns/visn_va_facility_infowindow
 //= require jquery.collapser.js
 //= require category_usage.js
-//= require tinymce
 //= require page/page_infowindow
 //= require homepage_search_dropdown
